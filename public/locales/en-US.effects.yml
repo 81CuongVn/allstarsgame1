@@ -1,0 +1,1720 @@
+en-US:
+  effects:
+    kill_with_one_hit:
+      buff:
+        self: |
+          se matar ao usar essa habilidade. <span class="vermelho">( Falhando fará um golpe poderoso )</span>
+        enemy: |
+          se matar ao usar essa habilidade. <span class="vermelho">( Falhando fará um golpe poderoso )</span>
+      debuff: 
+        self: |
+          matar o inimigo ao usar essa habilidade. <span class="vermelho">( Falhando fará um golpe poderoso )</span>
+        enemy: |
+          matar o inimigo ao usar essa habilidade. <span class="vermelho">( Falhando fará um golpe poderoso )</span>
+    cancel_regen_mana:
+      buff:
+        self: |
+          cancelar a sua regeneração de mana
+        enemy: |
+          cancelar a sua regeneração de mana
+      debuff: 
+        self: |
+          cancelar a regeneração de mana do inimigo
+        enemy: |
+          cancelar a regeneração de mana do inimigo
+    remove_mana:
+      buff:
+        self: |
+          remover #{value} de mana do seu personagem
+        enemy: |
+          remover #{value} de mana do seu personagem
+      debuff: 
+        self: |
+          remover #{value} de mana do inimigo
+        enemy: |
+          remover #{value} de mana do inimigo
+    steal_mana:
+      buff:
+        self: |
+          remover #{value} de mana de você e passar para o inimigo
+        enemy: |
+          remover #{value} de mana de você e passar para o inimigo
+      debuff: 
+        self: |
+          remover #{value} de mana do inimigo e passar para você.
+        enemy: |
+          remover #{value} de mana do inimigo e passar para você.
+    steal_health:
+      buff:
+        self: |
+          recuperar #{value} de vida do dano causado
+        enemy: |
+          recuperar #{value} de vida do dano causado
+      debuff: 
+        self: |
+          perder #{value} de vida do dano causado
+        enemy: |
+          perder #{value} de vida do dano causado
+    turns: |
+      por #{turns} turno(s)
+    instant: |
+      no turno atual
+    chance: |
+        <span class="effect_gray">#{value}% de chance de</span>
+    bleeding:
+      buff:
+        self: |
+          causar sangramento em você mesmo, aplicando #{value} de dano extra
+        enemy: |
+          causar sangramento no inimigo, aplicando #{value} de dano extra
+      debuff:
+        self: |
+          causar sangramento em você mesmo, aplicando #{value} de dano extra
+        enemy: |
+          causar sangramento no inimigo, aplicando #{value} de dano extra
+    stun:
+      buff:
+        self: |
+          atordoar você mesmo, você não ataca no próximo turno
+        enemy: |
+          atordoar o inimigo, ele não ataca no próximo turno
+      debuff:
+        self: |
+          atordoar você mesmo, você não ataca no próximo turno
+        enemy: |
+          atordoar o inimigo, ele não ataca no próximo turno
+    slowness:
+      buff:
+        self: |
+          causar lentidão em você mesmo, os golpes dele ficam #{value} mais lentos e o tempo de recarga aumenta em 1 turno
+        enemy: |
+          causar lentidão no inimigo, os golpes dele ficam #{value} mais lentos e o tempo de recarga aumenta em 1 turno
+      debuff:
+         self: |
+          causar lentidão em você mesmo, seus golpes ficam #{value} mais lentos e o tempo de recarga aumenta em 1 turno
+         enemy: |
+          causar lentidão no inimigo, os golpes dele ficam #{value} mais lentos e o tempo de recarga aumenta em 1 turno
+    confusion:
+      buff:
+        self: |
+          causar confusão em você mesmo, reduzindo sua chance de acerto em #{value}
+        enemy: |
+          causar confusão no inimigo, reduzindo sua chance de acerto em #{value}
+      debuff:
+         self: |
+          causar confusão em você mesmo, reduzindo sua chance de acerto em #{value}
+         enemy: |
+          causar confusão no inimigo, reduzindo sua chance de acerto em #{value}
+    elemental_damage:
+      buff:
+        self: |
+          aumentar em #{value} o dano Elemental
+        enemy: |
+          aumentar em #{value} o dano Elemental do inimigo
+      debuff: 
+        self: |
+          aumentar em #{value} o dano Elemental
+        enemy: |
+          diminuir em #{value} o dano Elemental do inimigo
+    fighter_damage:
+      buff:
+        self: |
+          aumentar em #{value} o dano Corpo-a-Corpo
+        enemy: |
+          aumentar em #{value} o dano Corpo-a-Corpo do inimigo
+      debuff: 
+        self: |
+          aumentar em #{value} o dano Corpo-a-Corpo
+        enemy: |
+          diminuir em #{value} o dano Corpo-a-Corpo do inimigo
+    magic_damage:
+      buff:
+        self: |
+          aumentar em #{value} o dano Mágico
+        enemy: |
+          aumentar em #{value} o dano Mágico do inimigo
+      debuff: 
+        self: |
+          aumentar em #{value} o dano Mágico
+        enemy: |
+          diminuir em #{value} o dano Mágico do inimigo
+    warrior_damage:
+      buff:
+        self: |
+          aumentar em #{value} o dano Guerreiro
+        enemy: |
+          aumentar em #{value} o dano Guerreiro do inimigo
+      debuff: 
+        self: |
+          aumentar em #{value} o dano Guerreiro
+        enemy: |
+          diminuir em #{value} o dano Guerreiro do inimigo
+    ranger_damage:
+      buff:
+        self: |
+          aumentar em #{value} o dano Atirador
+        enemy: |
+          aumentar em #{value} o dano Atirador do inimigo
+      debuff: 
+        self: |
+          aumentar em #{value} o dano Atirador
+        enemy: |
+          diminuir em #{value} o dano Atirador do inimigo
+    reduce_critical_damage:
+      buff:
+        self: |
+          diminuir pela metade o seu dano Crítico
+        enemy: |
+          diminuir pela metade o dano Crítico do inimigo
+      debuff: 
+        self: |
+          diminuir pela metade o seu dano Crítico
+        enemy: |
+          diminuir pela metade o dano Crítico do inimigo
+    enemy_absorb_reduction:
+      buff:
+        self: |
+          diminuir pela metade o seu dano Absorvido
+        enemy: |
+          diminuir pela metade o dano Absorvido do inimigo
+      debuff: 
+        self: |
+          diminuir pela metade o seu dano Absorvido
+        enemy: |
+          diminuir pela metade o dano Absorvido do inimigo
+    damage_in_bleeding:
+      buff:
+        self: |
+          aumentar em #{value} o dano causado quando seu oponente estiver com sangramento
+        enemy: |
+          aumentar em #{value} o dano causado quando seu oponente estiver com sangramento
+      debuff: 
+        self: |
+          diminuir em #{value} o dano causado quando seu oponente estiver com sangramento
+        enemy: |
+          diminuir em #{value} o dano causado quando seu oponente estiver com sangramento
+    damage_in_slowness:
+      buff:
+        self: |
+          aumentar em #{value} o dano causado quando seu oponente estiver com lentidão
+        enemy: |
+          aumentar em #{value} o dano causado quando seu oponente estiver com lentidão
+      debuff: 
+        self: |
+          diminuir em #{value} o dano causado quando seu oponente estiver com lentidão
+        enemy: |
+          diminuir em #{value} o dano causado quando seu oponente estiver com lentidão
+    damage_in_confusion:
+      buff:
+        self: |
+          aumentar em #{value} o dano causado quando seu oponente estiver com confusão
+        enemy: |
+          aumentar em #{value} o dano causado quando seu oponente estiver com confusão
+      debuff: 
+        self: |
+          diminuir em #{value} o dano causado quando seu oponente estiver com confusão
+        enemy: |
+          diminuir em #{value} o dano causado quando seu oponente estiver com confusão
+    damage_in_stun:
+      buff:
+        self: |
+          Aumenta em #{value} o seu dano causado em inimigos Atordoados
+        enemy: |
+          Aumenta em #{value} o dano do inimigo causado enquanto você estiver Atordoado
+      debuff: 
+        self: |
+          Diminui em #{value} o seu dano causado em inimigos Atordoados
+        enemy: |
+          Diminui em #{value} o dano do inimigo causado enquanto você estiver Atordoado
+    increase_bleeding_damage:
+      buff:
+        self: |
+          aumentar em #{value} o dano de seu sangramento 
+        enemy: |
+          aumentar em #{value} o dano do sangramento no inimigo
+      debuff:
+        self: |
+          diminuir em #{value} o dano de seu sangramento
+        enemy: |
+          diminuir em #{value} o dano do sangramento no inimigo
+    generic_attack_damage:
+      buff:
+        self: |
+          aumentar em #{value}% o dano do seu próximo golpe genérico
+        enemy: |
+          aumentar em #{value}% o dano do próximo golpe genérico do inimigo
+      debuff:
+        self: |
+          diminuir em #{value}% o dano do seu próximo golpe genérico
+        enemy: |
+          diminuir em #{value}% o dano do próximo golpe genérico do inimigo
+    attack_half_life:
+      buff:
+        self: |
+          aumentar em #{value} o seu ataque quando sua vida estiver abaixo de 50%
+        enemy: |
+          aumentar em #{value} o ataque do inimigo quando sua vida estiver abaixo de 50%
+      debuff:
+        self: |
+          diminuir em #{value} o seu ataque quando sua vida estiver abaixo de 50%
+        enemy: |
+          diminuir em #{value} o ataque do inimigo quando sua vida estiver abaixo de 50%
+    defense_half_life:
+      buff:
+        self: |
+          aumentar em #{value} a sua defesa quando sua vida estiver abaixo de 50%
+        enemy: |
+          aumentar em #{value} a defesa do inimigo quando sua vida estiver abaixo de 50%
+      debuff:
+        self: |
+          diminuir em #{value} a sua defesa quando sua vida estiver abaixo de 50%
+        enemy: |
+          diminuir em #{value} a defesa do inimigo quando sua vida estiver abaixo de 50%
+    unique_attack_damage:
+      buff:
+        self: |
+          aumentar em #{value}% o dano do seu próximo golpe único
+        enemy: |
+          umentar em #{value}% o dano do próximo golpe único do inimigo
+      debuff:
+        self: |
+          diminuir em #{value}% o dano do seu próximo golpe único
+        enemy: |
+          diminuir em #{value}% o dano do próximo golpe único do inimigo
+    for_atk:
+      buff:
+        self: |
+          aumentar em #{value} o seu ataque 
+        enemy: |
+          aumentar em #{value} o ataque do inimigo
+      debuff:
+        self: |
+          diminuir o seu ataque em #{value}
+        enemy: |
+          diminuir #{value} do ataque do inimigo
+    for_def:
+      buff:
+        self: |
+          aumentar em #{value} a sua defesa
+        enemy: |
+          aumentar em #{value} a defesa do inimigo
+      debuff:
+        self: |
+          diminuir a sua defesa em #{value}
+        enemy: |
+          diminuir #{value} do defesa do inimigo
+    for_crit:
+      buff:
+        self: |
+          aumentar em #{value}% o seu crítico
+        enemy: |
+          aumentar em #{value}% o crítico do inimigo
+      debuff:
+        self: |
+          diminuir o seu crítico em #{value}%
+        enemy: |
+          diminuir #{value}% do crítico do inimigo
+    for_crit_inc:  
+      buff:
+        self: |
+          aumentar em #{value}% o seu dano crítico
+        enemy: |
+          aumentar em #{value}% o dano crítico do inimigo
+      debuff:
+        self: |
+          diminuir o seu dano critico em #{value}
+        enemy: |
+          diminuir #{value} do dano critico do inimigo
+    for_abs:
+      buff:
+         self: |
+           aumentar em #{value}% a sua absorção
+         enemy: |
+           aumentar em #{value}% a absorção do inimigo
+      debuff:
+        self: |
+          diminuir a sua absorção em #{value}%
+        enemy: |
+          diminuir #{value}% da absorção do inimigo
+    for_abs_inc:
+      buff:
+        self: |
+           aumentar em #{value}% o seu dano absorvido
+        enemy: |
+          aumentar em #{value}% o dano absorvido do inimigo
+      debuff:
+        self: |
+          diminuir em #{value}% o seu dano absorvido
+        enemy: |
+          diminuir em #{value}% o dano absorvido do inimigo
+    for_prec:
+      buff:
+        self: |
+          aumentar em #{value} a sua precisão
+        enemy: |
+          aumentar em #{value} a precisão do inimigo
+      debuff:
+        self: |
+          diminuir a sua precisão em #{value}
+        enemy: |
+          diminuir #{value} da precisão do inimigo
+    for_init:
+      buff:
+        self: |
+          aumentar em #{value} a sua iniciativa
+        enemy: |
+          aumentar em #{value} a iniciativa do inimigo
+      debuff:
+        self: |
+          diminuir a sua iniciativa em #{value}
+        enemy: |
+          diminuir #{value} da iniciativa do inimigo
+    for_hit:
+      buff:
+        self: |
+          aumentar em #{value} a sua chance de acerto
+        enemy: |
+          aumentar em #{value} a chance de acerto do inimigo
+      debuff:
+        self: |
+          diminuir a sua chance de acerto em #{value}
+        enemy: |
+          diminuir #{value} da chance de acerto do inimigo
+    attack_speed:
+      buff:
+        self: |
+          diminuir em #{value} o seu tempo de execução
+        enemy: |
+          diminuir em #{value} o tempo de execução do inimigo
+      debuff:
+        self: |
+          aumentar o seu tempo de execução em #{value}
+        enemy: |
+          aumentar #{value} do tempo de execução do inimigo
+    next_mana_cost:
+      buff:
+        self: |
+          diminuir em #{value} o custo de mana dos seus golpes
+        enemy: |
+          diminuir em #{value} o custo de mana dos seus golpes
+      debuff:
+        self: |
+          aumentar em #{value} o custo de mana dos golpes inimigos
+        enemy: |
+          aumentar em #{value} o custo de mana dos golpes inimigos
+    lock_random_technique:
+      buff:
+        self: |
+          desbloquear um golpe aleatório
+        enemy: |
+          desbloquear um golpe aleatório do inimigo
+      debuff:
+        self: |
+          selar um golpe aleatório
+        enemy: |
+          selar um golpe aleatório do inimigo
+    copy_last_technique:
+      buff:
+        self: |
+          copiar o último golpe utilizado pelo inimigo
+        enemy: |
+          copiar o último golpe utilizado por você
+      debuff:
+        self: |
+          copiar o último golpe utilizado pelo inimigo
+        enemy: |
+          copiar o último golpe utilizado por você
+    last_hit_dont_die:
+      buff:
+        self: |
+          sobreviver caso receber um golpe fatal no próximo turno
+        enemy: |
+          sobreviver caso receber um golpe fatal no próximo turno
+      debuff:
+        self: |
+          sobreviver caso receber um golpe fatal no próximo turno
+        enemy: |
+          sobreviver caso receber um golpe fatal no próximo turno
+    null_next_attack:
+      buff:
+        self: |
+          anular o próximo golpe do inimigo
+        enemy: |
+          anular o próximo golpe do inimigo
+      debuff:
+        self: |
+          anular o seu próximo golpe
+        enemy: |
+          anular o seu próximo golpe
+    dodge_technique:
+      buff:
+        self: |
+          esquivar o próximo golpe do inimigo
+        enemy: |
+          esquivar o próximo golpe do inimigo
+      debuff:
+        self: |
+          esquivar o seu próximo golpe
+        enemy: |
+          esquivar o seu próximo golpe
+    turns_attack_to_elemental:
+      buff:
+        self: |
+          transformar seu próximo golpe no tipo Elemental
+        enemy: |
+          transformar o próximo golpe inimigo no tipo Elemental
+      debuff:
+        self: |
+          transformar seu próximo golpe no tipo Elemental
+        enemy: |
+          transformar o próximo golpe inimigo no tipo Elemental
+    turns_attack_to_neutral:
+      buff:
+        self: |
+          transformar seu próximo golpe no tipo Neutro
+        enemy: |
+          transformar o próximo golpe inimigo no tipo Neutro
+      debuff:
+        self: |
+          transformar seu próximo golpe no tipo Neutro
+        enemy: |
+          transformar o próximo golpe inimigo no tipo Neutro
+    turns_attack_to_fighter:
+      buff:
+        self: |
+          transformar seu próximo golpe no tipo Corpo-a-Corpo
+        enemy: |
+          transformar o próximo golpe inimigo no tipo Corpo-a-Corpo
+      debuff:
+        self: |
+          transformar seu próximo golpe no tipo Corpo-a-Corpo
+        enemy: |
+          transformar o próximo golpe inimigo no tipo Corpo-a-Corpo
+    turns_attack_to_magic:
+      buff:
+        self: |
+          transformar seu próximo golpe no tipo Mágico
+        enemy: |
+          transformar o próximo golpe inimigo no tipo Mágico
+      debuff:
+        self: |
+          transformar seu próximo golpe no tipo Mágico
+        enemy: |
+          transformar o próximo golpe inimigo no tipo Mágico
+    turns_attack_to_warrior:
+      buff:
+        self: |
+          transformar seu próximo golpe no tipo Guerreiro
+        enemy: |
+          transformar o próximo golpe inimigo no tipo Guerreiro
+      debuff:
+        self: |
+          transformar seu próximo golpe no tipo Guerreiro
+        enemy: |
+          transformar o próximo golpe inimigo no tipo Guerreiro
+    turns_attack_to_ranger:
+      buff:
+        self: |
+          transformar seu próximo golpe no tipo Atirador
+        enemy: |
+          transformar o próximo golpe inimigo no tipo Atirador
+      debuff:
+
+        self: |
+          transformar seu próximo golpe no tipo Atirador
+        enemy: |
+          transformar o próximo golpe inimigo no tipo Atirador
+    removes_stun:
+      buff:
+        self: |
+          remover o efeito de Atordoamento do seu personagem
+        enemy: |
+          remover o efeito de Atordoamento do seu inimigo
+      debuff:
+        self: |
+          remover o efeito de Atordoamento do seu personagem
+        enemy: |
+          remover o efeito de Atordoamento do seu inimigo
+    remove_slowness:
+      buff:
+        self: |
+          remover o efeito de Lentidão do seu personagem
+        enemy: |
+          remover o efeito de Lentidão do seu inimigo
+      debuff:
+        self: |
+          remover o efeito de Lentidão do seu personagem
+        enemy: |
+          remover o efeito de Lentidão do seu inimigo
+    remove_bleeding:
+      buff:
+        self: |
+          remover o efeito de Sangramento do seu personagem
+        enemy: |
+          remover o efeito de Sangramento do seu inimigo
+      debuff:
+        self: |
+          remover o efeito de Sangramento do seu personagem
+        enemy: |
+          remover o efeito de Sangramento do seu inimigo
+    remove_confusion:
+      buff:
+        self: |
+          remover o efeito de Confusão do seu personagem
+        enemy: |
+          remover o efeito de Confusão do seu inimigo
+      debuff:
+        self: |
+          remover o efeito de Confusão do seu personagem
+        enemy: |
+          remover o efeito de Confusão do seu inimigo
+    double_bleeding_chance:
+      buff:
+        self: |
+          dobrar a chance do seu próximo golpe deixar Sangramento
+        enemy: |
+          dobrar a chance do seu próximo golpe deixar Sangramento
+      debuff:
+        self: |
+          dobrar a chance do seu próximo golpe deixar Sangramento
+        enemy: |
+          dobrar a chance do seu próximo golpe deixar Sangramento
+    double_stun_chance:
+      buff:
+        self: |
+          dobrar a chance do seu próximo golpe deixar Atordoamento
+        enemy: |
+          dobrar a chance do seu próximo golpe deixar Atordoamento
+      debuff:
+        self: |
+          dobrar a chance do seu próximo golpe deixar Atordoamento
+        enemy: |
+          dobrar a chance do seu próximo golpe deixar Atordoamento
+    double_slowness_chance:
+      buff:
+        self: |
+          dobrar a chance do seu próximo golpe deixar Lentidão
+        enemy: |
+          dobrar a chance do seu próximo golpe deixar Lentidão
+      debuff:
+        self: |
+          dobrar a chance do seu próximo golpe deixar Lentidão
+        enemy: |
+          dobrar a chance do seu próximo golpe deixar Lentidão
+    double_confusion_chance:
+      buff:
+        self: |
+          dobrar a chance do seu próximo golpe deixar Confusão
+        enemy: |
+          dobrar a chance do seu próximo golpe deixar Confusão
+      debuff:
+        self: |
+          dobrar a chance do seu próximo golpe deixar Confusão
+        enemy: |
+          dobrar a chance do seu próximo golpe deixar Confusão
+    increase_bleeding_duration:
+      buff:
+        self: |
+          diminuir em #{value} turno(s) efeitos de Sangramento em seu personagem
+        enemy: |
+          diminuir em #{value} turno(s) efeitos de Sangramento no inimigo
+      debuff:
+        self: |
+          aumentar em #{value} turno(s) efeitos de Sangramento em seu personagem
+        enemy: |
+          aumentar em #{value} turno(s) efeitos de Sangramento no inimigo	
+    increase_slowness_duration:
+      buff:
+        self: |
+          diminuir em #{value} turno(s) efeitos de Lentidão em seu personagem
+        enemy: |
+          diminuir em #{value} turno(s) efeitos de Lentidão no inimigo
+      debuff:
+        self: |
+          aumentar em #{value} turno(s) efeitos de Lentidão em seu personagem
+        enemy: |
+          aumentar em #{value} turno(s) efeitos de Lentidão no inimigo	
+    increase_confusion_duration:
+      buff:
+        self: |
+          diminuir em #{value} turno(s) efeitos de Confusão em seu personagem
+        enemy: |
+          diminuir em #{value} turno(s) efeitos de Confusão no inimigo
+      debuff:
+        self: |
+          aumentar em #{value} turno(s) efeitos de Confusão em seu personagem
+        enemy: |
+          aumentar em #{value} turno(s) efeitos de Confusão no inimigo	
+    remove_attack_weakness:
+      buff:
+        self: |
+          remover a fraqueza do tipo do seu próximo golpe
+        enemy: |
+          remover a fraqueza do tipo do próximo golpe inimigo
+      debuff:
+        self: |
+          remover a fraqueza do tipo do seu próximo golpe
+        enemy: |
+          remover a fraqueza do tipo do próximo golpe inimigo	
+    double_strong_effect:
+      buff:
+        self: |
+          dobrar a vantagem do tipo do seu próximo golpe
+        enemy: |
+          dobrar a vantagem do tipo do próximo golpe inimigo
+      debuff:
+        self: |
+          dobrar a vantagem do tipo do seu próximo golpe
+        enemy: |
+          dobrar a vantagem do tipo do próximo golpe inimigo
+    heals_life:
+      buff:
+        self: |
+          recuperar #{value} da sua vida
+        enemy: |
+          recuperar #{value} da vida do inimigo
+      debuff:
+        self: |
+          recuperar #{value} da sua vida
+        enemy: |
+          recuperar #{value} da vida do inimigo      
+    heals_mana:
+      buff:
+        self: |
+          recuperar #{value} da sua mana
+        enemy: |
+          recuperar #{value} da mana do inimigo
+      debuff:
+        self: |
+          gastar #{value} da sua mana
+        enemy: |
+          gastar #{value} da mana do inimigo 
+    renew_random_cooldown:
+      buff:
+        self: |
+          resetar o Tempo de Recarga de um golpe aleatório
+        enemy: |
+          resetar o Tempo de Recarga de um golpe aleatório do inimigo
+      debuff:
+        self: |
+          resetar o Tempo de Recarga de um golpe aleatório
+        enemy: |
+          resetar o Tempo de Recarga de um golpe aleatório do inimigo
+    next_is_critical:
+      buff:
+        self: |
+          Crítico no próximo turno.
+        enemy: |
+          Crítico no próximo turno.
+      debuff:
+        self: |
+          Crítico no próximo turno.
+        enemy: |
+          Crítico no próximo turno.
+    next_is_absorb:
+      buff:
+        self: |
+          Absorção no próximo turno.
+        enemy: |
+          Absorção no próximo turno.
+      debuff:
+        self: |
+          Absorção no próximo turno.
+        enemy: |
+          Absorção no próximo turno.
+    next_is_precise:
+      buff:
+        self: |
+          Precisão no próximo turno.
+        enemy: |
+          Precisão no próximo turno.
+      debuff:
+        self: |
+          Precisão no próximo turno.
+        enemy: |
+          Precisão no próximo turno.
+    next_will_hit:
+      buff:
+        self: |
+          Chance de Acerto no próximo turno
+        enemy: |
+          Chance de Acerto no próximo turno
+      debuff:
+        self: |
+          Chance de Acerto no próximo turno
+        enemy: |
+          Chance de Acerto no próximo turno
+  effects_roundup:
+    turns_attack_to_elemental: |
+      O próximo golpe inimigo será do tipo Elemental
+    turns_attack_to_fighter: |
+      O próximo golpe inimigo será do tipo Corpo-a-Corpo
+    turns_attack_to_magic: |
+      O próximo golpe inimigo será do tipo Mágico
+    turns_attack_to_ranger: |
+      O próximo golpe inimigo será do tipo Atirador
+    turns_attack_to_warrior: |
+      O próximo golpe inimigo será do tipo Guerreiro
+    stun: |
+      <span style="color:#08decc; font-size: 15px">Atordoamento</span><br/>Atordoado por #{value} turno(s)
+    bleeding: |
+      <span style="color:#fb102b; font-size: 15px">Sangramento</span><br/>Recebendo #{value} de dano por #{turns} turno(s)
+    bleeding_percent: |
+      <span style="color:#fb102b; font-size: 15px">Sangramento</span><br/>Recebendo #{value}% de dano por #{turns} turno(s)
+    slowness: |
+      <span style="color:#107efb; font-size: 15px">Lentidão</span><br/>Seus Golpes estão #{value} mais lentos e o tempo de recarga aumentado em 1 por #{turns} turno(s)
+    slowness_percent: |
+      <span style="color:#107efb; font-size: 15px">Lentidão</span><br/>Seus Golpes estão #{value}% mais lentos e o tempo de recarga aumentado em 1 por #{turns} turno(s)
+    confusion: |
+      <span style="color:#fb8410; font-size: 15px">Confusão</span><br/>Seus golpes estão com  #{value}% de Chance de Acerto por #{turns} turno(s)
+    confusion_percent: |
+      <span style="color:#fb8410; font-size: 15px">Confusão</span><br/>Seus golpes estão com  #{value}% de Chance de Acerto por #{turns} turno(s)
+    for_atk: |
+      #{value} de Ataque por #{turns} turno(s)
+    for_atk_percent: |
+      #{value}% de Ataque por #{turns} turno(s)
+    for_def: |
+      #{value} de Defesa por #{turns} turno(s)
+    for_def_percent: |
+      #{value}% de Defesa por #{turns} turno(s)
+    for_crit: |
+      #{value}% de Chance de Crítico por #{turns} turno(s)
+    for_crit_percent: |
+      #{value}% de Chance de Crítico por #{turns} turno(s)
+    for_crit_inc: |
+      #{value}% de Dano Crítico por #{turns} turno(s)
+    for_crit_inc_percent: |
+      #{value}% de Dano Crítico por #{turns} turno(s)
+    for_abs: |
+      #{value}% de Chance de Absorção por #{turns} turno(s)
+    for_abs_percent: |
+      #{value}% de Chance de Absorção por #{turns} turno(s)
+    for_abs_inc: |
+      #{value}% de Dano Absorvido por #{turns} turno(s)
+    for_abs_inc_percent: |
+      #{value}% de Dano Absorvido por #{turns} turno(s)
+    for_prec: |
+      #{value}% de Chance de Precisão por #{turns} turno(s)
+    for_prec_percent: |
+      #{value}% de Chance de Precisão por #{turns} turno(s)
+    for_init: |
+      #{value} de Iniciativa por #{turns} turno(s)
+    for_init_percent: |
+      #{value}% de Iniciativa por #{turns} turno(s)
+    for_hit: |
+      #{value}% de Chance de Acerto por #{turns} turno(s)
+    for_hit_percent: |
+      #{value}% de Chance de Acerto por #{turns} turno(s)
+    attack_speed: |
+      #{value} de Tempo de Execução por #{turns} turno(s)
+    attack_speed_percent: |
+      #{value}% de Tempo de Execução por #{turns} turno(s)
+    null_next_attack: |
+      Anula o golpe do inimigo
+    steal_mana: |
+      Rouba #{value} de mana do adversário
+    remove_mana: |
+      Remove #{value} de mana do adversário
+    dodge_technique: |
+      Esquiva o golpe do inimigo
+    heals_mana: |
+      Recupera #{value} de mana instantaneamente
+    heals_life: |
+      Cura #{value} de vida instantaneamente
+    remove_attack_weakness: |
+      Remove a fraqueza do seu próximo golpe
+    double_strong_effect: |
+      Dobra a vantagem do seu próximo golpe
+    next_mana_cost: |
+      #{value} de mana extra no custo de seus golpes por #{turns} turno(s)
+    cancel_regen_mana: |
+      Você não irá recuperar mana por #{turns} turno(s)
+    steal_health: |
+      Você recuperará 10% do seu dano em vida por #{turns} turno(s)
+    last_hit_dont_die: |
+      Não morre no próximo golpe
+    next_is_absorb: |
+      O próximo golpe inimigo será absorvido
+    next_is_critical: |
+      O seu próximo golpe será crítico
+    next_will_hit: |
+      O seu próximo golpe terá 100% de chance de acerto
+    next_is_precise: |
+      O seu próximo golpe será preciso
+    lock_random_technique: |
+      Um golpe seu foi bloqueado por #{turns} turno(s)
+    renew_random_cooldown: |
+      Um golpe aleatório seu foi resetado
+    elemental_damage: |
+      #{value} de Dano Elemental
+    elemental_damage_percent: |
+      #{value}% de Dano Elemental
+    fighter_damage: |
+      #{value} de Dano Corpo-a-corpo
+    fighter_damage_percent: |
+      #{value}% de Dano Corpo-a-corpo
+    magic_damage: |
+      #{value} de Dano Mágico
+    magic_damage_percent: |
+      #{value}% de Dano Mágico
+    warrior_damage: |
+      #{value} de Dano Guerreiro
+    warrior_damage_percent: |
+      #{value}% de Dano Guerreiro
+    ranger_damage: |
+      #{value} de Dano Atirador
+    ranger_damage_percent: |
+      #{value}% de Dano Atirador
+    bleeding_chance: |
+      #{value}% de Chance de Sangramento
+    bleeding_chance_percent: |
+      #{value}% de Chance de Sangramento
+    slowness_chance: |
+      #{value}% de Chance de Lentidão
+    slowness_chance_percent: |
+      #{value}% de Chance de Lentidão
+    confusion_chance: |
+      #{value}% de Chance de Confusão
+    confusion_chance_percent: |
+      #{value}% de Chance de Confusão
+    stun_chance: |
+      #{value}% de Chance de Atordoamento
+    stun_chance_percent: |
+      #{value}% de Chance de Atordoamento
+    strong_effect: |
+      #{value} de dano na Vantagem do tipo do seu golpe
+    strong_effect_percent: |
+      #{value}% de dano na Vantagem do tipo do seu golpe
+    weak_effect: |
+      #{value} de dano na desvantagem do tipo do seu golpe
+    weak_effect_percent: |
+      #{value}% de dano na desvantagem do tipo do seu golpe
+    heals_by_turn: |
+      #{value} de vida por turno
+    heals_by_turn_percent: |
+      #{value}% de vida por turno
+    mana_through_turns: |
+      Recupera 1 de mana a cada #{value} turnos
+    mana_through_turns_percent: |
+      Recupera 1 de mana a cada #{value}% turnos
+    exp_reward_extra: |
+      #{value} de experiência extra no final da batalha
+    exp_reward_extra_percent: |
+      #{value}% de experiência extra no final da batalha
+    currency_reward_extra: |
+      #{value} de dinheiro extra no final da batalha
+    currency_reward_extra_percent: |
+      #{value}% de dinheiro extra no final da batalha
+    item_find: |
+      #{value}% de chance de achar itens no final da batalha
+    item_find_percent: |
+      #{value}% de chance de achar itens no final da batalha
+    fragment_find: |
+      #{value}% de chance de achar fragmentos das almas no final da batalha
+    fragment_find_percent: |
+      #{value}% de chance de achar fragmentos das almas no final da batalha
+    grimoire_find: |
+      #{value}% de chance de achar páginas perdidas no final da batalha
+    grimoire_find_percent: |
+      #{value}% de chance de achar páginas no final da batalha
+    damage_in_bleeding: |
+      #{value} de dano extra em inimigo com Sangramento
+    damage_in_bleeding_percent: |
+      #{value}% de dano extra em inimigo com Sangramento
+    damage_in_slowness: |
+      #{value} de dano extra em inimigo com Lentidão
+    damage_in_slowness_percent: |
+      #{value}% de dano extra em inimigo com Lentidão
+    damage_in_confusion: |
+      #{value} de dano extra em inimigo com Confusão
+    damage_in_confusion_percent: |
+      #{value}% de dano extra em inimigo com Confusão
+    damage_in_stun: |
+      #{value} de dano extra em inimigo Atordoados
+    damage_in_stun_percent: |
+      #{value}% de dano extra em inimigo Atordoados
+    generic_attack_damage: |
+      #{value} de dano nos golpes genéricos
+    generic_attack_damage_percent: |
+      #{value}% de dano nos golpes genéricos
+    generic_defense: |
+      #{value} de defesa nos golpes defensivos
+    generic_defense_percent: |
+      #{value}% de defesa nos golpes defensivos
+    unique_attack_damage: |
+      #{value} de dano nos golpes únicos
+    unique_attack_damage_percent: |
+      #{value}% de dano nos golpes únicos
+    attack_half_life: |
+      #{value} de Ataque com menos de 50% da vida
+    attack_half_life_percent: |
+      #{value}% de Ataque com menos de 50% da vida
+    defense_half_life: |
+      #{value} de Defesa com menos de 50% da vida
+    defense_half_life_percent: |
+      #{value}% de Defesa com menos de 50% da vida
+    increase_bleeding_damage: |
+      #{value} de Dano Extra em Sangramento
+    increase_bleeding_damage_percent: |
+      #{value}% de Dano Extra em Sangramento
+    increase_slowness_damage: |
+      #{value} de Tempo de Execução durante a Lentidão 
+    increase_slowness_damage_percent: |
+      #{value}% de Tempo de Execução durante a Lentidão
+    increase_confusion_damage: |
+      #{value} de Chance de Acerto durante a Confusão
+    increase_confusion_damage_percent: |
+      #{value}% de Chance de Acerto durante a Confusão
+    next_turn_mana: |
+      #{value}% de Chance de recuperar 1 de Mana ao Pular o Turno
+    next_turn_mana_percent: |
+      #{value}% de Chance de recuperar 1 de Mana ao Pular o Turno
+    next_turn_life: |
+      #{value}% de Chance de recuperar 50 de Vida ao Pular o Turno
+    next_turn_life_percent: |
+      #{value}% de Chance de recuperar 50 de Vida ao Pular o Turno
+    mana_half_life: |
+      #{value}% de Chance de recuperar 1 de mana quando sua mana estiver abaixo da metade
+    mana_half_life_percent: |
+      #{value}% de Chance de recuperar 1 de mana quando sua mana estiver abaixo da metade
+    reduce_critical_damage: |
+      #{value}% de Chance de reduzir pela metade seu Dano Crítico
+    reduce_critical_damage_percent: |
+     #{value}% de Chance de reduzir pela metade seu Dano Crítico
+    enemy_absorb_reduction: |
+      #{value}% de Chance de reduzir pela metade o seu Dano Absorvido
+    enemy_absorb_reduction_percent: |
+     #{value}% de Chance de reduzir pela metade o seu Dano Absorvido
+    low_technique_no_cost: |
+      #{value}% de Chance dos golpes de até 3 de Mana não consumirem Mana
+    low_technique_no_cost_percent: |
+      #{value}% de Chance dos golpes de até 3 de Mana não consumirem Mana
+    mid_technique_no_cooldown: |
+      #{value}% de Chance dos golpes com 4 a 7 não terem Recarga
+    mid_technique_no_cooldown_percent: |
+      #{value}% de Chance dos golpes com 4 a 7 não terem Recarga
+    high_technique_half_cost: |
+      #{value}% de Chance dos golpes com 8 ou mais de Mana gastarem apenas 50% de Mana
+    high_technique_half_cost_percent: |
+      #{value}% de Chance dos golpes com 8 ou mais de Mana gastarem apenas 50% de Mana
+    damage_increase_in_confusion: |
+      #{value}% de Chance de aumentar o dano em 25% quando o oponente estiver Confuso
+    damage_increase_in_confusion_percent: |
+      #{value}% de Chance de aumentar o dano em 25% quando o oponente estiver Confuso
+    damage_increase_in_slowness: |
+      #{value}% de Chance de aumentar o dano em 25% quando o oponente estiver Lento
+    damage_increase_in_slowness_percent: |
+      #{value}% de Chance de aumentar o dano em 25% quando o oponente estiver Lento
+    half_weak_damage_chance: |
+      #{value}% de Chance de diminuir pela metade o dano de fraqueza de golpe
+    half_weak_damage_chance_percent: |
+      #{value}% de Chance de diminuir pela metade o dano de fraqueza de golpe
+    bonus_stamina_max: |
+      #{value} de Stamina Extra
+    bonus_stamina_max_percent: |
+      #{value}% de Stamina Extra
+    bonus_stamina_heal: |
+      #{value} de recuperação extra de Stamina
+    bonus_stamina_heal_percent: |
+      #{value}% de recuperação extra de Stamina
+    no_consume_stamina: |
+      #{value}% de chance de batalha npc não consumir sua Stamina
+    no_consume_stamina_percent: |
+      #{value}% de chance de batalha npc não consumir sua Stamina
+    bonus_gold_mission: |
+      #{value}% a mais de Ouro em missões
+    bonus_gold_mission_percent: |
+      #{value}% a mais de Ouro em missões
+    bonus_exp_mission: |
+      #{value}% a mais de Experiência em missões
+    bonus_exp_mission_percent: |
+      #{value}% a mais de Experiência em missões
+    pets_find: |
+      #{value}% a mais de chance para encontrar Mascotes
+    pets_find_percent: |
+      #{value}% a mais de chance para encontrar Mascotes
+    double_bleeding_chance: |
+      Seu próximo golpe terá a chance de sangramento dobrada
+    double_bleeding_chance_percent: |
+      Seu próximo golpe terá a chance de sangramento dobrada
+    double_confusion_chance: |
+      Seu próximo golpe terá a chance de confusão dobrada
+    double_confusion_chance_percent: |
+      Seu próximo golpe terá a chance de confusão dobrada
+    double_slowness_chance: |
+      Seu próximo golpe terá a chance de lentidão dobrada
+    double_slowness_chance_percent: |
+      Seu próximo golpe terá a chance de lentidão dobrada
+    double_stun_chance: |
+      Seu próximo golpe terá a chance de atordoar dobrada
+    double_stun_chance_percent: |
+      Seu próximo golpe terá a chance de atordoar dobrada
+    turns_attack_to_neutral:
+      Seu próximo golpe será do tipo Neutro
+    turns_attack_to_neutral_percent:
+      Seu próximo golpe será do tipo Neutro
+  fixed_effects:
+    for_atk:
+      buff:
+        self: |
+          Aumenta em #{value} o seu Ataque
+
+        enemy: |
+          Aumenta em #{value} o Ataque do inimigo
+      debuff: 
+        self: |
+          Diminui em #{value} o seu Ataque
+        enemy: |
+          Diminui em #{value} o Ataque do inimigo
+    for_def:
+      buff:
+        self: |
+          Aumenta em #{value} a sua Defesa
+        enemy: |
+          Aumenta em #{value} a Defesa do inimigo
+      debuff: 
+        self: |
+          Diminui em #{value} a sua Defesa
+        enemy: |
+          Diminui em #{value} a Defesa do inimigo
+    for_crit:
+      buff:
+        self: |
+          Aumenta em #{value} a sua Chance de Crítico
+        enemy: |
+          Aumenta em #{value} a Chance de Crítico do inimigo
+      debuff: 
+        self: |
+          Diminui em #{value} a sua Chance de Crítico
+        enemy: |
+          Diminui em #{value} a Chance de Crítico do inimigo
+    for_crit_inc:
+      buff:
+        self: |
+          Aumenta em #{value}% o seu Incremento de Crítico
+        enemy: |
+          Aumenta em #{value}% o Incremento de Crítico do inimigo
+      debuff: 
+        self: |
+          Diminui em #{value}% o seu Incremento de Crítico
+        enemy: |
+          Diminui em #{value}% o Incremento de Crítico do inimigo
+    for_abs:
+      buff:
+        self: |
+          Aumenta em #{value} a sua Chance de Absorção
+        enemy: |
+          Aumenta em #{value} a Chance de Absorção do inimigo
+      debuff: 
+        self: |
+          Diminui em #{value} a sua Chance de Absorção
+        enemy: |
+          Diminui em #{value} a Chance de Absorção do inimigo
+    for_abs_inc:
+      buff:
+        self: |
+          Aumenta em #{value}% o seu Incremento de Absorção
+        enemy: |
+          Aumenta em #{value}% o Incremento de Absorção do inimigo
+      debuff: 
+        self: |
+          Diminui em #{value}% o seu Incremento de Absorção
+        enemy: |
+          Diminui em #{value}% o Incremento de Absorção do inimigo
+    for_prec:
+      buff:
+        self: |
+          Aumenta em #{value} a sua Chance de Precisão
+        enemy: |
+          Aumenta em #{value} a Chance de Precisão do inimigo
+      debuff: 
+        self: |
+          Diminui em #{value} a sua Chance de Precisão
+        enemy: |
+          Diminui em #{value} a Chance de Precisão do inimigo
+    for_init:
+      buff:
+        self: |
+          Aumenta em #{value} a sua Iniciativa
+        enemy: |
+          Aumenta em #{value} a Iniciativa do inimigo
+      debuff: 
+        self: |
+          Diminui em #{value} a sua Iniciativa
+        enemy: |
+          Diminui em #{value} a Iniciativa do inimigo
+    for_hit:
+      buff:
+        self: |
+          Aumenta em #{value} a sua Chance de Acerto
+        enemy: |
+          Aumenta em #{value} a Chance de Acerto do inimigo
+      debuff: 
+        self: |
+          Diminui em #{value} a sua Chance de Acerto
+        enemy: |
+          Diminui em #{value} a Chance de Acerto do inimigo
+    attack_speed:
+      buff:
+        self: |
+          Diminui em #{value} o seu Tempo de Execução
+        enemy: |
+          Diminui em #{value} o Tempo de Execução do inimigo
+      debuff: 
+        self: |
+          Aumenta em #{value} o seu Tempo de Execução
+        enemy: |
+          Aumenta em #{value} o Tempo de Execução do inimigo
+    elemental_damage:
+      buff:
+        self: |
+          Aumenta em #{value} o dano Elemental de seus golpes
+        enemy: |
+          Aumenta em #{value} o dano Elemental dos golpes inimigos
+      debuff: 
+        self: |
+          Diminui em #{value} o dano Elemental de seus golpes
+        enemy: |
+          Diminui em #{value} o dano Elemental dos golpes inimigos
+    fighter_damage:
+      buff:
+        self: |
+          Aumenta em #{value} o dano Corpo-a-corpo de seus golpes
+        enemy: |
+          Aumenta em #{value} o dano Corpo-a-corpo dos golpes inimigos
+      debuff: 
+        self: |
+          Diminui em #{value} o dano Corpo-a-corpo de seus golpes
+        enemy: |
+          Diminui em #{value} o dano Corpo-a-corpo dos golpes inimigos
+    magic_damage:
+      buff:
+        self: |
+          Aumenta em #{value} o dano Mágico de seus golpes
+        enemy: |
+          Aumenta em #{value} o dano Mágico dos golpes inimigos
+      debuff: 
+        self: |
+          Diminui em #{value} o dano Mágico de seus golpes
+        enemy: |
+          Diminui em #{value} o dano Mágico dos golpes inimigos
+    warrior_damage:
+      buff:
+        self: |
+          Aumenta em #{value} o dano Guerreiro de seus golpes
+        enemy: |
+          Aumenta em #{value} o dano Guerreiro dos golpes inimigos
+      debuff: 
+        self: |
+          Diminui em #{value} o dano Guerreiro de seus golpes
+        enemy: |
+          Diminui em #{value} o dano Guerreiro dos golpes inimigos
+    ranger_damage:
+      buff:
+        self: |
+          Aumenta em #{value} o dano Atirador de seus golpes
+        enemy: |
+          Aumenta em #{value} o dano Atirador dos golpes inimigos
+      debuff: 
+        self: |
+          Diminui em #{value} o dano Atirador de seus golpes
+        enemy: |
+          Diminui em #{value} o dano Atirador dos golpes inimigos
+    bleeding_chance:
+      buff:
+        self: |
+          Aumenta em #{value} a sua Chance de Sangramento
+        enemy: |
+          Aumenta em #{value} a Chance de Sangramento do inimigo
+      debuff: 
+        self: |
+          Diminui em #{value} a sua Chance de Sangramento
+        enemy: |
+          Diminui em #{value} a Chance de Sangramento do inimigo
+    slowness_chance:
+      buff:
+        self: |
+          Aumenta em #{value} a sua Chance de Lentidão
+        enemy: |
+          Aumenta em #{value} a Chance de Lentidão do inimigo
+      debuff: 
+        self: |
+          Diminui em #{value} a sua Chance de Lentidão
+        enemy: |
+          Diminui em #{value} a Chance de Lentidão do inimigo
+    confusion_chance:
+      buff:
+        self: |
+          Aumenta em #{value} a sua Chance de Confusão
+        enemy: |
+          Aumenta em #{value} a Chance de Confusão do inimigo
+      debuff: 
+        self: |
+          Diminui em #{value} a sua Chance de Confusão
+        enemy: |
+          Diminui em #{value} a Chance de Confusão do inimigo
+    stun_chance:
+      buff:
+        self: |
+          Aumenta em #{value} a sua Chance de Atordoamento
+        enemy: |
+          Aumenta em #{value} a Chance de Atordoamento do inimigo
+      debuff: 
+        self: |
+          Diminui em #{value} a sua Chance de Atordoamento
+        enemy: |
+          Diminui em #{value} a Chance de Atordoamento do inimigo
+    strong_effect:
+      buff:
+        self: |
+          Aumenta em #{value} a vantagem do tipo do seu golpe
+        enemy: |
+          Aumenta em #{value} a vantagem do tipo do golpe inimigo
+      debuff: 
+        self: |
+          Diminui em #{value} a vantagem do tipo do seu golpe
+        enemy: |
+          Diminui em #{value} a vantagem do tipo do golpe inimigo
+    weak_effect:
+      buff:
+        self: |
+          Diminui em #{value} a desvantagem do tipo do seu golpe
+        enemy: |
+          Diminui em #{value} a desvantagem do tipo do golpe inimigo
+      debuff: 
+        self: |
+          Aumenta em #{value} a desvantagem do tipo do seu golpe
+        enemy: |
+          Aumenta em #{value} a desvantagem do tipo do golpe inimigo
+    heals_by_turn:
+      buff:
+        self: |
+          Cura #{value} da sua vida por turno
+        enemy: |
+          Causa #{value} da vida do inimigo por turno
+      debuff: 
+        self: |
+          Causa #{value} de dano em você por turno
+        enemy: |
+          Causa #{value} de dano no inimigo por turno
+    mana_through_turns:
+      buff:
+        self: |
+          Recupera 1 da sua mana a cada #{value} turnos
+        enemy: |
+          Recupera 1 da mana do inimigo a cada #{value} turnos
+      debuff: 
+        self: |
+          Gasta 1 da sua mana a cada #{value} turnos
+        enemy: |
+          Gasta 1 da mana do inimigo a cada #{value} turnos
+    exp_reward_extra:
+      buff:
+        self: |
+          Aumenta em #{value} a sua recompensa de experiência no final da batalha
+        enemy: |
+          Aumenta em #{value} a recompensa de experiência do inimigo no final da batalha
+      debuff: 
+        self: |
+          Diminui em #{value} a sua recompensa de experiência no final da batalha
+        enemy: |
+          Diminui em #{value} a recompensa de experiência do inimigo no final da batalha
+    currency_reward_extra:
+      buff:
+        self: |
+          Aumenta em #{value} a sua recompensa de dinheiro no final da batalha
+        enemy: |
+          Aumenta em #{value} a recompensa de dinheiro do inimigo no final da batalha
+      debuff: 
+        self: |
+          Diminui em #{value} a sua recompensa de dinheiro no final da batalha
+        enemy: |
+          Diminui em #{value} a recompensa de dinheiro do inimigo no final da batalha
+    item_find:
+      buff:
+        self: |
+          Aumenta em #{value}% a sua chance de achar itens no final da batalha
+        enemy: |
+          Aumenta em #{value}% a chance de achar itens do inimigo no final da batalha
+      debuff: 
+        self: |
+          Diminui em #{value}% a sua chance de achar itens no final da batalha
+        enemy: |
+          Diminui em #{value}% a chance de achar itens do inimigo no final da batalha
+    fragment_find:
+      buff:
+
+        self: |
+          Aumenta em #{value}% a sua chance de achar fragmentos das almas no final da batalha
+        enemy: |
+          Aumenta em #{value}% a chance de achar fragmentos das almas do inimigo no final da batalha
+      debuff: 
+        self: |
+          Diminui em #{value}% a sua chance de achar fragmentos das almas no final da batalha
+        enemy: |
+          Diminui em #{value}% a chance de achar fragmentos das almas do inimigo no final da batalha
+    grimoire_find:
+      buff:
+        self: |
+          Aumenta em #{value}% a sua chance de achar Páginas Perdidas no final da batalha
+        enemy: |
+          Aumenta em #{value}% a chance de achar Páginas Perdidas do inimigo no final da batalha
+      debuff: 
+        self: |
+          Diminui em #{value}% a sua chance de achar Páginas Perdidas no final da batalha
+        enemy: |
+          Diminui em #{value}% a chance de achar Páginas Perdidas do inimigo no final da batalha
+    damage_in_bleeding:
+      buff:
+        self: |
+          Aumenta em #{value} o seu dano causado em inimigos Sangrando
+        enemy: |
+          Aumenta em #{value} o dano do inimigo causado enquanto você estiver Sangrando
+      debuff: 
+        self: |
+          Diminui em #{value} o seu dano causado em inimigos Sangrando
+        enemy: |
+          Diminui em #{value} o dano do inimigo causado enquanto você estiver Sangrando
+    damage_in_slowness:
+      buff:
+        self: |
+          Aumenta em #{value} o seu dano causado em inimigos Lentos
+        enemy: |
+          Aumenta em #{value} o dano do inimigo causado enquanto você estiver Lento
+      debuff: 
+        self: |
+          Diminui em #{value} o seu dano causado em inimigos Lentos
+        enemy: |
+          Diminui em #{value} o dano causado pelo inimigo enquanto você estiver Lento
+    damage_in_confusion:
+      buff:
+        self: |
+          Aumenta em #{value} o seu dano causado em inimigos Confusos
+        enemy: |
+          Aumenta em #{value} o dano do inimigo causado enquanto você estiver Confuso
+      debuff: 
+        self: |
+          Diminui em #{value} o seu dano causado em inimigos Confusos
+        enemy: |
+          Diminui em #{value} o dano do inimigo causado enquanto você estiver Confuso
+    damage_in_stun:
+      buff:
+        self: |
+          Aumenta em #{value} o seu dano causado em inimigos Atordoados
+        enemy: |
+          Aumenta em #{value} o dano do inimigo causado enquanto você estiver Atordoado
+      debuff: 
+        self: |
+
+          Diminui em #{value} o seu dano causado em inimigos Atordoados
+        enemy: |
+          Diminui em #{value} o dano do inimigo causado enquanto você estiver Atordoado
+    generic_attack_damage:
+      buff:
+        self: |
+          Aumenta em #{value} o dano de seus Golpes Genéricos
+        enemy: |
+          Aumenta em #{value} o dano dos Golpes Genéricos do inimigo
+      debuff: 
+        self: |
+          Diminui em #{value} o dano de seus Golpes Genéricos
+        enemy: |
+          Diminui em #{value} o dano dos Golpes Genéricos do inimigo
+    unique_attack_damage:
+      buff:
+        self: |
+          Aumenta em #{value} o dano de seus Golpes Únicos
+        enemy: |
+          Aumenta em #{value} o dano dos Golpes Únicos do inimigo
+      debuff: 
+        self: |
+          Diminui em #{value} o dano de seus Golpes Únicos
+        enemy: |
+          Diminui em #{value} o dano dos Golpes Únicos do inimigo
+    attack_half_life:
+      buff:
+        self: |
+          Aumenta em #{value} o seu Ataque enquanto você estiver com menos de 50% de vida
+        enemy: |
+          Aumenta em #{value} o Ataque do inimigo enquanto ele estiver com menos de 50% de vida
+      debuff: 
+        self: |
+          Diminui em #{value} o seu Ataque enquanto você estiver com menos de 50% de vida
+        enemy: |
+          Diminui em #{value} o Ataque do inimigo enquanto ele estiver com menos de 50% de vida
+    defense_half_life:
+      buff:
+        self: |
+          Aumenta em #{value} a sua Defesa enquanto você estiver com menos de 50% de vida
+        enemy: |
+          Aumenta em #{value} a Defesa do inimigo enquanto ele estiver com menos de 50% de vida
+      debuff: 
+        self: |
+          Diminui em #{value} a sua Defesa enquanto você estiver com menos de 50% de vida
+        enemy: |
+          Diminui em #{value} a Defesa do inimigo enquanto ele estiver com menos de 50% de vida
+    bonus_stamina_max_bkp:
+      buff:
+        self: |
+          Aumenta em #{value} o valor de sua Stamina
+        enemy: |
+          Aumenta em #{value} o valor da Stamina do seu Inimigo
+      debuff: 
+        self: |
+          Diminui em #{value} o valor de sua Stamina
+        enemy: |
+          Diminui em #{value} o valor da Stamina do seu Inimigo
+    next_turn_mana:
+      buff:
+        self: |
+          Ao pular o turno #{value} de chance de recuperar 1 de Mana
+        enemy: |
+          Ao pular o turno #{value} de chance de recuperar 1 de Mana do seu inimigo
+      debuff: 
+        self: |
+          Ao pular o turno #{value} de chance de gastar 1 de Mana
+        enemy: |
+          Ao pular o turno #{value} de chance de gastar 1 de Mana do seu inimigo
+    mana_half_life:
+      buff:
+        self: |
+          Quando sua mana estiver abaixo da metade você tem #{value} de recuperar 1 de mana
+        enemy: |
+          Quando a mana do inimigo estiver abaixo da metade ele tem #{value} de recuperar 1 de mana
+      debuff: 
+        self: |
+          Quando sua mana estiver abaixo da metade você tem #{value} de gastar 1 de mana
+        enemy: |
+          Quando a mana do inimigo estiver abaixo da metade ele tem #{value} de gastar 1 de mana
+    reduce_critical_damage:
+      buff:
+        self: |
+          Chance de #{value}% de cortar pela metade o seu dano critico
+        enemy: |
+          Chance de #{value}% de cortar pela metade o dano critico do seu oponente
+      debuff: 
+        self: |
+          Chance de #{value}% de cortar pela metade o seu dano critico
+        enemy: |
+          Chance de #{value}% de cortar pela metade o dano critico do seu oponente
+    enemy_absorb_reduction:
+      buff:
+        self: |
+          Chance de #{value}% de cortar pela metade o Dano Absorvido
+        enemy: |
+          Chance de #{value}% de cortar pela metade o Dano Absorvido do seu oponente
+      debuff: 
+        self: |
+          Chance de #{value}% de cortar pela metade o Dano Absorvido
+        enemy: |
+          Chance de #{value}% de cortar pela metade o Dano Absorvido do seu oponente
+    low_technique_no_cost:
+      buff:
+        self: |
+          Chance de #{value}% de golpes de até 3 de mana não consumirem mana
+        enemy: |
+          Chance de #{value}% dos golpes do oponente de até 3 de mana não consumirem mana
+      debuff: 
+        self: |
+          Chance de #{value}% de golpes de até 3 de mana não consumirem mana
+        enemy: |
+          Chance de #{value}% dos golpes do oponente de até 3 de mana não consumirem mana
+    mid_technique_no_cooldown:
+      buff:
+        self: |
+          Chance de #{value}% de golpes com 4 a 7 não entrarem em Recarga
+        enemy: |
+          Chance de #{value}% dos golpes do oponente com 4 a 7 não entrarem em Recarga
+      debuff: 
+        self: |
+          Chance de #{value}% de golpes com 4 a 7 não entrarem em Recarga
+        enemy: |
+          Chance de #{value}% dos golpes do oponente com 4 a 7 não entrarem em Recarga
+    high_technique_half_cost:
+      buff:
+        self: |
+          Chance de #{value}% de golpes com 8 ou mais de mana gastarem apenas 50% da mana
+        enemy: |
+          Chance de #{value}% dos golpes do oponente com 8 ou mais de mana gastarem apenas 50% da mana
+      debuff: 
+        self: |
+          Chance de #{value}% de golpes com 8 ou mais de mana gastarem apenas 50% da mana
+        enemy: |
+          Chance de #{value}% dos golpes do oponente com 8 ou mais de mana gastarem apenas 50% da mana
+    next_turn_life:
+      buff:
+        self: |
+          Ao pular o turno #{value}% de chance de recuperar 50 de Vida
+        enemy: |
+          Ao pular o turno #{value}% de chance de recuperar 50 de Vida do seu oponente
+      debuff: 
+        self: |
+          Ao pular o turno #{value}% de chance de recuperar 50 de Vida
+        enemy: |
+          Ao pular o turno #{value}% de chance de recuperar 50 de Vida do seu oponente
+    damage_increase_in_confusion:
+      buff:
+        self: |
+          Chance de #{value}% de aumentar o dano em 25% quando o oponente estiver Confuso
+        enemy: |
+          Chance de #{value}% de aumentar o dano em 25% quando o oponente estiver Confuso
+      debuff: 
+        self: |
+          Chance de #{value}% de aumentar o dano em 25% quando o oponente estiver Confuso
+        enemy: |
+          Chance de #{value}% de aumentar o dano em 25% quando o oponente estiver Confuso
+    damage_increase_in_slowness:
+      buff:
+        self: |
+          Chance de #{value}% de aumentar o dano em 25% quando o oponente estiver Lento
+        enemy: |
+          Chance de #{value}% de aumentar o dano em 25% quando o oponente estiver Lento
+      debuff: 
+        self: |
+          Chance de #{value}% de aumentar o dano em 25% quando o oponente estiver Lento
+        enemy: |
+          Chance de #{value}% de aumentar o dano em 25% quando o oponente estiver Lento
+    kill_with_one_hit:
+      buff:
+        self: |
+          Chance de #{value}% de se matar com esse golpe
+        enemy: |
+          Chance de #{value}% de se matar com esse golpe
+      debuff: 
+        self: |
+          Chance de #{value}% de matar o inimigo com esse golpe
+        enemy: |
+          Chance de #{value}% de matar o inimigo com esse golpe
+    half_weak_damage_chance:
+      buff:
+        self: |
+          Chance de #{value}% de diminuir pela metade o dano de golpes com fraqueza
+        enemy: |
+          Chance de #{value}% de diminuir pela metade o dano de golpes com fraqueza
+      debuff: 
+        self: |
+          Chance de #{value}% de diminuir pela metade o dano de golpes com fraqueza
+        enemy: |
+          Chance de #{value}% de diminuir pela metade o dano de golpes com fraqueza
+    bonus_stamina_max:
+      buff:
+        self: |
+          Aumenta em  #{value} o total de sua Stamina
+        enemy: |
+          Aumenta em  #{value} o total de sua Stamina
+      debuff: 
+        self: |
+          Aumenta em  #{value} o total de sua Stamina
+        enemy: |
+          Aumenta em  #{value} o total de sua Stamina
+    bonus_stamina_heal:
+
+      buff:
+        self: |
+          Aumenta em  #{value} a recuperação de sua Stamina
+        enemy: |
+          Aumenta em  #{value} a recuperação de sua Stamina
+      debuff: 
+        self: |
+          Aumenta em  #{value} a recuperação de sua Stamina
+        enemy: |
+          Aumenta em  #{value} a recuperação de sua Stamina
+    no_consume_stamina:
+      buff:
+        self: |
+          Chance de #{value} de batalhas npcs não consumirem sua Stamina
+        enemy: |
+          Chance de #{value} de batalhas npcs não consumirem sua Stamina
+      debuff: 
+        self: |
+          Chance de #{value} de batalhas npcs não consumirem sua Stamina
+        enemy: |
+          Chance de #{value} de batalhas npcs não consumirem sua Stamina
+    bonus_gold_mission:
+      buff:
+        self: |
+          Aumenta em #{value} o Ouro das recompensas das missões
+        enemy: |
+          Aumenta em #{value} o Ouro das recompensas das missões
+      debuff: 
+        self: |
+          Aumenta em #{value} o Ouro das recompensas das missões
+        enemy: |
+          Aumenta em #{value} o Ouro das recompensas das missões
+    bonus_exp_mission:
+      buff:
+        self: |
+          Aumenta em #{value} a Experiência das recompensas das missões
+        enemy: |
+          Aumenta em #{value} a Experiência das recompensas das missões
+      debuff: 
+        self: |
+          Aumenta em #{value} a Experiência das recompensas das missões
+        enemy: |
+          Aumenta em #{value} a Experiência das recompensas das missões
+    generic_defense:
+      buff:
+        self: |
+          Aumenta as Técnicas Defensivas em #{value}
+        enemy: |
+          Aumenta as Técnicas Defensivas em #{value} do oponente
+      debuff: 
+        self: |
+          Diminui as Técnicas Defensivas em #{value}
+        enemy: |
+          Diminui as Técnicas Defensivas em #{value} do oponente
+    increase_bleeding_damage:
+      buff:
+        self: |
+          Aumenta o efeito de Sangramento do seu personagem em #{value}
+        enemy: |
+          Aumenta o efeito de Sangramento do oponente em #{value}
+      debuff: 
+        self: |
+          Diminui o efeito de Sangramento do seu personagem em #{value}
+        enemy: |
+          Diminui o efeito de Sangramento do oponente em #{value}
+    increase_slowness_damage:
+      buff:
+        self: |
+          Aumenta o efeito de Lentidão do seu personagem em #{value}
+        enemy: |
+          Aumenta o efeito de Lentidão do oponente em #{value}
+      debuff: 
+        self: |
+          Diminui o efeito de Lentidão do seu personagem em #{value}
+        enemy: |
+          Diminui o efeito de Lentidão do oponente em #{value}
+    increase_confusion_damage:
+      buff:
+        self: |
+          Aumenta o efeito de Confusão do seu personagem em #{value}
+        enemy: |
+          Aumenta o efeito de Confusão do oponente em #{value}
+      debuff: 
+        self: |
+          Diminui o efeito de Confusão do seu personagem em #{value}
+        enemy: |
+          Diminui o efeito de Confusão do oponente em #{value}
+    pets_find:
+      buff:
+        self: |
+          Aumenta a chance em  #{value}% de encontrar mascotes
+        enemy: |
+          Aumenta a chance em  #{value}% de encontrar mascotes
+      debuff: 
+        self: |
+          Diminui a chance em  #{value}% de encontrar mascotes
+        enemy: |
+          Diminui a chance em  #{value}% de encontrar mascotes
+    steal_health:
+      buff:
+        self: |
+          Recupera #{value}% de vida do dano causado
+        enemy: |
+          Recupera #{value}% de vida do dano causado
+      debuff: 
+        self: |
+          Gasta #{value}% de vida do dano causado
+        enemy: |
+          Gasta #{value}% de vida do dano causado

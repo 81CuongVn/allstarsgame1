@@ -1,0 +1,284 @@
+#luck-container {
+	position: relative;
+	width: 717px;
+	height: 538px
+}
+
+#luck-container #luck-stripes, #luck-container #luck-mask, #luck-container #luck-mask2, #luck-container #luck-stripes-shadows {
+	position: absolute;
+	left: 0px
+}
+
+#luck-container #luck-stripes, #luck-container #luck-stripes-shadows {
+	margin-top: 175px;
+	margin-left: 30px
+}
+
+#luck-container #luck-mask {
+	background-image: url(../images/luck/base.png);
+	width: 717px;
+	height: 487px;
+	z-index: 1
+}
+#luck-container #luck-mask2 {
+	background-image: url(../images/summon/bg.png);
+	width: 711px;
+	height: 627px;
+	z-index: 1;
+	margin-left: 14px;
+}
+#luck-container .luck-stripe, #luck-container #luck-stripes-shadows div {
+	background-image: url(../images/luck/slot.jpg);
+	background-position: 0px 0px;
+	width: 141px;
+	height: 141px;
+	float: left;
+	margin-right: 28px
+}
+#luck-container #luck-buy{
+	background-image: url(../images/summon/bg2.png);
+	width: 730px;
+	height: 115px;
+}
+#luck-container .luck-stripe2{
+	background-image: url(../images/summon/slot.png);
+	background-position: 0px 0px;
+	width: 62px;
+	height: 64px;
+	background-color: #381313;
+}
+#luck-container .luck-stripe2-1{
+	position:relative;
+    top: -159px;
+    left: 313px;
+}
+#luck-container .luck-stripe2-2{
+    position: relative;
+    top: 142px;
+    left: 91px;
+}
+#luck-container .luck-stripe2-3{
+	position:relative;
+    top: 79px;
+    left: 519px;
+}
+#luck-container #luck-stripes-shadows div {
+	background-image: url(../images/luck/shadow.png);	
+}
+
+#luck-container #buttons {
+	z-index: 2;
+	position: absolute;
+	top: 388px;
+	width: 100%
+}
+
+#luck-container #buttons .daily div, #luck-container #buttons .weekly div {
+	width: 71px;
+	height: 71px;
+	text-align: center;
+	float: left;
+	background-image: url('../images/luck/button_normal.png');
+	color: #FFF;
+	font-weight: bold;
+	font-size: 14px;
+	cursor: pointer;
+}
+
+#luck-container #buttons .selected {
+	background-image: url('../images/luck/button_selected.png') !important
+}
+
+#luck-container .daily {
+	float: left;
+	margin-left: 32px
+}
+
+#luck-container .daily div {
+	margin-right: 8px
+}
+
+#luck-container .weekly {
+	float: right;
+	margin-right: 32px
+}
+
+#luck-container .weekly div {
+	margin-left: 8px
+}
+
+
+#luck-container .button {
+	display: table;
+}
+
+#luck-container .button span, #luck-container #luck-button span, #luck-container #summon-button span {
+	display: table-cell;
+	vertical-align: middle;
+}
+
+#luck-container #luck-button{
+	background-image: url('../images/luck/play.png');
+	width: 121px;
+	height: 121px;
+	display: table;
+	color: #333;
+	text-align: center;
+	font-size: 26px;
+	position: absolute;
+	z-index: 2;
+	left: 303px;
+    top: 342px;
+	cursor: pointer;
+}
+#luck-container #summon-button {
+	background-image: url('../images/luck/play.png');
+	width: 121px;
+	height: 121px;
+	display: table;
+	color: #333;
+	text-align: center;
+	font-size: 26px;
+	position: absolute;
+	z-index: 2;
+	left: 307px;
+    top: 376px;
+	cursor: pointer;
+}
+
+#luck-container #luck-status {
+	position: absolute;
+	width: 100%;
+	z-index: 2;
+	top: 36px;
+	left: 0px;
+	margin-left: 52px
+}
+
+#luck-container #luck-status .day {
+	float: left;
+	width: 61px;
+	margin-right: 31px
+}
+
+#luck-container #luck-status .day .ball {
+	width: 49px;
+	height: 49px;
+	background-image: url('../images/luck/light_red.png');
+	margin-left: 7px;
+}
+
+#luck-container #luck-status .day.green .ball {
+	background-image: url('../images/luck/light_green.png') !important;
+}
+
+#luck-container #luck-status .day .check {
+	width: 61px;
+	height: 61px;
+	background-image: url('../images/luck/check_red.png');
+	margin-top: -5px
+}
+
+#luck-container #luck-status .day.green .check {
+	background-image: url('../images/luck/check_green.png') !important;
+}
+
+#luck-container #daynames {
+	position: absolute;
+	top: 20px;
+	left: 0px;
+	width: 100%;
+	z-index: 2;
+	margin-left: 41px
+}
+
+#luck-container #daynames div {
+	float: left;
+	font-size: 13px;
+	color: #FFF;
+	width: 84px;
+	margin-right: 8px;
+	text-align: center;
+}
+
+#luck-container #result {
+	width: 412px;
+	height: 63px;
+	background-image: url('../images/luck/won.png');
+	position: absolute;
+	top: 476px;
+	margin-left: 150px;
+	z-index: 0;
+	text-align: center;
+	padding-top: 24px;
+	font-size: 14px;
+}
+
+#luck-container #result span {
+	color: #E6E645
+}
+
+#luck-container #luck-types {
+	position: absolute;
+	z-index: 2;
+	top: 353px;
+	width: 100%;
+	font-size: 22px;
+	color: #C7C72C;
+	text-transform: uppercase;
+	text-shadow: 0px 0px 4px #B4AE82;
+}
+
+#luck-container #luck-types .daily {
+	margin-left: 65px;
+}
+
+#luck-container #luck-types .weekly {
+	margin-right: 60px;
+}
+
+#luck-reward-list td {
+	min-height: 32px;
+	height: 32px
+}
+.luck-money{
+	float: left;  width: 227px;  height: 115px;	text-align: center; color: #afb17a; font-size: 30px; cursor: pointer;
+}
+#luck-buy .luck-money .selected{
+	background-image: url(../images/summon/bg2-1.png);
+	width: 227px;
+	height: 115px;
+	cursor: pointer;
+}
+.luck-money span{
+	position: relative;
+    top: 40px;
+    left: 16px;	
+}
+.luck-result{
+	float: left;  width: 276px;  height: 115px;
+	color: #afb17a;
+    font-size: 16px;
+    text-align: center;
+    position: relative;
+    top: 27px;
+}
+.luck-credit{
+	float: left;  width: 227px;  height: 115px; text-align: center; color: #afb17a; font-size: 30px; cursor: pointer;	
+}
+#luck-buy .luck-credit .selected{
+	background-image: url(../images/summon/bg2-2.png);
+	width: 227px;
+	height: 115px;
+	cursor: pointer;
+}
+.luck-credit span{
+	position: relative;
+    top: 40px;
+    right: 14px;	
+}
+.type-reward{
+	position: relative;
+    top: -40px;
+    left: 300px;	
+}

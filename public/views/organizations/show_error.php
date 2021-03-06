@@ -1,0 +1,2 @@
+<?php echo partial('shared/title', array('title' => 'organizations.show.title', 'place' => 'organizations.show.title')) ?>
+<?php echo partial('shared/info', array('id'=> 1, 'title' => 'organizations.show.error_title', 'message' => t('organizations.show.error_message'))) ?>

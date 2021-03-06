@@ -1,0 +1,15 @@
+public/config.prod.php
+
+public/cache/recset/*.sqlcache
+public/cache/store/*.store
+public/cache/yaml/*.ts
+public/cache/yaml/*.data
+
+public/logs/paypal/*.log
+public/logs/*.log
+
+public/vendor
+
+servers/chat/node_modules
+servers/highlights/node_modules
+servers/pvp/log/*.log

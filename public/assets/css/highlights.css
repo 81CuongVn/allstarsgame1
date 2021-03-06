@@ -1,0 +1,25 @@
+.highlight-window {
+  position: fixed;
+  top: 100px;
+  width: 625px;
+  left: 50%;
+  margin-left: -300px;
+  height: 70px;
+  z-index: 5000;
+  background-repeat: no-repeat;
+  background-image:url(../images/bg_highlights.png);
+}
+
+.highlight-text {
+  position: absolute;
+  color: #FFF;
+  width: 350px;
+  font-size: 13pt;
+  text-align: center;
+  top: 11px;
+  left: 111px;
+  text-shadow: 0 0 0.2em #000, 0 0 0.2em #000, 0 0 0.2em #000;
+}
+.highlight-text span {
+  color: #24fd00 !important;
+}

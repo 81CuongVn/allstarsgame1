@@ -1,0 +1,15 @@
+#maintenance-content, #maintenance-facebook {
+	width: 970px;
+	margin: 0px auto;
+	position: relative;
+	z-index: 10;
+}
+
+#maintenance-content {
+	margin-top: 296px;
+	text-align: center;
+}
+
+#maintenance-facebook {
+ 	background-color: #FFF;
+}

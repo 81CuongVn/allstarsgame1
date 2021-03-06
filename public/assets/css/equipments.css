@@ -1,0 +1,282 @@
+#position-container {
+	width: 664px;
+	height: 651px;
+	position: relative;
+	margin: 0px auto; 
+}
+
+#position-container .slot {
+	position: absolute;
+	cursor: pointer
+}
+
+#position-container.position-container-1 {
+	width: 729px;
+	height: 663px;
+}
+
+#position-container.anime-1 .slot {
+	width: 114px;
+	height: 115px;
+}
+
+#position-container.anime-5 .slot {
+	width: 114px;
+	height: 115px;
+}
+#position-container.position-container-10 {
+	width: 683px;
+	height: 587px;
+}
+
+#position-container.anime-11 .slot {
+	width: 115px;
+	height: 115px;
+}
+#position-container.position-container-11 {
+	width: 683px;
+	height: 587px;
+}
+#position-container.anime-12 .slot {
+	width: 115px;
+	height: 115px;
+}
+#position-container.position-container-12 {
+	width: 683px;
+	height: 587px;
+}
+#position-container.anime-29 .slot {
+	width: 115px;
+	height: 115px;
+}
+#position-container.position-container-29 {
+	width: 683px;
+	height: 587px;
+}
+#position-container.anime-30 .slot {
+	width: 115px;
+	height: 115px;
+}
+#position-container.position-container-30 {
+	width: 683px;
+	height: 587px;
+}
+#position-container.anime-31 .slot {
+	width: 115px;
+	height: 115px;
+}
+#position-container.position-container-31 {
+	width: 683px;
+	height: 587px;
+}
+#position-container.anime-33 .slot, #position-container.anime-35 .slot, #position-container.anime-36 .slot, #position-container.anime-37 .slot, #position-container.anime-38 .slot, #position-container.anime-39 .slot, #position-container.anime-40 .slot {
+	width: 115px;
+	height: 115px;
+}
+#position-container.position-container-33, #position-container.position-container-35, #position-container.position-container-36, #position-container.position-container-37, #position-container.position-container-38, #position-container.position-container-39, #position-container.position-container-40{
+	width: 683px;
+	height: 587px;
+}
+#position-container.anime-32 .slot {
+	width: 115px;
+	height: 115px;
+}
+#position-container.position-container-32 {
+	width: 683px;
+	height: 587px;
+}
+#position-container.anime-16 .slot {
+	width: 115px;
+	height: 115px;
+}
+#position-container.position-container-16 {
+	width: 683px;
+	height: 587px;
+}
+#position-container.anime-999 .slot {
+	width: 115px;
+	height: 115px;
+}
+#position-container.position-container-999 {
+	width: 683px;
+	height: 587px;
+}
+
+#position-container.anime-10 .slot {
+	width: 115px;
+	height: 115px;
+}
+#position-container.position-container-4 {
+	width: 683px;
+	height: 587px;
+}
+
+#position-container.anime-4 .slot {
+	width: 115px;
+	height: 115px;
+}
+#position-container.position-container-2 {
+	width: 669px;
+	height: 581px;
+}
+
+#position-container.anime-2 .slot {
+	width: 72px;
+	height: 70px;
+}
+#position-container.position-container-3 {
+	width: 718px;
+	height: 627px;
+}
+
+#position-container.anime-3 .slot {
+	width: 127px;
+	height: 128px;
+}
+
+#position-container.position-container-7 {
+	width: 714px;
+	height: 600px;
+}
+
+#position-container.anime-7 .slot {
+	width: 127px;
+	height: 128px;
+}
+
+#position-container.position-container-6 {
+	width: 751px;
+	height: 662px;
+}
+
+#position-container.anime-6 .slot.slot-head {
+	width: 88px;
+	height: 97px;
+}
+#position-container.anime-6 .slot.slot-neck {
+	width: 84px;
+	height: 121px;
+}
+#position-container.anime-6 .slot.slot-shoulder {
+	width: 78px;
+	height: 87px;
+}
+#position-container.anime-6 .slot.slot-chest {
+	width: 116px;
+	height: 103px;
+}
+#position-container.anime-6 .slot.slot-hand {
+	width: 80px;
+	height: 110px;
+}
+#position-container.anime-6 .slot.slot-leggings {
+	width: 98px;
+	height: 85px;
+}
+
+#equipment-list .equipment {
+	/* float: left; */
+	margin: 10px 4px 0;
+    cursor: pointer;
+    display: inline-block;
+}
+
+#equipment-list .equipment .badge, #position-container .badge {
+	position: absolute;
+	margin-top: -48px;
+	margin-left: 14px;
+	background-color: #C72C2C !important
+}
+
+#position-container .badge {
+	margin-top: 0px;
+	position: absolute;
+	right: 0;
+}
+
+#equipment-list .plus, .equipment-popover-content .plus {
+	color: #30B33B;
+}
+
+#equipment-list .less, .equipment-popover-content .less {
+	color: #B51414 !important;
+}
+
+#equipment-list .same {
+	color: #A8A8A8;
+}
+
+.equipment-popover-content {
+	padding: 6px;
+	font-size: 12px
+}
+.equipment-popover-content .rarity{
+	float: left;
+	margin-top: -20px;
+	margin-left: 8px;	
+}
+
+.equipment-popover-content .graduation{
+	padding-top: 5px;
+	font-style: italic;	
+	color: #07c72b;
+	
+}
+.equipment-popover-content .extra{
+	color: #8d8d8d;
+}
+.equipment-popover-content .rarity-common, #chat-container .rarity-common, .global-rarity-common {
+	color: #8d8d8d;
+}
+.equipment-popover-content .rarity-rare, #chat-container .rarity-rare, .global-rarity-rare {
+	color: #2065d4;
+}
+.equipment-popover-content .rarity-epic, #chat-container .rarity-epic, .global-rarity-epic {
+	color: #a43bd5;
+}
+.equipment-popover-content .rarity-legendary, #chat-container .rarity-legendary, .global-rarity-legendary {
+	color: #ff6a16;
+}
+.equipment-popover-content .rarity-set, #chat-container .rarity-set, .global-rarity-set {
+	color: #00bf24;
+}
+
+.equipment-popover-content * {
+	line-height: 20px !important;
+}
+#position-container.position-container-8 {
+	width: 674px;
+	height: 580px;
+}
+#position-container.anime-8 .slot {
+	width: 114px;
+	height: 115px;
+}
+#position-container.position-container-9 {
+	width: 683px;
+	height: 587px;
+}
+#position-container.anime-9 .slot.slot-head {
+	width: 67px;
+	height: 79px;
+}
+#position-container.anime-9 .slot.slot-neck {
+	width: 137px;
+	height: 196px;
+}
+#position-container.anime-9 .slot.slot-shoulder {
+	width: 33px;
+	height: 36px;
+}
+#position-container.anime-9 .slot.slot-chest {
+	width: 191px;
+	height: 173px;
+}
+#position-container.anime-9 .slot.slot-hand {
+	width: 33px;
+	height: 36px;
+}
+#position-container.anime-9 .slot.slot-leggings {
+	width: 219px;
+	height: 83px;
+}

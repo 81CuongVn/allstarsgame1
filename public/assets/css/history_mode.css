@@ -1,0 +1,52 @@
+#history-mode-group-list .group, #challenge-list .group, #organization-event-list .group{
+	position: relative;
+	width: 232px;
+	height: 320px;
+	float: left;	
+	margin-left: 10px;
+}
+#history-mode-group-list .buttons, #challenge-list .buttons, #organization-event-list .buttons{
+	position: relative;
+	width: 235px;
+	height: 40px;
+	top: -20px;
+	text-align: center;
+}
+.efeito{
+	 opacity:0.75;
+	 -moz-opacity: 0.75;
+	 filter: alpha(opacity=75);
+	 -webkit-filter: opacity(0.75);
+}
+.efeito:hover{
+	 opacity:1;
+	 -moz-opacity: 1;
+	 filter: alpha(opacity=100);
+	 -webkit-filter: opacity(1);
+}
+
+.history-mode-subgroup-list .show-battles {
+	margin-top: -8px;
+	margin-right: 34px;
+}
+.name-anime{
+	margin: 0;
+	padding: 0;
+	text-transform: uppercase;
+	font-size: 16px !important;
+	font-style: italic;
+	color: #fdc173;
+	position: relative;
+	text-align: center;
+	width: 235px;
+	top: -30px;
+}
+.content ul{
+	margin: 0;
+	padding: 0;	
+}
+.content li{
+	display: inline-block;	
+	padding-top: 5px;
+	color: #F60;
+}

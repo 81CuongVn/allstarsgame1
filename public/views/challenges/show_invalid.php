@@ -1,0 +1,2 @@
+<?php echo partial('shared/title', array('title' => 'challenges.title', 'place' => 'challenges.title')) ?>
+<?php echo partial('shared/info', array('id'=> 1, 'title' => 'history_mode.show.error_title', 'message' => t('challenges.invalid'))) ?>

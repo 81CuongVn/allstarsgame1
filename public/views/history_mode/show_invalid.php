@@ -1,0 +1,2 @@
+<?php echo partial('shared/title', array('title' => 'history_mode.index.title', 'place' => 'history_mode.index.title')) ?>
+<?php echo partial('shared/info', array('id'=> 1, 'title' => 'history_mode.show.error_title', 'message' => t('history_mode.show.invalid'))) ?>

@@ -1,0 +1,166 @@
+#character-creation-container {
+	position: relative;
+}
+
+#character-creation-container .faccao {
+	opacity: .3;
+	cursor: pointer;
+}
+
+.character-paginator {
+	text-align: center;
+	padding-top: 7px;
+}
+
+.character-paginator .page {
+	display: inline-block;
+}
+
+#character-creation-container .faccao.selected {
+	opacity: 1
+}
+
+#character-creation-container #character-data {
+	margin-bottom: 20px;
+	min-height: 710px;
+}
+
+#character-creation-container #anime-list, #character-creation-container #anime-character-list {
+	position: relative;
+	display: block;
+}
+
+#anime-list .anime, #anime-character-list .character, #select-player-list-container .player, #theme-list-ajax .character-uniques {
+	cursor: pointer;
+	opacity: .3;
+	transition:All 0.3s linear;
+	-webkit-transition:All 0.3s linear;
+	-moz-transition:All 0.3s linear;
+	-o-transition:All 0.3s linear;
+}
+
+#anime-list .anime:hover, #anime-character-list .character:hover, #select-player-list-container .player:hover, #theme-list-ajax .character-uniques:hover {
+	opacity: 1;
+}
+
+#character-creation-container .selected, #select-player-list-container .selected, #theme-list-ajax .selected {
+	opacity: 1 !important;
+}
+
+#anime-list .anime {
+	float: left;
+	position: relative;
+	padding-left: 29px;
+	padding-top: 8px;
+}
+
+#select-player-list-container .player,
+#anime-character-list .character {
+	float: left;
+	position: relative;
+	padding-left: 20px;
+	width: 140px;
+	height: 138px;
+}
+
+#select-player-list-container .player span,
+#anime-character-list .character span {
+	position: absolute;
+	font-size: 82px;
+	top: 24px;
+	left: 50px;
+	color: black;
+}
+
+#popup-character-images .ultimate {
+	float: left;
+	position: relative;
+	padding-left: 15px;
+    padding-bottom: 5px;
+}
+
+#popup-character-images .ultimate-image {
+	position: absolute;
+	bottom: 10px;
+	left: 47px;	
+}
+.image2 {
+	display: block;
+	float: left;
+	padding-left: 9px;
+	cursor: pointer;
+	padding-bottom: 5px;
+}
+#popup-character-images .image {
+}
+
+#popup-character-themes {
+	position: relative;
+	width: 730px;
+	margin: 0px auto;
+}
+
+#popup-character-themes #theme-list, #popup-character-themes .theme-images {
+}
+
+#popup-character-themes .barra-secao {
+
+}
+
+#popup-character-themes #bar-images {
+	display: none;
+}
+
+#popup-character-themes .attack-list {
+	width: 300px;
+	position: relative;
+	margin-left: 34px;
+	float: left;
+	top: 12px;
+}
+
+#popup-character-themes #theme-list .card img {
+	cursor: pointer;
+}
+
+#popup-character-themes .ability-list {
+	position: absolute;
+	margin-top: 338px;
+	margin-left: 122px;
+	display: none
+}
+
+#popup-character-themes .attack {
+	float: left;
+	margin: 2px
+}
+
+#popup-character-themes .theme {
+	text-align: center;
+}
+#popup-character-themes .theme-images {
+	display: none
+}
+
+#popup-character-themes .theme-controls {
+	position: relative;
+	float: right;
+	top: 15px;
+}
+.tutorial{
+	width: 680px;
+	text-align: center;
+	margin: auto;
+	height: 55px;
+	margin-bottom: 2px;
+	padding: 5px;	
+}
+.tutorial .icon{
+	float: left; width: 80px; padding-top: 6px;	
+}
+.tutorial .description{
+	width: 400px; float: left	
+}
+.tutorial .bar{
+	float: right; left: -7px; position: relative; top: 9px;	
+}

@@ -1,0 +1,2 @@
+<?php echo partial('shared/title', array('title' => 'denied.title', 'place' => 'denied.title')) ?>
+<?php echo partial('shared/info', array('id'=> 1, 'title' => 'denied.title_msg', 'message' => t('denied.message'))) ?>

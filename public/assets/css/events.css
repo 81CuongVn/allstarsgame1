@@ -1,0 +1,103 @@
+.ev-main{
+	width:730px; 
+	height: 235px; 
+	text-align: center;	
+}
+.ev-logo{
+	float: left;
+	width:240px;
+	padding-top: 20px;	
+}
+.ev-vs{
+	float: left;
+	width:240px;
+}
+.ev-size{
+	font-size: 16px;	
+}
+.ev-barra{
+	left: 35px; 
+	position: absolute; 
+	/*top: 515px;*/
+	top: 573px;
+}
+.ev-anime-a{
+	font-size: 18px; 
+	color:#747cda	
+}
+.ev-anime-b{
+	font-size: 18px; 
+	color:#b92b2f	
+}
+.ev-barra-red{
+	display: inline-block;
+	margin-top: 15px;
+	width: 512px;
+	height:16px;
+	background-image:url('../images/events/red.png');	
+}
+.ev-barra-b{
+	right: 35px;
+	position: absolute;
+	/*top: 515px;*/
+	top: 573px;
+}
+.ev-last{
+	float: left; 
+	width:360px	
+}
+.ev-last-anime{
+	height: 160px; 
+	text-align:center	
+}
+.ev-reward{
+	float: left; 
+	width:360px; 
+	position:relative;
+	left:5px;	
+}
+.ev-padding{
+	padding-top: 32px;	
+}
+.ev-reward-float{
+	width:120px; 
+	float: left	
+}
+.ev-req{
+	position: relative;	
+	width: 59px;
+	height: 59px;
+	float: left;
+	margin-left: 49px;	
+	background-image:url(../images/achievement/square-on.png);
+	text-align: center		
+}
+.bg-wanteds{
+	width: 170px;
+	height: 250px;
+	position: relative;
+	background-image:url(../images/wanted/bg2.jpg);	
+	float: left;
+	margin: 10px 0 0 10px;
+}
+.wanteds-info{
+	position: relative;
+ 	top: 74px;	
+	color: #523625;
+	text-align: center;
+}
+.wanteds-foto{
+	position: relative;
+	top: 53px;
+	text-align: center;
+    left: 1px;
+}
+.ev-req2{
+	position: relative;	
+	display: inline-block;
+	padding: 10px;
+    margin: 5px;
+	text-align: center;
+	background-color:#12304b;
+	border-radius: 5px;		
+}

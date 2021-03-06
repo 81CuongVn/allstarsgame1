@@ -1,0 +1,438 @@
+#battle-container {
+	width: 960px;
+	margin: 0px auto;
+	position: relative;
+	margin-top: 10px
+}
+
+#battle-container #ranking {
+	background-image: url(../images/battle/ranking.png);
+	margin: 0px auto;
+	width: 471px;
+	height: 70px;
+	margin-bottom: 10px;
+	position: relative;
+}
+
+#battle-container #ranking div {
+	position: absolute;
+}
+
+#battle-container #ranking .text {
+	left: 22px;
+	top: 20px;
+	text-align: center;
+	font-size: 14px;
+	font-weight: bold;
+}
+
+#battle-container #ranking .wins {
+	left: 172px;
+	text-align: center;
+	top: 20px;
+	font-size: 14px;
+}
+
+#battle-container #ranking .losses {
+	left: 284px;
+	text-align: center;
+	top: 20px;
+	font-size: 14px;
+}
+
+#battle-container #ranking .draws {
+	left: 395px;
+	text-align: center;
+	top: 20px;
+	font-size: 14px;
+}
+
+#battle-container #vs {
+	background-image: url(../images/battle/vs.png);
+	position: absolute;
+	width: 349px;
+	height: 448px;
+	top: 7px;
+	left: 50%;
+	margin-left: -175px;
+}
+
+#battle-container .player-container {
+	position: relative;
+}
+
+#battle-container #player {
+	float: left
+}
+
+#battle-container #enemy {
+	float: right
+}
+
+#battle-container #divider {
+	height: 23px;
+	background-image: url(../images/battle/divider.png)
+}
+
+#battle-container #players {
+	padding: 0px 43px;
+	background-image: url(../images/battle/fill.png);
+	height: 540px
+}
+
+#battle-container #technique-container {
+	padding: 50px 0px;
+	background-image: url(../images/battle/bg-golpes.png);
+	width: 774px;
+	height: 162px;
+	margin: -20px auto 0px auto;
+	background-image: url(../images/battle/bg-golpes.png);
+	position: relative;
+}
+
+#battle-container #technique-container #skip-turn {
+	position: absolute;
+	width: 200px;
+	text-align: center;
+	font-size: 15px;
+	cursor: pointer;
+	top: 119px;
+	left: 291px;
+}
+
+#battle-container #technique-container .technique-list-box {
+	margin: 0px auto;
+	width: 657px
+}
+
+#battle-container #technique-container .technique-list-box .item img {
+	margin-top: -1px;
+	margin-left: -1px
+}
+
+#battle-container .top {
+	height: 19px;
+	background-image: url(../images/battle/top.png)
+}
+
+#battle-container .chains {
+	height: 19px;
+	background-image: url(../images/battle/chains.png);
+	margin-top: -22px
+}
+
+#battle-container .bottom {
+	height: 19px;
+	background-image: url(../images/battle/bottom.png)
+}
+
+#battle-container #technique-container .item {
+	float: left;
+	margin: 5px;
+	cursor: pointer;
+	position: relative;
+}
+
+#battle-container #technique-container .item .modifier-turn-data, #battle-container #activatables .modifier-turn-data {
+	position: absolute;
+	top: 20px;
+	text-align: center;
+	width: 100%;
+	font-size: 34px;
+	font-weight: bold;
+}
+
+#battle-container #activatables .modifier-turn-data {
+	top: 28px
+}
+
+#battle-container .log {
+	margin: 6px auto 0px auto;
+	width: 226px;
+	height: 110px;
+	overflow: hidden;
+}
+
+#battle-container .player-box {
+	width: 285px;
+	position: relative;
+	height: 415px;
+}
+
+#battle-container .player-box .image {
+	display: block;
+	margin: 0px auto;
+	width: 235px
+}
+
+#battle-container .player-box .name {
+	position: relative;
+	font-size: 16px;
+	top: -30px;
+	color: #fed5a3;
+	font-weight: bold;
+	text-align: center;
+}
+
+#battle-container .player-box .mana {
+	position: absolute;
+	top: 87px;
+	background-image: url('../images/battle/bars/mana-empty.png');
+	left: 87px
+}
+
+#battle-container .player-box .life {
+	position: absolute;
+	font-weight: bold;
+	left: 15px;
+	top: 106px;
+	background-image: url('../images/battle/bars/life-empty.png');
+}
+
+#battle-container .player-box .mana, #battle-container .player-box .mana-fill, #battle-container .player-box .mana .text {
+	width: 125px;
+	height: 16px;
+}
+
+#battle-container .player-box .life, #battle-container .player-box .life-fill, #battle-container .player-box .life .text {
+	width: 274px;
+	height: 16px;
+}
+
+#battle-container .player-box .mana-fill, #battle-container .player-box .life-fill {
+	width: 0px;
+	height: 16px
+}
+
+#battle-container .player-box .mana-fill {
+	background-image: url('../images/battle/bars/mana-full.png');
+}
+
+#battle-container .player-box .life-fill {
+	background-image: url('../images/battle/bars/life-full.png');
+}
+
+#battle-container .player-box .mana .text, #battle-container .player-box .life .text {
+ 	position: absolute;
+	top: 1px;
+	font-weight: bold;
+	text-align: center;
+}
+
+
+#battle-container .type-filter {
+	background-color: #0f2e40;
+	float: right;
+	padding: 4px 6px;
+	border-radius: 5px;
+	box-shadow: 0px 0px 10px rgba(0, 0, 0, .7), inset 0px 0px 2px 2px rgba(22, 69, 96, .8);
+	color: #ffe9a5;
+	font-weight: bold;
+	margin-right: 10px;
+	cursor: pointer;
+}
+
+#battle-container .type-filter.disabled {
+	color: #133040 !important;
+	background-color: #071928 !important;
+	box-shadow: 0px 0px 10px rgba(0, 0, 0, .7), inset 0px 0px 2px 2px rgba(10, 37, 60, .8);
+}
+
+#battle-container .log{
+	color: #426785;	
+}
+
+#battle-container .log .p {
+	color: #FFF;
+	font-weight: bold;
+	font-size:	12px;
+}
+
+#battle-container .log .i {
+	cursor: pointer;
+	color: #51fc54;
+}
+
+#battle-container .log .d {
+	color: #d32f34;
+	
+}
+
+#battle-container .filter-container {
+	margin-top: 47px;
+	position: absolute;
+	right: 20px;
+}
+
+#battle-container #divider .text {
+	position: absolute;
+	left: 25px;
+	margin-top: 48px;
+	font-size: 17px;
+	color: #9fc0dd;
+	font-weight: bold;
+}
+
+#battle-container .log-scroller {
+	position: absolute;
+	bottom: 14px;
+	left: 62px;
+	z-index: 500;
+}
+
+#battle-container .log-scroller span {
+	cursor: pointer;
+}
+
+#battle-container .log-scroller span:hover {
+	color: #FFF
+}
+
+#battle-container .modifiers {
+	position: absolute;
+	width: 24px;
+	padding-top: 38px;
+}
+
+#battle-container .modifiers .item {
+	margin-bottom: 5px
+}
+
+#battle-container #player .modifiers {
+	left: 0px;
+	margin-left: -8px;
+}
+
+#battle-container #enemy .modifiers {
+	right: 0px;
+	margin-right: -8px;
+}
+
+#battle-container .player-info {
+	width: 285px;
+	margin: 0px auto;
+}
+
+#battle-container .player-info .anime {
+	color: #FFF;
+}
+
+#battle-container .player-info .headline {
+	color: #fdd555;
+	font-size: 16px
+}
+
+#battle-container .player-info .level {
+	width: 35px;
+	background-image: url(../images/bg_lvl.jpg);
+	height: 42px;
+	font-size: 16px;
+	padding-top: 17px;
+	text-align: center;
+	color: #fff;
+}
+
+#battle-container .player-box .level {
+	position: absolute;
+	bottom: 13px;
+	text-align: center;
+	width: 100%;
+}
+
+#battle-container #player .player-info .anime-headline {
+	float: left;
+	margin-right: 5px
+}
+
+#battle-container #enemy .player-info .anime-headline {
+	float: right;
+	margin-left: 5px
+}
+
+#battle-container .life-container {
+	margin-bottom: 10px;
+	position: relative;
+	margin-top: -17px;
+}
+
+#battle-container .modifier-tooltip {
+	width: 350px;
+}
+
+#battle-container .modifier-tooltip .hidden-modifier {
+	display: none
+}
+
+#battle-container .modifiers .status .modifier-tooltip {
+	width: 220px;
+	padding: 10px;
+	line-height: 18px
+}
+
+#battle-container #attack-text {
+	position: absolute;
+	bottom: 15px;
+	left: 98px;
+}
+
+#battle-container #activatables {
+	z-index: 2;
+	position: relative;
+}
+
+#battle-container #activatables .left, #battle-container #activatables .right {
+	margin-top: 38px;
+}
+
+#battle-container #activatables .left {
+	margin-left: 17px;
+	float: left;
+	position: relative;
+}
+
+#battle-container #activatables .right {
+	margin-right: 19px;
+	float: right;
+	position: relative;
+}
+
+#battle-container #activatables .technique-popover img {
+	width: 64px;
+	height: 65px;
+	cursor: pointer;
+}
+
+#battle-container #activatables .technique-popover img.pet {
+	width: 138px;
+	height: 34px;
+	cursor: pointer;
+}
+
+#battle-container #activatables div.pet {
+	position: absolute;
+	top: 33px;
+	left: 80px;
+}
+
+#battle-container .log-timer {
+	position: absolute;
+	bottom: 15px;
+	left: 256px;
+}
+.bg-attributes {
+	width:  303px;
+	height: 157px;
+	background-image:url(../images/battle/bg.png);		
+	position: relative;
+}
+
+.player-box .bg-attributes-container {
+	position: absolute;
+	bottom: 0px;
+	margin-left: -9px;
+}
+
+#finished-message .msg-container {
+	margin: 0px auto;
+	width: 730px;
+}

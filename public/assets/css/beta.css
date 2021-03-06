@@ -1,0 +1,14 @@
+#beta-container, #beta-facebook {
+	width: 1000px;
+	margin: 0px auto
+}
+
+#beta-container {
+	margin-top: 296px;
+	position: relative;
+	z-index: 10
+}
+
+#beta-facebook {
+	background-color: #FFF;
+}

@@ -1,0 +1,47 @@
+#inventory-trigger.shown {
+	background-color: rgba(0, 0, 0, .85);
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+}
+
+#inventory-container {
+	display: none;
+	width: 246px;
+	/*max-height: 200px;*/
+	/*overflow: auto;*/
+	background-color: rgba(0, 0, 0, .85);
+	padding: 10px;
+	margin-left: -165px;
+	text-align: left;
+}
+#inventory-container h3 {
+	text-align: left;
+	margin-top: 0;
+	margin-bottom: 5px;
+}
+
+#inventory-container.shown {
+	display: block
+}
+
+#inventory-container .item {
+	/*float: left;*/
+	width: 56px;
+	height: 56px;
+	position: relative;
+	display: inline-block;
+	margin: -1px;
+}
+
+#inventory-container .quantity, #technique-list .quantity {
+	background-color: rgba(0, 0, 0, 0.75);
+	color: #FFF;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	padding: 2px;
+	border-bottom-right-radius: 7px;
+	border-bottom-left-radius: 7px;
+	width: 100%;
+	text-align: center;
+}

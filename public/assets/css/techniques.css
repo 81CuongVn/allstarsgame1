@@ -1,0 +1,263 @@
+#eqquiped-technique-list, #technique-list{
+	background-color: #081929;
+}
+
+#eqquiped-technique-list .item .item {
+	margin: 0px
+}
+
+#technique-list .item-content {
+	cursor: pointer;
+}
+
+#technique-list .item-content .lock{
+	position: absolute;
+	font-size: 28px;
+	margin-left: 14px;
+	margin-top: 8px;
+	color: #000;
+	opacity: .8
+}
+.ability-speciality-box .lock {
+    margin-left: -40px;
+    margin-top: 12px;
+	position: absolute;
+	font-size: 28px;
+	color: #000;
+	opacity: .8
+}
+.technique-list-box {
+	margin-left: 11px;
+	position: relative;
+	width: 710px;
+	padding-bottom: 5px;
+}
+
+.technique-list-box .item {
+	float: left;
+	margin: 5px 0px 0px 15px;
+	width: 54px;
+	height: 54px;
+	box-shadow: inset 0px 0px 10px rgba(0,0,0,.7);
+	border-radius: 8px;
+	overflow: hidden;
+	position: relative;
+}
+
+.technique-list-box .item .item-image {
+	margin: -1px 0px 0px -1px;
+}
+
+.technique-list-box .item:hover, .technique-list-box .item.dropping {
+	overflow: inherit !important;
+}
+
+.technique-list-box .item.dropping:before {
+	display: none !important;
+}
+
+.technique-list-box .item:hover:before {
+	display: none
+}
+
+.technique-list-box .item:before {
+	content: " ";
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	left: 0px;
+	bottom: 0px;
+	z-index: 1;
+	border-radius: 8px;
+}
+
+.technique-list-box .item.attack:before {
+	box-shadow: inset 0px 0px 10px #ED1818, inset 0px 0px 10px #ED1818;
+}
+.technique-list-box .item.unique:before {
+	box-shadow: inset 0px 0px 10px #F60, inset 0px 0px 10px #F60;
+}
+.technique-list-box .item.defense:before {
+	box-shadow: inset 0px 0px 10px #3879CF, inset 0px 0px 10px #3879CF;
+}
+.technique-list-box .item.buff:before {
+	box-shadow: inset 0px 0px 10px #9C4892, inset 0px 0px 10px #3879CF;
+}
+
+
+.popover-content {
+	position: relative;
+}
+
+.popover-content .attribute-value {
+	font-size: 16px !important
+}
+
+.popover-type-container {
+	width: 100%;
+	margin-left: -15px;
+	position: absolute;
+	bottom: -30px;
+}
+
+.popover-type-container .black {
+	background-color: black;
+	height: 20px;
+	border-radius: 5px;
+	z-index: 1;
+	position: absolute;
+	width: 100%;
+}
+
+.popover-type-container .type {
+	background-color: #181818;
+	border-radius: 5px;
+	margin-top: 12px;
+	height: 32px;
+	padding-top: 10px;
+	text-align: center;
+	width: 100%;
+	position: relative;
+}
+
+.popover-type-container .type .weak {
+	position: absolute;
+	left: 10px;
+}
+
+.popover-type-container .type .strong {
+	position: absolute;
+	right: 10px;
+}
+
+.ability-speciality-box, .pet-box {
+	box-shadow: inset 0 0 10px rgba(0, 0, 0, .7);
+	border-radius: 8px;
+	width: 178px;
+	height: 245px;
+	text-align: center;
+	padding: 15px 12px;
+	margin: 2px;
+	background-color: #09141d;
+	float: left;
+}
+
+.ability-speciality-box .content, .ability-speciality-box.disabled .content, .ability-speciality-box.disabled .content:hover,
+.pet-box .content, .pet-box.disabled .content, .pet-box.disabled .content:hover {
+	-webkit-filter: grayscale(100%);
+	-moz-filter: grayscale(100%);
+	filter: grayscale(100%);
+	filter: url(../images/desaturate.svg#greyscale);
+	opacity: .8
+}
+
+.ability-speciality-box .content .lock, .pet-box .content .lock {
+	display: none;
+	font-size: 30px;
+	width: 100%;
+	top: 14px;
+	text-align: center;
+	color: black;
+	position: absolute;
+}
+
+.ability-speciality-box.disabled:hover, .pet-box.disabled:hover {
+	background-color: #09141d;
+}
+
+.ability-speciality-box.active, .ability-speciality-box:hover, .pet-box.active, .pet-box:hover {
+	background-color: #041626
+}
+
+.ability-speciality-box.active .content, .ability-speciality-box .content:hover, .pet-box.active .content, .pet-box .content:hover {
+	-webkit-filter: none;
+	-moz-filter: none;
+	filter: none;
+	opacity: 1
+}
+
+.ability-speciality-box .image, .pet-box .image {
+	margin-bottom: 10px;
+	position: relative;
+}
+
+.ability-speciality-box .lock {
+	position: absolute;
+}
+
+.ability-speciality-box .name, .pet-box .name {
+	font-size: 16px;
+	margin-bottom: 10px;
+	height: 33px;
+}
+.ability-speciality-box .description {
+	margin-bottom: 10px;
+	height: 65px;
+}
+
+.ability-speciality-box.disabled .content .lock, .pet-box.disabled .content .lock {
+	display: block;
+}
+.enchant{
+	background-image: url('../images/enchant/bg.jpg');
+	background-position: top center;
+	width: 706px;
+	height: 541px;
+	position: relative;
+	left: 10px;
+}
+.enchant-golpe{
+	position: absolute;
+    top: 157px;
+    left: 324px;	
+}
+.enchant-1{
+	position: absolute;
+    top: 29px;
+    left: 324px;	
+}
+.enchant-2{
+	position: absolute;
+    top: 157px;
+    left: 447px;	
+}
+.enchant-3{
+	position: absolute;
+    top: 284px;
+    left: 324px;
+}
+.enchant-4{
+	position: absolute;
+    top: 157px;
+    left: 205px;	
+}
+.item-enchanted-1{
+	position: absolute;
+    top: 159px;
+    left: 519px;	
+}
+.item-enchanted-2{
+	position: absolute;
+   	top: 349px;
+    left: 324px;	
+}
+.item-enchanted-3{
+	position: absolute;
+    top: 159px;
+    left: 131px;	
+}
+.button_enchant1{
+	position: absolute;
+    top: 15px;
+    left: 67px;
+}
+.button_enchant2{
+	position: absolute;
+    top: 62px;
+    left: -8px;
+}
+.button_enchant3{
+	position: absolute;
+    top: 15px;
+    left: -88px;
+}

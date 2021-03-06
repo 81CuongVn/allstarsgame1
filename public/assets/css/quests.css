@@ -1,0 +1,8 @@
+#time-quests-list-content tr {
+	display: table;
+}
+
+#time-quests-list-content td {
+	display: table-cell;
+	vertical-align: middle;
+}
