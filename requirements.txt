@@ -2,13 +2,10 @@
 ### RECURSOS NECESSÁRIOS PARA INSTALAÇÃO E CONFIGURAÇÃO DA APLICAÇÃO ###
 ########################################################################
 
-PHP		5.5.38
-Redis		2.2.7
-Yaml		1.3.0
-Mongo		1.6.16
-MariaDB		10.3
-NodeJS		8.16.2		(nodemon, n)
+PHP             >= 5.6.38
+Redis		    2.2.7
+NodeJS		    8.16.2		(nodemon, n)
 CoffeeScript	2.4.1
-Ruby		2.6.5p114	(bunny, mysql2, activesupport, daemons)
+Ruby	    	2.6.5p114	(bunny, mysql2, activesupport, daemons)
 RabbitMQ
 Erlang
