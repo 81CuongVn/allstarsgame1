@@ -16,15 +16,20 @@ class CallbackController extends Controller {
     }
 
     function paypal() {
-        // $method = $_SERVER['REQUEST_METHOD'];
-        // if ('POST' == $method) {
+        $method = $_SERVER['REQUEST_METHOD'];
+        if ('POST' == $method) {
             $p = new PayPal();
             if ($p->verifyIPN()) {
                 $paymentData = $p->ipn_data;
+                /*$paymentData = [
+                    'custom'            => 1485,
+                    'payment_status'    => 'Completed',
+                    'txn_id'            => '2WF07612DY1362636'
+                ];*/
 
                 $star_purchase	= StarPurchase::find_first("id=" . $paymentData['custom']);
                 if ($star_purchase) {
-                    $is_dbl     = StarDouble::find_first($star_purchase->created_at . ' BETWEEN data_init AND data_end');
+                    $is_dbl     = StarDouble::find_first("'{$star_purchase->created_at}' BETWEEN data_init AND data_end");
                     $star_plan  = StarPlan::find_first("id = " . $star_purchase->star_plan_id);
                     $user       = User::find($star_purchase->user_id);
                     $credits    = !$is_dbl ? $star_plan->coin : ($star_plan->coin * 2);
@@ -46,18 +51,21 @@ class CallbackController extends Controller {
                     $star_purchase->completed_at        = now(TRUE);
                     $star_purchase->save();
 
-                    echo $paymentData['custom'];
+                } else {
+                    // echo 'Achei n cara!';
+                    $this->bad_request();
+                    return;
                 }
-                echo ' - Deu bom!';
-                // $this->bad_request();
+            } else {
+                $this->good_request();
+                return;
             }
-
-            // $this->good_request();
-        // }
-
-        // $this->bad_request();
-        echo ' - Deu ruim! 2';
+        } else {
+            $this->bad_request();
+            return;
+        }
     }
+
     function pagseguro() {
         \PagSeguro\Library::initialize();
         \PagSeguro\Library::cmsVersion()->setName(GAME_NAME)->setRelease(GAME_VERSION);

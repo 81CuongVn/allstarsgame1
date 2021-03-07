@@ -86,16 +86,14 @@ class PayPal {
 	}
 
 	public function verifyIPN() {
-		// if (!count($_POST)) {
-		// 	$this->last_error = "Missing POST Data";
-		// 	$this->logResults(FALSE);
+		if (!count($_POST)) {
+			$this->last_error = "Missing POST Data";
+			$this->logResults(FALSE);
 
-		// 	throw new Exception($this->last_error);
-		// }
+			throw new Exception($this->last_error);
+		}
 
-		// $raw_post_data  = file_get_contents('php://input');
-		$raw_post_data	= 'mc_gross=10.00&protection_eligibility=Eligible&address_status=confirmed&payer_id=V52792RJHP2ML&address_street=Rua Aparecida Maria Consiglio  170  B 412
-Jardim Nova Michigan&payment_date=06:35:45 Mar 07, 2021 PST&payment_status=Completed&charset=windows-1252&address_zip=12225-400&first_name=Silmara&mc_fee=1.08&address_country_code=BR&address_name=Silmara Alves&notify_version=3.9&custom=1485&payer_status=verified&business=medeiros.dev@gmail.com&address_country=Brazil&address_city=São José Dos Campos&quantity=1&verify_sign=A9kWwTnXhiA-MTZYhyP9dZSbAOB7A2nR.ndc4cwDwMhBG.sOUqRarCe0&payer_email=mamara.salves@gmail.com&txn_id=2WF07612DY1362636&payment_type=instant&last_name=Alves&address_state=SP&receiver_email=medeiros.dev@gmail.com&payment_fee=&shipping_discount=0.00&insurance_amount=0.00&receiver_id=52F6LT43QQXKN&txn_type=web_accept&item_name=Estrela&discount=0.00&mc_currency=BRL&item_number=&residence_country=BR&shipping_method=Default&transaction_subject=&payment_gross=&ipn_track_id=7f0127532831e';
+		$raw_post_data  = file_get_contents('php://input');
 		$raw_post_array = explode('&', $raw_post_data);
 		$myPost         = [];
 		foreach ($raw_post_array as $keyval) {
