@@ -122,19 +122,19 @@ Jardim Nova Michigan&payment_date=06:35:45 Mar 07, 2021 PST&payment_status=Compl
 
 		// Post the data back to PayPal, using curl. Throw exceptions if errors occur.
 		$ch = curl_init($this->getPayPalIPNUri());
-		curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
-		curl_setopt($ch, CURLOPT_POST, 1);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_POSTFIELDS, $req);
-		curl_setopt($ch, CURLOPT_SSLVERSION, 6);
-		// curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 1);
-		// curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
-		curl_setopt($ch, CURLOPT_FORBID_REUSE, 1);
-		curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 30);
-		curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+		curl_setopt($ch, CURLOPT_HTTP_VERSION,		CURL_HTTP_VERSION_1_1);
+		curl_setopt($ch, CURLOPT_POST,				1);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER,	1);
+		curl_setopt($ch, CURLOPT_POSTFIELDS,		$req);
+		curl_setopt($ch, CURLOPT_SSLVERSION,		6);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER,	1);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST,	2);
+		curl_setopt($ch, CURLOPT_FORBID_REUSE,		1);
+		curl_setopt($ch, CURLOPT_CONNECTTIMEOUT,	30);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, 		[
 			'User-Agent: PHP-IPN-Verification-Script',
 			'Connection: Close',
-		));
+		]);
 		$this->ipn_response = curl_exec($ch);
 		if (!($this->ipn_response)) {
 			$errno  = curl_errno($ch);

@@ -45,8 +45,10 @@ class CallbackController extends Controller {
                     $star_purchase->transid             = $paymentData['txn_id'];
                     $star_purchase->completed_at        = now(TRUE);
                     $star_purchase->save();
-                }
 
+                    echo $paymentData['custom'];
+                }
+                echo ' - Deu bom!';
                 // $this->bad_request();
             }
 
@@ -54,6 +56,7 @@ class CallbackController extends Controller {
         // }
 
         // $this->bad_request();
+        echo ' - Deu ruim! 2';
     }
     function pagseguro() {
         \PagSeguro\Library::initialize();
