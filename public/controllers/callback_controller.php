@@ -16,8 +16,8 @@ class CallbackController extends Controller {
     }
 
     function paypal() {
-        $method = $_SERVER['REQUEST_METHOD'];
-        if ('POST' == $method) {
+        // $method = $_SERVER['REQUEST_METHOD'];
+        // if ('POST' == $method) {
             $p = new PayPal();
             if ($p->verifyIPN()) {
                 $paymentData = $p->ipn_data;
@@ -47,13 +47,13 @@ class CallbackController extends Controller {
                     $star_purchase->save();
                 }
 
-                $this->bad_request();
+                // $this->bad_request();
             }
 
-            $this->good_request();
-        }
+            // $this->good_request();
+        // }
 
-        $this->bad_request();
+        // $this->bad_request();
     }
     function pagseguro() {
         \PagSeguro\Library::initialize();
