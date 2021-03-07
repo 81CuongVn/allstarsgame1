@@ -2,17 +2,21 @@
 <div id="battle-container" data-target="<?php echo $target_url ?>" data-mana-player="<?php echo t('formula.for_mana.' . $player->character()->anime_id) ?>"  data-mana-enemy="<?php echo t('formula.for_mana.' . $enemy->character()->anime_id) ?>" <?php if ($player->battle_pvp_id): ?>data-ping="<?php echo $player->id ?>"<?php endif ?>>
 	<?php if(!$player->battle_npc_id): ?>
 		<?php if($player->no_talent || $enemy->no_talent){?>
-			<div style="float: left; position:relative; width: 250px; left: 29px">
-				<div style="float: left; width: 180px; position: relative; text-align: center; top: 15px"><?php echo ($player->no_talent==1 || $enemy->no_talent==1) ? t('battles.pvp.no_talent') : t('battles.pvp.no_talent2')?></div>
-				<div style="float: left; width: 70px; position: relative; text-align: center">
-					<img src="<?=image_url('items/1715.png');?>"  data-title="<?php echo ($player->no_talent==1 || $enemy->no_talent==1) ? t('battles.pvp.no_talent') : t('battles.pvp.no_talent2')?>" data-trigger="hover" data-placement="bottom" />
-				</div>	
+			<div style="float: left; height: 70px; padding: 7px; margin-left: 5px;">
+				<img src="<?=image_url('items/1715.png');?>" class="technique-popover" style="cursor: help;" data-source="#no_talent-player" data-title="" data-trigger="hover" data-placement="right" />
+				<div class="technique-container" id="no_talent-player">
+					<div class="technique-data" style="width: 200px; margin: 0; padding: 5px 15px;">
+						<?php echo ($player->no_talent==1 || $enemy->no_talent==1) ? t('battles.pvp.no_talent') : t('battles.pvp.no_talent2')?>
+					</div>
+				</div>
 			</div>
-			<div style="float: right; position:relative; width: 250px; left: -30px">
-				<div style="float: left; width: 70px; position: relative; text-align: center">
-					<img src="<?=image_url('items/1715.png');?>"  data-title="<?php echo ($player->no_talent==1 || $enemy->no_talent==1) ? t('battles.pvp.no_talent') : t('battles.pvp.no_talent2')?>" data-trigger="hover" data-placement="bottom" />
+			<div style="float: right; height: 70px; padding: 7px; margin-right: 5px;">
+				<img src="<?=image_url('items/1715.png');?>" class="technique-popover" style="cursor: help;" data-source="#no_talent-enemy" data-title="" data-trigger="hover" data-placement="left" />
+				<div class="technique-container" id="no_talent-enemy">
+					<div class="technique-data" style="width: 200px; margin: 0; padding: 5px 15px;">
+						<?php echo ($player->no_talent==1 || $enemy->no_talent==1) ? t('battles.pvp.no_talent') : t('battles.pvp.no_talent2')?>
+					</div>
 				</div>	
-				<div style="float: left; width: 180px; position: relative; text-align: center; top: 15px"><?php echo ($player->no_talent==1 || $enemy->no_talent==1) ? t('battles.pvp.no_talent') : t('battles.pvp.no_talent2')?></div>
 			</div>
 		<?php }?>	
 		<div id="ranking">
@@ -50,7 +54,7 @@
 						<?php echo partial('shared/fight_panel_activatables', ['who' => $player]) ?>
 						<div class="mana"><div class="mana-fill"></div><div class="text"></div></div>
 						<div class="life"><div class="life-fill"></div><div class="text"></div></div>
-						<div class="level"><?php echo $player->level ?></div>
+						<div class="level"><?php //echo $player->level ?></div>
 					</div>
 				</div>
 			</div>
@@ -63,7 +67,7 @@
 						<?php echo partial('shared/fight_panel_activatables', ['who' => $enemy]) ?>
 						<div class="mana"><div class="mana-fill"></div><div class="text"></div></div>
 						<div class="life"><div class="life-fill"></div><div class="text"></div></div>
-						<div class="level"><?php echo $enemy->level ?></div>
+						<div class="level"><?php //echo $enemy->level ?></div>
 					</div>	
 				</div>
 			</div>

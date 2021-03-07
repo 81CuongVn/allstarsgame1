@@ -15,10 +15,10 @@ var	MCrypt = require("mcrypt").MCrypt;
 var redis = require('redis');
 
 var db = mysql.createConnection({
-	host: config.db.host,
-	user: config.db.user,
-	password: config.db.password,
-	database: config.db.name,
+	host:			config.db.host,
+	user:			config.db.user,
+	password:		config.db.pass,
+	database:		config.db.name,
 	insecureAuth:	true
 });
 

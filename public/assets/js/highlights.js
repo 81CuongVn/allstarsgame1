@@ -1,4 +1,4 @@
-var socket = io.connect(_node_server + ':2600');
+var socket = io.connect(_highlights_server);
 socket.on('connect', function () {
 	console.log('Highlights service connected');
 	socket.emit('set-language', {

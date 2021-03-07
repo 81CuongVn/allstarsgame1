@@ -279,7 +279,7 @@ class VipsController extends Controller {
 					$player->save();
 				break;
 				case 1709:
-					$user->vip_char_slots =  $user->vip_char_slots + 1;
+					$user->character_slots =  $user->character_slots + 1;
 					$user->save();
 				break;
 				case 1715:

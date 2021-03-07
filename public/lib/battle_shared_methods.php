@@ -242,8 +242,8 @@ trait BattleSharedMethods {
 			}
 
 			//Variaveis dos drops
-			$drop_message	= '';
-			$drop_message_e	= '';
+			$drop_message	= '<br />';
+			$drop_message_e	= '<br />';
 
 			// Carrega o Último ganhador
 			$bonus_active = false;
@@ -302,7 +302,6 @@ trait BattleSharedMethods {
 				$counters->save();
 			}
 
-
 			$p->battle_npc_id	= 0;
 			$p->battle_pvp_id	= 0;
 			$p->less_mana		= 0;
@@ -310,8 +309,6 @@ trait BattleSharedMethods {
 			$extras				= $p->attributes();
 			$currency_name		= t('currencies.' . $p->character_theme()->anime()->id);
 			$effects			= $p->get_parsed_effects();
-
-
 
 			// Clean up ability/speciality lock
 			SharedStore::S('battle_used_ability_' . $p->id, false);
@@ -330,7 +327,7 @@ trait BattleSharedMethods {
 			$treasure_still	= false;
 			// Variaveis para as missões de conta
 
-			$candy			= 0;
+			$drop_event		= 0;
 			$drop_areia     = 0;
 			$drop_sangue    = 0;
 
@@ -342,13 +339,13 @@ trait BattleSharedMethods {
 				$drop_chance_pet 	 	 = $_SESSION['universal'] ? 100 : (10 + ($bonus_active ? 10 : 0) * 1.5);
 				$drop_areia 			 = $_SESSION['universal'] ? 100 : (5 * 1.5);
 				$drop_sangue			 = $_SESSION['universal'] ? 100 : (1 * 1.5);
-				$candy			 		 = $_SESSION['universal'] ? 100 : (1 * 1.5);
-
+				$drop_event		 		 = $_SESSION['universal'] ? 100 : (1 * 1.5);
 			} else {
 				$drop_chance_page		 = $_SESSION['universal'] ? 100 : (5 * 1.5);
 				$drop_chance_fragment	 = $_SESSION['universal'] ? 100 : (10 * 1.5);
 				$drop_chance_equipment	 = $_SESSION['universal'] ? 100 : (7 + ($bonus_active ? 10 : 0) * 1.5);
 				$drop_chance_pet 	 	 = $_SESSION['universal'] ? 100 : (7 + ($bonus_active ? 10 : 0) * 1.5);
+				$drop_event		 		 = $_SESSION['universal'] ? 100 : (1 * 1.5);
 			}
 			if(($battle->won != $p->id && $battle->inactivity == 1) || $battle->battle_type_id == 4){
 				//Não dropa nada!
@@ -369,7 +366,9 @@ trait BattleSharedMethods {
 							$player_areia->quantity = 1;
 							$player_areia->save();
 						}
-						$drop_message	.= ' ' . t('battles.finished.areia');
+						$drop_message	.= t('battles.finished.drop', [
+							'item'	=> $player_areia->item()->description()->name
+						]);
 
 						//Mensagem Global
 						global_message('hightlights.sand', TRUE, [ $p->name ]);
@@ -396,7 +395,9 @@ trait BattleSharedMethods {
 							$player_sangue->quantity = 1;
 							$player_sangue->save();
 						}
-						$drop_message	.= ' ' . t('battles.finished.sangue');
+						$drop_message	.= t('battles.finished.drop', [
+							'item'	=> $player_sangue->item()->description()->name
+						]);
 
 						//Mensagem Global
 						global_message('hightlights.blood', TRUE, [ $p->name ]);
@@ -409,24 +410,27 @@ trait BattleSharedMethods {
 						//Diz que ganhou o Sangue
 						$blood_drop  = true;
 					}
-
-					//Drop de Doce de Halloween
-//					if (has_chance($candy + $extras->sum_bonus_drop)) {
-//						$item_2059 = PlayerItem::find_first("player_id =". $p->id. " AND item_id=2059");
-//						if ($item_2059){
-//							$player_candy				= $p->get_item(2059);
-//							$player_candy->quantity 	+= 1;
-//							$player_candy->save();
-//						} else {
-//							$player_candy				= new PlayerItem();
-//							$player_candy->item_id		= 2059;
-//							$player_candy->player_id	= $p->id;
-//							$player_candy->quantity 	= 1;
-//							$player_candy->save();
-//						}
-//						$drop_message	.= ' ' . t('battles.finished.candy');
-//					}
 				}
+
+				// Drop de Evento
+				if (EVENT_ACTIVE && has_chance($drop_event + $extras->sum_bonus_drop)) {
+					$item_event = PlayerItem::find_first("player_id =". $p->id. " AND item_id=" . EVENT_ITEM);
+					if ($item_event){
+						$player_event				= $p->get_item(EVENT_ITEM);
+						$player_event->quantity 	+= 1;
+						$player_event->save();
+					} else {
+						$player_event				= new PlayerItem();
+						$player_event->item_id		= EVENT_ITEM;
+						$player_event->player_id	= $p->id;
+						$player_event->quantity 	= 1;
+						$player_event->save();
+					}
+					$drop_message	.= t('battles.finished.drop', [
+						'item'	=> $player_event->item()->description()->name
+					]);
+				}
+
 				//Drop de Cartas de Grimorio
 				if(has_chance($drop_chance_page + $effects['grimoire_find'] + $extras->sum_bonus_drop)){
 					$grimoire_card  = Item::find_first('item_type_id=11', ['reorder' => 'RAND()']);
@@ -436,18 +440,17 @@ trait BattleSharedMethods {
 						$player_grimoire_card->player_id	= $p->id;
 						$player_grimoire_card->save();
 
-						$drop_message	.= ' ' . t('battles.finished.drop_grimoire_text', ['name' => $grimoire_card->description()->name]);
+						$drop_message	.= t('battles.finished.drop_grimoire_text', [
+							'name' => $grimoire_card->description()->name
+						]);
 					}
 					//Diz que ganhou a Pagina Perdida
 					$page_drop  = true;
 				}
 				//Drop de Fragmento de Armadura
 				if(has_chance($drop_chance_fragment + $effects['fragment_find'] + $extras->sum_bonus_drop)){
-
 					$item_446 = PlayerItem::find_first("player_id =". $p->id. " AND item_id=446");
-
 					$fragments = rand(1,10);
-
 					if($item_446){
 						$player_fragment			= $p->get_item(446);
 						$player_fragment->quantity += $fragments;;
@@ -459,8 +462,9 @@ trait BattleSharedMethods {
 						$player_fragment->quantity = $fragments;;
 						$player_fragment->save();
 					}
-					$drop_message	.= t('battles.finished.fragment') . '<span class="azul_claro">' . $fragments . ' ' . t('battles.finished.fragment2');
-
+					$drop_message	.= t('battles.finished.drop', [
+						'item'	=> 'x' . $fragments . ' ' . $player_fragment->item()->description()->name
+					]);
 
 					//Verifica a conquista de fragmentos - Conquista
 					$p->achievement_check("fragments");
@@ -473,9 +477,11 @@ trait BattleSharedMethods {
 
 				if (has_chance($drop_chance_equipment + $effects['item_find'] + $extras->sum_bonus_drop)) {
 					$dropped	= Item::generate_equipment($p);
-
 					if($dropped) {
-						$drop_message	.= ' ' . t('battles.finished.drop_text', ['name' => t('slots.' . $p->character()->anime_id) . ' ' . $dropped->attributes()->name(), 'rarity' => $dropped->rarity]);
+						$drop_message	.= t('battles.finished.drop_text', [
+							'name'		=> t('slots.' . $p->character()->anime_id) . ' ' . $dropped->attributes()->name(),
+							'rarity'	=> $dropped->rarity
+						]);
 
 						//Verifica a conquista de fragmentos - Conquista
 						$p->achievement_check("equipment");
@@ -494,7 +500,10 @@ trait BattleSharedMethods {
 							$player_pet->item_id	= $pet->id;
 							$player_pet->player_id	= $p->id;
 							$player_pet->save();
-							$drop_message	.= ' ' . t('battles.finished.drop_pet_text', ['name' => $pet->description()->name, 'rarity' => $pet->rarity]);
+							$drop_message	.= t('battles.finished.drop_pet_text', [
+								'name'		=> $pet->description()->name,
+								'rarity'	=> $pet->rarity
+							]);
 
 							//Verifica se você tem pets - Conquista
 							$p->achievement_check("pets");
@@ -609,6 +618,7 @@ trait BattleSharedMethods {
 						}
 
 						$p->draws_pvp++;
+						// $p->hospital = 1;
 						$stats->draws++;
 
 						// rank de combates diário, semanal e mensal
@@ -617,6 +627,7 @@ trait BattleSharedMethods {
 						$player_battle_stats->draws_pvp_monthly++;
 					} else {
 						$p->draws_npc++;
+						// $p->hospital = 1;
 
 						// rank de combates diário, semanal e mensal
 						$player_battle_stats->draws_npc++;
@@ -923,7 +934,7 @@ trait BattleSharedMethods {
 									$p->save();
 									$e->treasure_atual--;
 									$e->save();
-									$drop_message	.= ' ' . t('battles.finished.treasure');
+									$drop_message	.= t('battles.finished.treasure');
 
 									//Verifica se você ganhou treasure - Conquista
 									$p->achievement_check("treasure");
@@ -1090,7 +1101,7 @@ trait BattleSharedMethods {
 											$reward_character->was_reward	= 1;
 											$reward_character->save();
 
-											$drop_message	.= ' ' . t('map.character_map') . ' <span class="azul_claro">'. Character::find($rewards->character_id)->description()->name .'</span>';
+											$drop_message	.= t('map.character_map') . ' <span class="azul_claro">'. Character::find($rewards->character_id)->description()->name .'</span>';
 
 											// verifica se desbloqueou novo personagem - conquista
 											$p->achievement_check("character");
@@ -1105,7 +1116,7 @@ trait BattleSharedMethods {
 											$reward_theme->was_reward			= 1;
 											$reward_theme->save();
 
-											$drop_message	.= ' ' . t('map.character_theme_map') . ' <span class="azul_claro">'. CharacterTheme::find($rewards->character_theme_id)->description()->name .'</span>';
+											$drop_message	.= t('map.character_theme_map') . ' <span class="azul_claro">'. CharacterTheme::find($rewards->character_theme_id)->description()->name .'</span>';
 										}
 									}
 								}
@@ -1406,7 +1417,7 @@ trait BattleSharedMethods {
 						if($is_pvp){
 							if($p->organization_id != $e->organization_id && $p->organization_id && $e->organization_id){
 								if($p->treasure_atual > 0){
-									$drop_message_e	.= ' ' . t('battles.finished.treasure2');
+									$drop_message_e	.= t('battles.finished.treasure2');
 								}
 							}
 						}
@@ -1452,6 +1463,7 @@ trait BattleSharedMethods {
 
 							$stats->losses++;
 							$p->losses_pvp++;
+							// $p->hospital = 1;
 
 							// rank de combates diário, semanal e mensal
 							$player_battle_stats->looses_pvp++;
@@ -1465,6 +1477,7 @@ trait BattleSharedMethods {
 							}
 						} else {
 							$p->losses_npc++;
+							// $p->hospital = 1;
 
 							// rank de combates diário, semanal e mensal
 							$player_battle_stats->looses_npc++;
@@ -1473,7 +1486,7 @@ trait BattleSharedMethods {
 						}
 					}
 					// Não da premiação para o jogador que inativa
-					if(($battle->won != $p->id && $battle->inactivity==1) || $battle->battle_type_id == 4){
+					if(($battle->won != $p->id && $battle->inactivity == 1) || $battle->battle_type_id == 4){
 						$p->currency	+= 0;
 						$p->exp			+= 0;
 
@@ -1678,12 +1691,12 @@ trait BattleSharedMethods {
 				'seconds'	=> $timer_diff['seconds'] < 0 ? 0 : $timer_diff['seconds']
 			];
 
-//			if ($action_was_made) {
-//				if ($timer_diff['minutes'] < 1 && $timer_diff['seconds'] < 30) {
-//					if ($_SESSION['pvp_time_reduced'] < 60)
-//						$_SESSION['pvp_time_reduced']	+= 30;
-//				}
-//			}
+			// if ($action_was_made) {
+			// 	if ($timer_diff['minutes'] < 1 && $timer_diff['seconds'] < 30) {
+			// 		if ($_SESSION['pvp_time_reduced'] < 60)
+			// 			$_SESSION['pvp_time_reduced']	+= 30;
+			// 	}
+			// }
 
 			if($current > $future && !$battle_now->finished_at) {
 				$battle->finished_at	= now(true);
@@ -1703,16 +1716,16 @@ trait BattleSharedMethods {
 		$this->json->enemy->effects		= $e_effects;
 		$this->json->current_turn		= $battle->current_turn;
 
-//		if (isset($_GET['initial']) || !$is_pvp)
-//			$this->json->enemy->update_existent_locks		= TRUE;
-//		else {
-//			// So quando a trigger fizer a ação que não zera os dados
-//			if ($is_pvp && $battle->should_process) {
-//				$this->json->enemy->locks					= [];
-//				$this->json->enemy->effects					= [];
-//				$this->json->enemy->update_existent_locks	= FALSE;
-//			} elseif($is_pvp && !$battle->should_process)
-//				$this->json->enemy->update_existent_locks	= TRUE;
-//		}
+		// if (isset($_GET['initial']) || !$is_pvp)
+		// 	$this->json->enemy->update_existent_locks		= TRUE;
+		// else {
+		// 	// So quando a trigger fizer a ação que não zera os dados
+		// 	if ($is_pvp && $battle->should_process) {
+		// 		$this->json->enemy->locks					= [];
+		// 		$this->json->enemy->effects					= [];
+		// 		$this->json->enemy->update_existent_locks	= FALSE;
+		// 	} elseif($is_pvp && !$battle->should_process)
+		// 		$this->json->enemy->update_existent_locks	= TRUE;
+		// }
 	}
 }

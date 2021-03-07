@@ -332,4 +332,17 @@
     window.$id = function() {
         return 'id-' + parseInt(Math.random() * 512384).toString(16) + '-' + parseInt(Math.random() * 512384).toString(16) + '-' + parseInt(Math.random() * 512384).toString(16) + '-' + parseInt(Math.random() * 512384).toString(16);
     }
-})();
+    
+    if (!localStorage.alertCookies) {
+        $(".box-cookies").removeClass('hide');
+    }
+
+    function acceptCookies() {
+        $(".box-cookies").hide();
+
+        localStorage.setItem("alertCookies", "accept");
+    };
+
+    var btnCookies = $(".btn-cookies");
+    btnCookies.on('click', acceptCookies);
+  })();

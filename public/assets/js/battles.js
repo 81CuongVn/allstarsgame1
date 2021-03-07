@@ -623,7 +623,9 @@
 
 			if(result.finished) {
 				$('#finished-message').html(result.finished);
-				$('#battle-container #technique-container').html('');
+				$('#battle-container #technique-container').html('').hide();
+				$('#battle-container .player-container #players').css({ height: '430px' });
+				
 
 				/*
 				var	win	= bootbox.dialog({message: result.finished, buttons: [

@@ -25,17 +25,17 @@ $database			= [
 ];
 
 # SMTP settings
-$mailConfig		= [
-	'host'		=> 'mail.animeallstarsgame.com',
-	'port'		=> 587,
-	'username'	=> 'contato@animeallstarsgame.com',
-	'password'	=> '[z29e|?IEi',
-	'from'		=> 'noreply@animeallstarsgame.com',
-	'from_name'	=> GAME_NAME
+$mailConfig			= [
+	'host'			=> 'mail.animeallstarsgame.com',
+	'port'			=> 587,
+	'username'		=> 'contato@animeallstarsgame.com',
+	'password'		=> '[z29e|?IEi',
+	'from'			=> 'noreply@animeallstarsgame.com',
+	'from_name'		=> GAME_NAME
 ];
 
 # Attributes rate
-$attrRate = [
+$attrRate			= [
 	'for_atk'		=> 4,
 	'for_def'		=> 4,
 	'for_crit'		=> 3,
@@ -47,11 +47,12 @@ $attrRate = [
 ];
 
 # Default sessions
-if (!isset($_SESSION['language_id']))	$_SESSION['language_id']	= 1;
-if (!isset($_SESSION['user_id']))		$_SESSION['user_id']		= NULL;
-if (!isset($_SESSION['player_id']))		$_SESSION['player_id']		= NULL;
-if (!isset($_SESSION['loggedin']))		$_SESSION['loggedin']		= FALSE;
-if (!isset($_SESSION['universal']))		$_SESSION['universal'] 		= FALSE;
+if (!isset($_SESSION['language_id']))		$_SESSION['language_id']	= 1;
+if (!isset($_SESSION['user_id']))			$_SESSION['user_id']		= NULL;
+if (!isset($_SESSION['player_id']))			$_SESSION['player_id']		= NULL;
+if (!isset($_SESSION['loggedin']))			$_SESSION['loggedin']		= FALSE;
+if (!isset($_SESSION['universal']))			$_SESSION['universal'] 		= FALSE;
+if (!isset($_SESSION['orig_player_id']))	$_SESSION['orig_player_id']	= 0;
 
 # Timezone settings
 define('DEFAULT_TIMEZONE',		'America/Sao_Paulo');
@@ -60,11 +61,21 @@ define('DEFAULT_TIMEZONE',		'America/Sao_Paulo');
 define('CHAT_ID',				1);
 define('CHAT_KEY',				'a7b5b8f8-7256-4e22-b982-ecaaf98b7b79');
 define('CHAT_SECRET',			'YAn8yK930907L2KUTnnSqLDuI6jl0G9N');
+define('CHAT_SERVER',			'http://localhost');
 
 # Highligts settings
 define('HIGHLIGHTS_KEY',		'430rBdLShn8yK930907L2a8yeTszrDip');
+define('HIGHLIGHTS_SERVER',		'http://localhost:2600');
 
-define('NODE_SERVER',			'http://localhost');
+# Redis Server settings
+define('REDIS_SERVER', 			'127.0.0.1');
+define('REDIS_PORT',			6379);
+define('REDIS_PASS',			'uD7uSr8Bgxb3fMzB9TKSURmeYGw6u1pHsf7HOo9r62mErXp9YDGrJERvkcPHDVGt3Ybw4v21SBhYcFOibvNkXux8DSU5HckhvAyS');
+
+# PvP Server settings
+define('PVP_SERVER',			'127.0.0.1');
+define('PVP_PORT',				5672);
+define('PVP_CHANNEL',			'allstars_pvp_queue');
 
 # Round settings
 define('ROUND_END',				'2021-03-31 23:59:59');
@@ -76,16 +87,19 @@ define('INITIAL_MONEY',			500);
 define('MAX_EQUIPPED_ATTACKS',	10);
 
 # Rate settings
-define('EXP_RATE',				100);
-define('MONEY_RATE',			1);
+define('EXP_RATE',				10);
+define('MONEY_RATE',			10);
 
 # PvP settings
-define('PVP_RANGE',				5);
-define('PVP_TURN_TIME',			90);
+define('PVP_TURN_TIME',			120);
 
 # Energy costs
 define('NPC_COST',				2);
 define('PVP_COST',				2);
+
+# Event settings
+define('EVENT_ACTIVE', 			TRUE);
+define('EVENT_ITEM', 			2059);
 
 # PagSeguro settings
 define('PS_ENV',                'sandbox');  # production, sandbox

@@ -159,7 +159,7 @@ function as_percent($base, $value) {
 function global_message($message, $is_yaml = FALSE, $assigns = []) {
 	$curl      = curl_init();
 	$curl_options = [
-		CURLOPT_URL				=> NODE_SERVER . ':2600/console/write/',
+		CURLOPT_URL				=> HIGHLIGHTS_SERVER . '/console/write/',
 		CURLOPT_RETURNTRANSFER	=> TRUE,
 		CURLOPT_ENCODING		=> '',
 		CURLOPT_SSL_VERIFYPEER  => FALSE,

@@ -1,0 +1,30 @@
+name: Deploy
+
+on:
+  push:
+    branches: [ master ]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: multiple command
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          port: ${{ secrets.PORT }}
+          script: |
+            cd /var/www/animeallstarsgame.com.br/
+            git status
+            git reset --hard
+            git pull origin prod
+            pm2 stop allstars-queue
+            pm2 delete allstars-queue
+            pm2 start /var/www/animeallstarsgame.com.br/servers/pvp/queue.rb --name="allstars-queue"
+            pm2 stop allstars-alerts
+            pm2 delete allstars-alerts
+            pm2 start /var/www/animeallstarsgame.com.br/servers/highlights/highlights.js --name="allstars-alerts"

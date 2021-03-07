@@ -423,6 +423,7 @@ class UsersController extends Controller {
 		// session_destroy();
 		$_SESSION['loggedin']			= FALSE;
 		$_SESSION['user_id']	        = NULL;
+		$_SESSION['player_id']			= NULL;
 		$_SESSION['universal']	        = FALSE;
 		$_SESSION['skip_maintenance']	= FALSE;
 

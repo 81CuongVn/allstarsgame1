@@ -571,10 +571,10 @@ echo partial('shared/info', [
                                     <a class="btn btn-primary objective_change" data-id="<?=$reward->id;?>"><?=t('objectives.buy_now', ['points' => $reward->chance]);?></a>
                                 <?php } ?>
                             <?php } else { ?>
-                                <a class="btn btn-danger"><?=t('objectives.buy_now', ['points' => $reward->chance]);?></a>
+                                <button type="button" class="btn btn-disabled btn-danger" disabled><?=t('objectives.buy_now', ['points' => $reward->chance]);?></a>
                             <?php } ?>
                         <?php } else { ?>
-                            <a class="btn btn-success "><?=t('objectives.ja_adquirido');?></a>
+                            <button type="button" class="btn btn-disabled btn-success" disabled><?=t('objectives.ja_adquirido');?></a>
                         <?php } ?>
                     </div>
                 </div>

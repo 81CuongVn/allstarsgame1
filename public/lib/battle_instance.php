@@ -1,13 +1,13 @@
 <?php
 	class BattleInstance {
-		public	$log			= [];
-		private	$player			= null;
-		private	$player_item	= null;
-		private	$enemy			= null;
-		private	$enemy_item		= null;
-		public	$first			= 'player';
-		public	$player_was_error = false;
-		public	$enemy_was_error = false;		
+		public	$log				= [];
+		private	$player				= null;
+		private	$player_item		= null;
+		private	$enemy				= null;
+		private	$enemy_item			= null;
+		public	$first				= 'player';
+		public	$player_was_error 	= false;
+		public	$enemy_was_error 	= false;		
 
 		function set_player(&$player) {
 			$this->player	=& $player;
@@ -154,15 +154,14 @@
 				$player_is_error	= false;
 			}
 
-			if(!$player_is_error) {
-				
+			if (!$player_is_error) {
 				$player_attack	= $this->player->for_atk() + $this->player_item->formula()->damage;
 				$player_defense	= $this->player->for_def() + $this->player_item->formula()->defense;
 			
 				// Carrega os valores que serão adicionados pelos equipamentos aos golpes.
-				/*if($_SESSION['universal']){
+				if ($_SESSION['universal']) {
 					$extras = $this->player->attributes();
-					if(!$player_is_skip){
+					if (!$player_is_skip){
 						if ($extras->generic_technique_damage && $this->player_item->is_generic ) {
 							$player_attack	+= percent($extras->generic_technique_damage,$this->player_item->formula()->damage);
 						}
@@ -173,9 +172,10 @@
 							$player_defense	+= percent($extras->defense_technique_extra,$this->player_item->formula()->defense);
 						}
 					}
-				}*/
-				if($player_is_critical) {
-					if($this->player_item->is_defensive) {
+				}
+
+				if ($player_is_critical) {
+					if ($this->player_item->is_defensive) {
 						$player_defense	+= percent($this->player->for_crit_inc(), $player_defense);
 					} else {
 						$player_attack	+= percent($this->player->for_crit_inc(), $player_attack);

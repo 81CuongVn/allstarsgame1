@@ -7,15 +7,21 @@ if (!$language) {
 	$language = Language::find($_SESSION['language_id']);
 }
 
-if ($_SESSION['player_id']) {
-	$player	= Player::get_instance();
+if ($_SESSION['user_id']) {
 	$user	= User::get_instance();
-	$player_fidelity_topo = PlayerFidelity::find_first("player_id=".$player->id);
 
-	if ($player && ($player->battle_npc_id || $player->battle_pvp_id) && preg_match('/battle/', $controller)) {
-		$with_battle	= TRUE;
+	if ($_SESSION['player_id']) {
+		$player	= Player::get_instance();
+		$player_fidelity_topo = PlayerFidelity::find_first("player_id=".$player->id);
+
+		if ($player && ($player->battle_npc_id || $player->battle_pvp_id) && preg_match('/battle/', $controller)) {
+			$with_battle	= TRUE;
+		}
+	} else {
+		$player	= FALSE;
 	}
 } else {
+	$user	= FALSE;
 	$player	= FALSE;
 }
 ?>
@@ -58,8 +64,6 @@ if ($_SESSION['player_id']) {
 	<script type="text/javascript">
 		var	_site_url				= "<?=$site_url;?>";
 		var	_rewrite_enabled		= <?=($rewrite_enabled ? 'true' : 'false');?>;
-		var _node_server			= "<?=NODE_SERVER;?>";
-		var _chat_server_id			= "<?=CHAT_ID;?>";
 		var _language				= "<?=$language->header;?>";
 		<?php if ($player) { ?>
 
@@ -88,11 +92,12 @@ if ($_SESSION['player_id']) {
 			}
 		} ?>
 
-		var	_check_pvp_queue	= <?=($player && $player->is_pvp_queued ? 'true': 'false');?>;
+		var	_check_pvp_queue		= <?=($player && $player->is_pvp_queued ? 'true': 'false');?>;
+		var _highlights_server		= "<?=HIGHLIGHTS_SERVER;?>";
 
 		$(document).ready(function() {
-        	I18n.default_locale = _language;
-        	I18n.translations   = <?=Lang::toJSON()?>;
+        	I18n.default_locale		= _language;
+        	I18n.translations		= <?=Lang::toJSON()?>;
 		});
     </script>
 </head>
@@ -291,9 +296,18 @@ if ($_SESSION['player_id']) {
 							</div>
 						</div>
 					<?php } ?>
-                    <?php if (FW_ENV != 'dev') { ?>
-                    <div align="center">
-                        <div class="fb-like" data-href="https://www.facebook.com/AllStarsGame" data-width="70" data-layout="box_count" data-action="like" data-size="small" data-share="false"></div>
+                    <?php if (FW_ENV == 'dev') { ?>
+                    <div style="width: <?php echo ($player ? '240px' : '100%');?>; text-align: center">
+						<div>
+                        	<div class="fb-like" data-href="https://www.facebook.com/AnimeAllStarsGame" data-width="70" data-layout="box_count" data-action="like" data-size="small" data-share="false"></div>
+						</div>
+						<div>
+							<script id="_waulxb">var _wau = _wau || []; _wau.push(["classic", "zp4gq851mt0f", "lxb"]);
+							(function() {var s=document.createElement("script"); s.async=true;
+							s.src="http://widgets.amung.us/classic.js";
+							document.getElementsByTagName("head")[0].appendChild(s);
+							})();</script>
+						</div>
                     </div>
                     <?php } ?>
 				</div>
@@ -312,8 +326,14 @@ if ($_SESSION['player_id']) {
 	<div class="clearfix"></div>
 </div>
 <?=partial('shared/footer', ['player' => $player]);?>
+
+<div class="box-cookies hide">
+	<p class="msg-cookies">Este site usa cookies para garantir que você obtenha a melhor experiência.</p>
+	<button class="btn btn-primary btn-cookies">Aceitar!</button>
+</div>
+
 <?php if ($player) { ?>
-	<?//=partial('shared/chat', ['player' => $player]);?>
+	<?php echo partial('shared/chat', ['player' => $player]); ?>
 	<script type="text/javascript" src="<?=asset_url('js/highlights.js');?>"></script>
 <?php } ?>
 <script type="text/javascript" src="<?=asset_url('js/bootstrap.js');?>"></script>

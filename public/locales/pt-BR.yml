@@ -855,37 +855,37 @@ pt-BR:
         <span class='p'>#{player}</span> tenta fugir da batalha porém não consegue
     finished:
       character_map: |
-        <br /><br />Adicionalmente você ganhou o personagem:
+        <br />Adicionalmente você ganhou o personagem:
       character_theme_map: |
-        <br /><br />Adicionalmente você ganhou o tema:
-      candy: |
-        <br /><br />Adicionalmente você conseguiu encontrar um <span class="azul_claro">Doce de Halloween</span>
+        <br />Adicionalmente você ganhou o tema:
+      drop: |
+        <br />Adicionalmente você conseguiu encontrar um <span class="azul_claro">#{item}</span>
       sangue: |
-        <br /><br />Adicionalmente você conseguiu encontrar um <span class="azul_claro">Sangue de Deus</span>
+        <br />Adicionalmente você conseguiu encontrar um <span class="azul_claro">Sangue de Deus</span>
       areia: |
-        <br /><br />Adicionalmente você conseguiu encontrar uma <span class="azul_claro">Areia Estelar</span>
+        <br />Adicionalmente você conseguiu encontrar uma <span class="azul_claro">Areia Estelar</span>
       fragment: |
-        <br /><br />Adicionalmente você conseguiu encontrar 
+        <br />Adicionalmente você conseguiu encontrar 
       fragment2: |
         Fragmentos das Almas</span>
       treasure: |
-        <br /><br />Você ganhou <span class="azul_claro">1 Tesouro</span> do oponente de outra organização
+        <br />Você ganhou <span class="azul_claro">1 Tesouro</span> do oponente de outra organização
       treasure2: |
-        <br /><br />Você perdeu <span class="azul_claro">1 Tesouro</span> para um jogador de outra organização
+        <br />Você perdeu <span class="azul_claro">1 Tesouro</span> para um jogador de outra organização
       win_title: Parabéns!
       win_text: |
-        Você venceu seu oponente!<br /><br />Como recompensa você recebeu #{value} #{currency} e #{exp} pontos de experiência.<br /><br /><a href='#{link}' class='btn btn-primary close-button'>Status do personagem</a>
+        Você venceu seu oponente!<br />Como recompensa você recebeu #{value} #{currency} e #{exp} pontos de experiência.<br /><br /><a href='#{link}' class='btn btn-primary close-button'>Status do personagem</a>
       loss_title: Que pena!
       loss_text: |
-        Você perdeu a luta.<br /><br />Como recompensa você recebeu #{value} #{currency} e #{exp} pontos de experiência.<br /><br /><a href='#{link}' class='btn btn-primary close-button'>Status do personagem</a>
+        Você perdeu a luta.<br />Como recompensa você recebeu #{value} #{currency} e #{exp} pontos de experiência.<br /><br /><a href='#{link}' class='btn btn-primary close-button'>Status do personagem</a>
       draw_title: Quase lá!
       draw_text: Você e seu oponente estão muito fracos para lutar e a batalha terminou em empate.<br /><br /><a href='#{link}' class='btn btn-primary close-button'>Status do personagem</a>
       drop_text: |
-        <br /><br />Adicionalmente você conseguiu encontrar o item <span class="global-rarity-#{rarity}">[#{name}]</span>
+       <br />Adicionalmente você conseguiu encontrar o item <span class="global-rarity-#{rarity}">[#{name}]</span>
       drop_pet_text: |
-        <br /><br />Adicionalmente você encontrou um novo Mascote <span class="global-rarity-#{rarity}">[#{name}]</span>
+       <br />Adicionalmente você encontrou um novo Mascote <span class="global-rarity-#{rarity}">[#{name}]</span>
       drop_grimoire_text: |
-        <br /><br />Adicionalmente você encontrou uma nova Página Perdida <span>[#{name}]</span>
+        <br />Adicionalmente você encontrou uma nova Página Perdida <span>[#{name}]</span>
     errors:
       needs_technique_before: O inimigo precisa ter usado um golpe no turno anterior
       no_stamina: Você não tem Stamina para essa ação
@@ -2205,26 +2205,51 @@ pt-BR:
     9: Matar sem usar habilidade
     10: Matar sem usar especialidade
   fidelity:
-    type:
-      experience: Experiência
-      souls: Fragmento de Alma
-      sand: Areia Estelar
-      jewel: Joia Aleatória
-      blood: Sangue de Deus
-      pet: Mascote Aleatório
-      stars: Estrelas
+    reward_title: |
+      Logar #{days} dia(s) seguidos
+    days:
+      1: 100 de
+      2: 200 de Experiência
+      3: x2 Tigela de Arroz
+      4: x1 Joia Aleatória
+      5: 200 de 
+      6: 400 de Experiência
+      7: x2 Ramen Comum
+      8: x1 Mascote Aleatório
+      9: x1 Equipamento Raro
+      10: 400 de 
+      11: 800 de Experiência
+      12: x2 Takoyaki
+      13: x1 Joia Aleatória
+      14: x1 Gema Rara
+      15: 800 de 
+      16: 1600 de Experiência
+      17: x2 Nigiri
+      18: x1 Mascote Aleatório
+      19: x1 Areia Estelar
+      20: 1600 de
+      21: 3200 de Experiência
+      22: x2 Bento
+      23: x1 Joia Aleatória
+      24: x1 Sangue de Deus 
+      25: 3200 de
+      26: 6400 de Experiência
+      27: x2 Churrasco
+      28: x1 Gema Lendária
+      29: x1 Equipamento Lendário
+      30: 1 Estrela<br />( uma vez por mês )
     buttons:
-      reward: Resgatar
-      rewarded: Resgatado
+      available: Coletar
       unavailable: Indisponível
+      rewarded: Coletado
     topo_title: Ganhe seu prêmio diário!
     topo_description: Você ainda não recebeu seu prêmio diário, <a href="#{link}">clique aqui</a> para ir até a página para recebê-lo.
     topo_description2: Você já recebeu seu prêmio diário, volte amanhã para um novo prêmio.
     errors:
-      day: Resgate indisponível!
-      rewarded: Você já resgatou essa recompensa!
+      day: O dia não corresponde com a data atual!
+      reward: Você já ganhou essa recompensa!
     title: Recompensas de Fidelidade
-    description: Ao logar diariamente você pode coletar recompensas para seu personagem. Você deve entrar no jogo durante 8 dias seguidos para conseguir todas as recompensas e começar de novo. Caso você não logue um dos dias, o contador irá retornar para o primeiro dia.
+    description: Ao logar diariamente, você pode coletar recompensas para seu personagem.<br />Você deve entrar no jogo durante <span class="verde">30 dias seguidos</span> para conseguir todas as recompensas e começar de novo.<br /><br /><span class="laranja">Caso você não logue um dos dias, o contador irá retornar para o primeiro dia.</span>
   enchant:
     limite: Esse é o limite de pontos que você pode treinar diariamente.
     custo: Custo para treinar

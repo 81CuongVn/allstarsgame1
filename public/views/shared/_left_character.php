@@ -79,7 +79,8 @@
 			</div>
 			<div class="menu_esquerdo_divisao">
 				<b class="amarelo"><?php echo t('global.character') ?></b>
-				<b class=""><?php echo $player->character()->description()->name; ?></b>
+				<?php $character_name = explode(' ', $player->character()->description()->name); ?>
+				<b class=""><?php echo $character_name[0]; ?></b>
 			</div>
 		</div>
 		<div class="bg_menu_esquerdo">

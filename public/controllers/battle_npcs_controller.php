@@ -225,7 +225,7 @@ class BattleNpcsController extends Controller {
 		$player						= Player::get_instance();
 		$npc						= ($player->battle_npc_challenge ? $player->get_npc_challenge() : $player->get_npc());
 		$battle						= $player->battle_npc();
-		$enemy_original_less_life = $npc->less_life;
+		$enemy_original_less_life	= $npc->less_life;
 
 		if($player->challenge_id && $battle->battle_type_id == 3){
 			$challenge  			= PlayerChallenge::find_first('player_id='. $player->id .' AND challenge_id='.$player->challenge_id .' AND complete = 0');
@@ -329,8 +329,6 @@ class BattleNpcsController extends Controller {
 					$battle_instance->add_effect($enemy_item, $npc, $player);
 
 					$battle_instance->run();
-
-					$npc->shared_less_life += $npc->less_life - $enemy_original_less_life;
 
 					// Consumes
 					if (!$is_copy && !$is_kill) {
