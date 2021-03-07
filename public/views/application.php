@@ -296,7 +296,7 @@ if ($_SESSION['user_id']) {
 							</div>
 						</div>
 					<?php } ?>
-                    <?php if (FW_ENV == 'dev') { ?>
+                    <?php if (FW_ENV != 'dev') { ?>
                     <div style="width: <?php echo ($player ? '240px' : '100%');?>; text-align: center">
 						<div>
                         	<div class="fb-like" data-href="https://www.facebook.com/AnimeAllStarsGame" data-width="70" data-layout="box_count" data-action="like" data-size="small" data-share="false"></div>
