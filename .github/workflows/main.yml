@@ -24,7 +24,7 @@ jobs:
             git pull origin main
             pm2 stop allstars-queue
             pm2 delete allstars-queue
-            pm2 start /var/www/animeallstarsgame.com.br/servers/pvp/queue.rb --name="allstars-queue"
+            pm2 start /var/www/animeallstarsgame.com.br/servers/pvp/service.rb --name="allstars-queue"
             pm2 stop allstars-alerts
             pm2 delete allstars-alerts
             pm2 start /var/www/animeallstarsgame.com.br/servers/highlights/highlights.js --name="allstars-alerts"

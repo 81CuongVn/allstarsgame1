@@ -22,12 +22,12 @@ require 'securerandom'
 @db				= {
 	'host'	=> 'localhost',
 	'user'	=> 'root',
-	'pass'	=> '',
+	'pass'	=> 'SugoiG@m3',
 	'name'	=> 'aasg'
 }
 
 # PvP range settings
-level_range		= 50;
+level_range		= 1;
 
 Thread.abort_on_exception = true
 
