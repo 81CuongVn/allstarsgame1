@@ -306,11 +306,8 @@ class BattlePvpsController extends Controller {
 
 			if ($player->less_stamina < 0) {
 				$player->less_stamina	= 0;
+				$player->save();
 			}
-
-			$player->is_pvp_queued		= false;
-			$player->pvp_queue_found	= NULL;
-			$player->save();
 
 			$connection = new AMQPConnection(PVP_SERVER, PVP_PORT, 'guest', 'guest');
 			$channel	= $connection->channel();

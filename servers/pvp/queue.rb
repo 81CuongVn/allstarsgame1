@@ -195,6 +195,7 @@ puts "[+] Waiting for players..."
 					@players.delete_if{ |k, v| k == current_player['id'] }
 				end
 
+				@mysql.query "UPDATE players SET pvp_queue_found=NULL, is_pvp_queued=0 WHERE id=#{current_player['id']}"
 				puts "Player cancelled"
 			rescue
 				@mysql.query "UPDATE players SET pvp_queue_found=NULL, is_pvp_queued=0 WHERE id=#{current_player['id']}"
