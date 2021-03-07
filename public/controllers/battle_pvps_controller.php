@@ -253,11 +253,12 @@ class BattlePvpsController extends Controller {
 		$player			= Player::get_instance();
 
 		if ($player->pvp_queue_found) {
-			$now					= new DateTime(); 
-			$queue_diff				= $now->diff(new DateTime($player->pvp_queue_found));
+			$diff = $player->pvp_queue_found - now();
+			// $now					= new DateTime(); 
+			// $queue_diff				= $now->diff(new DateTime($player->pvp_queue_found));
 			
 			$this->json->found		= true;
-			$this->json->seconds	= $queue_diff->s;
+			$this->json->seconds	= $diff;
 		} else {
 			$this->json->found		= false;
 

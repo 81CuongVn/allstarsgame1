@@ -93,7 +93,9 @@ puts "[+] Waiting for players..."
 							timeout		= true
 							accepted	= false
 
-							mysql.query "UPDATE players SET pvp_queue_found='#{Time.now + timer}' WHERE id IN(#{current_player['id']}, #{player['id']})"
+							time_queue	= Time.now.to_i + timer
+
+							mysql.query "UPDATE players SET pvp_queue_found='#{time_queue}' WHERE id IN(#{current_player['id']}, #{player['id']})"
 
 							while timer > 0 do
 								sleep(1)
