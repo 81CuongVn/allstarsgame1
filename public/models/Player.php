@@ -120,11 +120,9 @@ class Player extends Relation {
 
 		if($this->level_screen_seen) {
 			if($this->is_next_level()) {
-				while ($this->is_next_level()) {
-					$exp	= $this->level_exp();
-					$this->level++;
-
-					$this->exp			-= $exp;
+				// while ($this->is_next_level()) {
+					$this->level		+= 1;
+					$this->exp			-= $this->level_exp();
 					$this->less_mana	= 0;
 					$this->less_life	= 0;
 					$this->less_stamina	= 0;
@@ -133,7 +131,7 @@ class Player extends Relation {
 					$this->achievement_check('level_player');
 					// Checa a conquista de level do player
 					$this->check_objectives('level_player');
-				}
+				// }
 			}
 		}
 	}
