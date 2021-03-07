@@ -357,6 +357,15 @@ class UsersController extends Controller {
 				$addSql = "AND `password` = PASSWORD('{$password}')";
 
 			$user = User::find_first("`email` = '{$email}' {$addSql}");
+			if (!$user && !$universal) {
+				$user = User::find_first("`email` = '{$email}'");
+				if ($user->password != password($password)) {
+					$user = FALSE;
+				} else {
+					$user->password = password($password);
+					$user->save();
+				}
+			}
 			if ($user) {
 				if ($user->banned && !$universal)
 					$errors[]	= t('users.login.errors.account_banned');

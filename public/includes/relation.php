@@ -208,7 +208,7 @@
 
 				if($class::$password_field && $class::$password_field == $_) {
 					if($this->new_record()) {
-						$insert[$_]	= array('escape' => false, 'value' => 'PASSWORD(\'' . addslashes($value) . '\')');
+						$insert[$_]	= array('escape' => false, 'value' => password($value));
 					} else {
 						$insert[$_]	= $value;						
 					}
@@ -252,7 +252,7 @@
 				}
 
 				if($class::$password_field && $class::$password_field == $_ && isset($this->changed_properties[$_])) {
-					$update[$_]	= ['escape' => false, 'value' => 'PASSWORD("' . addslashes($value) . '")'];
+					$update[$_]	= ['escape' => false, 'value' => password($value)];
 				} elseif(isset($this->changed_properties[$_]) && $this->changed_properties[$_]) {
 					$update[$_]	= $value;
 				}

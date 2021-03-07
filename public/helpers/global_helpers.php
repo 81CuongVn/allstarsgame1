@@ -1,4 +1,7 @@
 <?php
+function password($str) {
+	return md5($str);
+}
 function between($value, $start, $end) {
 	return $value >= $start && $value <= $end;
 }
