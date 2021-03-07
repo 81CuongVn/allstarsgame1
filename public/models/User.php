@@ -6,12 +6,12 @@ class User extends Relation {
 	
 	protected function before_update() {
 		if ($this->is_next_level()) {
-			while ($this->is_next_level()) {
+			/*while ($this->is_next_level()) {
 				$this->level	+= 1;
 				$this->exp		-= $this->level_exp();
-			}
-			/*$this->level	+= 1;
-			$this->exp		-= $this->level_exp();*/
+			}*/
+			$this->level	+= 1;
+			$this->exp		-= $this->level_exp();
 		}
 	}
 	function character_theme_image($image_id) {
