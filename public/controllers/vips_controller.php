@@ -105,7 +105,7 @@ class VipsController extends Controller {
 				if ($bought_currency) {
 					$buy_mode = 2;
 
-					if ($user->credits < $item->price_vip) {
+					if ($user->credits < $item->price_credits) {
 						$errors[]	= t("vips.errors.not_enough_vip");
 					}
 				}
@@ -171,7 +171,7 @@ class VipsController extends Controller {
 			if ($buy_mode == 1) {
 				$player->spend($item->price_currency);
 			} elseif($buy_mode == 2) {
-				$user->spend($item->price_vip);
+				$user->spend($item->price_credits);
 			}
 			
 			
@@ -279,7 +279,7 @@ class VipsController extends Controller {
 					$player->save();
 				break;
 				case 1709:
-					$user->character_slots =  $user->character_slots + 1;
+					$user->character_slots += 1;
 					$user->save();
 				break;
 				case 1715:

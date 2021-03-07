@@ -29,12 +29,12 @@
 									break;
 			
 								default:
-									echo "<span class='laranja'>". t("vips.buy_modes.vip", ["price" => $item->price_vip]) . "</span>";
+									echo "<span class='laranja'>". t("vips.buy_modes.vip", ["price" => $item->price_credits]) . "</span>";
 									
 									break;
 							}
 						}else{
-							echo "<span class='laranja'>". t("vips.buy_modes.vip", ["price" => $item->price_vip]) . "</span>";
+							echo "<span class='laranja'>". t("vips.buy_modes.vip", ["price" => $item->price_credits]) . "</span>";
 						}
 					?>
 				</span>
