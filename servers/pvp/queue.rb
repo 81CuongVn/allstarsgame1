@@ -27,7 +27,7 @@ require 'securerandom'
 }
 
 # PvP range settings
-level_range		= 1;
+level_range		= 5;
 
 Thread.abort_on_exception = true
 
