@@ -422,6 +422,7 @@ class VipsController extends Controller {
 					break;
 				default:
 					$p = new PayPal();
+					if (PAYPAL_SANDBOX) $p->useSandbox();
 					$p->addField('business',		PAYPAL_EMAIL);
 					$p->addField('return',			make_url('vips/make_donation?success'));
 					$p->addField('cancel_return',	make_url('vips/make_donation?cancel'));

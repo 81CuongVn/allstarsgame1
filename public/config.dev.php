@@ -111,6 +111,7 @@ define('PS_LOG_FILE',			ROOT . '/logs/pagseguro.log');
 
 # PayPal settings
 define('PAYPAL_EMAIL',			'medeiros.dev@gmail.com');
+define('PAYPAL_SANDBOX',		TRUE);
 define('PAYPAL_LOG_FOLDER',		ROOT . '/logs/paypal');
 
 # Facebook settings
