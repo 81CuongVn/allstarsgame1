@@ -22,7 +22,7 @@ jobs:
 
             git status
             git reset --hard
-            git pull https://fmedeiros95:${{ secrets.TOKEN }}@github.com/name/repo.git main
+            git pull https://fmedeiros95:${{ secrets.TOKEN }}@github.com/fmedeiros95/allstars.git main
 
             source /etc/profile.d/rvm.sh
             rvm use 2.6.5 --default
