@@ -5382,7 +5382,7 @@ class Player extends Relation {
 
 	function available_training_points() {
 		$user = User::get_instance();
-		return $user->level + $this->training_total_to_point() - $this->training_points_spent;
+		return ($user->level * 4) + ($this->training_total_to_point() - $this->training_points_spent);
 	}
 
 	function training_to_next_point($current = false) {
