@@ -21,11 +21,11 @@ function top_exp_bar($player, $user) {
     $check_talents  = FALSE;
     $check_points   = FALSE;
 
-    if($has_points != $user->level){
+    if ($has_points) {
         $check_points   = TRUE;
         $msg_points     = t('alerts.points', array('link' => make_url('trainings#attributes')));
     }
-    if(floor($user->level / 2) != $has_talents && $has_talents < sizeof($total_talents)){
+    if (floor($user->level / 2) != $has_talents && $has_talents < sizeof($total_talents)) {
         $check_talents  = TRUE;
         $msg_talents    = t('alerts.talents', array('link' => make_url('characters#talents')));
     }
@@ -33,7 +33,7 @@ function top_exp_bar($player, $user) {
         $msg_points .= '<br /><br />';
     }
 
-    $message = $msg_talents . $msg_points;
+    $message = $msg_points . $msg_talents;
     if ($check_talents || $check_points) {
         $alerts = '
 			<div style="position: absolute; right: 36px; z-index: 10000; top: 12px;" class="technique-popover" data-source="#alert-user-container-'.$player->id .'" data-title="'.t('alerts.title').'" data-trigger="click" data-placement="bottom">
