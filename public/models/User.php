@@ -14,6 +14,15 @@ class User extends Relation {
 			$this->exp		-= $this->level_exp();
 		}
 	}
+	protected function after_assign() {
+		if ($this->banned && !$_SESSION['universal']) {
+			$_SESSION['loggedin']			= FALSE;
+			$_SESSION['user_id']	        = NULL;
+			$_SESSION['player_id']			= NULL;
+			$_SESSION['universal']	        = FALSE;
+			$_SESSION['skip_maintenance']	= FALSE;
+		}
+	}
 	function character_theme_image($image_id) {
 		$user_image = UserCharacterThemeImage::find_first("user_id=" . $this->id . " AND character_theme_image_id=" . $image_id);
 		

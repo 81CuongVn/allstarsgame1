@@ -92,6 +92,23 @@
 
 		//room_search_friend.trigger('submit');
 	}
+
+	$(document).on('click', '#tooltip-1x-queue-data .btn-primary', function() {
+		lock_screen(true);
+
+		$.ajax({
+			url: make_url('battle_pvps#enter_queue'),
+			dataType: 'json',
+			success: function() {
+				lock_screen(false);
+				_check_pvp_queue = true;
+
+				// location.href = make_url('battle_pvps');
+				location.href.reload();
+			}
+		});
+	});
+
 	$(document).on('click', '#tooltip-1x-queue-data .btn-danger', function() {
 		lock_screen(true);
 
@@ -102,11 +119,12 @@
 				lock_screen(false);
 				_check_pvp_queue = false;
 
-				location.href = make_url('battle_pvps');
-
+				// location.href = make_url('battle_pvps');
+				location.href.reload();
 			}
 		});
 	});
+
 	$('#1x-queue-data').on('click', function() {
 		lock_screen(true);
 

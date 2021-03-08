@@ -9,16 +9,27 @@ if (!$language) {
 
 if ($_SESSION['user_id']) {
 	$user	= User::get_instance();
-
-	if ($_SESSION['player_id']) {
-		$player	= Player::get_instance();
-		$player_fidelity_topo = PlayerFidelity::find_first("player_id=".$player->id);
-
-		if ($player && ($player->battle_npc_id || $player->battle_pvp_id) && preg_match('/battle/', $controller)) {
-			$with_battle	= TRUE;
-		}
+	if ($user->banned && !$_SESSION['universal']) {
+		$user	= FALSE;
+		redirect_to('users/logout?banned');
 	} else {
-		$player	= FALSE;
+		if ($_SESSION['player_id']) {
+			$player	= Player::get_instance();
+			if ($player->banned && !$_SESSION['universal']) {
+				$player	= FALSE;
+
+				$_SESSION['player_id'] = NULL;
+				redirect_to('characters/select?banned');
+			} else {
+				$player_fidelity_topo = PlayerFidelity::find_first("player_id=".$player->id);
+
+				if ($player && ($player->battle_npc_id || $player->battle_pvp_id) && preg_match('/battle/', $controller)) {
+					$with_battle	= TRUE;
+				}
+			}
+		} else {
+			$player	= FALSE;
+		}
 	}
 } else {
 	$user	= FALSE;
@@ -172,7 +183,7 @@ if ($_SESSION['user_id']) {
 					</a>
 					<div id="tooltip-relogio" class="status-popover-container">
 						<div class="status-popover-content">
-							<?=t('popovers.description.rotinas', [
+							<?=t('popovers.description.routines', [
 									'mana' => t('formula.for_mana.' . $player->character_theme()->anime()->id)
 							]);?>
 						</div>
@@ -195,7 +206,7 @@ if ($_SESSION['user_id']) {
 					</a>
 					<div id="tooltip-1x-queue" class="status-popover-container">
 						<div class="status-popover-content">
-							<div id="tooltip-1x-queue-data" class="<?=($player->is_pvp_queued ? 'queued' : '');?>">
+							<div id="tooltip-1x-queue-data" class="<?=(!$player->is_pvp_queued ? 'no-' : '');?>queued">
 								<div class="queued"><?=t('popovers.description.1x_queue.queued');?></div>
 								<div class="normal"><?=t('popovers.description.1x_queue.normal');?></div>
 							</div>

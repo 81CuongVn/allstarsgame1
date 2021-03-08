@@ -88,19 +88,19 @@ class Player extends Relation {
 	}
 
 	protected function after_assign() {
-		if(!$this->stats()) {
+		if (!$this->stats()) {
 			$stats				= new PlayerStat();
 			$stats->player_id	= $this->id;
 			$stats->save();
 		}
 
-		if(!$this->attributes()) {
+		if (!$this->attributes()) {
 			$attributes				= new PlayerAttribute();
 			$attributes->player_id	= $this->id;
 			$attributes->save();
 		}
 
-		if(!$this->_attributes) {
+		if (!$this->_attributes) {
 			$this->_attributes	=& $this->attributes();
 		}
 
