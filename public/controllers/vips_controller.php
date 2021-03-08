@@ -73,7 +73,9 @@ class VipsController extends Controller {
 					$bought_currency = false;
 					
 					if ($player->currency < $item->price_currency) {
-						$errors[]	= t("vips.errors.not_enough_currency");
+						$errors[]	= t("vips.errors.not_enough_currency", [
+							'currency'	=> t('currencies.' . $player->character()->anime_id)
+						]);
 					}
 					
 				} else if($item->id == 432 || $item->id == 1709 || $item->id == 1715 || $item->id == 1718 || $item->id == 1746  || $item->id == 2112){
@@ -97,7 +99,9 @@ class VipsController extends Controller {
 					$buy_mode = 1;
 
 					if ($player->currency < $item->price_currency) {
-						$errors[]	= t("vips.errors.not_enough_currency");
+						$errors[]	= t("vips.errors.not_enough_currency", [
+							'currency'	=> t('currencies.' . $player->character()->anime_id)
+						]);
 					}
 				}
 
