@@ -88,6 +88,10 @@ class Player extends Relation {
 	}
 
 	protected function after_assign() {
+		if ($this->exp < 0) {
+			$this->exp = 0;
+			$this->save();
+		}
 		if (!$this->stats()) {
 			$stats				= new PlayerStat();
 			$stats->player_id	= $this->id;
