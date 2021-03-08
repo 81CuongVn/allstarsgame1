@@ -9,7 +9,11 @@
 			$items_per_page	= 5;
 			$this->layout	= false;
 			
-			$this->assign('news', SiteNew::find("round = 3", [
+			/*$this->assign('news', SiteNew::find("round = 3", [
+				'limit' => ($items_per_page * ($page - 1)) . ', ' . $items_per_page,
+				'reorder' => 'id DESC'
+			]));*/
+			$this->assign('news', SiteNew::find("1=1", [
 				'limit' => ($items_per_page * ($page - 1)) . ', ' . $items_per_page,
 				'reorder' => 'id DESC'
 			]));
