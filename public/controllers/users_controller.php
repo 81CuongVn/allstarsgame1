@@ -369,8 +369,8 @@ class UsersController extends Controller {
 			if ($user) {
 				if ($user->banned && !$universal)
 					$errors[]	= t('users.login.errors.account_banned');
-				if (!$user->active && !$universal)
-					$errors[]	= t('users.login.errors.account_not_activated');
+				/*if (!$user->active && !$universal)
+					$errors[]	= t('users.login.errors.account_not_activated');*/
 				if (!$user->beta_allowed && $is_beta && !$universal)
 					$errors[]	= t('users.login.errors.beta_not_allowed');
 				if ($user->ip_lock /*|| ($user->last_login_ip && $user->last_login_ip != ip2long($_SERVER['REMOTE_ADDR']) && !$universal)*/) {
