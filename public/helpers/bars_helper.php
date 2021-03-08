@@ -11,9 +11,9 @@ function top_exp_bar($player, $user) {
     $frame_id   	 = $player->character()->anime_id;
 
     $has_talents    = $player->has_talents();
-    $has_points     = $player->training_points_spent;
+    $has_points     = $player->available_training_points();
 
-    $total_talents  = 0;
+    $total_talents  = Item::find('item_type_id=6 group by mana_cost');
 
     $msg_points      = "";
     $msg_talents     = "";
@@ -25,7 +25,7 @@ function top_exp_bar($player, $user) {
         $check_points   = TRUE;
         $msg_points     = t('alerts.points', array('link' => make_url('trainings#attributes')));
     }
-    if(floor($user->level / 2) != $has_talents && $has_talents < $total_talents){
+    if(floor($user->level / 2) != $has_talents && $has_talents < sizeof($total_talents)){
         $check_talents  = TRUE;
         $msg_talents    = t('alerts.talents', array('link' => make_url('characters#talents')));
     }
