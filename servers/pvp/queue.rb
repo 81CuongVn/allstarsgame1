@@ -22,7 +22,7 @@ require 'securerandom'
 @db				= {
 	'host'	=> 'localhost',
 	'user'	=> 'root',
-	'pass'	=> 'SugoiG@m3',
+	'pass'	=> '&U^kv0dgEjUl',
 	'name'	=> 'aasg'
 }
 
