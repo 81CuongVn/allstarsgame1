@@ -55,7 +55,25 @@
 		</div>
 	</div>
 	<hr />
+	<h3 class="verde" style="text-align: center;">Para alterar sua senha, preencha o formulário abaixo:</h3>
+	<div class="row">
+		<div class="form-group col-md-6">
+			<label class="control-label"><?php echo t('users.join.labels.password') ?></label>
+			<input type="password" class="form-control" id="password" name="password" placeholder="<?php echo t('users.join.placeholders.password2') ?>" />
+		</div>
+		<div class="col-md-6"></div>
+	</div>
+	<div class="row">
+		<div class="form-group col-md-6">
+			<label class="control-label"><?php echo t('users.join.labels.password_new') ?></label>
+			<input type="password" class="form-control" id="password_new" name="password_new" placeholder="<?php echo t('users.join.placeholders.password_new') ?>" />
+		</div>
+		<div class="form-group col-md-6">
+			<label class="control-label"><?php echo t('users.join.labels.password_new_confirmation') ?></label>
+			<input type="password" class="form-control" id="password_new_confirmation" name="password_new_confirmation" placeholder="<?php echo t('users.join.placeholders.password_new_confirmation') ?>" />
+		</div>
+	</div>
 	<div class="form-group" align="center">
-		<input type="submit" class="btn btn-primary" value="<?php echo t('users.join.submit') ?>" />
+		<input type="submit" class="btn btn-primary" value="<?php echo t('users.join.update_account') ?>" />
 	</div>
 </form>	

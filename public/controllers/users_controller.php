@@ -13,7 +13,9 @@ class UsersController extends Controller {
 		$this->as_json			= true;
 		$this->render			= false;
 		$this->json->success	= false;
-		$errors					= array();
+
+		$errors					= [];
+		$changePW				= !empty($_POST['password']) && !empty($_POST['password_new']) && !empty($_POST['password_new_confirmation']);
 
 		if(!isset($_POST['country_id']) || (isset($_POST['country_id']) && !Country::includes($_POST['country_id']))) {
 			$errors[]	= t('users.join.validators.country');
@@ -46,11 +48,28 @@ class UsersController extends Controller {
 			$errors[]	= t('users.join.validators.zip');
 		}
 
+		$user = User::get_instance();
+		if ($changePW) {
+			if ($_POST['password_new'] != $_POST['password_new_confirmation']) {
+				$errors[]	= t('users.join.validators.password_match');
+			}
+	
+			if (strlen($_POST['password_new']) < 6) {
+				$errors[]	= t('users.join.validators.password_length');
+			}
+
+			if (password($_POST['password_new']) == $user->password) {
+				$errors[]	= t('users.join.validators.same_password');
+			}
+
+			if (password($_POST['password']) != $user->password) {
+				$errors[]	= t('users.join.validators.password_invalid');
+			}
+		}
 
 		if(!sizeof($errors)) {
 			$this->json->success	= true;
 
-			$user					= User::get_instance();
 			$user->name 			= $_POST['name'];
 			$user->gender 			= $_POST['gender'];
 			$user->country_id		= $_POST['country_id'];
@@ -59,6 +78,9 @@ class UsersController extends Controller {
 			$user->neighborhood 	= $_POST['neighborhood'];
 			$user->state 			= $_POST['state'];
 			$user->zip 				= $_POST['zip'];
+			if ($changePW) {
+				$user->password		= $_POST['password_new'];
+			}
 			$user->save();
 
 		} else {

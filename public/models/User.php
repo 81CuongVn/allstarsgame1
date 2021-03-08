@@ -16,13 +16,13 @@ class User extends Relation {
 	}
 
 	protected function after_assign() {
-		if ($this->banned && !$_SESSION['universal']) {
-			$_SESSION['loggedin']			= FALSE;
-			$_SESSION['user_id']	        = NULL;
-			$_SESSION['player_id']			= NULL;
-			$_SESSION['universal']	        = FALSE;
-			$_SESSION['skip_maintenance']	= FALSE;
-		}
+		// if ($this->banned && !$_SESSION['universal']) {
+		// 	$_SESSION['loggedin']			= FALSE;
+		// 	$_SESSION['user_id']	        = NULL;
+		// 	$_SESSION['player_id']			= NULL;
+		// 	$_SESSION['universal']	        = FALSE;
+		// 	$_SESSION['skip_maintenance']	= FALSE;
+		// }
 
 		if ($this->exp < 0) {
 			$this->exp = 0;

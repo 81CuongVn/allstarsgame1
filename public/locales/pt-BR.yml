@@ -144,12 +144,15 @@ pt-BR:
         email_confirmation: "Confirmar e-mail:"
         password: "Senha:"
         password_confirmation: "Confirmar senha:"
+        password_new: "Nova senha:"
+        password_new_confirmation: "Confirmar nova senha:"
         country: País
         gender: Sexo
         terms: Termos
         captcha: Código de segurança
         captcha_refresh: Atualizar código
       submit: Completar meu cadastro
+      update_account: Atualizar dados
       placeholders:
         city: Sua Cidade
         street: Sua Rua
@@ -159,9 +162,11 @@ pt-BR:
         name: Seu nome completo
         email: Digite um email VÁLIDO
         email_confirmation: Confirme o e-mail digitado acima
-        password: |
-          Sua senha, com no mínimo de 8 caractéres
+        password: Sua senha, com no mínimo de 8 caractéres
+        password2: Informe sua senha atual
         password_confirmation: Confirme a senha digitada acima
+        password_new: Sua nova senha, com no mínimo de 8 caractéres
+        password_new_confirmation: Confirme a nova senha
         captcha: Digite o código ao lado
       validators:
         name: Nome inválido!
@@ -185,6 +190,9 @@ pt-BR:
         password_length: A senha não pode ter menos que 6 caractéres
         email_exists: O e-mails especificado já está cadastrado
         password_match:  As senhas precisam ser iguais
+        password_invalid: A senha atual está inválida
+        password_new_confirmation: Senha de confirmação diferente da nova senha
+        same_password: A nova senha é igual a senha atual
     password_reset:
       title: Recuperar minha senha
       text: Digite o e-mail da sua conta e o código de segurança abaixo. Em alguns instantes você receberá um email com instruções de como resetar a sua senha
