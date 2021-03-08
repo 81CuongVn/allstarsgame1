@@ -8,12 +8,12 @@
 	<div class="mr-container">
 		<form method="get">
 			<input type="hidden" name="__clear_the_damn_cache" value="<?php echo $___clear_cache_key ?>" />
-			<input type="submit" value="Clear Cache" />
+			<input type="submit" class="btn btn-primary" value="Clear Cache" />
 		</form>
 		<h3>Script took <?php echo microtime(true) - $___start ?> seconds</h3>
 		<hr />
 		<h3>SQL Status</h3>
-		<table class="table">
+		<table class="table table-condensed table-striped">
 			<tr>
 				<td class="col-lg-4">Queries:</td>
 				<td>
@@ -48,17 +48,16 @@
 							}
 
 							echo $sql_time;
-						?>
-						seconds
-						<h5>Repeated queries are not included</h5>						
+						?> seconds.<br />
+						Repeated queries are not included<
 					<?php else: ?>
-						DB_LOGGING not enableed
+						DB_LOGGING not enableed!
 					<?php endif ?>
 				</td>
 			</tr>
 		</table>
 		<h3>Memory Status</h3>
-		<table class="table">
+		<table class="table table-condensed table-striped">
 			<?php foreach ($___memory as $_ => $value): ?>
 				<tr>
 					<td class="col-lg-4"><?php echo $_ ?></td>
@@ -66,25 +65,25 @@
 				</tr>
 			<?php endforeach ?>			
 		</table>
+		<?php if (DB_LOGGING): ?>
 		<h3>SQLs Without cache</h3>
-		<table class="table">
+		<table class="table table-condensed table-striped">
 			<?php foreach (Recordset::$sqls as $_ => $sql): ?>
 				<?php if($sql['cached']) continue; ?>
 				<tr>
 					<td class="mr-sql-trace" data-id="<?php echo $_ ?>">
-						<?php echo $sql['sql'] ?><br />
-						<?php if (DB_LOGGING): ?>
-							<h5><?php echo $sql['duration'] ?> seconds</h5>							
-						<?php endif ?>
+						<?php echo $sql['sql'] ?><br /><br />
+						<?php echo $sql['duration'] ?> seconds.
 					</td>
 				</tr>
 			<?php endforeach ?>
 		</table>
+		<?php endif; ?>
 	</div>
 	<?php foreach (Recordset::$sqls as $_ => $sql): ?>
 		<?php if($sql['cached']) continue; ?>
 		<div id="mr-sql-trace-<?php echo $_ ?>" class="mr-sql-trace-data">
-			<table>
+			<table class="table table-condensed table-striped">
 			<?php if (DB_LOGGING): ?>
 				<?php foreach ($sql['traces'] as $trace): ?>
 					<?php foreach ($trace as $detail): ?>

@@ -1,16 +1,27 @@
 <?php
 set_time_limit(0);
 ini_set('memory_limit', '-1');
-date_default_timezone_set("America/Sao_Paulo");
 
-define('ROOT',				dirname(dirname(__FILE__)));
-define('DB_LOGGING',		FALSE);
-define('BACKTRACE_SELECTS',	TRUE);
-define('BACKTRACE_UPDATES',	TRUE);
-define('BACKTRACE_DELETES',	TRUE);
+define('DB_LOGGING',                FALSE);
+define('BACKTRACE_SELECTS',         TRUE);
+define('BACKTRACE_UPDATES',         TRUE);
+define('BACKTRACE_DELETES',         TRUE);
 
-// No cache for crons! They'll be sad I know, but it's necessary :(
+define('ROOT',						dirname(dirname(__FILE__)));
 define('RECORDSET_CACHE_OFF_FORCE', TRUE);
+
+$env = 'dev';
+if (!in_array($_SERVER['SERVER_ADDR'], [ '127.0.0.1' ])) {
+	$env = 'prod';
+}
+
+define('FW_ENV',                    $env);
+require ROOT . '/config.' . $env . '.php';
+
+date_default_timezone_set(DEFAULT_TIMEZONE);
+
+require ROOT . '/vendor/autoload.php';
+require ROOT . '/helpers/global_helpers.php';
 
 # base framework files
 require ROOT . '/includes/autoloader.php';
@@ -21,7 +32,6 @@ require ROOT . '/includes/recordset.php';
 require ROOT . '/includes/url_helper.php';
 
 # database
-require ROOT . '/config.php';
 require ROOT . '/includes/db.php';
 
 if (is_dir(ROOT . '/lib')) {

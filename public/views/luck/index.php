@@ -33,18 +33,18 @@
 	<div id="buttons">
 		<div class="daily">
 			<div class="button" data-type="daily" data-currency="1">
-				<span><?php echo t('luck.daily.currency', array('total' => $daily_currency, 'currency' => t('currencies.' . $player->character()->anime_id))) ?></span>
+				<span><?php echo t('luck.daily.currency', array('total' => highamount($daily_currency), 'currency' => t('currencies.' . $player->character()->anime_id))) ?></span>
 			</div>
 			<div class="button" data-type="daily" data-currency="2">
-				<span><?php echo t('luck.daily.credits', array('total' => $daily_credits, 'credits' => t('currencies.credits'))) ?></span>
+				<span><?php echo t('luck.daily.credits', array('total' => highamount($daily_credits), 'credits' => t('currencies.credits'))) ?></span>
 			</div>
 		</div>
 		<div class="weekly">
 			<div class="button" data-type="weekly" data-currency="1">
-				<span><?php echo t('luck.weekly.currency', array('total' => $weekly_currency, 'currency' => t('currencies.' . $player->character()->anime_id))) ?></span>
+				<span><?php echo t('luck.weekly.currency', array('total' => highamount($weekly_currency), 'currency' => t('currencies.' . $player->character()->anime_id))) ?></span>
 			</div>
 			<div class="button" data-type="weekly" data-currency="2">
-				<span><?php echo t('luck.weekly.credits', array('total' => $weekly_credits, 'credits' => t('currencies.credits'))) ?></span>
+				<span><?php echo t('luck.weekly.credits', array('total' => highamount($weekly_credits), 'credits' => t('currencies.credits'))) ?></span>
 			</div>
 		</div>
 	</div>
@@ -59,23 +59,10 @@
 			switch($item_type_id->item_type_id){
 				case 1:
 					$name = t('currencies.' . $player->character()->anime_id);
-				break;
-				case 2:
+					break;
+				default:
 					$name = t('luck.index.names.'.$item_type_id->item_type_id);
-				break;
-				case 3:
-					$name = t('luck.index.names.'.$item_type_id->item_type_id);
-				break;
-				case 4:
-					$name = t('luck.index.names.'.$item_type_id->item_type_id);
-				break;
-				case 5:
-					$name = t('luck.index.names.'.$item_type_id->item_type_id);
-				break;
-				case 6:
-					$name = t('luck.index.names.'.$item_type_id->item_type_id);
-				break;
-				break;	
+					break;	
 			}
 		?>	
 	
@@ -112,18 +99,18 @@
 							$message	= '';
 							
 							if($choosen_reward->enchant_points) {
-								$message	.= $choosen_reward->quantity . ' ' . t('luck.index.names.8');
+								$message	.= highamount($choosen_reward->quantity) . ' ' . t('luck.index.names.8');
 							}
 							
 							if($choosen_reward->currency) {
-								$message	.= $choosen_reward->currency . ' ' . t('currencies.' . $player->character()->anime_id);
+								$message	.= highamount($choosen_reward->currency) . ' ' . t('currencies.' . $player->character()->anime_id);
 							}
 							if($choosen_reward->exp) {
-								$message	.= $choosen_reward->exp . ' ' . t('attributes.attributes.exp2');
+								$message	.= highamount($choosen_reward->exp) . ' ' . t('attributes.attributes.exp2');
 							}
 		
 							if($choosen_reward->credits) {
-								$message	.= $choosen_reward->credits . ' ' . t('currencies.credits');
+								$message	.= highamount($choosen_reward->credits) . ' ' . t('currencies.credits');
 							}
 							if($choosen_reward->equipment) {
 								$message	.= $choosen_reward->equipment . ' ' . t('luck.index.header.equipment');
@@ -147,7 +134,7 @@
 		
 							foreach ($ats as $key => $value) {
 								if($choosen_reward->$key) {
-									$message	.= t('luck.index.messages.point', array('count' => $choosen_reward->$key, 'attribute' => $value));
+									$message	.= t('luck.index.messages.point', array('count' => highamount($choosen_reward->$key), 'attribute' => $value));
 								}
 							}
 							echo $message;

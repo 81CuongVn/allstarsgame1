@@ -23,7 +23,9 @@
 			$player					= Player::get_instance();
 
 			if($player->currency < $this->cost) {
-				$errors[]	= t('hospital.errors.currency', ['currency' => t('currencies.' . $player->character()->anime_id)]);
+				$errors[]	= t('hospital.errors.currency', [
+					'currency' => t('currencies.' . $player->character()->anime_id)
+				]);
 			}
 
 			if (!sizeof($errors)) {

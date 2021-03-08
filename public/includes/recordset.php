@@ -44,7 +44,7 @@ class Recordset {
 				Recordset::$sqls[$this->hash]['duration']	= microtime(true);
 			}
 
-			if(BACKTRACE_SELECTS) {
+			if (BACKTRACE_SELECTS) {
 				$current_trace	= array();
 				$count			= 0;
 				$traces			= debug_backtrace();

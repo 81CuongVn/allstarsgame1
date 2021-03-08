@@ -304,8 +304,10 @@ trait BattleSharedMethods {
 
 			$p->battle_npc_id	= 0;
 			$p->battle_pvp_id	= 0;
-			$p->less_mana		= 0;
-			$p->less_life		= 0;
+
+			// $p->less_mana		= 0;
+			// $p->less_life		= 0;
+
 			$extras				= $p->attributes();
 			$currency_name		= t('currencies.' . $p->character_theme()->anime()->id);
 			$effects			= $p->get_parsed_effects();
@@ -1487,6 +1489,8 @@ trait BattleSharedMethods {
 					}
 					// Não da premiação para o jogador que inativa
 					if(($battle->won != $p->id && $battle->inactivity == 1) || $battle->battle_type_id == 4){
+						$p->hospital	= 1;
+
 						$p->currency	+= 0;
 						$p->exp			+= 0;
 
@@ -1501,6 +1505,8 @@ trait BattleSharedMethods {
 									). $drop_message_e]
 						);
 					} else {
+						$p->hospital	= 1;
+
 						// Não faz quando for batalha de treino.
 						$p->exp			+= $exp + $exp_extra;
 						$p->currency	+= $currency + $currency_extra;

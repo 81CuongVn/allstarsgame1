@@ -73,6 +73,7 @@ trait AttributeManager {
             $total		+= $effects['bonus_stamina_max'];
         }
 
+        $total *= 10;
         if($max) {
             return $total;
         } else {

@@ -30,8 +30,6 @@
 		var	counter	= 1;
 		var	stopped	= 0;
 
-		//$('#luck-container #result').html(result_message).animate({top: '424px'});
-
 		for(var i = 1; i <= 4; i++) {
 			setTimeout(function () {
 				var	stop	= false;
@@ -57,7 +55,7 @@
 							running = false;
 
 							$('#luck-container .day-' + cur_day).addClass('green');
-							$('#luck-container #result').html(result_message);//.animate({top: '477px'});
+							$('#luck-container #result').html(result_message);
 						}
 
 						strip.css({backgroundPosition: '0px -' + (top1) + 'px'});
@@ -102,8 +100,6 @@
 		var	counter	= 1;
 		var	stopped	= 0;
 
-		//$('#luck-container #result').html(result_message).animate({top: '424px'});
-
 		for(var i = 1; i <= 4; i++) {
 			setTimeout(function () {
 				var	stop	= false;
@@ -129,7 +125,7 @@
 							running = false;
 
 							$('#luck-container .day-' + cur_day).addClass('green');
-							$('#luck-container .luck-result').html(result_message);//.animate({top: '477px'});
+							$('#luck-container .luck-result').html(result_message);
 						}
 
 						strip.css({backgroundPosition: '0px -' + (top1) + 'px'});
@@ -177,6 +173,8 @@
 
 		running		= true;
 
+		$('#luck-container .luck-result').html('');
+
 		$.ajax({
 			url:		make_url('luck#summoning'),
 			type:		'post',
@@ -207,6 +205,8 @@
 		}
 
 		running		= true;
+
+		$('#luck-container #result').html('');
 
 		$.ajax({
 			url:		make_url('luck#roll'),

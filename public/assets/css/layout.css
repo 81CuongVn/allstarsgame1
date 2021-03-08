@@ -1492,25 +1492,24 @@ div hr{
 	z-index: 10000;
 	background-color: #FFF;
 	border-top: solid 4px #F00;
-	height: 12px;
+	height: 24px;
 	background-color: #111
 }
 
 .mr-debug-window .title {
 	background-color: yellow;
 	background-size: 40px 40px;
-	height: 10px;
-	color: #000;
+	height: 20px;
+	/* color: #000; */
 	font-size: 13px;
 	cursor: pointer;
 	text-align: center;
 	font-weight: bold;
-	/*background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);*/
 	background-image: linear-gradient(45deg, rgba(0, 0, 0, 1) 25%, transparent 25%, transparent 50%, rgba(0, 0, 0, 1) 50%, rgba(0, 0, 0, 1) 75%, transparent 75%, transparent);
 }
 
 .mr-debug-window-expanded {
-	height: 224px
+	height: 234px
 }
 
 .mr-debug-window .mr-container {
@@ -1654,18 +1653,16 @@ div hr{
 .menu .values .vip { margin-left: 855px; margin-top: -6px; }
 .menu .values .logout { margin-left: 890px; margin-top: -6px; }
 
+.menu .values .badge,
+.top-expbar-container .badge {
+	background: #D00;
+	border-radius: 2px;
+	padding: 2px 0;
+}
 .menu .values .badge {
 	position: absolute;
     margin-left: 13px;
     margin-top: -5px;
-    background: #D00;
-    border-radius: 2px;
-    padding: 3px 4px;
-}
-.top-expbar-container .badge {
-	background: #D00;
-    border-radius: 2px;
-    padding: 3px 4px;
 }
 
 

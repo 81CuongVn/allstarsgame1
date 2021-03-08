@@ -713,7 +713,7 @@ pt-BR:
         5: Experiência
         6: Mascotes
         7: Equipamentos
-        8: Pontos de Encantamento
+        8: Encantamento
       header:
         equipment: Equipamento Aleatório
         name: Recompensa
@@ -2340,6 +2340,8 @@ pt-BR:
       description: Teste
     title: Loja das Estrelas
     buy_now: Comprar
+    restore_energy: |
+      Recupere #{amount}% por #{price} #{currency}
     buy_modes:
       free: Primeira vez de graça
       currency: |

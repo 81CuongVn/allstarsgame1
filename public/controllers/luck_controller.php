@@ -1,15 +1,15 @@
 <?php
 	class LuckController extends Controller {
-		private	$default_week		= array('1' => false, '2' => false, '3' => false, '4' => false, '5' => false, '6' => false, '7' => false);
+		private	$default_week		= ['1' => false, '2' => false, '3' => false, '4' => false, '5' => false, '6' => false, '7' => false];
 
 		private	$daily_currency		= 2000;
-		private	$daily_credits			= 1;
+		private	$daily_credits		= 1;
 		
 		private	$summon_currency	= 7500;
-		private	$summon_credits			= 4;
+		private	$summon_credits		= 4;
 
 		private	$weekly_currency	= 6000;
-		private	$weekly_credits			= 3;
+		private	$weekly_credits		= 3;
 
 		function __construct() {
 			parent::__construct();
@@ -88,7 +88,7 @@
 				if($_POST['type'] == 'daily') {
 					$is_weekly			= false;
 					$needed_currency	= $this->daily_currency;
-					$needed_credits			= $this->daily_credits;
+					$needed_credits		= $this->daily_credits;
 
 					if($player->luck_used) {
 						$errors[]	= t('luck.errors.already');
@@ -96,7 +96,7 @@
 				} elseif($_POST['type'] == 'weekly') {
 					$is_weekly			= true;
 					$needed_currency	= $this->weekly_currency;
-					$needed_credits			= $this->weekly_credits;
+					$needed_credits		= $this->weekly_credits;
 
 					foreach($week_data as $day => $used) {
 						if(!$used) {
@@ -141,7 +141,6 @@
 					$user->spend($needed_credits);
 					$log->credits	= $needed_credits;
 				}
-				//if(!$_SESSION['universal']){
 
 				while(true) {
 					foreach($rewards as $reward) {
@@ -152,9 +151,7 @@
 						}
 					}
 				}
-				//}else{
-					//$choosen_reward	= $rewards;	
-				//}
+
 				if($is_weekly) {
 					$week_data				= $this->default_week;
 				} else {
@@ -171,24 +168,23 @@
 				$message	= '';
 				
 				if($choosen_reward->enchant_points){
-					$message	.= $choosen_reward->quantity . ' ' . t('luck.index.names.8');
+					$message	.= highamount($choosen_reward->quantity) . ' ' . t('luck.index.names.8');
 					$player->enchant_points_total += $choosen_reward->quantity;
 				}
 				
 				if($choosen_reward->currency) {
-					$message	.= $choosen_reward->currency . ' ' . t('currencies.' . $player->character()->anime_id);
+					$message	.= highamount($choosen_reward->currency) . ' ' . t('currencies.' . $player->character()->anime_id);
 
 					$player->earn($choosen_reward->currency);
 				}
 				if($choosen_reward->exp) {
-					//die($choosen_reward->exp);
-					$message	.= $choosen_reward->exp . ' ' . t('attributes.attributes.exp2');
+					$message	.= highamount($choosen_reward->exp) . ' ' . t('attributes.attributes.exp2');
 
 					$player->earn_exp($choosen_reward->exp);
 				}
 
 				if($choosen_reward->credits) {
-					$message	.= $choosen_reward->credits . ' ' . t('currencies.credits');
+					$message	.= highamount($choosen_reward->credits) . ' ' . t('currencies.credits');
 					$user->earn($choosen_reward->credits);
 					
 					// Verifica os créditos do jogador.
@@ -198,13 +194,13 @@
 				}
 				
 				if($choosen_reward->equipment) {
-					$message	.= $choosen_reward->equipment . ' ' . t('luck.index.header.equipment');
+					$message	.= highamount($choosen_reward->equipment) . ' ' . t('luck.index.header.equipment');
 					Item::generate_equipment($player);
 				}
 
 				if($choosen_reward->item_id) {
 					$item		= Item::find_first($choosen_reward->item_id);
-					$message	.= $item->description()->name . ' x' . $choosen_reward->quantity;
+					$message	.= $item->description()->name . ' x' . highamount($choosen_reward->quantity);
 
 					$player->add_consumable($item, $choosen_reward->quantity);
 				}
@@ -224,7 +220,7 @@
 					if($choosen_reward->{$key}) {
 						$attributes->{$key}	+= $choosen_reward->{$key};
 
-						$message	.= t('luck.index.messages.point', array('count' => $choosen_reward->{$key}, 'attribute' => $value));
+						$message	.= t('luck.index.messages.point', array('count' => highamount($choosen_reward->$key), 'attribute' => $value));
 					}
 				}
 

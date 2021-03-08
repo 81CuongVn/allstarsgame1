@@ -6,6 +6,7 @@ define('BACKTRACE_SELECTS',	TRUE);
 define('BACKTRACE_UPDATES',	TRUE);
 define('BACKTRACE_DELETES',	TRUE);
 
+define('ROOT',						dirname(__FILE__));
 define('RECORDSET_CACHE_OFF_FORCE', TRUE);
 
 $env = 'dev';
@@ -13,9 +14,6 @@ if (!in_array($_SERVER['SERVER_ADDR'], [ '127.0.0.1' ]))
 	$env = 'prod';
 
 define('FW_ENV',                    $env);
-
-define('ROOT',						dirname(__FILE__));
-
 require ROOT . '/config.' . $env . '.php';
 
 date_default_timezone_set(DEFAULT_TIMEZONE);

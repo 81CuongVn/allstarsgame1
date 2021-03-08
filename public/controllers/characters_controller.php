@@ -612,13 +612,13 @@ class CharactersController extends Controller {
 		$player	=& Player::get_instance();
 
 		if ($_POST) {
-			/*$player->exp				-= $player->level_exp();
-			$player->level_screen_seen	= 1;
-			$player->less_mana	        = 0;
-			$player->less_life	        = 0;
-			$player->less_stamina	    = 0;
-			$player->level++;
-			$player->save();*/
+			// $player->exp				-= $player->level_exp();
+			// $player->level_screen_seen	= 1;
+			// $player->less_mana	        = 0;
+			// $player->less_life	        = 0;
+			// $player->less_stamina	    = 0;
+			// $player->level++;
+			// $player->save();
 
 			redirect_to('characters#status');
 		} else {

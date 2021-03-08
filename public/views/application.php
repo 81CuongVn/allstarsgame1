@@ -51,6 +51,7 @@ if ($_SESSION['user_id']) {
 	<link rel="stylesheet" type="text/css" href="<?=asset_url('css/luck.css');?>" />
 	<link rel="stylesheet" type="text/css" href="<?=asset_url('css/highlights.css');?>" />
 	<link rel="stylesheet" type="text/css" href="<?=asset_url('css/animate.css');?>" />
+	<link rel="stylesheet" type="text/css" href="<?=asset_url('css/font-awesome.min.css');?>" />
 	<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans:400,700" />
 
 	<script type="text/javascript" src="<?=asset_url('js/jquery.js');?>"></script>
@@ -124,17 +125,46 @@ if ($_SESSION['user_id']) {
 				</a>
 			<?php } ?>
 			<div class="values">
-				<div class="life absolute"><span class="c"><?=($player->for_life());?></span></div>
-				<div class="mana absolute"><span class="c"><?=($player->for_mana());?></span></div>
-				<div class="stamina absolute">
-					<?php
+				<div class="life absolute"><span class="c"><?=highamount($player->for_life());?></span></div>
+				<div class="mana absolute"><span class="c"><?=highamount($player->for_mana());?></span></div>
+				<?php
 					$staminaPercent = floor(($player->for_stamina() / $player->for_stamina(true)) * 100);
 					if ($staminaPercent <= 33)								$staminaColor = "vermelho";
 					else if ($staminaPercent > 34 && $staminaPercent <= 66)	$staminaColor = "laranja";
 					else													$staminaColor = "verde";
-					?>
-					<span class="c <?=$staminaColor;?>"><?=$player->for_stamina();?></span>/<span class="m"><?=$player->for_stamina(true);?></span>
+				?>
+				<div style="cursor: pointer;" class="stamina absolute requirement-popover" data-source="#tooltip-stamina" data-title="Recuperação de Stamina" data-trigger="hover" data-placement="bottom">
+					<div id="tooltip-stamina" class="status-popover-container">
+						<div class="status-popover-content">
+							<div class="item-vip-list">
+								<form id="vip-form-431" onsubmit="return false">
+									<input type="hidden" name="id" value="431" />
+									<button type="button" class="btn btn-primary btn-block buy" data-id="431" style="margin-bottom: 5px;">
+										<?=t('vips.restore_energy', [
+											'amount'	=> 50,
+											'price'		=> highamount(2000),
+											'currency'	=> t('currencies.' . $player->character()->anime_id)
+										]);?>
+									</button>
+								</form>	
+								<form id="vip-form-432" onsubmit="return false">
+									<input type="hidden" name="id" value="432" />
+									<button type="button" class="btn btn-primary btn-block buy" data-id="432" style="margin-bottom: 5px;">
+										<?=t('vips.restore_energy', [
+											'amount'	=> 100,
+											'price'		=> highamount(1),
+											'currency'	=> t('currencies.credits')
+										]);?>
+									</button>
+								</form>
+							</div>
+						</div>
+					</div>
+					<span class="c <?=$staminaColor;?>"><?=highamount($player->for_stamina());?></span>
 				</div>
+				<!-- <div class="stamina absolute"> -->
+					<!-- <span class="c <?=$staminaColor;?>"><?=$player->for_stamina();?></span>/<span class="m"><?=$player->for_stamina(true);?></span> -->
+				<!-- </div> -->
 				<div class="currency absolute"><?=highamount($player->currency);?></div>
 				<div class="relogio absolute">
 					<a href="javascript:void(0)" class="requirement-popover" data-source="#tooltip-relogio" data-title="<?=t('popovers.titles.rotinas');?>" data-trigger="hover" data-placement="bottom">
@@ -177,7 +207,10 @@ if ($_SESSION['user_id']) {
 					$newMessages	= PrivateMessage::find('removed=0 AND to_id=' . $player->id . ' AND read_at IS NULL');
 					if (sizeof($newMessages)) {
 					?>
-					<a href="<?=make_url('private_messages');?>" class="badge"><?=sizeof($newMessages);?></a>
+					<a href="<?=make_url('private_messages');?>" class="badge">
+						<!-- <?=sizeof($newMessages);?> -->
+						<i class="fa fa-exclamation fa-fw"></i>
+					</a>
 					<?php } ?>
 					<a href="<?=make_url('private_messages');?>"><img src="<?=image_url('icons/email.png');?>" /></a>
 				</div>

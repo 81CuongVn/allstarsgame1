@@ -10,7 +10,7 @@
 	<div id="luck-buy">
 		<div class="luck-money">
 			<div class="summon-button" data-currency="1">
-				<span><?php echo $summon_currency .' '. t('currencies.' . $player->character()->anime_id) ?></span>
+				<span><?php echo highamount($summon_currency) .' '. t('currencies.' . $player->character()->anime_id) ?></span>
 			</div>
 		</div>
 		<div class="luck-result">
@@ -18,7 +18,7 @@
 		</div>
 		<div class="luck-credit">
 			<div class="summon-button" data-currency="2">
-				<span><?php echo  $summon_credits .' '. t('currencies.credits') ?></span>
+				<span><?php echo  highamount($summon_credits) .' '. t('currencies.credits') ?></span>
 			</div>
 		</div>	
 	</div>

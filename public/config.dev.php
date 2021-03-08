@@ -52,6 +52,7 @@ if (!isset($_SESSION['user_id']))			$_SESSION['user_id']		= NULL;
 if (!isset($_SESSION['player_id']))			$_SESSION['player_id']		= NULL;
 if (!isset($_SESSION['loggedin']))			$_SESSION['loggedin']		= FALSE;
 if (!isset($_SESSION['universal']))			$_SESSION['universal'] 		= FALSE;
+if (!isset($_SESSION['orig_user_id']))		$_SESSION['orig_user_id']	= 0;
 if (!isset($_SESSION['orig_player_id']))	$_SESSION['orig_player_id']	= 0;
 
 # Timezone settings
@@ -98,8 +99,8 @@ define('MONEY_RATE',			10);
 define('PVP_TURN_TIME',			120);
 
 # Energy costs
-define('NPC_COST',				2);
-define('PVP_COST',				2);
+define('NPC_COST',				15);
+define('PVP_COST',				20);
 
 # Event settings
 define('EVENT_ACTIVE', 			TRUE);

@@ -6,15 +6,17 @@ function exp_bar_windth($v, $m, $w) {
 }
 
 function top_exp_bar($player, $user) {
-    $width		 = exp_bar_windth($player->exp, $player->level_exp(), 126);
-    $width2		 = exp_bar_windth($user->exp, $user->level_exp(), 126);
-    $frame_id	 = $player->character()->anime_id;
+    $width  		 = exp_bar_windth($player->exp, $player->level_exp(), 126);
+    $width2		     = exp_bar_windth($user->exp, $user->level_exp(), 126);
+    $frame_id   	 = $player->character()->anime_id;
 
-    $has_talents = $player->has_talents();
-    $has_points  = $player->training_points_spent;
+    $has_talents    = $player->has_talents();
+    $has_points     = $player->training_points_spent;
 
-    $msg_points  = "";
-    $msg_talents = "";
+    $total_talents  = 0;
+
+    $msg_points      = "";
+    $msg_talents     = "";
 
     $check_talents  = FALSE;
     $check_points   = FALSE;
@@ -23,27 +25,28 @@ function top_exp_bar($player, $user) {
         $check_points   = TRUE;
         $msg_points     = t('alerts.points', array('link' => make_url('trainings#attributes')));
     }
-    if(floor($user->level / 2) != $has_talents && $has_talents < 23){
+    if(floor($user->level / 2) != $has_talents && $has_talents < $total_talents){
         $check_talents  = TRUE;
         $msg_talents    = t('alerts.talents', array('link' => make_url('characters#talents')));
     }
-    if (!empty($msg_talents) && !empty($msg_points))
+    if (!empty($msg_talents) && !empty($msg_points)) {
         $msg_points .= '<br /><br />';
+    }
 
-    if($check_talents || $check_points){
+    $message = $msg_talents . $msg_points;
+    if ($check_talents || $check_points) {
         $alerts = '
-			<div style="position: absolute; right: 36px; z-index: 10000; top: 12px;" class="technique-popover" data-source="#alert-user-container-'.$player->id .'" data-title="'.t('alerts.title').'" data-trigger="click" data-placement="bottom"><a href="" class="badge">!</a></div>
+			<div style="position: absolute; right: 36px; z-index: 10000; top: 12px;" class="technique-popover" data-source="#alert-user-container-'.$player->id .'" data-title="'.t('alerts.title').'" data-trigger="click" data-placement="bottom">
+                <a href="" class="badge"><i class="fa fa-exclamation fa-fw"></i></a>
+            </div>
 			<div id="alert-user-container-'. $player->id .'" class="technique-container">
-				<div style="margin: 10px">
-					 ' . $msg_points . $msg_talents . '
-				</div>
+				<div style="margin: 0 10px 5px 10px;">' . $message . '</div>
 			</div>
 			';
-    }else{
+    } else {
         $alerts = '';
     }
-    $percentUser = floor(($user->exp / $user->level_exp()) * 100);
-    $percentPlayer = floor(($player->exp / $player->level_exp()) * 100);
+
     return '<div class="top-expbar-container">
       <div class="level technique-popover" data-source="#level-container-'.$player->id .'" data-title="Nível do Personagem" data-trigger="click" data-placement="bottom">
         <span>NV</span>

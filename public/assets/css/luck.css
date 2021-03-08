@@ -202,12 +202,12 @@
 }
 
 #luck-container #result {
-	width: 412px;
+	width: 612px;
 	height: 63px;
 	background-image: url('../images/luck/won.png');
 	position: absolute;
 	top: 476px;
-	margin-left: 150px;
+	margin: 0 52px;
 	z-index: 0;
 	text-align: center;
 	padding-top: 24px;
@@ -242,7 +242,13 @@
 	height: 32px
 }
 .luck-money{
-	float: left;  width: 227px;  height: 115px;	text-align: center; color: #afb17a; font-size: 30px; cursor: pointer;
+	float: left;
+	width: 227px;
+	height: 115px;
+	text-align: center;
+	color: #afb17a;
+	font-size: 23px;
+	cursor: pointer;
 }
 #luck-buy .luck-money .selected{
 	background-image: url(../images/summon/bg2-1.png);
@@ -264,7 +270,13 @@
     top: 27px;
 }
 .luck-credit{
-	float: left;  width: 227px;  height: 115px; text-align: center; color: #afb17a; font-size: 30px; cursor: pointer;	
+	float: left;
+	width: 227px;
+	height: 115px;
+	text-align: center;
+	color: #afb17a;
+	font-size: 23px;
+	cursor: pointer;	
 }
 #luck-buy .luck-credit .selected{
 	background-image: url(../images/summon/bg2-2.png);

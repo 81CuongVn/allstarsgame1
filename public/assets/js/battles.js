@@ -622,27 +622,24 @@
 			}
 
 			if(result.finished) {
-				$('#finished-message').html(result.finished);
+				// $('#finished-message').html(result.finished);
 				$('#battle-container #technique-container').html('').hide();
 				$('#battle-container .player-container #players').css({ height: '430px' });
-				
 
-				/*
 				var	win	= bootbox.dialog({message: result.finished, buttons: [
 					{
 						label:		'Fechar',
 						class:		'btn btn-default',
 						callback:	function () {
 							lock_screen(true);
-							//location.href	= parseInt(result.end_type) ? make_url('characters#status') : make_url('hospital') ;
-							location.href	= make_url('characters#status');
+							location.href	= parseInt(result.end_type) ? make_url('characters#status') : make_url('hospital') ;
+							// location.href	= make_url('characters#status');
 						}
 					}
 				]});
 
 				$('.modal-dialog', win).addClass('pattern-container');
 				$('.modal-content', win).addClass('with-pattern');
-				*/
 			}
 
 			if(result.messages && result.messages.length) {

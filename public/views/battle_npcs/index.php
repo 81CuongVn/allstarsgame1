@@ -47,8 +47,8 @@ echo partial('shared/info', [
 </div>
 <div align="center">
 	<?php if ($limit_npc->current_npc_made >= 10): ?>
-		<a href="javascript:void(0);" class="btn btn-warning"><?=t('battles.npc.accept');?></a>
+		<button type="button" class="btn btn-lg btn-warning btn-disabled" disabled><?=t('battles.npc.accept');?></button>
 	<?php else: ?>	
-		<a href="javascript:void(0);" id="btn-enter-npc-battle" data-type="1" class="btn btn-primary"><?=t('battles.npc.accept');?></a>
+		<a href="javascript:void(0);" id="btn-enter-npc-battle" data-type="1" class="btn btn-lg btn-primary"><?=t('battles.npc.accept');?></a>
 	<?php endif; ?>	
 </div>

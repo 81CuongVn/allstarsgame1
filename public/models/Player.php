@@ -106,7 +106,8 @@ class Player extends Relation {
 
 		$this->clear_fixed_effects('fixed');
 		$this->refresh_talents();
-
+		$this->update_online();
+		$this->check_heal();
 	}
 
 	protected function before_update() {
@@ -118,14 +119,14 @@ class Player extends Relation {
 			$this->less_mana	= $this->for_mana(true);
 		}
 
-		if($this->level_screen_seen) {
-			if($this->is_next_level()) {
+		if ($this->level_screen_seen) {
+			if ($this->is_next_level()) {
 				// while ($this->is_next_level()) {
 					$this->level		+= 1;
 					$this->exp			-= $this->level_exp();
-					$this->less_mana	= 0;
-					$this->less_life	= 0;
-					$this->less_stamina	= 0;
+					// $this->less_mana	= 0;
+					// $this->less_life	= 0;
+					// $this->less_stamina	= 0;
 
 					// Checa a conquista de level do player
 					$this->achievement_check('level_player');
@@ -6118,6 +6119,87 @@ class Player extends Relation {
 			return false;
 		}
 	}
+
+	private function check_heal() {
+		$effects	=  $this->get_parsed_effects();
+        $now		= new DateTime();
+
+        if (!$this->last_healed_at) {
+            $this->last_healed_at	= now(true);
+            $this->save();
+
+            $last_heal	= $now;
+        } else {
+            $last_heal	= new DateTime($this->last_healed_at);
+        }
+
+		$extras		= $this->attributes();
+        $heal_diff	= $now->diff($last_heal);
+
+		$num_runs	= floor((($heal_diff->d * (24 * 60)) + ($heal_diff->h * 60) + $heal_diff->i / 5));
+		if ($num_runs) {
+			$stamina_heal	= 2 + $effects['bonus_stamina_heal'];
+			$stamina_heal	+= percent($extras->stamina_regen, $stamina_heal);
+
+			$current_runs	= 0;
+			while ($current_runs++ < $num_runs) {
+				if ($this->less_stamina > 0)	$this->less_stamina	-= $stamina_heal;
+				if ($this->less_stamina < 0)	$this->less_stamina	= 0;
+			}
+		}
+
+        $num_runs	= floor((($heal_diff->d * (24 * 60)) + ($heal_diff->h * 60) + $heal_diff->i / 2));
+        if ($num_runs) {
+            if (!$this->battle_npc_id && !$this->battle_pvp_id) {
+                $max_life		= $this->for_life(true);
+                $max_mana		= $this->for_mana(true);
+                $life_heal		= percent(20, $max_life);
+                $mana_heal		= percent(20, $max_mana);
+
+                if ($this->hospital) {
+                    $life_heal	*= 2;
+                    $mana_heal	*= 2;
+                }
+
+                $life_heal		+= percent($extras->life_regen, $life_heal);
+                $mana_heal		+= percent($extras->mana_regen, $mana_heal);
+
+				$current_runs	= 0;
+                while ($current_runs++ < $num_runs) {
+                    if ($this->less_life > 0)	$this->less_life	-= $life_heal;
+                    if ($this->less_life < 0)	$this->less_life	= 0;
+
+                    if ($this->less_mana > 0)	$this->less_mana	-= $mana_heal;
+                    if ($this->less_mana < 0)	$this->less_mana	= 0;
+
+                    if ($this->less_life == 0 && $this->less_mana == 0) {
+                        $this->hospital	= 0;
+                    }
+                }
+            }
+
+            $this->last_healed_at	= now(true);
+        }
+
+        $this->save();
+	}
+
+	function is_online() {
+		return is_player_online($this->id);
+	}
+
+	private function update_online() {
+		$redis = new Redis();
+		if ($redis->pconnect(REDIS_SERVER, REDIS_PORT)) {
+			$redis->auth(REDIS_PASS);
+			$redis->select(0);
+
+			// $online = $redis->get('players_online');
+			// $redis->set('players_online', $online + 1);
+			$redis->set('player_' . $this->id . '_online', now(true));
+		}
+	}
+
 	static function set_instance($player) {
 		Player::$instance	= $player;
 	}
