@@ -20,16 +20,16 @@ define('MAINTENANCE_CONTROLLER',	'internal');
 define('MAINTENANCE_ACTION',		'maintenance');
 
 
-/*if (isset($_SERVER['REDIRECT_URL']) && $_SERVER['REDIRECT_URL']) {
+if (isset($_SERVER['REDIRECT_URL']) && $_SERVER['REDIRECT_URL']) {
     $_SERVER['PATH_INFO'] = $_SERVER['REDIRECT_URL'];
-}*/
+}
 
 define('DB_LOGGING',		        FALSE);
 define('BACKTRACE_SELECTS',	        TRUE);
 define('BACKTRACE_UPDATES',	        TRUE);
 define('BACKTRACE_DELETES',	        TRUE);
 
-// define('RECORDSET_CACHE_OFF_FORCE',	$env == 'dev');
+define('RECORDSET_CACHE_OFF_FORCE',	$env == 'dev');
 
 $___clear_cache_key				= 'vaMALORuhvCTTiCGvnDehblfdIJnPNbUak7OxcE1knbPGuwwTuPrpTGCGzdbYVwXBusrqhXcvqqIjhBIetDDPvzOvPaqzLHVE7eb';
 $___start						= microtime(TRUE);
@@ -61,8 +61,6 @@ if (isset($_GET['__clear_the_damn_cache']) && $_GET['__clear_the_damn_cache'] ==
     foreach(glob(ROOT . '/cache/recset/RECSET_' . Recordset::$key_prefix . '*') as $cache_file) {
         @unlink($cache_file);
     }
-
-    redirect_to();
 }
 
 # Fix to 'PATH_INFO' ??? Really? Oh My God!
