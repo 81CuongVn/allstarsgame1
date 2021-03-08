@@ -494,20 +494,20 @@ echo partial('shared/info', [
                         $message	= '';
 
                         if ($reward->enchant_points) {
-                            $message	.= $reward->quantity . ' ' . t('luck.index.names.8');
+                            $message	.= highamount($reward->quantity) . ' ' . t('luck.index.names.8');
                         }
 
                         if ($reward->currency) {
-                            $message	.= $reward->currency . ' ' . t('currencies.' . $player->character()->anime_id);
+                            $message	.= highamount($reward->currency) . ' ' . t('currencies.' . $player->character()->anime_id);
                         }
                         if ($reward->exp) {
-                            $message	.= $reward->exp . ' ' . t('attributes.attributes.exp2');
+                            $message	.= highamount($reward->exp) . ' ' . t('attributes.attributes.exp2');
                         }
                         if ($reward->exp_account) {
-                            $message	.= $reward->exp_account . ' ' . t('objectives.exp_account');
+                            $message	.= highamount($reward->exp_account) . ' ' . t('objectives.exp_account');
                         }
                         if ($reward->credits) {
-                            $message	.= $reward->credits . ' ' . t('currencies.credits');
+                            $message	.= highamount($reward->credits) . ' ' . t('currencies.credits');
                         }
                         if ($reward->character_id) {
                             $message	.= Character::find($reward->character_id)->description()->name;
@@ -524,20 +524,20 @@ echo partial('shared/info', [
                         if ($reward->equipment) {
                             switch ($reward->equipment) {
                                 case 2:
-                                    $message	.= $reward->quantity . ' ' . t('objectives.equip_comun');
+                                    $message	.= highamount($reward->quantity) . ' ' . t('objectives.equip_comun');
                                     break;
                                 case 3:
-                                    $message	.= $reward->quantity . ' ' . t('objectives.equip_raro');
+                                    $message	.= highamount($reward->quantity) . ' ' . t('objectives.equip_raro');
                                     break;
                                 case 4:
-                                    $message	.= $reward->quantity . ' ' . t('objectives.equip_lendario');
+                                    $message	.= highamount($reward->quantity) . ' ' . t('objectives.equip_lendario');
                                     break;
                             }
                         }
 
                         if ($reward->item_id) {
                             $item		= Item::find_first($reward->item_id);
-                            $message	.= $item->description()->name . ' x' . $reward->quantity;
+                            $message	.= $item->description()->name . ' x' . highamount($reward->quantity);
                         }
 
                         $ats	= [

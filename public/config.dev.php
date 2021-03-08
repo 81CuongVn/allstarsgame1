@@ -57,6 +57,10 @@ if (!isset($_SESSION['orig_player_id']))	$_SESSION['orig_player_id']	= 0;
 # Timezone settings
 define('DEFAULT_TIMEZONE',		'America/Sao_Paulo');
 
+# Regex settings
+define('REGEX_PLAYER',			'/^[áéíóúàèìòùâêîôûãõñç\w\d\s]+$/');
+define('REGEX_GUILD',			'/^[áéíóúàèìòùâêîôûãõñç\w\d\s]+$/');
+
 # Chat settinsg
 define('CHAT_ID',				1);
 define('CHAT_KEY',				'a7b5b8f8-7256-4e22-b982-ecaaf98b7b79');

@@ -11,7 +11,7 @@ class CharactersController extends Controller {
 			$this->json->success	= false;
 			$errors					= array();
 
-			if(!isset($_POST['name']) || (isset($_POST['name']) && !preg_match('/^[\dA-Z]+$/i', $_POST['name']))) {
+			if(!isset($_POST['name']) || (isset($_POST['name']) && !preg_match(REGEX_NAME, $_POST['name']))) {
 				$errors[]	= t('characters.create.errors.invalid_name');
 			} else {
 				if(strlen($_POST['name']) > 14) {

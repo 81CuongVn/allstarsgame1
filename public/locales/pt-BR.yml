@@ -261,7 +261,7 @@ pt-BR:
         character_totals: Total por personagem
       errors:
         removed: Você atingiu o limite de personagens excluídos em sua conta.
-        invalid_name: Nome inválido. Só são permitidos números e letras
+        invalid_name: Nome inválido. Só são permitidos números, letras, espaços e pontos.
         name_length_max: O Nome do seu personagem não pode ter mais que 14 caractéres
         name_length_min: O Nome do seu personagem tem que ter no mínimo 6 caractéres
         existent: Já existe um personagem com esse nome

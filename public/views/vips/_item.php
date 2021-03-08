@@ -24,17 +24,17 @@
 									break;
 								
 								case 1:
-									echo "<span class='laranja'>". t("vips.buy_modes.currency", ["price" => $item->price_currency, "currency" => t('currencies.' . $player->character()->anime_id)]) . "</span>";
+									echo "<span class='laranja'>". t("vips.buy_modes.currency", ["price" => highamount($item->price_currency), "currency" => t('currencies.' . $player->character()->anime_id)]) . "</span>";
 									
 									break;
 			
 								default:
-									echo "<span class='laranja'>". t("vips.buy_modes.vip", ["price" => $item->price_credits]) . "</span>";
+									echo "<span class='laranja'>". t("vips.buy_modes.vip", ["price" => highamount($item->price_credits)]) . "</span>";
 									
 									break;
 							}
 						}else{
-							echo "<span class='laranja'>". t("vips.buy_modes.vip", ["price" => $item->price_credits]) . "</span>";
+							echo "<span class='laranja'>". t("vips.buy_modes.vip", ["price" => highamount($item->price_credits)]) . "</span>";
 						}
 					?>
 				</span>

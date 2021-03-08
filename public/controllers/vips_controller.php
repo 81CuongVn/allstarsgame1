@@ -1,6 +1,5 @@
 <?php
 class VipsController extends Controller {
-	public	$name_rx		= '/^[áéíóúçãõ\w\s]*$/siU';
 	function __construct() {
 		$this->allowed_items	= Item::find("item_type_id=9", ["cache" => true]);
 
@@ -133,7 +132,7 @@ class VipsController extends Controller {
 						if($player_organization->player_id != $player->id){
 							$errors[]	= t('organizations.errors.not_leader');
 						}
-						if (!between(strlen($_POST['name_organization']), 6, 20) || !preg_match($this->name_rx, $_POST['name_organization'])) {
+						if (!between(strlen($_POST['name_organization']), 6, 20) || !preg_match(REGEX_GUILD, $_POST['name_organization'])) {
 							$errors[]	= t('organizations.create.errors.invalid_name');
 						}
 					}
@@ -144,7 +143,7 @@ class VipsController extends Controller {
 					}
 				}
 				if (isset($_POST["name"])) {
-					if (!preg_match('/^[\dA-Z]+$/i', $_POST['name'])) {
+					if (!preg_match(REGEX_PLAYER, $_POST['name'])) {
 						$errors[]	= t('characters.create.errors.invalid_name');
 					}
 
@@ -214,7 +213,6 @@ class VipsController extends Controller {
 					$player->character_theme_image_id	= $character->themes()[0]->images()[0]->id;
 					$player->character_ability_id		= CharacterAbility::find_first('character_id=' . $player->character_id . ' AND is_initial=1', ['cache' => true])->id;
 					$player->character_speciality_id	= CharacterSpeciality::find_first('character_id=' . $player->character_id . ' AND is_initial=1', ['cache' => true])->id;
-					$player->graduation_id				= Graduation::find_first("anime_id=" . $player->character()->anime_id . " AND sorting=" . $player->graduation()->sorting, ["cache" => true])->id;
 
 					$player->save();
 					

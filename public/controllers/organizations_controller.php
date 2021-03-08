@@ -4,7 +4,6 @@ class OrganizationsController extends Controller {
 	public	$currency_price	= 5000;
 	public	$min_level		= 5;
 	public	$max_players	= 8;
-	public	$name_rx		= '/^[áéíóúçãõ\w\s]*$/siU';
 
 	function __construct() {
 		Organization::$player_limit = $this->max_players;
@@ -58,7 +57,7 @@ class OrganizationsController extends Controller {
 		if (!$method) {
 			$errors[]	= t('organizations.create.errors.invalid_method');
 		} else {
-			if (!between(strlen($name), 6, 20) || !preg_match($this->name_rx, $name)) {
+			if (!between(strlen($name), 6, 20) || !preg_match(REGEX_GUILD, $name)) {
 				$errors[]	= t('organizations.create.errors.invalid_name');
 			}
 
@@ -608,7 +607,7 @@ class OrganizationsController extends Controller {
 			$organization	= $player->organization();
 
 			if ($organization->player_id == $player->id) {
-				if (isset($_POST['name']) && preg_match($this->name_rx, $_POST['name'])) {
+				if (isset($_POST['name']) && preg_match(REGEX_GUILD, $_POST['name'])) {
 					$other	= Organization::find_first('id != ' . $organization->id . ' AND name="' . addslashes($_POST['name']) . '"');
 
 					if ($other) {
