@@ -21,4 +21,4 @@ $combatDaily->period				= $questDaily->period;
 $combatDaily->combat_quest_id		= $questDaily->id;
 $combatDaily->save();
 
-echo 'Missões de combate adicionadas!';
+echo '[Combat Quests] Cron executada com sucesso!';

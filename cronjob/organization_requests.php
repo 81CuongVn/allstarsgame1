@@ -10,3 +10,5 @@ foreach ($organization_requests->result_array() as $organization_request) {
         Recordset::query('DELETE FROM organization_requests WHERE player_id='.$players['id']);
     }
 }
+
+echo '[Organization Requests] Cron executada com sucesso!';

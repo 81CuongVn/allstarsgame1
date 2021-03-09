@@ -17,3 +17,4 @@ foreach ($players->result_array() as $player) {
         ]);
     }
 }
+echo '[Pet Daily Quests] Cron executada com sucesso!';

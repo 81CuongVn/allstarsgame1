@@ -1,0 +1,32 @@
+# UMA VEZ POR HORA
+0 * * * * php /home/anime/www/crons/objectives.php
+0 * * * * php /home/anime/www/crons/ranking.php
+0 * * * * php /home/anime/www/crons/ranking_achievement.php
+0 * * * * php /home/anime/www/crons/ranking_account.php
+0 * * * * php /home/anime/www/crons/ranking_challenge.php
+0 * * * * php /home/anime/www/crons/ranking_combat.php
+0 * * * * php /home/anime/www/crons/ranking_organization.php
+0 * * * * php /home/anime/www/crons/ranking_ranked.php
+
+# TODA SEGUNDA-FEIRA
+0 0 * * 1 php /home/anime/www/cron/organization_daily_quests.php
+0 0 * * 1 php /home/anime/www/cron/pet_happiness.php
+0 0 * * 1 php /home/anime/www/cron/treasure_organization.php
+
+# UMA VEZ POR DIA
+0 0 * * * php /home/anime/www/crons/account_quests.php
+0 0 * * * php /home/anime/www/crons/daily_quests.php
+0 0 * * * php /home/anime/www/crons/organization_requests.php
+0 0 * * * php /home/anime/www/crons/pets_daily_quests.php
+0 0 * * * php /home/anime/www/crons/user_stats.php
+
+# AS 5H DA MANHÃ
+0 5 * * * php /home/anime/www/crons/statistic_players.php
+
+55 23 * * * php /home/anime/www/cron/combat_quests_rewards.php
+
+# A CADA 3 HORAS
+0 */3 * * * php /home/anime/www/cron/battle_animes.php
+
+# A CADA 12 HORAS
+0 0,12 * * * php /home/anime/www/cron/wanteds.php

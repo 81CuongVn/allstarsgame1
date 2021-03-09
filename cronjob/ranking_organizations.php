@@ -50,24 +50,33 @@ foreach ($factions->result_array() as $faction) {
         ]);
     }
 
-    $organizations	= Recordset::query('SELECT id, score FROM ranking_organizations WHERE faction_id=' . $faction['id'] . ' ORDER BY 2 DESC');
     $position	= 1;
-
+    $organizations	= Recordset::query('SELECT id, score FROM ranking_organizations WHERE faction_id=' . $faction['id'] . ' ORDER BY 2 DESC');
     foreach($organizations->result_array() as $organization) {
+        if ($organization->score <= 0)
+            $organization->delete();
+        else {
+            Recordset::update('ranking_organizations', [
+                'position_faction'	=> $position++
+            ], [
+                'id'				=> $organization['id']
+            ]);
+        }
+    }
+}
+
+$position	    = 1;
+$organizations	= Recordset::query('SELECT id, score FROM ranking_organizations ORDER BY 2 DESC');
+foreach($organizations->result_array() as $organization) {
+    if ($organization->score <= 0)
+        $organization->delete();
+    else {
         Recordset::update('ranking_organizations', [
-            'position_faction'	=> $position++
+            'position_general'	=> $position++
         ], [
             'id'				=> $organization['id']
         ]);
     }
 }
-$organizations	= Recordset::query('SELECT id, score FROM ranking_organizations ORDER BY 2 DESC');
-$position	= 1;
 
-foreach($organizations->result_array() as $organization) {
-    Recordset::update('ranking_organizations', [
-        'position_general'	=> $position++
-    ], [
-        'id'				=> $organization['id']
-    ]);
-}
+echo '[Ranking Organizations] Cron executada com sucesso!';

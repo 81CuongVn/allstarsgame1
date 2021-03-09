@@ -99,8 +99,8 @@ define('MONEY_RATE',			10);
 define('PVP_TURN_TIME',			120);
 
 # Energy costs
-define('NPC_COST',				10);
-define('PVP_COST',				10);
+define('NPC_COST',				2);
+define('PVP_COST',				2);
 
 # Event settings
 define('EVENT_ACTIVE', 			TRUE);

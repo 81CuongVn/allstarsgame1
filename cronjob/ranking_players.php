@@ -74,16 +74,26 @@ foreach ($animes->result_array() as $anime) {
     $position	= 1;
     $players	= Recordset::query('SELECT `id`,`score`,`level` FROM `ranking_players` WHERE `anime_id`=' . $anime['id'] . ' ORDER BY `score` DESC, `level` DESC');
     foreach ($players->result_array() as $player) {
-        Recordset::update('ranking_players', [
-            'position_anime'	=> $position++
-        ], ['id' => $player['id']]);
+        if ($player->score <= 0)
+            $player->delete();
+        else {
+            Recordset::update('ranking_players', [
+                'position_anime'	=> $position++
+            ], ['id' => $player['id']]);
+        }
     }
 }
 
 $position	= 1;
 $players	= Recordset::query('SELECT `id`,`score`,`level` FROM `ranking_players` ORDER BY `score` DESC, `level` DESC');
 foreach ($players->result_array() as $player) {
-    Recordset::update('ranking_players', [
-        'position_general'	=> $position++
-    ], ['id' => $player['id']]);
+    if ($player->score <= 0)
+        $player->delete();
+    else {
+        Recordset::update('ranking_players', [
+            'position_general'	=> $position++
+        ], ['id' => $player['id']]);
+    }
 }
+
+echo '[Ranking Players] Cron executada com sucesso!';
