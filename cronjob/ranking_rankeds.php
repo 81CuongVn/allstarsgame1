@@ -37,7 +37,9 @@
 				  
 	
 			foreach($players->result_array() as $player) {
-				$points	= (($player['rank'] == 0 ? 200000 : 100000) / $player['rank'])  +  ($player['wins'] * 50);
+				$points	= 
+					( $player['rank'] ==  0 ? 200000 : (100000 / $player['rank']) )  + 
+					( $player['wins'] * 50 );
 				Recordset::insert('ranking_rankeds', [
 					'player_id'				=> $player['id'],
 					'anime_id'				=> $player['anime_id'],
