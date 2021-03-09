@@ -53,89 +53,87 @@
 			</td>
 		</tr>
 	</table>
-	<br />
-	<br />
+	<br /><br />
 	<input type="hidden" name="page" value="<?php echo $page ?>" />
-		<?php foreach ($players as $p): ?>
-		<?php
-				if ($anime_id){
-					if($p->position_anime==1){
-						$cor_fundo = "#f9e1a7";
-						$cor	   = "ouro";
-						$class	   = "league-img-1";
-					}
-					if($p->position_anime==2){
-						$cor_fundo = "#dddddd";
-						$cor	   = "prata";
-						$class	   = "league-img-2";
-					}
-					if($p->position_anime==3){
-						$cor_fundo = "#f89b52";
-						$cor	   = "bronzeado";
-						$class	   = "league-img-3";
-					}
-					if($p->position_anime > 3){
-						$cor_fundo = "#232323";
-						$cor	   = "branco";
-						$class	   = "league-img-4";
-					}
-				}else{
-					if($p->position_general==1){
-						$cor_fundo = "#f9e1a7";
-						$cor	   = "ouro";
-						$class	   = "league-img-1";
-					}
-					if($p->position_general==2){
-						$cor_fundo = "#dddddd";
-						$cor	   = "prata";
-						$class	   = "league-img-2";
-					}
-					if($p->position_general==3){
-						$cor_fundo = "#f89b52";
-						$cor	   = "bronzeado";
-						$class	   = "league-img-3";
-					}
-					if($p->position_general > 3){
-						$cor_fundo = "#232323";
-						$cor	   = "branco";
-						$class	   = "league-img-4";
-					}
-				}	
-			?>
-			<div class="ability-speciality-box" style="width: 175px !important; height: 250px !important; padding-bottom: 40px">
-				<div class="image" align="center">
-					<div class="<?=$class;?>">
-						<div class="position">
-							<?php if ($anime_id) { ?>
-								<b class="<?=$cor;?>"><?=highamount($p->position_anime);?>º</b>
-							<?php } else { ?>
-								<b class="<?=$cor;?>"><?=highamount($p->position_general);?>º</b>
-							<?php } ?>
-						</div>
-						<?=$p->character_theme()->first_image()->small_image();?>
+	<?php
+	foreach ($players as $p) {
+		if ($anime_id) {
+			if($p->position_anime == 1) {
+				$cor_fundo = "#f9e1a7";
+				$cor	   = "ouro";
+				$class	   = "league-img-1";
+			}
+			if ($p->position_anime == 2) {
+				$cor_fundo = "#dddddd";
+				$cor	   = "prata";
+				$class	   = "league-img-2";
+			}
+			if ($p->position_anime == 3) {
+				$cor_fundo = "#f89b52";
+				$cor	   = "bronzeado";
+				$class	   = "league-img-3";
+			}
+			if ($p->position_anime > 3) {
+				$cor_fundo = "#232323";
+				$cor	   = "branco";
+				$class	   = "league-img-4";
+			}
+		} else {
+			if ($p->position_general == 1) {
+				$cor_fundo = "#f9e1a7";
+				$cor	   = "ouro";
+				$class	   = "league-img-1";
+			}
+			if ($p->position_general == 2) {
+				$cor_fundo = "#dddddd";
+				$cor	   = "prata";
+				$class	   = "league-img-2";
+			}
+			if ($p->position_general == 3) {
+				$cor_fundo = "#f89b52";
+				$cor	   = "bronzeado";
+				$class	   = "league-img-3";
+			}
+			if ($p->position_general > 3){
+				$cor_fundo = "#232323";
+				$cor	   = "branco";
+				$class	   = "league-img-4";
+			}
+		}
+	?>
+		<div class="ability-speciality-box" style="width: 175px !important; height: 250px !important; padding-bottom: 40px">
+			<div class="image" align="center">
+				<div class="<?=$class;?>">
+					<div class="position">
+						<?php if ($anime_id) { ?>
+							<b class="<?=$cor;?>"><?=highamount($p->position_anime);?>º</b>
+						<?php } else { ?>
+							<b class="<?=$cor;?>"><?=highamount($p->position_general);?>º</b>
+						<?php } ?>
 					</div>
-				</div>
-				<div class="name" style="height: 45px !important;">
-					<div class="amarelo" style="margin-bottom: 6px;">
-						<b><?=$p->name;?></b>
-					</div>
-					<img src="<?=image_url($p->faction_id . ".png");?>" width="25" />
-				</div>
-				<div class="description" style="height: auto; font-size:11px">
-					<span style="font-size:12px">
-						<?=$p->anime()->description()->name;?> /<br />
-						<?=$p->graduation()->description($p->anime()->id)->name;?>
-					</span><br />
-					Nível <?=highamount($p->level);?>
-				</div>
-				<div class="details">
-					<b class="verde" style="font-size: 14px">Liga <?php echo $p->league_id ?></b><br />
-					<b class="laranja" style="font-size: 14px">Rank <?php echo $p->rank == 0 ? "All-Star" : $p->rank?></b>
-				</div>
-				<div class="button" style="position:relative; top: 15px;">
+					<?=$p->character_theme()->first_image()->small_image();?>
 				</div>
 			</div>
-		<?php endforeach ?>
+			<div class="name" style="height: 45px !important;">
+				<div class="amarelo" style="margin-bottom: 6px;">
+					<b><?=$p->name;?></b>
+				</div>
+				<img src="<?=image_url($p->faction_id . ".png");?>" width="25" />
+			</div>
+			<div class="description" style="height: auto; font-size:11px">
+				<span style="font-size:12px">
+					<?=$p->anime()->description()->name;?> /<br />
+					<?=$p->graduation()->description($p->anime()->id)->name;?>
+				</span><br />
+				Nível <?=highamount($p->level);?>
+			</div>
+			<div class="details">
+				<b class="verde" style="font-size: 14px">Liga <?php echo $p->league_id ?></b><br />
+				<b class="laranja" style="font-size: 14px">Rank <?php echo $p->rank == 0 ? "All-Star" : $p->rank?></b>
+			</div>
+			<div class="button" style="position:relative; top: 15px;"></div>
+		</div>
+	<?php } ?>
 	<div class="break"></div>
 	<?php echo partial('shared/paginator', ['pages' => $pages, 'current' => $page + 1]) ?>
 </form>

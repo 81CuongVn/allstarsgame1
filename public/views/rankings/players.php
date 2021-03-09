@@ -138,8 +138,7 @@
 					</div>	
 				</div>	
 			</div>
-			<div class="button" style="position:relative; top: 15px;">
-			</div>
+			<div class="button" style="position:relative; top: 15px;"></div>
 		</div>
 	<?php } ?>
 	<div class="break"></div>	
