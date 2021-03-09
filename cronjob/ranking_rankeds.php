@@ -49,9 +49,9 @@
 					'level'					=> $player['level'],
 					'score'					=> $points,
 					'league_id'				=> $player['league'],
-					'loss'					=> $player['loss'],
-					'draw'					=> $player['draw'],
-					'win'					=> $player['win'],
+					'losses'				=> $player['losses'],
+					'draws'					=> $player['draws'],
+					'wins'					=> $player['wins'],
 					'rank'					=> $player['rank']
 				]);
 			}
