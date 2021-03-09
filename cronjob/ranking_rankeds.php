@@ -4,7 +4,7 @@
 	Recordset::query('TRUNCATE TABLE ranking_rankeds');
 
 	$animes		= Recordset::query('SELECT id FROM animes WHERE active = 1');
-	$rankeds	= Recordset::query('SELECT league FROM leagues WHERE finished = 0');
+	$rankeds	= Recordset::query('SELECT league FROM rankeds WHERE finished = 0');
 	foreach ($rankeds->result_array() as $ranked) {
 		foreach ($animes->result_array() as $anime) {
 			$players	= Recordset::query('
