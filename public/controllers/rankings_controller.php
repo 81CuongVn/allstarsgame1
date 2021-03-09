@@ -606,7 +606,7 @@ class RankingsController extends Controller {
 						$graduations[$grad->sorting]	= ['id' => $grad->sorting, 'name' => []];
 					}
 
-					$graduations[$grad->sorting]['name'][]	= $grad->description()->name;
+					$graduations[$grad->sorting]['name'][]	= $grad->description($anime->id)->name;
 				}
 			}
 
