@@ -19,17 +19,11 @@ require 'securerandom'
 @queues			= {}
 
 # Database settings
-@dbDev				= {
+@db				= {
 	'host'	=> 'localhost',
 	'user'	=> 'root',
 	'pass'	=> '',
 	'name'	=> 'aasg_original'
-}
-@db				= {
-	'host'	=> 'localhost',
-	'user'	=> 'root',
-	'pass'	=> '&U^kv0dgEjUl',
-	'name'	=> 'aasg'
 }
 
 # PvP range settings
