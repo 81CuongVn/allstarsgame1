@@ -53,8 +53,7 @@ foreach ($animes->result_array() as $anime) {
             ( $player['daily_total'] * 250 ) +
             ( $player['pet_total'] * 50 ) +
             ( $player['combat_total'] * 200 ) +
-            $boss_score
-        ;
+            $boss_score;
 
         Recordset::insert('ranking_players', [
             'player_id'				=> $player['id'],
@@ -67,33 +66,33 @@ foreach ($animes->result_array() as $anime) {
             'name'					=> $player['name'],
             'level'					=> $player['level'],
             'score'					=> $points,
-            'detail'				=> $player['wins_pvp'].",".($winRankeds ? $winRankeds : 0) .",".$player['wins_npc'].",".$player['graduation_level'].",".$player['time_total'].",".$player['pvp_total'].",".$player['daily_total'].",".$player['pet_total'].",".$player['combat_total']
+            'detail'				=> $player['wins_pvp'] . "," . $player['wins_npc'] . "," . $player['graduation_level'] . "," . $player['time_total'] . "," . $player['pvp_total'] . "," . $player['daily_total'] . "," . $player['pet_total'] . "," . $player['combat_total']
         ]);
     }
 
     $position	= 1;
     $players	= Recordset::query('SELECT `id`,`score`,`level` FROM `ranking_players` WHERE `anime_id`=' . $anime['id'] . ' ORDER BY `score` DESC, `level` DESC');
     foreach ($players->result_array() as $player) {
-        if ($player->score <= 0)
-            $player->delete();
-        else {
+        // if ($player->score <= 0)
+            // $player->delete();
+        // else {
             Recordset::update('ranking_players', [
                 'position_anime'	=> $position++
             ], ['id' => $player['id']]);
-        }
+        // }
     }
 }
 
 $position	= 1;
 $players	= Recordset::query('SELECT `id`,`score`,`level` FROM `ranking_players` ORDER BY `score` DESC, `level` DESC');
 foreach ($players->result_array() as $player) {
-    if ($player->score <= 0)
-        $player->delete();
-    else {
+    // if ($player->score <= 0)
+        // $player->delete();
+    // else {
         Recordset::update('ranking_players', [
             'position_general'	=> $position++
         ], ['id' => $player['id']]);
-    }
+    // }
 }
 
 echo '[Ranking Players] Cron executada com sucesso!';

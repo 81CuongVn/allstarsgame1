@@ -59,29 +59,29 @@
 			$position	= 1;
 			$players	= Recordset::query('SELECT id, score FROM ranking_rankeds WHERE league_id='.$ranked['league'].' AND anime_id=' . $anime['id'] . ' ORDER BY 2 DESC');
 			foreach($players->result_array() as $player) {
-				if ($player->score <= 0)
-					$player->delete();
-				else {
+				// if ($player->score <= 0)
+					// $player->delete();
+				// else {
 					Recordset::update('ranking_rankeds', [
 						'position_anime'	=> $position++
 					], [
 						'id'				=> $player['id']
 					]);
-				}
+				// }
 			}
 		
 		$position	= 1;
 		$players	= Recordset::query('SELECT id, score FROM ranking_rankeds WHERE league_id='.$ranked['league'].'  ORDER BY 2 DESC');
 		foreach($players->result_array() as $player) {
-			if ($player->score <= 0)
-				$player->delete();
-			else {
+			// if ($player->score <= 0)
+				// $player->delete();
+			// else {
 				Recordset::update('ranking_rankeds', [
 					'position_general'	=> $position++
 				], [
 					'id'				=> $player['id']
 				]);
-			}
+			// }
 		}
 	}
 }	
