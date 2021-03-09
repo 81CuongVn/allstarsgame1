@@ -1,32 +1,31 @@
 # UMA VEZ POR HORA
-0 * * * * php /home/anime/www/crons/objectives.php
-0 * * * * php /home/anime/www/crons/ranking.php
-0 * * * * php /home/anime/www/crons/ranking_achievement.php
-0 * * * * php /home/anime/www/crons/ranking_account.php
-0 * * * * php /home/anime/www/crons/ranking_challenge.php
-0 * * * * php /home/anime/www/crons/ranking_combat.php
-0 * * * * php /home/anime/www/crons/ranking_organization.php
-0 * * * * php /home/anime/www/crons/ranking_ranked.php
+0 * * * * php /var/www/animeallstarsgame.com.br/cronjob/objectives.php
+0 * * * * php /var/www/animeallstarsgame.com.br/cronjob/ranking_players.php
+0 * * * * php /var/www/animeallstarsgame.com.br/cronjob/ranking_achievement.php
+0 * * * * php /var/www/animeallstarsgame.com.br/cronjob/ranking_account.php
+0 * * * * php /var/www/animeallstarsgame.com.br/cronjob/ranking_challenge.php
+0 * * * * php /var/www/animeallstarsgame.com.br/cronjob/ranking_combat.php
+0 * * * * php /var/www/animeallstarsgame.com.br/cronjob/ranking_organization.php
+0 * * * * php /var/www/animeallstarsgame.com.br/cronjob/ranking_ranked.php
 
 # TODA SEGUNDA-FEIRA
-0 0 * * 1 php /home/anime/www/cron/organization_daily_quests.php
-0 0 * * 1 php /home/anime/www/cron/pet_happiness.php
-0 0 * * 1 php /home/anime/www/cron/treasure_organization.php
+0 0 * * 1 php /var/www/animeallstarsgame.com.br/cronjob/organization_daily_quests.php
+0 0 * * 1 php /var/www/animeallstarsgame.com.br/cronjob/pet_happiness.php
+0 0 * * 1 php /var/www/animeallstarsgame.com.br/cronjob/treasure_organization.php
 
 # UMA VEZ POR DIA
-0 0 * * * php /home/anime/www/crons/account_quests.php
-0 0 * * * php /home/anime/www/crons/daily_quests.php
-0 0 * * * php /home/anime/www/crons/organization_requests.php
-0 0 * * * php /home/anime/www/crons/pets_daily_quests.php
-0 0 * * * php /home/anime/www/crons/user_stats.php
+0 0 * * * php /var/www/animeallstarsgame.com.br/cronjob/account_quests.php
+0 0 * * * php /var/www/animeallstarsgame.com.br/cronjob/daily_quests.php
+0 0 * * * php /var/www/animeallstarsgame.com.br/cronjob/organization_requests.php
+0 0 * * * php /var/www/animeallstarsgame.com.br/cronjob/pets_daily_quests.php
 
 # AS 5H DA MANHÃ
-0 5 * * * php /home/anime/www/crons/statistic_players.php
+0 5 * * * php /var/www/animeallstarsgame.com.br/cronjob/statistic_players.php
 
-55 23 * * * php /home/anime/www/cron/combat_quests_rewards.php
+55 23 * * * php /var/www/animeallstarsgame.com.br/cronjob/combat_quests_rewards.php
 
 # A CADA 3 HORAS
-0 */3 * * * php /home/anime/www/cron/battle_animes.php
+0 */3 * * * php /var/www/animeallstarsgame.com.br/cronjob/battle_animes.php
 
 # A CADA 12 HORAS
-0 0,12 * * * php /home/anime/www/cron/wanteds.php
+0 0,12 * * * php /var/www/animeallstarsgame.com.br/cronjob/wanteds.php

@@ -10,9 +10,9 @@ define('BACKTRACE_DELETES',         TRUE);
 define('ROOT',						dirname(dirname(__FILE__)));
 define('RECORDSET_CACHE_OFF_FORCE', TRUE);
 
-$env = 'dev';
-if (!in_array($_SERVER['SERVER_ADDR'], [ '127.0.0.1' ])) {
-	$env = 'prod';
+$env = 'prod';
+if (!$_SERVER || in_array($_SERVER['SERVER_ADDR'], [ '127.0.0.1' ])) {
+	$env = 'dev';
 }
 
 define('FW_ENV',                    $env);
