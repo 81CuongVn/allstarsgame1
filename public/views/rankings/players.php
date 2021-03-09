@@ -125,15 +125,14 @@
 						<?php $detail = explode(",", $p->detail);?>
 						<div class="status-popover-content" style="min-width: 150px;">
 							Vitórias PVP: <span class="verde" style="float: right;"><?=highamount($detail[0] * 50);?></span><br />
-							Vitórias Liga: <span class="verde" style="float: right;"><?=highamount($detail[1] * 50);?></span><br />
-							Vitórias NPC: <span class="verde" style="float: right;"><?=highamount($detail[2] * 10);?></span><br />
-							Graduação: <span class="verde" style="float: right;"><?=highamount($detail[3] * 1000);?></span><br />
+							Vitórias NPC: <span class="verde" style="float: right;"><?=highamount($detail[1] * 10);?></span><br />
+							Graduação: <span class="verde" style="float: right;"><?=highamount($detail[2] * 1000);?></span><br />
 							Nível: <span class="verde" style="float: right;"><?=highamount($p->level * 1000);?></span><br />
-							Missão de Tempo: <span class="verde" style="float: right;"><?=highamount($detail[4] * 100);?></span><br />
-							Missão PVP: <span class="verde" style="float: right;"><?=highamount($detail[5] * 200);?></span><br />
-							Missão Diária: <span class="verde" style="float: right;"><?=highamount($detail[6] * 250);?></span><br />
-							Missão de Mascote: <span class="verde" style="float: right;"><?=highamount($detail[7] * 50);?></span><br />
-							Missão de Combate: <span class="verde" style="float: right;"><?=highamount($detail[8] * 200);?></span><br /><br />
+							Missão de Tempo: <span class="verde" style="float: right;"><?=highamount($detail[3] * 100);?></span><br />
+							Missão PVP: <span class="verde" style="float: right;"><?=highamount($detail[4] * 200);?></span><br />
+							Missão Diária: <span class="verde" style="float: right;"><?=highamount($detail[5] * 250);?></span><br />
+							Missão de Mascote: <span class="verde" style="float: right;"><?=highamount($detail[6] * 50);?></span><br />
+							Missão de Combate: <span class="verde" style="float: right;"><?=highamount($detail[7] * 200);?></span><br /><br />
 							Total de Pontos: <span class="laranja" style="float: right;"><?=highamount($p->score);?></span>
 						</div>	
 					</div>	

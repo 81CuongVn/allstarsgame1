@@ -522,6 +522,112 @@ class RankingsController extends Controller {
 		$this->assign('challenges', $challenges);
 		$this->assign('graduations', $graduations);
 	}
+	function rankeds(){
+		$player		= Player::get_instance();
+		$page		= isset($_POST['page']) && is_numeric($_POST['page']) ? $_POST['page'] : 0;
+		$limit		= 32;
+		$filter		= '';
+		$filter2	= '';
+
+		if(!$_POST) {
+			$filter			.= '';
+			$filter2		.= '';
+			$anime_id		= 0;
+			$faction_id		= 0;
+			$league_id		= 0;
+			$graduation_id	= 0;
+			$name			= '';
+		} else {
+			if(isset($_POST['anime_id']) && is_numeric($_POST['anime_id'])) {
+				if($_POST['anime_id'] != 0) {
+					$filter2 .= ' AND anime_id=' . $_POST['anime_id'];						
+				}
+
+				$anime_id	= $_POST['anime_id'];
+			} else {
+				$anime_id	= $player->character()->anime_id;
+			}
+			
+			if(isset($_POST['faction_id']) && is_numeric($_POST['faction_id'])) {
+				if($_POST['faction_id'] != 0) {
+					$filter	.= ' AND faction_id=' . $_POST['faction_id'];						
+				}
+
+				$faction_id	= $_POST['faction_id'];
+			} else {
+				//$anime_id	= $player->character()->anime_id;
+			}
+			if(isset($_POST['league_id']) && is_numeric($_POST['league_id'])) {
+				if($_POST['league_id'] != 0) {
+					$filter	.= ' AND league_id=' . $_POST['league_id'];						
+				}
+
+				$league_id	= $_POST['league_id'];
+			} else {
+				//$anime_id	= $player->character()->anime_id;
+			}
+			
+			if(isset($_POST['graduation_id']) && is_numeric($_POST['graduation_id'])) {
+				if($_POST['graduation_id'] != 0) {
+					if ($anime_id) {
+						$filter	.= ' AND graduation_id=' . $_POST['graduation_id'];
+					} else {
+						$filter	.= ' AND graduation_id IN(SELECT id FROM graduations WHERE sorting=' . $_POST['graduation_id'] . ')';
+					}
+				}
+
+				$graduation_id	= $_POST['graduation_id'];
+			} else {
+				$graduation_id	= 0;
+			}
+
+			if(isset($_POST['name']) && strlen(trim($_POST['name']))) {
+				$filter	.= ' AND name LIKE "%' . addslashes($_POST['name']) . '%"';
+				$name	= $_POST['name'];
+			} else {
+				$name	= '';
+			}
+		}
+
+		$result		= RankingRanked::filter($filter,$filter2, $page, $limit);
+		$animes		= Anime::find('active=1', ['cache' => true]);
+		$leagues	= Ranked::find('started = 1 order by league desc');
+
+		if($anime_id) {
+			$graduations	= Graduation::find('anime_id=' . $anime_id, ['cache' => true]);
+		} else {
+			$graduations	= [];
+
+			foreach ($animes as $anime) {
+				$grads	= Graduation::find('anime_id=' . $anime->id, ['cache' => true]);
+
+				foreach ($grads as $grad) {
+					if(!isset($graduations[$grad->sorting])) {
+						$graduations[$grad->sorting]	= ['id' => $grad->sorting, 'name' => []];
+					}
+
+					$graduations[$grad->sorting]['name'][]	= $grad->description()->name;
+				}
+			}
+
+			foreach ($graduations as $key => $graduation) {
+				$graduations[$key]['name']	= implode(' / ', $graduation['name']);
+			}
+		}
+
+		$this->assign('player', $player);
+		$this->assign('players', $result['players']);
+		$this->assign('pages', $result['pages']);
+		$this->assign('page', $page);
+		$this->assign('anime_id', $anime_id);
+		$this->assign('faction_id', $faction_id);
+		$this->assign('league_id', $league_id);
+		$this->assign('graduation_id', $graduation_id);
+		$this->assign('name', $name);
+		$this->assign('animes', $animes);
+		$this->assign('leagues', $leagues);
+		$this->assign('graduations', $graduations);
+	}
 	function organizations(){
 		$player		= Player::get_instance();
 		$page		= isset($_POST['page']) && is_numeric($_POST['page']) ? $_POST['page'] : 0;
