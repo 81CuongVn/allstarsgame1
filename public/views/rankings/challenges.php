@@ -112,6 +112,11 @@
 			</div>
 			<div class="name" style="height: 45px !important;">
 				<div class="amarelo" style="margin-bottom: 6px;">
+					<?php if (is_player_online($p->player_id)): ?>
+						<img src="<?php echo image_url("on.png" ) ?>"/>
+					<?php else: ?>
+						<img src="<?php echo image_url("off.png" ) ?>"/>
+					<?php endif ?>
 					<b><?=$p->name;?></b>
 				</div>
 				<img src="<?=image_url($p->faction_id . ".png");?>" width="25" />

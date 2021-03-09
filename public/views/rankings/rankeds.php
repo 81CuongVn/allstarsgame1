@@ -16,7 +16,7 @@
 			</td>
             <td align="center">
 				<b>Liga</b><br />
-				<select name="league_id" class="form-control">
+				<select name="league_id" class="form-control" style="width: 80px;">
 					<option value="0"><?php echo t('global.all') ?></option>
 					<?php foreach ($leagues as $league): ?>
 						<option value="<?php echo $league->league ?>" <?php if ($league->league == $league_id): ?>selected="selected"<?php endif ?>><?php echo $league->league ?></option>
@@ -25,10 +25,11 @@
 			</td>
 			<td align="center">
 				<b><?php echo t('characters.select.labels.faction') ?></b><br />
-				<select name="faction_id" class="form-control">
+				<select name="faction_id" class="form-control" style="width: 85px;">
 					<option value="0"><?php echo t('global.all') ?></option>
-					<option value="1" <?php if (1 == $faction_id): ?>selected="selected"<?php endif ?>>Herói</option>
-					<option value="2" <?php if (2 == $faction_id): ?>selected="selected"<?php endif ?>>Vilões</option>
+					<?php foreach ($factions as $faction): ?>
+						<option value="<?=$faction->id;?>"<?php if ($faction->id == $faction_id): ?>selected="selected"<?php endif ?>><?=$faction->name;?></option>
+          			<?php endforeach ?>
 				</select>
 			</td>
 			<td align="center">
@@ -116,6 +117,11 @@
 			</div>
 			<div class="name" style="height: 45px !important;">
 				<div class="amarelo" style="margin-bottom: 6px;">
+					<?php if (is_player_online($p->player_id)): ?>
+						<img src="<?php echo image_url("on.png" ) ?>"/>
+					<?php else: ?>
+						<img src="<?php echo image_url("off.png" ) ?>"/>
+					<?php endif ?>
 					<b><?=$p->name;?></b>
 				</div>
 				<img src="<?=image_url($p->faction_id . ".png");?>" width="25" />
