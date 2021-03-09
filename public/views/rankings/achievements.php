@@ -30,14 +30,14 @@
 			<td align="center">
 				<b><?php echo t('characters.select.labels.graduation') ?></b><br />
 				<select name="graduation_id" class="form-control" style="width: 130px">
-					<option value="0"><?php echo t('global.all') ?></option>
-					<?php foreach ($graduations as $graduation): ?>
+					<option value="0"><?=t('global.all');?></option>
+					<?php if ($anime_id): foreach ($graduations as $graduation): ?>
 						<?php if ($anime_id): ?>
-							<option value="<?php echo $graduation->id ?>" <?php if ($graduation->id == $graduation_id): ?>selected="selected"<?php endif ?>><?php echo $graduation->description($anime_id)->name ?></option>
+							<option value="<?=$graduation->id;?>" <?php if ($graduation->id == $graduation_id): ?>selected="selected"<?php endif ?>><?=$graduation->description($anime_id)->name;?></option>
 						<?php else: ?>
-							<option value="<?php echo $graduation['id'] ?>" <?php if ($graduation['id'] == $graduation_id): ?>selected="selected"<?php endif ?>><?php echo $graduation['name'] ?></option>
-						<?php endif ?>
-					<?php endforeach ?>
+							<option value="<?=$graduation['id'];?>" <?php if ($graduation['id'] == $graduation_id): ?>selected="selected"<?php endif ?>><?=$graduation['name'];?></option>
+						<?php endif; ?>
+					<?php endforeach; endif; ?>
 				</select>
 			</td>
 			<td align="center">
