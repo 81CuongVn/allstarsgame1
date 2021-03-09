@@ -102,39 +102,37 @@
 					}
 				}	
 			?>
-			<div class="ability-speciality-box" style="width: 175px !important; height: 270px !important; padding-bottom: 40px">
-				<div>
-					<div class="image">
-						<div class="<?php echo $class?>"><?php echo $p->character_theme()->first_image()->small_image() ?></div>
-						<div style="position: absolute; left: 90px; top: -1px; border-radius: 10px; border-top-right-radius: 2px; border-bottom-left-radius: 2px; background-repeat: no-repeat; background-position: center center; background-color: <?php echo $cor_fundo?>; padding: 5px;">
-							<?php if ($anime_id): ?>
-								<b style="font-size:18px" class="<?php echo $cor?>"><?php echo $p->position_anime ?>º</b>
-							<?php else: ?>
-								<b style="font-size:18px" class="<?php echo $cor?>"><?php echo $p->position_general ?>º</b>
-							<?php endif ?>
+			<div class="ability-speciality-box" style="width: 175px !important; height: 250px !important; padding-bottom: 40px">
+				<div class="image" align="center">
+					<div class="<?=$class;?>">
+						<div class="position">
+							<?php if ($anime_id) { ?>
+								<b class="<?=$cor;?>"><?=highamount($p->position_anime);?>º</b>
+							<?php } else { ?>
+								<b class="<?=$cor;?>"><?=highamount($p->position_general);?>º</b>
+							<?php } ?>
 						</div>
+						<?=$p->character_theme()->first_image()->small_image();?>
 					</div>
-					<div class="name" style="height: 45px !important;">
-						<span class="amarelo">
-							<?php if (is_player_online($p->player_id)): ?>
-								<img src="<?php echo image_url("on.png" ) ?>"/>
-							<?php else: ?>
-								<img src="<?php echo image_url("off.png" ) ?>"/>
-							<?php endif ?>
-							<?php echo $p->name ?></b><br />
-						</span>
-						<img src="<?php echo image_url( $p->faction_id.".png" ) ?>" width="25"/>
+				</div>
+				<div class="name" style="height: 45px !important;">
+					<div class="amarelo" style="margin-bottom: 6px;">
+						<b><?=$p->name;?></b>
 					</div>
-					<div class="description" style="height: auto; font-size:11px">
-						<span style="font-size:12px"><?php echo $p->anime()->description()->name ?> / <?php echo $p->graduation()->description()->name ?></span><br />
-						Level <?php echo $p->level ?>
-					</div>
-					<div class="details">
-						<b class="verde" style="font-size: 14px">Liga <?php echo $p->league_id ?></b><br />
-						<b class="laranja" style="font-size: 14px">Rank <?php echo $p->rank == 0 ? "All-Star" : $p->rank?></b>
-					</div>
-					<div class="button" style="position:relative; top: 15px;">
-					</div>
+					<img src="<?=image_url($p->faction_id . ".png");?>" width="25" />
+				</div>
+				<div class="description" style="height: auto; font-size:11px">
+					<span style="font-size:12px">
+						<?=$p->anime()->description()->name;?> /<br />
+						<?=$p->graduation()->description($p->anime()->id)->name;?>
+					</span><br />
+					Nível <?=highamount($p->level);?>
+				</div>
+				<div class="details">
+					<b class="verde" style="font-size: 14px">Liga <?php echo $p->league_id ?></b><br />
+					<b class="laranja" style="font-size: 14px">Rank <?php echo $p->rank == 0 ? "All-Star" : $p->rank?></b>
+				</div>
+				<div class="button" style="position:relative; top: 15px;">
 				</div>
 			</div>
 		<?php endforeach ?>
