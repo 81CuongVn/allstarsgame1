@@ -24,7 +24,7 @@ else {
         if (!$have)
             continue;
         ?>
-        <h3 <?=($i == 2 ? 'style="margin-top: 10px;"' : '')?>><?=($type->id != 10 ? t('item_types.' . $type->id) : "Especiais");?></h3>
+        <h3 <?=($i >= 2 ? 'style="margin-top: 10px;"' : '')?>><?=($type->id != 10 ? t('item_types.' . $type->id) : "Especiais");?></h3>
         <div class="clearfix"></div>
         <?php foreach ($items as $item) { ?>
             <div class="item" data-consumable="<?=(in_array($item->item_type_id, $consumables) ? 1 : 0);?>" data-id="<?=$item->id;?>" data-quantity="<?=$player_item->quantity;?>">

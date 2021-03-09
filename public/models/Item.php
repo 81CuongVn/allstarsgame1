@@ -289,7 +289,7 @@
 				return ItemDescription::find_first('item_id=' . $this->id . ' AND language_id=' . $_SESSION['language_id'], array('cache' => true));
 			}
 			
-			if(($this->is_generic && (!$anime_id || in_array($this->item_type_id, [5,7,9,10,12,13,15]))) || in_array($this->id, [112, 113])) {
+			if(($this->is_generic && (!$anime_id || in_array($this->item_type_id, [5,7,9,10,12,13,15,16]))) || in_array($this->id, [112, 113])) {
 				if($this->item_type_id == 3){
 					$description	= ItemDescription::find_first('item_id=' . $this->id . ' AND language_id=' . $_SESSION['language_id'], array('cache' => true));
 				}else{
@@ -359,7 +359,7 @@
 				if($this->_character_theme_id) {
 					$path	= $base . '/' . $this->_anime_id . '/' . $this->_character_theme_id .'/' . $description->image;
 				} else {
-					if($this->is_generic && in_array($this->item_type_id, [5,6,7,10,12,13,15])) {
+					if($this->is_generic && in_array($this->item_type_id, [5,6,7,10,12,13,15,16])) {
 						$path	= $base . '/' . $description->image;
 					} else {
 						$path	= $base . '/' . $this->_anime_id . '/' . $description->image;
@@ -601,7 +601,7 @@
 		function tooltip($battle_tooltip = false) {
 			if($this->item_type_id == 3) {
 				return $this->pet_tooltip($battle_tooltip);
-			} elseif($this->item_type_id == 5 || $this->item_type_id == 10 || $this->item_type_id == 12 || $this->item_type_id == 13 || $this->item_type_id == 15) {
+			} elseif($this->item_type_id == 5 || $this->item_type_id == 10 || $this->item_type_id == 12 || $this->item_type_id == 13 || $this->item_type_id == 15 || $this->item_type_id == 16) {
 				return $this->consumable_tooltip($battle_tooltip);
 			} elseif($this->item_type_id == 6) {
 				return $this->talent_tooltip($battle_tooltip);

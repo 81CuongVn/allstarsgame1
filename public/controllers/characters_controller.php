@@ -306,12 +306,13 @@ class CharactersController extends Controller {
 	function status() {
 		$player			= Player::get_instance();
 		$user			= User::get_instance();
-		
+		$player_ranked	= $player->ranked();
+		$best_rank		= PlayerRanked::find_first("player_id={$player->id} order by rank asc limit 1");
 		$player_stat	= PlayerStat::find_first("player_id=". $player->id);
 		
 		// Começando o novo modulo de missão de conta
 		$user_quest_counter = UserQuestCounter::find_first("user_id=". $player->user_id);
-		if(!$user_quest_counter){
+		if (!$user_quest_counter) {
 			$user_quest_counter = new UserQuestCounter();
 			$user_quest_counter->user_id = $player->user_id;
 			$user_quest_counter->save();
@@ -319,11 +320,16 @@ class CharactersController extends Controller {
 		
 		// Começando o novo modulo de recompensa diária
 		$player_fidelity = PlayerFidelity::find_first("player_id=". $player->id);
-		if(!$player_fidelity){
+		if (!$player_fidelity) {
 			$player_fidelity = new PlayerFidelity();
 			$player_fidelity->player_id = $player->id;
 			$player_fidelity->day = 1;	
 			$player_fidelity->save();
+		}
+
+		if ($best_rank) {
+			$ranked_total					= Recordset::query("SELECT SUM(wins) AS total_wins, SUM(losses) AS total_losses, SUM(draws) AS total_draws FROM player_rankeds WHERE player_id = {$player->id}");
+			$this->assign('ranked_total',	$ranked_total->result_array()[0]);
 		}
 		
 		$formulas	= [
@@ -349,6 +355,8 @@ class CharactersController extends Controller {
 		$this->assign('player',					$player);
 		$this->assign('stat',					$player_stat);
 		$this->assign('formulas',				$formulas);
+		$this->assign('best_rank',				$best_rank);
+		$this->assign('player_ranked',			$player_ranked);
 		$this->assign('quest_counters',			$player->quest_counters());
 		$this->assign('user_quest_counters',	$user->quest_counters());
 		$this->assign('player_tutorial',		$player->player_tutorial());
@@ -375,7 +383,7 @@ class CharactersController extends Controller {
 			if(is_numeric($_POST['id'])) {
 				$image	= CharacterThemeImage::find($_POST['id']);
 
-				if(!$image) {
+				if(!$image || !$image->active) {
 					$errors[]	= t('character.status.change_image.errors.invalid');
 				} else {
 					if($image->character_theme_id != $player->character_theme_id) {
@@ -628,7 +636,7 @@ class CharactersController extends Controller {
 
 	function inventory() {
 		// REMOVED = 7
-		$ids			= [5, 10, 12, 13];
+		$ids			= [5, 10, 12, 13, 16];
 		$consumables	= [5];
 		$player			=& Player::get_instance();
 		$items			= [];
@@ -687,27 +695,26 @@ class CharactersController extends Controller {
 			}
 
 			if(!sizeof($errors)) {
-				switch($item->item_type_id) {
-					case 5:
-						$player->less_life				-= $item->for_life;
-						$player->less_mana				-= $item->for_mana;
-						$player->less_stamina			-= $item->for_stamina;
+				if ($item->item_type_id == 5) {
+					$player->less_life				-= $item->for_life;
+					$player->less_mana				-= $item->for_mana;
+					$player->less_stamina			-= $item->for_stamina;
 
-						if($player->less_life <= 0) {
-							$player->less_life	= 0;
-						}
+					if($player->less_life <= 0) {
+						$player->less_life	= 0;
+					}
 
-						if($player->less_mana <= 0) {
-							$player->less_mana	= 0;
-						}
+					if($player->less_mana <= 0) {
+						$player->less_mana	= 0;
+					}
 
-						if($player->less_stamina <= 0) {
-							$player->less_stamina	= 0;
-						}
+					if($player->less_stamina <= 0) {
+						$player->less_stamina	= 0;
+					}
 
-						$player->save();
+					$player->save();
+				} elseif ($item->item_type_id == 16) {
 
-						break;
 				}
 
 				$this->json->life			= $player->for_life();
@@ -1427,6 +1434,9 @@ class CharactersController extends Controller {
 						$player_tutorial->missoes_conta = 1;
 					break;
 					case 23:
+						$player_tutorial->battle_ranked = 1;
+					break;
+					case 24:
 						$player_tutorial->objectives = 1;
 					break;	
 						

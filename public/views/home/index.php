@@ -34,6 +34,20 @@
 			<div class="next"></div>
 		</div>
 	</div>
+	<div class="noticias-5">
+		<div style="position: absolute; top: 41px; left: 89px;">
+			<?php if (sizeof($leagues)): ?>
+				<select name="sl-leagues" id="sl-leagues" class="form-control input-sm" style="line-height: 19px;height: 19px;padding: 2px 5px;">
+					<?php foreach ($leagues as $league): ?>
+						<option value="<?php echo $league->league ?>"><?php echo $league->league ?></option>
+					<?php endforeach ?>
+				</select>
+			<?php endif; ?>
+		</div>
+		<div class="leagues-list" style="height:135px">
+		
+		</div>
+	</div>
 	<div class="noticias-3">
 		<div class="tops-list" style="height:170px">
 			<?php echo t('global.wait')?>

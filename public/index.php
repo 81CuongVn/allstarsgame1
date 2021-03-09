@@ -143,6 +143,7 @@ require_once ROOT . '/helpers/item_helper.php';
 require_once ROOT . '/helpers/menu_helper.php';
 require_once ROOT . '/helpers/player_helper.php';
 require_once ROOT . '/helpers/user_helper.php';
+require_once ROOT . '/helpers/ranked_helper.php';
 require_once ROOT . '/helpers/pagseguro_helper.php';
 
 $___memory['after_helpers']	= memory_get_usage();

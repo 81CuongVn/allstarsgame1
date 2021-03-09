@@ -56,7 +56,7 @@
 			}
 		}
 		function images() {
-			return CharacterThemeImage::find('character_theme_id=' . $this->id, array('cache' => true));
+			return CharacterThemeImage::find('active = 1 and character_theme_id=' . $this->id, array('cache' => true));
 		}
 		
 		function first_image() {

@@ -5,6 +5,132 @@ use PhpAmqpLib\Message\AMQPMessage;
 class BattlePvpsController extends Controller {
 	use BattleSharedMethods;
 
+	function ranked() {
+		$player								= Player::get_instance();
+		$leagues							= Ranked::find('started = 1 order by league asc');
+		$best_rank							= PlayerRanked::find_first("player_id=" . $player->id . " ORDER BY rank ASC LIMIT 1");
+
+		// Verifica se você tem liga completa - Conquista
+		$player->achievement_check("league");
+
+		if (!$_POST)	$league				= Ranked::find_first('started = 1 order by league desc');
+		else			$league				= Ranked::find_first($_POST['leagues']);
+		
+		if ($league)	$player_ranked		= $player->ranked($league->league);
+		else			$player_ranked		= FALSE;
+
+		$this->assign('player',				$player);
+		$this->assign('league',				$league);
+		$this->assign('leagues',			$leagues);
+		$this->assign('player_ranked',		$player_ranked);
+		$this->assign('player_tutorial',	$player->player_tutorial());
+		
+		if ($best_rank) {
+			$ranked_total					= Recordset::query("SELECT SUM(wins) AS total_wins, SUM(losses) AS total_losses, SUM(draws) AS total_draws FROM player_rankeds WHERE player_id = {$player->id}");
+			$this->assign('best_rank',		$best_rank);
+			$this->assign('ranked_total',	$ranked_total->result_array()[0]);
+		}
+	}
+
+	function reward() {
+		$this->as_json			= true;
+		$this->json->success	= false;
+
+		$player					= Player::get_instance();
+		$user					= User::get_instance();
+		$errors					= [];
+		$content				= "";
+
+		if (isset($_POST['id']) && is_numeric($_POST['id'])) {
+			$league			= Ranked::find($_POST['id']);
+			if ($league || !$league->finished) {
+				$player_ranked	=  $player->ranked($league->league);
+				if (!$player_ranked) {
+					$errors[]	= t('ranked.errors.not_league');
+				} else {
+					if ($player_ranked->reward) {
+						$errors[]	= t('ranked.errors.no_reward');
+					}
+					if ($player->id != $player_ranked->player_id) {
+						$errors[]	= t('ranked.errors.no_player');
+					}
+				}
+			} else {
+				$errors[]	= t('ranked.errors.not_league');
+			}
+
+			if (!sizeof($errors)) {
+				$rewards  = RankedReward::find_first("league = {$league->league} and rank = {$player_ranked->rank}");
+				$player_ranked->reward = 1;
+				$player_ranked->save();
+
+				if ($rewards->currency) {
+					$player->earn($rewards->currency);
+					$content .= highamount($rewards->currency) ." ". t('currencies.' . $player->character()->anime_id). "<br />";
+				}
+				if ($rewards->exp) {
+					$player->earn_exp($rewards->exp);
+					$content .= highamount($rewards->exp). " " . t('ranked.exp')."<br />" ;
+				}
+				if ($rewards->credits) {
+					$user->earn($rewards->credits);
+					$content .= highamount($rewards->credits) ." ". t('treasure.show.credits'). "<br />";
+
+					// Verifica os créditos do jogador.
+					$player->achievement_check("credits");
+				}
+				if ($rewards->exp_user) {
+					$user->exp($rewards->exp_user);
+					$content .= highamount($rewards->exp_user) . " " . t('ranked.exp_account')."<br />";
+				}
+				if ($rewards->headline_id) {
+					$reward_headline				= new UserHeadline();
+					$reward_headline->user_id		= $player->user_id;
+					$reward_headline->headline_id	= $rewards->headline_id;
+					$reward_headline->save();
+
+					$content .= t('treasure.show.headline') ." ". Headline::find($rewards->headline_id)->description()->name . "<br />";
+				}
+				if ($rewards->character_id) {
+					$reward_character				= new UserCharacter();
+					$reward_character->user_id		= $player->user_id;
+					$reward_character->character_id	= $rewards->character_id;
+					$reward_character->was_reward	= 1;
+					$reward_character->save();
+
+					$content .= t('treasure.show.character') ." ". Character::find($rewards->character_id)->description()->name . "<br />";
+				}
+				if ($rewards->character_theme_id) {
+					$reward_theme						= new UserCharacterTheme();
+					$reward_theme->user_id				= $player->user_id;
+					$reward_theme->character_theme_id	= $rewards->character_theme_id;
+					$reward_theme->was_reward			= 1;
+					$reward_theme->save();
+
+					$content .= t('treasure.show.theme') ." ". CharacterTheme::find($rewards->character_theme_id)->description()->name . "<br />";
+				}
+				if($rewards->item_id) {
+					$item		= Item::find_first($rewards->item_id);
+					$player->add_consumable($item, $rewards->quantity);
+
+					$content .= highamount($rewards->quantity) ."x ". Item::find($rewards->item_id)->description()->name . "<br />";
+				}
+				
+				$pm				= new PrivateMessage();
+				$pm->to_id		= $player->id;
+				$pm->subject	= t("ranked.reward_league") . " - ". ($player_ranked->rank == 0 ? "Rank All-Star" : "Rank {$player_ranked->rank}");
+				$pm->content	= $content;
+				$pm->save();
+
+				$this->json->success = TRUE;
+			}
+		} else {
+			$errors[]	= t('ranked.errors.not_league');
+		}
+
+		$this->json->messages	= $errors;
+	}
+
 	function index() {
 		$player	= Player::get_instance();
 
@@ -221,7 +347,12 @@ class BattlePvpsController extends Controller {
 			$channel				= $connection->channel();
 			$channel->queue_declare(PVP_CHANNEL, false, false, false, false);
 			
-			$battle_type_id = 2;
+			if (date('w') == 0 || date('w') == 2 || date('w') == 4) {
+				$battle_type_id = 5;
+			} else {
+				$battle_type_id = 2;
+			}
+
 			$message	= new AMQPMessage(json_encode([
 				'method'			=> 'enter_queue',
 				'queue_id'			=> null,

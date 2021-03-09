@@ -18,7 +18,7 @@ $database			= [
 	'host'			=> '127.0.0.1',
 	'username'		=> 'root',
 	'password'		=> '',
-	'database'		=> 'aasg',
+	'database'		=> 'aasg_original',
 	'connection'	=> 'primary',
 	'cache_mode'	=> RECORDSET_SHM,
 	'cache_id'		=> 'AASG'
@@ -99,8 +99,8 @@ define('MONEY_RATE',			10);
 define('PVP_TURN_TIME',			120);
 
 # Energy costs
-define('NPC_COST',				15);
-define('PVP_COST',				20);
+define('NPC_COST',				10);
+define('PVP_COST',				10);
 
 # Event settings
 define('EVENT_ACTIVE', 			TRUE);

@@ -1,9 +1,5 @@
-<?php if($_SESSION['universal']){
-
-}
-?>
-<?php if(!$player_tutorial->status){?>
-    <script>
+<?php if (!$player_tutorial->status) { ?>
+    <script type="text/javascript">
         $(function () {
             $("#conteudo.with-player").css("z-index", 'initial');
             $(".info").css("z-index", 'initial');
@@ -12,66 +8,51 @@
             var tour = new Tour({
                 backdrop: true,
                 page: 1,
-
-                steps: [
-                    {
-                        element: ".top-expbar-container",
-                        title: "Bem Vindo ao <?=GAME_NAME;?>!",
-                        content: "Ganhe experiência batalhando e realizando missões! Sua vida e sua mana serão recuperados no final de cada batalha, porém sua Stamina irá recuperar 2 a cada 5 minutos, ou comendo Alimentos!",
-                        placement: "left"
-                    },
-                    {
-                        element: ".top-expbar-container",
-                        title: "Evolua sua Conta",
-                        content: "Além do personagem, você também recebe Experiência de Conta, que é compartilhada entre todos os seus personagens. Ao evoluir sua conta, você pode aprender novos Talentos e Treinar Atributos!",
-                        placement: "right"
-                    },
-                    {
-                        element: ".tutorial_formulas",
-                        title: "Atributos de Combate",
-                        content: "Coloque o mouse em cima de cada ícone para entender melhor cada um! Você aumenta seus atributos através de Equipamentos e evoluindo o level da sua conta.",
-                        placement: "right",
-                    },
-                    {
-                        element: ".h-combates",
-                        title: "Estatísticas de Batalha",
-                        content: "Suas vitórias, derrotas e empates contra NPCs e outros jogadores ficarão marcadas aqui!",
-                        placement: "left",
-                    },
-                    {
-                        element: ".tutorial_missoes",
-                        title: "Estatísticas de Missões",
-                        content: "Resumo de suas missões concluídas com sucesso. Cada missão completa te dá uma certa quantidade de Pontos.",
-                        placement: "top",
-                    },
-                    {
-                        element: ".msg-container",
-                        title: "Batalhas Competitivas",
-                        content: "Nas terças, quintas e domingos as Batalhas PVP automaticamente se tornam Batalhas da Liga, onde você terá 25 batalhas por Rank para ir para o próximo. No final do mês receberá recompensas baseada no Rank que parou.",
-                        placement: "left",
-                    },
-                    {
-                        element: ".tutorial_ranking",
-                        title: "Colocação do Personagem",
-                        content: "Consiga Pontos por cada coisa realizada pelo jogo e suba sua colocação para ser reconhecido por todos seus amigos e inimigos!",
-                        placement: "left",
-                    },
-                    {
-                        element: ".tutorial_profile",
-                        title: "Customização do Personagem",
-                        content: "Consiga títulos completando Conquistas e outras tarefas pelo site. Você também poderá mudar o Tema de seu personagem e escolher entre diversas Imagens!",
-                        placement: "right",
-                    }
-                ]});
-            //Renicia o Tour
+                steps: [{
+                    element: ".top-expbar-container",
+                    title: "Bem Vindo ao <?=GAME_NAME;?>!",
+                    content: "Ganhe experiência batalhando e realizando missões! Sua vida e sua mana serão recuperados no final de cada batalha, porém sua Stamina irá recuperar 2 a cada 5 minutos, ou comendo Alimentos!",
+                    placement: "left"
+                }, {
+                    element: ".top-expbar-container",
+                    title: "Evolua sua Conta",
+                    content: "Além do personagem, você também recebe Experiência de Conta, que é compartilhada entre todos os seus personagens. Ao evoluir sua conta, você pode aprender novos Talentos e Treinar Atributos!",
+                    placement: "right"
+                }, {
+                    element: ".tutorial_formulas",
+                    title: "Atributos de Combate",
+                    content: "Coloque o mouse em cima de cada ícone para entender melhor cada um! Você aumenta seus atributos através de Equipamentos e evoluindo o level da sua conta.",
+                    placement: "right",
+                }, {
+                    element: ".h-combates",
+                    title: "Estatísticas de Batalha",
+                    content: "Suas vitórias, derrotas e empates contra NPCs e outros jogadores ficarão marcadas aqui!",
+                    placement: "left",
+                }, {
+                    element: ".tutorial_missoes",
+                    title: "Estatísticas de Missões",
+                    content: "Resumo de suas missões concluídas com sucesso. Cada missão completa te dá uma certa quantidade de Pontos.",
+                    placement: "top",
+                }, {
+                    element: "#tutorial_ranked",
+                    title: "Batalhas Competitivas",
+                    content: "Nas terças, quintas e domingos as Batalhas PvP automaticamente se tornam Batalhas da Liga, onde você lutará para ir para subir seu Rank. Ao final da liga, você receberá recompensas baseada no Rank que parou.",
+                    placement: "left",
+                }, {
+                    element: ".tutorial_ranking",
+                    title: "Colocação do Personagem",
+                    content: "Consiga Pontos por cada coisa realizada pelo jogo e suba sua colocação para ser reconhecido por todos seus amigos e inimigos!",
+                    placement: "left",
+                }, {
+                    element: ".tutorial_profile",
+                    title: "Customização do Personagem",
+                    content: "Consiga títulos completando Conquistas e outras tarefas pelo site. Você também poderá mudar o Tema de seu personagem e escolher entre diversas Imagens!",
+                    placement: "right",
+                }]
+            });
             tour.restart();
-
-            // Initialize the tour
             tour.init(true);
-
-            // Start the tour
             tour.start(true);
-
         });
     </script>
 <?php }?>
@@ -161,3 +142,43 @@
         <span class="verde"><?php echo t('characters.status.account') ?>:</span> <?php echo $user_quest_counters->daily_total ?><br />
     </div>
 </div>
+<?php if ($best_rank) { ?>
+<div class="break"></div>
+<div id="tutorial_ranked">
+    <?php
+        echo partial('shared/info', array(
+            'id'		=> 1,
+            'title'		=> 'ranked.liga',
+            'message'	=> t('battles.ranked.description2')
+        ));
+    ?>
+</div>
+<div class="h-missoes">
+    <div style="width: 341px; text-align: center; padding-top: 12px">
+        <b class="amarelo" style="font-size:13px">
+            <?php if ($player_ranked) { ?>
+                Rank <?php echo ($player_ranked->rank == 0 ? 'All-Star' : $player_ranked->rank)?>
+            <?php } else { ?>
+                -
+            <?php } ?>
+        </b>
+    </div>
+    <div style="width: 341px; text-align: center; padding-top: 22px; font-size: 12px !important; line-height: 15px;">
+        <span class="verde"><?php echo t('ranked.total_pontos');?>: </span><?php echo ($player_ranked ? highamount($player_ranked->points()) : '-'); ?><br />
+        <span class="verde"><?php echo t('ranked.total_batalhas');?>: </span><?php echo ($player_ranked ? highamount($player_ranked->wins + $player_ranked->losses + $player_ranked->draws) : '-'); ?><br /><br />
+        <span class="verde"><?php echo t('ranked.vitorias');?>: </span><?php echo ($player_ranked ? highamount($player_ranked->wins) : '-'); ?> <br />
+        <span class="vermelho"><?php echo t('ranked.derrotas');?>: </span><?php echo ($player_ranked ? highamount($player_ranked->losses) : '-'); ?> <br />
+        <span><?php echo t('ranked.empates');?>: </span><?php echo ($player_ranked ? highamount($player_ranked->draws) : '-'); ?> <br />
+    </div>
+</div>
+<div class="h-missoes tutorial_ranking" style="left: 31px">
+    <div style="width: 341px; text-align: center; padding-top: 12px"><b class="amarelo" style="font-size:13px"><?php echo t('ranked.resumo');?></b></div>
+    <div style="width: 341px; text-align: center; padding-top: 22px; font-size: 12px !important; line-height: 15px;">
+        <span class="verde"><?php echo t('ranked.melhor_rank');?>: </span> <?php echo ($best_rank ? ($best_rank->rank == 0 ? "Rank All-Star" : "Rank ". $best_rank->rank) : '-'); ?><br />
+        <span class="verde"><?php echo t('ranked.total_batalhas');?>: </span><?php echo ($best_rank ? highamount($ranked_total['total_wins'] + $ranked_total['total_losses'] + $ranked_total['total_draws']) : '-'); ?><br /><br />
+        <span class="verde"><?php echo t('ranked.total_de');?> <?php echo t('ranked.vitorias');?>: </span><?php echo ($best_rank ? highamount($ranked_total['total_wins']) : '-'); ?> <br />
+        <span class="vermelho"><?php echo t('ranked.total_de');?> <?php echo t('ranked.derrotas');?>: </span><?php echo ($best_rank ? highamount($ranked_total['total_losses']) : '-'); ?><br />
+        <span><?php echo t('ranked.total_de');?> <?php echo t('ranked.empates');?>: </span><?php echo ($best_rank ? highamount($ranked_total['total_draws']) : '-'); ?><br />
+    </div>
+</div>
+<?php } ?>

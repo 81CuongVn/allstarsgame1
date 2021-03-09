@@ -171,7 +171,7 @@ if ($_SESSION['user_id']) {
 							</div>
 						</div>
 					</div>
-					<span class="c <?=$staminaColor;?>"><?=highamount($player->for_stamina());?></span>
+					<span class="c <?=$staminaColor;?>"><?=highamount($player->for_stamina());?></span>/<span class="m"><?=$player->for_stamina(true);?></span>
 				</div>
 				<!-- <div class="stamina absolute"> -->
 					<!-- <span class="c <?=$staminaColor;?>"><?=$player->for_stamina();?></span>/<span class="m"><?=$player->for_stamina(true);?></span> -->

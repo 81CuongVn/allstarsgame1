@@ -7,6 +7,7 @@
 	var	tops_container	= $('.noticias-3');
 	var	ranks_page	= 1;
 	var	ranks_container	= $('.noticias-4');
+	var	leagues_container	= $('.noticias-5');
 	var	comments_form	= $('#news-comment-form');
 		
 	if(news_container.length) {
@@ -37,6 +38,7 @@
 			refresh_news();
 		})();
 	}
+
 	if(players_container.length) {
 		(function () {
 			players_container.on('click', '.prev', function () {
@@ -65,6 +67,7 @@
 			refresh_news();
 		})();
 	}
+
 	if(tops_container.length) {
 		(function () {
 			tops_container.on('click', '.prev', function () {
@@ -93,6 +96,7 @@
 			refresh_news();
 		})();
 	}
+
 	$('#sl-ranks').on('change', function () {
 		function refresh_news() {
 			$.ajax({
@@ -103,7 +107,22 @@
 			});
 		}
 		refresh_news();
-	});	
+	});
+	
+	if(leagues_container.length) {
+		(function () {
+			function refresh_news() {
+				$.ajax({
+					url:		make_url('home#league_list/'+ $('#sl-leagues').val()),
+					success:	function (result) {
+						$('.leagues-list', leagues_container).html(result);
+					}
+				});
+			}
+			refresh_news();
+		})();
+	}
+
 	if(ranks_container.length) {
 		(function () {
 			ranks_container.on('click', '.prev', function () {

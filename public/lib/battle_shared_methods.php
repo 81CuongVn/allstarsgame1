@@ -233,7 +233,10 @@ trait BattleSharedMethods {
 
 
 		if ($battle->finished_at) {
-			$player_battle_stats = PlayerBattleStat::find_first("player_id=".$p->id);
+			$player_battle_stats	= PlayerBattleStat::find_first("player_id=".$p->id);
+			if ($battle->battle_type_id == 5) {
+				$player_ranked		= $p->ranked();
+			}
 
 			if ($battle->battle_type_id == 6) {
 				$link = make_url('maps#preview');
@@ -305,8 +308,8 @@ trait BattleSharedMethods {
 			$p->battle_npc_id	= 0;
 			$p->battle_pvp_id	= 0;
 
-			// $p->less_mana		= 0;
-			// $p->less_life		= 0;
+			$p->less_mana		= 0;
+			$p->less_life		= 0;
 
 			$extras				= $p->attributes();
 			$currency_name		= t('currencies.' . $p->character_theme()->anime()->id);
@@ -619,9 +622,15 @@ trait BattleSharedMethods {
 							$item1715->save();
 						}
 
-						$p->draws_pvp++;
-						// $p->hospital = 1;
-						$stats->draws++;
+						if ($battle->battle_type_id == 5) {
+							if ($player_ranked) {
+								$player_ranked->draws++;
+								$player_ranked->save();
+							}
+						} else {
+							$p->draws_pvp++;
+							$stats->draws++;
+						}
 
 						// rank de combates diário, semanal e mensal
 						$player_battle_stats->draws_pvp++;
@@ -629,7 +638,6 @@ trait BattleSharedMethods {
 						$player_battle_stats->draws_pvp_monthly++;
 					} else {
 						$p->draws_npc++;
-						// $p->hospital = 1;
 
 						// rank de combates diário, semanal e mensal
 						$player_battle_stats->draws_npc++;
@@ -1042,8 +1050,21 @@ trait BattleSharedMethods {
 							}
 							// Remove um contador da vantagem de sem talentos
 
-							$stats->wins++;
-							$p->wins_pvp++;
+							if ($battle->battle_type_id == 5) {
+								if ($player_ranked) {
+									$player_ranked->wins++;
+									$player_ranked->save();
+								}
+
+								// Verifica a conquista de liga pvp
+								$p->achievement_check("battle_league_pvp");
+
+								// Objetivo de Round
+								$p->check_objectives("battle_league_pvp");
+							} else {
+								$stats->wins++;
+								$p->wins_pvp++;
+							}
 							$p->won_last_battle++;
 
 							// rank de combates diário, semanal e mensal
@@ -1350,12 +1371,12 @@ trait BattleSharedMethods {
 						}
 					}
 
-					if($battle->battle_type_id == 3) {
+					if ($battle->battle_type_id == 3) {
 						$link = make_url('challenges#show/'.$p->challenge_id);
 					}
 
 					// Não faz quando for batalha de treino.
-					if($battle->battle_type_id != 4){
+					if ($battle->battle_type_id != 4) {
 						$this->json->end_type	= 1;
 
 						$p->exp			+= $exp + $exp_extra;
@@ -1463,9 +1484,15 @@ trait BattleSharedMethods {
 							}
 							// Remove um contador da vantagem de sem talentos
 
-							$stats->losses++;
-							$p->losses_pvp++;
-							// $p->hospital = 1;
+							if ($battle->battle_type_id == 5) {
+								if ($player_ranked) {
+									$player_ranked->losses++;
+									$player_ranked->save();
+								}
+							} else {
+								$stats->losses++;
+								$p->losses_pvp++;
+							}
 
 							// rank de combates diário, semanal e mensal
 							$player_battle_stats->looses_pvp++;
@@ -1479,7 +1506,6 @@ trait BattleSharedMethods {
 							}
 						} else {
 							$p->losses_npc++;
-							// $p->hospital = 1;
 
 							// rank de combates diário, semanal e mensal
 							$player_battle_stats->looses_npc++;
@@ -1487,9 +1513,10 @@ trait BattleSharedMethods {
 							$player_battle_stats->looses_npc_monthly++;
 						}
 					}
+
 					// Não da premiação para o jogador que inativa
 					if(($battle->won != $p->id && $battle->inactivity == 1) || $battle->battle_type_id == 4){
-						$p->hospital	= 1;
+						// $p->hospital	= 1;
 
 						$p->currency	+= 0;
 						$p->exp			+= 0;
@@ -1505,7 +1532,7 @@ trait BattleSharedMethods {
 									). $drop_message_e]
 						);
 					} else {
-						$p->hospital	= 1;
+						// $p->hospital	= 1;
 
 						// Não faz quando for batalha de treino.
 						$p->exp			+= $exp + $exp_extra;
@@ -1538,6 +1565,16 @@ trait BattleSharedMethods {
 					}
 				}
 			}
+
+			/** Sistema de ligas */
+			if ($battle->battle_type_id == 5) {
+				// Recarrega o rank de player na season
+				$player_ranked = $p->ranked();
+				if ($player_ranked) {
+					$player_ranked->update();
+				}
+			}
+			/* / Sistema de liga */
 
 			// Não faz quando for batalha de treino ou perder por inatividade.
 			if(($battle->won != $p->id && $battle->inactivity == 1) || $battle->battle_type_id == 4){

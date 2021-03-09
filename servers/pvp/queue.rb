@@ -19,6 +19,12 @@ require 'securerandom'
 @queues			= {}
 
 # Database settings
+@dbDev				= {
+	'host'	=> 'localhost',
+	'user'	=> 'root',
+	'pass'	=> '',
+	'name'	=> 'aasg_original'
+}
 @db				= {
 	'host'	=> 'localhost',
 	'user'	=> 'root',
@@ -27,7 +33,7 @@ require 'securerandom'
 }
 
 # PvP range settings
-level_range		= 50;
+level_range		= 500;
 
 Thread.abort_on_exception = true
 

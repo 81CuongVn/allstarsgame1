@@ -1,6 +1,8 @@
 <?php
 	class HomeController extends Controller {
 		function index() {
+			$leagues	= Ranked::find('started = 1 order by league desc');
+			$this->assign("leagues",	$leagues);
 		}
 		function maintenance() {
 			$this->layout	= 'maintenance';
@@ -9,14 +11,17 @@
 			$items_per_page	= 5;
 			$this->layout	= false;
 			
-			/*$this->assign('news', SiteNew::find("round = 3", [
-				'limit' => ($items_per_page * ($page - 1)) . ', ' . $items_per_page,
-				'reorder' => 'id DESC'
-			]));*/
-			$this->assign('news', SiteNew::find("1=1", [
-				'limit' => ($items_per_page * ($page - 1)) . ', ' . $items_per_page,
-				'reorder' => 'id DESC'
-			]));
+			$this->assign('news', SiteNew::find("1=1",['limit' => ($items_per_page * ($page - 1)) . ', ' . $items_per_page, 'reorder' => 'id DESC']));
+		}
+		function league_list($league) {
+			$this->layout	= false;
+			if ($league > 0) {
+				$ranked_rankings = RankingRanked::find("league_id={$league} order by position_general asc limit 3");
+			} else {
+				$ranked_rankings = [];
+			}
+			
+			$this->assign("ranked_rankings", $ranked_rankings);
 		}
 		function rank_list($page = 1, $type) {
 			$items_per_page	= 10;

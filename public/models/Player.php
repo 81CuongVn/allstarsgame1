@@ -112,6 +112,7 @@ class Player extends Relation {
 		$this->refresh_talents();
 		$this->update_online();
 		$this->check_heal();
+		$this->ranked();
 	}
 
 	protected function before_update() {
@@ -5385,7 +5386,7 @@ class Player extends Relation {
 
 	function available_training_points() {
 		$user = User::get_instance();
-		return (($user->level * 4) + $this->training_total_to_point()) - $this->training_points_spent;
+		return (($user->level * 1) + $this->training_total_to_point()) - $this->training_points_spent;
 	}
 
 	function training_to_next_point($current = false) {
@@ -6005,6 +6006,26 @@ class Player extends Relation {
 	function pvp_quests() {
 		return PlayerPvpQuest::find('player_id=' . $this->id);
 	}
+	function ranked($league_id = FALSE) {
+		if ($league_id) {
+			return PlayerRanked::find_last("player_id={$this->id} and league = {$league_id}");
+		} else {
+			$league		= Ranked::find_first('started = 1 and finished = 0 order by league desc');
+			if ($league) {
+				$player_ranked	= PlayerRanked::find_last("player_id={$this->id} and league = {$league->league}");
+				if (!$player_ranked) {
+					$player_ranked				= new PlayerRanked(); 
+					$player_ranked->player_id 	= $this->id;
+					$player_ranked->rank		= 10;
+					$player_ranked->league		= $league->league;
+					$player_ranked->save();
+				}
+
+				return $player_ranked;
+			}
+		}
+		return FALSE;
+	}
 	function player_daily_quest() {
 		return PlayerDailyQuest::find_first('player_id=' . $this->id . ' AND daily_quest_id=' . $this->daily_quest_id);
 	}
@@ -6099,16 +6120,16 @@ class Player extends Relation {
 	function faction() {
 		return Faction::find_first($this->faction_id);
 	}
-	function tutorial(){
+	function tutorial() {
 		$player_tutorial = PlayerTutorial::find_first("player_id=".$this->id);
-
-		if($player_tutorial->status && $player_tutorial->equips && $player_tutorial->pets
+		if ($player_tutorial->status && $player_tutorial->equips && $player_tutorial->pets
 			&& $player_tutorial->golpes && $player_tutorial->habilidades && $player_tutorial->aprimoramentos
 			&& $player_tutorial->escola && $player_tutorial->treinamento && $player_tutorial->mercado
 			&& $player_tutorial->missoes_tempo && $player_tutorial->missoes_pvp && $player_tutorial->missoes_diarias
 			&& $player_tutorial->missoes_seguidores && $player_tutorial->battle_npc && $player_tutorial->battle_pvp
 			&& $player_tutorial->fidelity && $player_tutorial->battle_village && $player_tutorial->bijuus
-			&& $player_tutorial->missoes_conta && $player_tutorial->talents && $player_tutorial->objectives){
+			&& $player_tutorial->missoes_conta && $player_tutorial->talents
+			&& $player_tutorial->objectives && $player_tutorial->battle_ranked) {
 
 			$player_stat = PlayerStat::find_first("player_id=".$this->id);
 			$player_stat->tutorial = 1;
@@ -6118,9 +6139,9 @@ class Player extends Relation {
 			$this->achievement_check("tutorial");
 			//Verifica a conquista de areia - Conquista
 
-			return true;
-		}else{
-			return false;
+			return TRUE;
+		} else {
+			return FALSE;
 		}
 	}
 

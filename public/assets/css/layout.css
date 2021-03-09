@@ -492,7 +492,7 @@ li{
 	text-align: left;
 	position: relative;
 	width: 695px;
-	height: 575px;
+	height: 730px;
 	background-image:url('../images/bg-conteudo-home.jpg');
 	left: 20px;
 			
@@ -576,12 +576,12 @@ li{
 .noticias-3{
 	margin-left: 5px;
 	margin-top: 8px;
-	top: 147px;
+	top: 175px;
 }
 .noticias-4{
 	margin-left: 20px;
 	margin-top: 8px;
-	top: 147px;
+	top: 175px;
 }
 .league-1{
 	position: absolute;
@@ -716,8 +716,8 @@ li{
 	color: #9fc0dd;
 	font-family: Arial;
 	font-size: 11px;
-	padding-top: 19px;
-
+	/* padding-top: 19px; */
+	padding-top: 27px;
 }
 .msg-h{
 	position: absolute;

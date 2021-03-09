@@ -8,6 +8,41 @@
 	var room_search_friend = $('#room-search-friend');
 	var results = $('#room-search-results');
 
+	// Filtro da página de ligas
+	$('#leagues').on('change', function () {
+		var	_	= $(this);
+		$.ajax({
+			url:		make_url('battles_pvp#ranked'),
+			data:		$(this).serialize(),
+			type:		'post',
+			data:		{ leagues: $(this).val()},
+			success:	function (result) {
+				$('#league-filter-form').trigger('submit');
+			}
+			
+		});		
+	});	
+
+	// Recebe a recompensa da Season
+	$('#reward-league').on('click','.reward', function () {
+		lock_screen(true);
+		var	_	= $(this);
+		$.ajax({
+			url:		make_url('battle_pvps#reward'),
+			data:		{ id: _.data('league')},
+			dataType:	'json',
+			type:		'post',
+			success:	function (result) {
+				if(result.success) {
+					location.href	= make_url('battle_pvps#ranked');
+				} else {
+					lock_screen(false);
+					format_error(result);
+				}
+			}
+		});
+	});
+
 	$('#battle-pvp-enter-queue').on('click', function() {
 		lock_screen(true);
 
