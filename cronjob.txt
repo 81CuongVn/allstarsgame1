@@ -1,12 +1,12 @@
 # UMA VEZ POR HORA
 0 * * * * php /var/www/animeallstarsgame.com.br/cronjob/objectives.php
 0 * * * * php /var/www/animeallstarsgame.com.br/cronjob/ranking_players.php
-0 * * * * php /var/www/animeallstarsgame.com.br/cronjob/ranking_achievement.php
-0 * * * * php /var/www/animeallstarsgame.com.br/cronjob/ranking_account.php
-0 * * * * php /var/www/animeallstarsgame.com.br/cronjob/ranking_challenge.php
-0 * * * * php /var/www/animeallstarsgame.com.br/cronjob/ranking_combat.php
-0 * * * * php /var/www/animeallstarsgame.com.br/cronjob/ranking_organization.php
-0 * * * * php /var/www/animeallstarsgame.com.br/cronjob/ranking_ranked.php
+0 * * * * php /var/www/animeallstarsgame.com.br/cronjob/ranking_achievements.php
+0 * * * * php /var/www/animeallstarsgame.com.br/cronjob/ranking_accounts.php
+0 * * * * php /var/www/animeallstarsgame.com.br/cronjob/ranking_challenges.php
+0 * * * * php /var/www/animeallstarsgame.com.br/cronjob/ranking_combats.php
+0 * * * * php /var/www/animeallstarsgame.com.br/cronjob/ranking_organizations.php
+0 * * * * php /var/www/animeallstarsgame.com.br/cronjob/ranking_rankeds.php
 
 # TODA SEGUNDA-FEIRA
 0 0 * * 1 php /var/www/animeallstarsgame.com.br/cronjob/organization_daily_quests.php

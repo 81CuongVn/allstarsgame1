@@ -18,9 +18,9 @@
 					a.faction_id,
 					a.level,
 					d.sorting AS graduation_level,
-					e.win,
-					e.loss,
-					e.draw,
+					e.wins,
+					e.losses,
+					e.draws,
 					e.league,
 					e.rank
 	
