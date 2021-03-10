@@ -12,6 +12,9 @@
             $this->from_name	= $mailConfig['from_name'];
         }
 
+        public function send_join_fb($user) {
+            $this->deliver(t('emails.join.subject'), $user->email, render_mailer('user_mailer', 'send_join_fb', array('user' => $user)));
+        }
         public function send_join($user) {
 			$this->deliver(t('emails.join.subject'), $user->email, render_mailer('user_mailer', 'send_join', array('user' => $user)));
 		}

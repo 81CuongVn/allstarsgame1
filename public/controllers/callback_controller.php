@@ -58,6 +58,7 @@ class CallbackController extends Controller {
                             else                            redirect_to('characters/create');
                         }
                     } else {
+                        // Cadastro
                         $user					= new User();
                         $user->name				= $fb_user->name;
                         $user->email			= $fb_user->email;
@@ -66,11 +67,23 @@ class CallbackController extends Controller {
                         $user->activation_key	= uniqid(uniqid(), true);
                         $user->fb_id            = $fb_user->id;
                         $user->active           = 1;
+
+                        /// Login
+                        $user->last_login_ip    = ip2long($_SERVER['REMOTE_ADDR']);
+                        $user->last_login_at    = now(TRUE);
+                        $user->session_key      = session_id();
+
+                        /// Salva dados
                         $user->save();
 
+                        // Segunda parte do login
+                        $_SESSION['loggedin']	= TRUE;
+                        $_SESSION['user_id']	= $user->id;
+
+                        // Dispara o email de cadastro com fb, informando a senha gerada
                         UserMailer::dispatch('send_join_fb', [ $user ]);
 
-                        redirect_to('callback/facebook?code=' . $_GET['code']);
+                        redirect_to('characters/create');
                     }
                 }
             } else {
