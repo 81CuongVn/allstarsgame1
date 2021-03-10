@@ -61,19 +61,19 @@ $('.technique-popover, .requirement-popover, .shop-item-popover').each(function 
 								<?php if ($theme->price_credits || $theme->price_currency): ?>
 									<?php if ($theme->price_credits): ?>
 										<?php if ($user->credits >= $theme->price_credits): ?>
-											<a href="javascript:;" class="btn btn-warning buy-theme" data-mode="1" data-theme="<?php echo $theme->id ?>"><?php echo t('characters.themes.buy_credits', array('price' => $theme->price_credits)) ?></a>
+											<a href="javascript:;" class="btn btn-warning buy-theme" data-mode="1" data-theme="<?php echo $theme->id ?>"><?php echo t('characters.themes.buy_credits', array('price' => highamount($theme->price_credits))) ?></a>
 										<?php else: ?>
-											<a href="javascript:;" class="btn btn-warning disabled"><?php echo t('characters.themes.buy_credits', array('price' => $theme->price_credits)) ?></a>
+											<a href="javascript:;" class="btn btn-warning disabled"><?php echo t('characters.themes.buy_credits', array('price' => highamount($theme->price_credits))) ?></a>
 										<?php endif ?>
 									<?php endif; ?>
 									<?php if ($theme->price_currency): ?>
 										<?php if ($player->currency >= $theme->price_currency): ?>
 											<a href="javascript:;" class="btn btn-warning buy-theme" data-mode="2" data-theme="<?php echo $theme->id ?>">
-												<?php echo t('characters.themes.buy_currency', array('price' => $theme->price_currency, 'currency' => t('currencies.' . $player->character()->anime_id))) ?>
+												<?php echo t('characters.themes.buy_currency', array('price' => highamount($theme->price_currency), 'currency' => t('currencies.' . $player->character()->anime_id))) ?>
 											</a>
 										<?php else: ?>
 											<a href="javascript:;" class="btn btn-warning disabled">
-												<?php echo t('characters.themes.buy_currency', array('price' => $theme->price_currency, 'currency' => t('currencies.' . $player->character()->anime_id))) ?>
+												<?php echo t('characters.themes.buy_currency', array('price' => highamount($theme->price_currency), 'currency' => t('currencies.' . $player->character()->anime_id))) ?>
 											</a>
 										<?php endif ?>
 									<?php endif ?>

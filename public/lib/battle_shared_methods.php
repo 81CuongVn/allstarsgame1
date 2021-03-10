@@ -627,10 +627,9 @@ trait BattleSharedMethods {
 								$player_ranked->draws++;
 								$player_ranked->save();
 							}
-						} else {
-							$p->draws_pvp++;
-							$stats->draws++;
 						}
+						$p->draws_pvp++;
+						$stats->draws++;
 
 						// rank de combates diário, semanal e mensal
 						$player_battle_stats->draws_pvp++;
@@ -1061,10 +1060,9 @@ trait BattleSharedMethods {
 
 								// Objetivo de Round
 								$p->check_objectives("battle_league_pvp");
-							} else {
-								$stats->wins++;
-								$p->wins_pvp++;
 							}
+							$stats->wins++;
+							$p->wins_pvp++;
 							$p->won_last_battle++;
 
 							// rank de combates diário, semanal e mensal
@@ -1489,10 +1487,10 @@ trait BattleSharedMethods {
 									$player_ranked->losses++;
 									$player_ranked->save();
 								}
-							} else {
-								$stats->losses++;
-								$p->losses_pvp++;
 							}
+
+							$stats->losses++;
+							$p->losses_pvp++;
 
 							// rank de combates diário, semanal e mensal
 							$player_battle_stats->looses_pvp++;
@@ -1577,7 +1575,7 @@ trait BattleSharedMethods {
 			/* / Sistema de liga */
 
 			// Não faz quando for batalha de treino ou perder por inatividade.
-			if(($battle->won != $p->id && $battle->inactivity == 1) || $battle->battle_type_id == 4){
+			if (($battle->won != $p->id && $battle->inactivity == 1) || $battle->battle_type_id == 4){
 			} else {
 				//Level da Conta ( Batalha NPC e PVP )
 				$user = $p->user();
@@ -1759,16 +1757,16 @@ trait BattleSharedMethods {
 		$this->json->enemy->effects		= $e_effects;
 		$this->json->current_turn		= $battle->current_turn;
 
-		// if (isset($_GET['initial']) || !$is_pvp)
-		// 	$this->json->enemy->update_existent_locks		= TRUE;
-		// else {
-		// 	// So quando a trigger fizer a ação que não zera os dados
-		// 	if ($is_pvp && $battle->should_process) {
-		// 		$this->json->enemy->locks					= [];
-		// 		$this->json->enemy->effects					= [];
-		// 		$this->json->enemy->update_existent_locks	= FALSE;
-		// 	} elseif($is_pvp && !$battle->should_process)
-		// 		$this->json->enemy->update_existent_locks	= TRUE;
-		// }
+		if (isset($_GET['initial']) || !$is_pvp)
+			$this->json->enemy->update_existent_locks		= TRUE;
+		else {
+			// So quando a trigger fizer a ação que não zera os dados
+			if ($is_pvp && $battle->should_process) {
+				$this->json->enemy->locks					= [];
+				$this->json->enemy->effects					= [];
+				$this->json->enemy->update_existent_locks	= FALSE;
+			} elseif($is_pvp && !$battle->should_process)
+				$this->json->enemy->update_existent_locks	= TRUE;
+		}
 	}
 }
