@@ -8,7 +8,7 @@
 
             var tour = new Tour({
                 backdrop: true,
-                page: 23,
+                page: 24,
 
                 steps: [
                     {
