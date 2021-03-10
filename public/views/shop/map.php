@@ -50,7 +50,7 @@ foreach($player_items as $player_item){
 				<br /><br />
 			</td>
 			<td width="120" align="center">
-				<b style="font-size:16px">x<?php echo $map_store->quantity?></b>
+				<b style="font-size:16px">x<?php echo highamount($map_store->quantity); ?></b>
 			</td>
 			<td width="120" align="center">
 				<?php 
@@ -66,7 +66,8 @@ foreach($player_items as $player_item){
 						break;
 					}
 				?>
-				<b style="font-size:16px"><?php echo "x". $map_store->map_item_total?></b><img style="position: relative; top: -3px;" src="<?php echo image_url('maps/'.$map_store->anime_id.'.png') ?>" width="24"/><br />
+				<b style="font-size:16px"><?php echo "x". highamount($map_store->map_item_total); ?></b>
+				<img style="position: relative; top: -3px;" src="<?php echo image_url('maps/'.$map_store->anime_id.'.png') ?>" width="24"/><br />
 				<?php echo $type?>
 			</td>
 			<td width="120" align="center">

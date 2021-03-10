@@ -8,5 +8,5 @@
 ?>
 <br />
 <div align="center">
-	<a href="javascript:;" id="hospital-heal-button" class="btn btn-primary btn-lg"><?php echo t('hospital.heal_button', ['currency' => $currency, 'value' => $cost]) ?></a>
+	<a href="javascript:;" id="hospital-heal-button" class="btn btn-primary btn-lg"><?php echo t('hospital.heal_button', ['currency' => $currency, 'value' => highamount($cost)]) ?></a>
 </div>	

@@ -36,7 +36,7 @@
 			</td>
 			<td width="85" align="center" id="shop-item-quantity-<?php echo $item->id ?>">
 				<?php if ($player->has_consumable($item)): ?>
-				 	x<?php echo $player->get_item($item)->quantity ?>
+				 	x<?php echo highamount($player->get_item($item)->quantity) ?>
 				 <?php else: ?>
 				 	<?php echo t('shop.none') ?>
 				 <?php endif ?>
@@ -50,10 +50,18 @@
 			</td>
 			<td width="85" align="center">
 				<?php if ($item->price_currency): ?>
-					<input type="radio" name="method_<?php echo $item->id ?>" value="1" /> <span id="shop-item-currency-value-<?php echo $item->id ?>" data-currency="<?php echo t('currencies.' . $player->character()->anime_id) ?>"><?php echo t('currencies.' . $player->character()->anime_id) ?> <?php echo $item->price_currency - percent($discount, $item->price_currency) ?></span>
+					<input type="radio" name="method_<?php echo $item->id ?>" value="1" />
+					<span id="shop-item-currency-value-<?php echo $item->id ?>" data-currency="<?php echo t('currencies.' . $player->character()->anime_id) ?>">
+						<?php echo t('currencies.' . $player->character()->anime_id) ?>
+						<?php echo highamount($item->price_currency - percent($discount, $item->price_currency)) ?>
+					</span>
 				<?php endif ?>
 				<?php if ($item->price_credits): ?>
-					<input type="radio" name="method_<?php echo $item->id ?>" value="2" /> <span id="shop-item-credits-value-<?php echo $item->id ?>" data-currency="<?php echo t('currencies.credits') ?>"><?php echo t('currencies.credits') ?> <?php echo $item->price_credits ?></span>
+					<input type="radio" name="method_<?php echo $item->id ?>" value="2" />
+					<span id="shop-item-credits-value-<?php echo $item->id ?>" data-currency="<?php echo t('currencies.credits') ?>">
+						<?php echo t('currencies.credits') ?>
+						<?php echo highamount($item->price_credits) ?>
+					</span>
 				<?php endif ?>
 			</td>
 			<td width="100" align="center">

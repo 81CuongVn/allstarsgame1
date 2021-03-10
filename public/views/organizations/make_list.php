@@ -23,7 +23,7 @@
 					<span style="font-size:13px"><?php echo $organization->leader()->name ?></span>
 				</td>
 				<td width="100" align="center">
-					<?php echo $organization->member_count ?>
+					<?php echo highamount($organization->member_count); ?>
 				</td>
 				<td width="300" align="center">
 					<a class="btn btn-primary details" data-id="<?php echo $organization->id ?>"><?php echo t('organizations.search.details') ?></a>
