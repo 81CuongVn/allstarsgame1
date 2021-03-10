@@ -14,10 +14,10 @@
 					<?php echo $subgroup->description()->description ?><br /><p style="color:#3C3; font-size: 14px; padding-top:5px"><?php echo t('history_mode.show.recompensas')?></p>
 					<ul>
 						<?php if($subgroup->reward_exp){?>
-							<li style="width:100px"><?php echo t('history_mode.show.experiencia')?>: <?php echo $subgroup->reward_exp ?></li>
+							<li style="width:100px"><?php echo t('history_mode.show.experiencia')?>: <?php echo highamount($subgroup->reward_exp) ?></li>
 						<?php }?>
 						<?php if($subgroup->reward_currency){?>
-							<li style="width:100px"><?php echo t('currencies.' . $player->character()->anime_id) ?>: <?php echo $subgroup->reward_currency ?></li>
+							<li style="width:100px"><?php echo t('currencies.' . $player->character()->anime_id) ?>: <?php echo highamount($subgroup->reward_currency) ?></li>
 						<?php }?>
 						<?php if($subgroup->reward_random_equipment_chance){?>
 							<li style="width:150px"><?php echo t('history_mode.show.equipamento')?>: <?php echo t('history_mode.show.aleatorio')?></li>
@@ -40,9 +40,7 @@
 								<?php
 									$reward	= Item::find($subgroup->reward_item_id);
 									$reward->set_anime($player->character()->anime_id);
-									echo $reward->description()->name . ($subgroup->reward_quantity ? " x ". $subgroup->reward_quantity : "");
-									
-									
+									echo $reward->description()->name . ($subgroup->reward_quantity ? " x ". highamount($subgroup->reward_quantity) : "");
 								?>
 							</li>
 						<?php }?>

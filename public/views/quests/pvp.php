@@ -87,8 +87,8 @@ $(function () {
 							</span>
 						</td>
 						<td width="110" align="center" class="verde" style="display: table-cell; vertical-align: middle;">
-							<span class="exp"><?php echo $quest->exp() + percent($effects['bonus_exp_mission_percent'], $quest->exp()) + $effects['bonus_exp_mission'] ?></span> Exp<br />
-							<span class="currency"><?php echo $quest->currency() + percent($effects['bonus_gold_mission_percent'], $quest->currency()) + $effects['bonus_gold_mission'] ?></span> <?php echo t('currencies.' . $player->character()->anime_id) ?><br />
+							<span class="exp"><?php echo highamount($quest->exp() + percent($effects['bonus_exp_mission_percent'], $quest->exp()) + $effects['bonus_exp_mission']) ?></span> Exp<br />
+							<span class="currency"><?php echo highamount($quest->currency() + percent($effects['bonus_gold_mission_percent'], $quest->currency()) + $effects['bonus_gold_mission']) ?></span> <?php echo t('currencies.' . $player->character()->anime_id) ?><br />
 
 							<?php if ($quest->random_equipment_chance): ?>
 								<span class="random-equipment"><?php echo t('quests.equipment_chance', ['chance' => $quest->random_equipment_chance]) ?></span><br />

@@ -652,16 +652,16 @@ trait BattleSharedMethods {
 
 				$exp_text = ($exp + $exp_extra);
 				if ($exp_extra) {
-					$exp_text .= " ({$exp}";
+					$exp_text .= " ({" . highamount($exp) . "}";
 					if ($exp_extra)
-						$exp_text .= " <span class=\"verde\">+ {$exp_extra}</span>";
+						$exp_text .= " <span class=\"verde\">+ {" . highamount($exp_extra) . "}</span>";
 					$exp_text .= ')';
 				}
 				$currency_text = ($currency + $currency_extra);
 				if ($currency_extra) {
-					$currency_text .= " ({$currency}";
+					$currency_text .= " ({" . highamount($currency) . "}";
 					if ($currency_extra)
-						$currency_text .= " <span class=\"verde\">+ {$currency_extra}</span>";
+						$currency_text .= " <span class=\"verde\">+ {" . highamount($currency_extra) . "}</span>";
 					$currency_text .= ')';
 				}
 				$finished_message		= partial('shared/info', [
@@ -1383,16 +1383,16 @@ trait BattleSharedMethods {
 
 						$exp_text = ($exp + $exp_extra);
 						if ($exp_extra) {
-							$exp_text .= " ({$exp}";
+							$exp_text .= " ({" . highamount($exp) . "}";
 							if ($exp_extra)
-								$exp_text .= " <span class=\"verde\">+ {$exp_extra}</span>";
+								$exp_text .= " <span class=\"verde\">+ {" . highamount($exp_extra) . "}</span>";
 							$exp_text .= ')';
 						}
 						$currency_text = ($currency + $currency_extra);
 						if ($currency_extra) {
-							$currency_text .= " ({$currency}";
+							$currency_text .= " ({" . highamount($currency) . "}";
 							if ($currency_extra)
-								$currency_text .= " <span class=\"verde\">+ {$currency_extra}</span>";
+								$currency_text .= " <span class=\"verde\">+ {" . highamount($currency_extra) . "}</span>";
 							$currency_text .= ')';
 						}
 						$finished_message		= partial('shared/info', [
@@ -1538,16 +1538,16 @@ trait BattleSharedMethods {
 
 						$exp_text = ($exp + $exp_extra);
 						if ($exp_extra) {
-							$exp_text .= " ({$exp}";
+							$exp_text .= " ({" . highamount($exp) . "}";
 							if ($exp_extra)
-								$exp_text .= " <span class=\"verde\">+ {$exp_extra}</span>";
+								$exp_text .= " <span class=\"verde\">+ {" . highamount($exp_extra) . "}</span>";
 							$exp_text .= ')';
 						}
 						$currency_text = ($currency + $currency_extra);
 						if ($currency_extra) {
-							$currency_text .= " ({$currency}";
+							$currency_text .= " ({" . highamount($currency) . "}";
 							if ($currency_extra)
-								$currency_text .= " <span class=\"verde\">+ {$currency_extra}</span>";
+								$currency_text .= " <span class=\"verde\">+ {" . highamount($currency_extra) . "}</span>";
 							$currency_text .= ')';
 						}
 						$finished_message		= partial('shared/info', [

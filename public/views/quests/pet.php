@@ -91,13 +91,13 @@ echo partial('shared/info', [
 				<td rowspan="2" align="center" width="150">
 					<b class="laranja" style="font-size:14px"><?php echo t('quests.time.header.reward') ?></b><br />
 					<?php if ($quest->quest()->exp) { ?>
-					<span class="exp"><?=$quest->quest()->exp;?> Exp<br />
+					<span class="exp"><?=highamount($quest->quest()->exp);?> Exp<br />
 					<?php }?>
 					<?php if ($quest->quest()->currency) { ?>
-						<span class="currency"><?=$quest->quest()->currency;?> <?=t('currencies.' . $player->character()->anime_id);?></span><br />
+						<span class="currency"><?=highamount($quest->quest()->currency);?> <?=t('currencies.' . $player->character()->anime_id);?></span><br />
 					<?php } ?>
 					<?php if ($quest->quest()->pet_exp) { ?>
-						<span class="exp"><?php echo $quest->quest()->pet_exp ?> <?php echo t('quests.pet.exp_mascote')?><br />
+						<span class="exp"><?php echo highamount($quest->quest()->pet_exp) ?> <?php echo t('quests.pet.exp_mascote')?><br />
 					<?php }?>
 					<?php if($quest->quest()->pet_happiness){?>
 						<span class="exp"><?php echo $quest->quest()->pet_happiness ?> <?php echo t('quests.pet.de_felicidade')?><br />

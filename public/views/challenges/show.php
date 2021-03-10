@@ -21,14 +21,14 @@
 				foreach($rewards as $reward){
 				?>
 				<div class="challenge-float">
-					<div class="andar"><?php echo $reward['quantity']?></div>
+					<div class="andar"><?php echo highamount($reward['quantity']); ?></div>
 					<img src="<?php echo image_url(($challenge_active->quantity <= $reward['quantity'] ? 'icons/star2.png' : 'icons/star.png'))?>" class="requirement-popover" data-source="#tooltip-star-<?php echo $reward['quantity']?>" data-title="Premiação do <?php echo $reward['quantity']?>º Andar" data-trigger="hover" data-placement="bottom" />
 					<div id="tooltip-star-<?php echo $reward['quantity']?>" class="status-popover-container">
 						<div class="status-popover-content">
 							<ul>
-								<li>Experiência: <?php echo $reward['exp']?></li>
+								<li>Experiência: <?php echo highamount($reward['exp'])?></li>
 								<?php if($reward['money']){?>
-									<li><?php echo t('currencies.' . $player->character()->anime_id) ?>: <?php echo $reward['money']?></li>
+									<li><?php echo t('currencies.' . $player->character()->anime_id) ?>: <?php echo highamount($reward['money'])?></li>
 								<?php }?>
 								<?php if($reward['equipments']){?>	
 									<li>Equipamento: <?php echo $reward['equipments']?></li>

@@ -25,11 +25,10 @@
 			<div style="float: left; width:200px; text-align: center"><label><?php echo t('organizations.show.choose_image') ?></label></div>
 			<div style="float: left; width:300px;"><input type="file" name="cover" /><?php echo t('organizations.show.image_note') ?></div>
 			<div style="float: left; width:130px;"><input type="submit" class="btn btn-primary" value="<?php echo t('organizations.show.upload_data') ?>" /></div>
-			<input type="hidden" name="name" class="form-control" value="<?php echo $organization->name ?>" />
-			<?php /*<div class="form-group">
+			<div class="form-group">
 				<label class="col-sm-2 control-label"><?php echo t('organizations.show.set_name') ?></label>
 				<div class="col-sm-10">
-					
+					<input type="text" name="name" class="form-control" value="<?php echo $organization->name ?>" />
 				</div>
 			</div>
 			<div class="form-group">
@@ -38,7 +37,6 @@
 					<textarea name="description" class="form-control" rows="5"><?php echo $organization->description ?></textarea>
 				</div>
 			</div>
-			*/?>
 		</form>
 	<?php endif ?>
 </div>
@@ -47,23 +45,19 @@
 		<div style="width: 341px; text-align: center; padding-top: 12px"><b class="amarelo" style="font-size:13px"><?php echo $organization->name?></b></div>
 		<div style="width: 341px; text-align: center; padding-top: 22px; font-size: 12px !important; line-height: 15px;">
 			<span class="verde"><?php echo t('organizations.name_leader') ?>: </span> <?php echo $rank_org ? $rank_org->leader_name : '-'?><br />
-			<span class="verde"><?php echo t('organizations.total_members') ?>:</span> <?php echo $organization->member_count ?><br />
+			<span class="verde"><?php echo t('organizations.total_members') ?>:</span> <?php echo highamount($organization->member_count) ?><br />
 			<span class="verde"><?php echo t('organizations.faction') ?>:</span> <?php echo $organization->faction_id==1? "Herois" : "Vilões" ?><br />
-			<span class="verde"><?php echo t('organizations.score') ?>: </span> <?php echo $rank_org ? $rank_org->score : '-' ?><br />
-			<span class="verde"><?php echo t('organizations.rank_faction') ?>: </span> <?php echo $rank_org ? $rank_org->position_faction : '-' ?>º<br />
-			<span class="verde"><?php echo t('organizations.rank_general') ?>: </span> <?php echo $rank_org ? $rank_org->position_general : '-'?>º<br />
-
-	
+			<span class="verde"><?php echo t('organizations.score') ?>: </span> <?php echo $rank_org ? highamount($rank_org->score) : '-' ?><br />
+			<span class="verde"><?php echo t('organizations.rank_faction') ?>: </span> <?php echo $rank_org ? highamount($rank_org->position_faction) : '-' ?>º<br />
+			<span class="verde"><?php echo t('organizations.rank_general') ?>: </span> <?php echo $rank_org ? highamount($rank_org->position_general) : '-'?>º<br />
 		</div>
 	</div>
 	<div class="h-missoes">
 		<div style="width: 341px; text-align: center; padding-top: 12px"><b class="amarelo" style="font-size:13px"><?php echo t('organizations.missions') ?></b></div>
 		<div style="width: 341px; text-align: center; padding-top: 22px; font-size: 12px !important; line-height: 15px;">
-			<span class="verde"><?php echo t('organizations.daily') ?>:</span> <?php echo $daily_org->daily_total ?><br />
-			<span class="verde"><?php echo t('organizations.treasure_atual') ?>:</span> <?php echo $organization->treasure_atual ?><br />
-			<span class="verde"><?php echo t('organizations.treasure_total') ?>:</span> <?php echo $organization->treasure_total ?><br />
-
-	
+			<span class="verde"><?php echo t('organizations.daily') ?>:</span> <?php echo highamount($daily_org->daily_total) ?><br />
+			<span class="verde"><?php echo t('organizations.treasure_atual') ?>:</span> <?php echo highamount($organization->treasure_atual) ?><br />
+			<span class="verde"><?php echo t('organizations.treasure_total') ?>:</span> <?php echo highamount($organization->treasure_total) ?><br />
 		</div>
 	</div>
 </div>

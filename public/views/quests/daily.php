@@ -109,7 +109,7 @@ $(function () {
 		<?php echo $descricao?><br />
 		</div>
 		<div class="details">
-			<img src="<?php echo image_url("icons/currency.png" ) ?>" /><span class="amarelo_claro" style="font-size: 16px; margin-left: 5px; top: 2px; position: relative"><?php echo $currency->currency?></span>
+			<img src="<?php echo image_url("icons/currency.png" ) ?>" /><span class="amarelo_claro" style="font-size: 16px; margin-left: 5px; top: 2px; position: relative"><?php echo highamount($currency->currency); ?></span>
 		</div>
 		<div class="change-mission" style="margin-top: 10px">
 			<?php if(!$quest->complete){?>

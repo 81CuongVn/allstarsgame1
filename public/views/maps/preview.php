@@ -38,13 +38,13 @@
 				<?php }?>
 				<?php if(isset($rewards)){?>
 					<?php if($rewards->exp){?>
-						<?php echo $rewards->exp ?> Exp<br />
+						<?php echo highamount($rewards->exp) ?> Exp<br />
 					<?php }?>
 					<?php if($rewards->currency){?>
-						<?php echo $rewards->currency ?> <?php echo t('currencies.' . $player->character()->anime_id) ?><br />
+						<?php echo highamount($rewards->currency) ?> <?php echo t('currencies.' . $player->character()->anime_id) ?><br />
 					<?php }?>	
 					<?php if($rewards->credits){?>
-						<?php echo $rewards->credits ?> <?php echo t('treasure.show.credits')?><br />
+						<?php echo highamount($rewards->credits) ?> <?php echo t('treasure.show.credits')?><br />
 					<?php }?>	
 					<?php if($rewards->equipment && $rewards->equipment == 1){?>
 						<?php echo t('treasure.show.equipment1')?><br />
@@ -175,7 +175,7 @@
 			<img src="<?php echo image_url("maps/icons/".$map->anime_id.".png" ) ?>" width="26" height="26"/><span class="amarelo_claro" style="font-size: 16px; margin-left: 5px; top: 2px; position: relative"><?php echo $total_item_map ?> / <?php echo $store->map_item_total?></span>
 		</div>
 		<div class="button" style="position:relative; top: 15px;">
-			<?php if($total_item_map >= $store->map_item_total && !$has_technique){?>
+			<?php if($total_item_map >= $store->map_item_total && !$has_technique){ ?>
 				<a class="store_change btn btn-primary" data-mode="<?php echo $store->id?>"><?php echo t('treasure.show.change') ?></a>
 			<?php }else{?>
 				<a class="btn btn-danger"><?php echo $has_technique ? "Aprendido" : t('treasure.show.change') ?></a>

@@ -32,10 +32,10 @@
 				<?php if(!$player->challenge_id):?>
 					<?php if(sizeof($challenge->limit_by_day()) <= 1):?>
 						<?php if($challenge->currency_cost):?>
-							<a class="btn btn-primary unlock" data-challenge="<?php echo $challenge->id ?>" data-mode="1"><?php echo t('history_mode.index.unlock_currency', ['amount' => $challenge->currency_cost, 'currency' => t('currencies.' . $player->character()->anime_id)]) ?></a>
+							<a class="btn btn-primary unlock" data-challenge="<?php echo $challenge->id ?>" data-mode="1"><?php echo t('history_mode.index.unlock_currency', ['amount' => highamount($challenge->currency_cost), 'currency' => t('currencies.' . $player->character()->anime_id)]) ?></a>
 						<?php endif ?>
 						<?php if($challenge->credits_cost):?>
-							<a class="btn btn-warning unlock" data-challenge="<?php echo $challenge->id ?>" data-mode="2"><?php echo t('history_mode.index.unlock_credits', ['amount' => $challenge->credits_cost]) ?></a>
+							<a class="btn btn-warning unlock" data-challenge="<?php echo $challenge->id ?>" data-mode="2"><?php echo t('history_mode.index.unlock_credits', ['amount' => highamount($challenge->credits_cost)]) ?></a>
 						<?php endif ?>
 					<?php else: ?>
 							<a class="btn btn-danger"><?php echo t('friends.f26')?></a>
