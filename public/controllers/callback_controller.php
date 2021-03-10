@@ -10,14 +10,72 @@ class CallbackController extends Controller {
     public function facebook() {
         $token_url      = "https://graph.facebook.com/oauth/access_token?client_id=" . FB_APP_ID . "&redirect_uri=" . urlencode(make_url(FB_CALLBACK_URL)) . "&client_secret=" . FB_APP_SECRET . "&code=" . $_GET['code'];
         $response       = @file_get_contents($token_url);
-        $params         = json_decode($response, TRUE);
-        $graph_url      = "https://graph.facebook.com/me?fields=name,email&access_token=" . $params['access_token'];
-        $user           = json_decode(file_get_contents($graph_url));
+        if ($response) {
+            $params         = json_decode($response, TRUE);
+            $graph_url      = "https://graph.facebook.com/me?fields=name,email&access_token=" . $params['access_token'];
+            $graph          = @file_get_contents($graph_url);
+            if ($graph) {
+                $fb_user       = json_decode($graph);
 
-        echo '<pre>';
-        print_r($params);
-        print_r($user);
-        echo '</pre>';
+                $user = User::find_first('fb_id = ' . $fb_user['id']);
+                if ($user) {
+                    if ($user->banned) {
+                        redirect_to('?banned');
+                    } elseif (IS_BETA && !$user->beta_allowed) {
+                        redirect_to('?not_allowed');
+                    } else {
+                        $_SESSION['loggedin']	= TRUE;
+					    $_SESSION['user_id']	= $user->id;
+
+                        $user->last_login_ip	= ip2long($_SERVER['REMOTE_ADDR']);
+                        $user->last_login_at    = now(TRUE);
+                        $user->session_key      = session_id();
+                        $user->save();
+
+                        if (sizeof($user->players()))   redirect_to('characters/select');
+                        else                            redirect_to('characters/create');
+                    }
+                } else {
+                    $user = User::find_first('email = ' . $fb_user['email']);
+                    if ($user) {
+                        if ($user->banned) {
+                            redirect_to('?banned');
+                        } elseif (IS_BETA && !$user->beta_allowed) {
+                            redirect_to('?not_allowed');
+                        } else {
+                            $_SESSION['loggedin']	= TRUE;
+                            $_SESSION['user_id']	= $user->id;
+
+                            $user->last_login_ip    = ip2long($_SERVER['REMOTE_ADDR']);
+                            $user->last_login_at    = now(TRUE);
+                            $user->session_key      = session_id();
+                            $user->fb_id            = $fb_user['id'];
+                            $user->save();
+
+                            if (sizeof($user->players()))   redirect_to('characters/select');
+                            else                            redirect_to('characters/create');
+                        }
+                    } else {
+                        $user					= new User();
+                        $user->name				= $fb_user['name'];
+                        $user->email			= $fb_user['email'];
+                        $user->password			= random_str(8);
+                        $user->user_key			= uniqid(uniqid(), true);
+                        $user->activation_key	= uniqid(uniqid(), true);
+                        $user->fb_id            = $fb_user['id'];
+                        $user->save();
+
+                        UserMailer::dispatch('send_join_fb', [ $user ]);
+
+                        redirect_to('callback/facebook?code=' . $_GET['code']);
+                    }
+                }
+            } else {
+                redirect_to('?graph_error');
+            }
+        } else {
+            redirect_to('?token_error');
+        }
     }
 
     private function good_request() {

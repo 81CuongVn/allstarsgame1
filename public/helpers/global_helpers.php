@@ -1,7 +1,23 @@
 <?php
+function random_str($length) {
+	$letters	= "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+	$str		= "";
+	for ($i = 1; $i <= $length; $i++) {
+		$rand = rand(0, strlen($letters) - 1);
+		$str .= $letters[$rand];
+	}
+
+	return $str;
+}
+
+function generate_key(){
+	return md5(microtime().serialize($_SERVER));
+}
+
 function password($str) {
 	return md5($str);
 }
+
 function between($value, $start, $end) {
 	return $value >= $start && $value <= $end;
 }
@@ -12,6 +28,31 @@ function display_money($number) {
 
 function highamount($number, $decimals = 0) {
 	return number_format($number, $decimals, ',', '.');
+}
+
+function format_date($date, $show_secs = FALSE){
+	$time		= time();
+	$date		= strtotime($date);
+
+	$today		= date("d", $time);
+	$yesterday	= date("d", $time);
+	$tomorrow	= date("d", $time + 86400);
+
+	$return		= "";
+	if ($yesterday == date("d", $date)) {
+		$return	= "ontem";
+	} elseif ($today == date("d", $date)) {
+		$return	= "hoje";
+	} elseif ($tomorrow == date("d", $date)) {
+		$return	= "amanhã";
+	} else {
+		$return	= "em " . date("d.m", $date);
+	}
+
+	if ($show_secs)	$return .= " às " . date("G:i:s", $date);
+	else			$return .= " às " . date("G:i", $date);
+
+	return $return;
 }
 
 function timeago($date) {
