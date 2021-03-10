@@ -215,8 +215,8 @@
 			var	target	= $('#time-quest-reward-' + $(this).data('id')),
 				option	= $(this.options[this.selectedIndex]);
 
-			$('.exp',		target).html(option.data('exp'));
-			$('.currency',	target).html(option.data('currency'));
+			$('.exp',		target).html(highamount(option.data('exp')));
+			$('.currency',	target).html(highamount(option.data('currency')));
 		});
 
 		$('#timer-quest-cancel').on('click', function () {

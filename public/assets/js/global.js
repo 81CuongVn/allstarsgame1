@@ -40,15 +40,6 @@
     });
 
     window.make_url	= function(to) {
-        /*if(!to) {
-            return _site_url;
-        }
-
-        var to = to.split('#');
-
-        url	=  _site_url + (_rewrite_enabled ? '' : '/index.php') + '/' + to[0] + (to.length > 1 ? '/' + to[1] : '');
-
-        return url;*/
         if (!to)
             return _site_url;
 
@@ -286,7 +277,7 @@
         $('.top-expbar-container .fill').animate({width: size});
         $('.top-expbar-container .light').animate({marginLeft: size + 50});
 
-        $('.top-expbar-container .text').html(exp + ' / ' + max);
+        $('.top-expbar-container .text').html(highamount(exp) + ' / ' + highamount(max));
     };
 
     window.default_bar_change	= function (val, max, target) {
@@ -296,42 +287,64 @@
         if(size > width) size	= width;
 
         $('.fill', target).animate({width: size});
-        $('.text', target).html(val + ' / ' + max);
+        $('.text', target).html(highamount(val) + ' / ' + highamount(max));
     };
 
     window.character_stats	= function (params) {
         if(typeof(params.life) != 'undefined') {
-            $('#background-topo2 .life .c').html(params.life);
+            $('#background-topo2 .life .c').html(highamount(params.life));
         }
 
         if(typeof(params.max_life) != 'undefined') {
-            $('#background-topo2 .life .m').html(params.max_life);
+            $('#background-topo2 .life .m').html(highamount(params.max_life));
         }
 
         if(typeof(params.mana) != 'undefined') {
-            $('#background-topo2 .mana .c').html(params.mana);
+            $('#background-topo2 .mana .c').html(highamount(params.mana));
         }
 
         if(typeof(params.max_mana) != 'undefined') {
-            $('#background-topo2 .mana .m').html(params.max_mana);
+            $('#background-topo2 .mana .m').html(highamount(params.max_mana));
         }
 
         if(typeof(params.stamina) != 'undefined') {
-            $('#background-topo2 .stamina .c').html(params.stamina);
+            $('#background-topo2 .stamina .c').html(highamount(params.stamina));
         }
 
         if(typeof(params.max_stamina) != 'undefined') {
-            $('#background-topo2 .stamina .m').html(params.max_stamina);
+            $('#background-topo2 .stamina .m').html(highamount(params.max_stamina));
         }
 
         if(typeof(params.currency) != 'undefined') {
-            $('#background-topo2 .currency').html(params.currency);
+            $('#background-topo2 .currency').html(highamount(params.currency));
         }
     };
 
     window.$id = function() {
         return 'id-' + parseInt(Math.random() * 512384).toString(16) + '-' + parseInt(Math.random() * 512384).toString(16) + '-' + parseInt(Math.random() * 512384).toString(16) + '-' + parseInt(Math.random() * 512384).toString(16);
     }
+
+    window.highamount	= function (number, decimals, dec_point, thousands_sep) {
+		number = (number + '').replace(/[^0-9+\-Ee.]/g, '');
+		var n = !isFinite(+number) ? 0 : +number,
+			prec = !isFinite(+decimals) ? 0 : Math.abs(decimals),
+			sep = (typeof thousands_sep === 'undefined') ? '.' : thousands_sep,
+			dec = (typeof dec_point === 'undefined') ? ',' : dec_point,
+			s = '',
+			toFixedFix = function (n, prec) {
+				var k = Math.pow(10, prec);
+				return '' + Math.round(n * k) / k;
+			};
+		s = (prec ? toFixedFix(n, prec) : '' + Math.round(n)).split('.');
+		if (s[0].length > 3) {
+			s[0] = s[0].replace(/\B(?=(?:\d{3})+(?!\d))/g, sep);
+		}
+		if ((s[1] || '').length < prec) {
+			s[1] = s[1] || '';
+			s[1] += new Array(prec - s[1].length + 1).join('0');
+		}
+		return s.join(dec);
+	}
     
     if (!localStorage.alertCookies) {
         $(".box-cookies").removeClass('hide');
