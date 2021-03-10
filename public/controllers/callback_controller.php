@@ -7,6 +7,19 @@ class CallbackController extends Controller {
         parent::__construct();
     }
 
+    public function facebook() {
+        $token_url      = "https://graph.facebook.com/oauth/access_token?client_id=" . FB_APP_ID . "&redirect_uri=" . urlencode(make_url(FB_CALLBACK_URL)) . "&client_secret=" . FB_APP_SECRET . "&code=" . $_GET['code'];
+        $response       = @file_get_contents($token_url);
+        $params         = json_decode($response, TRUE);
+        $graph_url      = "https://graph.facebook.com/me?fields=name,email&access_token=" . $params['access_token'];
+        $user           = json_decode(file_get_contents($graph_url));
+
+        echo '<pre>';
+        print_r($params);
+        print_r($user);
+        echo '</pre>';
+    }
+
     private function good_request() {
         header("HTTP/1.1 200 OK");
     }

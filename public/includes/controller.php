@@ -9,7 +9,7 @@ class Controller {
 	function __construct() {
 		$this->json	= new stdClass();
 
-		$this->assigns['fb_url'] = "https://www.facebook.com/dialog/oauth?client_id=" . FB_APP_ID . "&redirect_uri=" . urlencode(make_url('users/login_fb')) . "&scope=email";
+		$this->assigns['fb_url'] = "https://www.facebook.com/dialog/oauth?client_id=" . FB_APP_ID . "&redirect_uri=" . urlencode(make_url(FB_CALLBACK_URL)) . "&scope=email";
 	}
 
 	function assign($key, $value) {
