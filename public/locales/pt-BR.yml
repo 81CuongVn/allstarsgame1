@@ -2291,6 +2291,8 @@ pt-BR:
       semogolpe: Você não tem esse golpe liberado ou precisa equipá-lo ao menos uma vez!
       invalid: O Golpe não existe!
   hightlights:
+    buy_theme: |
+      O jogador <span>%s</span> adquiriu o tema: <span>%s</span>
     wanteds: |
       O jogador <span>%s</span> matou o alvo Procurado: <span>%s</span>!
     blood: |

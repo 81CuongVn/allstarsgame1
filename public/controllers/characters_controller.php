@@ -482,10 +482,10 @@ class CharactersController extends Controller {
 				$errors[]	= t('characters.themes.errors.invalid');
 			}					
 
-			if(!sizeof($errors)) {
+			if (!sizeof($errors)) {
 				$this->json->success	= true;
 
-				if(isset($_POST['buy'])) {
+				if (isset($_POST['buy'])) {
 					$user_theme						= new UserCharacterTheme();
 					$user_theme->user_id			= $user->id;
 					$user_theme->character_theme_id	= $_POST['theme'];
@@ -493,13 +493,17 @@ class CharactersController extends Controller {
 					$user_theme->price_currency		= $theme->price_currency;						
 					$user_theme->save();
 					
-					if($_POST['type']){
+					if ($_POST['type']){
 						$image								= $theme->first_image();
 						$player->character_theme_id			= $theme->id;
 						$player->character_theme_image_id	= $image->id;
 						$player->save();
 					}
-					
+
+					global_message('hightlights.buy_theme', TRUE,[
+						$player->name,
+						$theme->description()->name
+					]);
 					
 					if($_POST['mode'] == 1){
 						if($theme->price_credits) {
