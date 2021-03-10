@@ -37,7 +37,7 @@ class CallbackController extends Controller {
                         else                            redirect_to('characters/create');
                     }
                 } else {
-                    $user = User::find_first('email = ' . $fb_user->email);
+                    $user = User::find_first("email = '{$fb_user->email}'");
                     if ($user) {
                         if ($user->banned) {
                             redirect_to('?banned');
