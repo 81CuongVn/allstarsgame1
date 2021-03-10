@@ -1,0 +1,45 @@
+// Dados enviados
+key: 6048b89cd8ccc5.79588455
+cx: 16
+cy: 14
+
+// Retorno
+{
+   "places":[
+      {
+         "name":"Chuva",
+         "x":15,
+         "y":13,
+         "type":"place"
+      }
+   ],
+   "players":[
+      {
+         "id":"EotlIe1WKLwrSERwDFeWVVdkvqIiVmqMTzuZ5tjrEkI=",
+         "name":"Magnum",
+         "world":"Chuva",
+         "enemy":false,
+         "level":"15",
+         "klass":"103-27",
+         "x":16,
+         "y":14,
+         "type":"player",
+         "dipl":1,
+         "target":false
+      }
+   ],
+   "qr":[
+      
+   ],
+   "info":{
+      "xs":88,
+      "xe":792,
+      "ys":308,
+      "ye":924
+   },
+   "player":{
+      "x":"20",
+      "y":"28",
+      "id":"EotlIe1WKLwrSERwDFeWVVdkvqIiVmqMTzuZ5tjrEkI="
+   }
+}

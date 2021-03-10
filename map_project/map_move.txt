@@ -1,0 +1,15 @@
+// Dados Enviados
+x: -1
+y: 0
+
+// Dados recebidos
+{
+    "info": [
+        "ENTRY COND",
+        "OPT2"
+    ]
+}
+{
+    "info":[],
+    "redirect":"?secao=mapa_vila"
+}
