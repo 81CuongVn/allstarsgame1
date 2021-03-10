@@ -46,7 +46,7 @@ function top_exp_bar($player, $user) {
     }
 
     return '<div class="top-expbar-container">
-        <div class="level technique-popover" data-source="#level-container-'.$player->id .'" data-title="Nível do Personagem" data-trigger="click" data-placement="bottom">
+        <div style="cursor: help;" class="level technique-popover" data-source="#level-container-'.$player->id .'" data-title="Nível do Personagem" data-trigger="click" data-placement="bottom">
             <span>NV</span>
             <div class="number">' . $player->level . '</div>
         </div>
@@ -54,7 +54,7 @@ function top_exp_bar($player, $user) {
             <div style="margin: 10px">'.t('level.player').'</div>
         </div>
         '.$alerts.'
-        <div class="level level-user technique-popover" data-source="#level-user-container-'.$player->id .'" data-title="Nível da Conta" data-trigger="click" data-placement="bottom">
+        <div style="cursor: help;" class="level level-user technique-popover" data-source="#level-user-container-'.$player->id .'" data-title="Nível da Conta" data-trigger="click" data-placement="bottom">
             <span>NV</span>
             <div class="number">' . $user->level . '</div>
         </div>
