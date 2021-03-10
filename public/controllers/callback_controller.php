@@ -30,6 +30,7 @@ class CallbackController extends Controller {
                         $user->last_login_ip	= ip2long($_SERVER['REMOTE_ADDR']);
                         $user->last_login_at    = now(TRUE);
                         $user->session_key      = session_id();
+                        $user->active           = 1;
                         $user->save();
 
                         if (sizeof($user->players()))   redirect_to('characters/select');
@@ -49,6 +50,7 @@ class CallbackController extends Controller {
                             $user->last_login_ip    = ip2long($_SERVER['REMOTE_ADDR']);
                             $user->last_login_at    = now(TRUE);
                             $user->session_key      = session_id();
+                            $user->active           = 1;
                             $user->fb_id            = $fb_user['id'];
                             $user->save();
 
@@ -63,6 +65,7 @@ class CallbackController extends Controller {
                         $user->user_key			= uniqid(uniqid(), true);
                         $user->activation_key	= uniqid(uniqid(), true);
                         $user->fb_id            = $fb_user['id'];
+                        $user->active           = 1;
                         $user->save();
 
                         UserMailer::dispatch('send_join_fb', [ $user ]);
