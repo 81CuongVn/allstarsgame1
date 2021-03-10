@@ -21,22 +21,10 @@
 				</div>
 			<?php endif ?>
 
-			
+			<input type="hidden" name="name" value="<?php echo $organization->name ?>" />
 			<div style="float: left; width:200px; text-align: center"><label><?php echo t('organizations.show.choose_image') ?></label></div>
 			<div style="float: left; width:300px;"><input type="file" name="cover" /><?php echo t('organizations.show.image_note') ?></div>
 			<div style="float: left; width:130px;"><input type="submit" class="btn btn-primary" value="<?php echo t('organizations.show.upload_data') ?>" /></div>
-			<div class="form-group">
-				<label class="col-sm-2 control-label"><?php echo t('organizations.show.set_name') ?></label>
-				<div class="col-sm-10">
-					<input type="text" name="name" class="form-control" value="<?php echo $organization->name ?>" />
-				</div>
-			</div>
-			<div class="form-group">
-				<label class="col-sm-2 control-label"><?php echo t('organizations.show.set_description') ?></label>
-				<div class="col-sm-10">
-					<textarea name="description" class="form-control" rows="5"><?php echo $organization->description ?></textarea>
-				</div>
-			</div>
 		</form>
 	<?php endif ?>
 </div>
@@ -117,7 +105,7 @@
 						<?php endif ?>
 						<span style="font-size:14px" class="amarelo"><?php echo $instance->name ?></span><br /><span class="azul_claro">Nível <?php echo $instance->level ?></span></td>
 					<td width="80" align="center">
-						<img src="<?php echo image_url('icons/treasure.png') ?>" width="16"/> <span style="font-size: 12px"><?php echo $instance->treasure_atual?></span>
+						<img src="<?php echo image_url('icons/treasure.png') ?>" width="16"/> <span style="font-size: 12px"><?php echo highamount($instance->treasure_atual); ?></span>
 					</td>
 					<td width="100" align="center">
 						<?php 

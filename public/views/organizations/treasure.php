@@ -16,20 +16,20 @@
 		</div>
 		<div class="name legendary" style="height: 30px !important;">
 			<?php echo $treasures->name ?><br />
-			<span style="font-size:12px;" class="amarelo">( Você ganhou <?php echo $treasures->total?> vez(es) )</span>
+			<span style="font-size:12px;" class="amarelo">( Você ganhou <?php echo highamount($treasures->total); ?> vez(es) )</span>
 		</div>
 		<div class="description" style="height: 40px !important;">
 		<?php if($treasures->exp){?>
-			<li><?php echo t('treasure.show.desc')?>: <?php echo $treasures->exp ?> <?php echo t('treasure.show.exp')?></li>
+			<li><?php echo t('treasure.show.desc')?>: <?php echo highamount($treasures->exp); ?> <?php echo t('treasure.show.exp')?></li>
 		<?php }?>
 		<?php if($treasures->enchant_points){?>
-			<li><?php echo t('treasure.show.desc')?>: <?php echo $treasures->quantity ?> <?php echo t('treasure.show.enchant')?></li>
+			<li><?php echo t('treasure.show.desc')?>: <?php echo highamount($treasures->quantity); ?> <?php echo t('treasure.show.enchant')?></li>
 		<?php }?>
 		<?php if($treasures->currency){?>
-			<li><?php echo t('treasure.show.desc')?>: <?php echo $treasures->currency ?> <?php echo t('currencies.' . $player->character()->anime_id) ?></li> 
+			<li><?php echo t('treasure.show.desc')?>: <?php echo highamount($treasures->currency); ?> <?php echo t('currencies.' . $player->character()->anime_id) ?></li> 
 		<?php }?>
 		<?php if($treasures->credits){?>
-			<li><?php echo t('treasure.show.desc')?>: <?php echo $treasures->credits ?> <?php echo t('treasure.show.credits')?></li>
+			<li><?php echo t('treasure.show.desc')?>: <?php echo highamount($treasures->credits); ?> <?php echo t('treasure.show.credits')?></li>
 		<?php }?>
 		<?php if($treasures->equipment && $treasures->equipment == 1){?>
 			<li><?php echo t('treasure.show.desc')?>: <?php echo t('treasure.show.equipment1')?></li>
@@ -61,21 +61,24 @@
 				<?php
 					$reward	= Item::find($treasures->item_id);
 					$reward->set_anime($player->character()->anime_id);
-					echo $treasures->quantity ." ". $reward->description()->name;
+					echo highamount($treasures->quantity) . " " . $reward->description()->name;
 				?>
 			</li>
 		<?php }?>
 		<br />
 		</div>
 		<div class="details">
-			<img src="<?php echo image_url("icons/treasure.png" ) ?>" width="26" height="26"/><span class="amarelo_claro" style="font-size: 16px; margin-left: 5px; top: 2px; position: relative"><?php echo $total_treasure->treasure_atual ?> / <?php echo $treasures->treasure_total?></span>
+			<img src="<?php echo image_url("icons/treasure.png" ) ?>" width="26" height="26" />
+			<span class="amarelo_claro" style="font-size: 16px; margin-left: 5px; top: 2px; position: relative">
+				<?php echo highamount($total_treasure->treasure_atual); ?> / <?php echo highamount($treasures->treasure_total); ?>
+			</span>
 		</div>
 		<div class="button" style="position:relative; top: 15px;">
-			<?php if($total_treasure->treasure_atual >= $treasures->treasure_total && $can_accept){?>
+			<?php if ($total_treasure->treasure_atual >= $treasures->treasure_total && $can_accept) { ?>
 				<button type="button" class="treasures_change btn btn-primary" data-mode="<?php echo $treasures->id?>"><?php echo t('treasure.show.change') ?></button>
-			<?php }else{?>
+			<?php }else{ ?>
 				<button type="button" class="btn btn-danger btn-disabled" disabled><?php echo t('treasure.show.change') ?></button>
-			<?php }?>	
+			<?php } ?>	
 		</div>
 	</div>
 </div>
