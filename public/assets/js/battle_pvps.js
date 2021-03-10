@@ -139,7 +139,7 @@
 				_check_pvp_queue = true;
 
 				// location.href = make_url('battle_pvps');
-				location.href.reload();
+				location.reload();
 			}
 		});
 	});
@@ -155,7 +155,7 @@
 				_check_pvp_queue = false;
 
 				// location.href = make_url('battle_pvps');
-				location.href.reload();
+				location.reload();
 			}
 		});
 	});
