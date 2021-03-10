@@ -95,8 +95,8 @@ if (!$player_tutorial->missoes_tempo) {
 							</select>
 						</td>
 						<td width="110" align="center" id="time-quest-reward-<?=$quest->id;?>" class="verde">
-							<span class="exp"><?=$expReward;?></span> Exp<br />
-							<span class="currency"><?=$coinsReward;?></span> <?=t('currencies.' . $player->character()->anime_id);?><br />
+							<span class="exp"><?=highamount($expReward);?></span> Exp<br />
+							<span class="currency"><?=highamount($coinsReward);?></span> <?=t('currencies.' . $player->character()->anime_id);?><br />
 							
 							<?php if ($quest->random_equipment_chance): ?>
 								<span class="random-equipment"><?=t('quests.equipment_chance', [
