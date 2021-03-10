@@ -17,7 +17,7 @@ class CallbackController extends Controller {
             if ($graph) {
                 $fb_user       = json_decode($graph);
 
-                $user = User::find_first('fb_id = ' . $fb_user['id']);
+                $user = User::find_first('fb_id = ' . $fb_user->id);
                 if ($user) {
                     if ($user->banned) {
                         redirect_to('?banned');
@@ -37,7 +37,7 @@ class CallbackController extends Controller {
                         else                            redirect_to('characters/create');
                     }
                 } else {
-                    $user = User::find_first('email = ' . $fb_user['email']);
+                    $user = User::find_first('email = ' . $fb_user->email);
                     if ($user) {
                         if ($user->banned) {
                             redirect_to('?banned');
@@ -51,7 +51,7 @@ class CallbackController extends Controller {
                             $user->last_login_at    = now(TRUE);
                             $user->session_key      = session_id();
                             $user->active           = 1;
-                            $user->fb_id            = $fb_user['id'];
+                            $user->fb_id            = $fb_user->id;
                             $user->save();
 
                             if (sizeof($user->players()))   redirect_to('characters/select');
@@ -59,12 +59,12 @@ class CallbackController extends Controller {
                         }
                     } else {
                         $user					= new User();
-                        $user->name				= $fb_user['name'];
-                        $user->email			= $fb_user['email'];
+                        $user->name				= $fb_user->name;
+                        $user->email			= $fb_user->email;
                         $user->password			= random_str(8);
                         $user->user_key			= uniqid(uniqid(), true);
                         $user->activation_key	= uniqid(uniqid(), true);
-                        $user->fb_id            = $fb_user['id'];
+                        $user->fb_id            = $fb_user->id;
                         $user->active           = 1;
                         $user->save();
 
