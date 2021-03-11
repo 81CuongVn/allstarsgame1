@@ -57,6 +57,8 @@ if ($_SESSION['user_id']) {
 	<meta property="og:image:width" content="300" />
 	<meta property="og:image:height" content="300" />
 	<meta property="og:url" content="<?=make_url('/')?>" />
+	<meta property="fb:app_id" content="<?=FB_APP_ID;?>" />
+
 	<link itemprop="thumbnailUrl" href="<?=image_url('social/cover2.png');?>" />
 	<span itemprop="thumbnail" itemscope itemtype="http://schema.org/ImageObject">
 		<link itemprop="url" href="<?=image_url('social/cover2.png');?>" />
