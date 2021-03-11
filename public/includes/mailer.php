@@ -1,38 +1,40 @@
 <?php
-require'vendor/ci_email.php';
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
 
 class Mailer {
-	private	$factory	= null;
-
-	public	$host		= '';
-	public	$port		= 25;
-	public	$username	= '';
-	public	$password	= '';
-	public	$debug		= '';
-	public	$from		= '';
-	public	$from_name	= '';
-
 	function deliver($subject, $to, $message) {
-		$factory		= new CI_Email(array(
-			'protocol'	=> 'smtp',
-			'charset'	=> 'utf-8',
-			'smtp_user'	=> $this->username,
-			'smtp_pass'	=> $this->password,
-			'smtp_port'	=> $this->port,
-			'smtp_host'	=> $this->host,
-			'mailtype'	=> 'html'
-		));
+		global $mailConfig;
 
-		$factory->from($this->from, $this->from_name);
-		$factory->to($to);
+		$mail = new PHPMailer(true);
+		try {
+			// Server settings
+			$mail->SMTPDebug	= SMTP::DEBUG_SERVER;						// Enable verbose debug output
+			$mail->isSMTP();												// Send using SMTP
+//			$mail->Host			= $mailConfig['host'];						// Set the SMTP server to send through
+			$mail->Host			= gethostbyname($mailConfig['host']);
+			$mail->SMTPAuth		= true;										// Enable SMTP authentication
+			$mail->Username		= $mailConfig['username'];					// SMTP username
+			$mail->Password		= $mailConfig['password'];					// SMTP password
+			$mail->SMTPSecure	= PHPMailer::ENCRYPTION_STARTTLS;			// Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` encouraged
+			$mail->Port			= $mailConfig['port'];						// TCP port to connect to, use 465 for `PHPMailer::ENCRYPTION_SMTPS` above
 
-		$factory->subject($subject);
-		$factory->message($message);
+			$mail->setFrom($mailConfig['from'], $mailConfig['from_name']);
+			$mail->addReplyTo($mailConfig['from'], $mailConfig['from_name']);
+			$mail->addAddress($to);											// Add a recipient
 
-		$return			= $factory->send();
-		$this->debug	= $factory->print_debugger();
+			// Content
+			$mail->isHTML(true);											// Set email format to HTML
+			$mail->Subject	= $subject;
+			$mail->Body		= $message;
+			$mail->AltBody	= 'This is a plain-text message body';
 
-		return $return;
+			return $mail->send();
+		} catch (Exception $e) {
+			echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+			return FALSE;
+		}
 	}
 
 	static function dispatch($method, $params) {

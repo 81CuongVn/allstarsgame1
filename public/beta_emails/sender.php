@@ -15,18 +15,6 @@ require '../includes/db.php';
 require '../includes/url_helper.php';
 
 class BetaMailer extends Mailer {
-    public function __construct()
-    {
-        global $mailConfig;
-
-        $this->host		    = $mailConfig['host'];
-        $this->port		    = $mailConfig['port'];
-        $this->username	    = $mailConfig['username'];
-        $this->password	    = $mailConfig['password'];
-        $this->from		    = $mailConfig['from'];
-        $this->from_name	= $mailConfig['from_name'];
-    }
-
     public function send_beta($user) {
         $this->deliver('O Beta começou!', $user['email'], render_file('email_template.php', ['user' => $user]));
     }

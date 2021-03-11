@@ -26,11 +26,11 @@ $database			= [
 
 # SMTP settings
 $mailConfig			= [
-	'host'			=> 'mail.animeallstarsgame.com',
+	'host'			=> 'smtp.gmail.com',
 	'port'			=> 587,
-	'username'		=> 'contato@animeallstarsgame.com',
-	'password'		=> '[z29e|?IEi',
-	'from'			=> 'noreply@animeallstarsgame.com',
+	'username'		=> 'animeallstarsgamebr@gmail.com',
+	'password'		=> 'ffm160295',
+	'from'			=> 'animeallstarsgamebr@gmail.com',
 	'from_name'		=> GAME_NAME
 ];
 
