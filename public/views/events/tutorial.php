@@ -146,6 +146,14 @@
 			<a href="<?=make_url('battle_pvps');?>">Batalha PVP</a>
 		</div>
 	</div>
+	<div class="tutorial" style="<?php echo $player_tutorial->battle_ranked ? 'background-color: #12304b;' : 'background-color: #051727;'?>">
+		<div class="image">
+			<img src="<?php echo $player_tutorial->battle_ranked ? image_url('icons/yes.png') : image_url('icons/no.png')?>" />
+		</div>
+		<div class="texto">	
+			<a href="<?=make_url('battle_pvps/ranked');?>">Liga All-Stars</a>
+		</div>
+	</div>
 	<div class="tutorial" style="<?php echo $player_tutorial->fidelity ? 'background-color: #12304b;' : 'background-color: #051727;'?>">
 		<div class="image">
 			<img src="<?php echo $player_tutorial->fidelity ? image_url('icons/yes.png') : image_url('icons/no.png')?>" />
