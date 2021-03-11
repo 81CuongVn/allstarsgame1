@@ -56,7 +56,11 @@ if ($_SESSION['user_id']) {
 	<meta property="og:image:type" content="image/jpeg" />
 	<meta property="og:image:width" content="300" />
 	<meta property="og:image:height" content="300" />
-	<meta property="og:url" content="<?=make_url('/')?>">
+	<meta property="og:url" content="<?=make_url('/')?>" />
+	<link itemprop="thumbnailUrl" href="<?=image_url('social/cover2.png');?>" />
+	<span itemprop="thumbnail" itemscope itemtype="http://schema.org/ImageObject">
+		<link itemprop="url" href="<?=image_url('social/cover2.png');?>" />
+	</span>
 
 	<link rel="stylesheet" type="text/css" href="<?=asset_url('css/bootstrap.css');?>" />
 	<link rel="stylesheet" type="text/css" href="<?=asset_url('css/tipped.css');?>" />
