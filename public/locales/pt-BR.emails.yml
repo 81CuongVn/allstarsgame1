@@ -1,14 +1,30 @@
 pt-BR:
   emails:
-    join:
-      subject: Seja Bem-Vindo ao All Stars Game
-      subject_beta: Aplicação para beta do All Stars Game
+    join_fb:
+      subject: |
+        Seja bem-vindo ao All-Stars Game!
       welcome_message: |
         <p>#{user},</p>
-        <p>Seja bem-vindo ao All Stars Game!</p>
+        <p>Seja bem-vindo ao All-Stars Game!</p>
+      message: |
+        Estamos felizes por ter-lo conosco!
+        Oo dados de acesso à sua conta é:
+        <b>E-mail:</b> #{email}<br />
+        <b>Senha:</b> #{password}<br /><br />
+
+        Caso Tenha alguma dúvida, não hesite em entrar em contato.<br /><br />
+
+        Grato,
+        Equipe All-Stars Game.
+    join:
+      subject: Seja bem-vindo ao All-Stars Game!
+      subject_beta: Aplicação para beta do All-Stars Game
+      welcome_message: |
+        <p>#{user},</p>
+        <p>Seja bem-vindo ao All-Stars Game!</p>
       welcome_message_beta: |
         <p>#{user},</p>
-        <p>Registramos seu cadastro para aplicação do beta do All Stars Game!</p>
+        <p>Registramos seu cadastro para aplicação do beta do All-Stars Game!</p>
       message: |
         Utilize o link abaixo para ativar a sua conta. E logo abaixo se encontra o código de ativação, caso não esteja conseguindo utilizar o link
       message_beta: |

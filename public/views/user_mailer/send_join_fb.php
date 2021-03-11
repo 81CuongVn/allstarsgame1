@@ -4,17 +4,11 @@
 	<title></title>
 </head>
 <body>
-	<h3><?php echo t('emails.join.welcome_message', array('user' => $user->name)) ?></h3>
-	<p><?php echo t('emails.join.message') ?></p>
+	<h3><?php echo t('emails.join_fb.welcome_message', array('user' => $user->name)) ?></h3>
+	<p><?php echo t('emails.join_fb.message', [
+		'email'		=>  $user->email,
+		'password'	=>  $user->password
+	]) ?></p>
 	<div style="clear: block"></div>
-	<div style="width: 70%; margin: 0px auto">
-		<span style="font-size: 12px"><?php echo make_url('users#activate/' . $user->activation_key) ?></span>
-	</div>
-	<div style="clear: block"></div>
-	<br />
-	<br />
-	<div style="width: 70%; margin: 0px auto; text-align: center">
-		<span style="font-size: 24px"><?php echo $user->activation_key ?></span>
-	</div>
 </body>
 </html>
