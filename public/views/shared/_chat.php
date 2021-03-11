@@ -8,15 +8,15 @@
     <div class="selector">
         <ul>
             <li data-channel="world" data-cmd="m">Mundo</li>
-            <li data-channel="anime" data-cmd="a"><?=$player->character()->anime()->description()->name;?></li>
-            <?php if ($_SESSION['universal']): ?>
-                <li data-channel="system" data-cmd="s">Sistema</li>
-            <?php endif; ?>
+            <li data-channel="anime" data-cmd="a"><?=$player->faction()->name;?></li>
             <?php if ($player->organization_id): ?>
                 <li data-channel="guild" data-cmd="g">Organização</li>
             <?php endif; ?>
             <?php if ($player->battle_pvp_id): ?>
                 <li data-channel="battle" data-cmd="b">Batalha</li>
+            <?php endif; ?>
+            <?php if ($_SESSION['universal']): ?>
+                <li data-channel="system" data-cmd="s">Sistema</li>
             <?php endif; ?>
         </ul>
         <div class="selector-trigger">Mundo</div>
@@ -31,7 +31,7 @@ $guild          = $player->organization();
 $chat_data	    = [
     'uid'           => $player->id,
 	'user_id'       => $player->user_id,
-	'anime'         => $player->character()->anime_id,
+	'anime'         => $player->faction_id,
 	'guild'         => $player->organization_id,
 	'guild_owner'   => $guild ? $player->id == $guild->leader()->id : FALSE,
 	'battle'        => $player->battle_pvp_id,

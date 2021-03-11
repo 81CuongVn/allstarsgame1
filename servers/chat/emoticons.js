@@ -33,7 +33,7 @@ exports.parse	= function (text, gm) {
 		var	emoticon	= emoticons[i];
 
 		while(text.indexOf(i) != -1) {
-			text	= text.replace(i, ' <img src="/images/layout/emotes/' + emoticon + '" class="emoticon" /> ');			
+			text	= text.replace(i, ' <img src="/assets/images/chat/emotes/' + emoticon + '" class="emoticon" /> ');			
 		}
 	}
 
@@ -42,7 +42,7 @@ exports.parse	= function (text, gm) {
 			var	emoticon	= emoticons_gm[i];
 
 			while(text.indexOf(i) != -1) {
-				text	= text.replace(i, ' <img src="/images/layout/emotes/' + emoticon + '" class="emoticon" /> ');
+				text	= text.replace(i, ' <img src="/assets/images/chat/emotes/' + emoticon + '" class="emoticon" /> ');
 			}
 		}		
 	}

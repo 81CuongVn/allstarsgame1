@@ -8,7 +8,7 @@ $rewrite_enabled	= TRUE;
 
 # Game settings
 define('GAME_NAME', 			'All-Stars Game');
-define('GAME_VERSION', 			'2.0.141');
+define('GAME_VERSION', 			'2.0.142');
 define('GLOBAL_PASSWORD', 		'dev2@21');
 
 # Database settings

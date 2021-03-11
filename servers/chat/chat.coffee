@@ -12,7 +12,7 @@ emoticons			= require './emoticons'
 # db_sync				= require './db_sync'
 
 # Mysql config
-mysql_config		= db: 'narutoga_prod', user: 'narutoga_prod', password: 'xc88%a3j'
+# mysql_config		= db: 'narutoga_prod', user: 'narutoga_prod', password: 'xc88%a3j'
 
 users				= {}
 users_by_name		= {}
@@ -49,7 +49,7 @@ bootstrap	= ->
 
 	server.listen 2934
 
-	console.log "Process started with PID " + process.pid
+	console.log "+ Chat Thread Started on " + server.address().address + " at port " + server.address().port
 
 decrypt_json	= (encrypted) ->
 	key				= 'YAn8yK930907L2KUTnnSqLDuI6jl0G9N'
@@ -241,6 +241,9 @@ io.sockets.on 'connection', (socket) ->
 				return
 
 			last_messages[user.user_id]	= now;
+
+			if user.gm
+				user_message_size = 500
 
 			# Character limtit for non-gm users
 			data.message	= emoticons.parse(data.message.substr(0, user_message_size), user.gm)
