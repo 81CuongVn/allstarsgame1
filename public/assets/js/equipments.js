@@ -321,97 +321,93 @@
 					}
 
 					_.on('click', function(e) {
-						if (e.shiftKey && typeof ChatService !== 'undefined') {
-							ChatService.embed(_.data('embed'), '[equip:' + _.data('id') + ']');
-						} else {
-							var win2 = bootbox.dialog({
-								message: I18n.t('equipments.show.click_text'),
-								buttons: [{
-									label: I18n.t('equipments.show.equip'),
-									className: 'btn btn-primary',
-									callback: function() {
-										lock_screen(true);
+						var win2 = bootbox.dialog({
+							message: I18n.t('equipments.show.click_text'),
+							buttons: [{
+								label: I18n.t('equipments.show.equip'),
+								className: 'btn btn-primary',
+								callback: function() {
+									lock_screen(true);
 
-										$.ajax({
-											url: make_url('equipments#equip'),
-											type: 'post',
-											dataType: 'json',
-											data: {
-												slot: _.data('slot'),
-												equipment: _.data('id')
-											},
-											success: function(result) {
-												if (result.success) {
-													location.reload();
-												} else {
-													lock_screen(false);
-													format_error(result);
-												}
+									$.ajax({
+										url: make_url('equipments#equip'),
+										type: 'post',
+										dataType: 'json',
+										data: {
+											slot: _.data('slot'),
+											equipment: _.data('id')
+										},
+										success: function(result) {
+											if (result.success) {
+												location.reload();
+											} else {
+												lock_screen(false);
+												format_error(result);
 											}
-										});
+										}
+									});
 
-										return false;
-									}
-								}, {
-									label: I18n.t('global.sell_by') + ' ' + _.data('price') + ' ' + I18n.t('currencies.' + _current_anime),
-									className: 'btn btn-danger',
-									callback: function() {
-										lock_screen(true);
+									return false;
+								}
+							}, {
+								label: I18n.t('global.sell_by') + ' ' + _.data('price') + ' ' + I18n.t('currencies.' + _current_anime),
+								className: 'btn btn-danger',
+								callback: function() {
+									lock_screen(true);
 
-										$.ajax({
-											url: make_url('equipments#sell'),
-											type: 'post',
-											dataType: 'json',
-											data: {
-												equipment: _.data('id')
-											},
-											success: function(result) {
-												if (result.success) {
-													lock_screen(false);
-													_.remove();
-													win2.modal('hide');
-												} else {
-													lock_screen(false);
-													format_error(result);
-												}
+									$.ajax({
+										url: make_url('equipments#sell'),
+										type: 'post',
+										dataType: 'json',
+										data: {
+											equipment: _.data('id')
+										},
+										success: function(result) {
+											if (result.success) {
+												lock_screen(false);
+												_.remove();
+												win2.modal('hide');
+											} else {
+												lock_screen(false);
+												format_error(result);
 											}
-										});
+										}
+									});
 
-										return false;
-									}
-								}, {
-									label: I18n.t('global.destroy_by') + ' ' + _.data('destroy') + ' Fragmentos',
-									className: 'btn btn-danger',
-									callback: function() {
-										lock_screen(true);
+									return false;
+								}
+							}, {
+								label: I18n.t('global.destroy_by') + ' ' + _.data('destroy') + ' Fragmentos',
+								className: 'btn btn-danger',
+								callback: function() {
+									lock_screen(true);
 
-										$.ajax({
-											url: make_url('equipments#destroy'),
-											type: 'post',
-											dataType: 'json',
-											data: {
-												equipment: _.data('id')
-											},
-											success: function(result) {
-												if (result.success) {
-													lock_screen(false);
-													_.remove();
-													win2.modal('hide');
-												} else {
-													lock_screen(false);
-													format_error(result);
-												}
+									$.ajax({
+										url: make_url('equipments#destroy'),
+										type: 'post',
+										dataType: 'json',
+										data: {
+											equipment: _.data('id')
+										},
+										success: function(result) {
+											if (result.success) {
+												lock_screen(false);
+												_.remove();
+												win2.modal('hide');
+											} else {
+												lock_screen(false);
+												format_error(result);
 											}
-										});
+										}
+									});
 
-										return false;
-									}
-								}, {
-									label: I18n.t('global.close'),
-									className: 'btn'
-								}]
-							});
-						}
+									return false;
+								}
+							}, {
+								label: I18n.t('global.close'),
+								className: 'btn'
+							}]
+						});
 					});
 				})
 			}
@@ -420,10 +416,6 @@
 
 	container.on('click', '.slot', function(e) {
 		var element = $(this);
-		if (e.shiftKey && $(this).hasClass('equipped') && typeof ChatService !== 'undefined') {
-			ChatService.embed(element.data('embed'), '[equip:' + element.data('id') + ']');
-			return;
-		}
 
 		var buttons = [];
 		if (!$(this).hasClass('equipped')) {
@@ -455,23 +447,4 @@
 			buttons: buttons
 		});
 	});
-
-	if (typeof ChatService !== 'undefined') {
-		var expression = /\[equip\:(\d*)\]/i;
-		ChatService.register_embed_cb(expression, function(element, data) {
-			if (data) {
-				data.attributes.rarity = data.rarity;
-				_equipments[data.id] = data.attributes;
-				element.html(element.html().replace(expression, '<span class="embed embed-equipment rarity-' + data.rarity + '" data-id="$1">[' + I18n.t('slots.' + _current_anime) + ' ' + data.name.replace(/[\s]$/, '') + ']</span>'));
-
-				$('.embed-equipment').each(function() {
-					if (this.with_callback) {
-						return;
-					}
-
-					attach_equipment_popver($(this), null, true);
-				});
-			}
-		});
-	}
 })();

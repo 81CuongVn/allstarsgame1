@@ -21,7 +21,9 @@ jobs:
             cd /var/www/allstarsgame.com.br
 
             git status
+            git stash
             git reset --hard
+            git clean -fd
             git pull https://fmedeiros95:${{ secrets.TOKEN }}@github.com/fmedeiros95/allstars.git main
 
             source /etc/profile.d/rvm.sh

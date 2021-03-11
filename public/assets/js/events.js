@@ -15,29 +15,6 @@
 			wanteds[0].submit();
 		});
 	}
-	container.on('click', '.bg-wanteds', function (e) {
-		if(e.shiftKey && typeof ChatService !== 'undefined') {
-			ChatService.embed($(this).data('embed'), '[wanted:' + $(this).data('id') + ']');
-			return;
-		}
-	});
-
-	if (typeof ChatService !== 'undefined') {
-		var	expression	= /\[wanted\:(\d*)\]/i;
-		ChatService.register_embed_cb(expression, function (element, data) {
-			if(data) {
-				element.html(element.html().replace(expression, '<span class="vermelho embed embed-procurado" data-id="$1" data-name="'+ data.name +'" data-type="'+ data.type +'" data-won="'+ data.won +'" data-character="'+ data.character +'">[Procurado: '+ data.name +']</span>'));
-
-				$('.embed-procurado').each(function () {
-					if(this.with_callback) {
-						return;
-					}
-
-					attach_wanted_popver($(this), null, true);
-				});
-			}
-		});
-	}
 
 	window.attach_wanted_popver	= function (source, comparison, is_chat) {
 		source.popover({

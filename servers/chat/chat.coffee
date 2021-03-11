@@ -12,7 +12,7 @@ emoticons			= require './emoticons'
 # db_sync				= require './db_sync'
 
 # Mysql config
-# mysql_config		= db: 'narutoga_prod', user: 'narutoga_prod', password: 'xc88%a3j'
+mysql_config		= db: 'narutoga_prod', user: 'narutoga_prod', password: 'xc88%a3j'
 
 users				= {}
 users_by_name		= {}
