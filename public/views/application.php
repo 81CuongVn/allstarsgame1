@@ -51,7 +51,7 @@ if ($_SESSION['user_id']) {
 	<meta property="og:site_name" content="<?=GAME_NAME;?>" />
 	<meta property="og:title" content="<?=GAME_NAME;?> - Seja o Herói de nossa História" />
 	<meta property="og:description" content="<?=GAME_NAME;?> é o novo jogo para fãs de anime, em nosso jogo você será um dos personagens emblemáticos dos principais animes que fizeram e fazem parte de nossa vida." />
-	<meta property="og:image" content="<?=image_url('social/cover2.png');?>" />
+	<meta property="og:image" itemprop="image" content="<?=image_url('social/cover2.png');?>" />
 	<meta property="og:type" content="website" />
 	<meta property="og:image:type" content="image/jpeg" />
 	<meta property="og:image:width" content="300" />
@@ -122,6 +122,10 @@ if ($_SESSION['user_id']) {
         	I18n.translations		= <?=Lang::toJSON()?>;
 		});
     </script>
+	<?php if (FW_ENV != 'dev') { ?>
+
+	<script data-ad-client="ca-pub-6665062829379662" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+	<?php } ?>
 </head>
 <body>
 <!-- Topo -->
