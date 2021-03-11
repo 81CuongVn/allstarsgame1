@@ -164,12 +164,12 @@ textarea:focus, input:focus{
 }
 
 .chat-pvt .l {
-    background-image: url(http://narutogame.com.br/images//layout/chat/chat_notification_l.png);	
+    background-image: url(../images/chat/notification_l.png);	
     width: 22px;
 }
 
 .chat-pvt .r {
-    background-image: url(http://narutogame.com.br/images//layout/chat/chat_notification_r.png);	
+    background-image: url(../images/chat/notification_r.png);	
     background-position: top right;
     margin-left: -10px;
     padding-right: 12px;
@@ -189,7 +189,7 @@ textarea:focus, input:focus{
 }
 
 .reply-box {
-    background-image: url(http://narutogame.com.br/images//layout/chat/chat_bg_private.png);
+    background-image: url(../images/chat/bg_private.png);
     width: 247px;
     height: 122px;
     position: fixed;
@@ -203,7 +203,7 @@ textarea:focus, input:focus{
     right: 10px;
     bottom: 13px;
     background-repeat: no-repeat;
-    background-image: url(http://narutogame.com.br/images/layout/chat/chat_next.png);
+    background-image: url(../images/chat/next.png);
     background-position: right bottom;
     padding-right: 14px;
     cursor: pointer;		
@@ -215,7 +215,7 @@ textarea:focus, input:focus{
     left: 23px;
     background-position: left center;
     background-repeat: no-repeat;
-    background-image: url(http://narutogame.com.br/images/layout/chat/chat_reply.png);
+    background-image: url(../images/chat/reply.png);
     padding-left: 14px;		
     cursor: pointer;		
 }
