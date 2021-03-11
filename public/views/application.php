@@ -47,12 +47,16 @@ if ($_SESSION['user_id']) {
     <meta name="description" content="<?=GAME_NAME;?> é o novo jogo para fãs de anime, em nosso jogo você será um dos personagens emblemáticos dos principais animes que fizeram e fazem parte de nossa vida." />
     <meta name="keywords" content="aasg, naruto, boruto, one, piece, cdz, anime, all, stars, game, jogo, online" />
 
-    <meta property="og:title" content="<?=GAME_NAME;?> - Seja o Herói de nossa História" />
-    <meta property="og:site_name" content="<?=GAME_NAME;?>" />
-    <meta property="og:url" content="<?=make_url();?>" />
-    <meta property="og:description" content="<?=GAME_NAME;?> é o novo jogo para fãs de anime, em nosso jogo você será um dos personagens emblemáticos dos principais animes que fizeram e fazem parte de nossa vida." />
-    <meta property="og:type" content="website" />
-    <meta property="og:image" content="<?=image_url('social/cover2.png');?>" />
+	<meta name="msapplication-TileImage" content="<?=image_url('social/cover2.png');?>" />    
+	<meta property="og:site_name" content="<?=GAME_NAME;?>" />
+	<meta property="og:title" content="<?=GAME_NAME;?> - Seja o Herói de nossa História" />
+	<meta property="og:description" content="<?=GAME_NAME;?> é o novo jogo para fãs de anime, em nosso jogo você será um dos personagens emblemáticos dos principais animes que fizeram e fazem parte de nossa vida." />
+	<meta property="og:image" content="<?=image_url('social/cover2.png');?>" />
+	<meta property="og:type" content="website" />
+	<meta property="og:image:type" content="image/jpeg" />
+	<meta property="og:image:width" content="300" />
+	<meta property="og:image:height" content="300" />
+	<meta property="og:url" content="<?=make_url('/')?>">
 
 	<link rel="stylesheet" type="text/css" href="<?=asset_url('css/bootstrap.css');?>" />
 	<link rel="stylesheet" type="text/css" href="<?=asset_url('css/tipped.css');?>" />
