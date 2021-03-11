@@ -27,7 +27,7 @@ function display_money($number) {
 }
 
 function highamount($number, $decimals = 0) {
-	return number_format($number, $decimals, ',', '.');
+	return @number_format($number, $decimals, ',', '.');
 }
 
 function format_date($date, $show_secs = FALSE){
