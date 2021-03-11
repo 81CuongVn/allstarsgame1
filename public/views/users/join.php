@@ -1,6 +1,6 @@
 <div class="new2">
 	<?php if (!isset($beta)): ?>
-		<?php echo partial('shared/title', [ 'title' => 'users.join.title', 'image' => 'create' ]) ?>
+		<?php echo partial('shared/title', [ 'title' => 'users.join.title', 'place' => 'users.join.title' ]) ?>
 	<?php endif ?>
 </div>
 <div class="new2">

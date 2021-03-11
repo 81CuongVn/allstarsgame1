@@ -296,9 +296,9 @@ if ($_SESSION['user_id']) {
 											<input type="text" name="captcha" class="in-codigo" placeholder="Digite o Código" />
 											<img class="in-captcha" src="<?=make_url('captcha#login');?>" alt="Captcha Code" />
 											<div style="position: relative; left: -8px; margin-top: -4px">
-												<a href="<?=make_url('users/reset_password');?>"><img src="<?=image_url('buttons/bt-senha.png');?>" alt="Esqueci minha Senha" /></a>
+												<a href="<?=make_url('users/reset_password');?>"><img src="<?=image_url('buttons/bt-senha.png');?>" data-toggle="tooltip" title="<div style='width: 120px; padding: 5px;'>Esqueci minha Senha</div>" /></a>
 												<input class="play-button" type="image" src="<?=image_url('buttons/bt-jogar.png');?>" width="37" height="23" />
-												<a href="<?=$fb_url;?>"><img src="<?=image_url('buttons/bt-face.png');?>" alt="Entrar com Facebook" /></a>
+												<a href="<?=$fb_url;?>"><img src="<?=image_url('buttons/bt-face.png');?>" data-toggle="tooltip" title="<div style='width: 120px; padding: 5px;'>Entrar com Facebook</div>" /></a>
 											</div>
 										</form>
 									</div>
