@@ -33,6 +33,7 @@ $registration       = openssl_encrypt(json_encode($chat_registration), 'AES-256-
 ?>
 <script type="text/javascript">
 	(function () {
+		var _chat_server		= '<?=CHAT_SERVER?>';
 		var socket				= null;
 		var	connected			= false;
 		var	container			= $('#chat-container');
@@ -49,7 +50,7 @@ $registration       = openssl_encrypt(json_encode($chat_registration), 'AES-256-
 		var worker_port			= 0;
 
 		$.ajax({
-			url:		_node_server + ':2999/register/',
+			url:		_chat_server + ':2999/register/',
 			dataType:	'json',
 			type:		'post',
 			data:		{
@@ -328,7 +329,7 @@ $registration       = openssl_encrypt(json_encode($chat_registration), 'AES-256-
 		};
 
 		function init_socket(connect_cb) {
-			socket = io.connect(base_server + ':' + worker_port);
+			socket = io.connect(_chat_server + ':' + worker_port);
 
 			socket.on('connect', function () {
 				if (connect_cb) {
