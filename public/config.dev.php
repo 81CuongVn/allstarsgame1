@@ -27,7 +27,7 @@ $database			= [
 # SMTP settings
 $mailConfig			= [
 	'host'			=> 'smtp.gmail.com',
-	'port'			=> 587,
+	'port'			=> 465,
 	'username'		=> 'animeallstarsgamebr@gmail.com',
 	'password'		=> 'ffm160295',
 	'from'			=> 'animeallstarsgamebr@gmail.com',
