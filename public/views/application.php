@@ -367,7 +367,7 @@ if ($_SESSION['user_id']) {
 </div>
 
 <?php if ($player) { ?>
-	<?php //echo partial('shared/chat', ['player' => $player]); ?>
+	<?php echo partial('shared/chat', ['player' => $player]); ?>
 	<script type="text/javascript" src="<?=asset_url('js/highlights.js');?>"></script>
 <?php } ?>
 <script type="text/javascript" src="<?=asset_url('js/bootstrap.js');?>"></script>

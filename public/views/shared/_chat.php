@@ -1,500 +1,494 @@
-<div id="chat-container">
+<div id="chat-v2">
 	<div class="title">
-		Chat All-Stars
+        Chat All-Stars
 	</div>
-	<div class="messages"></div>
-	<div class="composer">
-		<div class="channel-selector">
-			<div class="channel-current"></div>
-			<ul class="channel-list"></ul>
-		</div>
-		<input type="text" name="message" maxlength="100" value="" />
-		<div class="timer"></div>
-		<input type="checkbox" name="autoscroll" checked="checked" />
-	</div>
+    <div class="messages">
+        <div class="wait">Conectando...</div>
+    </div>
+    <div class="selector">
+        <ul>
+            <li data-channel="world" data-cmd="m">Mundo</li>
+            <li data-channel="anime" data-cmd="a"><?=$player->character()->anime()->description()->name;?></li>
+            <?php if ($_SESSION['universal']): ?>
+                <li data-channel="system" data-cmd="s">Sistema</li>
+            <?php endif; ?>
+            <?php if ($player->organization_id): ?>
+                <li data-channel="guild" data-cmd="g">Organização</li>
+            <?php endif; ?>
+            <?php if ($player->battle_pvp_id): ?>
+                <li data-channel="battle" data-cmd="b">Batalha</li>
+            <?php endif; ?>
+        </ul>
+        <div class="selector-trigger">Mundo</div>
+        <input type="text" id="message" autocomplete="off" name="message" maxlength="60" />
+        <input type="checkbox" id="as" checked="checked" class="auto-scroll" />
+    </div>
 </div>
-<?php if (!$_SESSION['universal']  ): ?>
-<input type="hidden" name="gm" checked="checked" />
-<?php endif ?>
 <?php
-$chat_enc_key		= CHAT_SECRET;
-$chat_registration	= [
-	'key'		=> CHAT_KEY,
-	'name'		=> $player->name,
-	'player'	=> $player->id,
-	'world_id'	=> $player->character()->anime_id,
-	'channels'	=> [],
-	'color'		=> $_SESSION['universal'] ? '#EDD309' : '',
-	'is_master'	=> $_SESSION['universal']
+$color          = '';
+$icon           = '';
+$guild          = $player->organization();
+$chat_data	    = [
+    'uid'           => $player->id,
+	'user_id'       => $player->user_id,
+	'anime'         => $player->character()->anime_id,
+	'guild'         => $player->organization_id,
+	'guild_owner'   => $guild ? $player->id == $guild->leader()->id : FALSE,
+	'battle'        => $player->battle_pvp_id,
+	'gm'            => $_SESSION['universal'],
+	'color'         => $color,
+	'icon'          => $icon,
+	'name'          => $player->name
 ];
 
-$iv                 = substr($chat_enc_key, 0, 16);
-$registration       = openssl_encrypt(json_encode($chat_registration), 'AES-256-CBC', $chat_enc_key,0, $iv);
+$key            = CHAT_KEY;
+$iv             = substr($key, 0, 16);
+$registration   = openssl_encrypt(json_encode($chat_data), 'AES-256-CBC', $key, 0, $iv);
 ?>
 <script type="text/javascript">
 	(function () {
-		var _chat_server		= '<?=CHAT_SERVER?>';
-		var socket				= null;
-		var	connected			= false;
-		var	container			= $('#chat-container');
-		var	last_message		= null;
-		var	wait_seconds		= 0;
-		var	key					= null;
-		var	chat_size_mini		= '35px';
-		var	chat_size_normal	= '350px';
-		var	current_channel		= '';
-		var current_filter		= '';
-		var	have_channels		= false;
-		var	colors				= {};
-		var	owner				= <?=$player->id;?>;
-		var worker_port			= 0;
-
-		$.ajax({
-			url:		_chat_server + ':2999/register/',
-			dataType:	'json',
-			type:		'post',
-			data:		{
-				registration: '<?=$registration;?>',
-				game_id: _chat_server_id
-			},
-			cors:		true,
-			success:	function (result) {
-				if(!connected) {
-					if (result.status == 200) {
-						worker_port = result.server;
-						connected	= true;
-						key			= result.key;
-
-						result.channels.forEach(function (channel) {
-							$('.channel-list', container).append('<li data-key="' + channel.key + '" data-filter="' + channel.filter + '">' + channel.name + '</li>');
-
-							if (!channel.subchannel && !current_channel) {
-								$('.channel-list li:last', container).trigger('click');
-							}
-
-							colors[channel.filter]	= channel.color;
-						});
-
-						have_channels	= true;
-						init_socket(function () {
-							socket.emit('join', result.key);
-						});
-					} else {
-						$('.messages', container).append('<div align="center">Erro de autenticação no chat</div>');
-					}
-				}
-			}, error: function () {
-				$('.messages', container).append('<div align="center">Falha ao efetuar autenticação com o chat</div>');
-			}
-		});
-
-		window.ChatService	= {
-			embeds:		[],
-			decoded:	[],
-			callbacks:	[],
-			embed:	function (signed_string, match_text) {
-				$('.composer [name=message]', container)[0].value += match_text;
-				ChatService.embeds.push([match_text, signed_string]);
-			},
-
-			register_embed_cb:	function (matcher_expression, cb) {
-				ChatService.callbacks.push([matcher_expression, cb]);
-			},
-
-			apply_embed_cb:	function (element) {
-				ChatService.callbacks.forEach(function (callback) {
-					var	count	= 0;
-
-					while(true) {
-						if(count++ >= 1000) {
-							break;
-						}
-
-						var match	= element.html().match(callback[0]);
-						var decoded	= null;
-
-						if (match) {
-							for (var i in ChatService.decoded) {
-								if(i == match[0]) {
-									decoded	= ChatService.decoded[i];
-								}
-							}
-
-							callback[1].apply(null, [element, decoded]);
-						} else {
-							break;
-						}
-					}
-				});
-			}
-		};
-
-		var	ChatPMManager	= {
-			_initialised:		false,
-			store:				[],
-			container:			null,
-			minify_container:	null,
-			window_count:		0,
-			minified_count:		0,
-			init:				function () {
-				var	_this				= this;
-				var	pm_container		= $(document.createElement('DIV')).addClass('pm-window-container');
-				var	pm_minified_list	= $(document.createElement('DIV')).addClass('pm-minified-list');
-
-				pm_container.append(pm_minified_list);
-
-				$(document.body).append(pm_container);
-
-				this.container			= pm_container;
-				this.minify_container	= pm_minified_list;
-				this._initialised		= true;
-
-				pm_minified_list.on('click', function () {
-					$('.list', this).toggleClass('shown');
-				});
-
-				pm_minified_list.on('click', '.list li', function () {
-					var	id	= $(this).data('id');
-
-					_this.store.forEach(function (item) {
-						if (item.id == id) {
-							item.show();
-						}
-					});
-				});
-			}, allocate:		function (id, name, auto_open) {
-				if (!this._initialised) {
-					this.init();
-				}
-
-				var	new_chat		= true;
-				var	current_chat	= null;
-
-				this.store.forEach(function (chat) {
-					if (chat.id == id) {
-						if (auto_open) {
-							chat.show();
-						}
-
-						new_chat		= false;
-						current_chat	= chat;
-					}
-				});
-
-				if (new_chat) {
-					current_chat	= new ChatPM(id, name, this, auto_open);
-					this.store.push(current_chat);
-				}
-
-				return current_chat;
-			}, update_minified:	function () {
-				if (this.minified_count) {
-					var	html	= '<div class="count"></div><ul class="list"></ul>';
-
-					this.minify_container.show().html(html);
-					this.store.forEach(function (item) {
-						if (item.minified) {
-							$('.list', this.minify_container).append('<li data-id="' + item.id + '">' + item.name + '</li>');
-						}
-					});
-
-					$('.count', this.minify_container).html(this.minified_count);
-				} else {
-					this.minify_container.hide().html('');
-				}
-			}, close:		function (id) {
-				var	new_store	= [];
-
-				this.store.forEach(function (chat) {
-					if (chat.id != id) {
-						new_store.push(chat);
-					} else {
-						chat.destroy();
-					}
-				});
-
-				this.store	= new_store;
-				this.update_minified();
-			}
-		};
-
-		var ChatPM	= function (id, name, manager, auto_open) {
-			this.opened		= true;
-			this.minified	= false;
-			this.id			= id;
-			this.name		= name;
-			this.is_new		= true;
-
-			var	_this		= this;
-			var	chat_window	= $('<div class="pm-window"><div class="title">' + name + '<div class="close">&times;</div></div><div class="messages"></div>' +
-				'<div class="composer"><input type="text" /></div></div>');
-
-			chat_window.on('click', '.title', function () {
-				var	_			= $(this);
-				_this.opened	= !_this.opened;
-
-				if (_this.opened) {
-					_this.show();
-				} else {
-					_this.hide();
-				}
-			});
-
-			chat_window.on('keyup', 'input[type=text]', function (e) {
-				if (e.which == 13 && !e.shiftKey) {
-					socket.emit('pmsend', {
-						key:		key,
-						content:	this.value,
-						target:		_this.id,
-						who:		_this.name
-					});
-
-					_this.receive(owner, this.value);
-					this.value	= '';
-				} else if (e.which == 13 && e.shiftKey) {
-					this.value	+= "\r\n";
-				}
-			});
-
-			chat_window.on('minify', function () {
-				_this.minify();
-			});
-
-			chat_window.on('click', '.close', function () {
-				manager.close(_this.id);
-			});
-
-			manager.window_count++;
-			manager.container.append(chat_window);
-
-			this.show	= function () {
-				if (manager.window_count > 2) {
-					$('.pm-window.normal:last', manager.container).trigger('minify');
-				}
-
-				chat_window.removeClass('closed');
-				chat_window.removeClass('minified');
-				chat_window.addClass('opened');
-				chat_window.addClass('normal');
-
-				if (_this.minified) {
-					manager.minified_count--;
-				}
-
-				_this.opened	= true;
-				_this.minified	= false;
-				_this.is_new	= false;
-
-				manager.update_minified();
-			};
-
-			this.hide	= function () {
-				chat_window.addClass('closed');
-				chat_window.removeClass('opened');
-				_this.opened	= false;
-			};
-
-			this.minify	= function () {
-				chat_window.addClass('minified');
-				chat_window.removeClass('normal');
-				_this.minified	= true;
-				_this.opened	= false;
-
-				manager.minified_count++;
-				manager.update_minified();
-			};
-
-			this.receive	= function (who, message) {
-				var	style	= 'self';
-
-				if (parseInt(who) != parseInt(owner)) {
-					style	= 'guest';
-				}
-
-				$('.messages', chat_window).append('<div class="' + style + '">' + message + '</div><div class="divider"></div>');
-			};
-
-			this.destroy	= function () {
-				socket.emit('pmclose', {
-					key:	key,
-					target: this.id
-				});
-
-				chat_window.remove();
-			};
-
-			if (auto_open) {
-				this.show();
-			}
-		};
-
-		function init_socket(connect_cb) {
-			socket = io.connect(_chat_server + ':' + worker_port);
-
-			socket.on('connect', function () {
-				if (connect_cb) {
-					connect_cb.apply(null, []);
-				}
-
-				socket.on('broadcast', function (broadcast) {
-					var	staff	= broadcast.staff ? '<span class="glyphicon glyphicon-star"></span>&nbsp;' : '';
-					var	style	= 'color: #' + colors[broadcast.filter];
-
-					var	html	= '<div style="' + style + '" class="message message-' + broadcast.filter + '">' + staff +
-						'<span class="who" data-chat-id="' + broadcast.id + '" data-who="' + broadcast.who + '">' + broadcast.who + ':</span><span>' +
-						broadcast.message + '</span></div>';
-
-					$('.messages', container).append(html);
-
-					if (broadcast.decodes) {
-						broadcast.decodes.forEach(function (decoded) {
-							ChatService.decoded[decoded[0]]	= decoded[1];
-						});
-					}
-
-					list_last_message	= $('.messages .message:last', container);
-
-					if (broadcast.filter != current_filter) {
-						list_last_message.hide();
-					}
-
-					ChatService.apply_embed_cb(list_last_message);
-
-					if ($('[name=autoscroll]:checked', container).length) {
-						$('.messages', container).scrollTop(10000000);
-					}
-				});
-
-				socket.on('pmreceived', function (pm_data) {
-					var	chat	= ChatPMManager.allocate(pm_data.from, pm_data.who, false);
-					chat.receive(pm_data.from, pm_data.message.content);
-				});
-
-				socket.on('pminitial', function (pm_data) {
-					var	chat	= ChatPMManager.allocate(pm_data.from, pm_data.who, true);
-
-					pm_data.messages.forEach(function (message) {
-						chat.receive(message.from, message.content);
-					});
-				});
-			});
-
-			socket.on('error', function () {
-				$('.messages', container).append('Falha ao conectar ao chat');
-			});
+		var __chat_socket	= io.connect('<?=CHAT_SERVER;?>');
+		var has_type		= false;
+		var	channel			= 'anime';
+		var	real_channel	= 'anime';
+		var	pvt_dest		= 0;
+		var	last_pvt_index	= 0;
+		var	trigger_pvt		= false;
+		var pvt_data		= null;
+		var last_msg		= null;
+		var blocked			= [];
+		var pm_total		= 0;
+		
+		function resize_selector() {
+			var	tw	= $('#chat-v2 .selector-trigger').outerWidth() + 15;
+			
+			$('#chat-v2 input[name=message]').css({
+				paddingLeft: tw
+			});		
 		}
 
-		$('.channel-current', container).on('click', function (e) {
-			if (!have_channels) {
-				return;
+		function diff_in_secs(d1, d2) {
+			var diff		= d2 - d1,
+				sign		= diff < 0 ? -1 : 1,
+				milliseconds,
+				seconds,
+				minutes,
+				hours,
+				days;
+			
+			diff	/= sign;
+			diff	= (diff-(milliseconds=diff%1000))/1000;
+			diff	= (diff-(seconds=diff%60))/60;
+			diff	= (diff-(minutes=diff%60))/60;
+			days	= (diff-(hours=diff%24))/24;
+
+			return seconds;
+		}
+		
+		__chat_socket.on('error', function () {
+			$('#chat-v2 .messages').html(
+				'<div style="padding: 10px">Ocorreu um problema ao conectar ao chat.<br /><br />Você pode ter algum firewall(isso inclui programas anti-hack de jogos on-line)' +
+				' ou anti-vírus bloqueando o chat.<br /><br />Se sua rede está conectada através de um proxy, o proxy pode estar bloqueando as conexões ou não suporta conexões via websocket</div>'
+			);
+		});
+	
+		__chat_socket.on('connect', function () {
+			__chat_socket.emit('register', {
+                data: '<?=$registration;?>'
+			});
+			
+			$('#chat-v2 .messages .wait').remove();
+		});
+		
+		__chat_socket.on('blocked-broadcast', function (data) {
+			blocked	= data;
+		});
+		__chat_socket.on('pvt-broadcast', function (data) {
+			var	container	= $('.chat-pvt .r');
+			
+			pvt_data	= data;
+			
+			if (!container.length) {
+				if (!data.length) {
+					return;
+				}
+				
+				var	l	= $(document.createElement('DIV')).addClass('l');
+				var	r	= $(document.createElement('DIV')).addClass('r');
+				var	c	= $(document.createElement('DIV')).addClass('chat-pvt');
+			
+				c.append(l, r);
+				container	= r;
+
+				$(document.body).append(c);
+				
+				c.on('click', function () {
+					function dispatch_pvt_read(id) {
+						__chat_socket.emit('pvt-was-read', {index: id});
+					}
+
+					if(this.shown) {
+						$('.reply-box').remove();
+						this.shown	= false;
+						
+						return;
+					}
+					
+					this.shown			= true;
+					var	_this			= this;
+					
+					var	msg_container	= $(document.createElement('DIV')).addClass('reply-box');
+					var	msg_reply		= $(document.createElement('A')).html('Responder').addClass('reply');
+					var	msg_next		= $(document.createElement('A')).html(pvt_data.length == 1 ? 'Fechar' : 'Próxima').addClass(pvt_data.length == 1 ? 'close-pv' : 'next');
+					var	msg_from		= $(document.createElement('SPAN')).html(pvt_data[0].from).addClass('from');
+					var	msg_text		= $(document.createElement('SPAN')).html(pvt_data[0].message).addClass('text');
+					
+					msg_reply.on('click', function () {
+						$('#chat-v2 .selector-trigger')
+							.html(pvt_data[0].from)[0].shown = false;
+	
+						channel		= 'private';
+						pvt_dest	= pvt_data[0].id;
+		
+						$('#chat-v2 input[name=message]').focus();
+						resize_selector();
+					});
+					
+					if (pvt_data.length == 1) {
+						msg_next.on('click', function () {
+							dispatch_pvt_read(last_pvt_index);
+							
+							msg_container.remove();
+							c.remove();
+						});
+					} else {
+						msg_next.on('click', function () {
+							msg_reply.remove();
+							msg_next.remove();
+							msg_from.remove();
+							msg_text.remove();
+
+							// No próximo broadcast ele recarrega =)
+							trigger_pvt	= true;
+							_this.shown	= false;
+							
+							msg_container.append('<div class="wait">Aguarde...</div>');
+
+							dispatch_pvt_read(last_pvt_index);
+							pm_total--;
+						});
+					}
+					
+
+					msg_container.append(msg_from, msg_text, msg_reply, msg_next);
+					$(document.body).append(msg_container);					
+				});
+			}
+			
+			container.html(data.length);
+			
+            if (data.length > pm_total) {
+				pm_total	= data.length;
+				$(document.body).append('<audio autoplay><source src="' + resource_url('media/pm.mp3') + '" type="audio/mp3" /></audio>');
+			}
+						
+			if (!data.length && container.length) {
+				pm_total	= 0;
+				
+				container.remove();
+			}
+			
+			last_pvt_index	= data[0].index;
+			
+			if (trigger_pvt) {
+				$('.reply-box').remove();
+				
+				if (data.length) {
+					container.trigger('click');
+				}
+
+				trigger_pvt	= false;
 			}
 
-			if (!this.shown) {
-				$('.channel-list', container).show().css('opacity', 0).animate({opacity: 1});
-
-				this.shown	= true;
+			if (!parseInt($.cookie('chatv2_show'))) {
+				$('.chat-pvt').css({bottom: 30});
 			} else {
-				$('.channel-list', container).animate({opacity: 0}, function () { $('.channel-list', container).hide() });
-
-				this.shown	= false;
+				$('.chat-pvt').css({bottom: 340});
 			}
 		});
-
-		container.on('click', '.channel-list li', function (e) {
-			var	_	= $(this);
-
-			current_channel	= _.data('key');
-			current_filter	= _.data('filter');
-
-			$('.channel-current', container).html(_.html()).css('color', '#' + colors[current_filter]);
-			$('input[type=text]', container).css('padding-left', ($('.channel-current', container).width() + 20) + 'px');
-			$('.channel-current', container).trigger('click');
-
-			$('.messages .message', container).hide();
-			$('.messages .message-' + current_filter, container).show();
-		});
-
-		$(container).on('click', '.messages .who', function () {
-			var	id	= parseInt($(this).data('chat-id'));
-
-			if (id == owner) {
-				return;
+		__chat_socket.on('broadcast', function (data) {
+			if (data.channel == 'system' || data.channel == 'warn') {
+				$('#chat-v2 .messages').append('<div class="chat-message chat-' + data.channel + '"><div>Aviso de sistema</div><div>' + data.message + '</div></div>')				
+			
+				return;	
 			}
+			
+			// GLobal user block -->
+				var is_blocked	= false;
 
-			ChatPMManager.allocate(id, $(this).data('who'), true);
-		});
+				blocked.forEach(function (id) {
+					if (parseInt(data.user_id) == parseInt(id)) {
+						is_blocked	= true;
+					}
+				});
 
-		$(container).on('keyup', '.composer [name=message]', function (e) {
-			if (!connected) {
-				console.log('not connected');
+				if (is_blocked) {
+					return;
+				}
+			// <--
 
-				return;
-			}
+            if (data.gm) {
+                data.icon = '<span class="fa fa-star fa-fw"></span>';
+            }
 
-			if (!this.value.replace(/[\s]*/, '').length) {
-				console.log('all blank');
-
-				return;
-			}
-
-			if(e.which == 13) {
-				if(last_message && wait_seconds <= 10) {
+            $('#chat-v2 .messages').append(
+				'<div class="chat-message chat-' + data.channel + '' + (data.gm ? ' chat-gm' : '') + '" ' + (!(data.channel == real_channel) ? 'style="display: none;"' : '') + '>' +
+                    '<span ' + (data.color ? 'style="color: ' + data.color + '!important"' : '') + ' class="chat-user" data-id="' + data.id + '" data-from="' + data.from + '">' +
+                        (data.icon || '') + data.from +
+                    ':</span>' +
+                    '<span>' + data.message + '</span>' + 
+                '</div>');
+	
+			$('#chat-v2 .messages .chat-user').each(function() {
+				if (this.with_callback) {
 					return;
 				}
 
-				socket.emit('message', {
-					key:		key,
-					message:	this.value,
-					staff:		$('[name=gm]:checked', container).length,
-					embeds: 	ChatService.embeds,
-					channel:	current_channel
+				this.with_callback	= true;
+				var	_				= $(this);
+
+				_.on('click', function() {
+					if (channel == 'block') {
+						$('#chat-v2 input[name=message]').val($(this).data('from')).focus();
+
+						return;
+					}
+
+					$('#chat-v2 .selector-trigger')
+						.html(this.innerHTML)[0].shown = false;
+
+					$('#chat-v2 .selector ul').animate({opacity: 0}, function () {
+						$(this).hide()
+					});
+
+					channel		= 'private';
+					pvt_dest	= _.data('id');
+
+					$('#chat-v2 input[name=message]').focus();
+					resize_selector();
+				});
+			});
+
+			if (has_type) {
+				$('#chat-v2 .messages').scrollTop(1000000);
+				has_type	= false;
+			}
+			if ($('#chat-v2 .auto-scroll:checked').length) {
+				$('#chat-v2 .messages').scrollTop(1000000);
+			}
+		});
+
+        $(document).ready(function(e) {
+			$('#chat-v2 input[name=message]').on('keyup', function(e) {
+				var	message	= $(this);
+				
+				if (e.keyCode == 13 && this.value) {
+                    var now	= new Date();
+					if (diff_in_secs(last_msg, now) < 10) {
+                        return;
+                    }
+
+					var broadcast_data	= {
+						message:	this.value,
+						channel:	channel,
+						dest:		pvt_dest
+					};
+
+					__chat_socket.emit('message', broadcast_data);
+
+					this.value	= '';
+					has_type	= true;
+
+					if (channel == 'private') {
+						$('#chat-v2 .selector ul li').each(function () {
+							if ($(this).data('channel') == real_channel) {
+								$(this).trigger('click');	
+							}
+						});
+					} else {
+                        <?php if (!$_SESSION['universal']): ?>
+                            message.attr('disabled', 'disabled');
+                            last_msg	= now;
+                            var _iv1	= setInterval(function () {
+                                var	now	= new Date();
+
+                                if (diff_in_secs(last_msg, now) < 10) {
+                                    message.attr('placeholder', 'Aguarde ' + (10 - diff_in_secs(last_msg, now)) + ' segundo(s)');
+                                } else {
+                                    message.removeAttr('disabled').attr('placeholder', '');
+                                    clearInterval(_iv1);
+                                }
+                            }, 1000);
+                        <?php endif; ?>
+                    }
+				}
+
+				if (e.keyCode == 32) {
+					$('#chat-v2 .selector ul li').each(function () {
+						var _	= $(this);
+
+						if (message.val().match(new RegExp('\^/' + _.data('cmd')))) {
+							_.trigger('click');	
+
+							message.val('');
+						}
+					});
+
+					if (message.val().match(/^@[^\s]+/)) {
+						var	dest	= message.val().replace(/[@<>]/img, '');
+
+						$('#chat-v2 .selector-trigger').html(dest)[0].shown = false;
+
+						message.val('');
+
+						channel		= 'private';
+						pvt_dest	= dest;
+
+						resize_selector();
+					}
+
+					if (message.val().match('^/block')) {
+						$('#chat-v2 .selector-trigger').html('Bloquear')[0].shown = false;
+
+						channel	= 'block';
+
+						message.val('');
+						resize_selector();
+					}
+				}
+			}).on('focus', function () {
+				$('#chat-v2 #as').stop().animate({opacity: 0});
+			}).on('blur', function () {
+				$('#chat-v2 #as').stop().animate({opacity: 1});
+			}).on('pvt-switch', function (e, dest) {
+				$('#chat-v2 .selector-trigger').html(dest)[0].shown = false;
+
+				channel		= 'private';
+				pvt_dest	= dest;
+
+				resize_selector();
+			});
+
+			$('#chat-v2 .selector ul li').on('click', function () {
+				$('#chat-v2 .selector-trigger').html(this.innerHTML)[0].shown = false;
+				$('#chat-v2 .selector ul').animate({opacity: 0}, function () {
+					$(this).hide()
 				});
 
-				this.value			= '';
-				ChatService.embeds	= [];
+				channel			= $(this).data('channel');
+				real_channel	= channel;
 
-				<?php if(!$_SESSION['universal']): ?>
-				last_message	= new Date();
-				<?php endif; ?>
-			}
-		});
-
-		<?php if(!$_SESSION['universal']): ?>
-		setInterval(function () {
-			if (last_message) {
-				var	now			= new Date();
-				var	diff		= last_message.getTime() - now.getTime();
-				wait_seconds	= Math.round(Math.abs(diff / 1000));
-
-				if (wait_seconds <= 10) {
-					$('.timer', container).show().html('Aguarde ' + (10 - wait_seconds) + ' segundo(s)');
+                if (channel == 'r10') {
+					$('#chat-v2 #message').attr('maxlength', 500);
 				} else {
-					$('.timer', container).hide();
+					$('#chat-v2 #message').attr('maxlength', 60);
 				}
-			};
-		}, 1000);
-		<?php endif; ?>
 
-		$('[name=gm]:checked', container).on('click', function (e) {
-			e.stopPropagation();
-		});
+				$('#chat-v2 .messages .chat-message').hide();
 
-		if (!$.cookie('chat_expanded')) {
-			$.cookie('chat_expanded', 0);
-		}
+				$.cookie('chatv2_channel', channel);
 
-		if ($.cookie('chat_expanded') == 1) {
-			container.css('height', chat_size_normal);
-		}
+				$('#chat-v2 .messages .chat-' + channel).show();
+				$('#chat-v2 .messages .chat-warn').show();
 
-		$('.title', container).on('click', function () {
-			if ($.cookie('chat_expanded') == 0) {
-				container.css('height', chat_size_normal);
-				$.cookie('chat_expanded', 1);
+				$('#chat-v2 input[name=message]').focus();
+				resize_selector();
+			});
+
+			$('#chat-v2 .selector-trigger').on('click', function () {
+				if (!this.shown) {
+					$('#chat-v2 .selector ul').show().animate({opacity: 1});
+
+					this.shown	= true;
+				} else {
+					$('#chat-v2 .selector ul').animate({opacity: 0}, function () { $(this).hide() });
+
+					this.shown	= false;
+				}
+			});
+
+            if ($.cookie('chatv2_channel')) {
+				var	current		= $.cookie('chatv2_channel');
+				var was_found	= false;
+
+				$('#chat-v2 .selector ul li').each(function () {
+					var _		= $(this);
+
+					if (_.data('channel') == current) {
+						_.trigger('click');
+
+						was_found	= true;
+					}
+				});
+
+				if (!was_found) {
+					$('#chat-v2 .selector ul li').each(function () {
+						var _		= $(this);
+
+						if (_.data('channel') == 'anime') {
+							_.trigger('click');
+						}
+					});
+				}
 			} else {
-				container.css('height', chat_size_mini);
-				$.cookie('chat_expanded', 0);
+				$('#chat-v2 .selector ul li').each(function () {
+					var _		= $(this);
+
+					if (_.data('channel') == 'anime') {
+						_.trigger('click');
+					}
+				});
 			}
 		});
+
+		var	__pvt_iv	= setInterval(function() {
+			__chat_socket.emit('pvt-query');
+		}, 2000)
+
+		var	__block_iv	= setInterval(function() {
+			__chat_socket.emit('blocked-query');
+		}, 2000)
+
+		$('#chat-v2 .title').on('click', function () {
+			if (parseInt($.cookie('chatv2_show'))) {
+				$('#chat-v2').animate({height: 35});
+				$('.chat-pvt').animate({bottom: 30});
+
+				$.cookie('chatv2_show', 0);
+			} else {
+				$('#chat-v2').animate({height: 350});
+				$('.chat-pvt').animate({bottom: 340});
+
+				$.cookie('chatv2_show', 1);
+			}
+
+			resize_selector();
+		});
+
+		$('#chat-v2 .auto-scroll').on('click', function () {
+			if (this.checked) {
+				$.cookie('chatv2_as', 1);
+			} else {
+				$.cookie('chatv2_as', 0);
+			}
+		});
+
+		if (!parseInt($.cookie('chatv2_show'))) {
+			$('#chat-v2').css('height', 35);
+		}
+
+		if (parseInt($.cookie('chatv2_as'))) {
+			$('#chat-v2 .auto-scroll')[0].checked = true;
+		}
 	})();
 </script>

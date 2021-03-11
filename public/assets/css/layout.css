@@ -1,7 +1,7 @@
 @import 'anivers.css';
 @import 'inventory.css';
 @import 'battle.css';
-/* @import 'chat.css'; */
+@import 'chat.css';
 @import 'quests.css';
 @import 'equipments.css';
 @import 'typeahead.css';

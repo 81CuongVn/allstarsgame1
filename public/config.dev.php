@@ -63,10 +63,8 @@ define('REGEX_PLAYER',			'/^[ÁÉÍÓÚÀÈÌÒÙÂÊÎÔÛÃÕÑÇáéíóúà�
 define('REGEX_GUILD',			'/^[ÁÉÍÓÚÀÈÌÒÙÂÊÎÔÛÃÕÑÇáéíóúàèìòùâêîôûãõñç\w\d\s]+$/');
 
 # Chat settinsg
-define('CHAT_ID',				1);
-define('CHAT_KEY',				'a7b5b8f8-7256-4e22-b982-ecaaf98b7b79');
-define('CHAT_SECRET',			'YAn8yK930907L2KUTnnSqLDuI6jl0G9N');
-define('CHAT_SERVER',			'http://localhost');
+define('CHAT_KEY',				'YAn8yK930907L2KUTnnSqLDuI6jl0G9N');
+define('CHAT_SERVER',			'http://localhost:2934');
 
 # Highligts settings
 define('HIGHLIGHTS_KEY',		'430rBdLShn8yK930907L2a8yeTszrDip');
