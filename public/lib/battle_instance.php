@@ -507,67 +507,68 @@
 										$stats->use_with_precision++;
 									}
 
-									if($is_kill) {
+									if ($is_kill) {
 										$stats->kills++;
-										
-										if($player_effects['slowness'] || $player_effects['slowness_percent']){
-											$player_kills = new PlayerKill();
-											$player_kills->player_id = $player->id;
-											$player_kills->enemy_id  = $enemy->id;
-											$player_kills->kills_with_slowness++;
-											$player_kills->save();
-										}
-										if($player_effects['confusion'] || $player_effects['confusion_percent']){
-											$player_kills = new PlayerKill();
-											$player_kills->player_id = $player->id;
-											$player_kills->enemy_id  = $enemy->id;
-											$player_kills->kills_with_confusion++;
-											$player_kills->save();
-										}
-										if($player_effects['bleeding'] || $player_effects['bleeding']){
-											$player_kills = new PlayerKill();
-											$player_kills->player_id = $player->id;
-											$player_kills->enemy_id  = $enemy->id;
-											$player_kills->kills_with_bleeding++;
-											$player_kills->save();
-										}
-										if($player_effects['slowness'] || $player_effects['slowness_percent']){
-											$player_kills = new PlayerKill();
-											$player_kills->player_id = $player->id;
-											$player_kills->enemy_id  = $enemy->id;
-											$player_kills->kills_with_slowness++;
-											$player_kills->save();
-										}
-										if($player_effects['stun'] || $player_effects['stun']){
-											$player_kills = new PlayerKill();
-											$player_kills->player_id = $player->id;
-											$player_kills->enemy_id  = $enemy->id;
-											$player_kills->kills_with_stun++;
-											$player_kills->save();
-										}
-										
-										if($is_stronger) {
-											$player_kills = new PlayerKill();
-											$player_kills->player_id = $player->id;
-											$player_kills->enemy_id  = $enemy->id;
-											$player_kills->kills_with_stronger++;
-											$player_kills->save();
-										}
-										if($is_critical) {
-											$stats->kills_with_crit++;
-											$player_kills = new PlayerKill();
-											$player_kills->player_id = $player->id;
-											$player_kills->enemy_id  = $enemy->id;
-											$player_kills->kills_with_crit++;
-											$player_kills->save();
-										}
-										if($is_precision) {
-											$stats->kills_with_precision++;
-											$player_kills = new PlayerKill();
-											$player_kills->player_id = $player->id;
-											$player_kills->enemy_id  = $enemy->id;
-											$player_kills->kills_with_precision++;
-											$player_kills->save();
+										if (is_a($enemy, 'Player')) {
+											if ($player_effects['slowness'] || $player_effects['slowness_percent']){
+												$player_kills = new PlayerKill();
+												$player_kills->player_id = $player->id;
+												$player_kills->enemy_id  = $enemy->id;
+												$player_kills->kills_with_slowness++;
+												$player_kills->save();
+											}
+											if ($player_effects['confusion'] || $player_effects['confusion_percent']){
+												$player_kills = new PlayerKill();
+												$player_kills->player_id = $player->id;
+												$player_kills->enemy_id  = $enemy->id;
+												$player_kills->kills_with_confusion++;
+												$player_kills->save();
+											}
+											if ($player_effects['bleeding'] || $player_effects['bleeding']){
+												$player_kills = new PlayerKill();
+												$player_kills->player_id = $player->id;
+												$player_kills->enemy_id  = $enemy->id;
+												$player_kills->kills_with_bleeding++;
+												$player_kills->save();
+											}
+											if ($player_effects['slowness'] || $player_effects['slowness_percent']){
+												$player_kills = new PlayerKill();
+												$player_kills->player_id = $player->id;
+												$player_kills->enemy_id  = $enemy->id;
+												$player_kills->kills_with_slowness++;
+												$player_kills->save();
+											}
+											if ($player_effects['stun'] || $player_effects['stun']){
+												$player_kills = new PlayerKill();
+												$player_kills->player_id = $player->id;
+												$player_kills->enemy_id  = $enemy->id;
+												$player_kills->kills_with_stun++;
+												$player_kills->save();
+											}
+											
+											if($is_stronger) {
+												$player_kills = new PlayerKill();
+												$player_kills->player_id = $player->id;
+												$player_kills->enemy_id  = $enemy->id;
+												$player_kills->kills_with_stronger++;
+												$player_kills->save();
+											}
+											if($is_critical) {
+												$stats->kills_with_crit++;
+												$player_kills = new PlayerKill();
+												$player_kills->player_id = $player->id;
+												$player_kills->enemy_id  = $enemy->id;
+												$player_kills->kills_with_crit++;
+												$player_kills->save();
+											}
+											if($is_precision) {
+												$stats->kills_with_precision++;
+												$player_kills = new PlayerKill();
+												$player_kills->player_id = $player->id;
+												$player_kills->enemy_id  = $enemy->id;
+												$player_kills->kills_with_precision++;
+												$player_kills->save();
+											}
 										}
 									}
 								}

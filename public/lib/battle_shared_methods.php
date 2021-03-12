@@ -691,7 +691,7 @@ trait BattleSharedMethods {
 					$currency_extra	+= percent($effects['currency_reward_extra_percent'], $currency) + $effects['currency_reward_extra'];
 
 					// adiciona as novas flags de como o jogador matou os jogadores
-					if($is_pvp){
+					if($is_pvp) {
 						if(!@$_SESSION['pvp_used_buff']) {
 							$player_kills = new PlayerKill();
 							$player_kills->player_id = $p->id;

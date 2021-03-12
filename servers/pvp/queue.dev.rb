@@ -23,7 +23,7 @@ require 'securerandom'
 	'host'	=> 'localhost',
 	'user'	=> 'root',
 	'pass'	=> '',
-	'name'	=> 'aasg_original'
+	'name'	=> 'aasg_dev'
 }
 
 # PvP range settings
