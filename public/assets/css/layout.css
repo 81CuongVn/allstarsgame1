@@ -583,19 +583,19 @@ li{
 	margin-top: 8px;
 	top: 175px;
 }
-.league-1{
+.league-1 {
 	position: absolute;
     left: 301px;
-    top: 16px;	
+    top: 30px;	
 }
-.league-2{
+.league-2 {
     position: absolute;
     top: 42px;
     left: 225px;	
 }
-.league-3{
+.league-3 {
 	position: absolute;
-    top: 45px;
+    top: 59px;
     left: 404px;	
 }
 .league-name-1, .league-name-2, .league-name-3{

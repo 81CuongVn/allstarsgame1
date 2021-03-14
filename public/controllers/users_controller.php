@@ -368,8 +368,8 @@ class UsersController extends Controller {
 
 		$this->json->uni	= $universal;
 
-		if (!IS_BETA && $is_beta)
-			$errors[]	= t('users.login.errors.beta_disabled');
+		// if (!IS_BETA && $is_beta)
+			// $errors[]	= t('users.login.errors.beta_disabled');
 		if (!$universal && !($captcha && $captcha_session && $captcha == $captcha_session))
 			$errors[]	= t('users.login.errors.invalid_captcha');
 		if (!sizeof($errors)) {
@@ -392,7 +392,7 @@ class UsersController extends Controller {
 					$errors[]	= t('users.login.errors.account_banned');
 				if (!$user->active && !$universal)
 					$errors[]	= t('users.login.errors.account_not_activated');
-				if (!$user->beta_allowed && $is_beta && !$universal)
+				if (!$user->beta_allowed && IS_BETA && !$universal)
 					$errors[]	= t('users.login.errors.beta_not_allowed');
 //				if ($user->ip_lock || ($user->last_login_ip && $user->last_login_ip != ip2long($_SERVER['REMOTE_ADDR']) && !$universal)) {
 //					$user->ip_lock		= 1;

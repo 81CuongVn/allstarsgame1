@@ -29,7 +29,7 @@
 <?php } elseif ($type == "accounts" ) { ?>
 	<div class="float-noticias">
 		<div class="fn-info">
-			<b><?php echo $player->name ?></b><br />
+			<b><?php echo str_limit($player->name, 23) ?></b><br />
 			<span>Nível <?php echo $player->level?> / Pontos: <?php echo highamount($player->score);?></span>
 		</div>
 	</div>

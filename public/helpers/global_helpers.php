@@ -30,6 +30,28 @@ function highamount($number, $decimals = 0) {
 	return @number_format($number, $decimals, ',', '.');
 }
 
+function limit_text($text, $limit) {
+    if (str_word_count($text, 0) > $limit) {
+        $words = str_word_count($text, 2);
+        $pos   = array_keys($words);
+        $text  = substr($text, 0, $pos[$limit]) . '...';
+    }
+    return $text;
+}
+
+function make_tooltip($text, $width = 120) {
+	return "<div style='min-width: {$width}px; padding: 5px;'>{$text}</div>";
+}
+
+function str_limit($value, $limit = 100, $end = '...')
+{
+    if (mb_strwidth($value, 'UTF-8') <= $limit) {
+        return $value;
+    }
+
+    return rtrim(mb_strimwidth($value, 0, $limit, '', 'UTF-8')) . $end;
+}
+
 function format_date($date, $show_secs = FALSE){
 	$time		= time();
 	$date		= strtotime($date);

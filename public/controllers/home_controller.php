@@ -8,10 +8,20 @@
 			$this->layout	= 'maintenance';
 		}
 		function news_list($page = 1) {
+			$this->layout	= FALSE;
+
 			$items_per_page	= 5;
-			$this->layout	= false;
+			$total_pages	= SiteNew::find("round=1");
+			$total_pages	= ceil(sizeof($total_pages) / $items_per_page);
+			$page			= (!is_numeric($page) || $page <= 0) ? 1 : $page;
+			$page			= ($page > $total_pages) ? $total_pages : $page;
+			$start			= ceil(($page * $items_per_page) - $items_per_page);
+			$news			= SiteNew::find("round=1",[
+				'limit'		=> $start . ', ' . $items_per_page,
+				'reorder'	=> 'id desc'
+			]);
 			
-			$this->assign('news', SiteNew::find("1=1",['limit' => ($items_per_page * ($page - 1)) . ', ' . $items_per_page, 'reorder' => 'id DESC']));
+			$this->assign('news',	$news);
 		}
 		function league_list($league) {
 			$this->layout	= false;
@@ -24,27 +34,40 @@
 			$this->assign("ranked_rankings", $ranked_rankings);
 		}
 		function rank_list($page = 1, $type) {
+			$this->layout	= FALSE;
+
+			$list			= [];
 			$items_per_page	= 10;
-			$this->layout	= false;
 			if ($type == "accounts") {
-				$this->assign("type", $type);
-				$this->assign('players', RankingAccount::all(['limit' => ($items_per_page * ($page - 1)) . ', ' . $items_per_page, 'reorder' => 'position_general ASC']));
+				$list	= RankingAccount::all([
+					'limit'		=> ($items_per_page * ($page - 1)) . ', ' . $items_per_page,
+					'reorder'	=> 'position_general asc'
+				]);
 			} elseif ($type == "players") {
-				$this->assign("type", $type);
-				$this->assign('players', RankingPlayer::all(['limit' => ($items_per_page * ($page - 1)) . ', ' . $items_per_page, 'reorder' => 'position_general ASC']));	
+				$list	= RankingPlayer::all([
+					'limit'		=> ($items_per_page * ($page - 1)) . ', ' . $items_per_page,
+					'reorder'	=> 'position_general asc'
+				]);
 			} elseif ($type == "achievements") {
-				$this->assign("type", $type);
-				$this->assign('players', RankingAchievement::all(['limit' => ($items_per_page * ($page - 1)) . ', ' . $items_per_page, 'reorder' => 'position_general ASC']));
+				$list	= RankingAchievement::all([
+					'limit'		=> ($items_per_page * ($page - 1)) . ', ' . $items_per_page,
+					'reorder'	=> 'position_general asc'
+				]);
 			} elseif ($type == "organizations") {
-				$this->assign("type", $type);
-				$this->assign('players', RankingOrganization::all(['limit' => ($items_per_page * ($page - 1)) . ', ' . $items_per_page, 'reorder' => 'position_general ASC']));
+				$list	= RankingOrganization::all([
+					'limit'		=> ($items_per_page * ($page - 1)) . ', ' . $items_per_page,
+					'reorder'	=> 'position_general asc'
+				]);
 			}
+
+			$this->assign("type",		$type);
+			$this->assign('players',	$list);
 		}
 		function top_list($page = 1) {
-			$items_per_page	= 10;
 			$this->layout	= false;
-			
-			$this->assign('tops', RankingPlayer::find('position_anime=1', [
+
+			$items_per_page	= 10;
+			$this->assign('tops',		RankingPlayer::find('position_anime=1', [
 				'limit' => ($items_per_page * ($page - 1)) . ', ' . $items_per_page
 			]));
 		}
@@ -62,8 +85,8 @@
 			if (!$new)
 			    redirect_to('home');
 
-			$this->assign('new', $new);
-			$this->assign('comments', $new->comments());
+			$this->assign('new',		$new);
+			$this->assign('comments',	$new->comments());
 		}
 		
 		function make_comment($news_id = NULL) {

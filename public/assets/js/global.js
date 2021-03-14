@@ -98,8 +98,10 @@
         $('.modal-body', win).css('border-top', 'solid 6px #F00');
     };
 
-	$('[data-toggle="tooltip"]').tooltip({html: true});
-	$('[data-toggle="popover"]').popover({html: true});
+    window.generate_tooltips = function() {
+        $('[data-toggle="tooltip"]').tooltip({html: true});
+        $('[data-toggle="popover"]').popover({html: true});
+    }
 
     $('.technique-popover, .requirement-popover, .shop-item-popover').each(function () {
         $(this).popover({
@@ -349,6 +351,8 @@
     if (!localStorage.alertCookies) {
         $(".box-cookies").removeClass('hide');
     }
+
+    generate_tooltips();
 
     function acceptCookies() {
         $(".box-cookies").hide();
