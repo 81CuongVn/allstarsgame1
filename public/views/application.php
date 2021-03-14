@@ -105,10 +105,8 @@ if ($_SESSION['user_id']) {
 
 				echo "_graduations[{$anime->id}] = []\n";
 
-				$ii = 1;
 				foreach ($graduations as $graduation) {
 					echo "\t\t_graduations[{$anime->id}][{$graduation->sorting}] = '{$graduation->description($anime->id)->name}';\n";
-					++$ii;
 				}
 				++$i;
 			}
@@ -249,7 +247,7 @@ if ($_SESSION['user_id']) {
 					<img src="<?php echo image_url('icons/Vip.png')?>" class="requirement-popover" data-source="#tooltip-vip" data-title="<?php echo t('popovers.titles.credits') ?>" data-trigger="hover" data-placement="bottom" />
 					<div id="tooltip-vip" class="status-popover-container">
 						<div class="status-popover-content">
-							Você possui <a href="<?php echo make_url('vips') ?>"><?php echo $user->credits?> estrelas</a>.
+							Você possui <a href="<?php echo make_url('vips') ?>"><?php echo highamount($user->credits); ?> estrelas</a>.
 						</div>
 					</div>
 				</div>

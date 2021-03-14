@@ -6,19 +6,11 @@ if (!in_array($_SERVER['SERVER_ADDR'], [ '127.0.0.1' ]))
 	$env = 'prod';
 
 define('FW_ENV',                    $env);
-
 define('ROOT',						dirname(__FILE__));
 
 require_once ROOT . '/config.' . $env . '.php';
 
 date_default_timezone_set(DEFAULT_TIMEZONE);
-
-$maintenance    = ROUND_END <= date('Y-m-d H:i:s');
-define('IS_BETA',					FALSE);
-define('IS_MAINTENANCE',			$maintenance);
-define('MAINTENANCE_CONTROLLER',	'internal');
-define('MAINTENANCE_ACTION',		'maintenance');
-
 
 if (isset($_SERVER['REDIRECT_URL']) && $_SERVER['REDIRECT_URL']) {
     $_SERVER['PATH_INFO'] = $_SERVER['REDIRECT_URL'];
@@ -29,7 +21,7 @@ define('BACKTRACE_SELECTS',	        TRUE);
 define('BACKTRACE_UPDATES',	        TRUE);
 define('BACKTRACE_DELETES',	        TRUE);
 
-define('RECORDSET_CACHE_OFF_FORCE',	$env == 'dev');
+// define('RECORDSET_CACHE_OFF_FORCE',	$env == 'dev');
 
 $___clear_cache_key				= 'vaMALORuhvCTTiCGvnDehblfdIJnPNbUak7OxcE1knbPGuwwTuPrpTGCGzdbYVwXBusrqhXcvqqIjhBIetDDPvzOvPaqzLHVE7eb';
 $___start						= microtime(TRUE);
@@ -107,6 +99,8 @@ if (!$_SERVER['PATH_INFO']) {
 }
 
 if (IS_MAINTENANCE) {
+    define('MAINTENANCE_CONTROLLER',	'internal');
+    define('MAINTENANCE_ACTION',		'maintenance');
     if (isset($_GET['is_admin'])) {
         $_SESSION['skip_maintenance']	= TRUE;
     }

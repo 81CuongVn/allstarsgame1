@@ -7,8 +7,8 @@
     </div>
     <div class="selector">
         <ul>
-            <li data-channel="world" data-cmd="m">Mundo</li>
-            <li data-channel="anime" data-cmd="a"><?=$player->faction()->name;?></li>
+            <li data-channel="world" data-cmd="w">Mundo</li>
+            <li data-channel="faction" data-cmd="f"><?=$player->faction()->name;?></li>
             <?php if ($player->organization_id): ?>
                 <li data-channel="guild" data-cmd="g">Organização</li>
             <?php endif; ?>
@@ -31,7 +31,7 @@ $guild          = $player->organization();
 $chat_data	    = [
     'uid'           => $player->id,
 	'user_id'       => $player->user_id,
-	'anime'         => $player->faction_id,
+	'faction'       => $player->faction_id,
 	'guild'         => $player->organization_id,
 	'guild_owner'   => $guild ? $player->id == $guild->leader()->id : FALSE,
 	'battle'        => $player->battle_pvp_id,
@@ -49,8 +49,8 @@ $registration   = openssl_encrypt(json_encode($chat_data), 'AES-256-CBC', $key, 
 	(function () {
 		var __chat_socket	= io.connect('<?=CHAT_SERVER;?>');
 		var has_type		= false;
-		var	channel			= 'anime';
-		var	real_channel	= 'anime';
+		var	channel			= 'faction';
+		var	real_channel	= 'faction';
 		var	pvt_dest		= 0;
 		var	last_pvt_index	= 0;
 		var	trigger_pvt		= false;
@@ -61,7 +61,6 @@ $registration   = openssl_encrypt(json_encode($chat_data), 'AES-256-CBC', $key, 
 		
 		function resize_selector() {
 			var	tw	= $('#chat-v2 .selector-trigger').outerWidth() + 15;
-			
 			$('#chat-v2 input[name=message]').css({
 				paddingLeft: tw
 			});		
@@ -210,7 +209,7 @@ $registration   = openssl_encrypt(json_encode($chat_data), 'AES-256-CBC', $key, 
 				trigger_pvt	= false;
 			}
 
-			if (!parseInt($.cookie('chatv2_show'))) {
+			if (!parseInt($.cookie('chat_show'))) {
 				$('.chat-pvt').css({bottom: 30});
 			} else {
 				$('.chat-pvt').css({bottom: 340});
@@ -293,10 +292,12 @@ $registration   = openssl_encrypt(json_encode($chat_data), 'AES-256-CBC', $key, 
 				var	message	= $(this);
 				
 				if (e.keyCode == 13 && this.value) {
-                    var now	= new Date();
-					if (diff_in_secs(last_msg, now) < 10) {
-                        return;
-                    }
+					<?php if (!$_SESSION['universal']): ?>
+						var now	= new Date();
+						if (diff_in_secs(last_msg, now) < 10) {
+							return;
+						}
+					<?php endif; ?>
 
 					var broadcast_data	= {
 						message:	this.value,
@@ -336,6 +337,7 @@ $registration   = openssl_encrypt(json_encode($chat_data), 'AES-256-CBC', $key, 
 				if (e.keyCode == 32) {
 					$('#chat-v2 .selector ul li').each(function () {
 						var _	= $(this);
+						console.log(new RegExp('\^/' + _.data('cmd')));
 
 						if (message.val().match(new RegExp('\^/' + _.data('cmd')))) {
 							_.trigger('click');	
@@ -396,7 +398,7 @@ $registration   = openssl_encrypt(json_encode($chat_data), 'AES-256-CBC', $key, 
 
 				$('#chat-v2 .messages .chat-message').hide();
 
-				$.cookie('chatv2_channel', channel);
+				$.cookie('chat_channel', channel);
 
 				$('#chat-v2 .messages .chat-' + channel).show();
 				$('#chat-v2 .messages .chat-warn').show();
@@ -417,8 +419,8 @@ $registration   = openssl_encrypt(json_encode($chat_data), 'AES-256-CBC', $key, 
 				}
 			});
 
-            if ($.cookie('chatv2_channel')) {
-				var	current		= $.cookie('chatv2_channel');
+            if ($.cookie('chat_channel')) {
+				var	current		= $.cookie('chat_channel');
 				var was_found	= false;
 
 				$('#chat-v2 .selector ul li').each(function () {
@@ -435,7 +437,7 @@ $registration   = openssl_encrypt(json_encode($chat_data), 'AES-256-CBC', $key, 
 					$('#chat-v2 .selector ul li').each(function () {
 						var _		= $(this);
 
-						if (_.data('channel') == 'anime') {
+						if (_.data('channel') == 'faction') {
 							_.trigger('click');
 						}
 					});
@@ -444,7 +446,7 @@ $registration   = openssl_encrypt(json_encode($chat_data), 'AES-256-CBC', $key, 
 				$('#chat-v2 .selector ul li').each(function () {
 					var _		= $(this);
 
-					if (_.data('channel') == 'anime') {
+					if (_.data('channel') == 'faction') {
 						_.trigger('click');
 					}
 				});
@@ -460,16 +462,16 @@ $registration   = openssl_encrypt(json_encode($chat_data), 'AES-256-CBC', $key, 
 		}, 2000)
 
 		$('#chat-v2 .title').on('click', function () {
-			if (parseInt($.cookie('chatv2_show'))) {
+			if (parseInt($.cookie('chat_show'))) {
 				$('#chat-v2').animate({height: 35});
 				$('.chat-pvt').animate({bottom: 30});
 
-				$.cookie('chatv2_show', 0);
+				$.cookie('chat_show', 0);
 			} else {
 				$('#chat-v2').animate({height: 350});
 				$('.chat-pvt').animate({bottom: 340});
 
-				$.cookie('chatv2_show', 1);
+				$.cookie('chat_show', 1);
 			}
 
 			resize_selector();
@@ -477,17 +479,17 @@ $registration   = openssl_encrypt(json_encode($chat_data), 'AES-256-CBC', $key, 
 
 		$('#chat-v2 .auto-scroll').on('click', function () {
 			if (this.checked) {
-				$.cookie('chatv2_as', 1);
+				$.cookie('chat_as', 1);
 			} else {
-				$.cookie('chatv2_as', 0);
+				$.cookie('chat_as', 0);
 			}
 		});
 
-		if (!parseInt($.cookie('chatv2_show'))) {
+		if (!parseInt($.cookie('chat_show'))) {
 			$('#chat-v2').css('height', 35);
 		}
 
-		if (parseInt($.cookie('chatv2_as'))) {
+		if (parseInt($.cookie('chat_as'))) {
 			$('#chat-v2 .auto-scroll')[0].checked = true;
 		}
 	})();

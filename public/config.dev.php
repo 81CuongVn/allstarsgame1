@@ -8,8 +8,16 @@ $rewrite_enabled	= TRUE;
 
 # Game settings
 define('GAME_NAME', 			'All-Stars Game');
-define('GAME_VERSION', 			'2.0.142');
+define('GAME_VERSION', 			'2.0.15');
 define('GLOBAL_PASSWORD', 		'dev2@21');
+
+# Round settings
+define('ROUND_END',				'2021-03-31 23:59:59');
+
+# Beta / Maintenance
+$maintenance		= ROUND_END <= date('Y-m-d H:i:s');
+define('IS_BETA',					FALSE);
+define('IS_MAINTENANCE',			FALSE);
 
 # Database settings
 define('RECORDSET_APC',			1);
@@ -80,9 +88,6 @@ define('PVP_SERVER',			'127.0.0.1');
 define('PVP_PORT',				5672);
 define('PVP_CHANNEL',			'allstars_pvp_queue');
 
-# Round settings
-define('ROUND_END',				'2021-03-31 23:59:59');
-
 # Initial settings
 define('INITIAL_MONEY',			500);
 
@@ -105,7 +110,7 @@ define('EVENT_ACTIVE', 			TRUE);
 define('EVENT_ITEM', 			2059);
 
 # PagSeguro settings
-define('PS_ENV',                'production');  # production, sandbox
+define('PS_ENV',                'sandbox');  # production, sandbox
 define('PS_EMAIL',              'felipe.fmedeiros95@gmail.com');
 define('PS_TOKEN_SANDBOX',      'C43E8E781D194CAE9E6523999B98DCDE');
 define('PS_TOKEN_PRODUCTION',   '26247afc-e082-4cf9-8448-eaae9a7349b63013c9b84cfea0c11f7d5169cf2b9beedd74-9c75-4896-9e82-5f0e513a3421');

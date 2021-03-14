@@ -96,7 +96,7 @@ io.sockets.on 'connection', (socket) ->
 		# If the user data is valid
 		if data
 			# We subscribe the user to the channels
-			socket.join 'anime_' + data.anime
+			socket.join 'faction_' + data.faction
 			socket.join 'guild_' + data.guild
 			socket.join 'battle_' + data.battle
 			socket.join 'world_0'
@@ -113,7 +113,7 @@ io.sockets.on 'connection', (socket) ->
 
 			# For every new connection we should broadcast the message history for every channel(now it's aync bitch)
 			process.nextTick ->
-				['anime', 'guild', 'battle', 'world', 'system'].forEach (channel) ->
+				['faction', 'guild', 'battle', 'world', 'system'].forEach (channel) ->
 					if ['world', 'system'].contains(channel)
 						channel_id	= 0
 					else
@@ -210,7 +210,7 @@ io.sockets.on 'connection', (socket) ->
 				channel: 'warn'					
 
 		switch(data.channel)
-			when 'anime'	then channel_id = user.anime
+			when 'faction'	then channel_id = user.faction
 			when 'guild'	then channel_id = user.guild
 			when 'battle'	then channel_id = user.battle
 
@@ -251,7 +251,7 @@ io.sockets.on 'connection', (socket) ->
 		channel_id		= 0 unless channel_id
 		broadcast		= from: user.name, message: data.message, channel: data.channel, channel_id: channel_id, id: user.uid, user_id: user.user_id, gm: user.gm, when: new Date()
 
-		if data.channel == 'anime'
+		if data.channel == 'faction'
 			broadcast.color	= user.color
 			broadcast.icon	= user.icon
 
@@ -307,7 +307,7 @@ io.sockets.on 'connection', (socket) ->
 
 		counters[@_uid]	= false
 	
-		socket.leave 'anime_' + users[@_uid].anime
+		socket.leave 'faction_' + users[@_uid].faction
 		socket.leave 'guild' + users[@_uid].guild
 		socket.leave 'battle_' + users[@_uid].battle
 		socket.leave 'world_0'

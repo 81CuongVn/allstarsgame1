@@ -18,7 +18,7 @@ jobs:
           key: ${{ secrets.KEY }}
           port: ${{ secrets.PORT }}
           script: |
-            cd /var/www/allstarsgame.com.br
+            cd /var/www/allstarsgame
 
             git status
             git stash
@@ -31,12 +31,12 @@ jobs:
 
             pm2 stop allstars-queue
             pm2 delete allstars-queue
-            pm2 start /var/www/allstarsgame.com.br/servers/pvp/queue.prod.rb --name="allstars-queue"
+            pm2 start /var/www/allstarsgame/servers/pvp/queue.prod.rb --name="allstars-queue"
 
             pm2 stop allstars-alerts
             pm2 delete allstars-alerts
-            pm2 start /var/www/allstarsgame.com.br/servers/highlights/highlights.js --name="allstars-alerts"
+            pm2 start /var/www/allstarsgame/servers/highlights/highlights.js --name="allstars-alerts"
 
             pm2 stop allstars-chat
             pm2 delete allstars-chat
-            pm2 start /var/www/allstarsgame.com.br/servers/chat/chat.coffee --name="allstars-chat"
+            pm2 start /var/www/allstarsgame/servers/chat/chat.coffee --name="allstars-chat"
