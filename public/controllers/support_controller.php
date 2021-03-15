@@ -99,7 +99,7 @@
 							$ext	= substr($_FILES['attachments']['name'][$f], -3, 3);
 							$id		= uniqid('', true);
 
-							move_uploaded_file($_FILES['attachments']['tmp_name'][$f], ROOT . '/assets/support_files/' . $id . '.' . $ext);
+							move_uploaded_file($_FILES['attachments']['tmp_name'][$f], ROOT . '/uploads/support/' . $id . '.' . $ext);
 
 							$upload						= new SupportTicketUpload();
 							$upload->support_ticket_id	= $ticket->id;
@@ -208,7 +208,7 @@
 							}
 
 							if (!$error) {
-								move_uploaded_file($_FILES['attachments']['tmp_name'][$f], ROOT . '/assets/support_files/' . $upload_id . '.' . $ext);
+								move_uploaded_file($_FILES['attachments']['tmp_name'][$f], ROOT . '/uploads/support/' . $upload_id . '.' . $ext);
 
 								$upload								= new SupportTicketUpload();
 								$upload->support_ticket_id			= $ticket->id;

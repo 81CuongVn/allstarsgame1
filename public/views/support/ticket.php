@@ -71,7 +71,7 @@
 		<p><b><?php echo t('support.ticket.attachments') ?>:</b></p>
 		<ul>
 			<?php foreach ($attachments as $attachment): ?>
-				<li><a href="<?php echo resource_url('assets/support_files/' . $attachment->filename) ?>"><span class="glyphicon glyphicon-link"></span>&nbsp;<?php echo $attachment->filename ?></a></li>
+				<li><a href="<?php echo resource_url('uploads/support/' . $attachment->filename) ?>"><span class="glyphicon glyphicon-link"></span>&nbsp;<?php echo $attachment->filename ?></a></li>
 			<?php endforeach ?>
 		</ul>
 		<hr />
@@ -91,7 +91,7 @@
 				<p><b><?php echo t('support.ticket.attachments') ?>:</b></p>
 				<ul>
 					<?php foreach ($reply_attachments as $attachment): ?>
-						<li><a href="<?php echo resource_url('assets/support_files/' . $attachment->filename) ?>"><span class="glyphicon glyphicon-link"></span>&nbsp;<?php echo $attachment->filename ?></a></li>
+						<li><a href="<?php echo resource_url('uploads/support/' . $attachment->filename) ?>"><span class="glyphicon glyphicon-link"></span>&nbsp;<?php echo $attachment->filename ?></a></li>
 					<?php endforeach ?>
 				</ul>
 				<hr />
