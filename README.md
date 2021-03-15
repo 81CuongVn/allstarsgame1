@@ -6,7 +6,7 @@ Este é o repositório oficial do allstarsgame.com.br!
 
 Qualquer pessoa pode fazer um fork desse projeto, realizar modificações para o jogo e abrir pull request, que se aprovados, entrará em produção.
 
-O branch `prod` contém a versão estável do jogo que está rodando em produção, e o branch `main` contem a versão mais recente, que foi desenvolvida e não está necessáriamente estável.
+O branch `master` contém a versão estável do jogo que está rodando em produção, e o branch `main` contem a versão mais recente, que foi desenvolvida e não está necessáriamente estável.
 
 ## Como colaborar?
 
