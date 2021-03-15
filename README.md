@@ -1,6 +1,6 @@
 # All-Stars Game
 
-Este é o repositório oficial do allstarsgame.com!
+Este é o repositório oficial do allstarsgame.com.br!
 
 ## Como funciona?
 
@@ -12,4 +12,4 @@ O branch `prod` contém a versão estável do jogo que está rodando em produç�
 
 Crie um fork desse projeto e ele será salvo na sua conta do GitHub.
 
-Após fazer suas alterações, faça um commit para seu branch. Após este passo, você poderá abrir um pull request para esse repositório."# allstars" 
+Após fazer suas alterações, faça um commit para seu branch. Após este passo, você poderá abrir um pull request para esse repositório."#allstarsgame" 
