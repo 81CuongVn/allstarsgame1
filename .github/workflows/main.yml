@@ -21,15 +21,15 @@ jobs:
             cd /var/www/allstarsgame
 
             git status
-            git pull https://fmedeiros95:${{ secrets.TOKEN }}@github.com/fmedeiros95/allstars.git main
+            git pull https://fmedeiros95:${{ secrets.TOKEN }}@github.com/fmedeiros95/allstarsgame.git main
 
             source /etc/profile.d/rvm.sh
             rvm use 2.6.5 --default
 
+            pm2 stop allstars-chat
             pm2 stop allstars-queue
             pm2 stop allstars-alerts
-            pm2 stop allstars-chat
 
+            pm2 start /var/www/allstarsgame/servers/chat/chat.coffee --name="allstars-chat"
             pm2 start /var/www/allstarsgame/servers/pvp/queue.prod.rb --name="allstars-queue"
             pm2 start /var/www/allstarsgame/servers/highlights/highlights.js --name="allstars-alerts"
-            pm2 start /var/www/allstarsgame/servers/chat/chat.coffee --name="allstars-chat"
