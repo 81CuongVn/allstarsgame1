@@ -47,23 +47,15 @@ if ($_SESSION['user_id']) {
     <meta name="description" content="<?=GAME_NAME;?> é o novo jogo para fãs de anime, em nosso jogo você será um dos personagens emblemáticos dos principais animes que fizeram e fazem parte de nossa vida." />
     <meta name="keywords" content="aasg, naruto, boruto, one, piece, cdz, anime, all, stars, game, jogo, online" />
 
-	<meta name="msapplication-TileImage" content="<?=image_url('social/cover2.png');?>" />    
-	<meta property="og:site_name" content="<?=GAME_NAME;?>" />
+	<meta property="og:url" content="<?=make_url('/')?>" />
+	<meta property="og:type" content="website" />
 	<meta property="og:title" content="<?=GAME_NAME;?> - Seja o Herói de nossa História" />
 	<meta property="og:description" content="<?=GAME_NAME;?> é o novo jogo para fãs de anime, em nosso jogo você será um dos personagens emblemáticos dos principais animes que fizeram e fazem parte de nossa vida." />
 	<meta property="og:image" itemprop="image" content="<?=image_url('social/cover2.png');?>" />
-	<meta property="og:type" content="website" />
-	<meta property="og:image:type" content="image/jpeg" />
-	<meta property="og:image:width" content="300" />
-	<meta property="og:image:height" content="300" />
-	<meta property="og:url" content="<?=make_url('/')?>" />
+	<meta property="og:locale" content="<?=str_replace('-', '_', $language->header);?>" />
 	<meta property="fb:app_id" content="<?=FB_APP_ID;?>" />
 
-	<link itemprop="thumbnailUrl" href="<?=image_url('social/cover2.png');?>" />
-	<span itemprop="thumbnail" itemscope itemtype="http://schema.org/ImageObject">
-		<link itemprop="url" href="<?=image_url('social/cover2.png');?>" />
-	</span>
-
+	<!-- CSS -->
 	<link rel="stylesheet" type="text/css" href="<?=asset_url('css/bootstrap.css');?>" />
 	<link rel="stylesheet" type="text/css" href="<?=asset_url('css/tipped.css');?>" />
 	<link rel="stylesheet" type="text/css" href="<?=asset_url('css/layout.css');?>" />
@@ -75,6 +67,7 @@ if ($_SESSION['user_id']) {
 	<link rel="stylesheet" type="text/css" href="<?=asset_url('css/font-awesome.min.css');?>" />
 	<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans:400,700" />
 
+	<!-- JS -->
 	<script type="text/javascript" src="<?=asset_url('js/jquery.js');?>"></script>
 	<script type="text/javascript" src="<?=asset_url('js/jquery.ui.js');?>"></script>
 	<script type="text/javascript" src="<?=asset_url('js/jquery.ui.touch-punch.min.js');?>"></script>
@@ -351,9 +344,7 @@ if ($_SESSION['user_id']) {
 					<?php } ?>
                     <?php if (FW_ENV != 'dev') { ?>
                     <div style="width: <?php echo ($player ? '240px' : '100%');?>; text-align: center">
-						<div>
-                        	<div class="fb-like" data-href="https://www.facebook.com/AllStarsGame" data-width="70" data-layout="box_count" data-action="like" data-size="small" data-share="false"></div>
-						</div>
+                       	<div class="fb-like" data-href="https://www.facebook.com/AllStarsGame" data-width="70" data-layout="box_count" data-action="like" data-size="small" data-share="true"></div>
                     </div>
                     <?php } ?>
 				</div>

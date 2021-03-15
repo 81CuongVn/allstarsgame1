@@ -1,10 +1,10 @@
 @font-face {
     font-family: 'Anivers';
-    src: url('fonts/anivers_regular-webfont.eot');
-    src: url('fonts/anivers_regular-webfont.eot?#iefix') format('embedded-opentype'),
-         url('fonts/anivers_regular-webfont.woff') format('woff'),
-         url('fonts/anivers_regular-webfont.ttf') format('truetype'),
-         url('fonts/anivers_regular-webfont.svg#aniversregular') format('svg');
+    src: url('../fonts/anivers_regular-webfont.eot');
+    src: url('../fonts/anivers_regular-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/anivers_regular-webfont.woff') format('woff'),
+         url('../fonts/anivers_regular-webfont.ttf') format('truetype'),
+         url('../fonts/anivers_regular-webfont.svg#aniversregular') format('svg');
     font-weight: normal;
     font-style: normal;
 
