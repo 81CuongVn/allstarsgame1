@@ -1892,12 +1892,15 @@ div hr{
 .filtros b{
 	font-size: 14px;
 }
-.conteudo-news{
+.conteudo-news {
 	background-color: #143348;
 	width: 717px;
 	position: relative;
 	left: 7px;
 	top: 2px;
+	padding: 15px;
+	margin-bottom: 10px;
+	border-radius: 5px;
 }
 
 .table-striped tr:nth-child(odd) td {
@@ -1962,7 +1965,7 @@ div hr{
 	font-size: 14px;
 	font-weight: bold;	
 }
-.page{
+.page {
 	padding: 6px;
 	background-color: #224b71;
 	border: 1px solid #000;
@@ -1971,7 +1974,7 @@ div hr{
 	border-left-color: #7fb1e0;
 	cursor: pointer;
 }
-.page:hover{
+.page:hover {
 	padding: 6px;
 	background-color: #3b6e9c;
 	border: 1px solid #000;
@@ -1980,7 +1983,7 @@ div hr{
 	border-left-color: #7fb1e0;
 	cursor: pointer;
 }
-.page.active{
+.page.active {
 	padding: 6px;
 	background-color: #3b6e9c;
 	border: 1px solid #000;
@@ -1989,7 +1992,8 @@ div hr{
 	border-left-color: #7fb1e0;
 	cursor: pointer;
 }
-.challenge_texto{
+
+.challenge_texto {
 	position: relative;
 	padding-top: 10px;
 }
