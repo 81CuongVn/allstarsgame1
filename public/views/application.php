@@ -344,11 +344,6 @@ if ($_SESSION['user_id']) {
 					<?php } ?>
                     <?php if (FW_ENV != 'dev') { ?>
                     <div style="width: <?php echo ($player ? '240px' : '100%');?>; text-align: center">
-						<style type="text/css">
-							._1drm._1b90, ._1drm._1ds4 {
-								border: none !important;
-							}
-						</style>
                        	<div class="fb-like" data-href="https://www.facebook.com/AllStarsGame" data-width="70" data-layout="box_count" data-action="like" data-size="small" data-share="true"></div>
                     </div>
                     <?php } ?>
