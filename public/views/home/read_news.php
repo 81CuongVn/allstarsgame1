@@ -17,8 +17,8 @@
 </div>
 <?php if (FW_ENV != 'dev') { ?>
 <div align="right" style="margin-top: 10px; margin-right: 5px;">
-    <div class="fb-share-button" data-href="<?=make_url('home#read_news/' . $new->id);?>" data-layout="button_count" data-size="large"></div>
-    <div class="fb-like" data-href="<?=make_url('home#read_news/' . $new->id);?>" data-width="70" data-layout="button_count" data-action="like" data-size="large" data-share="false"></div>
+    <div class="fb-share-button" data-href="<?=make_url('home#read_news/' . $new->id);?>" data-layout="button_count" data-size="small"></div>
+    <div class="fb-like" data-href="<?=make_url('home#read_news/' . $new->id);?>" data-width="70" data-layout="button_count" data-action="like" data-size="small" data-share="false"></div>
 </div>
 <?php } ?>
 <?php if ($_SESSION['user_id']) { ?>
