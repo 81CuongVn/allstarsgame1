@@ -30,7 +30,7 @@
 		var	win	= bootbox.dialog({message: '<h3>' + I18n.t('friends.kick_reason') + '</h3>' + '<textarea style="width: 400px" rows="5"></textarea>', buttons: [
 			{
 				label:		I18n.t('friends.kick'),
-				className:	'btn btn-primary',
+				className:	'btn btn-sm btn-primary',
 				callback:	function () {
 					lock_screen(true);
 
@@ -52,7 +52,7 @@
 				}
 			}, {
 				label:		'Fechar',
-				className:	'btn btn-default'
+				className:	'btn btn-sm btn-default'
 			}
 		]});
 
@@ -66,7 +66,7 @@
 		var	win	= bootbox.dialog({message: '...', buttons: [
 			{
 				label: 'Fechar',
-				class:	'btn btn-default'
+				class:	'btn btn-sm btn-default'
 			}
 		]});
 	
@@ -212,7 +212,7 @@
 		var	win	= bootbox.dialog({message: '<h3>' + I18n.t('organizations.show.reason_title') + '</h3>' + '<textarea style="width: 400px" rows="5"></textarea>', buttons: [
 			{
 				label:		I18n.t('organizations.show.refuse'),
-				className:	'btn btn-primary',
+				className:	'btn btn-sm btn-primary',
 				callback:	function () {
 					$.ajax({
 						url:		make_url('friend_lists#enter_refuse'),
@@ -233,7 +233,7 @@
 				}
 			}, {
 				label:		'Fechar',
-				className:	'btn btn-default'
+				className:	'btn btn-sm btn-default'
 			}
 		]});
 

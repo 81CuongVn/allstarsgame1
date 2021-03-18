@@ -14,7 +14,7 @@
 	position: absolute;
 	font-size: 28px;
 	margin-left: 14px;
-	margin-top: 8px;
+	margin-top: 12px;
 	color: #000;
 	opacity: .8
 }
@@ -95,29 +95,20 @@
 
 .popover-type-container {
 	width: 100%;
-	margin-left: -15px;
+	margin-left: -14px;
 	position: absolute;
-	bottom: -30px;
-}
-
-.popover-type-container .black {
-	background-color: black;
-	height: 20px;
-	border-radius: 5px;
-	z-index: 1;
-	position: absolute;
-	width: 100%;
+	bottom: -20px;
 }
 
 .popover-type-container .type {
 	background-color: #181818;
-	border-radius: 5px;
-	margin-top: 12px;
-	height: 32px;
-	padding-top: 10px;
+	margin-bottom: 0!important;
+	padding: 5px;
 	text-align: center;
 	width: 100%;
 	position: relative;
+	border-bottom-left-radius: 5px;
+	border-bottom-right-radius: 5px;
 }
 
 .popover-type-container .type .weak {

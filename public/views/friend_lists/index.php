@@ -38,9 +38,9 @@
 							<?php echo t('friends.f3');?><br /> <?php echo t('friends.f4');?> <span class="verde">2000 <?php echo t('currencies.' . $player->character()->anime_id)?></span><br /><br />
 							<?php if($user->level > 4){?>
 								<?php if(sizeof($player->limit_by_day($player->id)) < 1){?>
-									<a data-gift="1" data-player="<?php echo $p->id ?>" class="btn btn-primary gift"><?php echo t('friends.f2');?> 2000 <?php echo t('currencies.' . $player->character()->anime_id)?></a>
+									<a data-gift="1" data-player="<?php echo $p->id ?>" class="btn btn-sm btn-primary gift"><?php echo t('friends.f2');?> 2000 <?php echo t('currencies.' . $player->character()->anime_id)?></a>
 								<?php }else{?>
-									<a class="btn btn-danger"><?php echo t('friends.f26');?></a>
+									<a class="btn btn-sm btn-danger"><?php echo t('friends.f26');?></a>
 								<?php }?>
 							<?php }else{?>
 								<span class="laranja"><?php echo t('friends.f21');?> 4</span>
@@ -53,9 +53,9 @@
 							<?php echo t('friends.f3');?><br /> <?php echo t('friends.f5');?> <span class="verde"><?php echo t('friends.f6');?></span><br /><br />
 							<?php if($user->level > 9){?>
 								<?php if(sizeof($player->limit_by_day($player->id)) < 1){?>
-									<a data-gift="2" data-player="<?php echo $p->id ?>" class="btn btn-primary gift"><?php echo t('friends.f7');?></a>
+									<a data-gift="2" data-player="<?php echo $p->id ?>" class="btn btn-sm btn-primary gift"><?php echo t('friends.f7');?></a>
 								<?php }else{?>
-									<a class="btn btn-danger"><?php echo t('friends.f26');?></a>
+									<a class="btn btn-sm btn-danger"><?php echo t('friends.f26');?></a>
 								<?php }?>
 							<?php }else{?>
 								<span class="laranja"><?php echo t('friends.f21');?> 9</span>
@@ -68,9 +68,9 @@
 							<?php echo t('friends.f3');?><br /> <?php echo t('friends.f5');?> <span class="verde"><?php echo t('friends.f8');?></span><br /><br />
 							<?php if($user->level > 19){?>	
 								<?php if(sizeof($player->limit_by_day($player->id)) < 1){?>
-									<a data-gift="3" data-player="<?php echo $p->id ?>" class="btn btn-primary gift"><?php echo t('friends.f10');?></a>
+									<a data-gift="3" data-player="<?php echo $p->id ?>" class="btn btn-sm btn-primary gift"><?php echo t('friends.f10');?></a>
 								<?php }else{?>
-									<a class="btn btn-danger"><?php echo t('friends.f26');?></a>
+									<a class="btn btn-sm btn-danger"><?php echo t('friends.f26');?></a>
 								<?php }?>	
 							<?php }else{?>
 								<span class="laranja"><?php echo t('friends.f21');?> 19</span>
@@ -83,9 +83,9 @@
 							<?php echo t('friends.f3');?><br /> <?php echo t('friends.f5');?> <span class="verde"><?php echo t('friends.f9');?></span><br /><br />
 							<?php if($user->level > 29){?>	
 								<?php if(sizeof($player->limit_by_day($player->id)) < 1){?>
-									<a data-gift="4"  data-player="<?php echo $p->id ?>" class="btn btn-primary gift"><?php echo t('friends.f10');?></a>
+									<a data-gift="4"  data-player="<?php echo $p->id ?>" class="btn btn-sm btn-primary gift"><?php echo t('friends.f10');?></a>
 								<?php }else{?>
-									<a class="btn btn-danger"><?php echo t('friends.f26');?></a>
+									<a class="btn btn-sm btn-danger"><?php echo t('friends.f26');?></a>
 								<?php }?>	
 							<?php }else{?>
 								<span class="laranja"><?php echo t('friends.f21');?> 29</span>
@@ -98,9 +98,9 @@
 							<?php echo t('friends.f3');?><br /> <?php echo t('friends.f5');?> <span class="verde"><?php echo t('friends.f12');?></span><br /><br />
 							<?php if($user->level > 39){?>
 								<?php if(sizeof($player->limit_by_day($player->id)) < 1){?>
-									<a data-gift="5" data-player="<?php echo $p->id ?>" class="btn btn-primary gift"><?php echo t('friends.f11');?></a>
+									<a data-gift="5" data-player="<?php echo $p->id ?>" class="btn btn-sm btn-primary gift"><?php echo t('friends.f11');?></a>
 								<?php }else{?>
-									<a class="btn btn-danger"><?php echo t('friends.f26');?></a>
+									<a class="btn btn-sm btn-danger"><?php echo t('friends.f26');?></a>
 								<?php }?>	
 							<?php }else{?>
 								<span class="laranja"><?php echo t('friends.f21');?> 39</span>
@@ -109,8 +109,8 @@
 					</div>
 				</td>
                 <td width="200" align="center">
-                	<a class="btn btn-primary current-player" data-url="<?php echo make_url('friend_lists#list_status') ?>" data-player_id="<?php echo $p->id?>"><?php echo t('friends.f13');?></a>
-                    <a class="btn btn-danger kick" data-id="<?php echo $p->id?>"><?php echo t('friends.f14');?></a>
+                	<a class="btn btn-sm btn-primary current-player" data-url="<?php echo make_url('friend_lists#list_status') ?>" data-player_id="<?php echo $p->id?>"><?php echo t('friends.f13');?></a>
+                    <a class="btn btn-sm btn-danger kick" data-id="<?php echo $p->id?>"><?php echo t('friends.f14');?></a>
                 </td>
             </tr>
             <tr height="4"></tr>

@@ -40,7 +40,7 @@
 					<img src="<?php echo image_url("icons/vip-on.png" ) ?>" width="26" height="26"/><span class="amarelo_claro" style="font-size: 16px; margin-left: 5px; top: 2px; position: relative"><?php echo $is_dbl ? '<span class="vermelho" style="text-decoration: line-through; font-size: 12px">'.$plan->coin.'</span><span class="verde"> '. $plan->coin*2 .'</span>' :  $plan->coin?></span>
 				</div>
 				<div class="button" style="position:relative; top: 15px;">
-					<a class="btn btn-primary vip_purchase" data-message="<?php echo t('vips.done_donation.you_have') ?> <?php echo $currency; ?> <?php echo $plan->valor ?>, <?php echo t('vips.done_donation.you_have2') ?>" data-mode="<?php echo $plan->id?>" data-valor="<?php echo $method; ?>"><?php echo t('vips.done_donation.donation_by') ?> <?php echo $currency; ?> <?php echo $plan->valor ?></a>
+					<a class="btn btn-sm btn-primary vip_purchase" data-message="<?php echo t('vips.done_donation.you_have') ?> <?php echo $currency; ?> <?php echo $plan->valor ?>, <?php echo t('vips.done_donation.you_have2') ?>" data-mode="<?php echo $plan->id?>" data-valor="<?php echo $method; ?>"><?php echo t('vips.done_donation.donation_by') ?> <?php echo $currency; ?> <?php echo $plan->valor ?></a>
 				</div>
 			</div>
 		</div>

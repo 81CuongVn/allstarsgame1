@@ -67,9 +67,9 @@
 					</td>
 					<td width="117" align="center">
 						<?php if (!$can_train): ?>
-							<a class="btn btn-primary disabled"><?php echo t('techniques.training.train') ?></a>
+							<a class="btn btn-sm btn-primary disabled"><?php echo t('techniques.training.train') ?></a>
 						<?php else: ?>
-							<input type="button" class="btn btn-primary train" value="<?php echo t('techniques.training.train') ?>" data-item="<?php echo $technique->id ?>" />
+							<input type="button" class="btn btn-sm btn-primary train" value="<?php echo t('techniques.training.train') ?>" data-item="<?php echo $technique->id ?>" />
 						<?php endif ?>
 					</td>					
 				<?php else: ?>

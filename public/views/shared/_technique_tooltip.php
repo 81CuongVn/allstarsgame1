@@ -12,7 +12,7 @@
 	<?php endif ?>
 	<div class="clearfix"></div>
 	<?php if (!$battle_tooltip): ?>
-		<div class="description"><?php //echo $description->description ?></div>
+		<!-- <div class="description"><?php echo $description->description ?></div> -->
 	<?php endif ?>
 	<div class="clearfix"></div>
 	<hr />
@@ -108,7 +108,6 @@
 		<?php echo partial('shared/effect_tooltip', ['effects' => $item->effects(), 'item' => $item, 'player' => $player]) ?>
 	<?php endif ?>
 	<div class="popover-type-container">
-		<div class="black"></div>
 		<div class="type">
 			<?php $type	= $item->attack_type() ?>
 			<?php if ($type): ?>

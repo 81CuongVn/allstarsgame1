@@ -106,12 +106,12 @@ $(function () {
 						<td width="100" align="center" style="display: table-cell; vertical-align: middle;">
 							<?php if (!in_array($quest->id, $player_quests)): ?>
 								<?php if ($quest->req_graduation_sorting <= $player->graduation()->sorting && $quest->req_level <= $player->level): ?>
-									<a href="javascript:;" class="accept btn btn-primary" data-id="<?php echo $quest->id ?>"><?php echo t('quests.accept') ?></a>									
+									<a href="javascript:;" class="accept btn btn-sm btn-primary" data-id="<?php echo $quest->id ?>"><?php echo t('quests.accept') ?></a>									
 								<?php else: ?>
-									<a href="javascript:;" class="disabled btn btn-primary" data-id="<?php echo $quest->id ?>"><?php echo t('quests.accept') ?></a>									
+									<a href="javascript:;" class="disabled btn btn-sm btn-primary" data-id="<?php echo $quest->id ?>"><?php echo t('quests.accept') ?></a>									
 								<?php endif ?>
 							<?php else: ?>
-								<a href="javascript:;" class="disabled btn btn-success"><?php echo t('quests.completed') ?></a>
+								<a href="javascript:;" class="disabled btn btn-sm btn-success"><?php echo t('quests.completed') ?></a>
 							<?php endif ?>
 						</td>
 					</tr>

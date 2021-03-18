@@ -84,7 +84,7 @@ if (!$player_tutorial->missoes_tempo) {
 							</span>
 						</td>
 						<td width="110" align="center">
-							<select name="duration" class="duration-selector form-control" style="width: auto;" data-id="<?=$quest->id;?>" id="quest-time-duration-selector-<?=$quest->id;?>">
+							<select name="duration" class="duration-selector form-control input-sm" style="width: auto;" data-id="<?=$quest->id;?>" id="quest-time-duration-selector-<?=$quest->id;?>">
 								<?php
 								foreach ($quest->durations() as $duration) {
 									$expDurationReward		= $duration->exp + percent($effects['bonus_exp_mission_percent'], $duration->exp) + $effects['bonus_exp_mission'] + percent($extras->exp_quest, $duration->exp);
@@ -120,12 +120,12 @@ if (!$player_tutorial->missoes_tempo) {
 						<td width="100" align="center">
 							<?php if (!in_array($quest->id, $player_quests)) { ?>
 								<?php if ($quest->req_graduation_sorting <= $player->graduation()->sorting && $quest->req_level <= $player->level) { ?>
-									<a href="javascript:;" class="accept btn btn-primary" data-id="<?=$quest->id;?>"><?=t('quests.accept');?></a>									
+									<a href="javascript:;" class="accept btn btn-sm btn-primary" data-id="<?=$quest->id;?>"><?=t('quests.accept');?></a>									
 								<?php } else { ?>
-									<a href="javascript:;" class="disabled btn btn-primary" data-id="<?=$quest->id;?>"><?=t('quests.accept');?></a>									
+									<a href="javascript:;" class="disabled btn btn-sm btn-primary" data-id="<?=$quest->id;?>"><?=t('quests.accept');?></a>									
 								<?php } ?>
 								<?php } else { ?>
-								<a href="javascript:;" class="disabled btn btn-success"><?=t('quests.completed');?></a>
+								<a href="javascript:;" class="disabled btn btn-sm btn-success"><?=t('quests.completed');?></a>
 							<?php } ?>
 						</td>
 					</tr>

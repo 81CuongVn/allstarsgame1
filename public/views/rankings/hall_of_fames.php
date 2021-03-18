@@ -11,7 +11,7 @@
 		<tr>
 			<td align="center" style="max-width: 200px;">
 				<b><?php echo t('characters.create.labels.anime') ?></b><br />
-				<select class="form-control" name="anime_id" id="anime_id" style="width: 186px">
+				<select class="form-control input-sm" name="anime_id" id="anime_id" style="width: 186px">
 					<option value="0"><?php echo t('global.all') ?></option>
 					<?php foreach ($animes as $anime): ?>
 						<option value="<?php echo $anime->id ?>" <?php if ($anime->id == $anime_id): ?>selected="selected"<?php endif ?>><?php echo $anime->description()->name ?></option>
@@ -23,7 +23,7 @@
 			</td>
 			<td align="center" style="max-width: 98px;">
 				<b>Round</b><br />
-				<select class="form-control" name="round" style="width: 91px">
+				<select class="form-control input-sm" name="round" style="width: 91px">
 					<option value="eterno" <?php if ("eterno" == $round): ?>selected="selected"<?php endif ?>>Eterno</option>
 					<option value="r1" <?php if ("r1" == $round): ?>selected="selected"<?php endif ?>>Round 1</option>
 					<option value="r2" <?php if ("r2" == $round): ?>selected="selected"<?php endif ?>>Round 2</option>
@@ -32,7 +32,7 @@
 			</td>
 			<td align="center" style="max-width: 86px;">
 				<b><?php echo t('characters.select.labels.faction') ?></b><br />
-				<select class="form-control" name="faction_id" style="width: 80px">
+				<select class="form-control input-sm" name="faction_id" style="width: 80px">
 					<option value="0"><?php echo t('global.all') ?></option>
           <?php foreach ($factions as $faction): ?>
 						<option value="<?=$faction->id;?>"<?php if ($faction->id == $faction_id): ?>selected="selected"<?php endif ?>><?=$faction->name;?></option>
@@ -41,10 +41,10 @@
 			</td>
 			<td align="center" style="max-width: 130px;">
 				<b><?php echo t('rankings.players.header.nome') ?></b><br />
-				<input class="form-control" type="text" name="name" value="<?php echo $name ?>" />
+				<input class="form-control input-sm" type="text" name="name" value="<?php echo $name ?>" />
 			</td>
 			<td align="center" style="max-width: 65px;">
-				<a href="javascript:;" class="btn btn-primary filter" style="margin-top: 14px"><?php echo t('buttons.filtrar') ?></a>
+				<a href="javascript:;" class="btn btn-sm btn-primary filter" style="margin-top: 14px"><?php echo t('buttons.filtrar') ?></a>
 			</td>
 		</tr>
 	</table>

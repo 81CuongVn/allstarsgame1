@@ -10,7 +10,7 @@
 			<?php echo t('techniques.training.wait.info_finished') ?><br /><br />
 			<br />
 			<br />
-			<a class="btn btn-primary finish"><?php echo t('techniques.training.wait.finish') ?></a>
+			<a class="btn btn-sm btn-primary finish"><?php echo t('techniques.training.wait.finish') ?></a>
 		</div>
 	</div>
 <?php else: ?>
@@ -23,7 +23,7 @@
 			<span id="technique-wait-timer" data-seconds="<?php echo $diff['seconds'] ?>" data-minutes="<?php echo $diff['minutes'] ?>" data-hours="<?php echo $diff['hours'] ?>">--:--:--</span>
 			<br />
 			<br />
-			<a class="btn btn-danger cancel" data-confirmation="<?php echo t('techniques.training.wait.cancel_msg') ?>"><?php echo t('techniques.training.wait.cancel') ?></a>
+			<a class="btn btn-sm btn-danger cancel" data-confirmation="<?php echo t('techniques.training.wait.cancel_msg') ?>"><?php echo t('techniques.training.wait.cancel') ?></a>
 		</div>
 	</div>
 <?php endif ?>

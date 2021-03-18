@@ -59,16 +59,16 @@
 					container.html(result);
 
 					$('.item img', container).each(function () {
-                        $(this).popover({
-							content:	$($(this).data('source')).html(),
-							html:		true
+						$(this).popover({
+							content:	function () {
+								return $($(this).data('source')).html();
+							},
+							html:		true,
+							container:	'body'
 						});
 					}).on('shown.bs.popover', function () {
 						var _		= $(this);
 						var	popover	= $('.popover', _.parent());
-
-						$(document.body).append(popover);
-
 						popover.css({
 							position:	'absolute',
 							left:		_.offset().left - popover.width() - 4,

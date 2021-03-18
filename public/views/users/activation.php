@@ -8,10 +8,10 @@
 <form method="post" action="<?php echo make_url(isset($beta) ? 'users#beta_activate' : 'users#activate') ?>" clas="form">
 	<div class="form-group">
 		<label class="control-label"><?php echo t('users.activation.labels.key') ?></label>
-		<input type="text" class="form-control" placeholder="<?php echo t('users.activation.placeholders.key') ?>" name="key" />
+		<input type="text" class="form-control input-sm" placeholder="<?php echo t('users.activation.placeholders.key') ?>" name="key" />
 	</div>
 	<div class="pull-right">
-		<input type="submit" value="<?php echo t('buttons.proceed') ?>" class="btn btn-primary" />
+		<input type="submit" value="<?php echo t('buttons.proceed') ?>" class="btn btn-sm btn-primary" />
 	</div>
 	<div class="clearfix"></div>
 </form>

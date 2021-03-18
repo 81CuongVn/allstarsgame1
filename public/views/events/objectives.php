@@ -568,13 +568,13 @@ echo partial('shared/info', [
                                 <?php if ($reward->luck_reward_log($reward->id, $player->id)) { ?>
                                     <span class="laranja"><?=t('objectives.ja_trocou');?></span>
                                 <?php } else { ?>
-                                    <a class="btn btn-primary objective_change" data-id="<?=$reward->id;?>"><?=t('objectives.buy_now', ['points' => $reward->chance]);?></a>
+                                    <a class="btn btn-sm btn-primary objective_change" data-id="<?=$reward->id;?>"><?=t('objectives.buy_now', ['points' => $reward->chance]);?></a>
                                 <?php } ?>
                             <?php } else { ?>
-                                <button type="button" class="btn btn-disabled btn-danger" disabled><?=t('objectives.buy_now', ['points' => $reward->chance]);?></a>
+                                <button type="button" class="btn btn-sm btn-disabled btn-danger" disabled><?=t('objectives.buy_now', ['points' => $reward->chance]);?></a>
                             <?php } ?>
                         <?php } else { ?>
-                            <button type="button" class="btn btn-disabled btn-success" disabled><?=t('objectives.ja_adquirido');?></a>
+                            <button type="button" class="btn btn-sm btn-disabled btn-success" disabled><?=t('objectives.ja_adquirido');?></a>
                         <?php } ?>
                     </div>
                 </div>

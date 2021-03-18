@@ -7,7 +7,7 @@
 		<tr>
 			<td align="center">
 				<b><?php echo t('characters.create.labels.anime') ?></b><br />
-				<select name="anime_id" id="anime_id" class="form-control" style="width:130px">
+				<select name="anime_id" id="anime_id" class="form-control input-sm" style="width:130px">
 					<option value="0"><?php echo t('global.all') ?></option>
 					<?php foreach ($animes as $anime): ?>
 						<option value="<?php echo $anime->id ?>" <?php if ($anime->id == $anime_id): ?>selected="selected"<?php endif ?>><?php echo $anime->description()->name ?></option>
@@ -16,7 +16,7 @@
 			</td>
             <td align="center">
 				<b><?php echo t('characters.select.labels.challenge') ?></b><br />
-				<select name="challenge_id" class="form-control" style="width: 130px">
+				<select name="challenge_id" class="form-control input-sm" style="width: 130px">
 					<!-- <option value="0"><?php echo t('global.all') ?></option> -->
 					<?php foreach ($challenges as $challenge): ?>
 						<option value="<?php echo $challenge->id ?>" <?php if ($challenge->id == $challenge_id): ?>selected="selected"<?php endif ?>><?php echo $challenge->description()->name ?></option>
@@ -25,7 +25,7 @@
 			</td>
 			<td align="center" style="max-width: 86px;">
 				<b><?php echo t('characters.select.labels.faction') ?></b><br />
-				<select name="faction_id" class="form-control" style="width: 80px;">
+				<select name="faction_id" class="form-control input-sm" style="width: 80px;">
 					<option value="0"><?=t('global.all');?></option>
 					<?php foreach ($factions as $faction): ?>
 						<option value="<?=$faction->id;?>"<?php if ($faction->id == $faction_id): ?>selected="selected"<?php endif ?>><?=$faction->name;?></option>
@@ -34,7 +34,7 @@
 			</td>
 			<td align="center">
 				<b><?php echo t('characters.select.labels.graduation') ?></b><br />
-				<select name="graduation_id" class="form-control" style="width: 130px">
+				<select name="graduation_id" class="form-control input-sm" style="width: 130px">
 					<option value="0"><?=t('global.all');?></option>
 					<?php if ($anime_id): foreach ($graduations as $graduation): ?>
 						<?php if ($anime_id): ?>
@@ -47,10 +47,10 @@
 			</td>
 			<td align="center">
 				<b><?php echo t('rankings.players.header.nome') ?></b><br />
-				<input type="text" name="name" class="form-control" value="<?php echo $name ?>" />
+				<input type="text" name="name" class="form-control input-sm" value="<?php echo $name ?>" />
 			</td>
 			<td align="center">
-				<a href="javascript:;" class="btn btn-primary filter" style="margin-top: 14px"><?php echo t('buttons.filtrar') ?></a>
+				<a href="javascript:;" class="btn btn-sm btn-primary filter" style="margin-top: 14px"><?php echo t('buttons.filtrar') ?></a>
 			</td>
 		</tr>
 	</table>

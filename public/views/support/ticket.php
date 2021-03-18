@@ -56,9 +56,9 @@
 <?php if ($_SESSION['universal'] && !$_SESSION['orig_user_id']): ?>
     <hr />
 	<div align="center" id="support-command-extras">
-		<a href="javascript:;" class="btn btn-primary alternate" data-id="<?php echo $ticket->id ?>">Acessar Conta</a>
+		<a href="javascript:;" class="btn btn-sm btn-primary alternate" data-id="<?php echo $ticket->id ?>">Acessar Conta</a>
 		<?php if ($ticket->player_id): ?>
-			<a href="javascript:;" class="btn btn-primary fullalternate" data-id="<?php echo $ticket->id ?>">Acessar Conta & Personagem</a>
+			<a href="javascript:;" class="btn btn-sm btn-primary fullalternate" data-id="<?php echo $ticket->id ?>">Acessar Conta & Personagem</a>
 		<?php endif ?>
 	</div>
 <?php endif ?>
@@ -108,7 +108,7 @@
 			<label class="control-label col-md-12" style="text-align: left"><?php echo t('support.open.form.description') ?></label>
 			<br /><br />
 			<div class="col-sm-12">
-				<textarea name="content" class="form-control" rows="10"></textarea>
+				<textarea name="content" class="form-control input-sm" rows="10" style="resize: none;"></textarea>
 			</div>
 		</div>
 		<hr />
@@ -135,16 +135,16 @@
 		<div class="clearfix"></div>
 		<div align="center" style="margin-top: 20px; position: relative;">
 			<?php if ($_SESSION['universal']): ?>
-				<input type="button" class="btn btn-primary reply-close" value="<?php echo t('support.ticket.reply_close') ?>" />
+				<input type="button" class="btn btn-sm btn-primary reply-close" value="<?php echo t('support.ticket.reply_close') ?>" />
 			<?php endif ?>
-			<input type="button" class="btn btn-primary reply" value="<?php echo t('support.ticket.reply') ?>" />
+			<input type="button" class="btn btn-sm btn-primary reply" value="<?php echo t('support.ticket.reply') ?>" />
 		</div>
 		<div class="clearfix"></div>
 	</form>
 <?php elseif($ticket->support_ticket_status_id == 4 && $_SESSION['universal']): ?>
 	<div align="center">
 		<form action="<?php echo make_url('support/reopen/' . $ticket->id) ?>" id="support-ticket-reply-form" method="post">
-			<input type="button" class="btn btn-primary reopen" value="<?php echo t('support.ticket.reopen') ?>" />
+			<input type="button" class="btn btn-sm btn-primary reopen" value="<?php echo t('support.ticket.reopen') ?>" />
 		</form>
 	</div>
 <?php endif ?>

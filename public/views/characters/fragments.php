@@ -95,9 +95,9 @@ $descriptions	= [
 		</div>
 		<div class="button" style="position:relative; top: 15px;">
 			<?php if($total >= $prices[$rarity]){?>
-				<a class="fragments_change btn btn-primary" data-mode="<?php echo $rarity?>"><?php echo t('fragments.change') ?></a>
+				<a class="fragments_change btn btn-sm btn-primary" data-mode="<?php echo $rarity?>"><?php echo t('fragments.change') ?></a>
 			<?php }else{?>
-				<a class="btn btn-danger"><?php echo t('fragments.change') ?></a>
+				<a class="btn btn-sm btn-danger"><?php echo t('fragments.change') ?></a>
 			<?php }?>	
 		</div>
 	</div>

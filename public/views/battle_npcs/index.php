@@ -30,7 +30,7 @@ echo partial('shared/info', [
 			<span class="cinza" style="font-size: 12px"><?=$npc->character()->anime()->description()->name;?></span>
 		</div>
 		<div align="center">
-			<select id="character_id" class="form-control" name="character_id" style="width:180px">
+			<select id="character_id" class="form-control input-sm" name="character_id" style="width:180px">
 				<?php foreach ($animes as $anime): ?>
 					<optgroup label="<?=$anime->description()->name;?>">
 					<?php foreach ($anime->characters($_SESSION['universal'] ? '' : ' AND active = 1') as $character): ?>
@@ -40,7 +40,7 @@ echo partial('shared/info', [
 					</optgroup>
 				<?php endforeach; ?>
 			</select><br />
-			<a class="btn btn-primary change-oponent" data-message="<?=t('battles.message');?>"><?=t('battles.trocar');?></a>
+			<a class="btn btn-sm btn-primary change-oponent" data-message="<?=t('battles.message');?>"><?=t('battles.trocar');?></a>
 		</div>
 	</div>
 	<div class="clearfix"></div>

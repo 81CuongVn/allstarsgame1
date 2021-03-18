@@ -31,14 +31,14 @@
 	<?php endif ?>
 	<?php if ($character->currency_lock): ?>
 		<?php if ($player): ?>
-			<a class="btn btn-primary unlock" data-method="1" data-id="<?php echo $character->id?>"><?php echo t('characters.create.unlocks_currency', ['amount' => highamount($character->currency_lock), 'currency' => t('currencies.' . $player->character()->anime_id)]) ?></a>
+			<a class="btn btn-sm btn-primary unlock" data-method="1" data-id="<?php echo $character->id?>"><?php echo t('characters.create.unlocks_currency', ['amount' => highamount($character->currency_lock), 'currency' => t('currencies.' . $player->character()->anime_id)]) ?></a>
 		<?php else: ?>
 			<b class="laranja" style="font-size:14px"><?php echo t('characters.create.needs_unlock_player') ?></b>
 		<?php endif ?>
 	<?php endif ?>
 	<br /><br />
 	<?php if ($character->credits_lock): ?>
-		<a class="btn btn-primary unlock" data-method="2" data-id="<?php echo $character->id?>"><?php echo t('characters.create.unlocks_credits', ['amount' => highamount($character->credits_lock)]) ?></a>
+		<a class="btn btn-sm btn-primary unlock" data-method="2" data-id="<?php echo $character->id?>"><?php echo t('characters.create.unlocks_credits', ['amount' => highamount($character->credits_lock)]) ?></a>
 	<?php endif ?>	
 <?php
 	}

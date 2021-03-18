@@ -43,7 +43,7 @@ class BattleNpcsController extends Controller {
 		$this->assign('player', $player);
 		$this->assign('npc', $npc);
 		$this->assign("animes", Anime::find($_SESSION['universal'] ? '1=1' : 'active=1', ['cache' => true, 'reorder' => 'id ASC']));
-		$this->assign("player_battle_stats",PlayerBattleStat::find_first("player_id=".$player->id));
+		$this->assign("player_battle_stats", PlayerBattleStat::find_first("player_id=".$player->id));
 
 		//$this->assign('max_npc_count', $this->npc_limit + $player->attributes()->sum_bonus_daily_npc);
 		//$this->assign('current_npc_count', $player->battle_counters()->current_npc_made);

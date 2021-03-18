@@ -2,7 +2,6 @@
 	<?php echo partial('shared/effect_tooltip', ['effects' => $effects, 'player' => $player]) ?>	
 <?php else: ?>
 	<div class="technique-data fix-lines" style="width: 280px">
-		<hr />
 		<span>Valores para Combate</span>
 		<table width="100%">
 			<tr>

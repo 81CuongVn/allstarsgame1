@@ -198,7 +198,7 @@
 							buttons: {
 								'accept': {
 									label: I18n.t('battles.pvp.queue_accept'),
-									className: 'btn btn-primary',
+									className: 'btn btn-sm btn-primary',
 									callback: function() {
 										var _ = $(this);
 
@@ -222,7 +222,7 @@
 								},
 								'cancel': {
 									label: I18n.t('battles.pvp.queue_exit'),
-									className: 'btn btn-danger',
+									className: 'btn btn-sm btn-danger',
 									callback: function() {
 										var _ = $(this);
 

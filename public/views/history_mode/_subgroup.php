@@ -8,7 +8,7 @@
 			<div class="msgb-h" style="position:relative; margin-left: 231px; text-align: left; top: 36px">
 				<b>
 					<?php echo $subgroup->description()->name ?>
-					<a class="btn btn-primary pull-right show-battles" data-target="#<?php echo $npc_list_id ?>" data-show-text="<?php echo t('history_mode.show.show_battles') ?>" data-hide-text="<?php echo t('history_mode.show.hide_battles') ?>"><?php echo t('history_mode.show.show_battles') ?></a>
+					<a class="btn btn-sm btn-primary pull-right show-battles" data-target="#<?php echo $npc_list_id ?>" data-show-text="<?php echo t('history_mode.show.show_battles') ?>" data-hide-text="<?php echo t('history_mode.show.hide_battles') ?>"><?php echo t('history_mode.show.show_battles') ?></a>
 				</b>
 				<div class="content">
 					<?php echo $subgroup->description()->description ?><br /><p style="color:#3C3; font-size: 14px; padding-top:5px"><?php echo t('history_mode.show.recompensas')?></p>
@@ -63,12 +63,12 @@
 				<td width="100" align="center"><?php echo t('difficulties.' . $npc->difficulty) ?></td>
 				<td width="120" align="center">
 					<?php if ($npc->killed()): ?>
-						<a class="btn btn-success disabled"><?php echo t('history_mode.show.completed') ?></a>
+						<a class="btn btn-sm btn-success disabled"><?php echo t('history_mode.show.completed') ?></a>
 					<?php else: ?>
 						<?php if ($npc->can_battle()): ?>
-							<a class="btn btn-primary battle" data-npc="<?php echo $npc->id ?>"><?php echo t('history_mode.show.battle') ?></a>
+							<a class="btn btn-sm btn-primary battle" data-npc="<?php echo $npc->id ?>"><?php echo t('history_mode.show.battle') ?></a>
 						<?php else: ?>
-							<a class="btn btn-primary disabled"><?php echo t('history_mode.show.battle') ?></a>
+							<a class="btn btn-sm btn-primary disabled"><?php echo t('history_mode.show.battle') ?></a>
 						<?php endif ?>
 					<?php endif ?>
 				</td>

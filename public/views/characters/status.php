@@ -66,7 +66,7 @@
                 buttons: [
                 {
                     label: 'Fechar',
-                    class:	'btn btn-default'
+                    class:	'btn btn-sm btn-default'
                 }
             ]});
             $('.modal-dialog', win).addClass('pattern-container');

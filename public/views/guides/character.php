@@ -58,7 +58,7 @@
 			<div style="width:231px; float: left; position: relative; top: 20px; text-align: center ">
 				<img width="235" height="281" id="character-profile-image" />
 				<div id="name-character" class="nome-personagem"></div>
-				<input class="button btn btn-primary" type="button" id="theme-view-image" data-url="<?php echo make_url('characters#list_images_only') ?>" value="Imagens" style="position:relative; top: -30px" />
+				<input class="button btn btn-sm btn-primary" type="button" id="theme-view-image" data-url="<?php echo make_url('characters#list_images_only') ?>" value="Imagens" style="position:relative; top: -30px" />
 				<div id="theme-list-ajax"></div>
 			</div>
 			<div style="width:495px; height:auto; float: left; position: relative; top: 10px; left: 3px">

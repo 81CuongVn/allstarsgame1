@@ -28,13 +28,13 @@
 	<br /><br />
 	<?php if ($character->currency_lock): ?>
 		<?php if ($player): ?>
-			<a class="btn btn-primary unlock" data-method="1"><?php echo t('characters.create.unlocks_currency', ['amount' => $character->currency_lock, 'currency' => t('currencies.' . $player->character()->anime_id)]) ?></a>
+			<a class="btn btn-sm btn-primary unlock" data-method="1"><?php echo t('characters.create.unlocks_currency', ['amount' => $character->currency_lock, 'currency' => t('currencies.' . $player->character()->anime_id)]) ?></a>
 		<?php else: ?>
 			<p><?php echo t('characters.create.needs_unlock_player') ?></p>
 		<?php endif ?>
 	<?php endif ?>
 	<br /><br />
 	<?php if ($character->credits_lock): ?>
-		<a class="btn btn-primary unlock" data-method="2"><?php echo t('characters.create.unlocks_credits', ['amount' => $character->credits_lock]) ?></a>
+		<a class="btn btn-sm btn-primary unlock" data-method="2"><?php echo t('characters.create.unlocks_credits', ['amount' => $character->credits_lock]) ?></a>
 	<?php endif ?>
 </div>

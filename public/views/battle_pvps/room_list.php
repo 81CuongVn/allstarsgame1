@@ -26,7 +26,7 @@
                 </td>
                 <td width="220" align="center"><?=$room->room_name;?></td>
                 <td width="140" align="center">
-					<a class="btn btn-primary enter-pvp-training-battle" data-id="<?=$room->id;?>">Aceitar Duelo</a>
+					<a class="btn btn-sm btn-primary enter-pvp-training-battle" data-id="<?=$room->id;?>">Aceitar Duelo</a>
 				</td>
             </tr>
             <tr height="4"></tr>

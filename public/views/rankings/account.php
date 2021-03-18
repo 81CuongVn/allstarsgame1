@@ -7,10 +7,10 @@
 		<tr>
 			<td width="556" align="center">
 				<b><?php echo t('rankings.players.header.nome') ?></b><br />
-				<input type="text" name="name" class="form-control" value="<?php echo $name ?>" style="width:400px" />
+				<input type="text" name="name" class="form-control input-sm" value="<?php echo $name ?>" style="width:400px" />
 			</td>
 			<td width="169" align="center">
-				<a href="javascript:;" class="btn btn-primary filter" style="margin-top: 14px"><?php echo t('buttons.filtrar') ?></a>
+				<a href="javascript:;" class=" btn-sm btn-primary filter" style="margin-top: 14px"><?php echo t('buttons.filtrar') ?></a>
 			</td>
 		</tr>
 	</table>

@@ -75,13 +75,13 @@
 			<div class="form-group">
 				<label class="control-label col-md-2"><?php echo t('users.join.labels.email') ?></label>
 				<div class="col-md-10">
-					<input type="text" class="form-control" placeholder="<?php echo t('users.join.placeholders.email') ?>" name="email" />
+					<input type="text" class="form-control input-sm" placeholder="<?php echo t('users.join.placeholders.email') ?>" name="email" />
 				</div>
 			</div>
 			<div class="form-group">
 				<label class="control-label col-md-2"><?php echo t('users.join.labels.password') ?></label>
 				<div class="col-md-10">
-					<input type="password" name="password" class="form-control" placeholder="<?php echo t('users.join.placeholders.password') ?>" name="password" />
+					<input type="password" name="password" class="form-control input-sm" placeholder="<?php echo t('users.join.placeholders.password') ?>" name="password" />
 				</div>
 			</div>
 			<div class="form-group">
@@ -93,7 +93,7 @@
 						<a id="join-captcha-image-refresh" href="javascript:;"><?php echo t('users.join.labels.captcha_refresh') ?></a>
 					</div>
 					<div class="col-md-4">
-						<input type="text" style="margin-top: 7px" class="form-control" placeholder="<?php echo t('users.join.placeholders.captcha') ?>" name="captcha" />
+						<input type="text" style="margin-top: 7px" class="form-control input-sm" placeholder="<?php echo t('users.join.placeholders.captcha') ?>" name="captcha" />
 					</div>
 				</div>
 			</div>

@@ -5,7 +5,7 @@
 	<div class="form-group">
 		<label class="col-sm-2"><?php echo t('users.password_reset.email') ?></label>
 		<div class="col-sm-10">
-			<input type="text" name="email" class="form-control" />
+			<input type="text" name="email" class="form-control input-sm" />
 		</div>
 	</div>
 	<div class="form-group">
@@ -16,14 +16,14 @@
 					<img src="<?php echo make_url('captcha/reset_password') ?>" style="float: left">
 				</div>
 				<div class="col-sm-9">
-					<input type="text" name="captcha" class="form-control" style="margin-top: 5px" />
+					<input type="text" name="captcha" class="form-control input-sm" style="margin-top: 5px" />
 				</div>
 			</div>
 		</div>
 	</div>
 	<div class="form-group">
 		<div class="col-sm-10 col-sm-offset-2">
-			<input type="submit" value="<?php echo t('users.password_reset.reset') ?>" class="btn btn-primary" />
+			<input type="submit" value="<?php echo t('users.password_reset.reset') ?>" class="btn btn-sm btn-primary" />
 		</div>
 	</div>
 </form>

@@ -1732,12 +1732,12 @@ trait BattleSharedMethods {
 				'seconds'	=> $timer_diff['seconds'] < 0 ? 0 : $timer_diff['seconds']
 			];
 
-			// if ($action_was_made) {
-			// 	if ($timer_diff['minutes'] < 1 && $timer_diff['seconds'] < 30) {
-			// 		if ($_SESSION['pvp_time_reduced'] < 60)
-			// 			$_SESSION['pvp_time_reduced']	+= 30;
-			// 	}
-			// }
+			if ($action_was_made) {
+				if ($timer_diff['minutes'] < 1 && $timer_diff['seconds'] < 30) {
+					if ($_SESSION['pvp_time_reduced'] < 60)
+						$_SESSION['pvp_time_reduced']	+= 30;
+				}
+			}
 
 			if($current > $future && !$battle_now->finished_at) {
 				$battle->finished_at	= now(true);
@@ -1762,8 +1762,8 @@ trait BattleSharedMethods {
 		else {
 			// So quando a trigger fizer a ação que não zera os dados
 			if ($is_pvp && $battle->should_process) {
-				$this->json->enemy->locks					= [];
-				$this->json->enemy->effects					= [];
+				// $this->json->enemy->locks					= [];
+				// $this->json->enemy->effects					= [];
 				$this->json->enemy->update_existent_locks	= FALSE;
 			} elseif($is_pvp && !$battle->should_process)
 				$this->json->enemy->update_existent_locks	= TRUE;

@@ -47,15 +47,15 @@ $(function () {
 	<tr>
 		<td width="0%" align="center">
 		<b><?php echo t('rankings.players.header.nome') ?></b><br />
-		<input type="text" class="form-control" style="max-width: 150px" name="name" value="<?php echo $name ?>" />
+		<input type="text" class="form-control input-sm" style="max-width: 150px" name="name" value="<?php echo $name ?>" />
 		</td>
 		<td width="0%" align="center">
 		<b><?php echo t('rankings.players.header.description') ?></b><br />	
-		<input type="text" class="form-control" style="max-width: 150px" name="description" value="<?php echo $description ?>" />
+		<input type="text" class="form-control input-sm" style="max-width: 150px" name="description" value="<?php echo $description ?>" />
 		</td>
 		<td width="0%" align="center">
 		<b><?php echo t('rankings.players.header.raridade') ?></b><br />
-		<select name="raridade" class="form-control" style="max-width: 100px">
+		<select name="raridade" class="form-control input-sm" style="max-width: 100px">
 			<option value="todos"><?php echo t('global.all') ?></option>
 			<option value="common" <?php if ('common' == $raridade): ?>selected="selected"<?php endif ?>>Comum</option>
 			<option value="rare" <?php if ('rare' == $raridade): ?>selected="selected"<?php endif ?>>Raro</option>
@@ -73,7 +73,7 @@ $(function () {
 		</select>
 		</td>
 		<td width="0%" align="center">
-			<a href="javascript:;" class="btn btn-primary filter" style="margin-top: 14px"><?php echo t('buttons.filtrar') ?></a>
+			<a href="javascript:;" class="btn btn-sm btn-primary filter" style="margin-top: 14px"><?php echo t('buttons.filtrar') ?></a>
 		</td>
 	</tr>
 </table>

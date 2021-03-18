@@ -9,13 +9,13 @@
 	?>
 	<div style="width:242px; height:285px; float: left; text-align: center" class="tutorial_profile">	
 		<?php echo $player->profile_image() ?>
-		<input class="button btn btn-warning" type="button" id="current-player-change-theme" data-url="<?php echo make_url('characters#list_themes') ?>" value="Temas" style="position:relative; top: -30px" />
-		<input class="button btn btn-primary" type="button" id="current-player-change-image" data-url="<?php echo make_url('characters#list_images') ?>" value="Imagens" style="position:relative; top: -30px" />
+		<input class="button btn btn-sm btn-warning" type="button" id="current-player-change-theme" data-url="<?php echo make_url('characters#list_themes') ?>" value="Temas" style="position:relative; top: -30px" />
+		<input class="button btn btn-sm btn-primary" type="button" id="current-player-change-image" data-url="<?php echo make_url('characters#list_images') ?>" value="Imagens" style="position:relative; top: -30px" />
 	</div>
 	<?php $next_level_menu = Menu::find(41) ?>
 	<?php if (is_menu_accessible($next_level_menu, $player)): ?>
 		<div align="center" style="margin-left: -22px">
-			<a href="<?php echo make_url($next_level_menu->href) ?>" class="btn btn-primary" style="width: 242px"><?php echo t($next_level_menu->name) ?></a>
+			<a href="<?php echo make_url($next_level_menu->href) ?>" class="btn btn-sm btn-primary" style="width: 242px"><?php echo t($next_level_menu->name) ?></a>
 		</div>
 	<?php endif ?>
 	<div style="color: #FFFFFF; width: 240px; float: left; text-align: left">
@@ -65,7 +65,7 @@
 			</div>
 			</a>
 		</div>
-		<select id="character-change-headline" class="form-control">
+		<select id="character-change-headline" class="form-control input-sm">
 			<option value="0"><?php echo t('characters.no_headline') ?></option>
 			<?php foreach ($player->user()->headlines() as $user_headline): ?>
 				<option value="<?php echo $user_headline->id ?>" <?php echo $player->headline_id == $user_headline->headline_id ? 'selected="selected"' : '' ?>><?php echo $user_headline->headline()->description()->name ?></option>

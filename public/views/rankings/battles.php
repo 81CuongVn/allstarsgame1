@@ -8,7 +8,7 @@
 		<tr>
 			<td align="center">
 				<b><?php echo t('characters.create.labels.anime') ?></b><br />
-				<select name="anime_id" id="anime_id" class="form-control" style="width:110px">
+				<select name="anime_id" id="anime_id" class="form-control input-sm" style="width:110px">
 					<option value="0"><?php echo t('global.all') ?></option>
 					<?php foreach ($animes as $anime): ?>
 						<option value="<?php echo $anime->id ?>" <?php if ($anime->id == $anime_id): ?>selected="selected"<?php endif ?>><?php echo $anime->description()->name ?></option>
@@ -20,7 +20,7 @@
 			</td>
 			<td align="center">
 				<b><?php echo t('characters.select.labels.faction') ?></b><br />
-				<select name="faction_id" class="form-control">
+				<select name="faction_id" class="form-control input-sm">
 					<option value="0"><?php echo t('global.all') ?></option>
           <?php foreach ($factions as $faction): ?>
 						<option value="<?=$faction->id;?>"<?php if ($faction->id == $faction_id): ?>selected="selected"<?php endif ?>><?=$faction->name;?></option>
@@ -29,7 +29,7 @@
 			</td>
 			<td align="center">
 				<b><?php echo t('characters.select.labels.graduation') ?></b><br />
-				<select name="graduation_id" class="form-control" style="width: 130px">
+				<select name="graduation_id" class="form-control input-sm" style="width: 130px">
 					<option value="0"><?=t('global.all');?></option>
 					<?php if ($anime_id): foreach ($graduations as $graduation): ?>
 						<?php if ($anime_id): ?>
@@ -42,7 +42,7 @@
 			</td>
 			<td align="center">
 				<b>Status</b><br />
-				<select name="status" class="form-control">
+				<select name="status" class="form-control input-sm">
 					<option value="victory_pvp" <?php if ("victory_pvp" == $status): ?>selected="selected"<?php endif ?>>Vitórias PVP</option>
 					<option value="victory_npc" <?php if ("victory_npc" == $status): ?>selected="selected"<?php endif ?>>Vitórias NPC</option>
 					<option value="looses_pvp" <?php if ("looses_pvp" == $status): ?>selected="selected"<?php endif ?>>Derrotas PVP</option>
@@ -53,14 +53,14 @@
 			</td>
 			<td align="center">
 				<b><?php echo t('rankings.battles.periodo') ?></b><br />
-				<select name="periodo" class="form-control" style="width: 80px">
+				<select name="periodo" class="form-control input-sm" style="width: 80px">
 					<option value="daily" <?php if ("diario" == $periodo): ?>selected="selected"<?php endif ?>>Diário</option>
 					<option value="weekly" <?php if ("semanal" == $periodo): ?>selected="selected"<?php endif ?>>Semanal</option>
 					<option value="monthly" <?php if ("mensal" == $periodo): ?>selected="selected"<?php endif ?>>Mensal</option>
 				</select>
 			</td>
 			<td align="center">
-				<a href="javascript:;" class="btn btn-primary filter" style="margin-top: 14px"><?php echo t('buttons.filtrar') ?></a>
+				<a href="javascript:;" class="btn btn-sm btn-primary filter" style="margin-top: 14px"><?php echo t('buttons.filtrar') ?></a>
 			</td>
 		</tr>
 	</table>

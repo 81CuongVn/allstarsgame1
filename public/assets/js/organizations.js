@@ -96,14 +96,14 @@
 			var	win	= bootbox.dialog({message: '...', buttons: [
 				{
 					label:		I18n.t('organizations.search.join'),
-					className:	'btn btn-primary',
+					className:	'btn btn-sm btn-primary',
 					callback:	function () {
 						join_cb(_.data('id'));
 						return false;
 					}
 				}, {
 					label:		'Fechar',
-					className:	'btn btn-default'
+					className:	'btn btn-sm btn-default'
 				}
 			]});
 
@@ -179,7 +179,7 @@
 		var	win	= bootbox.dialog({message: '<h3>' + I18n.t('organizations.show.reason_title') + '</h3>' + '<textarea style="width: 400px" rows="5"></textarea>', buttons: [
 			{
 				label:		I18n.t('organizations.show.refuse'),
-				className:	'btn btn-primary',
+				className:	'btn btn-sm btn-primary',
 				callback:	function () {
 					$.ajax({
 						url:		make_url('organizations#enter_refuse'),
@@ -200,7 +200,7 @@
 				}
 			}, {
 				label:		'Fechar',
-				className:	'btn btn-default'
+				className:	'btn btn-sm btn-default'
 			}
 		]});
 
@@ -212,7 +212,7 @@
 		bootbox.dialog({message: '<h3>' + I18n.t('organizations.destroy.title') + '</h3>' + I18n.t('organizations.destroy.text'), buttons: [
 			{
 				label:		I18n.t('organizations.destroy.confirm'),
-				className:	'btn btn-danger',
+				className:	'btn btn-sm btn-danger',
 				callback:	function () {
 					$.ajax({
 						url:		make_url('organizations#destroy'),
@@ -230,7 +230,7 @@
 				}
 			}, {
 				label:		'Fechar',
-				className:	'btn btn-default'
+				className:	'btn btn-sm btn-default'
 			}
 		]});
 	});
@@ -283,7 +283,7 @@
 		var	win	= bootbox.dialog({message: '<h3>' + I18n.t('organizations.show.kick_reason') + '</h3>' + '<textarea style="width: 400px" rows="5"></textarea>', buttons: [
 			{
 				label:		I18n.t('organizations.show.kick'),
-				className:	'btn btn-primary',
+				className:	'btn btn-sm btn-primary',
 				callback:	function () {
 					lock_screen(true);
 
@@ -305,7 +305,7 @@
 				}
 			}, {
 				label:		'Fechar',
-				className:	'btn btn-default'
+				className:	'btn btn-sm btn-default'
 			}
 		]});
 

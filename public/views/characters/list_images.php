@@ -4,9 +4,9 @@
 			<div class="ultimate">
 				<?php echo $image->profile_image() ?>
 				<?php if(!$image->is_buyable || $user->character_theme_image($image->id)){?>
-					<a class="ultimate-image btn btn-primary" data-id="<?php echo $image->id ?>">&nbsp;&nbsp;Escolher essa Imagem&nbsp;&nbsp;</a>
+					<a class="ultimate-image btn btn-sm btn-primary" data-id="<?php echo $image->id ?>">&nbsp;&nbsp;Escolher essa Imagem&nbsp;&nbsp;</a>
 				<?php }else{?>
-					<a class="ultimate-image btn btn-warning" data-id="<?php echo $image->id ?>">Comprar por <?php echo highamount($image->price_credits); ?> Estrela(s)</a>
+					<a class="ultimate-image btn btn-sm btn-warning" data-id="<?php echo $image->id ?>">Comprar por <?php echo highamount($image->price_credits); ?> Estrela(s)</a>
 				<?php }?>	
 			</div>
 		<?php else: ?>

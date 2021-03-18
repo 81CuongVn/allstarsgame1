@@ -7,7 +7,7 @@
 		<tr>
 			<td align="center">
 				<b><?php echo t('characters.create.labels.anime') ?></b><br />
-				<select name="anime_id" id="anime_id" class="form-control" style="width:130px">
+				<select name="anime_id" id="anime_id" class="form-control input-sm" style="width:130px">
 					<option value="0"><?=t('global.all');?></option>
 					<?php foreach ($animes as $anime): ?>
 					<option value="<?=$anime->id;?>" <?php if ($anime->id == $anime_id): ?>selected="selected"<?php endif; ?>><?=$anime->description()->name;?></option>
@@ -16,7 +16,7 @@
 			</td>
             <td align="center">
 				<b>Liga</b><br />
-				<select name="league_id" class="form-control" style="width: 80px;">
+				<select name="league_id" class="form-control input-sm" style="width: 80px;">
 					<option value="0"><?php echo t('global.all') ?></option>
 					<?php foreach ($leagues as $league): ?>
 						<option value="<?php echo $league->league ?>" <?php if ($league->league == $league_id): ?>selected="selected"<?php endif ?>><?php echo $league->league ?></option>
@@ -25,7 +25,7 @@
 			</td>
 			<td align="center">
 				<b><?php echo t('characters.select.labels.faction') ?></b><br />
-				<select name="faction_id" class="form-control" style="width: 85px;">
+				<select name="faction_id" class="form-control input-sm" style="width: 85px;">
 					<option value="0"><?php echo t('global.all') ?></option>
 					<?php foreach ($factions as $faction): ?>
 						<option value="<?=$faction->id;?>"<?php if ($faction->id == $faction_id): ?>selected="selected"<?php endif ?>><?=$faction->name;?></option>
@@ -34,7 +34,7 @@
 			</td>
 			<td align="center">
 				<b><?=t('characters.select.labels.graduation');?></b><br />
-				<select name="graduation_id" class="form-control" style="width: 130px">
+				<select name="graduation_id" class="form-control input-sm" style="width: 130px">
 					<option value="0"><?=t('global.all');?></option>
 					<?php if ($anime_id): foreach ($graduations as $graduation): ?>
 						<?php if ($anime_id): ?>
@@ -47,10 +47,10 @@
 			</td>
 			<td align="center">
 				<b><?php echo t('rankings.players.header.nome') ?></b><br />
-				<input type="text" name="name" class="form-control" value="<?=$name;?>" style="width:120px"/>
+				<input type="text" name="name" class="form-control input-sm" value="<?=$name;?>" style="width:120px"/>
 			</td>
 			<td align="center">
-				<a href="javascript:;" class="btn btn-primary filter" style="margin-top: 14px"><?=t('buttons.filtrar');?></a>
+				<a href="javascript:;" class="btn btn-sm btn-primary filter" style="margin-top: 14px"><?=t('buttons.filtrar');?></a>
 			</td>
 		</tr>
 	</table>

@@ -7,7 +7,7 @@
 		<tr>
 			<td width="205" align="center">
 				<b><?php echo t('characters.select.labels.faction') ?></b><br />
-				<select name="faction_id" class="form-control" style="max-width: 100px;">
+				<select name="faction_id" class="form-control input-sm" style="max-width: 100px;">
 					<option value="0"><?=t('global.all');?></option>
 					<?php foreach ($factions as $faction): ?>
 						<option value="<?=$faction->id;?>"<?php if ($faction->id == $faction_id): ?>selected="selected"<?php endif ?>><?=$faction->name;?></option>
@@ -16,10 +16,10 @@
 			</td>
 			<td width="264" align="center">
 				<b><?php echo t('rankings.players.header.nome') ?></b><br />
-				<input type="text" class="form-control" name="name" value="<?php echo $name ?>" />
+				<input type="text" class="form-control input-sm" name="name" value="<?php echo $name ?>" />
 			</td>
 			<td width="256" align="center">
-				<a href="javascript:;" class="btn btn-primary filter" style="margin-top: 14px"><?php echo t('buttons.filtrar') ?></a>
+				<a href="javascript:;" class="btn btn-sm btn-primary filter" style="margin-top: 14px"><?php echo t('buttons.filtrar') ?></a>
 			</td>
 		</tr>
 	</table>

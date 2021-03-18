@@ -7,11 +7,11 @@
 	<div style="width:242px; height:310px; float: left; text-align: center">
 		<?php if(!isset($npc)){?>
 			<img src="<?php echo image_url('profile/unknown.jpg') ?>"/>
-			<a style="position:relative; top: -35px" class="btn btn-danger"><?php echo t('map.nenhum_npc');?></a>
+			<a style="position:relative; top: -35px" class="btn btn-sm btn-danger"><?php echo t('map.nenhum_npc');?></a>
 		<?php }else{?>
 			<?php echo $npc->profile_image() ?>
 			<div align="center" class="nome-personagem"><?php echo $npc->name ?></div>
-			<a style="position:relative; top: -22px" class="btn btn-success" id="btn-enter-npc-battle" data-type="6"><?php echo t('map.lutar');?></a>
+			<a style="position:relative; top: -22px" class="btn btn-sm btn-success" id="btn-enter-npc-battle" data-type="6"><?php echo t('map.lutar');?></a>
 		<?php }?>	
 	</div>
 	<div class="bg_menu_esquerdo">

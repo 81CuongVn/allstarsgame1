@@ -64,7 +64,7 @@ $(function () {
 			<div align="center">
 				<p align="center"><?php echo t('enchant.custo')?></p>
 				<img src="<?php echo image_url("icons/for_stamina.png")?>" />
-				<select name="sltTreinoStamina" id="sltTreinoStamina" class="form-control" style="width: auto; display: inline-block;">
+				<select name="sltTreinoStamina" id="sltTreinoStamina" class="form-control input-sm" style="width: auto; display: inline-block;">
 					<option value="1">1</option>
 					<option value="2">2</option>
 					<option value="3">3</option>
@@ -79,7 +79,7 @@ $(function () {
 			</div>
 		</div>
 		<div style="float:left">
-			<a class="btn btn-primary filter" style="margin-top: 14px"><?php echo t('enchant.treinar')?></a>
+			<a class="btn btn-sm btn-primary filter" style="margin-top: 14px"><?php echo t('enchant.treinar')?></a>
 		</div>
 	</form>
 </div>
@@ -95,7 +95,7 @@ $(function () {
 				<?php echo exp_bar($player->enchant_points_total.'/50000', 50000, 350);?><br />
 				<?php $total_gem = floor($player->enchant_points_total / 2000);?>
 				<p class="laranja">
-					<?php echo $total_gem >=1 ? t('enchant.frase1')." ". $total_gem . " " . t('enchant.frase2'). " <a class='btn btn-success create_gem'>".t('enchant.criar')."</a>" : t('enchant.frase3')?><br />
+					<?php echo $total_gem >=1 ? t('enchant.frase1')." ". $total_gem . " " . t('enchant.frase2'). " <a class='btn btn-sm btn-success create_gem'>".t('enchant.criar')."</a>" : t('enchant.frase3')?><br />
 				</p>
 				<?php if(isset($_GET['joia']) && $_GET['joia']){?>
 					<div style="position: absolute; float: right; right: 61px; top: 72px;">
@@ -226,9 +226,9 @@ $(function () {
 				</div>
 				<?php $result = $player->valid_gem_combination($item_equipped->id, $combination, $counter);?>
 					<?php if(!sizeof($result) && $verification && !$enchanted){?>
-						<a class="btn btn-primary enchant_item_gem button_enchant<?php echo $counter?>" data-counter="<?php echo $counter?>" data-enchanted="<?php echo $item_equipped->id?>" data-item="<?php echo $item_enchanted->id?>"><?php echo t('enchant.encantar')?></a>
+						<a class="btn btn-sm btn-primary enchant_item_gem button_enchant<?php echo $counter?>" data-counter="<?php echo $counter?>" data-enchanted="<?php echo $item_equipped->id?>" data-item="<?php echo $item_enchanted->id?>"><?php echo t('enchant.encantar')?></a>
 					<?php }elseif($enchanted && !sizeof($result) && $verification){ ?>
-						<a class="btn btn-success button_enchant<?php echo $counter?>"><?php echo t('enchant.encantado')?></a>
+						<a class="btn btn-sm btn-success button_enchant<?php echo $counter?>"><?php echo t('enchant.encantado')?></a>
 					<?php }?>
 			</div>
 		<?php 

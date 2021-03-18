@@ -49,14 +49,14 @@ $(function () {
 			Escolha o tempo que quer deixar treinando automático, esse recurso pode ser usado sempre que você quiser.
 		</td>
 		<td align="center" width="250">
-			<select class="form-control" style="width: auto">
+			<select class="form-control input-sm" style="width: auto">
 				<option value="1">Treinar por 30 Minutos</option>
 				<option value="2">Treinar por 30 Minutos</option>
 				<option value="3">Treinar por 30 Minutos</option>
 			</select>
 		</td>
 		<td align="center" width="150">
-			<a class="btn btn-primary train"><?php echo t('attributes.attributes.train') ?></a>
+			<a class="btn btn-sm btn-primary train"><?php echo t('attributes.attributes.train') ?></a>
 		</td>
 	</tr>
 </table>

@@ -18,7 +18,7 @@
 	<div class="form-group">
 		<label class="col-sm-2 control-label"><?php echo t('support.open.form.category') ?></label>
 		<div class="col-sm-10">
-			<select class="form-control" name="category">
+			<select class="form-control input-sm" name="category">
 				<?php foreach ($categories as $c): ?>
 					<option value="<?php echo $c->id ?>" <?php echo $c->id == $category ? ' selected="selected"' : '' ?>><?php echo $c->name ?></option>
 				<?php endforeach ?>
@@ -28,13 +28,13 @@
 	<div class="form-group">
 		<label class="col-sm-2 control-label"><?php echo t('support.open.form.title') ?></label>
 		<div class="col-sm-10">
-			<input type="text" name="title" value="<?php echo $title ?>" class="form-control" />
+			<input type="text" name="title" value="<?php echo $title ?>" class="form-control input-sm" />
 		</div>
 	</div>
 	<div class="form-group">
 		<label class="col-sm-2 control-label"><?php echo t('support.open.form.browser') ?></label>
 		<div class="col-sm-10">
-			<input type="text" class="form-control" name="browser" disabled="disabled" />
+			<input type="text" class="form-control input-sm" name="browser" disabled="disabled" />
 			<label class="checkbox">
 				<input type="checkbox" name="same_browser" checked="checked" value="1" />
 				<?php echo t('support.open.form.same_browser') ?>
@@ -45,7 +45,7 @@
 		<label class="control-label col-md-offset-1 col-md-10" style="text-align: left"><?php echo t('support.open.form.description') ?></label>
 		<br /><br />
 		<div class="col-md-offset-1 col-md-10">
-			<textarea name="description" class="form-control" rows="15"><?php echo $description ?></textarea>
+			<textarea name="description" class="form-control input-sm" rows="15"><?php echo $description ?></textarea>
 		</div>
 	</div>
 	<hr />
@@ -70,6 +70,6 @@
 		</div>
 	</div>
 	<br />
-	<div align="center"><input type="submit" class="btn btn-primary" value="<?php echo t('support.open.open') ?>"/></div>
+	<div align="center"><input type="submit" class="btn btn-sm btn-primary" value="<?php echo t('support.open.open') ?>"/></div>
 	<div class="clearfix"></div>
 </form>

@@ -5,18 +5,18 @@
 	<div class="form-group">
 		<label class="col-sm-2"><?php echo t('users.password_reset.password') ?></label>
 		<div class="col-sm-10">
-			<input type="password" name="password" class="form-control" />
+			<input type="password" name="password" class="form-control input-sm" />
 		</div>
 	</div>
 	<div class="form-group">
 		<label class="col-sm-2"><?php echo t('users.password_reset.password_confirmation') ?></label>
 		<div class="col-sm-10">
-			<input type="password" name="password_confirmation" class="form-control" />
+			<input type="password" name="password_confirmation" class="form-control input-sm" />
 		</div>
 	</div>
 	<div class="form-group">
 		<div class="col-sm-10 col-sm-offset-2">
-			<input type="submit" value="<?php echo t('users.password_reset.reset_finish') ?>" class="btn btn-primary" />
+			<input type="submit" value="<?php echo t('users.password_reset.reset_finish') ?>" class="btn btn-sm btn-primary" />
 		</div>
 	</div>
 </form>

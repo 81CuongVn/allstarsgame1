@@ -24,14 +24,14 @@
 				<?php $map_anime->set_player($player) ?>
 				<?php if(!$player->map_id):?>
 					<?php if(sizeof($map_anime->limit_by_day($map_anime->anime_id)) < 1):?>
-						<a class="btn btn-primary unlock" style="width:160px; position: relative; top: 5px;" data-id="<?php echo $map_anime->id?>" data-mode="1">5 Passos gratuitos</a>
-						<a class="btn btn-warning unlock" style="width:160px; position: relative; top: 10px;" data-id="<?php echo $map_anime->id?>" data-mode="2">10 Passos por <?php echo highamount($map_anime->currency_cost); ?> <?php echo t('currencies.' . $player->character()->anime_id)?></a>
-						<a class="btn btn-success unlock" style="width:160px; position: relative; top: 15px;" data-id="<?php echo $map_anime->id?>" data-mode="3">15 Passos por <?php echo highamount($map_anime->credits_cost); ?> <?php echo t('currencies.credits')?></a>
+						<a class="btn btn-sm btn-primary unlock" style="width:160px; position: relative; top: 5px;" data-id="<?php echo $map_anime->id?>" data-mode="1">5 Passos gratuitos</a>
+						<a class="btn btn-sm btn-warning unlock" style="width:160px; position: relative; top: 10px;" data-id="<?php echo $map_anime->id?>" data-mode="2">10 Passos por <?php echo highamount($map_anime->currency_cost); ?> <?php echo t('currencies.' . $player->character()->anime_id)?></a>
+						<a class="btn btn-sm btn-success unlock" style="width:160px; position: relative; top: 15px;" data-id="<?php echo $map_anime->id?>" data-mode="3">15 Passos por <?php echo highamount($map_anime->credits_cost); ?> <?php echo t('currencies.credits')?></a>
 					<?php else: ?>
-						<a class="btn btn-danger"><?php echo t('friends.f26')?></a>
+						<a class="btn btn-sm btn-danger"><?php echo t('friends.f26')?></a>
 					<?php endif ?>			
 				<?php else: ?>
-					<a class="btn btn-danger"><?php echo t('challenges.challenge_active_error') ?></a>
+					<a class="btn btn-sm btn-danger"><?php echo t('challenges.challenge_active_error') ?></a>
 				<?php endif ?>			
 			</div>
 		</div>

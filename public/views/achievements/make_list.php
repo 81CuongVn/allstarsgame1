@@ -34,7 +34,7 @@
 				</span>
 				<span style="top:5px; position: relative">
 					<?php 
-						if($on_off=="on"){
+						if ($on_off == "on") {
 							$timestamp = strtotime($player_achievement->created_at);
 							echo date('d/m/Y H:i:s', $timestamp);
 						}
@@ -49,6 +49,7 @@
 					<div class="status-popover-content">
 						<?php echo $achievement->description()->description;?>
 						<?php 
+						if ($on_off != "on") {
 							//Barrinhas de Progresso dos Amigos
 							if($achievement->friends > 1){
 								$player_friends = Recordset::query("select count(id) as total from player_friend_lists WHERE  player_id=".$player->id)->result_array();
@@ -314,6 +315,7 @@
 								}
 							}
 							//Barrinhas de Progresso de Batalha PVP
+						}
 						?>
 					</div>
 				</div>	
@@ -330,19 +332,19 @@
 						<?php if($rewards){?>
 							<ul>
 								<?php if($rewards->exp){?>
-									<li><?php echo $rewards->exp ?> <?php echo t('ranked.exp');?></li><br />
+									<li><?php echo highamount($rewards->exp); ?> <?php echo t('ranked.exp');?></li><br />
 								<?php }?>
 								<?php if($rewards->exp_user){?>
-									<li><?php echo $rewards->exp_user ?> <?php echo t('ranked.exp_account');?></li><br />
+									<li><?php echo highamount($rewards->exp_user); ?> <?php echo t('ranked.exp_account');?></li><br />
 								<?php }?>
 								<?php if($rewards->currency){?>
-									<li><?php echo $rewards->currency ?> <?php echo t('currencies.' . $player->character()->anime_id) ?></li><br />
+									<li><?php echo highamount($rewards->currency); ?> <?php echo t('currencies.' . $player->character()->anime_id) ?></li><br />
 								<?php }?>	
 								<?php if($rewards->credits){?>
-									<li><?php echo $rewards->credits ?> <?php echo t('treasure.show.credits')?></li><br />
+									<li><?php echo highamount($rewards->credits); ?> <?php echo t('treasure.show.credits')?></li><br />
 								<?php }?>	
 								<?php if($rewards->item_id){?>
-									<li><?php echo $rewards->quantity?>x "<?php echo Item::find($rewards->item_id)->description()->name ?>"</li><br />
+									<li><?php echo highamount($rewards->quantity);?>x "<?php echo Item::find($rewards->item_id)->description()->name ?>"</li><br />
 								<?php }?>
 								<?php if($rewards->character_theme_id){?>
 									<li><?php echo t('treasure.show.theme')?> "<?php echo CharacterTheme::find($rewards->character_theme_id)->description()->name ?>"</li><br />
@@ -369,10 +371,10 @@
 		</div>
 		<div class="a-point">
 			<div class="<?php echo $on_off?> requirement-popover" data-source="#tooltip-point-<?php echo $achievement->id?>" data-title="Pontos de Conquista" data-trigger="hover" data-placement="bottom">
-				<span class="a-point-<?php echo $on_off?>"><?php echo $achievement->points?></span>
+				<span class="a-point-<?php echo $on_off?>"><?php echo highamount($achievement->points); ?></span>
 				<div id="tooltip-point-<?php echo $achievement->id?>" class="status-popover-container">
 					<div class="status-popover-content">
-						Ao concluir essa conquista você ganhará <?php echo $achievement->points?> pontos de conquista
+						Ao concluir essa conquista você ganhará <?php echo highamount($achievement->points); ?> pontos de conquista
 					</div>
 				</div>	
 			</div>

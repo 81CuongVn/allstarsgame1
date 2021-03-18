@@ -23,7 +23,7 @@
 		</div>	
 	</div>
 	<div class="type-reward" style="left: 285px;">
-		<select name="type_reward" id="type_reward" class="form-control" style="width: auto">
+		<select name="type_reward" id="type_reward" class="form-control input-sm" style="width: auto">
 			<option value="character">Personagem</option>
 			<option value="character_theme">Tema de Personagem</option>
 		</select>

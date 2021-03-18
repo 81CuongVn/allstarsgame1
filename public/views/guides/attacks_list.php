@@ -70,35 +70,35 @@
 				<?php if ($theme->price_credits || $theme->price_currency): ?>
 					<?php if ($theme->price_credits): ?>
 						<?php if ($user->credits >= $theme->price_credits): ?>
-							<a href="javascript:;" class="btn btn-warning buy-theme" data-mode="1" data-theme="<?php echo $theme->id ?>"><?php echo t('characters.themes.buy_credits', array('price' => $theme->price_credits)) ?></a>
+							<a href="javascript:;" class="btn btn-sm btn-warning buy-theme" data-mode="1" data-theme="<?php echo $theme->id ?>"><?php echo t('characters.themes.buy_credits', array('price' => $theme->price_credits)) ?></a>
 						<?php else: ?>
-							<a href="javascript:;" class="btn btn-warning disabled"><?php echo t('characters.themes.buy_credits', array('price' => highamount($theme->price_credits))) ?></a>
+							<a href="javascript:;" class="btn btn-sm btn-warning disabled"><?php echo t('characters.themes.buy_credits', array('price' => highamount($theme->price_credits))) ?></a>
 						<?php endif ?>
 					<?php endif; ?>
 					<?php if ($theme->price_currency): ?>
 						<?php if ($player->currency >= $theme->price_currency): ?>
-							<a href="javascript:;" class="btn btn-warning buy-theme" data-mode="2" data-theme="<?php echo $theme->id ?>">
+							<a href="javascript:;" class="btn btn-sm btn-warning buy-theme" data-mode="2" data-theme="<?php echo $theme->id ?>">
 								<?php echo t('characters.themes.buy_currency', array('price' => highamount($theme->price_currency), 'currency' => t('currencies.' . $player->character()->anime_id))) ?>
 							</a>
 						<?php else: ?>
-							<a href="javascript:;" class="btn btn-warning disabled">
+							<a href="javascript:;" class="btn btn-sm btn-warning disabled">
 								<?php echo t('characters.themes.buy_currency', array('price' => highamount($theme->price_currency), 'currency' => t('currencies.' . $player->character()->anime_id))) ?>
 							</a>
 						<?php endif ?>
 					<?php endif ?>
 				<?php else: ?>
-					<a href="javascript:;" class="btn btn-warning buy-theme" data-theme="<?php echo $theme->id ?>"><?php echo t('characters.themes.buy_free') ?></a>
+					<a href="javascript:;" class="btn btn-sm btn-warning buy-theme" data-theme="<?php echo $theme->id ?>"><?php echo t('characters.themes.buy_free') ?></a>
 				<?php endif ?>
 			<?php else: ?>
-				<a href="javascript:;" class="btn btn-warning disabled"><?php echo t('characters.themes.already_bought') ?></a>
+				<a href="javascript:;" class="btn btn-sm btn-warning disabled"><?php echo t('characters.themes.already_bought') ?></a>
 			<?php endif ?>
 	<?php else: ?>
 		<?php if (!$theme->is_default && $theme->reward_lock && !$theme->map_lock){ 
 			$subgroup = HistoryModeSubgroup::find_first('reward_character_theme_id='. $theme->id)->description()->name;
 		?>
-			<a href="javascript:;" class="btn btn-warning disabled"><?php echo t('characters.themes.liberado') ?></a>
+			<a href="javascript:;" class="btn btn-sm btn-warning disabled"><?php echo t('characters.themes.liberado') ?></a>
 		<?php }elseif(!$theme->is_default && !$theme->reward_lock && $theme->map_lock){?>				
-			<a href="javascript:;" class="btn btn-warning disabled"><?php echo t('characters.themes.liberado2') ?></a>
+			<a href="javascript:;" class="btn btn-sm btn-warning disabled"><?php echo t('characters.themes.liberado2') ?></a>
 		<?php } ?>
 	<?php endif ?>
 <?php endif ?>

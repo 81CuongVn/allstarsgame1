@@ -63,7 +63,7 @@
             var d	= $(document.createElement('DIV')).addClass('screen-lock');
             var dd	= $(document.createElement('DIV')).addClass('screen-lock-text');
 
-            dd.html('<span class="glyphicon glyphicon-refresh"></span>&nbsp;Aguarde...');
+            dd.html('<i class="fa fa-spinner fa-pulse fa-fw"></i> Aguarde...');
 
             $(document.body).append(d, dd).css('overflow', 'hidden');
 
@@ -94,7 +94,7 @@
             errors.push('<li>&bull; ' + error + '</li>');
         });
 
-        $('.bootbox-body', win).html('<h3>Os seguintes erros impediram de salvar os dados atuais:</h3><ul>' + errors.join('') + '</ul>')
+        $('.bootbox-body', win).html('<h4>Os seguintes erros impediram de salvar os dados atuais:</h4><ul>' + errors.join('') + '</ul>')
         $('.modal-body', win).css('border-top', 'solid 6px #F00');
     };
 

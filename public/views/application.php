@@ -56,8 +56,8 @@ if ($_SESSION['user_id']) {
 	<meta property="fb:app_id" content="<?=FB_APP_ID;?>" />
 
 	<!-- CSS -->
-	<link rel="stylesheet" type="text/css" href="<?=asset_url('css/bootstrap.css');?>" />
-	<link rel="stylesheet" type="text/css" href="<?=asset_url('css/tipped.css');?>" />
+	<link rel="stylesheet" type="text/css" href="<?=asset_url('css/bootstrap.min.css');?>" />
+	<link rel="stylesheet" type="text/css" href="<?=asset_url('css/bootstrap-theme.css');?>" />
 	<link rel="stylesheet" type="text/css" href="<?=asset_url('css/layout.css');?>" />
 	<link rel="stylesheet" type="text/css" href="<?=asset_url('css/characters.css');?>" />
 	<link rel="stylesheet" type="text/css" href="<?=asset_url('css/tutorial.css');?>" />
@@ -73,7 +73,6 @@ if ($_SESSION['user_id']) {
 	<script type="text/javascript" src="<?=asset_url('js/jquery.ui.touch-punch.min.js');?>"></script>
 	<script type="text/javascript" src="<?=asset_url('js/jquery.devrama.slider.js');?>"></script>
 	<script type="text/javascript" src="<?=asset_url('js/jquery.cookie.js');?>"></script>
-	<script type="text/javascript" src="<?=asset_url('js/tipped.js');?>"></script>
     <script type="text/javascript" src="<?=asset_url('js/i18n.js');?>"></script>
     <script type="text/javascript" src="<?=asset_url('js/socket.io.js');?>"></script>
 	<script type="text/javascript">
@@ -155,7 +154,7 @@ if ($_SESSION['user_id']) {
 							<div class="item-vip-list">
 								<form id="vip-form-431" onsubmit="return false">
 									<input type="hidden" name="id" value="431" />
-									<button type="button" class="btn btn-primary btn-block buy" data-id="431" style="margin-bottom: 5px;">
+									<button type="button" class="btn btn-primary btn-sm btn-block buy" data-id="431" style="margin-bottom: 5px;">
 										<?=t('vips.restore_energy', [
 											'amount'	=> 50,
 											'price'		=> highamount(2000),
@@ -165,7 +164,7 @@ if ($_SESSION['user_id']) {
 								</form>	
 								<form id="vip-form-432" onsubmit="return false">
 									<input type="hidden" name="id" value="432" />
-									<button type="button" class="btn btn-primary btn-block buy" data-id="432" style="margin-bottom: 5px;">
+									<button type="button" class="btn btn-primary btn-sm btn-block buy" data-id="432">
 										<?=t('vips.restore_energy', [
 											'amount'	=> 100,
 											'price'		=> highamount(1),
@@ -186,7 +185,7 @@ if ($_SESSION['user_id']) {
 					<div id="tooltip-relogio" class="status-popover-container">
 						<div class="status-popover-content">
 							<?=t('popovers.description.routines', [
-									'mana' => t('formula.for_mana.' . $player->character_theme()->anime()->id)
+								'mana' => t('formula.for_mana.' . $player->character_theme()->anime()->id)
 							]);?>
 						</div>
 					</div>
@@ -301,9 +300,9 @@ if ($_SESSION['user_id']) {
 											<input type="text" name="captcha" class="in-codigo" placeholder="Digite o Código" />
 											<img class="in-captcha" src="<?=make_url('captcha#login');?>" alt="Captcha Code" />
 											<div style="position: relative; left: -8px; margin-top: -4px">
-												<a href="<?=make_url('users/reset_password');?>"><img src="<?=image_url('buttons/bt-senha.png');?>" data-toggle="tooltip" title="<div style='width: 120px; padding: 5px;'>Esqueci minha Senha</div>" /></a>
+												<a href="<?=make_url('users/reset_password');?>"><img src="<?=image_url('buttons/bt-senha.png');?>" data-toggle="tooltip" title="<?=make_tooltip('Esqueci minha Senha', 125);?>" /></a>
 												<input class="play-button" type="image" src="<?=image_url('buttons/bt-jogar.png');?>" width="37" height="23" />
-												<a href="<?=$fb_url;?>"><img src="<?=image_url('buttons/bt-face.png');?>" data-toggle="tooltip" title="<div style='width: 120px; padding: 5px;'>Entrar com Facebook</div>" /></a>
+												<a href="<?=$fb_url;?>"><img src="<?=image_url('buttons/bt-face.png');?>" data-toggle="tooltip" title="<?=make_tooltip('Entrar com Facebook', 125);?>" /></a>
 											</div>
 										</form>
 									</div>
@@ -373,7 +372,7 @@ if ($_SESSION['user_id']) {
 	<?php echo partial('shared/chat', ['player' => $player]); ?>
 	<script type="text/javascript" src="<?=asset_url('js/highlights.js');?>"></script>
 <?php } ?>
-<script type="text/javascript" src="<?=asset_url('js/bootstrap.js');?>"></script>
+<script type="text/javascript" src="<?=asset_url('js/bootstrap.min.js');?>"></script>
 <script type="text/javascript" src="<?=asset_url('js/tutorial.js');?>"></script>
 <script type="text/javascript" src="<?=asset_url('js/typeahead.js');?>"></script>
 <script type="text/javascript" src="<?=asset_url('js/bootbox.js');?>"></script>

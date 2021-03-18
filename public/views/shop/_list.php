@@ -66,9 +66,9 @@
 			</td>
 			<td width="100" align="center">
 				<?php if (!$has_requirement): ?>
-					<a class="btn btn-primary disabled"><?php echo t('shop.buy') ?></a>
+					<a class="btn btn-sm btn-primary disabled"><?php echo t('shop.buy') ?></a>
 				<?php else: ?>
-					<a class="btn btn-primary buy" data-item="<?php echo $item->id ?>"><?php echo t('shop.buy') ?></a>
+					<a class="btn btn-sm btn-primary buy" data-item="<?php echo $item->id ?>"><?php echo t('shop.buy') ?></a>
 				<?php endif; ?>
 			</td>
 		</tr>

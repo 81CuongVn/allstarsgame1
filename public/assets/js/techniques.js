@@ -41,7 +41,7 @@
 			message: '...',
 			buttons: [{
 				label: 'Fechar',
-				class: 'btn btn-default'
+				class: 'btn btn-sm btn-default'
 			}]
 		});
 
@@ -405,7 +405,7 @@
 			message: '...',
 			buttons: [{
 				label: 'Fechar',
-				class: 'btn btn-default'
+				class: 'btn btn-sm btn-default'
 			}]
 		});
 
@@ -457,7 +457,7 @@
 		if (!element.hasClass('disabled') && !element.hasClass('active'))
 			buttons.push({
 				label: I18n.t('abilities.show.learn'),
-				className: 'btn btn-primary',
+				className: ' btn-sm btn-primary',
 				callback: function() {
 					equip_ability_speciality(element);
 					return false;
@@ -466,14 +466,14 @@
 
 		buttons.push({
 			label: I18n.t('abilities.show.modify'),
-			className: 'btn btn-danger',
+			className: 'btn btn-sm btn-danger',
 			callback: function() {
 				modify_ability_speciality(element);
 				return false;
 			}
 		}, {
 			label: I18n.t('global.close'),
-			className: 'btn'
+			className: 'btn btn-sm'
 		});
 		
 		bootbox.dialog({

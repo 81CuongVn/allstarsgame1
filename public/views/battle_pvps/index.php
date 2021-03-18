@@ -44,9 +44,9 @@ $(function () {
 				<?=t('battles.pvp.m1_message');?>
 				<br /><br /> 
 				<?php if ($player->is_pvp_queued) { ?>
-					<a href="javascript:;" id="1x-queue-data" class="btn btn-danger"><?=t('battles.sair_fila');?></a>
+					<a href="javascript:;" id="1x-queue-data" class="btn btn-danger btn-lg"><?=t('battles.sair_fila');?></a>
 				<?php } else { ?>
-					<a id="battle-pvp-enter-queue" href="javascript:void(0);" class="btn btn-primary"><?=t('battles.ir_fila');?></a>
+					<a id="battle-pvp-enter-queue" href="javascript:void(0);" class="btn btn-primary btn-lg"><?=t('battles.ir_fila');?></a>
 				<?php } ?>
 			</div>
 		</div>

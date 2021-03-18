@@ -35,9 +35,9 @@
 							$request	= PlayerFriendRequest::find_first('player_id=' . $player->id . ' AND friend_id=' . $p->id);
 						?>
 						<?php if(!$request){?>
-							<a class="btn btn-primary send" data-id="<?php echo $p->id ?>">Enviar pedido de amizade</a>
+							<a class="btn btn-sm btn-primary send" data-id="<?php echo $p->id ?>">Enviar pedido de amizade</a>
 						<?php }else{?>
-							<a class="btn btn-primary disabled">Solicitação enviada</a>
+							<a class="btn btn-sm btn-primary disabled">Solicitação enviada</a>
 						<?php }?>
 							
 					</td>
@@ -70,14 +70,14 @@
 				</td>
 				<td width="200" align="center">
 				<td width="200" align="center">
-					<a class="btn btn-success accept" data-id="<?php echo $instance->id ?>"><?php echo t('organizations.show.accept') ?></a>
-					<a class="btn btn-danger refuse" data-id="<?php echo $instance->id ?>"><?php echo t('organizations.show.refuse') ?></a>
+					<a class="btn btn-sm btn-success accept" data-id="<?php echo $instance->id ?>"><?php echo t('organizations.show.accept') ?></a>
+					<a class="btn btn-sm btn-danger refuse" data-id="<?php echo $instance->id ?>"><?php echo t('organizations.show.refuse') ?></a>
 				</td>
 			</tr>
 			<tr height="4"></tr>
 		<?php } endforeach ?>
 		</table>
-		<div align="center" style="padding-top: 10px"><a class="btn btn-danger remove_all" data-message="<?php echo t('organizations.remove_all')?>"><?php echo t('buttons.remover_all')?></a></div>
+		<div align="center" style="padding-top: 10px"><a class="btn btn-sm btn-danger remove_all" data-message="<?php echo t('organizations.remove_all')?>"><?php echo t('buttons.remover_all')?></a></div>
 	<?php else: ?>
 		<div align="center" style="padding-top: 10px"><b class="laranja" style="font-size:14px;"><?php echo t('friends.nothing2') ?></b></div>
 	<?php endif ?>    

@@ -14,7 +14,7 @@
 	margin-left: -165px;
 	text-align: left;
 }
-#inventory-container h3 {
+#inventory-container h5 {
 	text-align: left;
 	margin-top: 0;
 	margin-bottom: 5px;
@@ -32,8 +32,14 @@
 	display: inline-block;
 	margin: -1px;
 }
-
-#inventory-container .quantity, #technique-list .quantity {
+.popover-content div.inventory-popover {
+	min-width: 300px;
+}
+.inventory-popover table img {
+	margin: 0!important;
+}
+#inventory-container .quantity,
+#technique-list .quantity {
 	background-color: rgba(0, 0, 0, 0.75);
 	color: #FFF;
 	position: absolute;

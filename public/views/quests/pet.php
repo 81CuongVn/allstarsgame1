@@ -155,12 +155,12 @@ echo partial('shared/info', [
 					}
 					?>
 					<?php if (!$quest->completed && $completed && !$quest->finish_at && !$quest->completed): ?>
-						<a href="javascript:;" class="accept btn btn-primary" data-id="<?php echo $quest->pet_quest_id ?>"><?php echo t('quests.accept') ?></a>
+						<a href="javascript:;" class="accept btn btn-sm btn-primary" data-id="<?php echo $quest->pet_quest_id ?>"><?php echo t('quests.accept') ?></a>
 					<?php else: ?>
 						<?php if($can_finish){?>
-							<a href="javascript:;" class="btn btn-success pet-quest-finish" data-id="<?php echo $quest->pet_quest_id ?>"><?php echo t('quests.finish') ?></a>
+							<a href="javascript:;" class="btn btn-sm btn-success pet-quest-finish" data-id="<?php echo $quest->pet_quest_id ?>"><?php echo t('quests.finish') ?></a>
 						<?php }else{?>
-							<a href="javascript:;" class="disabled btn btn-danger" data-id="<?php echo $quest->pet_quest_id ?>"><?php echo t('quests.accept') ?></a>
+							<a href="javascript:;" class="disabled btn btn-sm btn-danger" data-id="<?php echo $quest->pet_quest_id ?>"><?php echo t('quests.accept') ?></a>
 						<?php }?>
 
 					<?php endif ?>

@@ -25,22 +25,22 @@
 	<tr>
 		<td width="25%" align="center"><div  style="position: relative;  left: 14px;  top: 53px;  background-color: #000;  width: 21px;  text-align: center;"><?php echo $item_1719 ? $item_1719->quantity : 0?></div>
 			<img src="<?php echo image_url("items/areia.png") ?>" /><br />
-			<a class="btn btn-primary upgrade" data-id="<?php echo $equipment->id ?>" data-method="1719">Aprimorar:<br />
+			<a class="btn btn-sm btn-primary upgrade" data-id="<?php echo $equipment->id ?>" data-method="1719">Aprimorar:<br />
 			1x Areia Estelar</a></td>
 		<td width="25%" align="center"><div  style="position: relative;  left: 14px;  top: 53px;  background-color: #000;  width: 21px;  text-align: center;"><?php echo $item_1720 ? $item_1720->quantity : 0?></div>
 			<img src="<?php echo image_url("items/sangue.png") ?>" /><br />
-			<a class="btn btn-primary upgrade" data-id="<?php echo $equipment->id ?>" data-method="1720">Aprimorar:<br />
+			<a class="btn btn-sm btn-primary upgrade" data-id="<?php echo $equipment->id ?>" data-method="1720">Aprimorar:<br />
 			1x Sangue de Deus</a></td>
 		<td width="25%" align="center">
 			<div  style="position: relative;  left: 14px;  top: 53px;  background-color: #000;  width: 21px;  text-align: center;"><?php echo $item_1852 ? $item_1852->quantity : 0?></div>
 			<img src="<?php echo image_url("items/gema_comum.png") ?>" /><br />
-			<a class="btn btn-primary upgrade" data-id="<?php echo $equipment->id ?>" data-method="1852">Aprimorar:<br />
+			<a class="btn btn-sm btn-primary upgrade" data-id="<?php echo $equipment->id ?>" data-method="1852">Aprimorar:<br />
 			1x Gema Rara</a>
 		</td>
 		<td width="25%" align="center">
 			<div  style="position: relative;  left: 14px;  top: 53px;  background-color: #000;  width: 21px;  text-align: center;"><?php echo $item_1853 ? $item_1853->quantity : 0?></div>
 			<img src="<?php echo image_url("items/gema_comum.png") ?>" /><br />
-			<a class="btn btn-primary upgrade" data-id="<?php echo $equipment->id ?>" data-method="1853">Aprimorar:<br />
+			<a class="btn btn-sm btn-primary upgrade" data-id="<?php echo $equipment->id ?>" data-method="1853">Aprimorar:<br />
 			1x Gema Lendária</a>
 		</td>
 	</tr>

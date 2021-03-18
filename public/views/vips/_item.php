@@ -39,7 +39,7 @@
 					?>
 				</span>
 				<?php if ($item->id == 429): ?>
-					<select name="character_id" class="form-control" style="width:140px">
+					<select name="character_id" class="form-control input-sm" style="width:140px">
 						<?php foreach ($animes as $anime): ?>
 							<optgroup label="<?php echo $anime->description()->name ?>">
 							<?php foreach ($anime->characters($_SESSION['universal'] ? '' : ' AND active=1') as $character): ?>
@@ -52,7 +52,7 @@
 				<?php endif ?>
 				<?php if ($item->id == 1864): ?>
 					<?php if($player_vip_items):?>
-					<select name="character_id" class="form-control" style="width:140px">
+					<select name="character_id" class="form-control input-sm" style="width:140px">
 						<?php foreach ($player_vip_items as $player_vip_item): ?>
 							<?php $character = $player_vip_item->characters($player_vip_item->character_id); ?>
 								<?php if ($character->id == $player->character_id) { continue; } ?>
@@ -65,13 +65,13 @@
 				<?php endif ?>
 	
 				<?php if ($item->id == 430): ?>
-					<input type="text" name="name" class="form-control" style="width:140px" />
+					<input type="text" name="name" class="form-control input-sm" style="width:140px" />
 				<?php endif ?>
 				<?php if ($item->id == 1745): ?>
-					<input type="text" name="name_organization" class="form-control" style="width:140px" />
+					<input type="text" name="name_organization" class="form-control input-sm" style="width:140px" />
 				<?php endif ?>
 				<?php /*if ($item->id == 1746): ?>
-					<select name="faction" class="form-control" style="width:140px">
+					<select name="faction" class="form-control input-sm" style="width:140px">
 						<?php if($player->faction_id != 1){?>
 						<option value="1">Heroi</option>
 						<?php }else{?>
@@ -82,13 +82,13 @@
 				<?php 
 					if ($player->has_item(1715) && $item->id == 1715) {
 				?>		
-					<a class="btn btn-<?php echo $player->no_talent ? "danger":"success"?> no-talent" data-id="<?php echo $item->id ?>"><?php echo $player->no_talent ? "Desativar":"Ativar"?> ( <?php echo $item1715->quantity?> Restantes )</a>
+					<a class="btn btn-sm btn-<?php echo $player->no_talent ? "danger":"success"?> no-talent" data-id="<?php echo $item->id ?>"><?php echo $player->no_talent ? "Desativar":"Ativar"?> ( <?php echo $item1715->quantity?> Restantes )</a>
 				<?php
 					}		
 				?>			
 			</td>
 			<td width="140" align="center">
-				<a class="btn btn-primary buy" data-id="<?php echo $item->id ?>"><?php echo t("vips.buy_now") ?></a>
+				<a class="btn btn-sm btn-primary buy" data-id="<?php echo $item->id ?>"><?php echo t("vips.buy_now") ?></a>
 			</td>
 		</tr>
 		<tr height="4"></tr>	

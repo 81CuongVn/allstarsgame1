@@ -93,7 +93,7 @@
 		</div>
 		<div class="change-mission" style="margin-top: 10px">
 			<?php if(!$quest->complete && $player->id == $total_treasure->player_id){?>
-				<a data-id="<?php echo $quest->id ?>" data-quest="<?php echo $quest->daily_quest_id ?>" class="btn btn-primary organization_daily_quests_change">
+				<a data-id="<?php echo $quest->id ?>" data-quest="<?php echo $quest->daily_quest_id ?>" class="btn btn-sm btn-primary organization_daily_quests_change">
 					<?php 
 						if($buy_mode_change){
 							if($buy_mode_change->weekly == 0){
@@ -133,6 +133,6 @@
 	if(sizeof($quests) && $can_accept){
 ?>	
 <div class="clearfix" align="center" style="position:relative; top:10px;">
-	<a id="organization_daily_quests_finish" class="btn btn-primary"><?php echo t('quests.daily.finish') ?></a>
+	<a id="organization_daily_quests_finish" class="btn btn-sm btn-primary"><?php echo t('quests.daily.finish') ?></a>
 </div>					
 <?php } ?>

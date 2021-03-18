@@ -390,8 +390,8 @@
 			$user = $player->user();
 			$ok				= true;
 			$log			= '<ul class="requirement-list">';
-			$error			= '<li class="error"><span class="glyphicon glyphicon-remove"></span> %result</li>';
-			$success		= '<li class="success"><span class="glyphicon glyphicon-ok"></span> %result</li>';
+			$error			= '<li class="error"><i class="fa fa-times fa-fw"></i> %result</li>';
+			$success		= '<li class="success"><i class="fa fa-ok fa-fw"></i> %result</li>';
 
 			if ($this->item_type_id == 6) {
 				$ok		= $this->mana_cost > $user->level ? false : $ok;

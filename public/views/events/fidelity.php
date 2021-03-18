@@ -114,11 +114,11 @@ $names	= [
 		<div class="details"></div>
 		<div class="button" style="position:relative;">
 			<?php if ($player_fidelity->day == $day+1 && $player_fidelity->reward==0 && !$active) { ?>
-				<a class="reward_fidelity btn btn-primary" data-day="<?php echo $day+1?>"><?php echo t('fidelity.buttons.available');?></a>
+				<a class="reward_fidelity btn btn-sm btn-primary" data-day="<?php echo $day+1?>"><?php echo t('fidelity.buttons.available');?></a>
 			<?php } elseif ($active) { ?>
-				<button class="btn btn-success btn-disabled" disabled><?php echo t('fidelity.buttons.rewarded');?></button>
+				<button class="btn btn-sm btn-success btn-disabled" disabled><?php echo t('fidelity.buttons.rewarded');?></button>
 			<?php } else { ?>
-				<button class="btn btn-danger btn-disabled" disabled><?php echo t('fidelity.buttons.unavailable');?></button>
+				<button class="btn btn-sm btn-danger btn-disabled" disabled><?php echo t('fidelity.buttons.unavailable');?></button>
 			<?php } ?>
 		</div>
 	</div>

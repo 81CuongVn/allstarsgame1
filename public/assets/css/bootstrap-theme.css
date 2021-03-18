@@ -1,0 +1,124 @@
+/* BUTTONS */
+.btn-primary:hover {
+	box-shadow: 0px 0px 6px 2px rgb(205, 255, 255), 0px 0px 15px 5px rgb(29, 102, 196);
+	border: solid 1px rgb(205, 255, 255);
+}
+.btn-success:hover {
+	box-shadow: 0px 0px 6px 2px rgb(205, 255, 255), 0px 0px 15px 5px rgb(152, 226, 152);
+	border: solid 1px rgb(205, 255, 255);
+}
+.btn-warning:hover {
+	box-shadow: 0px 0px 6px 2px rgb(205, 255, 255), 0px 0px 15px 5px rgb(252, 175, 26);
+	border: solid 1px rgb(205, 255, 255);
+}
+
+.btn-danger:hover {
+	box-shadow: 0px 0px 6px 2px rgb(255, 28, 28), 0px 0px 15px 5px rgb(255, 140, 1140);
+	border: solid 1px rgb(149, 53, 55);
+}
+
+/* POPOVER */
+.popover {
+	color: #FFF;
+	border: none;
+	background-color: transparent;
+	padding: 0px;
+	max-width: 550px;
+	font-size: unset;
+}
+
+.popover.top .arrow:after {
+    border-top-color: rgba(0, 0, 0, 0.95) !important;
+}
+.popover.bottom .arrow:after {
+    border-bottom-color: rgba(0, 0, 0, 0.95) !important;
+}
+.popover.left .arrow:after {
+	border-left-color: rgba(0, 0, 0, 0.95) !important;
+}
+.popover.right .arrow:after {
+	border-right-color: rgba(0, 0, 0, 0.95) !important;
+}
+.popover-title {
+	background-color: rgba(0, 0, 0, .95);
+	border-bottom: 1px solid rgba(235, 235, 235, .1);
+}
+.popover-content,
+.popover-navigation {
+	background-color: rgba(0,0,0,.9);
+	border-radius: 0 0 5px 5px;
+	padding: 9px 14px
+}
+.popover .error i.fa,
+.popover .error i.glyphicon {
+	color: #961212;
+	/* font-size: 13px; */
+}
+.popover .success i.fa,
+.popover .success i.glyphicon {
+	color: #268227;
+	/* font-size: 13px */
+}
+
+.popover.top .arrow2:after {
+    border-top-color: rgb(255, 255, 255) !important;
+}
+.popover.bottom .arrow2:after {
+    border-bottom-color: rgb(255, 255, 255) !important;
+}
+.popover.left .arrow2:after {
+	border-left-color: rgb(255, 255, 255) !important;
+}
+.popover.right .arrow2:after {
+	border-right-color: rgb(255, 255, 255) !important;
+}
+
+/* MODAL */
+body.modal-open {
+	margin-right: 0px !important;
+}
+.modal-content {
+	color: #000
+}
+.modal-content .modal-body {
+	padding: 10px 26px;
+}
+.modal-content .modal-footer {
+	border-top: 1px solid rgba(0,0,0,.333);
+    border-top: none;
+	padding: 15px 20px;
+    margin: 0;
+    text-align: center;
+}
+.modal-content .close {
+	font-size: 28px;
+	margin-top: 6px !important;
+	z-index: 1000;
+	position: absolute;
+	right: 23px;
+}
+
+/* OTHERS */
+.content-center {
+	text-align: center;
+}
+
+.btn b.glyphicon {
+	margin-right: 5px
+}
+
+.control-label, .form .checkbox label {
+	font-size: 13px;
+	font-weight: normal
+}
+
+.form .checkbox input[type=checkbox] {
+	margin-top: 0
+}
+
+.no-margin {
+    margin: 0;
+}
+.no-padding {
+    padding: 0;
+}

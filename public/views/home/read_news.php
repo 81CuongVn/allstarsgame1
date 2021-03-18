@@ -22,9 +22,9 @@
     </div>
     <form id="news-comment-form" action="<?php echo make_url('home#make_comment/' . $new->id) ?>">
         <div style="padding: 3px 7px 0 7px; margin-top: 5px;">
-            <textarea name="content" class="form-control" rows="10" cols="115" style="resize: none;"></textarea>
+            <textarea name="content" class="form-control input-sm" rows="10" cols="115" style="resize: none;"></textarea>
 	        <div align="right" style="margin-top: 5px">
-    	        <input type="submit" class="btn btn-primary" value="<?php echo t('news.comment') ?>"/>
+    	        <input type="submit" class="btn btn-sm btn-primary" value="<?php echo t('news.comment') ?>"/>
         	</div>
 		</div>
     </form>

@@ -42,7 +42,7 @@
 			</td>
 			<td align="center" width="250">
 				<img src="<?=image_url("icons/for_stamina.png");?>" />
-				<select class="form-control" style="width: auto; display: inline-block;" name="stamina" <?=($player->for_stamina() < 1 ? 'disabled' : '')?>>
+				<select class="form-control input-sm" style="width: auto; display: inline-block;" name="stamina" <?=($player->for_stamina() < 1 ? 'disabled' : '')?>>
 					<?php for($i = 1; $i <= $player->for_stamina(true); $i++): ?>
 						<option value="<?php echo $i ?>"><?php echo $i ?></option>
 					<?php endfor ?>
@@ -50,9 +50,9 @@
 			</td>
 			<td align="center" width="150">
 				<?php if ($player->training_points_spent < $player->max_attribute_training() && $player->for_stamina() > 0): ?>
-					<a class="btn btn-primary train"><?php echo t('attributes.attributes.train') ?></a>
+					<a class="btn btn-sm btn-primary train"><?php echo t('attributes.attributes.train') ?></a>
 				<?php else: ?>
-					<a class="btn btn-danger disabled"><?php echo t('attributes.attributes.train') ?></a>
+					<a class="btn btn-sm btn-danger disabled"><?php echo t('attributes.attributes.train') ?></a>
 				<?php endif ?>
 			</td>
 		</tr>

@@ -8,7 +8,7 @@
 	<div class="mr-container">
 		<form method="get">
 			<input type="hidden" name="__clear_the_damn_cache" value="<?php echo $___clear_cache_key ?>" />
-			<input type="submit" class="btn btn-primary" value="Clear Cache" />
+			<input type="submit" class="btn btn-sm btn-primary" value="Clear Cache" />
 		</form>
 		<h3>Script took <?php echo microtime(true) - $___start ?> seconds</h3>
 		<hr />

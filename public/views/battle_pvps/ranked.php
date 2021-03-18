@@ -153,7 +153,7 @@ $(function () {
 	<?php } ?>
 	<?php if ($player_ranked && !$player_ranked->reward && $league->finished) { ?>
 		<div align="center" id="reward-league">
-			<a class="btn btn-primary reward" data-league="<?php echo $league->league; ?>">
+			<a class="btn btn-sm btn-primary reward" data-league="<?php echo $league->league; ?>">
 				<?php echo t('ranked.recompesa_do')?> Rank <?php echo ($player_ranked->rank == 0 ? 'All-Star' : $player_ranked->rank)?>
 			</a>
 		</div>

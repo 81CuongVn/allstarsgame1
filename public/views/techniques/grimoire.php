@@ -87,12 +87,12 @@ $(function () {
 				?>
 				<?php if($player_pages_ok){?>
 					<?php if($player->has_item($item->id)){?>
-						<a href="javascript:;" class="btn btn-success"><?php echo t('grimoire.desbloqueado') ?></a>
+						<a href="javascript:;" class="btn btn-sm btn-success"><?php echo t('grimoire.desbloqueado') ?></a>
 					<?php }else{ ?>	
-						<a href="javascript:;" class="btn btn-primary player-item-finish" data-id="<?php echo $item->id ?>"><?php echo t('grimoire.desbloquear') ?></a>
+						<a href="javascript:;" class="btn btn-sm btn-primary player-item-finish" data-id="<?php echo $item->id ?>"><?php echo t('grimoire.desbloquear') ?></a>
 					<?php } ?>		
 				<?php }else{ ?>	
-					<a href="javascript:;" class="disabled btn btn-danger"><?php echo t('grimoire.desbloquear') ?></a>
+					<a href="javascript:;" class="disabled btn btn-sm btn-danger"><?php echo t('grimoire.desbloquear') ?></a>
 				<?php } ?>	
 			</td>
 		</tr>

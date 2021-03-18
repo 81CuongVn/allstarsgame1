@@ -29,12 +29,12 @@
 		</td>
 		<td width="117" align="center">
 			<?php if ($player->graduation_id >= $graduation->id): ?>
-				<a class="btn btn-success disabled"><b class="glyphicon glyphicon-ok"></b><?php echo t('graduations.index.graduated') ?></a>
+				<a class="btn btn-sm btn-success disabled"><b class="glyphicon glyphicon-ok"></b><?php echo t('graduations.index.graduated') ?></a>
 			<?php else: ?>
 				<?php if (!$has_requirement): ?>
-					<a class="btn btn-primary disabled"><?php echo t('graduations.index.graduate') ?></a>
+					<a class="btn btn-sm btn-primary disabled"><?php echo t('graduations.index.graduate') ?></a>
 				<?php else: ?>
-					<input type="button" class="btn btn-primary graduate" value="<?php echo t('graduations.index.graduate') ?>" data-id="<?php echo $graduation->id ?>" />
+					<input type="button" class="btn btn-sm btn-primary graduate" value="<?php echo t('graduations.index.graduate') ?>" data-id="<?php echo $graduation->id ?>" />
 				<?php endif ?>
 			<?php endif ?>
 		</td>

@@ -71,7 +71,7 @@ foreach($player_items as $player_item){
 				<?php echo $type?>
 			</td>
 			<td width="120" align="center">
-				<a class="btn btn-primary buy" data-item="<?php echo $map_store->item_id ?>"><?php echo t('shop.buy') ?></a>
+				<a class="btn btn-sm btn-primary buy" data-item="<?php echo $map_store->item_id ?>"><?php echo t('shop.buy') ?></a>
 			</td>
 		</tr>
 	<tr height="4"></tr>

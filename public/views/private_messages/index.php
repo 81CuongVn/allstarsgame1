@@ -1,11 +1,11 @@
 <?php echo partial('shared/title', array('title' => 'private_messages.index.title', 'place' => 'private_messages.index.title')) ?>
 <div>
 	<div class="pull-left">
-		<a class="btn btn-danger" id="private-message-delete-selected"><?php echo t('private_messages.delete_selected') ?></a>
-		<a class="btn btn-danger" id="private-message-delete-all"><?php echo t('private_messages.delete_all') ?></a>
+		<a class="btn btn-sm btn-danger" id="private-message-delete-selected"><?php echo t('private_messages.delete_selected') ?></a>
+		<a class="btn btn-sm btn-danger" id="private-message-delete-all"><?php echo t('private_messages.delete_all') ?></a>
 	</div>
 	<div class="pull-right">
-		<a class="btn btn-primary" id="private-message-compose"><?php echo t('private_messages.compose') ?></a>
+		<a class="btn btn-sm btn-primary" id="private-message-compose"><?php echo t('private_messages.compose') ?></a>
 	</div>
 	<div class="break"></div>
 </div>

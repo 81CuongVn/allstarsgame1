@@ -79,9 +79,9 @@
 		</td>
 		<td width="100">
 			<?php if ($points): ?>
-				<a class="btn btn-primary distribute" data-attribute="<?php echo str_replace('_trained', '', $_) ?>"><?php echo t('attributes.distribute.distribute') ?></a>
+				<a class="btn btn-sm btn-primary distribute" data-attribute="<?php echo str_replace('_trained', '', $_) ?>"><?php echo t('attributes.distribute.distribute') ?></a>
 			<?php else: ?>
-				<a class="btn btn-primary disabled"><?php echo t('attributes.distribute.distribute') ?></a>
+				<a class="btn btn-sm btn-primary disabled"><?php echo t('attributes.distribute.distribute') ?></a>
 			<?php endif ?>
 		</td>
 	</tr>
@@ -91,8 +91,8 @@
 <br />
 <div align="center">
 	<?php if ($points): ?>
-		<a class="btn btn-primary distribute-general" data-max="<?php echo $points ?>"><?php echo t('attributes.distribute.distribute_general') ?></a>
+		<a class="btn btn-sm btn-primary distribute-general" data-max="<?php echo $points ?>"><?php echo t('attributes.distribute.distribute_general') ?></a>
 	<?php else: ?>
-		<a class="btn btn-primary disabled"><?php echo t('attributes.distribute.distribute_general') ?></a>
+		<a class="btn btn-sm btn-primary disabled"><?php echo t('attributes.distribute.distribute_general') ?></a>
 	<?php endif ?>
 </div>

@@ -26,11 +26,11 @@
 					<?php echo highamount($organization->member_count); ?>
 				</td>
 				<td width="300" align="center">
-					<a class="btn btn-primary details" data-id="<?php echo $organization->id ?>"><?php echo t('organizations.search.details') ?></a>
+					<a class="btn btn-sm btn-primary details" data-id="<?php echo $organization->id ?>"><?php echo t('organizations.search.details') ?></a>
 					<?php
 						$request	= OrganizationRequest::find_first('player_id=' . $player->id . ' AND organization_id=' . $organization->id);
 					?>
-					<a class="btn btn-primary join <?php echo $request ? 'disabled' : '' ?>" data-id="<?php echo $organization->id ?>"><?php echo t('organizations.search.join') ?></a>
+					<a class="btn btn-sm btn-primary join <?php echo $request ? 'disabled' : '' ?>" data-id="<?php echo $organization->id ?>"><?php echo t('organizations.search.join') ?></a>
 				</td>
 			</tr>
 		<?php endforeach ?>

@@ -89,7 +89,7 @@
 				var	win	= bootbox.dialog({message: '...', buttons: [
 					{
 						label: 'Fechar',
-						class:	'btn btn-default'
+						class:	'btn btn-sm btn-default'
 					}
 				]});
 
@@ -212,7 +212,7 @@
 			var	win	= bootbox.dialog({message: '...', buttons: [
 				{
 					label: 'Fechar',
-					class:	'btn btn-default'
+					class:	'btn btn-sm btn-default'
 				}
 			]});
 
@@ -345,7 +345,7 @@
 		var	win	= bootbox.dialog({message: '...', buttons: [
 			{
 				label: 'Fechar',
-				class:	'btn btn-default'
+				class:	'btn btn-sm btn-default'
 			}
 		]});
 
@@ -369,7 +369,7 @@
 		var	win	= bootbox.dialog({message: '...', buttons: [
 			{
 				label: 'Fechar',
-				class:	'btn btn-default'
+				class:	'btn btn-sm btn-default'
 			}
 		]});
 

@@ -24,7 +24,7 @@
 			<input type="hidden" name="name" value="<?php echo $organization->name ?>" />
 			<div style="float: left; width:200px; text-align: center"><label><?php echo t('organizations.show.choose_image') ?></label></div>
 			<div style="float: left; width:300px;"><input type="file" name="cover" /><?php echo t('organizations.show.image_note') ?></div>
-			<div style="float: left; width:130px;"><input type="submit" class="btn btn-primary" value="<?php echo t('organizations.show.upload_data') ?>" /></div>
+			<div style="float: left; width:130px;"><input type="submit" class="btn btn-sm btn-primary" value="<?php echo t('organizations.show.upload_data') ?>" /></div>
 		</form>
 	<?php endif ?>
 </div>
@@ -135,12 +135,12 @@
 					<?php endif ?>
 					<?php if ($can_kick && $instance->id != $player->id): ?>
 						<td width="120" align="center">
-							<a class="btn btn-danger kick" data-id="<?php echo $instance->id ?>"><?php echo t('organizations.show.kick') ?></a>
+							<a class="btn btn-sm btn-danger kick" data-id="<?php echo $instance->id ?>"><?php echo t('organizations.show.kick') ?></a>
 						</td>
 					<?php elseif($player->id == $instance->id && $player->id != $organization->player_id): ?>
-						<td width="120" align="center"><a class="btn btn-danger leave" data-id="<?php echo $instance->id ?>"><?php echo t('organizations.show.leave') ?></a></td>
+						<td width="120" align="center"><a class="btn btn-sm btn-danger leave" data-id="<?php echo $instance->id ?>"><?php echo t('organizations.show.leave') ?></a></td>
 					<?php elseif($player->id == $instance->id && $player->id == $organization->player_id && $organization->member_count == 1): ?>
-						<td width="120" align="center"><a class="btn btn-danger destroy" data-id="<?php echo $instance->id ?>"><?php echo t('organizations.show.delete') ?></a></td>
+						<td width="120" align="center"><a class="btn btn-sm btn-danger destroy" data-id="<?php echo $instance->id ?>"><?php echo t('organizations.show.delete') ?></a></td>
 					<?php else: ?>
 						<td width="120" align="center"></td>
 					<?php endif ?>
@@ -186,8 +186,8 @@
 						<td width="150" align="center"><span style="font-size:14px" class="amarelo"><?php echo $instance->name ?></span></td>
 						<td width="80" align="center"><span class="azul_claro"><?php echo $instance->level ?></span></td>
 						<?php if ($currenct_can_accept): ?>
-							<td width="120" align="center"><a class="btn btn-success accept" data-id="<?php echo $p->id ?>"><?php echo t('organizations.show.accept') ?></a></td>
-							<td width="120" align="center"><a class="btn btn-danger refuse" data-id="<?php echo $p->id ?>"><?php echo t('organizations.show.refuse') ?></a></td>
+							<td width="120" align="center"><a class="btn btn-sm btn-success accept" data-id="<?php echo $p->id ?>"><?php echo t('organizations.show.accept') ?></a></td>
+							<td width="120" align="center"><a class="btn btn-sm btn-danger refuse" data-id="<?php echo $p->id ?>"><?php echo t('organizations.show.refuse') ?></a></td>
 						<?php else: ?>
 							<td width="240" align="center" colspan="2"><?php echo t('organizations.show.accept_unavailable') ?></td>
 						<?php endif ?>
@@ -195,7 +195,7 @@
 					<tr height="4"></tr>
 				<?php endforeach ?>
 			</table>
-			<div align="center" style="padding-top: 10px"><a class="btn btn-danger remove_all" data-message="<?php echo t('organizations.remove_all')?>"><?php echo t('buttons.remover_all')?></a></div>
+			<div align="center" style="padding-top: 10px"><a class="btn btn-sm btn-danger remove_all" data-message="<?php echo t('organizations.remove_all')?>"><?php echo t('buttons.remover_all')?></a></div>
 		<?php endif ?>
 	</div>	
 	<?php endif ?>

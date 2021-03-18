@@ -10,8 +10,8 @@
 		function has_requirement($player) {
 			$ok				= true;
 			$log			= '<ul class="requirement-list">';
-			$error			= '<li class="error"><span class="glyphicon glyphicon-remove"></span> %result</li>';
-			$success		= '<li class="success"><span class="glyphicon glyphicon-ok"></span> %result</li>';
+			$error			= '<li class="error"><i class="fa fa-times fa-fw"></i> %result</li>';
+			$success		= '<li class="success"><i class="fa fa-check fa-fw"></i> %result</li>';
 			$quest_counters	= $player->quest_counters();
 
 			if ($this->req_level) {

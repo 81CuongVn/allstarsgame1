@@ -26,7 +26,7 @@
 							<?=t('quests.finish_equipment_text');?>
 						<?php } ?>
 					</h3>
-					<a id="timer-quest-finish" class="btn btn-primary" href="javascript:;"><?=t('quests.finish');?></a>
+					<a id="timer-quest-finish" class="btn btn-sm btn-primary" href="javascript:;"><?=t('quests.finish');?></a>
 				<?php } else { ?>
 					<?=t('quests.time.time_left');?> <span class="quest-timer-container">--:--:--</span>
 					<script type="text/javascript">
@@ -43,6 +43,6 @@
 </div>
 <?php if (!$can_finish) { ?><br />
 	<div align="center">
-		<a id="timer-quest-cancel" class="btn btn-danger" href="javascript:;"><?php echo t('quests.cancel') ?></a>
+		<a id="timer-quest-cancel" class="btn btn-sm btn-danger" href="javascript:;"><?php echo t('quests.cancel') ?></a>
 	</div>	
 <?php } ?>

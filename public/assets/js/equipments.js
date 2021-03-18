@@ -235,7 +235,7 @@
 			message: '...',
 			buttons: [{
 				label: 'Fechar',
-				className: 'btn btn-danger'
+				className: 'btn btn-sm btn-danger'
 			}]
 		});
 
@@ -292,7 +292,7 @@
 			message: '...',
 			buttons: [{
 				label: I18n.t('global.close'),
-				className: 'btn btn-danger'
+				className: 'btn btn-sm btn-danger'
 			}]
 		});
 
@@ -325,7 +325,7 @@
 							message: I18n.t('equipments.show.click_text'),
 							buttons: [{
 								label: I18n.t('equipments.show.equip'),
-								className: 'btn btn-primary',
+								className: 'btn btn-sm btn-primary',
 								callback: function() {
 									lock_screen(true);
 
@@ -351,7 +351,7 @@
 								}
 							}, {
 								label: I18n.t('global.sell_by') + ' ' + _.data('price') + ' ' + I18n.t('currencies.' + _current_anime),
-								className: 'btn btn-danger',
+								className: 'btn btn-sm btn-danger',
 								callback: function() {
 									lock_screen(true);
 
@@ -378,7 +378,7 @@
 								}
 							}, {
 								label: I18n.t('global.destroy_by') + ' ' + _.data('destroy') + ' Fragmentos',
-								className: 'btn btn-danger',
+								className: 'btn btn-sm btn-danger',
 								callback: function() {
 									lock_screen(true);
 
@@ -405,7 +405,7 @@
 								}
 							}, {
 								label: I18n.t('global.close'),
-								className: 'btn'
+								className: 'btn btn-sm'
 							}]
 						});
 					});
@@ -424,7 +424,7 @@
         } else
             buttons.push({
                 label: I18n.t('equipments.show.upgrade'),
-                className: 'btn btn-primary',
+                className: 'btn btn-sm btn-primary',
                 callback: function() {
                     upgrade_equipment(element);
                     win.modal('hide');
@@ -433,14 +433,14 @@
 
 		buttons.push({
             label: I18n.t('equipments.show.list'),
-            className: 'btn btn-primary',
+            className: 'btn btn-sm btn-primary',
             callback: function() {
                 list_equipments(element);
                 win.modal('hide');
             }
         }, {
             label: I18n.t('global.close'),
-            className: 'btn'
+            className: 'btn btn-sm'
         });
 		var win = bootbox.dialog({
 			message: I18n.t('equipments.show.click_text'),

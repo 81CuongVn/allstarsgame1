@@ -1,18 +1,20 @@
 TRUNCATE TABLE `battle_npcs`;
 TRUNCATE TABLE `battle_pvps`;
 TRUNCATE TABLE `battle_rooms`;
+TRUNCATE TABLE `event_animes`;
 TRUNCATE TABLE `organization_daily_quests`;
-TRUNCATE TABLE `player_attribute_percents`;
 TRUNCATE TABLE `player_battle_pvps`;
 TRUNCATE TABLE `player_challenges`;
 TRUNCATE TABLE `player_combat_quests`;
 TRUNCATE TABLE `player_daily_quests`;
-TRUNCATE TABLE `player_items`;
-TRUNCATE TABLE `player_item_attributes`;
-TRUNCATE TABLE `player_item_gems`;
-TRUNCATE TABLE `player_item_stats`;
+TRUNCATE TABLE `player_friend_requests`;
+
+DELETE FROM `player_items` WHERE `item_id` NOT IN (SELECT `id` FROM `items` WHERE `item_type_id` = 3);
+DELETE FROM `player_item_attributes` WHERE `player_item_id` NOT IN (SELECT `id` FROM `player_items`);
+DELETE FROM `player_item_gems` WHERE `item_id` NOT IN (SELECT `item_id` FROM `player_items`);
+DELETE FROM `player_item_stats` WHERE `player_item_id` NOT IN (SELECT `id` FROM `player_items`);
+
 TRUNCATE TABLE `player_kills`;
-TRUNCATE TABLE `player_luck_logs`;
 TRUNCATE TABLE `player_map_animes`;
 TRUNCATE TABLE `player_map_logs`;
 TRUNCATE TABLE `player_pet_quests`;
@@ -22,11 +24,10 @@ TRUNCATE TABLE `player_time_quests`;
 TRUNCATE TABLE `player_treasure_logs`;
 TRUNCATE TABLE `player_wanteds`;
 TRUNCATE TABLE `private_messages`;
-TRUNCATE TABLE `ranking_accounts`;
-TRUNCATE TABLE `ranking_achievements`;
 TRUNCATE TABLE `ranking_challenges`;
 TRUNCATE TABLE `ranking_organizations`;
 TRUNCATE TABLE `ranking_players`;
+TRUNCATE TABLE `user_daily_quests`;
 TRUNCATE TABLE `user_history_mode_groups`;
 TRUNCATE TABLE `user_history_mode_npcs`;
 TRUNCATE TABLE `user_history_mode_subgroups`;
@@ -44,6 +45,7 @@ UPDATE `organization_quest_counters` SET
 
 UPDATE `players` SET
   `map_id`							            = 0,
+  `graduation_id`					          = 1,
   `battle_npc_challenge`          	= 0,
   `battle_npc_id`				            = 0,
   `battle_pvp_id`				            = 0,
@@ -56,19 +58,19 @@ UPDATE `players` SET
   `pvp_queue_found`			            = NULL,
   `level`							              = 1,
   `exp`								              = 0,
-  `currency`						            = 500,
+  `currency`						            = 0,
   `less_life`						            = 0,
   `less_mana`					            	= 0,
   `less_stamina`				            = 0,
   `hospital`						            = 0,
   `for_atk`							            = 0,
   `for_def`						            	= 0,
-  `for_crit`					            	= 0,
-  `for_abs`							            = 0,
-  `for_prec`						            = 0,
-  `for_init`					            	= 0,
-  `for_inc_crit`					          = 0,
-  `for_inc_abs`					          	= 0,
+  `for_crit`					            	= '0.00',
+  `for_abs`							            = '0.00',
+  `for_prec`						            = '0.00',
+  `for_init`					            	= '0.00',
+  `for_inc_crit`					          = '0.00',
+  `for_inc_abs`					          	= '0.00',
   `enchant_points`					        = 0,
   `enchant_points_total`		        = 0,
   `weekly_points_spent`			        = 0,
@@ -92,7 +94,6 @@ UPDATE `players` SET
   `losses_pvp`				  		        = 0,
   `draws`							              = 0,
   `won_last_battle`					        = 0,
-  `graduation_id`					          = 1,
   `first_actions`					          = 0;
 
 DELETE FROM `player_achievements` WHERE `achievement_id` = 1686;
@@ -161,10 +162,11 @@ UPDATE `player_battle_counters` SET
   `total_pvp_made`		                = 0,
   `current_npc_made`	                = 0,
   `current_pvp_made`	                = 0;
--- UPDATE `player_battle_pvp_logs` SET
---   `wins`		                          = 0,
---   `losses`	                          = 0,
---   `draws`		                        = 0;
+
+UPDATE `player_battle_pvp_logs` SET
+  `wins`		                          = 0,
+  `losses`	                          = 0,
+  `draws`		                          = 0;
 
 UPDATE `player_battle_stats` SET
   `victory_pvp`			    	            = 0,
@@ -187,27 +189,22 @@ UPDATE `player_battle_stats` SET
   `draws_npc_monthly`	  	            = 0;
 
 UPDATE `player_changes` SET
-  `daily`		= 0,
-  `weekly`	= 0,
-  `pet`			= 0;
+  `daily`		                          = 0,
+  `weekly`	                          = 0,
+  `pet`			                          = 0;
 
 UPDATE `player_fidelities` SET
-  `day`			  	= 1,
-  `reward`			= 0,
-  `created_at`	= NULL,
-  `reward_at`		= NULL;
-
-UPDATE `player_positions` SET
-  `organization_map_id`		= 0,
-  `xpos`				        	= 0,
-  `ypos`					        = 0;
+  `day`			  	                      = 1,
+  `reward`			                      = 0,
+  `created_at`	                      = NULL,
+  `reward_at`		                      = NULL;
 
 UPDATE `player_quest_counters` SET
-  `time_total`		= 0,
-  `pvp_total`	  	= 0,
-  `daily_total`		= 0,
-  `pet_total`		  = 0,
-  `combat_total`	= 0;
+  `time_total`		                    = 0,
+  `pvp_total`	  	                    = 0,
+  `daily_total`		                    = 0,
+  `pet_total`		                      = 0,
+  `combat_total`	                    = 0;
 
 UPDATE `player_stats` SET
   `luck_week_data`					        	= NULL,
@@ -228,31 +225,48 @@ UPDATE `player_stats` SET
   `view_golpes`							          = 0;
 
 UPDATE `player_tutorials` SET
-  `status`			      	= 0,
-  `talents`			      	= 0,
-  `equips`			      	= 0,
-  `pets`				        = 0,
-  `habilidades`	      	= 0,
-  `golpes`			      	= 0,
-  `aprimoramentos`	    = 0,
-  `escola`			      	= 0,
-  `treinamento`	      	= 0,
-  `mercado`			      	= 0,
-  `missoes_tempo`	    	= 0,
-  `missoes_pvp`			    = 0,
-  `missoes_diarias`		  = 0,
-  `missoes_seguidores`	= 0,
-  `missoes_conta`	    	= 0,
-  `battle_npc`		    	= 0,
-  `battle_pvp`		    	= 0,
-  `fidelity`			      = 0,
-  `battle_village`	  	= 0,
-  `bijuus`				      = 0,
-  `objectives`		    	= 0;
+  `status`			      	              = 0,
+  `talents`			      	              = 0,
+  `equips`			      	              = 0,
+  `pets`				                      = 0,
+  `habilidades`	      	              = 0,
+  `golpes`			      	              = 0,
+  `aprimoramentos`	                  = 0,
+  `escola`			      	              = 0,
+  `treinamento`	      	              = 0,
+  `mercado`			      	              = 0,
+  `missoes_tempo`	    	              = 0,
+  `missoes_pvp`			                  = 0,
+  `missoes_diarias`		                = 0,
+  `missoes_seguidores`	              = 0,
+  `missoes_conta`	    	              = 0,
+  `battle_npc`		    	              = 0,
+  `battle_pvp`		    	              = 0,
+  `battle_ranked`                     = 0,
+  `fidelity`			                    = 0,
+  `battle_village`	  	              = 0,
+  `bijuus`				                    = 0,
+  `objectives`		    	              = 0;
 
 DELETE FROM `player_star_items` WHERE `buy_mode` IN (0, 1);
 
+UPDATE `users` SET
+  `level`                             = 1,
+  `exp`                               = 0,
+  `session_key`                       = NULL,
+  `objectives`                        = 0;
+
 UPDATE `user_changes` SET
-  `daily`		= 0,
-  `weekly`	= 0,
-  `pet`			= 0;
+  `daily`		                          = 0,
+  `weekly`                            = 0,
+  `pet`			                          = 0;
+
+UPDATE `user_quest_counters` SET
+  `time_total`                        = 0,
+  `pvp_total`                         = 0,
+  `daily_total`                       = 0,
+  `pet_total`                         = 0;
+
+UPDATE `user_stats` SET
+  `credits`                           = NULL,
+  `exp`                               = NULL;

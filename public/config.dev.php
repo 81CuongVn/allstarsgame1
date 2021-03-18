@@ -8,7 +8,7 @@ $rewrite_enabled	= TRUE;
 
 # Game settings
 define('GAME_NAME', 			'All-Stars Game');
-define('GAME_VERSION', 			'2.0.15');
+define('GAME_VERSION', 			'2.0.16');
 define('GLOBAL_PASSWORD', 		'dev2@21');
 
 # Round settings
@@ -99,7 +99,7 @@ define('EXP_RATE',				1);
 define('MONEY_RATE',			1);
 
 # PvP settings
-define('PVP_TURN_TIME',			120);
+define('PVP_TURN_TIME',			90);
 
 # Energy costs
 define('NPC_COST',				2);

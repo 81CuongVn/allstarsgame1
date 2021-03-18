@@ -26,14 +26,14 @@
 			<div id="character-data">
 				<div style="width:231px; height:300px; float: left; position: relative; top: 20px; text-align: center ">
 					<img width="235" height="281" id="character-profile-image" />
-					<input class="button btn btn-warning" id="change-theme" type="button" value="<?php echo t('characters.create.change_theme') ?>" style="position:relative; top: -30px" />
+					<input class="button btn btn-sm btn-warning" id="change-theme" type="button" value="<?php echo t('characters.create.change_theme') ?>" style="position:relative; top: -30px" />
 					<div id="character-info" style="float: left; width: 240px; text-align: left; position: relative; line-height: 27px;">
 						<div class="row">
 							<div class="col-lg-2">
 								<labeL class="branco" style="margin-top: 7px"><?php echo t('characters.create.labels.name') ?>:</labeL>
 							</div>
 							<div class="col-lg-9" style="height: 30px">
-								<input type="text" name="name" placeholder="Nome do personagem" class="form-control" /><br />
+								<input type="text" name="name" placeholder="Nome do personagem" class="form-control input-sm" /><br />
 							</div>
 						</div>
 						<span class="branco"><?php echo t('characters.create.labels.anime') ?>:</span> <span class="cinza anime">--</span><br />
@@ -50,7 +50,7 @@
 							<img src="<?php echo image_url('viloes.jpg') ?>"  width="120" /><br />
 							<div>Vilões</div>
 						</div>	
-						<input type="submit" class="btn btn-primary" value="<?php echo t('characters.create.submit') ?>" style="position:relative; left: 40px; top: 20px;"/>
+						<input type="submit" class="btn btn-sm btn-primary" value="<?php echo t('characters.create.submit') ?>" style="position:relative; left: 40px; top: 20px;"/>
 					</div>
 					
 				</div>

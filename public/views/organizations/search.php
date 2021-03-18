@@ -11,7 +11,7 @@
 					<div class="form-group">
 						<label class="col-sm-2 control-label"><?php echo t('organizations.create.name') ?></label>
 						<div class="col-sm-10">
-							<input type="text" name="name" class="form-control" />
+							<input type="text" name="name" class="form-control input-sm" />
 							<p><?php echo t('organizations.create.name_note') ?></p>
 						</div>
 					</div>
@@ -31,7 +31,7 @@
 					</div>
 					<div class="form-group">
 						<div class="col-sm-offset-2 col-sm-10">
-							<input type="submit" class="btn btn-primary" value="<?php echo t('organizations.create.submit') ?>" />
+							<input type="submit" class="btn btn-sm btn-primary" value="<?php echo t('organizations.create.submit') ?>" />
 						</div>
 					</div>
 				</form>
@@ -55,12 +55,12 @@
 					<div class="form-group">
 						<label class="col-sm-2 control-label"><?php echo t('organizations.search.by_name') ?></label>
 						<div class="col-sm-10">
-							<input type="text" name="name" class="form-control" />
+							<input type="text" name="name" class="form-control input-sm" />
 						</div>
 					</div>
 					<div class="form-group">
 						<div class="col-sm-offset-2 col-sm-10">
-							<input type="submit" class="btn btn-primary" value="<?php echo t('organizations.search.submit') ?>" />
+							<input type="submit" class="btn btn-sm btn-primary" value="<?php echo t('organizations.search.submit') ?>" />
 						</div>
 					</div>
 				</form>

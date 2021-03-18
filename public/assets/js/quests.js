@@ -92,7 +92,7 @@
 			message: 'Que ação você gostaria de fazer?',
 			buttons: [{
 				label: 'Fechar',
-				className:	'btn btn-danger'
+				className:	'btn btn-sm btn-danger'
 			}]
 		});
 

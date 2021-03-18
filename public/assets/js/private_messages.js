@@ -14,13 +14,13 @@
 	function read(id, sender) {
 		var buttons	= [{
 			label:		'Fechar',
-			className:	'btn btn-default'
+			className:	'btn btn-sm btn-default'
 		}];
 
 		if (sender) {
 			buttons.unshift({
 				label:		I18n.t('private_messages.reply_current'),
-				className:	'btn btn-primary',
+				className:	'btn btn-sm btn-primary',
 				callback:	function () {
 					win.modal('hide');
 
@@ -45,7 +45,7 @@
 		var	win		= bootbox.dialog({message: '...', buttons: [
 			{
 				label:		I18n.t('private_messages.send_now'),
-				className:	'btn btn-primary',
+				className:	'btn btn-sm btn-primary',
 				callback:	function () {
 					if (!loaded) {
 						return false;
@@ -73,7 +73,7 @@
 				}
 			}, {
 				label:		'Fechar',
-				className:	'btn btn-default'
+				className:	'btn btn-sm btn-default'
 			}
 		]});
 
@@ -153,7 +153,7 @@
 						label:	I18n.t('global.cancel')
 					}, confirm: {
 						label:		I18n.t('global.continue'),
-						className:	'btn btn-danger',
+						className:	'btn btn-sm btn-danger',
 						callback:	function () {
 							options.each(function () {
 								post['ids[]'].push($(this).data('id'));
@@ -179,7 +179,7 @@
 					label:	I18n.t('global.cancel')
 				}, confirm: {
 					label:		I18n.t('global.continue'),
-					className:	'btn btn-danger',
+					className:	'btn btn-sm btn-danger',
 					callback:	function () {
 						$.ajax({
 							url:		make_url('private_messages#delete'),

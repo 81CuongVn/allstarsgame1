@@ -49,7 +49,7 @@
 					  I18n.t('battles.status_tooltip.prec', {image: image_url('icons/for_prec.png'), value: status.prec}) + "<br />" +
 					  I18n.t('battles.status_tooltip.init', {image: image_url('icons/for_inti.png'), value: (status.init).toFixed(2), init: status.init.toFixed(2)}) + "<br />";
 
-		item.append('<img src="' + image_url('battle/details.png') + '"  class="technique-popover" data-placement="' + container.data('placement') + '" data-source="' + item_id + '" data-trigger="hover" data-placement="bottom"  />')
+		item.append('<img src="' + image_url('battle/details.png') + '" class="technique-popover" data-placement="' + container.data('placement') + '" data-source="' + item_id + '" data-trigger="hover" data-placement="bottom"  />')
 		item.append(popover);
 		popover.append(html);
 		container.append(item);
@@ -629,11 +629,11 @@
 				var	win	= bootbox.dialog({message: result.finished, buttons: [
 					{
 						label:		'Fechar',
-						class:		'btn btn-default',
+						class:		'btn btn-sm btn-default',
 						callback:	function () {
 							lock_screen(true);
-							location.href	= parseInt(result.end_type) ? make_url('characters#status') : make_url('hospital') ;
-							// location.href	= make_url('characters#status');
+							// location.href	= parseInt(result.end_type) ? make_url('characters#status') : make_url('hospital') ;
+							location.href	= make_url('characters#status');
 						}
 					}
 				]});

@@ -42,7 +42,7 @@
 		if (!element.hasClass('disabled') && !element.hasClass('active')) {
 			buttons.push({
 				label: I18n.t('pets.show.equip'),
-				className: 'btn btn-primary',
+				className: 'btn btn-sm btn-primary',
 				callback: function() {
 					learn_pet(element);
 
@@ -53,7 +53,7 @@
 		} else {
 			buttons.push({
 				label: I18n.t('pets.show.unequip'),
-				className: 'btn btn-danger',
+				className: 'btn btn-sm btn-danger',
 				callback: function() {
 					remove_pet(element);
 
@@ -64,7 +64,7 @@
 		}
 		buttons.push({
 			label: I18n.t('global.close'),
-			className: 'btn'
+			className: 'btn btn-sm'
 		});
 
 		var win = bootbox.dialog({

@@ -75,9 +75,9 @@
 		</div>
 		<div class="button" style="position:relative; top: 15px;">
 			<?php if ($total_treasure->treasure_atual >= $treasures->treasure_total && $can_accept) { ?>
-				<button type="button" class="treasures_change btn btn-primary" data-mode="<?php echo $treasures->id?>"><?php echo t('treasure.show.change') ?></button>
+				<button type="button" class="treasures_change btn btn-sm btn-primary" data-mode="<?php echo $treasures->id?>"><?php echo t('treasure.show.change') ?></button>
 			<?php }else{ ?>
-				<button type="button" class="btn btn-danger btn-disabled" disabled><?php echo t('treasure.show.change') ?></button>
+				<button type="button" class="btn btn-sm btn-danger btn-disabled" disabled><?php echo t('treasure.show.change') ?></button>
 			<?php } ?>	
 		</div>
 	</div>

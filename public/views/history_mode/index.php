@@ -21,10 +21,10 @@
 				<div class="clearfix"></div>	
 				<div class="buttons">
 				<?php if ($group->unlocked()): ?>
-					<a class="btn btn-primary" href="<?php echo make_url('history_mode#show/' . $group->id) ?>"><?php echo t('history_mode.index.go_battles') ?></a>
+					<a class="btn btn-sm btn-primary" href="<?php echo make_url('history_mode#show/' . $group->id) ?>"><?php echo t('history_mode.index.go_battles') ?></a>
 				<?php else: ?>
-					<a class="btn btn-primary unlock" data-group="<?php echo $group->id ?>" data-mode="1"><?php echo t('history_mode.index.unlock_currency', ['amount' => highamount($group->currency_cost), 'currency' => t('currencies.' . $player->character()->anime_id)]) ?></a>
-					<a class="btn btn-warning unlock" data-group="<?php echo $group->id ?>" data-mode="2"><?php echo t('history_mode.index.unlock_credits', ['amount' => highamount($group->credits_cost)]) ?></a>
+					<a class="btn btn-sm btn-primary unlock" data-group="<?php echo $group->id ?>" data-mode="1"><?php echo t('history_mode.index.unlock_currency', ['amount' => highamount($group->currency_cost), 'currency' => t('currencies.' . $player->character()->anime_id)]) ?></a>
+					<a class="btn btn-sm btn-warning unlock" data-group="<?php echo $group->id ?>" data-mode="2"><?php echo t('history_mode.index.unlock_credits', ['amount' => highamount($group->credits_cost)]) ?></a>
 				<?php endif ?>
 				</div>
 				<div id="history-container-<?php echo $group->id ?>" class="technique-container">

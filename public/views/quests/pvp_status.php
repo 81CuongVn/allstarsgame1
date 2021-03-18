@@ -39,7 +39,7 @@
 						<?php endif ?>
 					</h3>
 
-					<a id="pvp-quest-finish" class="btn btn-primary" href="javascript:;"><?php echo t('quests.finish') ?></a>
+					<a id="pvp-quest-finish" class="btn btn-sm btn-primary" href="javascript:;"><?php echo t('quests.finish') ?></a>
 				<?php endif ?>
 			</div>
 		</div>		
@@ -50,6 +50,6 @@
 <br />
 <?php if (!$can_finish): ?>
 	<div align="center">
-		<a id="pvp-quest-cancel" class="btn btn-danger" href="javascript:;"><?php echo t('quests.cancel') ?></a>
+		<a id="pvp-quest-cancel" class="btn btn-sm btn-danger" href="javascript:;"><?php echo t('quests.cancel') ?></a>
 	</div>	
 <?php endif ?>
