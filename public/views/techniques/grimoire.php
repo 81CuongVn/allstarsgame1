@@ -76,8 +76,8 @@ $(function () {
 							$class = "style='opacity:.3'";	
 						}
 					?>	
-					<div class="technique-popover" data-source="#pages-container-<?php echo $page->id ?>" data-title="<?php echo $page->description()->name ?>" data-trigger="click" data-placement="bottom" style="display:inline-block; text-align:center">
-						<div><img src="<?php echo image_url('grimoire/'.$page->description()->image)?>" width="40" <?php echo $class?> /></div>
+					<div data-toggle="tooltip" data-title="<?php echo make_tooltip($page->description()->name); ?>" data-placement="bottom" style="display:inline-block; text-align:center">
+						<img src="<?php echo image_url('grimoire/'.$page->description()->image)?>" width="40" <?php echo $class?> />
 					</div>						
 				<?php endforeach ?>		
 			</td>

@@ -62,13 +62,6 @@ class Player extends Relation {
 		$this->save();
 	}
 	public function welcome() {
-		# Initial Foods
-		$initial_food				= new PlayerItem();
-		$initial_food->item_id		= 46;
-		$initial_food->quantity		= 5;
-		$initial_food->player_id	= $this->id;
-		$initial_food->save();
-
 		# Welcome Message
 		$message			= new PrivateMessage();
 		$message->to_id		= $this->id;

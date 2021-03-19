@@ -146,7 +146,7 @@ $(function () {
 	<div class="enchant-golpe">
 		<img style="cursor:pointer" data-source="#technique-content-<?php echo $id ?>" data-title="<?php echo $name ?>" data-trigger="hover" data-placement="bottom" class="change_golpe_enchant technique-popover item-image" data-url="<?php echo make_url('techniques#list_golpes') ?>" data-item="<?php echo $id?>" src="<?php echo $image ?>" />
 		<div class="technique-container" id="technique-content-<?php echo $id ?>">
-			<div style="margin: 10px 15px; width: 250px">
+			<div style="width: 250px">
 				<?php echo $tooltip ?>
 			</div>
 		</div>

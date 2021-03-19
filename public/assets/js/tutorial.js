@@ -51,10 +51,10 @@
 					<div class="popover-navigation" style="background-color: transparent;">
 						<div class="row">
 							<div class="col-sm-6">
-								<button class="btn btn-sm btn-default" data-role="prev"><i class="fa fa-arrow-left fa-fw"></i> Anterior</button>
+								<button class="btn btn-sm btn-danger" data-role="prev"><i class="fa fa-arrow-left fa-fw"></i> Anterior</button>
 							</div>
 							<div class="col-sm-6 text-right">
-								<button class="btn btn-sm btn-default" data-role="next">Próximo <i class="fa fa-arrow-right fa-fw"></i></button>
+								<button class="btn btn-sm btn-primary" data-role="next">Próximo <i class="fa fa-arrow-right fa-fw"></i></button>
 							</div>
 							<div class="col-sm-12">
 								<button class="btn btn-sm btn-success btn-block" data-role="end" data-tutorial="1" style="margin-top:5px">Conheço essa página e quero encerrar o tutorial!</button>
@@ -562,10 +562,10 @@
 			}
 			$template.addClass("tour-" + this._options.name + " tour-" + this._options.name + "-" + i);
 			if (step.prev < 0) {
-				$prev.addClass('disabled');
+				$prev.addClass('btn-disabled').attr('disabled', true);
 			}
 			if (step.next < 0) {
-				$next.addClass('disabled');
+				$next.addClass('btn-disabled').attr('disabled', true);
 			}
 			if (!step.duration) {
 				$resume.remove();
