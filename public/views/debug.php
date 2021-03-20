@@ -10,9 +10,9 @@
 			<input type="hidden" name="__clear_the_damn_cache" value="<?php echo $___clear_cache_key ?>" />
 			<input type="submit" class="btn btn-sm btn-primary" value="Clear Cache" />
 		</form>
-		<h3>Script took <?php echo microtime(true) - $___start ?> seconds</h3>
+		<h4>Script took <?php echo microtime(true) - $___start ?> seconds</h4>
 		<hr />
-		<h3>SQL Status</h3>
+		<h4>SQL Status</h4>
 		<table class="table table-condensed table-striped">
 			<tr>
 				<td class="col-lg-4">Queries:</td>

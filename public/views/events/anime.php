@@ -52,13 +52,13 @@ $(function () {
 		<span class="amarelo ev-size"><?=$activeEvent->description($activeEvent->anime_b_id)->name;?></span>
 	</div>
 	<div class="ev-barra">
-		<span class="ev-anime-a"><?=$activeEvent->points_a;?></span>
+		<span class="ev-anime-a"><?=highamount($activeEvent->points_a);?></span>
 	</div>
 	<div class="ev-barra-red">
 		<div style="width: <?=($points * 512);?>px; height:16px; background-image:url(<?=image_url('events/blue.png');?>)"></div>
 	</div>
 	<div class="ev-barra-b">
-		<span class="ev-anime-b"><?=$activeEvent->points_b;?></span>
+		<span class="ev-anime-b"><?=highamount($activeEvent->points_b);?></span>
 	</div>
 </div>
 <?php } else { ?>
@@ -142,7 +142,7 @@ $(function () {
 				<td width="200" align="center">
 					<span style="font-size:16px" class="amarelo"><?=$anime->description()->name;?></span>
 				</td>
-				<td width="100" align="center"><?=$anime->score;?></td>
+				<td width="100" align="center"><?=highamount($anime->score);?></td>
 			</tr>
 			<tr height="4"></tr>
 		<?php } ?>

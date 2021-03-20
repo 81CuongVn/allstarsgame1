@@ -3,7 +3,7 @@ error_reporting(E_ALL);
 
 # General settings
 $home				= 'home#index';
-$site_url			= 'http://animeallstarsgame.local';
+$site_url			= 'http://allstarsgame.test';
 $rewrite_enabled	= TRUE;
 
 # Game settings

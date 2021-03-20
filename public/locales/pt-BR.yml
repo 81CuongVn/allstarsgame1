@@ -15,6 +15,7 @@ pt-BR:
     friend: Amigos
     event: Eventos
   menus:
+    tournaments: Campeonato All-Star
     tutorial: Tutorial
     objectives: Objetivos de Round
     quests_battle: Missões de Combate
@@ -1588,18 +1589,14 @@ pt-BR:
     title: Página Não Encontrada
     title_msg: Você não pode acessar a página solicitada
     message: |
-      <p>
-        <h4>A página solicitada não foi encontrada!</h4>
-        <h4>Se você acha que isso é um problema, por favor entre em contato com o administrador</h4>
-      </p>
+      <p>A página solicitada não foi encontrada!</p>
+      <p>Se você acha que isso é um problema, por favor entre em contato com o administrador</p>
   denied:
     title: Acesso Negado
     title_msg: Você não pode acessar a página solicitada
     message: |
-      <p>
-        <h4>Você não tem privilégios suficiente para acessar a página solicitada.</h4>
-        <h4>Se você acha que isso é um problema, por favor entre em contato com o administrador</h4>
-      </p>
+      <p>Você não tem privilégios suficiente para acessar a página solicitada.</p>
+      <p>Se você acha que isso é um problema, por favor entre em contato com o administrador</p>
   global:
     player: Jogador
     character: Personagem
@@ -2372,3 +2369,5 @@ pt-BR:
       not_enough_vip: Você não tem estrela(s) suficiente
       invalid_character: Personagem inválido
       dont_have: Você não tem mais esse talento disponivel para ativa-lo.
+  tournaments:
+    title: Campeonato ALl-Star

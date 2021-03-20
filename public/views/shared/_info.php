@@ -1,11 +1,10 @@
 <?php
-	$instance	= Player::get_instance();
-
-	if(!$instance) {
-		$anime	= Anime::find_first('active=1 ORDER BY RAND() LIMIT 1')->id;
-	} else {
-		$anime	= $instance->character()->anime_id;
-	}
+$instance	= Player::get_instance();
+if (!$instance) {
+	$anime	= Anime::find_first('active=1 ORDER BY RAND() LIMIT 1')->id;
+} else {
+	$anime	= $instance->character()->anime_id;
+}
 ?>
 <div class="msg-container">
 	<div class="msg_top"></div>

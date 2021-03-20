@@ -65,6 +65,7 @@ if ($_SESSION['user_id']) {
 	<link rel="stylesheet" type="text/css" href="<?=asset_url('css/highlights.css');?>" />
 	<link rel="stylesheet" type="text/css" href="<?=asset_url('css/animate.css');?>" />
 	<link rel="stylesheet" type="text/css" href="<?=asset_url('css/font-awesome.min.css');?>" />
+	<link rel="stylesheet" type="text/css" href="<?=asset_url('css/jquery.bracket.min.css');?>" />
 	<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans:400,700" />
 
 	<!-- JS -->
@@ -73,6 +74,7 @@ if ($_SESSION['user_id']) {
 	<script type="text/javascript" src="<?=asset_url('js/jquery.ui.touch-punch.min.js');?>"></script>
 	<script type="text/javascript" src="<?=asset_url('js/jquery.devrama.slider.js');?>"></script>
 	<script type="text/javascript" src="<?=asset_url('js/jquery.cookie.js');?>"></script>
+	<script type="text/javascript" src="<?=asset_url('js/jquery.bracket.min.js');?>"></script>
     <script type="text/javascript" src="<?=asset_url('js/i18n.js');?>"></script>
     <script type="text/javascript" src="<?=asset_url('js/socket.io.js');?>"></script>
 	<script type="text/javascript">
