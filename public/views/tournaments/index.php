@@ -5,76 +5,67 @@
 <?php echo partial('shared/info', array(
     'id'		=> 5,
     'title'		=> 'tournaments.info.title',
-    'message'	=> t('tournaments.info.description2')
-)); ?>
+    'message'	=> t('tournaments.info.description', [
+        'currency'  => t('currencies.' . $player->character()->anime_id)
+    ])
+)); ?><br />
 <div class="ev-ranking">
 	<div style="clear:left; float: left" class="barra-secao barra-secao-<?=$player->character()->anime_id;?>">
-	<table width="725" border="0" cellpadding="0" cellspacing="0">
+	<table width="725">
 		<tr>
-			<td width="200">&nbsp;</td>
-			<td width="60" align="center"><?=t('rankings.players.header.posicao');?></td>
-			<td width="200" align="center"><?=t('rankings.players.header.nome');?></td>
-			<td width="100" align="center"><?=t('rankings.players.header.score');?></td>
+			<td width="225">&nbsp;</td>
+            <td width="100" class="text-center">Fase</td>
+			<td width="100" class="text-center">Participantes</td>
+            <td width="100" class="text-center">Inicio</td>
+            <td width="100" class="text-center">Vencedor</td>
+			<td width="100" class="text-center">Ações</td>
 		</tr>
 	</table>
 	</div>
-	<table width="725" border="0" cellpadding="0" cellspacing="0">
+	<table width="700" class="table table-striped table-hover">
 		<?php
 		$counter = 0;
 		foreach ($tournaments as $tournament) {
 			$color	= $counter++ % 2 ? '091e30' : '173148';
-        }
-		?>
+        ?>
+        <tr style="background-color: #<?=$color;?>;">
+            <td width="225" class="text-center">
+                <span style="font-size: 16px" class="amarelo">
+                    <?php echo $tournament->name; ?>
+                </span>
+            </td>
+            <td width="100" class="text-center">
+                <?php
+                if ($tournament->finished) {
+                    echo '<span class="label label-success">' . t('tournaments.status.finished') . '</span>';
+                } elseif ($tournament->canceled) {
+                    echo '<span class="label label-danger">' . t('tournaments.status.canceled') . '</span>';
+                } else {
+                    echo '<span class="label label-default">' . $tournament->getRound() . '</span>';
+                }
+                ?>
+            </td>
+            <td width="100" class="text-center">
+                <span class="label label-primary">
+                    <?php echo sizeof($tournament->players()); ?> / <?php echo $tournament->places; ?>
+                </span>
+            </td>
+            <td width="100" class="text-center">
+                <?php echo date('d/m/Y H:i:s', strtotime($tournament->starts_at)); ?>
+            </td>
+            <td width="100" class="text-center">
+                <?php
+                if ($tournament->finished) {
+                    echo '<span class="laranja">' . $tournament->winner()->player()->name . '</span>';
+                } else {
+                    echo '-';
+                }
+                ?>
+            </td>
+            <td width="100" class="text-center">
+                <a href="<?php echo make_url('tournaments#show/' . $tournament->id); ?>" class="btn btn-sm btn-primary">Detalhes</a>
+            </td>
+        </tr>
+        <?php } ?>
     </table>
-</div>
-<style>
-    div.jQBracket .team div.label {
-        color: black
-    }
-</style>
-<script type="text/javascript">
-    var doubleEliminationData = {
-        teams : [
-            ["Jogador 1", "Jogador 2"],
-            ["Jogador 3", "Jogador 4"],
-            ["Jogador 5", "Jogador 6"],
-            ["Jogador 7", "Jogador 8"],
-            ["Jogador 9", "Jogador 10"],
-            ["Jogador 11", "Jogador 12"],
-            ["Jogador 13", "Jogador 14"],
-            ["Jogador 15", "Jogador 16"],
-            ["Jogador 17", "Jogador 18"],
-            ["Jogador 19", "Jogador 20"],
-            ["Jogador 21", "Jogador 22"],
-            ["Jogador 23", "Jogador 24"],
-            ["Jogador 25", "Jogador 26"],
-            ["Jogador 27", "Jogador 28"],
-            ["Jogador 29", "Jogador 30"],
-            ["Jogador 31", "Jogador 32"]
-        ],
-        results : [
-            [ [1,0], [0,1], [1,0], [0,1], [1,0], [0,1], [1,0], [0,1] , [0,1], [1,0], [0,1], [1,0], [0,1], [1,0], [0,1], [1,0], [0,1] , [0,1] ],
-            [ [1,0], [0,1], [1,0], [0,1], [1,0], [0,1], [1,0], [0,1] ],
-            [ [1,0], [0,1], [1,0], [0,1] ],
-            [ [1,0], [0,1] ],
-            [ [1,0], [1,0] ]
-        ]
-    }
-</script>
-<div id="noSecondaryFinal">
-    <h3>No secondary final</h3>
-
-    <p>In double elimination, you can disable the secondary final which would
-    generally be used if Loser Bracket winner wins the first match against
-    Winner Bracket winner.</p>
-
-    <script type="text/javascript">
-        $(function() {
-            $('div#noSecondaryFinal .demo').bracket({
-                // skipSecondaryFinal: true,
-                init: doubleEliminationData
-            })
-        })
-    </script>
-    <div class="demo"></div>
 </div>

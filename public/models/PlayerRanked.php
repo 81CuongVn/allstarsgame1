@@ -13,8 +13,11 @@ class PlayerRanked extends Relation {
 	}
 
 	function points() {
-		$points = ($this->wins * 6) + ($this->draws * 3) - ($this->losses * 2);
-		return $points; // > 0 ? $points : 0;
+		$points = $this->wins * 4;
+		$points += $this->draws * 2;
+		$points -= $this->losses * 1;
+
+		return $points;
 	}
 
 	function update() {

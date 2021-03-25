@@ -11,12 +11,12 @@ class HomeController extends Controller {
 		$this->layout	= FALSE;
 
 		$items_per_page	= 5;
-		$total_pages	= SiteNew::find("round=1");
+		$total_pages	= SiteNew::find("round='eterno2'");
 		$total_pages	= ceil(sizeof($total_pages) / $items_per_page);
 		$page			= (!is_numeric($page) || $page <= 0) ? 1 : $page;
 		$page			= ($page > $total_pages) ? $total_pages : $page;
 		$start			= ceil(($page * $items_per_page) - $items_per_page);
-		$news			= SiteNew::find("round=1",[
+		$news			= SiteNew::find("round='eterno2'",[
 			'limit'		=> $start . ', ' . $items_per_page,
 			'reorder'	=> 'id desc'
 		]);

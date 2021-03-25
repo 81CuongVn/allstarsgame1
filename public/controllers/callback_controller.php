@@ -114,7 +114,7 @@ class CallbackController extends Controller {
                     $is_dbl     = StarDouble::find_first("'{$star_purchase->created_at}' BETWEEN data_init AND data_end");
                     $star_plan  = StarPlan::find_first("id = " . $star_purchase->star_plan_id);
                     $user       = User::find($star_purchase->user_id);
-                    $credits    = !$is_dbl ? $star_plan->coin : ($star_plan->coin * 2);
+                    $credits    = !$is_dbl ? $star_plan->credits : ($star_plan->credits * 2);
 
                     if ($paymentData['payment_status'] == 'Completed') {
                         if ($star_purchase->status != 'aprovado') {
@@ -160,7 +160,7 @@ class CallbackController extends Controller {
                     $is_dbl     = StarDouble::find_first("'{$star_purchase->created_at}' BETWEEN data_init AND data_end");
                     $star_plan  = StarPlan::find_first("id = " . $star_purchase->star_plan_id);
                     $user       = User::find($star_purchase->user_id);
-                    $credits    = !$is_dbl ? $star_plan->coin : ($star_plan->coin * 2);
+                    $credits    = !$is_dbl ? $star_plan->credits : ($star_plan->credits * 2);
 
                     $statusCode = $transaction->getStatus();
                     if (in_array($statusCode, [3, 4])) {

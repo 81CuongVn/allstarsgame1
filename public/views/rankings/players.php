@@ -146,7 +146,7 @@
 			<div class="button" style="position:relative; top: 15px;"></div>
 		</div>
 	<?php } ?>
-	<div class="break"></div>	
+	<div class="break"></div>
 	<?=partial('shared/paginator', [
     	'pages'		=> $pages,
 		'current'	=> $page + 1

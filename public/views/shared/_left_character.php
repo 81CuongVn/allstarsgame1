@@ -78,19 +78,24 @@
 				<b class=""><?=$player->character()->anime()->description()->name;?></b>
 			</div>
 			<div class="menu_esquerdo_divisao">
-				<b class="amarelo"><?php echo t('global.character') ?></b>
-				<?php $character_name = explode(' ', $player->character()->description()->name); ?>
-				<b class=""><?php echo $character_name[0]; ?></b>
+				<b class="amarelo"><?php echo t('organizations.faction') ?></b>
+				<b class=""><?=$player->faction()->name;?></b>
 			</div>
 		</div>
 		<div class="bg_menu_esquerdo">
 			<div class="menu_esquerdo_divisao">
-				<b class="amarelo"><?php echo t('organizations.faction') ?></b>
-				<b class=""><?=$player->faction()->name;?></b>
-			</div>
-			<div class="menu_esquerdo_divisao">
 				<b class="amarelo">Estrelas</b>
 				<b class=""><?php echo $user->credits ? highamount($user->credits) : "-" ?></b>
+			</div>
+			<div class="menu_esquerdo_divisao">
+				<b class="amarelo">Pts. Round</b>
+				<b class=""><?php echo $user->round_points ? highamount($user->round_points) : "-" ?></b>
+			</div>
+		</div>
+		<div class="bg_menu_esquerdo">
+			<div class="menu_esquerdo_divisao" style="width: 100%">
+				<b class="amarelo">Poder de Batalha</b>
+				<b class=""><?=highamount($player->fight_power());?></b>
 			</div>
 		</div>
 		<div class="bg_menu_esquerdo">

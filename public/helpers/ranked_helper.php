@@ -12,7 +12,7 @@ function ranked_up_points($rank) {
         2   => 9,
         1   => 10
     ];
-    return (500 / 5) * $ranks[$rank];
+    return (250 / 5) * $ranks[$rank];
 }
 
 function ranked_down_points($rank) {

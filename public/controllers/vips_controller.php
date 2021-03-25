@@ -345,13 +345,20 @@ class VipsController extends Controller {
 			$this->assign("is_dbl", false);	
 		}
 
-		$methods = [
-			'pagseguro'		=> 'R$',
-			'paypal_euro'	=> '€',
-			'paypal_dollar'	=> '$',
-			'paypal_brl'	=> 'R$'
+		$methods	= [
+			'pagseguro'		=> 'BRL',
+			'paypal_euro'	=> 'EUR',
+			'paypal_dollar'	=> 'USD',
+			// 'paypal_brl'	=> 'BRL'
 		];
+		$symbols	= [
+			'BRL'			=> 'R$',
+			'EUR'			=> '€',
+			'USD'			=> '$',
+		];
+
 		$this->assign("methods",	$methods);
+		$this->assign("symbols",	$symbols);
 		$this->assign("plans",		StarPlan::all());
 		$this->assign("player",		Player::get_instance());
 	}
@@ -394,20 +401,22 @@ class VipsController extends Controller {
 		
 		if ($star_purchase) {
 			$star_plan	= StarPlan::find_first("id = " . $star_purchase->star_plan_id);
-			$coins	= [
+			$coins		= [
 				'pagseguro'		=> 'BRL',
 				'paypal_euro'	=> 'EUR',
 				'paypal_dollar'	=> 'USD',
 				'paypal_brl'	=> 'BRL'
 			];
-			switch ($star_purchase->star_method){
+			$price		= 'price_' . strtolower($coins[$star_purchase->star_method]);
+
+			switch ($star_purchase->star_method) {
 				case 'pagseguro':
 					\PagSeguro\Library::initialize();
 					\PagSeguro\Library::cmsVersion()->setName(GAME_NAME)->setRelease(GAME_VERSION);
 					\PagSeguro\Library::moduleVersion()->setName(GAME_NAME)->setRelease(GAME_VERSION);
 
 					$payment = new \PagSeguro\Domains\Requests\Payment();
-					$payment->addItems()->withParameters($star_plan->id, $star_plan->name, 1, $star_plan->valor);
+					$payment->addItems()->withParameters($star_plan->id, $star_plan->name, 1, $star_plan->$price);
 					$payment->setCurrency($coins[$star_purchase->star_method]);
 					$payment->setReference($star_purchase->id);
 					$payment->setRedirectUrl(make_url('vips/make_donation'));
@@ -431,7 +440,7 @@ class VipsController extends Controller {
 					$p->addField('notify_url',		make_url('callback/paypal'));
 					$p->addField('item_name',		$star_plan->name);
 					$p->addField('currency_code',	$coins[$star_purchase->star_method]);
-					$p->addField('amount',			$star_plan->valor);
+					$p->addField('amount',			$star_plan->$price);
 					$p->addField('custom',			$star_purchase->id);
 
 					$p->submitPayment();

@@ -148,8 +148,8 @@
     <?php
         echo partial('shared/info', array(
             'id'		=> 1,
-            'title'		=> 'ranked.liga',
-            'message'	=> t('battles.ranked.description2')
+            'title'		=> 'battles.ranked.title',
+            'message'	=> t('battles.ranked.description')
         ));
     ?>
 </div>

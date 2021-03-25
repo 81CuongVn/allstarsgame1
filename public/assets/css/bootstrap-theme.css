@@ -99,6 +99,9 @@ body.modal-open {
 }
 
 /* OTHERS */
+.label {
+	font-size: unset;
+}
 .content-center {
 	text-align: center;
 }
@@ -121,4 +124,67 @@ body.modal-open {
 }
 .no-padding {
     padding: 0;
+}
+
+.vcenter {
+    display: inline-block;
+    vertical-align: middle;
+    float: none;
+}
+
+/* TABLES */
+.table > tbody > tr > td,
+.table > tbody > tr > th,
+.table > tfoot > tr > td,
+.table > tfoot > tr > th,
+.table > thead > tr > td,
+.table > thead > tr > th {
+	vertical-align: middle;
+	border: none;
+}
+.table-striped tr:nth-child(odd) td {
+	background-color: #091e30 !important;
+	border-top: 1px solid #0e263d;
+	border-bottom: 1px solid #0e263d;
+}
+.table-striped tr:nth-child(even) td {
+	background-color: #173148 !important;
+	border-top: 1px solid #0e263d;
+	border-bottom: 1px solid #0e263d;
+}
+.mr-debug-window .table-striped tr:nth-child(odd) td {
+	background-color: #061728 !important;
+	border-top: 1px solid #0e263d;
+	border-bottom: 1px solid #0e263d;
+}
+.mr-debug-window .table-striped tr:nth-child(even) td {
+	border-top: 1px solid #0e263d;
+	border-bottom: 1px solid #0e263d;
+}
+
+/* NAV PILLS */
+.nav-pills > li + li {
+	margin-left: 0;
+}
+.nav-pills > li.active > a,
+.nav-pills > li.active > a:hover,
+.nav-pills > li.active > a:focus,
+.nav-pills > li > a:hover {
+	color: #fff;
+	background-color: #163247;
+	border-bottom-color: transparent;
+	cursor: default;
+}
+.nav-pills > li:first-child > a {
+	margin-left: 0;
+}
+.nav-pills > li > a {
+	background-color: #061424;
+	margin: 1px;
+}
+.nav-pills > li:last-child > a {
+	margin-right: 0;
+}
+.nav-pills > li > a:hover {
+	cursor: pointer !important;
 }

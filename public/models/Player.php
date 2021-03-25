@@ -103,9 +103,6 @@ class Player extends Relation {
 
 		$this->clear_fixed_effects('fixed');
 		$this->refresh_talents();
-		$this->update_online();
-		$this->check_heal();
-		$this->ranked();
 	}
 
 	protected function before_update() {
@@ -5980,7 +5977,11 @@ class Player extends Relation {
 	}
 	function fight_power() {
 		$fight_power = 0;
-		return $fight_power;
+		$fight_power += ($this->for_init()) * 300;
+		$fight_power += ($this->for_atk() + $this->for_prec() + $this->for_def()) * 250;
+		$fight_power += ($this->for_crit() + $this->for_abs()) * 200;
+
+		return round($fight_power);
 	}
 	function daily_quests() {
 		return PlayerDailyQuest::find('player_id=' . $this->id);
@@ -6051,7 +6052,6 @@ class Player extends Relation {
 			}
 		}
 	}
-
 	function refresh_talents($enemy = null) {
 		$talents	= Recordset::query('SELECT a.item_id FROM player_items a JOIN items b ON b.id=a.item_id AND b.item_type_id=6 WHERE player_id=' . $this->id);
 		foreach ($talents->result() as $talent) {
@@ -6068,9 +6068,8 @@ class Player extends Relation {
 	}
 	function valid_gem_combination($item_id, $combination, $ordem){
 		$player_item_gem 		= PlayerItemGem::find_first("item_id=".$item_id." AND player_id=".$this->id);
-
-		if($player_item_gem){
-			switch($ordem){
+		if ($player_item_gem) {
+			switch ($ordem) {
 				case 1:
 					$array1 = array("0" => $player_item_gem->gem_1, "1" => $player_item_gem->gem_2);
 					$result = array_diff_assoc($combination,$array1);
@@ -6090,7 +6089,7 @@ class Player extends Relation {
 					return $result;
 					break;
 			}
-		}else{
+		} else {
 			return false;
 		}
 
@@ -6104,7 +6103,6 @@ class Player extends Relation {
 	function has_unlocked_item($id) {
 		return PlayerItem::find_first('player_id=' . $this->id . ' AND item_id=' . $id);
 	}
-
 	function organization() {
 		return Organization::find($this->organization_id);
 	}
@@ -6139,7 +6137,7 @@ class Player extends Relation {
 		}
 	}
 
-	private function check_heal() {
+	function check_heal() {
 		$effects	=  $this->get_parsed_effects();
         $now		= new DateTime();
 
@@ -6207,14 +6205,12 @@ class Player extends Relation {
 		return is_player_online($this->id);
 	}
 
-	private function update_online() {
+	function update_online() {
 		$redis = new Redis();
 		if ($redis->pconnect(REDIS_SERVER, REDIS_PORT)) {
 			$redis->auth(REDIS_PASS);
 			$redis->select(0);
 
-			// $online = $redis->get('players_online');
-			// $redis->set('players_online', $online + 1);
 			$redis->set('player_' . $this->id . '_online', now(true));
 		}
 	}

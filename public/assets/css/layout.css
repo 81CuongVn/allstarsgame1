@@ -1694,7 +1694,7 @@ div hr{
 .menu .menu-content ul li ul {
 	display: none;
 	position: absolute;
-	padding: 10px 0px;
+	padding: 5px 0px;
 	background-color: #05111A;
 	border-bottom-right-radius: 5px;
 	border-bottom-left-radius: 5px;
@@ -1704,7 +1704,7 @@ div hr{
 	display: block;
 	float: none;
 	text-align: left;
-	width: 150px
+	width: 160px
 }
 
 .menu .menu-content ul li ul li a {
@@ -1723,7 +1723,13 @@ div hr{
 }
 
 .menu .menu-content ul li ul li:hover {
-	background-color: transparent !important
+	/* background-color: transparent !important; */
+	background-color: rgba(51, 122, 183, .5);
+    border-radius: 2px;
+}
+.menu .menu-content ul li ul li:hover a {
+	text-decoration: none;
+	color: #fff;
 }
 
 #esquerda.with-player, #direita.with-player {
@@ -1909,46 +1915,6 @@ div hr{
 	border-radius: 5px;
 }
 
-.table-striped tr:nth-child(odd) td {
-	background-color: #061728 !important;
-	border-top: 1px solid #0e263d;
-	border-bottom: 1px solid #0e263d;		
-}
-
-.table-striped tr:nth-child(even) td {
-	border-top: 1px solid #0e263d;
-	border-bottom: 1px solid #0e263d;		
-}
-
-.nav-pills>li+li {
-	margin-left: 0;
-}
-
-.nav-pills > li.active > a,
-.nav-pills > li.active > a:hover,
-.nav-pills > li.active > a:focus,
-.nav-pills > li > a:hover {
-	color: #fff;
-	background-color: #163247;
-	/*border: 1px solid #061826;*/
-	border-bottom-color: transparent;
-	cursor: default;
-}
-
-.nav-pills > li:first-child > a {
-	margin-left: 0;
-}
-.nav-pills > li > a {
-	background-color: #061424;
-	margin: 1px;
-}
-.nav-pills > li:last-child > a {
-	margin-right: 0;
-}
-
-.nav-pills > li > a:hover {
-	cursor: pointer !important;
-}
 .commom{
 	color: #999 !important;	
 }

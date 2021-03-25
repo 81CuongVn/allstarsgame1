@@ -15,7 +15,7 @@ pt-BR:
     friend: Amigos
     event: Eventos
   menus:
-    tournaments: Campeonato All-Star
+    tournaments: Torneio All-Star
     tutorial: Tutorial
     objectives: Objetivos de Round
     quests_battle: Missões de Combate
@@ -68,7 +68,7 @@ pt-BR:
     history_mode: Modo Aventura
     quests_daily: Missões Diárias
     organization_quests_daily: Missões Semanais
-    battles_ranked: Liga All-Star
+    battles_ranked: Liga All-Stars
     battles:
       npc: Batalha NPC
       pvp: Batalha PVP
@@ -780,18 +780,15 @@ pt-BR:
     ir_fila: Ir para a fila
     sair_fila: Sair da fila
     ranked: 
-      title: Modo Rankeados
+      title: Liga All-Stars
       description: |
-        Para cada Rank você tem no máximo 25 lutas para fazer.
-        Cada vitória te dá 4 pontos, cada empate te dá 2 pontos e cada derrota você não ganha nem perde nada.<br />
-        Fique atento à quantidade necessária de pontos para subir de Rank, pois você pode lutar para permanecer no mesmo Rank ou senão vai descer para o Rank anterior!<br /><br />
-        <a id="battle-ranked-enter-queue" href="javascript:;" class="btn btn-primary btn-lg">Ir para fila</a><br /><br />
-        <span class="laranja">Essa fila pode demorar alguns minutos, caso demore muito você pode cancelar a fila à qualquer momento.</span>
-      description2: |
-        Para cada Rank você tem no máximo 25 lutas para fazer.
-        Cada vitória te dá 4 pontos, cada empate te dá 2 pontos e cada derrota você não ganha nem perde nada.<br />
-        Fique atento à quantidade necessária de pontos para subir de Rank, pois você pode lutar para permanecer no mesmo Rank ou senão vai descer para o Rank anterior!<br /><br />
-        <span class="laranja">A fila funciona automaticamente agora na fila pvp nos seguintes dias da semana ( Domingo, Terça e Quinta ).</span>
+        Este é um dos módulos competitivos do jogo,
+        onde você pode lutar para conseguir ótimas recompensas e titúlos únicos!
+        Além de ser eternizado na página inicial do jogo.<br /><br />
+        Cada <span class="verde">vitória te dá 6 pontos</span>, <span class="verde">empate te dá 3 pontos</span> e <span class="vermelho">derrota você perde 1 ponto</span>.<br />
+        Cuidado, caso você zere seus pontos e continue perdendo, ficará com pontuação negativa!<br /><br />
+        
+        <span class="laranja">A fila irá funcionar juntamenta com a fila PvP todo: <u>Domingo, terça-feira e quinta-feira</u>.</span>
     waiting: 
       title: Aguardando oponente
       description: Você está aguardando oponente e isso pode levar alguns minutos e aconselhamos você ficar nessa página, pois, achando oponente você será redirecionado automaticamente para o combate.<br/><br/> Você também pode fechar sua sala quando quiser.<br /><br /><a class="btn btn-danger decline">Fechar Sala</a>
@@ -2234,17 +2231,17 @@ pt-BR:
       13: x1 Joia Aleatória
       14: x1 Gema Rara
       15: 800 de 
-      16: 1600 de Experiência
+      16: 1.600 de Experiência
       17: x2 Nigiri
       18: x1 Mascote Aleatório
       19: x1 Areia Estelar
-      20: 1600 de
-      21: 3200 de Experiência
+      20: 1.600 de
+      21: 3.200 de Experiência
       22: x2 Bento
       23: x1 Joia Aleatória
       24: x1 Sangue de Deus 
-      25: 3200 de
-      26: 6400 de Experiência
+      25: 3.200 de
+      26: 6.400 de Experiência
       27: x2 Churrasco
       28: x1 Gema Lendária
       29: x1 Equipamento Lendário
@@ -2370,4 +2367,35 @@ pt-BR:
       invalid_character: Personagem inválido
       dont_have: Você não tem mais esse talento disponivel para ativa-lo.
   tournaments:
-    title: Campeonato ALl-Star
+    requirements:
+      level: |
+        Você precisa ter nível #{level} ou maior
+    success:
+      subscribe: Inscrição realizada com sucesso!
+    errors:
+      already_subscribed: Você já tem um personagens inscrito nesse torneio!
+      wait_draw: Aguardando o sorteio da chave.
+      enough_credits: Você não possui estrelas suficientes
+      enough_currency: |
+        Você não possui #{currency} suficientes
+    view:
+      bracket: Chave do Torneio
+      players: Jogadores inscritos no torneio
+    status:
+      canceled: Cancelado
+      finished: Finalizado
+    rounds:
+      subscriptions: Inscrições
+      final: Final
+      semifinal: Semifinal
+      quarterfinals: Quartas de inal
+      normal: |
+        Rodada #{round}
+    title: Torneio ALl-Star
+    info:
+      title: Como funciona o torneio?
+      description: |
+        Os torneios são realizados toda sexta-feira, sábado e domingo.<br />
+        As inscrições serão encerradas 30 minutos antes do inicio do torneio. A inscrição pode ser paga com #{currency} ou Estrelas<br /><br />
+
+        <span class="laranja">* Caso o torneio não alcance o total de inscrições, o mesmo será cancelado e a taxa de inscrição reembolsada.</span>

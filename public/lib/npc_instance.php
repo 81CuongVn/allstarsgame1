@@ -362,11 +362,12 @@ class NpcInstance {
 	function battle_exp($win = false) {
 		if ($win) {
 			$exp	= (250 - ($this->level * 5) + $this->level) * 2;
-			if ($exp < 0) {
-				$exp = 0;	
-			}
 		} else {
 			$exp	= (200 - ($this->level * 5) + $this->level) * 2;
+		}
+
+		if ($exp < 0) {
+			$exp = 0;	
 		}
 
 		return floor($exp * EXP_RATE);

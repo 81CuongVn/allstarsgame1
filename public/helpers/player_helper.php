@@ -23,4 +23,7 @@ function is_player_online($id) {
 if (isset($_SESSION['player_id']) && $_SESSION['player_id']) {
     $player = Player::find($_SESSION['player_id']);
     Player::set_instance($player);
+
+    $player->update_online();
+    $player->check_heal();
 }

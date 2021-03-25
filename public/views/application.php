@@ -409,6 +409,7 @@ if ($_SESSION['user_id']) {
 <script type="text/javascript" src="<?=asset_url('js/organizations.js');?>"></script>
 <script type="text/javascript" src="<?=asset_url('js/vips.js');?>"></script>
 <script type="text/javascript" src="<?=asset_url('js/png_animator.js');?>"></script>
+<script type="text/javascript" src="<?=asset_url('js/tournaments.js');?>"></script>
 <!-- Conteúdo -->
 </body>
 </html>

@@ -33,8 +33,8 @@ $(function () {
 <?php
 	echo partial('shared/info', array(
 		'id'		=> 1,
-		'title'		=> 'ranked.liga',
-		'message'	=> t('battles.ranked.description2')
+		'title'		=> 'battles.ranked.title',
+		'message'	=> t('battles.ranked.description')
 	));
 ?>
 <?php if ($league) { ?>
@@ -77,7 +77,7 @@ $(function () {
 							<?php } ?>
 						</div>
 						<div id="liga-container-<?php echo $rank; ?>" class="technique-container">
-							<div style="margin: 5px 15px; margin-top: 0; min-width: 220px;">
+							<div style="min-width: 220px;">
 								<span class="amarelo" style="font-size:14px"><?php echo t('ranked.promotion');?></span><br /><br />
 								<?php if ($rank != 10) { ?>
 									<span class="vermelho"><?php echo t('ranked.down');?>:</span> <?php echo highamount($league->down_points($rank)); ?> <?php echo t('ranked.points2');?><br />

@@ -6,25 +6,25 @@ class RankingsController extends Controller {
 		$limit		= 32;
 		$filter		= '';
 		
-		if(!$_POST) {
+		if (!$_POST) {
 			$filter			.= '';
 			$anime_id		= 0;
 			$character_id	= 0;
 			$faction_id		= 0;
-			$round			= "r3";
+			$round			= "r2";
 			$graduation_id	= 0;
 			$name			= '';
 		} else {
-			if(isset($_POST['anime_id']) && is_numeric($_POST['anime_id'])) {
-				if($_POST['anime_id'] != 0) {
+			if (isset($_POST['anime_id']) && is_numeric($_POST['anime_id'])) {
+				if ($_POST['anime_id'] != 0) {
 					$filter	.= ' AND anime_id=' . $_POST['anime_id'];						
 				}
 				$anime_id	= $_POST['anime_id'];
 			} else {
 				$anime_id	= $player->character()->anime_id;
 			}
-			if(isset($_POST['character_id']) && is_numeric($_POST['character_id'])) {
-				if($_POST['character_id'] != 0) {
+			if (isset($_POST['character_id']) && is_numeric($_POST['character_id'])) {
+				if ($_POST['character_id'] != 0) {
 					$filter	.= ' AND character_id=' . $_POST['character_id'];						
 				}
 
@@ -33,14 +33,14 @@ class RankingsController extends Controller {
 				$character_id = 0;
 			}
 			
-			if(isset($_POST['faction_id']) && is_numeric($_POST['faction_id'])) {
+			if (isset($_POST['faction_id']) && is_numeric($_POST['faction_id'])) {
 				if($_POST['faction_id'] != 0) {
 					$filter	.= ' AND faction_id=' . $_POST['faction_id'];						
 				}
 
 				$faction_id	= $_POST['faction_id'];
 			}
-			if(isset($_POST['round']) && strlen(trim($_POST['round']))) {
+			if (isset($_POST['round']) && strlen(trim($_POST['round']))) {
 				$filter	.= ' AND round="' . $_POST['round'].'"';						
 
 				$round	= $_POST['round'];
@@ -48,7 +48,7 @@ class RankingsController extends Controller {
 				$round	= '';
 			}
 
-			if(isset($_POST['name']) && strlen(trim($_POST['name']))) {
+			if (isset($_POST['name']) && strlen(trim($_POST['name']))) {
 				$filter	.= ' AND name LIKE "%' . addslashes($_POST['name']) . '%"';
 				$name	= $_POST['name'];
 			} else {
@@ -59,17 +59,17 @@ class RankingsController extends Controller {
 		$animes		= Anime::find('active=1', ['cache' => true]);
 		$factions	= Faction::find('1=1', ['cache' => true]);
 
-		$this->assign('player', $player);
-		$this->assign('players', $result['players']);
-		$this->assign('pages', $result['pages']);
-		$this->assign('page', $page);
-		$this->assign('anime_id', $anime_id);
-		$this->assign('character_id', $character_id);
-		$this->assign('faction_id', $faction_id);
-		$this->assign('round', $round);
-		$this->assign('name', $name);
-		$this->assign('animes', $animes);
-		$this->assign('factions', $factions);
+		$this->assign('player',			$player);
+		$this->assign('players',		$result['players']);
+		$this->assign('pages',			$result['pages']);
+		$this->assign('page',			$page);
+		$this->assign('anime_id',		$anime_id);
+		$this->assign('character_id',	$character_id);
+		$this->assign('faction_id',		$faction_id);
+		$this->assign('round',			$round);
+		$this->assign('name',			$name);
+		$this->assign('animes',			$animes);
+		$this->assign('factions',		$factions);
 	}
 	function players() {
 		$player		= Player::get_instance();

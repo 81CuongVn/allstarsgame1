@@ -27,16 +27,16 @@
 					<option value="eterno" <?php if ("eterno" == $round): ?>selected="selected"<?php endif ?>>Eterno</option>
 					<option value="r1" <?php if ("r1" == $round): ?>selected="selected"<?php endif ?>>Round 1</option>
 					<option value="r2" <?php if ("r2" == $round): ?>selected="selected"<?php endif ?>>Round 2</option>
-					<option value="r3" <?php if ("r3" == $round): ?>selected="selected"<?php endif ?>>Round 3</option>
+					<option value="eterno2" <?php if ("eterno2" == $round): ?>selected="selected"<?php endif ?>>Eterno 2</option>
 				</select>
 			</td>
 			<td align="center" style="max-width: 86px;">
 				<b><?php echo t('characters.select.labels.faction') ?></b><br />
 				<select class="form-control input-sm" name="faction_id" style="width: 80px">
 					<option value="0"><?php echo t('global.all') ?></option>
-          <?php foreach ($factions as $faction): ?>
+					<?php foreach ($factions as $faction): ?>
 						<option value="<?=$faction->id;?>"<?php if ($faction->id == $faction_id): ?>selected="selected"<?php endif ?>><?=$faction->name;?></option>
-          <?php endforeach ?>
+					<?php endforeach ?>
 				</select>
 			</td>
 			<td align="center" style="max-width: 130px;">
@@ -48,9 +48,8 @@
 			</td>
 		</tr>
 	</table>
-	<br />
-	<br />
 	<input type="hidden" name="page" value="<?=$page;?>" />
+	<br /><br />
 	<?php
 	foreach ($players as $p) {
 		if ($anime_id) {
