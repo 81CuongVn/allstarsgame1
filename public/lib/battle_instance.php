@@ -61,10 +61,10 @@
 			$this->log			= [];
 			$log				= [];
 
-			$critical_image		= '<img src="' . image_url('icons/for_crit.png') . '" align="absmiddle" />';
-			$absorb_image		= '<img src="' . image_url('icons/for_abs.png') . '" align="absmiddle" />';
-			$precision_image	= '<img src="' . image_url('icons/for_prec.png') . '" align="absmiddle" />';
-			$bleeding_image		= '<img src="' . image_url('icons/bleed.png') . '" align="absmiddle" />';
+			$critical_image		= '<img src="' . image_url('icons/for_crit.png') . '" align="absmiddle" />&nbsp;';
+			$absorb_image		= '<img src="' . image_url('icons/for_abs.png') . '" align="absmiddle" />&nbsp;';
+			$precision_image	= '<img src="' . image_url('icons/for_prec.png') . '" align="absmiddle" />&nbsp;';
+			$bleeding_image		= '<img src="' . image_url('icons/bleed.png') . '" align="absmiddle" />&nbsp;';
 			$strong_image		= '<span class="glyphicon glyphicon-chevron-up" style="color: #00b008"></span>&nbsp;';
 
 			$player_effects		= $this->player->get_parsed_effects();

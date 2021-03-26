@@ -1320,8 +1320,9 @@ trait BattleSharedMethods {
 									$player_quest_daily->save();
 								endforeach;
 							}
+
 							// Não dá score ao vencer o npc da arena
-							if($battle->battle_type_id <> 3){
+							if ($battle->battle_type_id <> 3) {
 								$p->wins_npc++;
 							}
 
@@ -1383,16 +1384,16 @@ trait BattleSharedMethods {
 
 						$exp_text = ($exp + $exp_extra);
 						if ($exp_extra) {
-							$exp_text .= " ({" . highamount($exp) . "}";
+							$exp_text .= " (" . highamount($exp);
 							if ($exp_extra)
-								$exp_text .= " <span class=\"verde\">+ {" . highamount($exp_extra) . "}</span>";
+								$exp_text .= " <span class=\"verde\">+ " . highamount($exp_extra) . "</span>";
 							$exp_text .= ')';
 						}
 						$currency_text = ($currency + $currency_extra);
 						if ($currency_extra) {
-							$currency_text .= " ({" . highamount($currency) . "}";
+							$currency_text .= " (" . highamount($currency);
 							if ($currency_extra)
-								$currency_text .= " <span class=\"verde\">+ {" . highamount($currency_extra) . "}</span>";
+								$currency_text .= " <span class=\"verde\">+ " . highamount($currency_extra) . "</span>";
 							$currency_text .= ')';
 						}
 						$finished_message		= partial('shared/info', [
@@ -1538,16 +1539,16 @@ trait BattleSharedMethods {
 
 						$exp_text = ($exp + $exp_extra);
 						if ($exp_extra) {
-							$exp_text .= " ({" . highamount($exp) . "}";
+							$exp_text .= " (" . highamount($exp);
 							if ($exp_extra)
-								$exp_text .= " <span class=\"verde\">+ {" . highamount($exp_extra) . "}</span>";
+								$exp_text .= " <span class=\"verde\">+ " . highamount($exp_extra) . "</span>";
 							$exp_text .= ')';
 						}
 						$currency_text = ($currency + $currency_extra);
 						if ($currency_extra) {
-							$currency_text .= " ({" . highamount($currency) . "}";
+							$currency_text .= " (" . highamount($currency);
 							if ($currency_extra)
-								$currency_text .= " <span class=\"verde\">+ {" . highamount($currency_extra) . "}</span>";
+								$currency_text .= " <span class=\"verde\">+ " . highamount($currency_extra) . "</span>";
 							$currency_text .= ')';
 						}
 						$finished_message		= partial('shared/info', [
