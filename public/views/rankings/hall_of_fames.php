@@ -1,3 +1,8 @@
+<style type="text/css">
+	.select2-container--bootstrap {
+		margin-bottom: 0;
+	}
+</style>
 <?=partial('shared/title', [
 	'title'	=> 'rankings.hall.title',
 	'place'	=> 'rankings.hall.title'
@@ -11,7 +16,7 @@
 		<tr>
 			<td align="center" style="max-width: 200px;">
 				<b><?php echo t('characters.create.labels.anime') ?></b><br />
-				<select class="form-control input-sm" name="anime_id" id="anime_id" style="width: 186px">
+				<select class="form-control input-sm select2" name="anime_id" id="anime_id" style="width: 186px">
 					<option value="0"><?php echo t('global.all') ?></option>
 					<?php foreach ($animes as $anime): ?>
 						<option value="<?php echo $anime->id ?>" <?php if ($anime->id == $anime_id): ?>selected="selected"<?php endif ?>><?php echo $anime->description()->name ?></option>
@@ -19,7 +24,12 @@
 				</select>
 			</td>
 			<td align="center" style="max-width: 151px;">
-				<div id="characters">Carregando...</div>
+				<b><?php echo t('characters.create.labels.character') ?></b><br />
+				<div id="characters">
+					<select name="character_id" class="form-control input-sm select2" id="character_id" style="width: 121px">
+						<option value="0"><?php echo t('global.all') ?></option>
+					</select>
+				</div>
 			</td>
 			<td align="center" style="max-width: 98px;">
 				<b>Round</b><br />
@@ -35,7 +45,7 @@
 				<select class="form-control input-sm" name="faction_id" style="width: 80px">
 					<option value="0"><?php echo t('global.all') ?></option>
 					<?php foreach ($factions as $faction): ?>
-						<option value="<?=$faction->id;?>"<?php if ($faction->id == $faction_id): ?>selected="selected"<?php endif ?>><?=$faction->name;?></option>
+						<option value="<?=$faction->id;?>"<?php if ($faction->id == $faction_id): ?>selected="selected"<?php endif ?>><?=$faction->description()->name;?></option>
 					<?php endforeach ?>
 				</select>
 			</td>

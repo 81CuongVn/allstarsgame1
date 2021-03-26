@@ -260,8 +260,9 @@
 			$('#select-player-list-container .player').removeClass('selected');
 			_.addClass('selected');
 
-			$('#current-player-info .name').html(player.name);
+			$('#current-player-name').html(player.name);
 			$('#current-player-info .anime').html(player.anime);
+			$('#current-player-info .faction').html(player.faction);
 			$('#current-player-info .level').html(player.level);
 			$('#current-player-info .currency').html(player.currency);
 			$('#current-player-info .amount').html(player.amount);

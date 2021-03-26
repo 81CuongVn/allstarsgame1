@@ -1,3 +1,8 @@
+<style type="text/css">
+	.select2-container--bootstrap {
+		margin-bottom: 0;
+	}
+</style>
 <?php echo partial('shared/title', array('title' => 'rankings.rankeds.title', 'place' => 'rankings.rankeds.title')) ?>
 <div class="barra-secao barra-secao-<?php echo $player->character()->anime_id ?>">
 	<p>Filtro do Ranking</p>
@@ -7,7 +12,7 @@
 		<tr>
 			<td align="center">
 				<b><?php echo t('characters.create.labels.anime') ?></b><br />
-				<select name="anime_id" id="anime_id" class="form-control input-sm" style="width:130px">
+				<select name="anime_id" id="anime_id" class="form-control input-sm select2" style="width:130px">
 					<option value="0"><?=t('global.all');?></option>
 					<?php foreach ($animes as $anime): ?>
 					<option value="<?=$anime->id;?>" <?php if ($anime->id == $anime_id): ?>selected="selected"<?php endif; ?>><?=$anime->description()->name;?></option>
@@ -28,7 +33,7 @@
 				<select name="faction_id" class="form-control input-sm" style="width: 85px;">
 					<option value="0"><?php echo t('global.all') ?></option>
 					<?php foreach ($factions as $faction): ?>
-						<option value="<?=$faction->id;?>"<?php if ($faction->id == $faction_id): ?>selected="selected"<?php endif ?>><?=$faction->name;?></option>
+						<option value="<?=$faction->id;?>"<?php if ($faction->id == $faction_id): ?>selected="selected"<?php endif ?>><?=$faction->description()->name;?></option>
           			<?php endforeach ?>
 				</select>
 			</td>
@@ -128,7 +133,7 @@
 			</div>
 			<div class="description" style="height: auto; font-size:11px">
 				<span style="font-size:12px">
-					<?=$p->anime()->description()->name;?> /<br />
+					<?=$p->anime()->description()->name;?><br />
 					<?=$p->graduation()->description($p->anime()->id)->name;?>
 				</span><br />
 				Nível <?=highamount($p->level);?>

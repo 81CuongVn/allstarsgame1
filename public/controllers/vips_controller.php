@@ -9,10 +9,11 @@ class VipsController extends Controller {
 		$player				= Player::get_instance();
 		$player_vip_items   = PlayerStarItem::find("player_id=".$player->id." AND item_id=429 AND character_id !=0 AND character_id != ".$player->character_id);
 		
-		$this->assign("vips", $this->allowed_items);
-		$this->assign("player", $player);
-		$this->assign("player_vip_items", $player_vip_items);
-		$this->assign("animes", Anime::find($_SESSION['universal'] ? '1=1' : 'active=1', ['reorder' => 'id ASC']));
+		$this->assign("vips",				$this->allowed_items);
+		$this->assign("player",				$player);
+		$this->assign("player_vip_items",	$player_vip_items);
+		$this->assign("animes",				Anime::find($_SESSION['universal'] ? '1=1' : 'active=1', ['reorder' => 'id ASC']));
+		$this->assign("factions",			Faction::find($_SESSION['universal'] ? '1=1' : 'active=1', ['reorder' => 'id ASC']));
 	}
 	function no_talent(){
 		$this->as_json		= true;

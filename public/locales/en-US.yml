@@ -1,0 +1,2395 @@
+# Linguaguem português brasil
+# Lembrando que esse arquivo segue os padrões estritos YAML 1.1
+# Ou seja, a tabulação tem que ser feita com 2 espaços, caso contrário
+# O parser irá dar erro
+
+en-US:
+  menu_categories:
+    main: Main
+    character: Character
+    academy: Academy
+    world: World
+    battles: Battles
+    guild: Guild
+    ranking: Ranking
+    friend: Friends
+    event: Events
+  menus:
+    tournaments: All-Star Tournament
+    tutorial: Tutorial
+    objectives: Round Objectives
+    quests_battle: Combat Missions
+    enchant: Enchant Techniques
+    quests_account: Account Quests
+    fidelity: Fidelity
+    wanted: Wanteds
+    shop_map: Loja da Exploração
+    invocacao: Summoning Circle
+    events_anime: Battle of Anime
+    maps_show: Continue Exploration
+    exploration: Exploration
+    make_donation: Buy Stars
+    jogador_vip: Stars Shop
+    achievement: Achievements
+    battles_waiting: Battle Lobby
+    battles_training: Training
+    character_guide: Character Guide
+    game_guide: Game Guide
+    friend_search: Find Friends
+    friend_list: Friend's List
+    grimoire: Forbidden Grimoire
+    challenges: Challenges
+    fragments: Fragments of Souls
+    organizations: Guild
+    home: Home
+    pets: Pets
+    join: Create your account
+    account: My Account
+    reset_password: Reset my password
+    contact_us: Contact Us
+    logout: Logout
+    create_character: Create Character
+    select_character: Select Character
+    switch_character: Switch Character
+    character_status: Character Status
+    graduations: Graduations
+    techniques: Techniques
+    specialities: Specialties
+    abilities_specialities: Abilities & Specialties
+    attribute_training: Attribute Training
+    shop: Restaurant
+    shop_weapon: Amplificadores
+    train_techniques: Techniques Training
+    train_technique_status: Techniques Training - Status
+    luck: Casino All-Star
+    talents: Talents
+    inventory: Inventory
+    equipments: Equipaments
+    history_mode: History Mode
+    quests_daily: Daily Quests
+    organization_quests_daily: Weekly Quests
+    battles_ranked: All-Stars League
+    battles:
+      npc: Battle NPC
+      pvp: Battle PVP
+      npc_in_battle: Battle NPC
+      pvp_in_battle: Battle PVP
+    hospital: Hospital
+    rankings:
+      hall: Hall of Fame
+      achievement: Achievements
+      account: Accounts
+      players: Characters
+      organizations: Guilds
+      challenges: Challenges
+      rankeds: All-Stars League
+      battles: Battles
+    prox_level: Go to next level
+    support: |
+      <b>Support</b>
+    quests_time: Time Quests
+    quests_time_wait: Time Quest - Status
+    quests_pet: Pet Quests
+    quests_pet_wait: Pet Quest - Status
+    quests_pvp: PvP Quests
+    quests_pvp_status: PvP Quest - Status
+    private_messages: Messenger
+    organization_details: Guild Details
+    organization_treasure: Exchanging Treasures
+  users:
+    login:
+      errors:
+        invalid: Invalid email and/or password!
+        ip_lock: Your account has been locked due to a change of IP, use the link sent in your email to unlock your account!
+        invalid_captcha: CAPTCHA invalid!
+        account_not_activated: Your account is not yet activated, please check your email to activate your account!
+        beta_disabled: Beta access is disabled!
+        beta_not_allowed: Your account has not yet been authorized to access the beta!
+        account_banned: This account has been banned!
+    beta:
+      title: Beta registration
+      submit: Confirm my beta registration
+      messages:
+        m1_title: Principal information
+        m1_message: |
+          Fill in the fields below to register for the closed beta. Remembering that after the beta, the account will become official, having no need to create a new account.
+          <br /><br />
+          Also remember to use a valid TRUE email, as it will not be possible to use your account without the code that will be sent to your email.
+        m2_title: Congratulations!
+        m2_message: |
+          Your application for the beta has been successfully registered, in a moment you will receive an email with instructions to activate your account, after effecting the activation of your account,
+          you will be participating in the selection of the beta.<br /><br />
+          If you are unable to click on the link in the email, paste the code you provided below and click on "proceed".
+        m3_title: All right!
+        m3_message: Account verified. Keep an eye on our facebook page, to learn more about the game and more details about the beta
+    join:
+      title: Create your account
+      terms:
+        t1: |
+          I have read and agree to the <a href="#{link}">Terms of Use</a>
+        t2: |
+          I have read and agree with the <a href="#{link}">Privacy Policy</a>
+        t3: |
+          I have read and agree to the <a href="#{link}">Rules and Penalties</a>
+        all: I have read and agree to the terms of all attached documents
+      labels:
+        city: City
+        street: Street
+        neighborhood: District
+        state: State
+        zip: Zip Code
+        email: "Email:"
+        name: "Name:"
+        email_confirmation: "Confirm email:"
+        password: "Password:"
+        password_confirmation: "Confirm password:"
+        password_new: "New Password:"
+        password_new_confirmation: "Confirm new password:"
+        country: Country
+        gender: Gender
+        terms: Terms
+        captcha: Captcha Code
+        captcha_refresh: Refresh Code
+      submit: Finish My Registration
+      update_account: Update Account
+      placeholders:
+        city: My City
+        street: My Street
+        neighborhood: My District
+        state: My State
+        zip: My Zip Code
+        name: Your full name
+        email: Enter a valid email address
+        email_confirmation: Confirm the email entered above
+        password: Your password, with at least 8 characters
+        password2: Enter your current password
+        password_confirmation: Confirm the password entered above
+        password_new: Your new password, with at least 8 characters
+        password_new_confirmation: Confirm new password
+        captcha: Enter the code beside
+      validators:
+        name: Invalid name!
+        street: Invalid street!
+        city: Invalid city!
+        neighborhood: Invalid street!
+        state: Invalid state!
+        zip: Invalid zip code!
+        email: Invalid email!
+        email_confirmation: Confirmation email other than email
+        country: Invalid selected country
+        gender: Unspecified gender
+        term1: You must agree to the Terms of Use
+        term2: You must agree to the Privacy Policy
+        term3: You must agree to the Rules and Penalties
+        term_all: You need to confirm that you agree with all attached documents
+        captcha1: Invalid Captcha Code!
+        captcha2: Invalid Captcha Code!
+        password: Invalid password!
+        password_confirmation: Confirmation password different from password
+        password_length: Password cannot be less than 6 characters
+        email_exists: The specified email is already registered
+        password_match: Passwords must be the same
+        password_invalid: The current password is invalid
+        password_new_confirmation: Confirmation password different from the new password
+        same_password: The new password is the same as the current password
+    password_reset:
+      title: Recover my password
+      text: Enter your account email and security code below. In a few moments you will receive an email with instructions on how to reset your password
+      text2: Enter your new password below and press the finish button. After that you will be logged on the site.
+      captcha: Captcha Code
+      email: Email
+      reset: Send instructions
+      reset_finish: Change Password
+      password: New Password
+      password_confirmation: Confirm Password
+      success:
+        title: All right!
+        message: In a few moments you will receive an email with instructions on how to recover your password. Don't forget to check your SPAM box
+      invalid:
+        title: Problem!
+        message: Invalid password change key! Use the menu on the side to request a new password change key
+      errors:
+        invalid_key: Invalid password change key
+        invalid_email: Invalid or not registered email
+        invalid_captcha: Invalid Captcha Code
+    activation:
+      labels:
+        key: Activation key
+      placeholders:
+        key: Enter here the activation key you received in your email
+      title: Activate my account
+      base_text: |
+        <p>In a few moments you will receive an email with a link and activation key for your account. Remember to check that the email did not end up in your spam/junk box.</p>
+        <p>If you are unable to use the links that were sent in your email, you can copy the activation code and paste it below, and then click on the "Proceed" button to activate your account.</p>
+    activate:
+      success:
+        title: Congratulations!
+        msg: |
+          <p>Your account has been successfully activated. It is not necessary to enter your access data again as we have already left your account logged in for you to be able to play.</p>
+      error_invalid_key:
+        title: Problem!
+        msg: |
+          <p>Invalid activation key. If you copied the activation code that was sent to your email, try to do the process again and make sure that no space or other character has been pasted in addition to the code.</p>
+      error_activated:
+        title: Problem!
+        msg: |
+          <p>Your account has already been activated.</p>
+    account_locked:
+      title: Account Unlock
+      title2: We are almost there
+      message: |
+        To unlock your account, just click the button below.<br /><br />
+        Remembering again, that for each different IP that your account is connected, you will have to lobby your account for security measures.
+      errors:
+        post_key: The account could not be unlocked. Please refresh the page and try again.
+      invalid:
+        title: Problem!
+        message: Invalid unlock key. The specified key is invalid or you have already unlocked your account
+  characters:
+    title_chars: Character limit
+    description_chars: You have reached the maximum number of characters created, to get more characters you need to buy a new slot in the <a href="#{link}">Star Shop</a> to extend the character capacity in the game.
+    title: Creating your character
+    description: | 
+      Choose your favorite character and join the Hero or Villain faction.<br />
+      You can check out the <a href="#{link}">Character Guide</a> to learn everything you need to know about a character before creating it!
+    no_headline: No Headline
+    create:
+      title: Create character
+      labels:
+        name: Name
+        anime: Anime
+        anime_totals: Total by anime
+        character: Character
+        character_totals: Total by character
+      errors:
+        removed: You have reached the limit of characters excluded in your account.
+        invalid_name: Invalid name. Only numbers, letters, spaces and dots are allowed.
+        name_length_max: Your character name cannot have more than 14 characters
+        name_length_min: Your character name must have at least 6 characters
+        existent: There is already a character with that name
+        invalid_character: O personagem que você escolheu é inválido
+        locked: Você não destravou esse personagem ainda
+        life: Você não pode usar esse item com a vida cheia
+        mana: |
+          You cannot use this item with a full #{mana}
+        stamina: You cannot use this item with full stamina
+      submit: Create my character!
+      section_anime: Choose your favorite anime
+      section_character: Choose your favorite character
+      created: Character created
+      created_msg: |
+        <p>Parabéns! Seu personagem foi criado com sucesso. Para começar a jogar, basta seleciona-lo abaixo e clicar no botão "Jogar"</p>
+      change_theme: Themes
+      unlocks_reward: |
+        Destrava ao finalizar a saga <b>#{name}</b> no Modo Aventura
+      unlocks_reward2: |
+        Destrava ao trocar com tesouros de organização.
+      unlocks_reward3: |
+        Não é possível desbloquear este personagem.
+      unlocks_reward4: |
+        Destrava no modo exploração.
+      unlocks_currency: |
+        Destravar com #{amount} #{currency}
+      unlocks_credits: |
+        Destravar com #{amount} Estrelas
+      needs_unlock_player: Você precisa estar com um personagem selecionado para destravar com moedas
+    select:
+      title: Select your character
+      none: No character
+      none_msg: |
+        <p>Você ainda não possui nenhum personagem. <a href="#{url}">Clique aqui</a> para criar um novo personagem.</p>
+      section_favorite: Escolha seu personagem favorito
+      delete_confirmation: Você realmente deseja excluir esse personagem? Essa ação não pode ser desfeita!
+      labels:
+        currency: Currency
+        anime: Anime
+        graduation: Graduation
+        faction: Faction
+        challenge: Challenge
+      errors:
+        banned: Este personagem foi banido!
+        invalid: O personagem especificado é inválido
+        user_match: O personagem especificado não pertence a sua conta
+        pvp_queue: Não é possível trocar de personagem enquanto você estiver na fila de batalhas PVP
+    removed:
+      success: Remover personagem
+      success_msg: O link de confirmação foi validado e seu personagem foi removido com sucesso
+    remove:
+      not_found: O jogador especificado não foi encontrado ou já está removido.
+      organization: Você não pode excluir esse personagem enquanto ele fizer parte de uma Organização
+      invalid: O jogador especificado é inválido
+      same_user: O jogador especificado não pertence a sua conta
+      same_player: Você não pode remover o personagem na qual está jogando no momento. Troque de personagem e tente novamente.
+      success: Remoção de personagem
+      success_msg: |
+        <p>Verifique seu e-mail para continuar com a remoção desse personagem.</p>
+      title: Remover personagem
+      error_title: Problema ao remover personagem
+    status:
+      battle: Battles
+      pet: Pets
+      title: Character Status
+      section_attributes: ATTRIBUTES .........................
+      section_formula: FÓRMULAS ..........................
+      wins_pvp: PVP wins
+      wins_npc: NPC wins
+      draws_pvp: PVP draws
+      draws_npc: NPC draws
+      losses_pvp: PVP losses
+      losses_npc: NPC defeats
+      time: Time
+      interativas: Interactive
+      especiais: PVP
+      daily: Daily
+      account: Acount
+      tarefas: Tasks
+      total_tempo: Total Training
+      pts_distribuidos: Distributed Points
+      change_image:
+        errors:
+          invalid: Imagem inválida
+          belongs: A imagem especificada não pertence ao tema/personagem atual
+          theme: A imagem especificada não pertence ao tema atual
+    themes:
+      choose: Escolha o tema abaixo
+      use_this: Usar esse tema
+      unavailable: Tema indisponível
+      liberado: Destrava no Modo Aventura
+      liberado2: Destrava no Modo Exploração
+      buy_credits: |
+        Comprar por <br />#{price} estrela(s)
+      buy_currency: |
+        Comprar por <br />#{price} #{currency}
+      buy_free: Adquirir
+      already_bought: Tema já adquirido
+      back: Voltar
+      theme_info_click: Clique para ver os detalhes
+      images: Imagens do tema
+      errors:
+        invalid: Tema inválido
+        character: O tema especificado não pertence ao seu personagem
+        enough_credits: Você não possui estrelas suficientes
+        enough_currency: |
+          Você não possui #{currency} suficientes
+        not_bought: Você não possui o tema especificado
+        operation: Ação desconhecida
+    talents:
+      title: Talentos
+      errors:
+        already: Você já possui esse talento
+        requirements: Você não tem os requerimentos necessários para aprender esse talento
+        tree_level: Você já aprendeu um talento para esse nível
+        invalid: Talento inválido
+    next_level:
+      title: Próximo nível
+      message_title: |
+        PARABÉNS, SUA FORÇA ESTÁ AUMENTANDO!
+      message: |
+        Você se esforçou bastante para poder chegar nesse momento e ver as gratificações de seu treino e empenho. Os seus inimigos vão temer sua força e suas novas habilidades.
+      next: Ir para o próximo nível
+    inventory:
+      empty: Seu inventário está vazio =(
+      errors:
+        allowed: O uso desse item não é permitido
+        invalid: Item inválido
+        existent: O item especificado não existe. Por favor reabra seu inventário
+        hospital: Você não pode usar itens do seu inventário enquanto estiver no hospital
+        battle: Você não pode usar itens do seu inventário enquanto estiver em batalha
+    unlock:
+      errors:
+        unallowed_method: Método de destravar não permitido
+        not_enough_currency: Você não possui moedas suficiente
+        not_enough_credits: Você não possui Estrelas suficientes
+    change_headline:
+      errors:
+        invalid: Título inválido
+        not_belongs: Você não possui esse título
+  graduations:
+    index:
+      title: Graduações
+      graduate: Graduar
+      graduated: Graduado
+    requirements:
+      level: |
+        Você precisa ter nível #{level} ou maior
+      quest_count: |
+        Você precisa ter completado #{count} missões
+      training_points: |
+        Você precisa ter #{count} pontos de treino ou mais
+      wins_pvp: |
+        Você precisa de #{count} vitórias PVP ou mais
+      wins_npc: |
+        Você precisa de #{count} vitórias NPC ou mais
+      battles_pvp: |
+        Você precisa de #{count} Batalhas PVP ou mais
+      league_wins: |
+        Você precisa de #{count} vitórias na Liga All-Stars ou mais
+      technique_count: |
+        Você precisa ter treinado #{count} golpes ou mais
+      technique_l1_count: |
+        Você precisa ter treinado #{count} golpes nível 1 ou maior
+      technique_l2_count: |
+        Você precisa ter treinado #{count} golpes nível 2 ou maior
+      technique_l3_count: |
+        Você precisa ter treinado #{count} golpes nível 3 ou maior
+      technique_l4_count: |
+        Você precisa ter treinado #{count} golpes nível 4 ou maior
+      technique_l5_count: |
+        Você precisa ter treinado #{count} golpes nível 5 ou maior
+  techniques:
+    index:
+      how_to_title: Como equipar seus golpes
+      how_to_text: |
+        <p>Para equipar seus golpes, basta arrastar da lista de de golpes disponíveis para uma área dos golpes equipados.</p><br />
+        <p>Se já houver um golpe equipado no slot na qual você quer equipar, o golpe será substituido.</p>
+      title: Golpes
+      learn: Aprender
+      learned: Aprendido
+      header:
+        name: Nome / Descrição
+        status: Status
+        requirements: Requerimentos
+        enhancements: Aprimoramentos
+      title2: Trocando suas Habilidades e Especialidades
+      description2: |
+        Todo personagem vem com 5 Habilidades padrões e 3 Especialidades Padrões. <br /><br /><span class="laranja">Clique com o botão esquerdo para escolher qual usar e/ou escolher o efeito da habilidade/especialidade.</span>
+    learn:
+      learned: Você já aprendeu esse golpe
+      requirements: Você não tem os requerimentos necessários para aprender esse golpe
+      invalid: Golpe inválido
+      success: |
+        <p>A Golpe #{name} foi aprendido com sucesso! Como recompensa, você ganhou #{exp} pontos de experiência!</p>
+      success_title: Golpe aprendido!
+    types:
+      attack: Golpe de ataque
+      defense: Golpe defensivo
+      buff: Modificador
+      unique: Única
+      generic: Genérica
+      ability: Habilidade
+      speciality: Especialidade
+      weapons: Amplificadores
+      talent: Talento
+    # consume: Consumo em combate
+    attack: Ataque
+    defense: Defesa
+    for_inc_crit: Crítico
+    combat_values: Valores para combate
+    usage_requirements: Requerimentos para uso
+    requirements: Requerimentos
+    cooldown: Turnos de espera
+    duration: Duração
+    consume: |
+      Consumo de #{name}
+    training:
+      title: Treinamento de golpes
+      weekly_limit: Limite de treino semanal
+      train: Treinar
+      no_technique_title: Nenhum golpe
+      no_technique: Você ainda não aprendeu nenhum golpe. Aprenda um golpe antes e depois volte para treina-lo.
+      max_level_reached: Esse golpe já está no nível máximo
+      info: |
+        A cada dia da semana é adicionado um valor de treino para que o jogador melhore seus atributos em batalha, esse valor é somado diariamente até que toda terça ele seja resetado.
+      time:
+        1: 30 Minutos
+        2: 1 Hora
+        3: 1 Hora e 30 Minutos
+      header:
+        time: Tempo de Treino
+      errors:
+        invalid_data: Dados inválidos
+        invalid_technique: Golpe inválido
+        invalid_duration: Duração inválida
+        limit: Você já treinou o limite máximo permitido
+        pvp_queue: Você não pode trainar golpes enquanto estiver na fila de batalha pvp
+      wait:
+        title: Treinamento de golpe
+        info: |
+
+          <p>Seu golpe está sendo treinado. Por favor aguarde o tempo especificado abaixo para efetuar outras ações no jogo.</p>
+          <br />
+          <p>Você também pode optar por cancelar o treinamento, porém, não irá ganhar nenhum ponto de treino no seu golpe!</p>
+        time_left: |
+          <span class="laranja">Tempo para terminar o treino:</span>
+        cancel: Cancelar treino
+        cancel_msg: Você quer cancelar o treinamento de golpe?
+        title_finished: Treinamento concluído
+        info_finished: |
+          Parabéns! O treinamento do seu golpe foi finalizado com sucesso.
+        finish: Concluir treino
+        errors:
+          non_finished: O trainamento ainda não está finalizado!
+    tooltip:
+      level_req:
+        req_use: |
+          Usar esse golpe #{have} de #{count} vezes em combate
+        req_kills: |
+          Matar #{have} de #{count} oponentes com esse golpe
+        req_kills_with_crit: |
+          Matar #{have} de #{count} oponentes com esse golpe com dano crítico
+        req_kills_with_precision: |
+          Matar #{have} de #{count} oponentes com esse golpe com precisão
+        req_use_low_stat: |
+          Usar esse golpe #{have} de #{count} vezes com #{mana} abaixo de 50%
+        req_full_defenses: |
+          Usar esse golpe #{have} de #{count} vezes e ainda tomar dano  
+        req_def_crit: |
+          Efetuar #{have} de #{count} defesa(s) críticas(s) com esse golpe
+        req_def_counter: |
+          Efetuar #{have} de #{count} defesa(s) causando dano de contra-ataque
+        req_kills_buff: |
+          Matar #{have} de #{count} oponentes com esse golpe ativo
+        req_kills_with_crit_buff: |
+          Matar #{have} de #{count} oponentes com dano crítico com esse golpe ativo
+        req_kills_with_precision_buff: |
+          Matar #{have} de #{count} oponentes com precisão com esse golpe ativo
+        for_inc_crit: |
+          Aumenta a chance de crítico em #{count}%
+        for_mana: |
+          Reduz o consumo de #{mana} em #{count}%
+        for_atk: |
+          Aumenta o ataque em #{count}
+        for_def: |
+          Aumenta a defesa em #{count}
+        for_hit_chance: |
+          Reduz o requerimento de chance de acerto em #{count}
+        for_hit_chance_inc: |
+          Aumenta seu bônus de chance de acerto quando ativo em #{count}
+        cooldown: |
+          Reduz o tempo de espera do golpe em #{count} turno(s)
+        duration: |
+          Aumenta a duração em #{count} turno(s)
+  abilities:
+    show:
+      click_text_ability: Que ação você gostaria de fazer com essa habilidade ?
+      click_text_speciality: Que ação você gostaria de fazer com essa especialidade ?
+      learn: Aprender
+      modify: Modificar
+    learn_button: Aprender
+    switch_button: Trocar para essa
+    learned_button: Aprendido
+    info_text_title: TIPOS DE HABILIDADES
+    info_text: |
+      Agora você é quem decide qual é o melhor <span class="laranja">Tipo para sua Habilidade</span>, escolha abaixo uma das opções e clique
+      depois no botão <span class="verde">Aprender</span> para poder treinar suas Habilidades normalmente.
+    index:
+      title: Habilidades e Especialidades
+    confirmation: |
+      <h3>Aprender habilidade</h3>
+      Você tem certeza que deseja aprender essa habilidade?
+    learn:
+      invalid: Habilidade inválida
+      learned2: Você já aprendeu essa habilidade
+      requirements: Você não tem os requerimentos suficientes para aprender essa habilidade
+      learned: Você já possui uma habilidade aprendida
+      success_learn_title: Parabéns!
+      success_learn: |
+        <p>Habilidade #{name} aprendida com sucesso!</p>
+      success: |
+        <h3>Parabéns!</h3>
+        Habilidade aprendida com sucesso
+  specialities:
+    learn_button: Aprender
+    switch_button: Trocar para essa
+    learned_button: Aprendido
+    info_text_title: TIPOS DE ESPECIALIDADES
+    info_text: |
+      Agora você é quem decide qual é o melhor <span class="laranja">Tipo para sua Especialidade</span>, escolha abaixo uma das opções e clique
+      depois no botão <span class="verde">Aprender</span> para poder treinar suas Especialidades normalmente.
+    index:
+      title: Especialidades
+    confirmation: |
+      <h3>Aprender especialidade</h3>
+      Você tem certeza que deseja aprender essa especialidade?
+    learn:
+      invalid: Especialidade inválida
+      learned: Você já possui uma especialidade aprendida
+      learned2: Você já aprendeu essa especialidade
+      requirements: Você não tem os requerimentos suficientes para aprender essa especialidade
+      success_learn_title: Parabéns!
+      success_learn: |
+        <p>Especialidade #{name} aprendida com sucesso!</p>
+      success: |
+        <h3>Parabéns!</h3>
+        Especialidade aprendida com sucesso
+  items:
+    requirements:
+      at_for: |
+        #{count} Ponto(s) em Força
+      at_int: |
+        #{count} Ponto(s) em Inteligência
+      at_res: |
+        #{count} Ponto(s) em Resistência
+      graduation: |
+        Requer a graduação #{graduation}
+      level: |
+        Você precisa ser nível #{level} ou maior
+      for_stamina: |
+        Você precisa ter #{total} pontos de Stamina
+      for_mana: |
+        Você precisa ter #{total} pontos de #{mana}
+      ability: |
+        Seu personagem precisa ter a habilidade de "#{name}"
+      speciality: |
+        Seu personagem precisa ter a especialidade de "#{name}"
+  attributes:
+    attributes:
+      headers:
+        manual_training: Treinamento Manual
+        automatic_training: Treinamento Automático
+        quantity: Quantidade
+        status: Status
+        title: Disitribuição dos atributos treinados
+      title: Treinamento de atributos
+      info: |
+        A cada dia da semana é adicionado um valor de treino para que o jogador melhore seus atributos em batalha, esse valor é somado diariamente até que toda terça ele seja resetado.
+      info_finished: Treinamento concluído
+      will_spend_mana: Você irá gastar
+      will_spend_stamina: Você irá gastar
+      train: Treinar
+      weekly_limit: Limite semanal de treino
+      you_won: |
+        Você ganhou:
+      you_spent: |
+        Você gastou:
+      exp: |
+        #{exp} pontos de experiência
+      exp2: |
+        pontos de experiência
+      points: |
+        #{points} pontos de habilidade
+      errors:
+        mana: |
+          Você não tem #{name} suficiente para treinar essa quantidade
+        stamina: Você não tem stamina suficiente para treinar essa quantidade
+        quantity: Quantidade inválida
+        limit: Você já treinou o limite de pontos semanal
+    distribute:
+      select: Selecione
+      having_points: |
+        Você tem <span class="verde">#{total} ponto(s)</span> para treinar seus personagem, preste atenção nos informativos do treino antes de usá-los.<br /><br /><span class="laranja">Você ganhará 1 ponto de treino a cada Nível de sua Conta.</span>
+      no_points: Você não tem mais pontos para distribuir, para conseguir mais um ponto você precisa aumentar o nível da sua conta.
+      info: |
+        Quando a barra de treinamento se completar, você receberá um ponto para treinar seus atributos!
+      distribute: Distribuir
+      distribute_general: Distribuir todos selecionados
+      remove: Remover
+      distribute_all: Distribuir geral
+      errors:
+        header: Problema!
+        invalid: Quantidade de treino inválido
+
+
+
+
+
+
+        enough: Você não tem essa quantidade de pontos disponíveis
+  shop:
+    food:
+      title: Alimentos
+    weapons:
+      title: Amplificadores
+    buy: Comprar
+    none: Nenhum
+    header:
+      name: Item
+      requirements: Requerimentos
+      inventory: Inventário
+      quantity: Quantidade
+      price: Preço
+    errors:
+      invalid: Item inválido
+      enough_credits: Você não possui créditos suficientes para comprar a quantidade especificada
+      enough_currency: Você não tem moedas suficiente para comprar a quantidade especificada
+      method: Método de pagamento inválido
+      dont_have_money: Você não tem itens suficientes para essa compra
+    bought: Item comprado com sucesso!
+  luck:
+    index:
+      names:
+        1: Dinheiro
+        2: Estrelas
+        3: Atributos
+        4: Alimentos
+        5: Experiência
+        6: Mascotes
+        7: Equipamentos
+        8: Encantamento
+      header:
+        equipment: Equipamento Aleatório
+        name: Recompensa
+        chance: Chance
+        won: Quantas vezes você ja ganhou
+      title: Roleta All-Star
+      daily: Diário
+      weekly: Semanal
+      play: Jogar!
+      summon: Invocar
+      won: |
+        <b>Você ganhou: </b> <span>#{prize}</span>
+      won2: |
+        <b>Você Invocou: </b> <span>#{prize}</span>
+      won_count: |
+        Você ganhou #{count} veze(es)
+      messages:
+        point: |
+          #{count} ponto(s) de atributo(s) em #{attribute}
+        training_total: |
+          #{count} no seu total de treino
+        weekly_points_spent: |
+          Reduz #{count} pontos do seu total de treino
+    daily:
+      currency: |
+        #{total}<br />#{currency}
+      credits: |
+        #{total}<br />#{credits}
+    weekly:
+      currency: |
+        #{total}<br />#{currency}
+      credits: |
+        #{total}<br />#{credits}
+    errors:
+      already: Você já jogou no sorte hoje
+      week_empty: Você não jogou todos os dias da semana ainda!
+      currency: |
+        Você não tem #{currency} suficiente para jogar
+      credits: |
+        Você não tem #{credits} suficiente para jogar
+  news:
+    leave_comment: Deixe seu comentário
+    posted_by: |
+      Postado por #{name}
+    post_date: |
+      Postado em: #{date}
+    comment_by: |
+      Comentário por #{name}
+    comment: Comentar
+    no_comments: Nenhum comentário postado até o momento. Seja o primeiro a comentar!
+  battles:
+    message: Você está prestes à gastar 1 estrela nessa ação, gostaria de continuar mesmo assim?
+    trocar: Trocar oponente por 1 estrela
+    ir_fila: Ir para a fila
+    sair_fila: Sair da fila
+    ranked: 
+      title: Liga All-Stars
+      description: |
+        Este é um dos módulos competitivos do jogo,
+        onde você pode lutar para conseguir ótimas recompensas e titúlos únicos!
+        Além de ser eternizado na página inicial do jogo.<br /><br />
+        Cada <span class="verde">vitória te dá 6 pontos</span>, <span class="verde">empate te dá 3 pontos</span> e <span class="vermelho">derrota você perde 1 ponto</span>.<br />
+        Cuidado, caso você zere seus pontos e continue perdendo, ficará com pontuação negativa!<br /><br />
+        
+        <span class="laranja">A fila irá funcionar juntamenta com a fila PvP todo: <u>Domingo, terça-feira e quinta-feira</u>.</span>
+    waiting: 
+      title: Aguardando oponente
+      description: Você está aguardando oponente e isso pode levar alguns minutos e aconselhamos você ficar nessa página, pois, achando oponente você será redirecionado automaticamente para o combate.<br/><br/> Você também pode fechar sua sala quando quiser.<br /><br /><a class="btn btn-danger decline">Fechar Sala</a>
+      description2: Você está aguardando oponente e isso pode levar alguns minutos e aconselhamos você ficar nessa página, pois, achando oponente você será redirecionado automaticamente para o combate.<br/><br/> Você também pode sair da fila quando quiser.<br /><br /><a class="btn btn-danger ranked-decline">Sair da Fila</a>
+      no_room: Nenhuma Batalha de Treinamento criada no momento!
+      desc: Descrição
+      errors:
+        room_invalid: Ação inválida, sala não encontrada.
+        not_name: Você precisa digitar o nome da sala.
+        pvp_queue: Ação inválida, você encontra-se em batalha no momento.
+        room_not_found: Ação inválida, você não tem mais uma sala para fechar.
+        is_pvp_queued: Você não pode ir na fila no momento, pois, você já está na fila aguardando oponente. 
+    training: 
+      title: Batalha de Treinamento
+      m1_title: Criando uma Sala de Treinamento
+      m1_description: |
+        Aqui você pode criar Salas de Treinamento para duelar contra seus amigos. Essa batalha não vale nada, então não se preocupe em perder ou ganhar!<br /><br /><input type="text" name="nome" class="form-control input-sm" style="margin-left: 10px; width: auto; display: inline-block;"/><input style="margin-left: 10px" type="submit" class="btn btn-sm btn-primary create_room" value="Criar Sala de Treino" /><br /><br /> <span class="laranja">Ps.: A lista é atualizada automaticamente, ou seja, não precisa atualizar a página para ver uma sala nova.</span>
+    null_text: porém o golpe foi anulado pelo inimigo
+    dodge_text: porém o golpe foi esquivado pelo inimigo
+    npcs:
+      title: Limite de NPC Diário
+      description: Duele com os melhores adversários NPC do jogo. Você tem até 10 duelos diários!
+      boss_title: Derrote o Boss
+      boss_description: Um grande inimigo acaba de invadir o nosso mundo! Entre na fila e ajude seus companheiros a derrotar este poderoso inimigo antes que algo de ruim possa acontecer.
+    pvp:
+      no_talent: Os Talentos foram desabilitados por uma vantagem vip
+      no_talent2: Os Talentos foram desabilitados porque a diferença de nível de conta é maior que 10.
+      title: Batalha PVP
+      queue_found: Um oponente foi encontrado! Deseja aceitar a batalha?
+      queue_accept: Aceitar batalha
+      queue_exit: Cancelar
+      timer: |
+        Tempo restante:
+      m1_title: Procurando um oponente 
+      m1_message: |
+        Aqui você poderá colocar seu personagem na fila para um combate pvp. Essa fila poderá demorar alguns minutos, caso demora muito você poderá cancelar a fila à qualquer momento. 
+      fight:
+        title: Batalha PVP
+    technique_text: Meus golpes
+    mine_action: |
+        Turno #{turn} - Sua vez
+    enemy_action: |
+        Turno #{turn} - Aguarde
+    stats:
+      text: Estatísticas<br />de Batalha
+      wins: Vitórias
+      losses: Derrotas
+      draws: Empates
+    attack_text: |
+      <span class='p'>#{player}</span> usa <span class='i' data-title='#{item}' data-tooltip='#{tooltip}'>#{item}</span>
+    error_text: |
+      porém erra o golpe
+    damage_text: |
+      causando <span class='d'>#{damage} de dano</span> <span class='d'>#{bleeding_damage}</span>
+    bleeding_damage: |
+      mais #{damage} de dano de sangramento
+    bleeding_text_only: |
+      <span class='d'>#{damage} de dano</span> de sangramento
+    defense_text: |
+      porém o golpe foi defendido com sucesso
+    counter_text: |
+      porém o golpe foi defendida com sucesso causando <span class='d'>#{damage} de dano</span> no contra-ataque
+    modifier_text: |
+      <span class='p'>#{player}</span> ativa <span class='i' data-title='#{item}' data-tooltip='#{tooltip}'>#{item}</span>
+    modifier_miss_text: |
+      porém a habilidade falha
+    flight_text:
+      success:  |
+        <span class='p'>#{player}</span> tenta fugir da batalha e consegue escapar
+      fail: |
+        <span class='p'>#{player}</span> tenta fugir da batalha porém não consegue
+    finished:
+      character_map: |
+        <br />Adicionalmente você ganhou o personagem:
+      character_theme_map: |
+        <br />Adicionalmente você ganhou o tema:
+      drop: |
+        <br />Adicionalmente você conseguiu encontrar um <span class="azul_claro">#{item}</span>
+      sangue: |
+        <br />Adicionalmente você conseguiu encontrar um <span class="azul_claro">Sangue de Deus</span>
+      areia: |
+        <br />Adicionalmente você conseguiu encontrar uma <span class="azul_claro">Areia Estelar</span>
+      fragment: |
+        <br />Adicionalmente você conseguiu encontrar 
+      fragment2: |
+        Fragmentos das Almas</span>
+      treasure: |
+        <br />Você ganhou <span class="azul_claro">1 Tesouro</span> do oponente de outra organização
+      treasure2: |
+        <br />Você perdeu <span class="azul_claro">1 Tesouro</span> para um jogador de outra organização
+      win_title: Parabéns!
+      win_text: |
+        Você venceu seu oponente!<br />Como recompensa você recebeu #{value} #{currency} e #{exp} pontos de experiência.
+      loss_title: Que pena!
+      loss_text: |
+        Você perdeu a luta.<br />Como recompensa você recebeu #{value} #{currency} e #{exp} pontos de experiência.
+      draw_title: Quase lá!
+      draw_text: Você e seu oponente estão muito fracos para lutar e a batalha terminou em empate.
+      drop_text: |
+       <br />Adicionalmente você conseguiu encontrar o item <span class="global-rarity-#{rarity}">[#{name}]</span>
+      drop_pet_text: |
+       <br />Adicionalmente você encontrou um novo Mascote <span class="global-rarity-#{rarity}">[#{name}]</span>
+      drop_grimoire_text: |
+        <br />Adicionalmente você encontrou uma nova Página Perdida <span>[#{name}]</span>
+    errors:
+      needs_technique_before: O inimigo precisa ter usado um golpe no turno anterior
+      no_stamina: Você não tem Stamina para essa ação
+      used_ability: |
+        Essa Habilidade encontra-se em tempo de recarga
+      not_my_turn: Não é a sua vez de atacar
+      needs_technique_cooldown: Você precisa ter um golpe em recarga
+      used_speciality: |
+        Essa Especialidade encontra-se em tempo de recarga
+      technique_locked: |
+        Golpe travado, aguarde o fim do cooldown
+      invalid: Golpe inválido
+      no_mana: |
+        Você não tem #{mana} suficiente para utilizar esse golpe
+      no_buff: |
+        Tipo de golpe inválido [Modificador]
+      must_buff: |
+        Tipo de golpe inválido [Não Modificador]
+      locked: Habilidade travada
+      buff_used: Você já usou um modificador nesse turno
+      buff_already: Você já aplicou esse modificador
+      low_stat: Você está com atributos muito baixos para entrar em batalha
+      stunned: Você não pode atacar enquanto estiver atordoado, mas pode usar Habilidade, Especialidade e Pular o Turno.
+    npc:
+      daily_title: Limite diário de NPCs
+      daily_text: |
+        Você possui um limite deário para lutar com npcs. A barra abaixo indica quantas lutas já foram feitas e esse valor é reiniciado todo dia a meia-noite.
+      title: Batalhas com NPCs
+      boss_title: Acabe com o boss
+      accept: Aceitar batalha
+      errors:
+        pvp_queue: Você não pode batalhar com NPCs enquanto estiver na fila de batalhas PVP
+        limit: Você já alcançou o limite máximo de npcs de hoje!
+        no_instance: |
+          Não há um NPC válido aguardando para batalha, atualize a página e tente novamente
+      fight:
+        title: Batalha com NPC
+    status_tooltip:
+      atk: |
+        <img src="#{image}" width="16px" /><span style="margin-left:3px">Ataque:</span> #{value}
+      def: |
+        <img src="#{image}" width="16px"/><span style="margin-left:3px">Defesa:</span> #{value}
+      crit: |
+        <img src="#{image}" width="16px" /><span style="margin-left:3px">Crítico:</span> #{value}% ( #{inc}% de Dano Crítico )
+      abs: |
+        <img src="#{image}" width="16px"/><span style="margin-left:3px">Absorção:</span> #{value}% ( #{inc}% de Dano Absorvido )
+      prec: |
+        <img src="#{image}" width="16px"/><span style="margin-left:3px">Precisão:</span> #{value}%
+      inti: |
+        <img src="#{image}" width="16px"/><span style="margin-left:3px">Intimidação:</span> #{value}
+      conv: |
+        <img src="#{image}" width="16px"/><span style="margin-left:3px">Convicção:</span> #{value}
+      init: |
+        <img src="#{image}" width="16px"/><span style="margin-left:3px">Iniciativa:</span> #{value}
+      hit: |
+        <img src="#{image}" width="16px"/><span style="margin-left:3px">Chance de acerto:</span> #{value} ( #{orig_value} - #{reduced} )
+  hospital:
+    title: Hospital
+    title2: Tratamento Médico
+    description: |
+      Você foi derrotado e precisa aguardar o tratamento médico para voltar para suas atividades, a cada 2 minutos você recuperará 20% de sua vida e de sua #{mana} e a sua liberação será feita ao curar ao máximo seus atributos.<br /><br />
+      <span class="laranja">Você também tem a opção de pagar para um tratamento médico mais eficaz e rápido, se for esse seu desejo, clique no botão abaixo: </span>
+    heal_button: |
+      Pagar #{value} #{currency} pelo atendimento
+    confirm_payment: Confirmar pagamento?
+    errors:
+      currency: |
+        Você não tem #{currency} suficiente
+  organization:
+    errors:
+      cant_kick_leader: Você não pode expulsar o líder
+      already_in_other: Esse jogador encontra-se em outra organização
+      max_players: A sua organização alcançou o número limite de membros
+  organizations:
+    events:
+      title: O que são os eventos?
+      description: Aqui é onde você e sua organização vai poder caçar npcs e tesouros junto ao seu time.
+    remove_error: Você não tem pedidos para remover no momento.
+    remove_error2: Você não tem organização e não pode fazer essa ação.
+    remove_all: Você realmente gostaria de deletar todos os pedidos pendentes?
+    help_title: Troca de Tesouros
+    help_description: Toda segunda-feira todos os membros já presentes na organização recebem 5 tesouros. Ao derrotar um jogador de outra organização, você rouba um tesouro dele, porém se você perder, ele rouba um tesouro seu. Na próxima segunda-feira, todos os tesouros acumulados são enviados para o banco da organização e apenas o líder pode trocar esses tesouros por alguma recompensa!
+    total_members: Total de Membros
+    faction: Facção
+    score: Pontos
+    rank_general: Posição Geral
+    rank_faction: Posição Facção
+    name_leader: Nome do Líder
+    missions: Resumo de Missões e Tesouros
+    treasure_atual: Tesouros Atuais
+    treasure_total: Total de Tesouros Roubados
+    daily: Missões Semanais Concluídas
+    search:
+      create: Criar minha organização
+      search: Porcurar e entrar em uma organização
+      title: Criar e procurar organizações
+      by_name: Nome
+      submit: Procurar organizações
+      do_search: Quero encontrar uma organização
+      search_text: |
+        <p>Abaixo estão a lista de organizações disponíveis para você.</p>
+        <p>Caso você queira procurar uma organização específica, utilize os campos de filtro abaixo.</p>
+      nothing: Nenhuma organização disponível no momento
+      details: Ver detalhes
+      join: Participar
+    create:
+      name: Organização
+      name_note: (Entre 6 e 20 caractéres sem caractéres especiais)
+      normal: |
+        Sou nível #{level} e tenho #{price}
+      credits: |
+        Quero usar #{credits} Estrelas
+      submit: Criar agora!
+      errors:
+        invalid_method: Modo de criação inválido
+        not_enough_credits: Estrelas insuficientes
+        not_enough_currency: Dinheiro insuficiente
+        not_enough_level: Nível insuficiente
+        invalid_name: Nome da organização é inválido
+        existent: Já existe uma organização com esse nome
+        no_privilege: Você não tem privilégios para essa ação
+        full: Essa Organização está cheia
+        users: Não é possível ter dois personagens da mesma conta nessa organização
+        change: Não é possível trocar de facção participando de uma organização
+      dungeon:
+        invalid_queue: invalid_queue
+        invalid_dungeon: invalid_dungeon
+        dungeon_not_unlocked: dungeon_not_unlocked
+        invalid_players_list: invalid_players_list
+    destroy:
+      title: Exclusão de sua Organização
+      text: Sua organização está sendo deletada, você tem certeza disso?
+      confirm: Sim, eu tenho certeza! 
+    show: 
+      delete: Excluir Organização
+      title: Detalhes da organização
+      error_title: Problema!
+      error_message: A organização que você especificou não existe
+      image_note: (Deixe em branco para não atualizar)
+      choose_image: Imagem de capa
+      set_name: Nome
+      set_description: Descrição
+      upload_data: Atualizar dados da organização
+      kick: Expulsar
+      leave: Sair
+      members: Integrantes
+      accepts: Pendências
+      accept: Aceitar
+      treasure: Tesouro(s)
+      refuse: Recusar
+      reason_title: Motivo da recusa
+      kick_reason: Motivo da expulsão
+      send: Enviar
+      request_message_title: Pedido para Organização
+      accept_message: |
+        <h3>Parabéns!</h3>
+        <p>Você foi aceito na organização <b>#{name}</b></p>
+      refuse_message: |
+        <h3>Que pena!</h3>
+        <p>Seu pedido para entrar na organização <b>#{name}</b> foi recusado.</p>
+      accept_unavailable: Jogar já esta em outra organização
+      no_pending: Não há novas solicitação para organização
+      header:
+        player: Integrante
+        level: Nível
+        can_accept: Aprova?
+        can_kick: Expulsa?
+      errors:
+        name: Nome inválido
+        existent: Já existe uma organização com esse nome
+        invalid_image: Imagem inválida
+    enter:
+      errors:
+        invalid: Organização inválida
+        already: Você já mandou pedido para essa organização
+    kick_leave:
+      errors:
+        invalid: Jogador inválido
+        battle: Jogador em batalha não pode ser removido
+        leave_message_title: Sua organização perdeu um integrante
+      leave_message: |
+        O jogador "#{name}" deixou a sua organização.
+      kick_message_title: Expulso da organização
+      kick_message: |
+        Você foi expulso da organização "#{name}"
+    errors:
+      no_privilege: Privilégios insuficientes para essa ação
+      max_players: A sua organização alcançou o número limite de membros
+  support:
+    index:
+      title: Suporte
+    open:
+      title: Novo ticket de suporte
+      form:
+        category: Categoria
+        title: Título
+        browser: Navegador
+
+        same_browser: É o mesmo navegador que estou usando
+        description: Descrição
+        attachment: Anexar arquivo
+        attachments: Arquivos anexos
+      error_title: Ocorreu um problema ao abrir seu ticket
+      errors:
+        title: Título inválido
+        description: Descrição inválida
+        category: Categoria inválida
+        invalid_extension: Extensão de arquivo inválida
+        invalid_type: Tipo de arquivo inválido
+      open: Confirmar abertura de ticket
+      attachment_info: |
+        Somente será aceitos upload de imagens GIF, JPG, PNG e BMP. Outros formatos de arquivos serão ignorados.
+      info_box:
+        title: |
+          Precisa de ajuda ?
+        text: |
+          O sistema de suporte foi criado para caso você tenha algum problema no jogo ou queira sugerir alguma idéia para nós.
+          Abaixo estão os tickets que você abriu anteriorment.<br /><br />
+          <a href="#{url}" class="btn btn-sm btn-primary">Abrir um novo ticket</a>
+    category: Categoria
+    title: Título
+    filter: Filtro
+    no_results: Nenhum ticket de suporte encontrado
+    header:
+      id: |
+        #
+      title: Título
+      category: Categoria
+      status: Status
+      open_date: Data de abertura
+    ticket:
+      email: Email
+      user: Usuário
+      character: Personagem
+      no_player: O usuário não selecionou um personagem
+      created_at: Data de criação
+      browser: Navegador usado
+      last_replied_at: Última resposta
+      last_replied_id: Última resposta por
+      status: Status
+      category: Categoria
+      attachments: Anexos
+      no_attachments: Nenhum anexo
+      title: Ticket de suporte
+      reply: Responder
+      reply_close: Responder e fechar
+      reopen: Reabrir ticket
+      no_description: Nenhuma descrição especificada
+      replied_by: |
+        Respondido por <b>#{user}</b>
+  quests:
+    battle:
+      b1: Missões de Combate Diárias
+      b2: Missões de Combate Semanais
+      b3: Missões de Combate Mensais
+    equipment_chance: |
+      #{chance}% de chance de conseguir um equipamento
+    random_pet_chance: |
+      #{chance}% de conseguir um mascote aleatório
+    specific_pet_chance: |
+      #{chance}% de conseguir o pet <b>#{pet}</b>
+    pet:
+      success: Sucesso
+      falhou: Falhou
+      exp_mascote: Exp para o Mascote
+      de_felicidade: de Felicidade
+      title: Missões de mascote
+      message: Você realmente quer remover esse Mascote dessa missão?
+      raridade: Raridade Adequada
+      comum: Comum ou maior
+      raro: Raro ou maior
+      lendario: Lendário ou maior
+      efeito: Efeito(s) Adequado(s)
+      anime: Anime Adequado
+      happiness: Felicidade Adequada
+    time:
+      title: Missões de tempo
+      time_left: Tempo restante
+      header:
+        quest: Missão
+        reward: Recompensa
+        duration: Duração
+      errors:
+        pvp_queue: Você não pode aceitar missões de tempo enquanto estiver na fila PVP
+        invalid: Missão inválida
+
+        duration: Duração inválida
+        graduation: Sua graduação não é suficiente para essa missão
+        level: Nível insuficiente
+        already: Você já concluiu essa missão de tempo
+        not_ready: Ainda falta tempo para essa missão acabar
+      wait:
+        title: |
+          Missão de tempo - Espera
+        warn: |
+          Você tem certeza que deseja cancelar essa missão? Todo o seu tempo até agora será perdido.
+    daily:
+      help_title: Entendendo as Missões Diárias
+      help_title2: Entendendo as Missões Semanais
+      help_title3: Entendendo as Missões de Conta
+      help_description: Diariamente você receberá uma missão aleatória para ser concluída, mas atenção, o máximo de missões que você pode acumular são apenas quatro, então tente completá-las o mais rápido possível!
+      help_description2: Semanalmente sua Organização receberá uma missão aleatória para ser concluída, mas atenção, o máximo de missões que você pode acumular são apenas quatro, então tente completá-las o mais rápido possível!
+      errors: 
+        not_ready: Você não tem todos os requerimentos para finalizar essa(s) missão(ões)
+        not_mission: Você não tem missões hoje
+      finish: Receber Recompensas
+    pets:
+      message: Você gostaria realmente de desequipar esse Mascote?
+      errors:
+        invalid: Mascote inválido!
+      title: Mascotes
+      description: |
+        Mascotes são ótimos companheiros para suas batalhas, e também podem fazer missões para ficarem mais fortes ou ganharem coisas para você!<br />Batalhe com seu mascote para aumentar a felicidade dele, e os mande em missões para ganharem experiência e evoluir para a próxima raridade.<br /> Evolua-o até a raridade Mega para ganhar um novo atributo! Para ganhar um mascote, você pode fazer batalhas, missões de tempo, modo aventura e muito mais! Basta ficar de olho nas recompensas!<br /><br /><span class="verde">Dica: Você pode equipar/desequipar seu mascote clicando com o botão direito nele.</span>
+      help_title: Missão de Mascote
+      help_description: |
+        Diariamente você recebe até no máximo 10 missões de mascotes. Você pode colocar qualquer mascote em qualquer missão, mas fique atento aos requerimentos adequados, pois quanto mais requerimentos você preencher, maior será sua chance de sucesso!<br /><br /><span class="laranja">Atenção: um mascote equipado não pode ir para uma missão e vice-versa.</span><br /><br /> <span class="verde">Dica: Você pode remover um mascote de uma missão clicando na foto dele!</span>
+    pvp:
+      title: Missões PVP
+      header:
+        quest: Missão
+        reward: Recompensa
+        level: Nível
+      status:
+        title: Status da missão PVP
+      conditions:
+        req_same_level: |
+          Eliminar #{count} jogadores do mesmo nível ou maior que o seu
+        req_low_level: |
+          Eliminar #{count} jogadores com nível abaixo do seu
+        req_kill_wo_amplifier: |
+          Eliminar #{count} jogadores sem utilizar amplificadores na batalha
+        req_kill_wo_buff: |
+          Eliminar #{count} jogadores sem utilizar modificadores na batalha
+        req_kill_wo_ability: |
+          Eliminar #{count} jogadores sem utilizar habilidade na batalha
+        req_kill_wo_speciality: |
+          Eliminar #{count} jogadores sem utilizar especialidade na batalha
+      status_conditions:
+        req_same_level: |
+          Eliminar <span class="laranja">#{have} de #{count} jogadores</span> do mesmo nível ou maior que o seu em batalha pvp
+        req_low_level: |
+          Eliminar <span class="laranja">#{have} de #{count} jogadores</span> com nível abaixo do seu em batalha pvp
+        req_kill_wo_amplifier: |
+          Eliminar <span class="laranja">#{have} de #{count} jogadores</span> sem utilizar amplificadores em batalha pvp
+        req_kill_wo_buff: |
+          Eliminar <span class="laranja">#{have} de #{count} jogadores</span> sem utilizar modificadores em batalha pvp
+        req_kill_wo_ability: |
+          Eliminar <span class="laranja">#{have} de #{count} jogadores</span> sem utilizar habilidade em batalha pvp
+        req_kill_wo_speciality: |
+          Eliminar <span class="laranja">#{have} de #{count} jogadores </span>sem utilizar especialidade em batalha pvp
+      errors:
+        invalid: Missão inválida
+        graduation: Sua graduação não é suficiente para essa missão
+        already: Você já concluiu essa missão pvp
+        not_ready: Você ainda não completou os requerimentos para finalizar essa missão
+    accept: Aceitar
+    failed: Falha
+    completed: Concluída
+    cancel: Cancelar missão
+    finish: Finalizar
+    finish_text: |
+      <span class="laranja">Missão finalizada!</span><br /><br />Você ganhou <span class="verde">#{currency} #{currency_name} e #{exp} Exp</span>
+    finish_pvp_text: |
+      <span class="laranja">Missão finalizada!</span><br /><br />Você ganhou <span class="verde">#{currency} #{currency_name}, #{exp} Exp</span>
+    finish_pet_text: |
+      e encontrou o mascote <span class="verde">#{pet}</span>
+    finish_equipment_text: |
+      e encontrou um equipamento que será dado após a finalização da missão
+  equipments:
+    same_value: Mesmo valor
+    title: Equipamentos
+    description: Equipamentos aumentam um pouco seus atributos, então sempre é importante equipar o quanto antes! <br />Caso você não queira o equipamento, você ainda pode vendê-lo ou destruí-lo para ganhar fragmentos das almas, usados para trocar por um novo.<br />Para conseguir equipamentos, você pode fazer batalhas, missões de tempo, modo aventura e muito mais! Basta ficar de olho nas recompensas!<br /><br /><span class="laranja">Para equipar, aprimorar, vender ou quebrar um equipamento, clique com o botão esquerdo nele.
+    show:
+      none: Você não possui nenhum equipamento para esse slot
+      equip: Equipar
+      click_text: Que ação você gostaria de fazer com esse equipamento ?
+      upgrade: Aprimorar
+      list: Ver Equipamentos
+    equip:
+      errors:
+        invalid: Equipamento inválido
+        graduation: Você não possui graduação suficiente para equipar esse item
+    names:
+      at_for: Fortificada
+      at_int: Inteligente
+      at_res: Resistente
+      at_agi: Veloz
+      at_dex: Apto
+      at_vit: Vigorosa
+      for_atk: Atacante
+      for_def: Defensor
+      for_crit: Crítico
+      for_abs: Absorção
+      for_prec: Precisa
+      for_inc_crit: Incrementado
+      for_inc_abs: Incrementado
+      for_hit: Perfeito
+      for_init: Ação
+      currency_battle: Mercenária
+      exp_battle: Lutador
+      currency_quest: Gananciosa
+      exp_quest: Aventureira
+      npc_battle_count: Sanguinário
+      item_drop_increase: Tesouro
+      luck_discount: Apostador
+      consumable_price_discount: Negociador
+      amplifier_price_discount: Barganha
+      cooldown_reduction: Especializado
+      technique_attack_increase: Poderoso
+      technique_mana_reduction: Redutor
+      technique_crit_increase: Maximizado
+      technique_zero_mana: Aperfeiçoado
+      lock_enemy_technique: Sorrateiro
+    attributes:
+      graduation: |
+        Graduação #{name}
+      have_extra: Propriedades extras
+      currency_battle: Dinheiro em batalhas
+      exp_battle: Exp em batalhas
+      currency_quest: Dinheiro em missão
+      exp_quest: Exp em missão
+      npc_battle_count: no total de batalhas npc
+      item_drop_increase: de chance de ganhar itens
+      luck_discount: na redução do preço do sorte
+      consumable_price_discount: na redução do preço dos alimentos
+      amplifier_price_discount: na redução do preço dos amplificadores
+      stamina_regen: de recuperação de stamina
+      life_regen: de recuperação de vida
+      mana_regen: de recuperação de mana
+      cooldown_reduction: |
+        de redução recarga da técnica #{name}
+      technique_attack_increase: |
+       a mais de dano na técnica #{name}
+      technique_mana_reduction: |
+       a menos de #{mana} na técnica #{name}
+      technique_crit_increase: |
+        de chance de crítico na técnica #{name}
+      technique_zero_mana: |
+        Remove o custo de mana da técnica #{name}
+      lock_enemy_technique: |
+        Trava uma habilidade aleatória do seu inimigo todo início de batalha
+      generic_technique_damage: |
+        a mais de dano em todas as suas técnicas de ataque genéricas
+      defense_technique_extra: |
+        a mais de defesa em todas suas técnicas de defesa
+      unique_technique_damage: |
+        a mais de dano para suas técnicas de ataque únicas
+  private_messages:
+    compose: Nova mensagem
+    delete_selected: Excluir selecionadas
+    delete_all: Remover todas
+    no_messages: Você não possui nenhuma mensagem nova
+    delete: Remover
+    reply_current: Responder
+    send_now: Enviar agora
+    confirm_delete_all: Você realmente quer remover todas as suas mensagens? Essa ação não pode ser desfeita
+    confirm_delete: Você realmente quer excluir as mensagens selecionadas? Essa ação não pode ser desfeita
+    index:
+      title: Mensagens
+    header:
+      from: Quem enviou
+      subject: Assunto
+      when: Enviada quando
+    reply:
+      subject: Assunto
+      content: Mensagem
+      to: Para
+      from: De
+    send:
+      errors:
+        subject: Assunto não especificado
+        content: Mensagem não pode ficar em branco
+        to: Destinatário inválido
+  consumables:
+    type: Consumível
+    for_life: Recuperação de vida
+    for_mana: |
+      Recuperação de #{name}
+    for_stamina: Recuperação de stamina
+  titles:
+    home: Main Page
+    news: News
+  genders:
+    male: Male
+    female: Female
+  at:
+    at_for: Force
+    at_int: Intelligence
+    at_res: Resistance
+    at_dex: Dexterity
+    at_agi: Agility
+    at_vit: Vitality
+    tooltip:
+      title:
+        at_for: Force
+        at_int: Intelligence
+        at_res: Resistance
+        at_agi: Agility
+        at_dex: Dexterity
+        at_vit: Vitality	
+      description:
+        at_for: Treinando sua força você aumenta o ataque e a sua intimidação
+        at_int: |
+          Treinando sua inteligência você aumenta a #{mana} e a sua precisão
+        at_res: Treinando sua resistência você aumenta a defesa e a sua convicção
+        at_agi: Treinando sua agilidade você aumenta o ataque e a iniciativa
+        at_dex: Treinando sua destreza você aumenta a defesa e a sua chance de acerto
+        at_vit: |
+          Treinando sua vitalidade você aumenta a vida e a sua #{mana}
+  formula:
+    tooltip:
+      title:
+        for_life: Life
+        for_stamina: Stamina
+        for_atk: Attack
+        for_def: Defense
+        for_hit: Chance de acerto
+        for_crit: Critical
+        for_abs: Absorption
+        for_prec: Precision
+        for_inti: Intimidation
+        for_conv: Conviction
+        for_init: Initiative
+        for_inc_crit: Critical increment
+        for_inc_abs: Absorption increment
+        for_crit_inc: Critical increment
+        for_abs_inc: Absorption increment
+      description:
+        for_life: That's the total of your life out of combat
+        for_mana: |
+          Esse é o total de #{mana} fora de combate e ela é necessária para usar seus golpes em batalha
+        for_stamina: Esse é o total de sua stamina e ela controla a quantidade de ações disponiveis que seu personagem poderá fazer no jogo
+        for_atk: Esse é o total de seu ataque fora de combate e ele é somado ao valor dos seus golpes ofensivos em batalha
+        for_def: Esse é o total de sua defesa fora de combate e ela é somado ao valor dos seus golpes defensivos em batalha
+        for_hit: Esse é o total de sua chance de acerto fora de combate e ela fará com que você não erre seus golpes em batalha
+        for_crit: Esse é o total de seu crítico fora de combate e com ele seus golpes ocasionalmente poderão ser mais poderosos
+        for_abs: Esse é o total de sua absorção fora de combate e com ela seus golpes ocasionalmente recebidos poderão ser mais fracos
+        for_prec: Esse é o total de sua precisão fora de combate e com ela seus golpes ocasionalmente poderão ignorar a defesa de seu oponente
+        for_inti: Esse é o total de sua intimidação fora de combate e ela reduzirá o total de chance de acerto do seu oponente em combate
+        for_conv: Esse é o total de sua convicção fora de combate e ele aumentará o total de iniciativa do seu personagem em combate
+        for_init: Esse é o total de sua iniciativa fora de combate e ela definirá quem será o primeiro oponente a atacar no turno
+        for_inc_crit: Esse é o total de seu incremento crítico e ele será o responsável por aumentar o dano de seus ataques críticos
+        for_inc_abs: Esse é o total de seu incremento de absorção e ele será o responsável por aumentar a defesa em seus ataques absorvidos
+        for_crit_inc: Esse é o total de seu incremento crítico e ele será o responsável por aumentar o dano de seus ataques críticos
+        for_abs_inc: Esse é o total de seu incremento de absorção e ele será o responsável por aumentar a defesa em seus ataques absorvidos
+      description2:
+        for_life: Esse é o total de sua vida fora de combate
+        for_mana: |
+          Esse é o total de #{mana} fora de combate e ela é necessária para usar seus golpes em batalha
+        for_stamina: Esse é o total de sua stamina e ela controla a quantidade de ações disponiveis que seu personagem poderá fazer no jogo
+        for_atk: |
+          A cada #{points} pontos você ganhará 1 ponto de Ataque
+        for_def: |
+          A cada #{points} pontos você ganhará 1 ponto de Defesa
+        for_hit: Esse é o total de sua chance de acerto fora de combate e ela fará com que você não erre seus golpes em batalha
+        for_crit: |
+          A cada #{points} pontos você ganhará 1% de Crítico
+        for_abs: |
+          A cada #{points} pontos você ganhará 1% de Absorção
+        for_prec: |
+          A cada #{points} pontos você ganhará 1% de Precisão
+        for_inti: Esse é o total de sua intimidação fora de combate e ela reduzirá o total de chance de acerto do seu oponente em combate
+        for_conv: Esse é o total de sua convicção fora de combate e ele aumentará o total de iniciativa do seu personagem em combate
+        for_init: |
+          A cada #{points} pontos você ganhará 1% de Iniciativa
+        for_inc_crit: |
+          A cada #{points} pontos você ganhará 1% de Incremento Crítico
+        for_inc_abs: |
+          A cada #{points} pontos você ganhará 1% de Incremento de Absorção
+        for_crit_inc: Esse é o total de seu incremento crítico e ele será o responsável por aumentar o dano de seus ataques críticos
+        for_abs_inc: Esse é o total de seu incremento de absorção e ele será o responsável por aumentar a defesa em seus ataques absorvidos
+    for_mana:
+      1: Chakra
+      2: Reiatsu
+      3: Ki
+      4: Douriki
+      5: Mana
+      6: Cosmo
+      7: Reiki
+      8: Nen
+      9: Mana
+      10: Mana
+      11: Chi 
+      12: Energy
+      16: Mana
+      29: Gás
+      30: CélulasRC
+      31: Tamashii
+      32: Chi
+      33: Mana
+      35: Energy
+      36: Energy
+      37: Mana
+      38: Breath
+      39: Adrenaline
+      40: Heart Energy
+      999: Mana
+    for_life: Life
+    for_stamina: Stamina
+    for_atk: Attack
+    for_def: Defense
+    for_hit: Chance de acerto
+    for_crit: Critical
+    for_abs: Absorption
+    for_prec: Precision
+    for_inti: Intimidation
+    for_conv: Conviction
+    for_init: Initiative
+    for_inc_crit: Critical increment
+    for_inc_abs: Absorption increment
+  bonuses:
+    bonus_food_discount: |
+      Desconto de #{value}% #{currency} na compra de alimentos
+    bonus_weapon_discount: |
+      Desconto de #{value}% #{currency} na compra de amplificadores
+    bonus_luck_discount: |
+      Desconto de #{value}% #{currency} para testar sua sorte
+    bonus_mana_consume: |
+      Redução de #{value}% do consumo de #{mana}
+    bonus_cooldown: |
+      Redução de #{value} turno no cooldown dos golpes
+    bonus_exp_fight: |
+      Aumenta em #{value}% experiência ganha na luta
+    bonus_currency_fight: |
+      Aumenta em #{value}% #{currency} a moeda ganha na luta
+    bonus_attribute_training_cost: |
+      Reduz o custo de #{mana} em #{value}% no treino de atributo 
+    bonus_training_earn: |
+      Aumenta em #{value}% a quantidade de pontos de habilidade do treino
+    bonus_training_exp: |
+      Diminui em #{value}% a quantidade de experiência ganha no treino
+    bonus_quest_time: |
+      Reduz o tempo das missões em #{value} minutos
+    bonus_food_heal: |
+      Aumenta em #{value}% a cura dos alimentos
+    bonus_npc_in_quests: |
+      Reduz em #{value} o número de NPC em missões
+    bonus_daily_npc: |
+      Aumenta a quantidade de NPCs diários em #{value}
+    bonus_map_npc: |
+      Aumenta a quantidade de NPCs diários no mapa em #{value}
+    bonus_drop: |
+      Aumenta a chance de encontrar itens em #{value}%
+    bonus_stamina_max: |
+      Aumenta a stamina máxima em #{value}
+    bonus_stamina_heal: |
+      Aumenta a recuperação de stamina em #{value}
+    bonus_stamina_consume: |
+      Reduz o gasto de stamina em #{value}
+  buttons:
+    proceed: Proceed
+    next: Next
+    back: Back
+    close: Close
+    play: Play
+    remove: Remove
+    filtrar: Filter
+    remover_all: Remove All
+  top:
+    graduation: |
+      Graduation: #{grad}
+    credits: |
+      Stars: <span>#{count}</span>
+  popovers:
+    titles:
+      requirements: Requirements
+      enhancer: Enhancements
+      rotinas: Game Routines
+      1x_queue: PvP Battle Queue
+      credits: Stars
+    description:
+      routines: |
+        <b class="amarelo">Healing do Jogo</b><br /> A cada 5 minutos o jogo recupera 2 pontos de sua Stamina<hr />
+        <b class="amarelo">Batalha PvP ( Normal )</b><br /> Sempre nos dias ( Segunda, Quarta, Sexta e Sábado )<hr />
+        <b class="amarelo">Batalha PvP ( Liga All-Stars )</b><br /> Sempre nos dias ( Domingo, Terça e Quinta )<hr />
+        <b class="amarelo">Ranking</b><br /> Atualização a cada 1 hora
+      1x_queue:
+        queued: |
+          Você está na fila de espera. Você pode continuar navegando normalmente, quando uma batalha for encontrada, você será avisado.
+          <hr />
+          <div align="center">
+            <a href="javascript:;" class="btn btn-sm btn-block btn-danger">Sair da fila</a>
+          </div>
+        normal: |
+          Para entrar na fila de batalha, vá até a página de batalhas PvP.
+          <hr />
+          <div align="center">
+            <a href="javascript:;" class="btn btn-sm btn-block btn-primary">Entrar na fila</a>
+          </div>
+  notfound:
+    title: Página Não Encontrada
+    title_msg: Você não pode acessar a página solicitada
+    message: |
+      <p>A página solicitada não foi encontrada!</p>
+      <p>Se você acha que isso é um problema, por favor entre em contato com o administrador</p>
+  denied:
+    title: Acesso Negado
+    title_msg: Você não pode acessar a página solicitada
+    message: |
+      <p>Você não tem privilégios suficiente para acessar a página solicitada.</p>
+      <p>Se você acha que isso é um problema, por favor entre em contato com o administrador</p>
+  global:
+    player: Player
+    character: Character
+    points: Points
+    anime: Anime
+    status: Status
+    free: Free
+    stars: Stars
+    treino_semanal: Treino Semanal
+    problem: Problem!
+    following_errors: Os seguintes erros impediram que a operação fosse completada
+    wait: |
+      Wait...
+    jogadores: players
+    por: Postado por
+    descricao: |
+      #{game} é o novo jogo para fãs de anime, em nosso jogo você será um dos personagens emblemáticos dos principais animes que fizeram e fazem parte de nossa vida.
+    em: em
+    all: All
+    close: Close
+    sell: Sell
+    sell_by: Sell by
+    destroy_by: Destruir por
+    new: New
+    cancel: Cancel
+    continue: Continue
+    system_message: System Message
+    word_yes: |
+      Yes
+    word_no: |
+      No
+  rankings:
+    achievement:
+      title: Ranking de Conquista
+    challenges:
+      title: Rankings de Arena do Céu
+    account:
+      title: Ranking de Contas	
+    battles:
+      title: Ranking de Combates
+      victory: Vitórias
+      looses: Derrotas
+      draws: Empates
+      periodo: Período
+    hall:
+      title: Hall of Fame
+    players:
+      title: Ranking de Personagens 
+      header:
+        andar: Floor
+        description: Description
+        raridade: Raridade
+        active: Status
+        posicao: Position
+        nome: Name
+        account_level: Nível da Conta
+        level: Level
+        score: Points
+        personagem: Character
+        members: Members
+    organizations:
+      title: Ranking de Organizações
+    rankeds:
+      title: Ranking da Liga All-Stars 
+  talents:
+    how_to_title: Quando e como aprender seus Talentos
+    how_to_text: |
+      Você poderá aprender seus talentos quando o <span class="laranja">NÍVEL DA SUA CONTA</span> estiver igual ao nível do Talento. ( O nível da conta é indicado no topo do site pela barra vermelha )
+    at:
+      at_for: |
+        Aumenta a sua força em #{value}
+      at_res: |
+        Aumenta a sua resistência em #{value}
+      at_vit: |
+        Aumenta a sua vitalidade em #{value}
+      at_agi: |
+        Aumenta a sua agilidade em #{value}
+      at_dex: |
+        Aumenta a sua destreza em #{value}
+      at_int: |
+        Aumenta a sua inteligência em #{value}
+    formula:
+      for_prec: | 
+        Aumenta a sua precisão em #{value}
+      for_inti: |
+        Aumenta a sua intimidação em #{value}
+      for_conv: |
+        Aumenta a sua convicção em #{value}
+      for_crit: |
+        Aumenta o seu crítico em #{value}
+      for_abs: |
+        Aumenta a sua absorção em #{value}
+      for_init: |
+        Aumenta a sua iniciativa em #{value}
+      for_def: |
+        Aumenta a sua defesa em #{value}
+      for_atk: |
+        Aumenta o seu ataque em #{value}
+  currencies:
+    1: Ryos
+    2: Kans
+    3: Zenis
+    4: Berries
+    5: Jewels
+    6: Ouros
+    7: Ouros
+    8: Jennys
+    9: Cols
+    10: Ienes
+    11: Cenz
+    12: Liras
+    16: Ienes
+    29: Ouros
+    30: Ienes
+    31: Dólares
+    32: Ienes
+    33: Ouros
+    35: Ienes
+    36: Ienes
+    37: Ouros
+    38: Euro
+    39: Ienes
+    40: Ienes
+    999: Moedas
+    credits: Estrelas
+  daynames:
+    1: Segunda
+    2: Terça
+    3: Quarta
+    4: Quinta
+    5: Sexta
+    6: Sábado
+    7: Domingo
+  rarities:
+    common: Comum
+    rare: Raro
+    epic: Épico
+    legendary: Lendário
+    set: Conjunto
+  slots:
+    1: Pergaminho
+    2: Insignia
+    3: Capsula
+    4: Tesouro
+    5: Lacrima
+    6: Armadura
+    7: Ferramenta
+    8: Equipamento
+    9: Equipamento
+    10: Acessório
+    11: Pedra
+    12: Caixa
+    16: Esfera
+    29: Equipamento
+    30: Equipamento
+    31: Alma
+    32: Equipamento
+    33: Equipamento
+    35: Emblema
+    36: Equipamento
+    37: Teigu
+    38: Carta
+    39: Equipamento
+    40: Livros Mamodos
+    999: Estrela
+  item_types:
+    1:
+      attack: Ataque
+      defense: Defesa
+      buff: Modificadores
+    2: Arvore [LEGACY]
+    3: Habilidade
+    4: Especialidade
+    5: Alimentos
+    6: Talentos
+    7: Amplificadores
+    10: Fragmento das Almas
+    11: Página de Magia
+    12: Areia Estelar
+    13: Sangue de Deus
+    16: Eventos
+  paginator:
+    first: Primeira
+    last: Última
+    errors:
+      needs_technique_before: O inimigo precisa ter usado um golpe no turno anterior
+      used_ability: |
+        Essa Habilidade ou Especialidade encontra-se em tempo de recarga
+      not_my_turn: Não é a sua vez de atacar
+      technique_locked: |
+        Golpe travado, aguarde o fim do cooldown
+      invalid: Golpe inválido
+      no_mana: |
+        Você não tem #{mana} suficiente para utilizar esse golpe
+      no_buff: |
+        Tipo de golpe inválido [Modificador]
+      must_buff: |
+        Tipo de golpe inválido [Não Modificador]
+      locked: Habilidade travada
+      buff_used: Você já usou um modificador nesse turno
+      buff_already: Você já aplicou esse modificador
+      low_stat: Você está com atributos muito baixos para entrar em batalha
+    pvp:
+      title: Batalha PVP
+      queue_found: Um oponente foi encontrado! Deseja aceitar a batalha?
+      queue_accept: Aceitar batalha
+      queue_exit: Cancelar
+      timer: |
+        Tempo restante:
+      m1_title: Procurando um oponente 
+      m1_message: |
+        Aqui você poderá colocar seu personagem na fila para um combate pvp. Essa fila poderá demorar alguns minutos, caso demora muito você poderá cancelar a fila à qualquer momento.<br /><br /> <span class="laranja">( Os combates serão criados entre oponentes com range de 1 nível do seu.)</span> <br /><br /> <a id="battle-pvp-enter-queue" href="javascript:;" class="btn btn-primary btn-lg">Ir para fila</a> 
+      fight:
+        title: Batalha PVP
+    technique_text: Meus golpes
+    mine_action: |
+        Turno #{turn} - Sua vez
+    enemy_action: |
+        Turno #{turn} - Aguarde
+    stats:
+      text: Estatísticas<br />de Batalha
+      wins: Vitórias
+      losses: Derrotas
+    attack_text: |
+      <span class='p'>#{player}</span> usa <span class='i' data-title='#{item}' data-tooltip='#{tooltip}'>#{item}</span>
+    error_text: |
+      porém erra o golpe
+    damage_text: |
+      causando <span class='d'>#{damage} de dano</span> <span class='d'>#{bleeding_damage}</span>
+    bleeding_damage: |
+      mais #{damage} de dano de sangramento
+    bleeding_text_only: |
+      <span class='d'>#{damage} de dano</span> de sangramento
+    defense_text: |
+      porém o golpe foi defendido com sucesso
+    counter_text: |
+      porém o golpe foi defendida com sucesso causando <span class='d'>#{damage} de dano</span> no contra-ataque
+    modifier_text: |
+      <span class='p'>#{player}</span> ativa <span class='i' data-title='#{item}' data-tooltip='#{tooltip}'>#{item}</span>
+    modifier_miss_text: |
+      porém a habilidade falha
+    flight_text:
+      success:  |
+        <span class='p'>#{player}</span> tenta fugir da batalha e consegue escapar
+      fail: |
+        <span class='p'>#{player}</span> tenta fugir da batalha porém não consegue
+    finished:
+      character_map:
+        <br /><br />Adicionalmente você ganhou o personagem:
+      character_theme_map:
+        <br /><br />Adicionalmente você ganhou o tema:
+      win_title: Parabéns!
+      win_text: |
+        Você venceu seu oponente!<br /><br />Como recompensa você recebeu #{value} #{currency} e #{exp} pontos de experiência.
+      loss_title: Que pena!
+      loss_text: |
+        Você perdeu a luta.<br /><br />Como recompensa você recebeu #{value} #{currency} e #{exp} pontos de experiência.
+      draw_title: Quase lá!
+      draw_text: Você e seu oponente estão muito fracos para lutar e a batalha terminou em empate.
+      drop_text: |
+        <br /><br />Adicionalmente você conseguiu encontrar o item <span class="global-rarity-#{rarity}">[#{name}]</span>
+      drop_pet_text: |
+        <br /><br />Adicionalmente você encontrou um novo Mascote <span class="global-rarity-#{rarity}">[#{name}]</span>
+      drop_grimoire_text: |
+        <br /><br />Adicionalmente você encontrou uma nova Carta Perdida <span>[#{name}]</span>
+    npc:
+      daily_title: Limite diário de NPCs
+      daily_text: |
+        Você possui um limite deário para lutar com npcs. A barra abaixo indica quantas lutas já foram feitas e esse valor é reiniciado todo dia a meia-noite.
+      title: Batalhas com NPCs
+      accept: Aceitar batalha
+      errors:
+        pvp_queue: Você não pode batalhar com NPCs enquanto estiver na fila de batalhas PVP
+        limit: Você já alcançou o limite máximo de npcs de hoje!
+        no_instance: |
+          Não há um NPC válido aguardando para batalha, atualize a página e tente novamente
+      fight:
+        title: Batalha com NPC
+    status_tooltip:
+      atk: |
+        <img src="#{image}" width="16px" /><span style="margin-left:3px">Ataque:</span> #{value}
+      def: |
+        <img src="#{image}" width="16px"/><span style="margin-left:3px">Defesa:</span> #{value}
+      crit: |
+        <img src="#{image}" width="16px" /><span style="margin-left:3px">Crítico:</span> #{value}% ( #{inc}% de Dano Crítico )
+      abs: |
+        <img src="#{image}" width="16px"/><span style="margin-left:3px">Absorção:</span> #{value}% ( #{inc}% de Dano Absorvido )
+      prec: |
+        <img src="#{image}" width="16px"/><span style="margin-left:3px">Precisão:</span> #{value}%
+      inti: |
+        <img src="#{image}" width="16px"/><span style="margin-left:3px">Intimidação:</span> #{value}
+      conv: |
+        <img src="#{image}" width="16px"/><span style="margin-left:3px">Convicção:</span> #{value}
+      init: |
+        <img src="#{image}" width="16px"/><span style="margin-left:3px">Iniciativa:</span> #{value}
+      hit: |
+        <img src="#{image}" width="16px"/><span style="margin-left:3px">Chance de acerto:</span> #{value} ( #{orig_value} - #{reduced} )
+  factions:
+    heroes: Herói
+    villains: Vilão
+  treasure:
+    error1: Esse item é inválido!
+    error2: Você não tem tesouros suficientes para essa troca!
+    show:
+      desc: Todos da sua organização ganham
+      exp: de Experiência
+      credits: Estrelas
+      headline: O Título
+      character: O Personagem
+      theme: O Tema
+      pet: O Mascote
+      equipment1: Um Equipamento Aleatório
+      equipment2: Um Equipamento Comum
+      equipment3: Um Equipamento Raro
+      equipment4: Um Equipamento Lendário
+      change: Troque agora!
+      enchant: Pontos de Encantamento
+  history_mode:
+    title: Modo Aventura
+    description: No Modo Aventura você vive as batalhas de cada anime, tanto na pele de um herói quanto na pele de um vilão! Ao comprar, o Modo Aventura fica habilitado para a conta toda, porém apenas um personagem de cada facção poderá fazer.<br />Caso você desbloqueie algum golpe com um personagem, ao trocar para o outro, o golpe também estará liberado! Mas não se esqueça de entrar no personagem que ganhou o golpe primeiro!
+    index:
+      title: Modo Aventura
+      unlock_credits: |
+        #{amount} Estrelas
+      unlock_currency: |
+        #{amount} #{currency}
+      go_battles: Ir para as batalhas
+    unlock:
+      success: Grupo destravado com sucesso. A página irá recarregar e o grupo ficara ativo para ver os detalhes e fazer as lutas
+      errors:
+        invalid: Grupo inválido
+        not_enough_credits: Estrelas insuficientes
+        not_enough_currency: Dinheiro insuficiente
+    show:
+      error_title: Um problema foi encontrado!
+      denied: Você não destravou esse grupo do Modo Aventura
+      invalid: Grupo especificado inválido!
+      battle: Batalhar
+      show_battles: Mostrar Batalhas
+      hide_battles: Ocultar Batalhas
+      mascote: Mascote
+      experiencia: Experiência
+      equipamento: Equipamento
+      tema: Tema
+      aleatorio: Aleatório
+      personagem: Personagem
+      item: Item
+      titulo: Título
+      completed: Concluído
+      recompensas: Recompensa(s)
+    accept:
+      errors:
+        locked: Você não destravou o grupo na qual esse npc pertence
+        invalid: Npc inválido
+        requirements: Você não possui os requerimentos necessários para essa batalha
+  difficulties:
+    normal: Normal
+    easy: | 
+      <span style="color: #1eda15">Fácil</span>
+    hard: | 
+      <span style="color: #ee8c00">Difícil</span>
+    very_hard: |
+      <span style="color: #fc1a1a">Extremo</span>
+  challenges:
+    title: Arena do Céu
+    challenge_active_error: Outro desafio ativo
+    denied: Você não pode participar desse Desafio no momento
+    invalid: O Desafio que você tentou acessar é inválido
+    title2: Entendendo a Arena do Céu
+    descriptions: |
+      A Arena do Céu provavelmente será o seu maior desafio, onde você conseguirá recompensas e glória.
+      <br /><br />A Arena do Céu é uma torre infinita, onde a cada andar a batalha fica mais difícil, e a cada 5 andares você enfrentará um poderoso Chefe.
+      <br /><br />Você paga para entrar, e se perder, está fora. Se quiser tentar novamente, terá que pagar mais uma vez.
+      <br /><br />Você está preparado?
+    success: Arena do Céu destravada com sucesso. A página irá recarregar e a Arena do Céu ficará ativa para ver os detalhes e fazer as lutas 	
+  fragments:
+    change: Transforme agora!
+    title: Entendendo os Fragmentos das Almas
+    error1: Os dados enviados são inválidos.
+    error2: Não tem Fragmentos das Almas suficiente.
+    descriptions: |
+      A Jóia de Quatro Almas é um objeto mágico extremamente poderoso que ao ser criada com a junção de diversos fragmentos, me permitem criar um equipamento aleatório para você. <br /><br />Batalhe contra NPCs e contra Jogadores para juntá-los e traga-os para mim quando tiver a quantidade necessária.
+  grimoire:
+    title: Grimório Proibido
+    description: Nas profundezas da biblioteca mágica existe um livro que foi banido do mundo, por conter os ensinamentos de magias proibidas no mundo atual.<br />Suas páginas foram rasgadas, então mesmo se alguém encontrar o livro, não adiantará de nada se não conseguir as páginas. Batalhando contra NPCs ou Jogadores, vocês tem uma chance pequena de achar uma dessas páginas de um golpe específico.<br />Ao encontrar todas as páginas do mesmo golpe, você consegue desbloqueá-lo e usá-lo em combate! 
+    desbloquear: Desbloquear
+    desbloqueado: Desbloqueado
+    status: Status
+    cartas: Páginas Perdidas
+    errors:
+      invalid: Item inválido
+      impossivel: O número de Cartas Perdidas não é suficiente para essa troca
+  friends:
+    f1: Presentear com
+    f2: Presenteie por
+    f3: Você pode presentear seu
+    f4: amigo com
+    f5: amigo com um
+    f6: Equipamento Aleatório
+    f7: Presenteie por 1 Estrela
+    f8: 2 Estrelas 
+    f9: Tema Aleatório
+    f10: Presenteie por 2 Estrelas
+    f11: Presenteie por 3 Estrelas    
+    f12: Mascote Aleatório
+    f13: Ver Status
+    f14: Remover
+    f15: Você recebeu um presente!
+    f16: |
+      Você recebeu 2000 moedas de presente do seu amigo <b>#{name}</b>
+    f17: |
+      Você recebeu um Equipamento Aleatório de presente do seu amigo <b>#{name}</b>
+    f18: |
+      Você recebeu 2 Estrelas de presente do seu amigo <b>#{name}</b>
+    f19: |
+      Você recebeu o Tema "#{tema}" de presente do seu amigo <b>#{name}</b>
+    f20: |
+      Você recebeu o Mascote "#{mascote}" de presente do seu amigo <b>#{name}</b>
+    f21: Necessário nível de Conta maior do que
+    f22: Presentear com Equipamentos
+    f23: Presentear com Estrelas
+    f24: Presentear com Temas
+    f25: Presentear com Mascotes
+    f26: Limite Diário			
+    kick_reason: Motivo da Exclusão
+    kick: Excluir
+    kick_title: Amizade desfeita!
+    kick_description: |
+        <p>Você não é mais amigo do jogador <b>#{name}</b>.</p>
+    title: Lista de Amigos
+    description: |
+      Nessa lista você pode ver se o seu amigo está online e ver suas estatísticas do jogo, como Missões e Batalhas. Ao evoluir sua conta, você tem direito de mandar pelo menos uma vez por dia um presente para algum de seus amigos, à custo de moedas ou Estrelas.<br /><br /> <span class="laranja">Ps.: Só serão localizados na busca jogadores a partir do nível 10.</span>
+    nothing: Nenhum jogador localizado com esse critério de busca.
+    nothing2: Nenhum pedido de amizade localizado no momento.
+    nothing3: |
+      Sem amigos no momento, <a href="#{link}" target="_parent">clique aqui</a> para buscar novos amigos.
+    search_title: Localizador de Amigos
+    search_description: |
+      Digite uma parte ou o nome completo de um jogador para buscá-lo. Lembrando que ele precisa estar a partir do nível 10!<br /><br /><input type="text" name="nome" class="form-control input-sm" style="width: auto;display: inline-block;" /><input style="margin-left: 10px" type="submit" class="btn btn-sm btn-primary" value="Procurar" />
+    search_description2: |
+      Você só poderá procurar por amigos quando seu personagem atingir o <span class="laranja">nível 10.</span>
+    errors:
+      player_not_found: O jogador não foi localizado
+      invalid: O ID não é válido ou jogador não localizado
+      removed: O jogador selecionado foi removido do jogo
+      send: Não existe mais esse convite de amizade
+      tema: O jogador já possui esse Tema sorteado, por favor tentar novamente.
+      pet: O jogador já possui esse Tema sorteado, por favor tentar novamente.
+      currency: Você não possui moedas suficientes para isso.
+      credits: Você não possui Estrelas suficientes para isso.
+      user_level: O nível da conta insuficiente para essa ação
+    accept:
+      new_friend: Novo amigo adicionado!
+      no_friend: Pedido de amizade negado!
+      refuse_message: |
+        <h3>Que pena!</h3>
+        <p>Seu pedido de amizade foi negado por <b>#{name}</b>.</p>
+      accept_message: |
+        <h3>Novo amigo!</h3>
+        <p>Seu pedido de amizade foi aceito por <b>#{name}</b>.</p>
+  level:
+    player: |
+      Essa experiência é única deste personagem,<br /> e toda recompensa de experiência que <br />você ganhar, virá para cá.<br /><br />Ao evoluir um personagem, sua Stamina<br /> aumenta, você libera mais missões,<br /> pode se graduar e tem chance <br />de ganhar equipamentos melhores.
+    user:  |    
+      Essa experiência é compartilhada entre todos os personagens da sua conta, e uma parte das recompensas de missões e batalhas virá para cá.<br /><br />Ao evoluir sua conta, você libera novos Talentos, ganha um ponto de Treinamento de Atributo e ganha novas opções na Lista de Amigos.
+  alerts:
+    talents: Você tem pontos de talento disponíveis, <a href='#{link}'>clique aqui</a> para aprendê-los.
+    points: Você tem pontos de treinamento disponíveis, <a href='#{link}'>clique aqui</a> para treiná-los.
+    title: Pontos Disponíveis
+  ranked:
+    reward_league: Recompensa da Liga
+    points: pontos ou mais
+    points2: pontos ou menos
+    points3: pontos 
+    exp: Experiência
+    exp_account: Experiência para a Conta
+    down: Desce de Rank com
+    stay: Permanece no Rank com
+    up: Sobe de Rank com
+    promotion: Promoção na Liga
+    reward: Premiação da Liga
+    no_rank: Você não pode duelar na Liga quando estiver no rank máximo.
+    title_no_level: Liga All-Stars Indisponivel
+    description_no_level: Ao alcançar Nível 10 da Conta, você ganha permissão para participar da grandiosa Liga All-Stars e concorrer prêmios incríveis!
+    rank_atual: Rank Atual
+    total_batalhas: Total de Batalhas
+    total_pontos: Total de Pontos
+    vitorias: Vitórias
+    derrotas: Derrotas
+    empates: Empates
+    total_de: Total de
+    liga: Liga All-Stars
+    resumo: Resumo Geral
+    melhor_rank: Melhor Rank
+    recompesa_do: Recompensa do
+    errors:
+      not_league: Ação inválida, a Liga não existe mais.
+      no_reward: Ação inválida, a Liga selecionada não pode mais recompensar.
+      no_player: Ação inválida, você não é o dono dessa recompensa.
+  guide:
+    title: Guia do Jogo
+    description: |
+      Bem vindo ao #{game}!<br /><br />Caso você seja novato no jogo, que tal dar uma passadinha no nosso <a href="#{link}">Guia do Jogo?</a> Em constante atualização, nosso Guia possui vídeos explicativos, ou caso não queira ver o vídeo, também temos um texto com imagens explicando tudo o que você precisa saber sobre os elementos do jogo!<br /><br />Boa sorte em suas batalhas!
+  upgrade:
+    title: Aprimoramento de Equipamento
+    errors:
+      1: Item não localizado.
+      2: Você não tem Areia Estelar suficiente para essa ação.
+      3: Você não tem Sangue de Deus suficiente para essa ação.
+      4: Método de pagamento inválido
+  map:
+    store:
+      title: Loja da Exploração
+      description: Aqui você poderá adquirir itens especiais com drops exclusivos dos Mapas de Exploração. 
+    nenhum_npc: Nenhum NPC Encontrado
+    nenhum: Nenhum
+    passos: Passos Restantes
+    maps: Mapas Descobertos
+    total1: Total de Pergaminhos
+    total9: Total de Materiais
+    find: |
+      Itens<br />Encontrados
+    lutar: Lutar agora mesmo!
+    item: Item localizado
+    character_map: |
+      <br /><br />Adicionalmente você ganhou o personagem:
+    character_theme_map: |
+      <br /><br />Adicionalmente você ganhou o tema:
+    errors:
+      1: Mapa não localizado.
+      2: Você não tem ouro suficiente para essa ação.
+      3: Você não tem créditos suficientes para essa ação.
+      4: Dados inválidos, tente novamente!
+      5: Direção inválida, tente novamente.
+      6: Você não tem passos para essa ação!
+      7: Você não tem itens suficientes para essa troca.
+      8: Você não pode fazer a Exploração enquanto estiver na Fila PVP.
+    title: Exploração
+    description: |
+      Explore os mundos de seus animes favoritos! Encontre diversas recompensas andando por aí, batalhe contra NPCs e libere novos Temas e Personagens! <br /><br /><span class="laranja">Atenção:</span> Você só pode ir para cada Exploração uma vez por dia. Ao acabar seus passos, você terá que encerrar a exploração e entrar só no próximo dia.
+    sair_mapa: Encerrar exploração
+    sair_msg: Deseja realmente sair do mapa? Você perderá seus passos atuais!
+  event:
+    e1: ÚLTIMO VENCEDOR
+    e2: Nenhum vecendor momento
+    e3: PREMIAÇÃO DA BATALHA
+    e4: Experiência Bônus
+    e5: 10% a mais de experiência em batalhas!
+    e6: Moedas Bônus
+    e7: 10% a mais de moedas em batalhas! 
+    e8: Chance de Drop Bônus
+    e9: 10% a mais de chance de dropar itens em batalhas!
+    e10: PONTUAÇÃO TOTAL DOS ANIMES
+    e11: 1000 de Ouro
+    e12: 1 Equipamento Comum Aleatório
+    e13: 5 Tigela de Arroz
+    e14: 1 Mascote Comum Aleatório
+    e15: 500 de Experiência  
+    title: Batalha de Animes
+    description: |
+      Dois animes serão sorteados a cada três horas para a luta, se ao término das três horas, nenhum anime estiver zerado, será declarado vencedor o que tiver mais pontos. O anime zerado perde a batalha instantaneamente, porém, uma nova batalha só terá início após as três horas.<br /><br /><span class="verde">Batalhas ocorrerão das 09:00h às 00:00. Durante a madrugada não haverá combates.</span><br /><br />
+      <span class="verde">Vitórias NPC</span> darão ao seu anime <span class="verde">1 ponto</span> e tirará <span class="vermelho">1 ponto do adversário</span>.<br />
+      <span class="verde">Vitórias PVP</span> darão ao seu anime <span class="verde">10 pontos</span> e tirará <span class="vermelho">10 pontos do adversário</span>.
+  tutorial:
+    quests: Missões Iniciais
+    quests_description: Conheça melhor o jogo fazendo as primeiras
+    quests_description2: Missões de Tempo
+    equips: Colocando um Equipamento
+    equips_description: Vá na página de
+    equips_description2: Equipamentos
+    equips_description3: para usar seus novos equipamentos
+    pets: Escolhendo um Mascote
+    pets_description: Mascotes
+    pets_description2: para escolher o mascote que batalhará com você
+    atributos: Treinamento de Atributos
+    atributos_description: Você ganha um ponto por nível de conta. Vá na página
+    atributos_description2: Treinamento de Atributos
+    atributos_description3: para treinar
+    habilidades: Conhecendo suas Habilidades e Especialidades
+    habilidades_description: Habilidades e Especialidades
+    habilidades_description2: e escolha uma para usar em batalha
+    golpes: Conhecendo seus Golpes
+    golpes_description: Golpes
+    golpes_description2: e escolha 10 golpes para usar em batalha
+    npcs: Enfrentando NPCs
+    npcs_description: Faça uma
+    npcs_description2: Batalha NPC
+    npcs_description3: para entender como funciona as batalhas. Você pode ir no
+    npcs_description4: Guia do Jogo
+    npcs_description5: se ainda tiver dúvidas
+    pvps: Enfrentando Jogadores
+    pvps_description: Batalha PVP
+    pvps_description2: para experimentar a verdadeira emoção de uma batalha, mas é muito mais difícil que um NPC!
+    talents: Pontos de Talentos
+    talents_description: Após conseguir sua Conta nível 2, vá na página de
+    talents_description2: Talentos
+    talents_description3: e use seu ponto disponível
+    graduacao: Graduando
+    graduacao_description: Após conseguir vencer um NPC e chegar no nível 5 de personagem, vá nas
+    graduacao_description2: Graduações
+    graduacao_description3: e se gradue
+    nada: Nada
+  summon:
+    title: Sobre o Círculo de Invocação
+    description: Usando o Círculo de Invocação, você pode adquirir qualquer tema e qualquer personagem bloqueado do jogo, inclusive os especiais All-Stars! <br /><br />Jogue quantas vezes você quiser, e arrisque sua sorte! Mas fique ciente que você poderá invocar algum personagem ou tema que já tem, ou até mesmo não invocar nada!
+  wanted:
+    title: Sobre os Procurados
+    description: |
+      Todos os jogadores que conseguirem 10 vitórias seguidas, se tornarão Procurados. <br />O valor da sua cabeça aumenta a cada vitória, mas se algum jogador te derrotar com o método especificado no seu cartaz, você deixará de ser um Procurado e o jogador receberá a recompensa.
+    sem_nenhum: No momento não temos nenhum procurado
+    1: Matar com crítico
+    2: Matar com precisão
+    3: Matar com counter
+    4: Matar com lentidão
+    5: Matar com confusão
+    6: Matar com sangramento
+    7: Matar com atordoamento
+    8: Matar sem usar buff
+    9: Matar sem usar habilidade
+    10: Matar sem usar especialidade
+  fidelity:
+    reward_title: |
+      Logar #{days} dia(s) seguidos
+    days:
+      1: 100 de
+      2: 200 de Experiência
+      3: x2 Tigela de Arroz
+      4: x1 Joia Aleatória
+      5: 200 de 
+      6: 400 de Experiência
+      7: x2 Ramen Comum
+      8: x1 Mascote Aleatório
+      9: x1 Equipamento Raro
+      10: 400 de 
+      11: 800 de Experiência
+      12: x2 Takoyaki
+      13: x1 Joia Aleatória
+      14: x1 Gema Rara
+      15: 800 de 
+      16: 1.600 de Experiência
+      17: x2 Nigiri
+      18: x1 Mascote Aleatório
+      19: x1 Areia Estelar
+      20: 1.600 de
+      21: 3.200 de Experiência
+      22: x2 Bento
+      23: x1 Joia Aleatória
+      24: x1 Sangue de Deus 
+      25: 3.200 de
+      26: 6.400 de Experiência
+      27: x2 Churrasco
+      28: x1 Gema Lendária
+      29: x1 Equipamento Lendário
+      30: 1 Estrela<br />( uma vez por mês )
+    buttons:
+      available: Coletar
+      unavailable: Indisponível
+      rewarded: Coletado
+    topo_title: Ganhe seu prêmio diário!
+    topo_description: Você ainda não recebeu seu prêmio diário, <a href="#{link}">clique aqui</a> para ir até a página para recebê-lo.
+    topo_description2: Você já recebeu seu prêmio diário, volte amanhã para um novo prêmio.
+    errors:
+      day: O dia não corresponde com a data atual!
+      reward: Você já ganhou essa recompensa!
+    title: Recompensas de Fidelidade
+    description: Ao logar diariamente, você pode coletar recompensas para seu personagem.<br />Você deve entrar no jogo durante <span class="verde">30 dias seguidos</span> para conseguir todas as recompensas e começar de novo.<br /><br /><span class="laranja">Caso você não logue um dos dias, o contador irá retornar para o primeiro dia.</span>
+  enchant:
+    limite: Esse é o limite de pontos que você pode treinar diariamente.
+    custo: Custo para treinar
+    enchant: Encantamento de Golpes
+    treino_diario: Limite Diário de Treino
+    treinar: Treinar
+    pontos: Total de Pontos de Treino
+    frase: A cada 2000 pontos você poderá criar uma Joia de Encantamento e aprimorar seus golpes.
+    frase1: Você pode criar
+    frase2: Joia(s) de Encantamento(s)
+    criar: Criar Joia
+    frase3: Você ainda não tem Pontos de Treino suficientes para criar<br />Joias de Encantamentos
+    criou: | 
+      Você criou:
+    escolha: Escolha um Golpe clicando aqui!
+    tooltip: Clicando no ? você terá a lista completa de golpes 
+    encantar: Encantar
+    encantado: Encantado
+    message: Você realmente gostaria de remover essa Joia? Seu golpe deixará de ser encantado!
+    errors:
+      sem_stamina: Você não tem Stamina suficiente para essa ação.
+      stamina_invalida: Ação inválida, tente novamente.
+      nao_pode_treinar: Você alcançou o limite diário de treino, volte amanhã!
+      nao_pode_treinar2: Você alcançou o limite de treino total, crie novas gemas para continuar treinando!
+      semogolpe: Você não tem esse golpe liberado ou precisa equipá-lo ao menos uma vez!
+      invalid: O Golpe não existe!
+  hightlights:
+    buy_theme: |
+      O jogador <span>%s</span> adquiriu o tema: <span>%s</span>
+    wanteds: |
+      O jogador <span>%s</span> matou o alvo Procurado: <span>%s</span>!
+    blood: |
+      O jogador <span>%s</span> dropou 1x Sangue de Deus em Batalha PVP!
+    sand: |
+      O jogador <span>%s</span> dropou 1x Areia Estelar em Batalha PVP!
+    circulo: |
+      O jogador <span>%s</span> acaba de ganhar no Círculo de Invocação e ganhou: <span>%s</span>!
+  objectives:
+    title: Objetivos de Round
+    mensagens:
+      title1: |
+        Objetivos de Round por Conta
+      description1: |
+        A cada novo Round, sua conta irá receber 10 objetivos para serem cumpridos dentro do tempo de Round. A cada objetivo concluído, você irá receber <span class="laranja">1 Ponto de Round</span> para ser usado na Loja abaixo:
+        <br /><br /><span class="verde">Os Pontos de Round nunca são resetados, eles são consumidos quando você comprar algo!</span>
+        <br /><br /><span class="laranja">O round termina em: #{days} dia(s)</span>
+      title2: Como funciona a Loja de Objetivos?
+      description2: |
+        Você poderá comprar apenas uma vez do mesmo item por <span class="laranja">Round</span>, portanto pense bem antes de sair gastando!
+        <br /><br /><span class="laranja">Você possui: #{points} Pontos de Round</span>
+    item_types:
+      1: Personagem
+      2: Itens
+      3: Equipamentos
+      4: All-Stars
+      5: Temas
+      6: Mascotes
+      7: Títulos
+    exp_account: de Experiência para a Conta
+    equip_comun: Equipamento Comum
+    equip_raro: Equipamento Raro
+    equip_lendario: Equipamento Lendário
+    ja_trocou: Você já trocou esse prêmio esse round!
+    round: Pontos de Evento
+    ja_adquirido: Já adquirido
+    voce: Você possui
+    buy_now: |
+      #{points} Pontos de Round
+  pets:
+    show:
+      click_text: Que ação você gostaria de fazer com esse mascote ?
+      equip: Equipar
+      unequip: Desequipar
+  vips:
+    make_donation:
+      title: |
+        Promoção: Estrelas em Dobro
+      description: |
+        Hoje você pode aproveitar nossa promoção de estrelas em dobro ao adquirir qualquer plano de doação abaixo! Promoção durará até o dia:
+    done_donation:
+      you_have: Você está preste há fazer uma Doação de
+      you_have2: tem certeza disso?
+      donation_by: Doação de 
+      title2: Você não tem pagamentos pendentes
+      description2: No momento você não tem pagamentos pendentes, você precisa selecionar um plano na página de Doações Vips, <a href="http://animeallstarsgame.com.br/index.php/vips/make_donation">clicando aqui</a>.
+      title: Aguarde o redirecionamento
+      description: Você está prestes a ser redirecionado para o site de pagamento de seu plano vip, aguarde sem sair dessa página.
+    purchase:
+      title: Faça uma Doação
+      description: Teste
+    title: Loja das Estrelas
+    buy_now: Comprar
+    restore_energy: |
+      Recupere #{amount}% por #{price} #{currency}
+    buy_modes:
+      free: Primeira vez de graça
+      currency: |
+        Custa #{price} #{currency}
+      vip: |
+        Custa #{price} Estrela(s)
+    no_memory: Nenhum personagem memorizado.
+    errors:
+      invalid_item: Item inválido
+      not_enough_currency: |
+        Você não tem #{currency} suficiente
+      not_enough_vip: Você não tem estrela(s) suficiente
+      invalid_character: Personagem inválido
+      dont_have: Você não tem mais esse talento disponivel para ativa-lo.
+  tournaments:
+    requirements:
+      level: |
+        Você precisa ter nível #{level} ou maior
+    success:
+      subscribe: Inscrição realizada com sucesso!
+    errors:
+      already_subscribed: Você já tem um personagens inscrito nesse torneio!
+      wait_draw: Aguardando o sorteio da chave.
+      enough_credits: Você não possui estrelas suficientes
+      enough_currency: |
+        Você não possui #{currency} suficientes
+    view:
+      bracket: Chave do Torneio
+      players: Jogadores inscritos no torneio
+    status:
+      canceled: Cancelado
+      finished: Finalizado
+    rounds:
+      subscriptions: Inscrições
+      final: Final
+      semifinal: Semifinal
+      quarterfinals: Quartas de inal
+      normal: |
+        Rodada #{round}
+    title: Torneio ALl-Star
+    info:
+      title: Como funciona o torneio?
+      description: |
+        Os torneios são realizados toda sexta-feira, sábado e domingo.<br />
+        As inscrições serão encerradas 30 minutos antes do inicio do torneio. A inscrição pode ser paga com #{currency} ou Estrelas<br /><br />
+
+        <span class="laranja">* Caso o torneio não alcance o total de inscrições, o mesmo será cancelado e a taxa de inscrição reembolsada.</span>

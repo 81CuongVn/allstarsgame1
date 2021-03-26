@@ -65,7 +65,7 @@
 			</div>
 			</a>
 		</div>
-		<select id="character-change-headline" class="form-control input-sm">
+		<select id="character-change-headline" class="form-control input-sm select2">
 			<option value="0"><?php echo t('characters.no_headline') ?></option>
 			<?php foreach ($player->user()->headlines() as $user_headline): ?>
 				<option value="<?php echo $user_headline->id ?>" <?php echo $player->headline_id == $user_headline->headline_id ? 'selected="selected"' : '' ?>><?php echo $user_headline->headline()->description()->name ?></option>
@@ -79,7 +79,7 @@
 			</div>
 			<div class="menu_esquerdo_divisao">
 				<b class="amarelo"><?php echo t('organizations.faction') ?></b>
-				<b class=""><?=$player->faction()->name;?></b>
+				<b class=""><?=$player->faction()->description()->name;?></b>
 			</div>
 		</div>
 		<div class="bg_menu_esquerdo">

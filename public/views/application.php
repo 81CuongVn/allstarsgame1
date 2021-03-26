@@ -58,6 +58,8 @@ if ($_SESSION['user_id']) {
 	<!-- CSS -->
 	<link rel="stylesheet" type="text/css" href="<?=asset_url('css/bootstrap.min.css');?>" />
 	<link rel="stylesheet" type="text/css" href="<?=asset_url('css/bootstrap-theme.css');?>" />
+	<link rel="stylesheet" type="text/css" href="<?=asset_url('css/select2.css');?>" />
+	<link rel="stylesheet" type="text/css" href="<?=asset_url('css/select2-bootstrap.css');?>" />
 	<link rel="stylesheet" type="text/css" href="<?=asset_url('css/layout.css');?>" />
 	<link rel="stylesheet" type="text/css" href="<?=asset_url('css/characters.css');?>" />
 	<link rel="stylesheet" type="text/css" href="<?=asset_url('css/tutorial.css');?>" />
@@ -375,6 +377,7 @@ if ($_SESSION['user_id']) {
 	<script type="text/javascript" src="<?=asset_url('js/highlights.js');?>"></script>
 <?php } ?>
 <script type="text/javascript" src="<?=asset_url('js/bootstrap.min.js');?>"></script>
+<script type="text/javascript" src="<?=asset_url('js/select2.js');?>"></script>
 <script type="text/javascript" src="<?=asset_url('js/tutorial.js');?>"></script>
 <script type="text/javascript" src="<?=asset_url('js/typeahead.js');?>"></script>
 <script type="text/javascript" src="<?=asset_url('js/bootbox.js');?>"></script>
@@ -411,5 +414,12 @@ if ($_SESSION['user_id']) {
 <script type="text/javascript" src="<?=asset_url('js/png_animator.js');?>"></script>
 <script type="text/javascript" src="<?=asset_url('js/tournaments.js');?>"></script>
 <!-- Conteúdo -->
+<script type="text/javascript">
+	$(document).ready(function() {
+		$('.select2').select2({
+			theme: "bootstrap",
+		});
+	});
+</script>
 </body>
 </html>

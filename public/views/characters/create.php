@@ -28,28 +28,22 @@
 					<img width="235" height="281" id="character-profile-image" />
 					<input class="button btn btn-sm btn-warning" id="change-theme" type="button" value="<?php echo t('characters.create.change_theme') ?>" style="position:relative; top: -30px" />
 					<div id="character-info" style="float: left; width: 240px; text-align: left; position: relative; line-height: 27px;">
-						<div class="row">
-							<div class="col-lg-2">
-								<labeL class="branco" style="margin-top: 7px"><?php echo t('characters.create.labels.name') ?>:</labeL>
-							</div>
-							<div class="col-lg-9" style="height: 30px">
-								<input type="text" name="name" placeholder="Nome do personagem" class="form-control input-sm" /><br />
-							</div>
+						<div class="form-group">
+							<labeL for="name"><?php echo t('characters.create.labels.name') ?>:</labeL>
+							<input type="text" id="name" name="name" placeholder="Nome do personagem" class="form-control input-sm" require />
 						</div>
-						<span class="branco"><?php echo t('characters.create.labels.anime') ?>:</span> <span class="cinza anime">--</span><br />
+						<!-- <span class="branco"><?php echo t('characters.create.labels.anime') ?>:</span> <span class="cinza anime">--</span><br />
 						<span class="branco"><?php echo t('characters.create.labels.anime_totals') ?>:</span> <span class="cinza anime_totals">--</span><br />
 						<span class="branco"><?php echo t('characters.create.labels.character') ?>:</span> <span class="cinza character">--</span><br />
-						<span class="branco"><?php echo t('characters.create.labels.character_totals') ?>:</span> <span class="cinza character_totals">--</span>
+						<span class="branco"><?php echo t('characters.create.labels.character_totals') ?>:</span> <span class="cinza character_totals">--</span> -->
 						<div class="break"></div>
 						<div class="titulo-home4"><p>Facção</p></div>
-						<div class="faccao" data-faction="1">
-							<img src="<?php echo image_url('herois.jpg') ?>" width="120" /><br />
-							<div>Heróis</div>
-						</div>
-						<div class="faccao" data-faction="2">
-							<img src="<?php echo image_url('viloes.jpg') ?>"  width="120" /><br />
-							<div>Vilões</div>
-						</div>	
+						<?php foreach ($factions as $faction) { ?>
+							<div class="faccao" data-faction="<?=$faction->id;?>">
+								<img src="<?=image_url($faction->image(true));?>" width="120" /><br />
+								<div><?=$faction->description()->name;?></div>
+							</div>
+						<?php } ?>
 						<input type="submit" class="btn btn-sm btn-primary" value="<?php echo t('characters.create.submit') ?>" style="position:relative; left: 40px; top: 20px;"/>
 					</div>
 					
@@ -63,13 +57,13 @@
 							$counter	= 1;
 						?>
 						<?php foreach ($animes as $anime): ?>
-							<a class="anime page-item page-item-<?php echo ceil($counter++ / 5) ?>" data-id="<?php echo $anime->id ?>">
+							<a class="anime page-item page-item-<?php echo ceil($counter++ / 6) ?>" data-id="<?php echo $anime->id ?>">
 								<img src="<?php echo image_url('anime/' . $anime->id . '.jpg') ?>" alt="<?php echo $anime->description()->name ?>" />
 							</a>			
 						<?php endforeach ?>
 						<div class="break"></div>
 						<div class="character-paginator" data-target-container="#anime-list">
-							<?php for($f = 1; $f <= ceil(sizeof($animes) / 5); $f++): ?>
+							<?php for($f = 1; $f <= ceil(sizeof($animes) / 6); $f++): ?>
 								<div class="page" data-page="<?php echo $f ?>"><?php echo $f ?></div>
 							<?php endfor; ?>
 						</div>
@@ -88,16 +82,16 @@
 									<?php
 										$unlocked	= $character->unlocked($user);
 									?>
-									<a class="character page-item page-item-<?php echo ceil($counter++ / 9) ?> <?php echo !$unlocked ? 'locked' : '' ?>" data-id="<?php echo $character->id ?>">
+									<a class="character page-item page-item-<?php echo ceil($counter++ / 12) ?> <?php echo !$unlocked ? 'locked' : '' ?>" data-id="<?php echo $character->id ?>">
 										<?php if (!$unlocked): ?>
 											<span class="glyphicon glyphicon-ban-circle"></span>
 										<?php endif ?>
-										<?php echo $character->small_image() ?>
+										<img src="<?=image_url($character->small_image(true));?>" width="120" />
 									</a>
 								<?php endforeach ?>
 								<div class="break"></div>
 								<div class="character-paginator" data-target-container="#anime-characters-<?php echo $anime->id ?>">
-									<?php for($f = 1; $f <= ceil(sizeof($characters) / 9); $f++): ?>
+									<?php for($f = 1; $f <= ceil(sizeof($characters) / 12); $f++): ?>
 										<div class="page" data-page="<?php echo $f ?>"><?php echo $f ?></div>
 									<?php endfor; ?>
 								</div>

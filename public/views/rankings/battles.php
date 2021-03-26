@@ -1,3 +1,8 @@
+<style type="text/css">
+	.select2-container--bootstrap {
+		margin-bottom: 0;
+	}
+</style>
 <?php echo partial('shared/title', array('title' => 'rankings.battles.title', 'place' => 'rankings.players.title')) ?>
 <div class="barra-secao barra-secao-<?php echo $player->character()->anime_id ?>">
 	<p>Filtro do Ranking</p>
@@ -8,7 +13,7 @@
 		<tr>
 			<td align="center">
 				<b><?php echo t('characters.create.labels.anime') ?></b><br />
-				<select name="anime_id" id="anime_id" class="form-control input-sm" style="width:110px">
+				<select name="anime_id" id="anime_id" class="form-control input-sm select2" style="width:110px">
 					<option value="0"><?php echo t('global.all') ?></option>
 					<?php foreach ($animes as $anime): ?>
 						<option value="<?php echo $anime->id ?>" <?php if ($anime->id == $anime_id): ?>selected="selected"<?php endif ?>><?php echo $anime->description()->name ?></option>
@@ -16,15 +21,20 @@
 				</select>
 			</td>
 			<td align="center">
-				<div id="characters">Carregando...</div>
+				<b><?php echo t('characters.create.labels.character') ?></b><br />
+				<div id="characters">
+					<select name="character_id" class="form-control input-sm select2" id="character_id" style="width: 121px">
+						<option value="0"><?php echo t('global.all') ?></option>
+					</select>
+				</div>
 			</td>
 			<td align="center">
 				<b><?php echo t('characters.select.labels.faction') ?></b><br />
 				<select name="faction_id" class="form-control input-sm">
 					<option value="0"><?php echo t('global.all') ?></option>
-          <?php foreach ($factions as $faction): ?>
-						<option value="<?=$faction->id;?>"<?php if ($faction->id == $faction_id): ?>selected="selected"<?php endif ?>><?=$faction->name;?></option>
-          <?php endforeach ?>
+          			<?php foreach ($factions as $faction): ?>
+						<option value="<?=$faction->id;?>"<?php if ($faction->id == $faction_id): ?>selected="selected"<?php endif ?>><?=$faction->description()->name;?></option>
+          			<?php endforeach ?>
 				</select>
 			</td>
 			<td align="center">

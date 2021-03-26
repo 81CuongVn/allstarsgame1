@@ -93,12 +93,14 @@ class CharactersController extends Controller {
 			} else
 				$this->json->errors	= $errors;
 		} else {
-			$animes	= Anime::find($_SESSION['universal'] ? '1=1 AND playable=1' : 'active=1 AND playable=1', ['cache' => true, 'reorder' => 'id ASC']);
+			$animes		= Anime::find($_SESSION['universal'] ? '1=1 AND playable=1' : 'active=1 AND playable=1', ['cache' => true, 'reorder' => 'id ASC']);
+			$factions	= Faction::find($_SESSION['universal'] ? '1=1' : 'active=1', ['cache' => true, 'reorder' => 'id ASC']);
 
-			$this->assign('user', $user);
-			$this->assign('total', $total);
-			$this->assign('animes', $animes);
-			$this->assign('formulas', [
+			$this->assign('user',		$user);
+			$this->assign('total',		$total);
+			$this->assign('animes',		$animes);
+			$this->assign('factions',	$factions);
+			$this->assign('formulas',	[
 				'for_atk'	=> t('formula.for_atk'),
 				'for_def'	=> t('formula.for_def'),
 				'for_crit'	=> t('formula.for_crit'),
@@ -451,27 +453,31 @@ class CharactersController extends Controller {
 							$errors[]	= t('characters.themes.errors.character');
 						}
 					}
-					if(isset($_POST['buy']) && isset($_POST['mode']) && is_numeric($_POST['mode'])) {
-						if(!$theme->is_buyable){
+					if(isset($_POST['buy']) && isset($_POST['mode'])) {
+						if (!$theme->is_buyable) {
 							$errors[]	= t('characters.themes.errors.invalid');
 						}
-						if($_POST['mode'] == 2 && !$theme->price_currency){
+						if (!in_array($_POST['mode'], [1, 2])) {
 							$errors[]	= t('characters.themes.errors.invalid');
 						}
-						if($_POST['mode'] == 1 && !$theme->price_credits){
+						if ($_POST['mode'] == 2 && !$theme->price_currency) {
 							$errors[]	= t('characters.themes.errors.invalid');
 						}
-						if($theme->price_credits || $theme->price_currency) {
-							if($theme->price_credits && $theme->price_credits > $user->credits && $_POST['mode']==1) {
+						if ($_POST['mode'] == 1 && !$theme->price_credits) {
+							$errors[]	= t('characters.themes.errors.invalid');
+						}
+						if ($theme->price_credits || $theme->price_currency) {
+							if ($theme->price_credits && $theme->price_credits > $user->credits && $_POST['mode'] == 1) {
 								$errors[]	= t('characters.themes.errors.enough_credits');
 							}
-
-							if($theme->price_currency && $theme->price_currency > $player->currency && $_POST['mode']==2) {
-								$errors[]	= t('characters.themes.errors.enough_currency', array('currency' => t('currencies.' . $player->character()->anime_id)));
+							if ($theme->price_currency && $theme->price_currency > $player->currency && $_POST['mode'] == 2) {
+								$errors[]	= t('characters.themes.errors.enough_currency', [
+									'currency' => t('currencies.' . $player->character()->anime_id)
+								]);
 							}
 						}
-					} elseif($_POST['use']) {
-						if(!$theme->is_default && !$user->is_theme_bought($_POST['theme'])) {
+					} elseif ($_POST['use']) {
+						if (!$theme->is_default && !$user->is_theme_bought($_POST['theme'])) {
 							$errors[]	= t('characters.themes.errors.not_bought');
 						}
 					} else {
@@ -506,11 +512,11 @@ class CharactersController extends Controller {
 					]);
 					
 					if($_POST['mode'] == 1){
-						if($theme->price_credits) {
+						if ($theme->price_credits) {
 							$user->spend($theme->price_credits);
 						}
-					}else{
-						if($theme->price_currency) {
+					} else {
+						if ($theme->price_currency) {
 							$player->spend($theme->price_currency);
 						}
 					}
@@ -519,7 +525,6 @@ class CharactersController extends Controller {
 					$player->achievement_check("character_theme");
 					// Objetivo de Round
 					$player->check_objectives("character_theme");
-					
 				} elseif($_POST['use']) {
 					$image								= $theme->first_image();
 					$player->character_theme_id			= $theme->id;

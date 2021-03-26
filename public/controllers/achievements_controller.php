@@ -11,7 +11,9 @@
 		
 			$this->json->success	= true;
 			
-			$achievement_id = isset($_POST['achievement_id']) ? $_POST['achievement_id'] : 1;
+			$achievement_id	= isset($_POST['achievement_id']) ? $_POST['achievement_id'] : 1;
+			$achievement	= AchievementCategory::find_first($achievement_id);
+			$achievement_id	= AchievementCategory::find_first('ordem = ' . $achievement->ordem)->id;
 			$player	= Player::get_instance();
 			$user	= User::get_instance();
 			

@@ -29,6 +29,9 @@
 	position: relative;
 	display: block;
 }
+#character-creation-container #anime-character-list {
+	padding-left: 15px;
+}
 
 #anime-list .anime, #anime-character-list .character, #select-player-list-container .player, #theme-list-ajax .character-uniques {
 	cursor: pointer;
@@ -50,25 +53,28 @@
 #anime-list .anime {
 	float: left;
 	position: relative;
-	padding-left: 29px;
-	padding-top: 8px;
+	padding-left: 16px;
+	padding-top: 5px;
 }
 
 #select-player-list-container .player,
 #anime-character-list .character {
 	float: left;
 	position: relative;
-	padding-left: 20px;
+	/*padding-left: 20px;
 	width: 140px;
-	height: 138px;
+	height: 138px; */
+	padding: 0px;
+	width: 120px;
+	height: 120px;
 }
 
 #select-player-list-container .player span,
 #anime-character-list .character span {
 	position: absolute;
 	font-size: 82px;
-	top: 24px;
-	left: 50px;
+	top: 20px;
+	left: 20px;
 	color: black;
 }
 

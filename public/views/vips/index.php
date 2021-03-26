@@ -5,7 +5,7 @@
 		<td width="80">&nbsp;</td>
 		<td width="290" align="center">Nome / Descrição</td>
 		<td width="215" align="center">Custo</td>
-		<td width="140" align="center">Status</td>
+		<td width="140" align="center">Ação</td>
 	</tr>
 	</table>
 </div>
@@ -26,7 +26,8 @@
 			"player"			=> $player,
 			"animes"			=> $animes,
 			"player_vip_items"	=> $player_vip_items,
-			"color"				=> $color
+			"color"				=> $color,
+			"factions"			=> $factions
 		]);
 	}
 }

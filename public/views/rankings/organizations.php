@@ -10,7 +10,7 @@
 				<select name="faction_id" class="form-control input-sm" style="max-width: 100px;">
 					<option value="0"><?=t('global.all');?></option>
 					<?php foreach ($factions as $faction): ?>
-						<option value="<?=$faction->id;?>"<?php if ($faction->id == $faction_id): ?>selected="selected"<?php endif ?>><?=$faction->name;?></option>
+						<option value="<?=$faction->id;?>"<?php if ($faction->id == $faction_id): ?>selected="selected"<?php endif ?>><?=$faction->description()->name;?></option>
           			<?php endforeach ?>
 				</select>
 			</td>

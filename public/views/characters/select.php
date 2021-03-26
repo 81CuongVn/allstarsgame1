@@ -12,18 +12,18 @@
 		<?php echo partial('shared/info', array('id'=> 3, 'title' => 'characters.removed.success', 'message' => t('characters.removed.success_msg'))) ?>
 	<?php endif ?>
 	<div style="width: 730px; position: relative;">
-		<div style="width:231px; height:300px; float: left; position: relative; top: 20px;" id="current-player-image">
-
+		<div style="width:231px; height:300px; float: left; position: relative; top: 20px;" id="current-player-info">
+			<div id="current-player-image"></div>
+			<div style="position: relative; top: -30px;" class="text-center">
+				<div id="current-player-name" class="amarelo" style="font-size: 16px; font-weight: bold;">--</div>
+			</div>
 		</div>
 		<div style="width:495px; height:300px; float: left; position: relative; top: 30px;">
 			<div style="float: left; width: 495px;">
 				<div class="titulo-home2"><p>Dados do Personagem</p></div>
 			</div>
 			<div style="float: left; width: 255px; text-align: left; position: relative; top: 25px;" id="current-player-info">
-				<div class="laranja name" style="font-size:16px;">--</div>
-				<div class="box_level level">
-					--
-				</div>
+				<div class="box_level level">--</div>
 				<div style="float: left; position: relative; top: 15px; left: 5px;">
 					<div class="b4">
 						<?php echo t('characters.select.labels.graduation') ?>: <span class="cinza graduation">--</span>
@@ -31,8 +31,20 @@
 					<div class="bar-exp"><?php echo exp_bar(0, 0, 175) ?></div>
 				</div>
 				<div style="float: left; clear:both; position: relative; top: 15px;">
-					<span class="branco currency"><?php echo t('characters.select.labels.currency') ?> </span>: <span class="cinza amount">--</span><br />
-					<span class="branco"><?php echo t('characters.select.labels.anime') ?>: </span><span class="cinza anime">--</span>
+					<table width="100%">
+						<tr>
+							<td style="width: 60px;" class="branco currency"><?=t('characters.select.labels.currency');?>:</td>
+							<td class="cinza"><span class="amount">--</span></td>
+						</tr>
+						<tr>
+							<td class="branco"><?=t('characters.select.labels.anime');?>:</td>
+							<td class="cinza"><span class="anime">--</span></td>
+						</tr>
+						<tr>
+							<td class="branco"><?=t('characters.select.labels.faction');?>:</td>
+							<td class="cinza"><span class="faction">--</span></td>
+						</tr>
+					</table>
 				</div>
 				<div style="float: left; clear:both; position: relative; top: 40px; width: 490px; text-align: center">
 					<div  id="playerButtons" style="display: none;">
@@ -88,7 +100,7 @@
 							<?php /*if ($player->banned) { ?>
 								<span class="glyphicon glyphicon-ban-circle"></span>
 							<?php }*/ ?>
-							<?=$player->small_image();?>
+							<img src="<?=image_url($player->small_image(true));?>" width="120" />
 						</a>
 					<?php endforeach ?>
 					<div class="break"></div>
@@ -107,13 +119,14 @@
 		_players[<?=$player->id;?>]	= {
 			name:			"<?=$player->name;?>",
 			anime:			"<?=$player->character()->anime()->description()->name;?>",
+			faction:		"<?=$player->faction()->description()->name;?>",
 			level:			<?=$player->level;?>,
 			profile:		"<?=image_url($player->profile_image(true));?>",
 			currency:		"<?=t('currencies.' . $player->character()->anime_id);?>",
 			amount:			"<?=highamount($player->currency);?>",
 			graduation:		"<?=$player->graduation()->description($player->character()->anime_id)->name;?>",
 			mana_name:		"<?=t('formula.for_mana.' . $player->character_theme()->anime()->id);?>",
-			exp:			<?=$player->exp ?>,
+			exp:			<?=$player->exp;?>,
 			level_exp:		<?=$player->level_exp();?>,
 			life:			<?=$player->for_life();?>,
 			max_life:		<?=$player->for_life(true);?>,

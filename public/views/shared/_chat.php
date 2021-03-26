@@ -8,7 +8,7 @@
     <div class="selector">
         <ul>
             <li data-channel="world" data-cmd="w">Mundo</li>
-            <li data-channel="faction" data-cmd="f"><?=$player->faction()->name;?></li>
+            <li data-channel="faction" data-cmd="f"><?=$player->faction()->description()->name;?></li>
             <?php if ($player->organization_id): ?>
                 <li data-channel="guild" data-cmd="g">Organização</li>
             <?php endif; ?>

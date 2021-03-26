@@ -5,12 +5,12 @@
 ?>
 <form id="vip-form-<?php echo $item->id ?>" onsubmit="return false">
 	<input type="hidden" name="id" value="<?php echo $item->id ?>" />
-	<table width="725" border="0" cellpadding="0" cellspacing="0">
+	<table width="725">
 		<tr bgcolor="<?php echo $color ?>" height="60">
-			<td width="80" align="center">
+			<td width="80" class="text-center">
 				<img src="<?php echo image_url($item->image(true)) ?>"  data-title="<?php echo $item->description()->name ?>" data-trigger="hover" data-placement="bottom" />
 			</td>
-			<td width="290" align="justify">
+			<td width="290" class="text-justify">
 				<span class="amarelo" style="font-size:14px"><?php echo $item->description()->name ?></span><br /><?php echo $item->description()->description ?>
 			</td>
 			<td width="215" align="center">
@@ -39,7 +39,7 @@
 					?>
 				</span>
 				<?php if ($item->id == 429): ?>
-					<select name="character_id" class="form-control input-sm" style="width:140px">
+					<select name="character_id" class="form-control input-sm select2" style="width:170px">
 						<?php foreach ($animes as $anime): ?>
 							<optgroup label="<?php echo $anime->description()->name ?>">
 							<?php foreach ($anime->characters($_SESSION['universal'] ? '' : ' AND active=1') as $character): ?>
@@ -52,7 +52,7 @@
 				<?php endif ?>
 				<?php if ($item->id == 1864): ?>
 					<?php if($player_vip_items):?>
-					<select name="character_id" class="form-control input-sm" style="width:140px">
+					<select name="character_id" class="form-control input-sm" style="width:170px">
 						<?php foreach ($player_vip_items as $player_vip_item): ?>
 							<?php $character = $player_vip_item->characters($player_vip_item->character_id); ?>
 								<?php if ($character->id == $player->character_id) { continue; } ?>
@@ -65,20 +65,20 @@
 				<?php endif ?>
 	
 				<?php if ($item->id == 430): ?>
-					<input type="text" name="name" class="form-control input-sm" style="width:140px" />
+					<input type="text" name="name" class="form-control input-sm" style="width:170px" />
 				<?php endif ?>
 				<?php if ($item->id == 1745): ?>
-					<input type="text" name="name_organization" class="form-control input-sm" style="width:140px" />
+					<input type="text" name="name_organization" class="form-control input-sm" style="width:170px" />
 				<?php endif ?>
-				<?php /*if ($item->id == 1746): ?>
-					<select name="faction" class="form-control input-sm" style="width:140px">
-						<?php if($player->faction_id != 1){?>
-						<option value="1">Heroi</option>
-						<?php }else{?>
-						<option value="2">Vilão</option>
-						<?php }?>
+				<?php if ($item->id == 1746): ?>
+					<select name="faction" class="form-control input-sm" style="width:170px">
+						<?php foreach($factions as $faction) {
+							if ($faction->id != $player->faction_id) {
+								echo '<option value="' . $faction->id . '">' . $faction->description()->name . '</option>';
+							}
+						} ?>
 					</select>
-				<?php endif*/ ?>
+				<?php endif ?>
 				<?php 
 					if ($player->has_item(1715) && $item->id == 1715) {
 				?>		
@@ -87,7 +87,7 @@
 					}		
 				?>			
 			</td>
-			<td width="140" align="center">
+			<td width="140" class="text-center">
 				<a class="btn btn-sm btn-primary buy" data-id="<?php echo $item->id ?>"><?php echo t("vips.buy_now") ?></a>
 			</td>
 		</tr>

@@ -368,8 +368,6 @@ class UsersController extends Controller {
 
 		$this->json->uni	= $universal;
 
-		// if (!IS_BETA && $is_beta)
-			// $errors[]	= t('users.login.errors.beta_disabled');
 		if (!$universal && !($captcha && $captcha_session && $captcha == $captcha_session))
 			$errors[]	= t('users.login.errors.invalid_captcha');
 		if (!sizeof($errors)) {
@@ -377,9 +375,9 @@ class UsersController extends Controller {
 			if (!$universal)
 				$addSql = "AND `password` = PASSWORD('{$password}')";
 
-			$user = User::find_first("`email` = '{$email}' {$addSql}");
+			$user = User::find_first("email = '{$email}' {$addSql}");
 			if (!$user && !$universal) {
-				$user = User::find_first("`email` = '{$email}'");
+				$user = User::find_first("email = '{$email}'");
 				if ($user->password != password($password)) {
 					$user = FALSE;
 				} else {
