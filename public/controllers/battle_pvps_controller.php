@@ -369,7 +369,7 @@ class BattlePvpsController extends Controller {
 			]);
 
 			$player->less_stamina	+= PVP_COST;
-			$player->is_pvp_queued	= true;
+			$player->is_pvp_queued	= TRUE;
 			$player->save();
 
 			$channel->basic_publish($message, '', PVP_CHANNEL);
@@ -420,23 +420,24 @@ class BattlePvpsController extends Controller {
 		}
 	}
 	function exit_queue() {
-		$this->as_json	= TRUE;
-		$player			= Player::get_instance();
+		$this->as_json				= TRUE;
+		$this->json->success		= FALSE;
 
-		var_dump($player->pvp_queue_found < now() && $player->is_pvp_queued);
-		if ($player->pvp_queue_found < now() && $player->is_pvp_queued) {
-			$player->less_stamina	-= PVP_COST;
-			if ($player->less_stamina < 0) {
-				$player->less_stamina	= 0;
-			}
+		$errors						= [];
+		$player						= Player::get_instance();
 
-			$player->pvp_queue_found	= now();
-			$player->is_pvp_queued		= FALSE;
-			$player->save();
+		if ($player->pvp_queue_found >= now()) {
+			$errors[]	= t('battles.waiting.errors.pvp_match_found');
+		}
+		if (!$player->is_pvp_queued) {
+			$errors[]	= t('battles.waiting.errors.no_pvp_queued');
+		}
 
-			/* SAI DA FILA */
-			$connection = new AMQPConnection(PVP_SERVER, PVP_PORT, 'guest', 'guest');
-			$channel	= $connection->channel();
+		if (!sizeof($errors)) {
+			$this->json->success	= TRUE;
+
+			$connection				= new AMQPConnection(PVP_SERVER, PVP_PORT, 'guest', 'guest');
+			$channel				= $connection->channel();
 			$channel->queue_declare(PVP_CHANNEL, FALSE, FALSE, FALSE, FALSE);
 
 			$message	= new AMQPMessage(json_encode([
@@ -446,11 +447,21 @@ class BattlePvpsController extends Controller {
 				'delivery_mode'	=> 2 # persistent mode
 			]);
 
+			$player->less_stamina	-= PVP_COST;
+			if ($player->less_stamina < 0) {
+				$player->less_stamina	= 0;
+			}
+
+			$player->pvp_queue_found	= now();
+			$player->is_pvp_queued		= FALSE;
+			$player->save();
+
 			$channel->basic_publish($message, '', PVP_CHANNEL);
 
 			$channel->close();
 			$connection->close();
-			/* /SAI DA FILA */
+		} else {
+			$this->json->messages	= $errors;
 		}
 	}
 
