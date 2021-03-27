@@ -453,7 +453,7 @@ class BattlePvpsController extends Controller {
 			}
 
 			$player->pvp_queue_found	= now();
-			$player->is_pvp_queued		= FALSE;
+			$player->is_pvp_queued		= 0;
 			$player->save();
 
 			$channel->basic_publish($message, '', PVP_CHANNEL);
