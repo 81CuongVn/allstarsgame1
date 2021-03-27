@@ -4,10 +4,10 @@ require 'daemons'
 
 module Daemons
 	class Application
-		def logfile;		'/var/www/allstarsgame/logs/pvp_queue.log'; end
-		def output_logfile;	'/var/www/allstarsgame/logs/pvp_queue2.log'; end
+		def logfile;		'/var/www/allstarsgame/servers/pvp/logs/pvp_queue.log'; end
+		def output_logfile;	'/var/www/allstarsgame/servers/pvp/logs/pvp_queue2.log'; end
 	end
 end
 
 Dir.mkdir('/var/run/allstars', 0777) rescue nil
-Daemons.run '/var/www/allstarsgame/queue.prod.rb', dir: '/var/run/allstars', dir_mode: :normal, ontop: false, log_output: true
+Daemons.run '/var/www/allstarsgame/servers/pvp/queue.prod.rb', dir: '/var/run/allstars', dir_mode: :normal, ontop: false, log_output: true
