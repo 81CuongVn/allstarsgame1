@@ -9,5 +9,5 @@ module Daemons
 	end
 end
 
-Dir.mkdir('/var/run/allstars', 0777) rescue nil
-Daemons.run '/var/www/allstarsgame/servers/pvp/queue.prod.rb', dir: '/var/run/allstars', dir_mode: :normal, ontop: false, log_output: true
+Dir.mkdir('/var/www/allstarsgame/servers/pvp', 0777) rescue nil
+Daemons.run '/var/www/allstarsgame/servers/pvp/queue.prod.rb', dir: '/var/www/allstarsgame/servers/pvp', dir_mode: :normal, ontop: false, log_output: true
