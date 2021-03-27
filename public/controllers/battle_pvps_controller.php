@@ -441,8 +441,8 @@ class BattlePvpsController extends Controller {
 
 		var_dump($player->pvp_queue_found < now() && $player->is_pvp_queued);
 		if ($player->pvp_queue_found < now() && $player->is_pvp_queued) {
-			echo var_dump($player->less_stamina) . ' = ' . var_dump($player->less_stamina + PVP_COST) . '<br />';
-			echo var_dump($player->pvp_queue_found) . ' = ' . var_dump($player->is_pvp_queued) . '<br />';
+			echo $player->less_stamina . ' = ' . ($player->less_stamina + PVP_COST) . '<br />';
+			echo $player->pvp_queue_found . ' = ' . $player->is_pvp_queued . '<br />';
 
 			$player->less_stamina	-= PVP_COST;
 			if ($player->less_stamina < 0) {
