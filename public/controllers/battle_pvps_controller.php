@@ -384,7 +384,7 @@ class BattlePvpsController extends Controller {
 		$this->as_json	= TRUE;
 		$player			= Player::get_instance();
 
-		if ($player->pvp_queue_found) {
+		if ($player->pvp_queue_found > now()) {
 			$diff = $player->pvp_queue_found - now();
 			
 			$this->json->found		= TRUE;
@@ -439,7 +439,7 @@ class BattlePvpsController extends Controller {
 		$channel->close();
 		$connection->close();
 
-		if (!$player->pvp_queue_found && $player->is_pvp_queued) {
+		if ($player->pvp_queue_found < now() && $player->is_pvp_queued) {
 			$player->less_stamina	-= PVP_COST;
 
 			if ($player->less_stamina < 0) {
