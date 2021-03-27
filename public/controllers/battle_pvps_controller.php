@@ -423,36 +423,34 @@ class BattlePvpsController extends Controller {
 		$this->as_json	= TRUE;
 		$player			= Player::get_instance();
 
-		$connection = new AMQPConnection(PVP_SERVER, PVP_PORT, 'guest', 'guest');
-		$channel	= $connection->channel();
-		$channel->queue_declare(PVP_CHANNEL, FALSE, FALSE, FALSE, FALSE);
-
-		$message	= new AMQPMessage(json_encode([
-			'method'		=> 'exit_queue',
-			'id'			=> $player->id
-		]), [
-			'delivery_mode'	=> 2 # persistent mode
-		]);
-
-		$channel->basic_publish($message, '', PVP_CHANNEL);
-
-		$channel->close();
-		$connection->close();
-
 		var_dump($player->pvp_queue_found < now() && $player->is_pvp_queued);
 		if ($player->pvp_queue_found < now() && $player->is_pvp_queued) {
-			echo $player->less_stamina . ' = ' . ($player->less_stamina + PVP_COST) . '<br />';
-
 			$player->less_stamina	-= PVP_COST;
 			if ($player->less_stamina < 0) {
 				$player->less_stamina	= 0;
 			}
 
-			$player->pvp_queue_found	= NULL;
+			$player->pvp_queue_found	= now();
 			$player->is_pvp_queued		= FALSE;
 			$player->save();
 
-			echo $player->pvp_queue_found . ' = ' . $player->is_pvp_queued . '<br />';
+			/* SAI DA FILA */
+			$connection = new AMQPConnection(PVP_SERVER, PVP_PORT, 'guest', 'guest');
+			$channel	= $connection->channel();
+			$channel->queue_declare(PVP_CHANNEL, FALSE, FALSE, FALSE, FALSE);
+
+			$message	= new AMQPMessage(json_encode([
+				'method'		=> 'exit_queue',
+				'id'			=> $player->id
+			]), [
+				'delivery_mode'	=> 2 # persistent mode
+			]);
+
+			$channel->basic_publish($message, '', PVP_CHANNEL);
+
+			$channel->close();
+			$connection->close();
+			/* /SAI DA FILA */
 		}
 	}
 
