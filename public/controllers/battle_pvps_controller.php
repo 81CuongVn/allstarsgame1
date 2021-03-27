@@ -319,14 +319,15 @@ class BattlePvpsController extends Controller {
 			/*$player_enemy->battle_pvp_id = $battle->id;
 			$player_enemy->save();*/
 
-			$this->json->success	= true;
+			$this->json->success	= TRUE;
 		} else {
 			$this->json->messages	= $errors;
 		}
 	}
 	function enter_queue() {
-		$this->as_json			= true;
-		$this->json->success	= false;
+		$this->as_json			= TRUE;
+		$this->json->success	= FALSE;
+
 		$errors					= [];
 		$player					= Player::get_instance();
 
@@ -342,10 +343,10 @@ class BattlePvpsController extends Controller {
 		}
 
 		if (!sizeof($errors)) {
-			$this->json->success	= true;
+			$this->json->success	= TRUE;
 			$connection				= new AMQPConnection(PVP_SERVER, PVP_PORT, 'guest', 'guest');
 			$channel				= $connection->channel();
-			$channel->queue_declare(PVP_CHANNEL, false, false, false, false);
+			$channel->queue_declare(PVP_CHANNEL, FALSE, FALSE, FALSE, FALSE);
 			
 			if (date('w') == 0 || date('w') == 2 || date('w') == 4) {
 				$battle_type_id = 5;
@@ -380,18 +381,16 @@ class BattlePvpsController extends Controller {
 		}
 	}
 	function check_queue() {
-		$this->as_json	= true;
+		$this->as_json	= TRUE;
 		$player			= Player::get_instance();
 
 		if ($player->pvp_queue_found) {
 			$diff = $player->pvp_queue_found - now();
-			// $now					= new DateTime(); 
-			// $queue_diff				= $now->diff(new DateTime($player->pvp_queue_found));
 			
-			$this->json->found		= true;
+			$this->json->found		= TRUE;
 			$this->json->seconds	= $diff;
 		} else {
-			$this->json->found		= false;
+			$this->json->found		= FALSE;
 
 			if ($player->battle_pvp_id) {
 				$this->json->redirect	= make_url('battle_pvps#fight');
@@ -399,13 +398,13 @@ class BattlePvpsController extends Controller {
 		}
 	}
 	function accept_queue() {
-		$this->as_json	= true;
+		$this->as_json	= TRUE;
 		$player			= Player::get_instance();
 
 		if ($player->pvp_queue_found) {
 			$connection = new AMQPConnection(PVP_SERVER, PVP_PORT, 'guest', 'guest');
 			$channel	= $connection->channel();
-			$channel->queue_declare(PVP_CHANNEL, false, false, false, false);
+			$channel->queue_declare(PVP_CHANNEL, FALSE, FALSE, FALSE, FALSE);
 
 			$message	= new AMQPMessage(json_encode([
 				'method'		=> 'accept_queue',
@@ -421,12 +420,12 @@ class BattlePvpsController extends Controller {
 		}
 	}
 	function exit_queue() {
-		$this->as_json	= true;
+		$this->as_json	= TRUE;
 		$player			= Player::get_instance();
 
 		$connection = new AMQPConnection(PVP_SERVER, PVP_PORT, 'guest', 'guest');
 		$channel	= $connection->channel();
-		$channel->queue_declare(PVP_CHANNEL, false, false, false, false);
+		$channel->queue_declare(PVP_CHANNEL, FALSE, FALSE, FALSE, FALSE);
 
 		$message	= new AMQPMessage(json_encode([
 			'method'		=> 'exit_queue',
@@ -447,7 +446,7 @@ class BattlePvpsController extends Controller {
 				$player->less_stamina	= 0;
 			}
 
-			$player->is_pvp_queued	= false;
+			$player->is_pvp_queued	= FALSE;
 			$player->save();
 			
 		}
