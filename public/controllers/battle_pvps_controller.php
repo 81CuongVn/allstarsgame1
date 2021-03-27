@@ -439,7 +439,9 @@ class BattlePvpsController extends Controller {
 		$channel->close();
 		$connection->close();
 
+		var_dump($player->pvp_queue_found < now() && $player->is_pvp_queued);
 		if ($player->pvp_queue_found < now() && $player->is_pvp_queued) {
+			echo 'aqui';
 			$player->less_stamina	-= PVP_COST;
 
 			if ($player->less_stamina < 0) {
