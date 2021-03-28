@@ -47,7 +47,7 @@
 		</div>	
 		<div class="form-group col-md-6">
 			<label class="control-label"><?php echo t('users.join.labels.country') ?></label>
-			<select name="country_id" class="form-control input-sm">
+			<select name="country_id" class="form-control input-sm select2">
 				<?php foreach ($countries as $country): ?>
 					<option value="<?php echo $country->id ?>" <?php echo $user->country_id == $country->id ? "selected='selected'" : ""?>><?php echo $country->name ?></option>
 				<?php endforeach ?>

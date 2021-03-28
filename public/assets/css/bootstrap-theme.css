@@ -146,20 +146,24 @@ body.modal-open {
 	background-color: #091e30 !important;
 	border-top: 1px solid #0e263d;
 	border-bottom: 1px solid #0e263d;
+	color: #bababa;
 }
 .table-striped tr:nth-child(even) td {
 	background-color: #173148 !important;
 	border-top: 1px solid #0e263d;
 	border-bottom: 1px solid #0e263d;
+	color: #bababa;
 }
 .mr-debug-window .table-striped tr:nth-child(odd) td {
 	background-color: #061728 !important;
 	border-top: 1px solid #0e263d;
 	border-bottom: 1px solid #0e263d;
+	color: #bababa;
 }
 .mr-debug-window .table-striped tr:nth-child(even) td {
 	border-top: 1px solid #0e263d;
 	border-bottom: 1px solid #0e263d;
+	color: #bababa;
 }
 
 /* NAV PILLS */

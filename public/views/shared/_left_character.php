@@ -1,11 +1,10 @@
-<?php if(!$player->map_id){?>
+<?php if (!$player->map_id) { ?>
 	<?php
 		$ranking 				= $player->ranking();
 		$ranking_achievement 	= $player->ranking_achievement();
 		$ranking_organization 	= $player->ranking_organization();
 		$ranking_account 		= $player->ranking_account();
 		$tutorial				= $player->tutorial();	
-		
 	?>
 	<div style="width:242px; height:285px; float: left; text-align: center" class="tutorial_profile">	
 		<?php echo $player->profile_image() ?>
@@ -92,12 +91,12 @@
 				<b class=""><?php echo $user->round_points ? highamount($user->round_points) : "-" ?></b>
 			</div>
 		</div>
-		<div class="bg_menu_esquerdo">
+		<?php /*<div class="bg_menu_esquerdo">
 			<div class="menu_esquerdo_divisao" style="width: 100%">
 				<b class="amarelo">Poder de Batalha</b>
 				<b class=""><?=highamount($player->fight_power());?></b>
 			</div>
-		</div>
+		</div>*/ ?>
 		<div class="bg_menu_esquerdo">
 			<div class="menu_esquerdo_divisao">
 				<b class="amarelo"><?php echo t('global.points') ?></b>
