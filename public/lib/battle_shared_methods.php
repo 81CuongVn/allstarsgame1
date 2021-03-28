@@ -238,11 +238,17 @@ trait BattleSharedMethods {
 				$player_ranked		= $p->ranked();
 			}
 
-			if ($battle->battle_type_id == 6) {
+			if ($battle->battle_type_id == 7 || $battle->battle_type_id == 8) {
+				$link = make_url('organizations#dungeon');
+			} else if ($battle->battle_type_id == 3) {
+				$link = make_url('challenges#show/' . $p->challenge_id);
+			} elseif ($battle->battle_type_id == 6) {
 				$link = make_url('maps#preview');
 			} else {
 				$link = make_url('characters#status');
 			}
+
+			$this->json->redirect	= $link;
 
 			//Variaveis dos drops
 			$drop_message	= '<br />';
@@ -1372,6 +1378,23 @@ trait BattleSharedMethods {
 
 					if ($battle->battle_type_id == 3) {
 						$link = make_url('challenges#show/'.$p->challenge_id);
+					}
+
+					if (!$is_pvp && ($battle->battle_type_id == 7 || $battle->battle_type_id == 8)) {
+						if ($battle->battle_type_id == 7) {
+							$session = new OrganizationMapObjectSession();
+							$session->down								= 1;
+							$session->organization_id					= $p->organization_id;
+							$session->organization_map_object_id		= $e->organization_map_object_id;
+							$session->organization_accepted_event_id	= $p->organization_accepted_event_id;
+							$session->player_id							= $p->id;
+						} else {
+							$session		= OrganizationMapObjectSession::find_first('player_id=0 AND organization_accepted_event_id=' . $p->organization_accepted_event_id . ' AND organization_id=' . $p->organization_id . ' AND organization_map_object_id=' . $e->organization_map_object_id);
+							$session->down	= 1;
+						}
+						$session->save();
+
+						$p->organization()->check_event_finished($p);
 					}
 
 					// Não faz quando for batalha de treino.

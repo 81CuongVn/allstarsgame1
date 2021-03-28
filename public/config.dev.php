@@ -55,6 +55,7 @@ $attrRate			= [
 ];
 
 # Default sessions
+// $_SESSION['language_id']	= 1;
 if (!isset($_SESSION['language_id']))		$_SESSION['language_id']	= 1;
 if (!isset($_SESSION['user_id']))			$_SESSION['user_id']		= NULL;
 if (!isset($_SESSION['player_id']))			$_SESSION['player_id']		= NULL;

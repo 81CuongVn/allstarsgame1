@@ -40,7 +40,12 @@ class CharactersController extends Controller {
 				}
 			}
 
-			if (!isset($_POST['faction_id']) || (isset($_POST['faction_id']) && !is_numeric($_POST['faction_id'])) || !in_array($_POST['faction_id'], [1, 2])) {
+			if (!isset($_POST['faction_id']) || (isset($_POST['faction_id']) && !is_numeric($_POST['faction_id']))) {
+				$errors[]	= t('characters.create.errors.invalid_faction');
+			}
+
+			$faction = Faction::find_first($_POST['faction_id']);
+			if (!$faction) {
 				$errors[]	= t('characters.create.errors.invalid_faction');
 			}
 
@@ -766,66 +771,117 @@ class CharactersController extends Controller {
 		$this->assign('player_tutorial', $player->player_tutorial());	
 	}
 	function fragments_change(){
-		$player		= Player::get_instance();
 		$this->as_json			= true;
 		$this->json->success	= false;
+
+		$user					= User::get_instance();
+		$player					= Player::get_instance();
 		$errors					= [];
-		
-		
+
 		if (!isset($_POST['mode']) || (isset($_POST['mode']) && !is_numeric($_POST['mode']))) {
 			$errors[]	= t('fragments.error1');
 		} else {
 			$item_446 = PlayerItem::find_first("player_id =". $player->id. " AND item_id=446");
-			$prices	= [
-						'100',
-						'100'
-						];
-			if($item_446->quantity < $prices[$_POST['mode']]){
+			$prices	= [ '100', '100', '100', '100' ];
+			if ($item_446->quantity < $prices[$_POST['mode']]) {
 				$errors[]	= t('fragments.error2');
 			}
 			
-			if(!sizeof($errors)) {
-				
+			if (!sizeof($errors)) {
 				$item_446->quantity -= $prices[$_POST['mode']];
 				$item_446->save(); 
-				
+
 				// Faz a premiação referente ao mode que o jogador escolheu!
-				switch($_POST['mode']){
+				switch ($_POST['mode']) {
 					case 0:
-						//Equipamento aleatorio
+						// Equipamento aleatorio
 						Item::generate_equipment($player);
-						
+
 						$message = "Você ganhou um Equipamento Aleatório, visite a página de Equipamentos para mais detalhes!";
-						$message = base64_encode($message);
+						$message = urlencode($message);
 					break;
 					case 1:
 						// Dá um pet random!
 						$npc_pet	= Item::find_first('item_type_id=3 AND is_initial=1', ['reorder' => 'RAND()']);
 						if (!$player->has_item($npc_pet->id)) {
-						
 							$player_pet						= new PlayerItem();
 							$player_pet->item_id			= $npc_pet->id;
 							$player_pet->player_id			= $player->id;
 							$player_pet->save();
-							
-							$message = "Você ganhou o Mascote: ". $npc_pet->description()->name;
-							$message = base64_encode($message);
-						}else{
+
+							$message = "Você ganhou o Mascote: <b>". $npc_pet->description()->name . '</b>';
+							$message = urlencode($message);
+						} else {
 							$item_446 = PlayerItem::find_first('item_id=446 AND player_id=' . $player->id);
-							
-							if($item_446){
-								$item_446->quantity += 25;
+							if ($item_446) {
+								$item_446->quantity 	+= 25;
 								$item_446->save();
-							}else{
+							} else {
 								$item_446				= new PlayerItem();						
 								$item_446->item_id		= 446;
 								$item_446->player_id	= $player->id;
-								$item_446->quantity 	+= 25;
+								$item_446->quantity 	= 25;
 								$item_446->save();
 							}
 							
-							$message = "Você já possuia o Mascote sorteado e por isso ganhou <strong>25 Fragmentos de Alma</strong>.";	
-							$message = base64_encode($message);
+							$message = "Você já possuia o Mascote sorteado e por isso ganhou <b>25 Fragmentos de Almas</b>.";	
+							$message = urlencode($message);
+						}
+					break;
+					case 2:
+						// Dá um personagem random!
+						$character	= Character::find_first('active=1 and (credits_lock=1 or currency_lock=1)', ['reorder' => 'RAND()']);
+						if (!$user->is_character_bought($character->id)) {
+							$player_pet					= new UserCharacter();
+							$player_pet->character_id	= $character->id;
+							$player_pet->user_id		= $user->id;
+							$player_pet->save();
+							
+							$message = "Você ganhou o Personagem: <b>". $character->description()->name . '</b>';
+							$message = urlencode($message);
+						} else {
+							$item_446 = PlayerItem::find_first('item_id=446 AND player_id=' . $player->id);
+							if ($item_446) {
+								$item_446->quantity		+= 25;
+								$item_446->save();
+							} else {
+								$item_446				= new PlayerItem();						
+								$item_446->item_id		= 446;
+								$item_446->player_id	= $player->id;
+								$item_446->quantity 	= 25;
+								$item_446->save();
+							}
+							
+							$message = "Você já possuia o Personagem sorteado e por isso ganhou <b>25 Fragmentos de Almas</b>.";	
+							$message = urlencode($message);
+						}
+					break;
+					case 3:
+						// Dá um tema random!
+						$theme	= CharacterTheme::find_first('active=1 and is_buyable=1', ['reorder' => 'RAND()']);
+						if (!$user->is_theme_bought($theme->id)) {
+							$player_pet						= new UserCharacterTheme();
+							$player_pet->character_theme_id	= $theme->id;
+							$player_pet->user_id			= $user->id;
+							$player_pet->save();
+							
+							$message = "Você ganhou o Tema: <b>". $theme->description()->name . '</b>';
+							$message = urlencode($message);
+						} else {
+							$item_446 = PlayerItem::find_first('item_id=446 AND player_id=' . $player->id);
+							if ($item_446) {
+								$item_446->quantity		+= 25;
+								$item_446->save();
+							} else {
+								$item_446				= new PlayerItem();						
+								$item_446->item_id		= 446;
+								$item_446->player_id	= $player->id;
+								$item_446->quantity 	= 25;
+								$item_446->save();
+							}
+							
+							$message = "Você já possuia o Tema sorteado e por isso ganhou <b>25 Fragmentos de Almas</b>.";	
+							$message = urlencode($message);
 						}
 					break;
 				}
@@ -836,293 +892,20 @@ class CharactersController extends Controller {
 				$upgrade_counter->save();
 				// Adiciona o contador de aprimoramentos
 				
-				//Verifica a conquista de fragmentos - Conquista
+				// Verifica a conquista de fragmentos - Conquista
 				$player->achievement_check("fragments");
 				// Objetivo de Round
 				$player->check_objectives("fragments");
 				
 				// Manda o id do premio para o json
-				$this->json->message = $message;
-				
-				$this->json->success	= true;
-			}else{
+				$this->json->message	= $message;
+				$this->json->success	= TRUE;
+			} else {
 				$this->json->messages	= $errors;
 			}
-			
-			
 		}
 	}
-	function generate_equipment($player, $rarity_fragment = NULL, $slot = NULL) {
-		$rarities	= [
-			'common',
-			'rare',
-			'legendary'
-		];
 
-		$slots	= [
-			'head',
-			'shoulder',
-			'chest',
-			'neck',
-			'hand',
-			'leggings'
-		];
-
-		$attributes_by_slot	= [
-			'head'		=> [],
-			'shoulder'	=> [],
-			'chest'		=> [],
-			'neck'		=> [],
-			'hand'		=> [],
-			'leggings'	=> []
-		];
-
-		$ignore_sums	= ['cooldown_reduction', 'for_stamina', 'npc_battle_count'];
-
-		$choosen_slot	= $slots[rand(0, sizeof($slots) - 1)];
-
-		$rarity_drop_by_graduation	= [
-			1	=> [
-				'common'	=> 95,
-				'rare'		=> 5,
-				'legendary'	=> 0
-			],
-			2	=> [
-				'common'	=> 80,
-				'rare'		=> 20,
-				'legendary'	=> 0
-			],
-			3	=> [
-				'common'	=> 65,
-				'rare'		=> 30,
-				'legendary'	=> 5
-			],
-			4	=> [
-				'common'	=> 50,
-				'rare'		=> 40,
-				'legendary'	=> 10
-			],
-			5	=> [
-				'common'	=> 35,
-				'rare'		=> 50,
-				'legendary'	=> 15
-			],
-			6	=> [
-				'common'	=> 20,
-				'rare'		=> 60,
-				'legendary'	=> 20
-			]
-		];
-
-		$bonuses_by_rarity	= [
-			'common'	=> [1],
-			'rare'		=> [2],
-			'legendary'	=> [3]
-		];
-
-		$additional_by_graduation	= [
-			'common'	=> 1,
-			'rare'		=> 2,
-			'legendary'	=> 3
-		];
-
-		$additional_chance_by_graduation	= [
-			[10, 35, 50, 5, 1],
-			[15, 30, 45, 10, 1],
-			[20, 25, 40, 15, 1],
-			[25, 20, 35, 20, 1],
-			[30, 15, 30, 25, 1],
-			[35, 10, 25, 30, 1]
-		];
-
-		$choosables	= [
-			'cooldown_reduction'		=> 'cooldown_reduction_id',
-			'technique_attack_increase'	=> 'technique_attack_increase_id',
-			'technique_mana_reduction'	=> 'technique_mana_reduction_id',
-			'technique_crit_increase'	=> 'technique_crit_increase_id',
-			'technique_zero_mana'		=> 'technique_zero_mana_id'
-		];
-
-		$bases	= [
-				[
-				[
-					'for_atk'		=> [1, 2, 3, 5],
-					'for_def'		=> [1, 2, 3, 5],
-					'for_crit'		=> [1, 2],
-					'for_abs'		=> [1, 2],
-					'for_inc_crit'	=> [1, 3],
-					'for_inc_abs'	=> [1, 3],
-					'for_prec'		=> [1, 2],
-					'for_init'		=> [1, 2]
-				], 					[
-					'for_atk'		=> [1, 2, 3, 5],
-					'for_def'		=> [1, 2, 3, 5],
-					'for_crit'		=> [1, 2],
-					'for_abs'		=> [1, 2],
-					'for_inc_crit'	=> [1, 3],
-					'for_inc_abs'	=> [1, 3],
-					'for_prec'		=> [1, 2],
-					'for_init'		=> [1, 2]
-				], [
-					'for_atk'		=> [1, 3, 3, 7],
-					'for_def'		=> [1, 3, 3, 7],
-					'for_crit'		=> [1, 3],
-					'for_abs'		=> [1, 3],
-					'for_inc_crit'	=> [1, 4],
-					'for_inc_abs'	=> [1, 4],
-					'for_prec'		=> [1, 3],
-					'for_init'		=> [1, 3]
-				], [
-					'for_atk'		=> [1, 4, 3, 9],
-					'for_def'		=> [1, 4, 3, 9],
-					'for_crit'		=> [1, 4],
-					'for_abs'		=> [1, 4],
-					'for_inc_crit'	=> [1, 5],
-					'for_inc_abs'	=> [1, 5],
-					'for_prec'		=> [1, 4],
-					'for_init'		=> [1, 4]
-				], [
-					'for_atk'		=> [1, 5, 4, 9],
-					'for_def'		=> [1, 5, 4, 9],
-					'for_crit'		=> [1, 5],
-					'for_abs'		=> [1, 5],
-					'for_inc_crit'	=> [1, 6],
-					'for_inc_abs'	=> [1, 6],
-					'for_prec'		=> [1, 5],
-					'for_init'		=> [1, 5]
-				], [
-					'for_atk'		=> [1, 6, 4, 11],
-					'for_def'		=> [1, 6, 4, 11],
-					'for_crit'		=> [1, 6],
-					'for_abs'		=> [1, 6],
-					'for_inc_crit'	=> [1, 7],
-					'for_inc_abs'	=> [1, 7],
-					'for_prec'		=> [1, 6],
-					'for_init'		=> [1, 6]
-				]
-			]
-		];
-
-		$values					= [];
-		$current_grad			= $player->graduation()->sorting;
-
-		$rarity_base			= $rarity_drop_by_graduation[$current_grad];
-		$rarity_choosen_name	= '';
-		$have_extras			= false;
-		
-		if(is_null($rarity_fragment)){
-			while(true) {
-				$rarity_choosen_id	= 0;
-
-				foreach ($rarity_base as $rarity => $chance) {
-					if(rand(1, 100) <= $chance) {
-						$rarity_choosen_name	= $rarity;
-						break 2;
-					}
-
-					$rarity_choosen_id++;
-				}
-			}
-		}else{
-			switch($rarity_fragment){
-				case 0:
-					$rarity_choosen_name = "common";
-					$rarity_choosen_id = 0;
-				break;
-				case 1:
-					$rarity_choosen_name = "rare";
-					$rarity_choosen_id = 1;
-				break;
-				case 2:
-					$rarity_choosen_name = "legendary";
-					$rarity_choosen_id = 2;
-				break;
-			}	
-		}
-
-		foreach ($bases as $block => $base) {
-			$attribute_counter	= $bonuses_by_rarity[$rarity_choosen_name][$block];
-			$choosen_attributes	= $base[$current_grad - 1];
-			$extras				= $additional_chance_by_graduation[$current_grad - 1];
-			$extra_chance		= $extras[$block];
-			
-	
-			if(rand(1, 100) <= 25 && rand(1, 100) <= $extra_chance && !$have_extras) {
-				$attribute_counter	+= $extras[4];
-				$have_extras		= true;
-			}
-
-			if ($attribute_counter) {
-				while(true) {
-					foreach ($base[$current_grad - 1] as $attribute => $value) {
-				
-						if(in_array($attribute, $attributes_by_slot[$choosen_slot])) {
-							continue;
-						}
-
-						if(isset($values[$attribute])) {
-							continue;
-						}
-
-						if(rand(1, 100) > 10) {
-							continue;
-						}
-
-						if(!in_array($attribute, $ignore_sums)) {
-							if($rarity_choosen_id == 2) {
-								$value[0]++;
-							}
-
-							if($rarity_choosen_id == 3 || $rarity_choosen_id == 4) {
-								$value[0]	+= 2;
-							}
-
-							//$values[$attribute]	= rand($value[0], $value[1] + (($rarity_choosen_id) * 2));
-							$values[$attribute]	= rand($value[0]*10, $value[1]*10)/10;
-							//$values[$attribute]	= rand($value[0], $value[1]);	
-						} else {
-							$values[$attribute]	= rand($value[0]*10, $value[1]*10)/10;
-							//$values[$attribute]	= rand($value[0], $value[1]);	
-						}
-
-						if (isset($choosables[$attribute])) {
-							$items_query	= Recordset::query('SELECT id FROM items WHERE item_type_id=1 AND id NOT IN(112, 113)', true)->result_array();
-
-							//$values[$attribute]					= 1;
-							$values[$choosables[$attribute]]	= $items_query[rand(0, sizeof($items_query) - 1)]['id'];
-						}
-
-						$attribute_counter--;
-
-						if(!$attribute_counter) {
-							break 2;
-						}
-					}
-				}
-			}
-		}
-
-		$player_item			= new PlayerItem();
-		$player_item->player_id	= $player->id;
-		$player_item->item_id	= 114;
-		$player_item->slot_name	= $choosen_slot;
-		$player_item->rarity	= $rarity_choosen_name;
-		$player_item->quantity	= 1;
-		$player_item->save();
-
-		$attribute						= new PlayerItemAttribute();
-		$attribute->player_item_id		= $player_item->id;
-		$attribute->graduation_sorting	= $player->graduation()->sorting;
-		$attribute->have_extra			= $have_extras ? 1 : 0;
-
-		foreach ($values as $property => $value) {
-			$attribute->{$property}	= $value;
-		}
-
-		$attribute->save();
-
-		return $player_item;
-	}
 	function pets() {
 		$player		= Player::get_instance();
 		$mine_pets	= [];

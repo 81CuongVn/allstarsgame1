@@ -26,25 +26,26 @@
 	$player_achievement = $achievement->player_achievement($player->id, $achievement->id);
 	$on_off  = $player_achievement ? "on" : "off";  	
 ?>
-	<div class="a-bg <?=$on_off;?>">
-		<div class="a-name">
-			<div align="center" style="width: 350px; position: relative; left: 140px; top: 39px;">
-				<span class="a-name-<?php echo $on_off?>">
-					<?php echo $achievement->description()->name;?><br/>
-				</span>
-				<span style="top:5px; position: relative">
-					<?php 
-						if ($on_off == "on") {
-							$timestamp = strtotime($player_achievement->created_at);
-							echo date('d/m/Y H:i:s', $timestamp);
-						}
-					?>
-				</span>
-			</div>
+	<div class="ability-speciality-box <?=($on_off == "on" ? 'active' : '')?>" style="height: auto;">
+		<div class="image">
+			<img src="<?=image_url('achievement/trophy-' . $on_off . '.png')?>">
 		</div>
-		<div class="a-req">
-			<div class="<?php echo $on_off?> requirement-popover" data-source="#tooltip-req-<?php echo $achievement->id?>" data-title="<?php echo $achievement->description()->name;?>" data-trigger="hover" data-placement="bottom">
-				<img src="<?php echo image_url('achievement/req_'.$on_off.'.png') ?>" />
+		<div class="name" style="height:55px !important;">
+			<span class="a-name-on"><?php echo $achievement->description()->name;?></span>
+			<span style="top:5px; position: relative; font-size: 11px">
+				<?php 
+				if ($on_off == "on") {
+					$timestamp = strtotime($player_achievement->created_at);
+					echo '<br />' . date('d/m/Y H:i:s', $timestamp);
+				}
+				?>
+			</span>
+		</div>
+		<div class="details" style="padding: 9px;">
+			<div class="a-req">
+				<div class="<?=$on_off;?> requirement-popover" data-source="#tooltip-req-<?=$achievement->id;?>" data-title="<?=$achievement->description()->name;;?>" data-trigger="hover" data-placement="bottom">
+					<img src="<?=image_url('achievement/req_' . $on_off . '.png')?>" width="38" />
+				</div>
 				<div id="tooltip-req-<?php echo $achievement->id?>" class="status-popover-container">
 					<div class="status-popover-content">
 						<?php echo $achievement->description()->description;?>
@@ -318,12 +319,12 @@
 						}
 						?>
 					</div>
-				</div>	
+				</div>
 			</div>
-		</div>
-		<div class="a-gift">
-			<div class="<?php echo $on_off?> requirement-popover" data-source="#tooltip-gift-<?php echo $achievement->id?>" data-title="Recompensa" data-trigger="hover" data-placement="bottom">
-				<img src="<?php echo image_url('achievement/gift_'.$on_off.'.png') ?>" />
+			<div class="a-gift">
+				<div class="<?=$on_off;?> requirement-popover" data-source="#tooltip-gift-<?=$achievement->id;?>" data-title="Recompensa" data-trigger="hover" data-placement="bottom">
+					<img src="<?=image_url('achievement/gift_' . $on_off . '.png')?>" width="38" />
+				</div>
 				<div id="tooltip-gift-<?php echo $achievement->id?>" class="status-popover-container">
 					<div class="status-popover-content">
 						<?php 
@@ -366,18 +367,21 @@
 							<span>Conquista sem premiação</span>
 						<?php }?>			
 					</div>
-				</div>	
+				</div>
 			</div>
-		</div>
-		<div class="a-point">
-			<div class="<?php echo $on_off?> requirement-popover" data-source="#tooltip-point-<?php echo $achievement->id?>" data-title="Pontos de Conquista" data-trigger="hover" data-placement="bottom">
-				<span class="a-point-<?php echo $on_off?>"><?php echo highamount($achievement->points); ?></span>
+			<div class="a-point">
+				<div class="<?=$on_off;?> requirement-popover" data-source="#tooltip-point-<?=$achievement->id;?>" data-title="Pontos de Conquista" data-trigger="hover" data-placement="bottom">
+					<span class="a-point-<?=$on_off;?>"><?=highamount($achievement->points);?></span>
+				</div>
 				<div id="tooltip-point-<?php echo $achievement->id?>" class="status-popover-container">
 					<div class="status-popover-content">
-						Ao concluir essa conquista você ganhará <?php echo highamount($achievement->points); ?> pontos de conquista
+						Ao concluir essa conquista você ganhará <?=highamount($achievement->points);?> pontos de conquista
 					</div>
-				</div>	
+				</div>
 			</div>
+			<div class="break"></div>
+		</div>
+		<div class="button" style="position:relative; top: 15px;">
 		</div>
 	</div>
-<?php endforeach ?>	
+<?php endforeach; ?>	

@@ -1,35 +1,24 @@
 <?php echo partial('shared/title', array('title' => 'menus.pets', 'place' => 'menus.pets')) ?>
-<?php if(!$player_tutorial->pets){?>
-<script>
-$(function () {
-	 $("#conteudo.with-player").css("z-index", 'initial');
-	 $(".info").css("z-index", 'initial');
-	 $("#background-topo2").css("z-index", 'initial');
-	
-    var tour = new Tour({
-	  backdrop: true,
-	  page: 3,
-	 
-	  steps: [
-	  {
-		element: "#pet-list",
-		title: "Colecione Mascotes!",
-		content: "Mascotes te dão bônus em diversas coisas durante a batalha, e também servem para fazer Missões de Mascotes. Existem 4 Raridades, e você pode evoluir qualquer Mascote até a raridade Mega. Você consegue novos Seguidores em Batalhas, Modo Aventura, Arena do Céu e muito mais!",
-		placement: "top"
-	  }
-	]});
-	//Renicia o Tour
-	tour.restart();
-	
-	// Initialize the tour
-	tour.init(true);
-	
-	// Start the tour
-	tour.start(true);
-	
-});
-</script>	
-<?php }?>
+<?php if (!$player_tutorial->pets) { ?>
+	<script type="text/javascript">
+		$(function () {
+			var tour = new Tour({
+				backdrop: true,
+				page: 3,
+				steps: [{
+					element: "#pet-list",
+					title: "Colecione Mascotes!",
+					content: "Mascotes te dão bônus em diversas coisas durante a batalha, e também servem para fazer Missões de Mascotes. Existem 4 Raridades, e você pode evoluir qualquer Mascote até a raridade Mega. Você consegue novos Seguidores em Batalhas, Modo Aventura, Arena do Céu e muito mais!",
+					placement: "top"
+				}]
+			});
+
+			tour.restart();
+			tour.init(true);
+			tour.start(true);
+		});
+	</script>
+<?php } ?>
 <?php
 	echo partial('shared/info', [
 		'id'		=> 1,

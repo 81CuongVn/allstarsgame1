@@ -139,6 +139,10 @@
 		};
 
 		Tour.prototype.init = function(force) {
+			$("#conteudo.with-player").css("z-index", 'initial');
+			$(".info").css("z-index", 'initial');
+			$("#background-topo2").css("z-index", 'initial');
+
 			this._force = force;
 			if (this.ended()) {
 				this._debug('Tour ended, init prevented.');
@@ -195,6 +199,10 @@
 		Tour.prototype.end = function() {
 			var endHelper, promise;
 			endHelper = (function(_this) {
+				$("#conteudo.with-player").removeAttr('style');
+				$(".info").removeAttr('style');
+				$("#background-topo2").css("z-index", '');
+
 				$.ajax({
 					url: make_url('characters#tutorial'),
 					type: 'post',

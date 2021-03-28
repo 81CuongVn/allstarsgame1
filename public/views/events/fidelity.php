@@ -1,35 +1,24 @@
 <?php echo partial('shared/title', array('title' => 'menus.fidelity', 'place' => 'menus.fidelity')) ?>
-<?php if(!$player_tutorial->fidelity){?>
-<script>
-$(function () {
-	 $("#conteudo.with-player").css("z-index", 'initial');
-	 $(".info").css("z-index", 'initial');
-	 $("#background-topo2").css("z-index", 'initial');
-	
-    var tour = new Tour({
-	  backdrop: true,
-	  page: 18,
-	 
-	  steps: [
-	  {
-		element: ".tutorial-0",
-		title: "Colete sua Recompensa!",
-		content: "Logue e colete sua recompensa diariamente! Toda meia noite você poderá vir coletar sua próxima recompensa, até 30 vezes por mês. Mas fique atento, a Fidelidade reseta todo dia 1, então não esqueça de pegar seu prêmio.",
-		placement: "right"
-	  }
-	]});
-	//Renicia o Tour
-	tour.restart();
-	
-	// Initialize the tour
-	tour.init(true);
-	
-	// Start the tour
-	tour.start(true);
-	
-});
-</script>	
-<?php }?>
+<?php if(!$player_tutorial->fidelity) { ?>
+	<script type="text/javascript">
+		$(function () {
+			var tour = new Tour({
+				backdrop: true,
+				page: 18,
+				steps: [{
+					element: ".tutorial-0",
+					title: "Colete sua Recompensa!",
+					content: "Logue e colete sua recompensa diariamente! Toda meia noite você poderá vir coletar sua próxima recompensa, até 30 vezes por mês. Mas fique atento, a Fidelidade reseta todo dia 1, então não esqueça de pegar seu prêmio.",
+					placement: "right"
+				}]
+			});
+
+			tour.restart();
+			tour.init(true);
+			tour.start(true);
+		});
+	</script>
+<?php } ?>
 <?php
 	echo partial('shared/info', [
 		'id'		=> 1,

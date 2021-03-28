@@ -1,39 +1,29 @@
 <?php echo partial('shared/title', array('title' => 'abilities.index.title', 'place' => 'abilities.index.title')) ?>
-<?php if(!$player_tutorial->habilidades){?>
-<script>
-$(function () {
-	 $("#conteudo.with-player").css("z-index", 'initial');
-	
-    var tour = new Tour({
-	  backdrop: true,
-	  page: 2,
-	 
-	  steps: [
-	  {
-		element: ".tutorial_ability",
-		title: "Escolha sua Habilidade",
-		content: "Mude de Habilidade a qualquer hora! Você poderá alterar o efeito clicando com o botão direito após selecioná-lo!",
-		placement: "top"
-	  },
-	  {
-		element: ".tutorial_speciality",
-		title: "Escolha sua Especialidade",
-		content: "Assim como as Habilidades, você pode mudar de Especialidade a qualquer hora. Também é possível alterar o efeito clicando com o botão direito após selecioná-la.",
-		placement: "top"
-	  }
-	]});
-	//Renicia o Tour
-	tour.restart();
-	
-	// Initialize the tour
-	tour.init(true);
-	
-	// Start the tour
-	tour.start(true);
-	
-});
-</script>	
-<?php }?>
+<?php if (!$player_tutorial->habilidades) { ?>
+	<script type="text/javascript">
+		$(function () {
+			var tour = new Tour({
+				backdrop: true,
+				page: 2,
+				steps: [{
+					element: ".tutorial_ability",
+					title: "Escolha sua Habilidade",
+					content: "Mude de Habilidade a qualquer hora! Você poderá alterar o efeito clicando com o botão direito após selecioná-lo!",
+					placement: "top"
+				}, {
+					element: ".tutorial_speciality",
+					title: "Escolha sua Especialidade",
+					content: "Assim como as Habilidades, você pode mudar de Especialidade a qualquer hora. Também é possível alterar o efeito clicando com o botão direito após selecioná-la.",
+					placement: "top"
+				}]
+			});
+
+			tour.restart();
+			tour.init(true);
+			tour.start(true);
+		});
+	</script>
+<?php } ?>
 <?php
 	echo partial('shared/info', [
 		'id'		=> 1,

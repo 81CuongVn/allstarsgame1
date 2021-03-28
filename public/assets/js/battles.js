@@ -96,10 +96,10 @@
 		var	popover	= $(document.createElement('DIV')).attr('id', item_id).css({display: 'none'});
 		var faction			= parseInt($('#battle-container #' + target).data('faction'));
 		var organization	= $('#battle-container #' + target).data('organization');
-		var	html	= 'Facção: ' + I18n.t('factions.' + (faction == 1 ? 'heroes' : 'villains'));
-		html = html +' <br /> '+'Organização: '+organization ;
+		var	html	= I18n.t('characters.select.labels.faction') + ': ' + I18n.t('factions.' + faction);
+		html = html +' <br /> ' + I18n.t('global.guild') + ': ' + organization ;
 	
-		item.append('<img src="' + image_url('battle/' + (faction == 1 ? 'heroes.png' : 'villains.png')) + '"  class="technique-popover" data-placement="' + container.data('placement') + '" data-source="' + item_id + '" data-trigger="hover" data-placement="bottom"  />')
+		item.append('<img src="' + image_url('factions/icons/small/' + faction + '.png') + '" class="technique-popover" data-placement="' + container.data('placement') + '" data-source="' + item_id + '" data-trigger="hover" data-placement="bottom"  />')
 		item.append(popover);
 		popover.append('<div class="modifier-tooltip">' + html + '</div>');
 		container.append(item);
@@ -129,8 +129,8 @@
 		var wanted			= parseInt($('#battle-container #' + target).data('wanted'));
 		var wanted_reward	= $('#battle-container #' + target).data('wanted-reward');
 		var wanted_type		= $('#battle-container #' + target).data('wanted-type');
-		var	html	= '<b style="font-size:14px; color:#f53b3b">Procurado</b><br />';
-		html = html +'Recompensa: '+ wanted_reward +'<br />' ;
+		var	html	= '<b style="font-size:14px; color:#f53b3b">' + I18n.t('global.wanted') + '</b><br />';
+		html = html + I18n.t('global.wanted_reward') + ': ' + wanted_reward + '<br />' ;
 		html = html + wanted_type ;
 		
 		if(wanted){
@@ -400,9 +400,9 @@
 
 				if (result.effects_roundup) {
 					['p', 'e'].forEach(function (word) {
-						/*if (word == 'e' && !result.enemy.update_existent_locks) {
+						if (word == 'e' && !result.enemy.update_existent_locks) {
 							return;
-						}*/
+						}
 
 						var fixed_values_positive	= '';
 						var fixed_values_negative	= '';
@@ -478,7 +478,7 @@
 							var	item_id	= 'i-' + (Math.random() * 65535) + '.' + (Math.random() * 65535);
 							var	popover	= $(document.createElement('DIV')).attr('id', item_id).css({display: 'none'});
 
-							item.append('<img src="' + image_url('battle/icone_setas.png') + '"  class="technique-popover" data-placement="' + container.data('placement') + '" data-source="' + item_id + '" data-trigger="hover" data-placement="bottom"  />')
+							item.append('<img src="' + image_url('battle/arrows.png') + '"  class="technique-popover" data-placement="' + container.data('placement') + '" data-source="' + item_id + '" data-trigger="hover" data-placement="bottom"  />')
 							item.append(popover);
 							popover.append('<div class="modifier-tooltip">' + normal_html + '</div>');
 							container.append(item);
@@ -504,9 +504,9 @@
 
 							fixed_values_positive = fixed_values_positive.replace(/por NaN turno\(s\)/img, '');
 
-							item.append('<img src="' + image_url('battle/talentos_p.png') + '"  class="technique-popover" data-placement="' + container.data('placement') + '" data-source="' + item_id + '" data-trigger="hover" data-placement="bottom"  />')
+							item.append('<img src="' + image_url('battle/talents_p.png') + '"  class="technique-popover" data-placement="' + container.data('placement') + '" data-source="' + item_id + '" data-trigger="hover" data-placement="bottom"  />')
 							item.append(popover);
-							popover.append('<div class="modifier-tooltip"><b style="font-size:14px; color:#ff871c; padding-bottom:5px">Talentos</b><br />' + fixed_values_positive + '</div>');
+							popover.append('<div class="modifier-tooltip"><b style="font-size:14px; color:#ff871c; padding-bottom:5px">' + I18n.t('item_types.6') + '</b><br />' + fixed_values_positive + '</div>');
 							container.append(item);
 
 							$('img', item).each(function () {
@@ -530,9 +530,9 @@
 
 							fixed_values_negative = fixed_values_negative.replace(/por NaN turno\(s\)/img, '');
 
-							item.append('<img src="' + image_url('battle/talentos_n.png') + '"  class="technique-popover" data-placement="' + container.data('placement') + '" data-source="' + item_id + '" data-trigger="hover" data-placement="bottom"  />')
+							item.append('<img src="' + image_url('battle/talents_n.png') + '"  class="technique-popover" data-placement="' + container.data('placement') + '" data-source="' + item_id + '" data-trigger="hover" data-placement="bottom"  />')
 							item.append(popover);
-							popover.append('<div class="modifier-tooltip"><b style="font-size:14px; color:#ff871c; padding-bottom:5px">Talentos</b><br />' + fixed_values_negative + '</div>');
+							popover.append('<div class="modifier-tooltip"><b style="font-size:14px; color:#ff871c; padding-bottom:5px">' + I18n.t('item_types.6') + '</b><br />' + fixed_values_negative + '</div>');
 							container.append(item);
 
 							$('img', item).each(function () {
@@ -557,9 +557,9 @@
 
 							infinity_values = infinity_values.replace(/por NaN turno\(s\)/img, '');
 
-							item.append('<img src="' + image_url('battle/botamon.png') + '"  class="technique-popover" data-placement="' + container.data('placement') + '" data-source="' + item_id + '" data-trigger="hover" data-placement="bottom"  />')
+							item.append('<img src="' + image_url('battle/pet.png') + '"  class="technique-popover" data-placement="' + container.data('placement') + '" data-source="' + item_id + '" data-trigger="hover" data-placement="bottom"  />')
 							item.append(popover);
-							popover.append('<div class="modifier-tooltip"><b style="font-size:14px; color:#ff871c; padding-bottom:5px">Mascotes</b><br />' + infinity_values + '</div>');
+							popover.append('<div class="modifier-tooltip"><b style="font-size:14px; color:#ff871c; padding-bottom:5px">' + I18n.t('item_types.3') + '</b><br />' + infinity_values + '</div>');
 							container.append(item);
 
 							$('img', item).each(function () {
@@ -632,8 +632,7 @@
 						class:		'btn btn-sm btn-default',
 						callback:	function () {
 							lock_screen(true);
-							// location.href	= parseInt(result.end_type) ? make_url('characters#status') : make_url('hospital') ;
-							location.href	= make_url('characters#status');
+							location.href	= parseInt(result.end_type) ? result.redirect : make_url('hospital') ;
 						}
 					}
 				]});

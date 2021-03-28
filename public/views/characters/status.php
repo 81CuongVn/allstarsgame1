@@ -1,13 +1,9 @@
 <?php if (!$player_tutorial->status) { ?>
-    <script type="text/javascript">
-        $(function () {
-            $("#conteudo.with-player").css("z-index", 'initial');
-            $(".info").css("z-index", 'initial');
-            $("#background-topo2").css("z-index", 'initial');
-
-            var tour = new Tour({
-                backdrop: true,
-                page: 1,
+	<script type="text/javascript">
+		$(function () {
+			var tour = new Tour({
+				backdrop: true,
+				page: 1,
                 steps: [{
                     element: ".top-expbar-container",
                     title: "Bem Vindo ao <?=GAME_NAME;?>!",
@@ -50,17 +46,19 @@
                     placement: "right",
                 }]
             });
+
             tour.restart();
             tour.init(true);
             tour.start(true);
         });
     </script>
-<?php }?>
-<script>
+<?php } ?>
+<script type="text/javascript">
     $(document).ready(function() {
         if (!$.cookie('guide-game')) {
             var guideGame	= $('#guide');
             guideGame.css("display","block");
+
             var	win	= bootbox.dialog({
                 message: '...',
                 buttons: [
@@ -69,11 +67,11 @@
                     class:	'btn btn-sm btn-default'
                 }
             ]});
+
             $('.modal-dialog', win).addClass('pattern-container');
             $('.modal-content', win).addClass('with-pattern');
             $('.bootbox-body', win).html(guideGame);
 
-            // Gerando um cookie
             $.cookie('guide-game', 1);
         }
     });

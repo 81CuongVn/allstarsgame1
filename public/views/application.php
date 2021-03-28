@@ -36,7 +36,7 @@ if ($_SESSION['user_id']) {
 	$player	= FALSE;
 }
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -413,6 +413,36 @@ if ($_SESSION['user_id']) {
 <script type="text/javascript" src="<?=asset_url('js/vips.js');?>"></script>
 <script type="text/javascript" src="<?=asset_url('js/png_animator.js');?>"></script>
 <script type="text/javascript" src="<?=asset_url('js/tournaments.js');?>"></script>
+<?php
+if ($player) {
+	$redis = new Redis();
+	$redis->pconnect(REDIS_SERVER);
+	$redis->auth(REDIS_PASS);
+	$redis->select(0);
+
+	$have_queue	= FALSE;
+	$queues		= $redis->lRange("aasg_od_invites", 0, -1);
+	foreach ($queues as $queue) {
+		$targets = array_unique(
+			array_merge(
+				$redis->lRange("od_targets_" . $queue, 0, -1),
+				$redis->lRange("od_accepts_" . $queue, 0, -1)
+			)
+		);
+
+		if (in_array($player->id, $targets)) {
+			$have_queue				= true;
+			$organization_dungeon	= $redis->get("od_id_" . $queue);
+			break;
+		}
+	}
+	if ($have_queue) {
+		echo '<script type="text/javascript">
+			createInviteModal(' . $organization_dungeon . ');
+		</script>';
+	}
+}
+?>
 <!-- Conteúdo -->
 <script type="text/javascript">
 	$(document).ready(function() {

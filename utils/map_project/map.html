@@ -354,7 +354,6 @@
 		function __update_map_image() {
 			$("#ngmap").css("background-position", (-(cur_x * coord_x)) + "px " + (-(cur_y * coord_y)) + "px");
 		}
-		
 		function __update_tooltip(show) {
 			if(show === true) {
 				$('.map-tip').show();
@@ -483,7 +482,6 @@
 				tooltip.css('top', ty + coord_y);
 			}
 		}
-		
 		function __update_qr(all_qr) {
 			$('.map-coord', map).removeClass('qr');
 			
@@ -499,7 +497,6 @@
 				}				
 			}
 		}
-		
 		function __update_invites(iv) {
 			var	bottom	= 0;
 			

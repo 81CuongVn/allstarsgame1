@@ -55,6 +55,10 @@ class Player extends Relation {
 		$attributes->player_id	= $this->id;
 		$attributes->save();
 
+		$position = new PlayerPosition();
+		$position->player_id = $this->id;
+		$position->save();
+
 		$this->character_ability_id		= CharacterAbility::find_first('character_id=' . $this->character_id . ' AND is_initial=1', ['cache' => true])->id;
 		$this->character_speciality_id	= CharacterSpeciality::find_first('character_id=' . $this->character_id . ' AND is_initial=1', ['cache' => true])->id;
 
@@ -5057,6 +5061,18 @@ class Player extends Relation {
 		return PlayerStat::find_first('player_id=' . $this->id);
 	}
 
+	function position() {
+		$position = PlayerPosition::find_first('player_id=' . $this->id);
+		if (!$position) {
+			$position = new PlayerPosition();
+			$position->player_id = $this->id;
+			$position->organization_id = $this->organization_id;
+			$position->save();
+		}
+
+		return $position;
+	}
+
 	function small_image($path_only = false) {
 		$theme	= $this->character_theme();
 		$path	= 'criacao/' . $this->character_id . '/' . $theme->theme_code . '/1.jpg';
@@ -5910,6 +5926,17 @@ class Player extends Relation {
 	}
 
 	function save_npc($npc) {
+		if (isset($npc->organization_map_object_id) && $npc->organization_map_object_id) {
+			$session = OrganizationMapObjectSession::find_first('player_id=0 AND organization_accepted_event_id=' . $this->organization_accepted_event_id . ' AND organization_id=' . $this->organization_id . ' AND organization_map_object_id=' . $npc->organization_map_object_id);
+
+			if ($session) {
+				Recordset::query('UPDATE organization_map_object_sessions SET less_life=less_life + ' . $npc->shared_less_life . ' WHERE id=' . $session->id);
+
+				$npc->less_life = Recordset::query('SELECT less_life FROM organization_map_object_sessions WHERE id=' . $session->id)->row()->less_life;
+				$npc->shared_less_life = 0;
+			}
+		}
+
 		SharedStore::S('NPC_' . $this->id, $npc);
 	}
 

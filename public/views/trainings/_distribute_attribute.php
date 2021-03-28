@@ -38,58 +38,57 @@
 		</ul>
 	</div>
 <?php endif; ?>
-<table width="725" border="0" cellspacing="0" cellpadding="0">
-	<?php $counter = 0 ?>
+<div style="width: 100%;">
 	<?php foreach ($attributes as $_ => $attribute): ?>
-	<tr bgcolor="<?php echo $counter++ % 2 ? '#173148' : '#091e30' ?>">
-		<td width="160" height="35" align="center"><span class="amarelo"><?php echo $attribute ?></span></td>
-		<td width="60" align="center">
-			<img src="<?php echo image_url('icons/' . str_replace('_trained', '', $_) . '.png') ?>" class="requirement-popover" data-source="#attribute-tooltip-<?php echo $_ ?>" data-title="<?php echo t('formula.tooltip.title.' . $_) ?>" data-trigger="hover" data-placement="bottom" />
-			<div id="attribute-tooltip-<?php echo $_ ?>" class="status-popover-container">
-				<div class="status-popover-content"><?php echo t('formula.tooltip.description.' . $_, ['mana' => t('formula.for_mana.' . $player->character()->anime_id)]) ?></div>
+		<?php
+		if ($_ == "for_inc_crit") {
+			$attrPoints = $attrRate['for_crit_inc'];
+		} elseif ($_=="for_inc_abs") {
+			$attrPoints = $attrRate['for_abs_inc'];
+		} else {
+			$attrPoints = $attrRate[$_];
+		}
+		?>
+		<div class="ability-speciality-box Ataque" style="width: 178px !important; height: auto !important; padding-bottom: 40px">
+			<div class="image">
+				<img src="<?php echo image_url('icons/' . str_replace('_trained', '', $_) . '.png') ?>" class="requirement-popover" data-source="#attribute-tooltip-<?php echo $_ ?>" data-title="<?php echo t('formula.tooltip.title.' . $_) ?>" data-trigger="hover" data-placement="bottom" />
+				<div id="attribute-tooltip-<?php echo $_ ?>" class="status-popover-container">
+					<div class="status-popover-content"><?php echo t('formula.tooltip.description.' . $_, ['mana' => t('formula.for_mana.' . $player->character()->anime_id)]) ?></div>
+				</div>
 			</div>
-		</td>
-		<td width="360" align="center">
-			<?php
-				if ($_ == "for_inc_crit") {
-					$attrPoints = $attrRate['for_crit_inc'];
-				} elseif ($_=="for_inc_abs") {
-					$attrPoints = $attrRate['for_abs_inc'];
-				} else {
-					$attrPoints = $attrRate[$_];
-				}
-
-				echo exp_bar($player->{$_} / $attrPoints, $max, 350);	
-			?>
-			<span class="laranja"><?php echo t('formula.tooltip.description2.' . $_, [
-				'points'	=> $attrPoints
-			]) ?></span>
-		</td>
-		<td width="135" align="center">
-			<?php if ($points): ?>
-				<select name="<?php echo str_replace('_trained', '', $_) ?>_val" class="form-control input-sm" style="width: auto;" data-default="<?php echo t('attributes.distribute.select') ?>">
-					<option value="0"><?php echo t('attributes.distribute.select') ?></option>
-					<?php for($i = 1; $i <= $points; $i++): ?>
-						<option value="<?php echo $i ?>"><?php echo $i ?></option>
-					<?php endfor; ?>
-				</select>				
-			<?php else: ?>
-				--
-			<?php endif ?>
-		</td>
-		<td width="100">
-			<?php if ($points): ?>
-				<a class="btn btn-sm btn-primary distribute" data-attribute="<?php echo str_replace('_trained', '', $_) ?>"><?php echo t('attributes.distribute.distribute') ?></a>
-			<?php else: ?>
-				<a class="btn btn-sm btn-primary disabled"><?php echo t('attributes.distribute.distribute') ?></a>
-			<?php endif ?>
-		</td>
-	</tr>
-	<tr height="3"></tr>
+			<div class="name" style="height: 60px !important;">
+				<span class="amarelo"><?php echo $attribute ?></span><br>
+				<span class="verde" style="font-size: 11px"><?php echo t('formula.tooltip.description2.' . $_, [
+					'points'	=> $attrPoints
+				]) ?></span>
+			</div>
+			<div class="description" style="height: auto; font-size:11px">
+				<?php echo exp_bar($player->{$_} / $attrPoints, $max, 145);	?>
+			</div>
+			<div class="details text-center">
+				<?php if ($points): ?>
+					<select name="<?php echo str_replace('_trained', '', $_) ?>_val" class="form-control input-sm" data-default="<?php echo t('attributes.distribute.select') ?>">
+						<option value="0"><?php echo t('attributes.distribute.select') ?></option>
+						<?php for($i = 1; $i <= $points; $i++): ?>
+							<option value="<?php echo $i ?>"><?php echo $i ?></option>
+						<?php endfor; ?>
+					</select>				
+				<?php else: ?>
+					--
+				<?php endif ?>
+			</div>
+			<div class="button" style="position:relative; top: 15px;">
+				<?php if ($points): ?>
+					<a class="btn btn-sm btn-primary distribute" data-attribute="<?php echo str_replace('_trained', '', $_) ?>"><?php echo t('attributes.distribute.distribute') ?></a>
+				<?php else: ?>
+					<a class="btn btn-sm btn-primary disabled"><?php echo t('attributes.distribute.distribute') ?></a>
+				<?php endif ?>
+			</div>
+		</div>
 	<?php endforeach; ?>
-</table>
-<br />
-<div align="center">
+	<div class="break"></div>
+</div>
+<div class="text-center" style="margin-top: 15px;">
 	<?php if ($points): ?>
 		<a class="btn btn-sm btn-primary distribute-general" data-max="<?php echo $points ?>"><?php echo t('attributes.distribute.distribute_general') ?></a>
 	<?php else: ?>

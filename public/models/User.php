@@ -6,24 +6,12 @@ class User extends Relation {
 	
 	protected function before_update() {
 		if ($this->is_next_level()) {
-			/*while ($this->is_next_level()) {
-				$this->level	+= 1;
-				$this->exp		-= $this->level_exp();
-			}*/
 			$this->level	+= 1;
 			$this->exp		-= $this->level_exp();
 		}
 	}
 
 	protected function after_assign() {
-		// if ($this->banned && !$_SESSION['universal']) {
-		// 	$_SESSION['loggedin']			= FALSE;
-		// 	$_SESSION['user_id']	        = NULL;
-		// 	$_SESSION['player_id']			= NULL;
-		// 	$_SESSION['universal']	        = FALSE;
-		// 	$_SESSION['skip_maintenance']	= FALSE;
-		// }
-
 		if ($this->exp < 0) {
 			$this->exp = 0;
 			$this->save();

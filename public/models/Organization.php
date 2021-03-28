@@ -1,7 +1,7 @@
 <?php
 class Organization extends Relation {
-	static $player_limit = null;
-	static $paranoid = true;
+	static $player_limit	= null;
+	static $paranoid		= true;
 
 	function filter($where, $page, $limit) {
 		$result	= [];
@@ -123,5 +123,121 @@ class Organization extends Relation {
 		$this->save();
 	}
 
-	
+	function check_event_finished($player) {
+		$accepted		= OrganizationAcceptedEvent::find_first($player->organization_accepted_event_id);
+		$active_event	= OrganizationEvent::find_first($accepted->organization_event_id);
+
+		$objects = OrganizationMapObjectSession::find("organization_id={$this->id} AND organization_accepted_event_id={$accepted->id}");
+		$npcs = 0;
+		$bosses = 0;
+		$bypassed_timer = false;
+
+		foreach($objects as $object) {
+			if ($object->player_id) {
+				$npcs++;
+			} else {
+				$bosses++;
+			}
+		}
+
+		if (now() > strtotime('YmdHis', $active_event->finishes_at) ) {
+			$bypassed_timer = true;
+		}
+
+		if ($bypassed_timer) {
+			$active_event->finished_at = now(true);
+			$active_event->save();
+
+			$this->organization_accepted_event_id = 0;
+			$this->save();
+		} else {
+			if ($bosses >= $active_event->require_boss && $npcs >= $active_event->require_npc) {
+				$active_event->finished_at = now(true);
+				$active_event->won = 1;
+				$active_event->save();
+
+				$this->organization_accepted_event_id = 0;
+				$this->save();
+
+				$reward = $active_event->reward();
+
+				foreach ($this->players() as $organization_player) {
+					$p = $organization_player->player();
+
+					if ($reward->currency) {
+						$p->earn($reward->currency);
+					}
+
+					if ($reward->exp) {
+						$p->earn_exp($reward->exp);
+					}
+
+					if ($reward->vip) {
+						$p->user()->earn($reward->vip);
+						$p->achievement_check("credits");
+						$p->check_objectives("credits");
+					}
+
+					if ($reward->equipment) {
+						if ($reward->equipment == 1) {
+							$dropped  = Item::generate_equipment($p);
+						} elseif ($reward->equipment==2) {
+							$dropped  = Item::generate_equipment($p,0); 
+						} elseif ($reward->equipment==3) {
+							$dropped  = Item::generate_equipment($p,1); 
+						} elseif ($reward->equipment==4) {
+							$dropped  = Item::generate_equipment($p,2); 
+						}
+					}
+
+					if ($reward->item_id && $reward->pets) {
+						$npc_pet = Item::find($reward->item_id);
+						
+						$player_pet = new PlayerItem();
+						$player_pet->item_id = $npc_pet->id;
+						$player_pet->player_id = $p->id;
+						$player_pet->save();
+					}
+
+					if ($reward->item_id && !$reward->pets) {
+						$player_item_exist = PlayerItem::find_first("item_id=" . $reward->item_id . " AND player_id=" . $p->id);
+						if(!$player_item_exist){
+							$player_item = new PlayerItem();
+							$player_item->item_id	= $reward->item_id;
+							$player_item->quantity	= $reward->quantity;
+							$player_item->player_id	= $p->id;
+							$player_item->save();
+						}else{
+							$player_item_exist->quantity += $reward->quantity;
+							$player_item_exist->save();
+						}
+					}
+
+					if ($reward->character_id) {
+						$reward_character = new UserCharacter();
+						$reward_character->user_id = $p->user_id;
+						$reward_character->character_id	= $reward->character_id;
+						$reward_character->was_reward	= 1;
+						$reward_character->save();
+					}
+
+					if ($reward->character_theme_id) {
+						$reward_theme = new UserCharacterTheme();
+						$reward_theme->user_id = $p->user_id;
+						$reward_theme->character_theme_id	= $reward->character_theme_id;
+						$reward_theme->was_reward = 1;
+						$reward_theme->save();
+					}
+
+					if ($reward->headline_id) {
+						$reward_headline = new UserHeadline();
+						$reward_headline->user_id = $p->user_id;
+						$reward_headline->headline_id = $reward->headline_id;
+						$reward_headline->save();
+					}
+				}
+			}
+		}
+		
+	}
 }

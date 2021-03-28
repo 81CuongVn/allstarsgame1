@@ -1,58 +1,44 @@
 <style>
-	.technique-data{
+	.technique-data {
 		width: 250px !important;	
 	}
 </style>
 <?php echo partial('shared/title', array('title' => 'menus.enchant', 'place' => 'menus.enchant')) ?>
-<?php if(!$player_tutorial->aprimoramentos){?>
-<script>
-$(function () {
-	 $("#conteudo.with-player").css("z-index", 'initial');
-	 $(".info").css("z-index", 'initial');
-	 $("#background-topo2").css("z-index", 'initial');
-	
-    var tour = new Tour({
-	  backdrop: true,
-	  page: 9,
-	 
-	  steps: [
-	  {
-		element: ".tutorial-aprimoramento",
-		title: "Treino Diário",
-		content: "Venha treinar diariamente para acumular pontos e criar Joias, usadas para aprimorar a força de seus golpes.",
-		placement: "top"
-	  },
-	  {
-		element: ".enchant-golpe",
-		title: "Escolha seu Golpe",
-		content: "Escolha um golpe que você já tenha Equipado alguma vez e você verá três opções de Encantamento disponíveis.",
-		placement: "left"
-	  },
-	  {
-		element: ".enchant-1",
-		title: "Encantamento 1",
-		content: "Vamos mostrar as Joias necessárias para você fazer o Encantamento número 1 de cada Golpe. Basta clicar na Joia acima e arrastar para o lugar certo.",
-		placement: "left",
-	  },
-	  {
-		element: ".enchant-3",
-		title: "Encantamento 2 e 3",
-		content: "Entretanto, ainda existem mais dois tipos de encantamentos para cada golpe, só que dessa vez você que terá que descobrir a combinação certa! As duas primeiras Joias não mudam, mas a terceira e quarta mudam sempre!",
-		placement: "left",
-	  }
-	]});
-	//Renicia o Tour
-	tour.restart();
-	
-	// Initialize the tour
-	tour.init(true);
-	
-	// Start the tour
-	tour.start(true);
-	
-});
-</script>	
-<?php }?>
+<?php if (!$player_tutorial->aprimoramentos) { ?>
+	<script type="text/javascript">
+		$(function () {
+			var tour = new Tour({
+				backdrop: true,
+				page: 9,
+				steps: [{
+					element: ".tutorial-aprimoramento",
+					title: "Treino Diário",
+					content: "Venha treinar diariamente para acumular pontos e criar Joias, usadas para aprimorar a força de seus golpes.",
+					placement: "top"
+				}, {
+					element: ".enchant-golpe",
+					title: "Escolha seu Golpe",
+					content: "Escolha um golpe que você já tenha Equipado alguma vez e você verá três opções de Encantamento disponíveis.",
+					placement: "left"
+				}, {
+					element: ".enchant-1",
+					title: "Encantamento 1",
+					content: "Vamos mostrar as Joias necessárias para você fazer o Encantamento número 1 de cada Golpe. Basta clicar na Joia acima e arrastar para o lugar certo.",
+					placement: "left",
+				}, {
+					element: ".enchant-3",
+					title: "Encantamento 2 e 3",
+					content: "Entretanto, ainda existem mais dois tipos de encantamentos para cada golpe, só que dessa vez você que terá que descobrir a combinação certa! As duas primeiras Joias não mudam, mas a terceira e quarta mudam sempre!",
+					placement: "left",
+				}]
+			});
+
+			tour.restart();
+			tour.init(true);
+			tour.start(true);
+		});
+	</script>
+<?php } ?>
 <div class="barra-secao barra-secao-<?php echo $player->character()->anime_id ?>"><p><?php echo t('enchant.treino_diario') ?></p></div>
 <div class="tutorial-aprimoramento">
 	<div style="float:left; width:370px">
@@ -135,7 +121,7 @@ $(function () {
 		$item_combinations_item_1 	= explode("-",$item_combinations[0]);
 		$item_combinations_item_2 	= explode("-",$item_combinations[1]);
 		$item_combinations_item_3	= explode("-",$item_combinations[2]);
-	}else{
+	} else {
 		$image  	= image_url("enchant/sem-golpe.png");
 		$name		= t('enchant.escolha');
 		$tooltip	= t('enchant.tooltip');

@@ -3,35 +3,24 @@
 	'place' => 'battles.pvp.title'
 ]);?>
 <?php if (!$player_tutorial->battle_pvp) { ?>
-<script>
-$(function () {
-	 $("#conteudo.with-player").css("z-index", 'initial');
-	 $(".info").css("z-index", 'initial');
-	 $("#background-topo2").css("z-index", 'initial');
-	
-    var tour = new Tour({
-	  backdrop: true,
-	  page: 16,
-	 
-	  steps: [
-	  {
-		element: ".msg-container",
-		title: "Busque seu Oponente",
-		content: "Ao entrar na Fila PVP, você gastará 2 de Stamina e terá que esperar achar algum outro jogador que também estará na Fila. Ao encontrar, você deverá aceitar a batalha e esperar que ele faça o mesmo. Se você cancelar e sair da fila, receberá sua Stamina de volta.",
-		placement: "top"
-	  }
-	]});
-	//Renicia o Tour
-	tour.restart();
-	
-	// Initialize the tour
-	tour.init(true);
-	
-	// Start the tour
-	tour.start(true);
-	
-});
-</script>	
+	<script type="text/javascript">
+		$(function () {
+			var tour = new Tour({
+				backdrop: true,
+				page: 16,
+				steps: [{
+					element: ".msg-container",
+					title: "Busque seu Oponente",
+					content: "Ao entrar na Fila PVP, você gastará 2 de Stamina e terá que esperar achar algum outro jogador que também estará na Fila. Ao encontrar, você deverá aceitar a batalha e esperar que ele faça o mesmo. Se você cancelar e sair da fila, receberá sua Stamina de volta.",
+					placement: "top"
+	  			}]
+			});
+
+			tour.restart();
+			tour.init(true);
+			tour.start(true);
+		});
+	</script>	
 <?php } ?>
 <div class="msg-container">
 	<div class="msg_top"></div>

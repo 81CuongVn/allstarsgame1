@@ -1,5 +1,5 @@
 <?php foreach ($themes as $theme): ?>
-	<a style="cursor: pointer;" class="character-uniques" data-id="<?php echo $theme->id?>" data-theme-code="<?php echo $theme->theme_code?>" data-character-id="<?php echo $theme->character_id?>" style="float: left;"><?php echo $theme->small_image2() ?></a>
+	<a data-toggle="tooltip" title="<?=make_tooltip($theme->description()->name);?>" data-placement="top" style="cursor: pointer;" class="character-uniques" data-id="<?php echo $theme->id?>" data-theme-code="<?php echo $theme->theme_code?>" data-character-id="<?php echo $theme->character_id?>" style="float: left;"><?php echo $theme->small_image2() ?></a>
 <?php endforeach ?>
 <br /><br />
 <?php
@@ -43,4 +43,11 @@
 <?php
 	}
 ?>
-		
+
+<script type="text/javascript">
+	$(document).ready(function() {
+		$('[data-toggle=tooltip]').tooltip({
+			html: true
+		});
+	});
+</script>

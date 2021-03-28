@@ -1,35 +1,24 @@
 <?php echo partial('shared/title', array('title' => 'characters.talents.title', 'place' => 'characters.talents.title')) ?>
-<?php if(!$player_tutorial->talents){?>
-<script>
-$(function () {
-	 $("#conteudo.with-player").css("z-index", 'initial');
-	 $(".info").css("z-index", 'initial');
-	 $("#background-topo2").css("z-index", 'initial');
-	
-    var tour = new Tour({
-	  backdrop: true,
-	  page: 21,
-	 
-	  steps: [
-	  {
-		element: ".tutorial-2",
-		title: "Escolha seus Talentos",
-		content: "A cada dois leveis de conta você ganha o direito de escolher apenas um entre os três talentos disponíveis. Escolha atentamente!",
-		placement: "top"
-	  }
-	]});
-	//Renicia o Tour
-	tour.restart();
-	
-	// Initialize the tour
-	tour.init(true);
-	
-	// Start the tour
-	tour.start(true);
-	
-});
-</script>	
-<?php }?>
+<?php if (!$player_tutorial->talents) { ?>
+	<script type="text/javascript">
+		$(function () {
+			var tour = new Tour({
+				backdrop: true,
+				page: 21,
+				steps: [{
+					element: ".tutorial-2",
+					title: "Escolha seus Talentos",
+					content: "A cada dois leveis de conta você ganha o direito de escolher apenas um entre os três talentos disponíveis. Escolha atentamente!",
+					placement: "top"
+				}]
+			});
+
+			tour.restart();
+			tour.init(true);
+			tour.start(true);
+		});
+	</script>	
+<?php } ?>
 <?php
 	echo partial('shared/info', [
 		'id'		=> 4,

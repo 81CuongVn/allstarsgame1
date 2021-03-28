@@ -278,28 +278,28 @@ en-US:
       section_character: Choose your favorite character
       created: Character created
       created_msg: |
-        <p>Parabéns! Seu personagem foi criado com sucesso. Para começar a jogar, basta seleciona-lo abaixo e clicar no botão "Jogar"</p>
+        <p>Congratulations! Your character was created successfully. To start playing, just select it below and click on the "Play" button</p>
       change_theme: Themes
       unlocks_reward: |
-        Destrava ao finalizar a saga <b>#{name}</b> no Modo Aventura
+        Unlocks at the end of the <b>#{name}</b> saga in Adventure Mode
       unlocks_reward2: |
-        Destrava ao trocar com tesouros de organização.
+        Unlocks when trading with guild treasures.
       unlocks_reward3: |
-        Não é possível desbloquear este personagem.
+        It is not possible to unlock this character.
       unlocks_reward4: |
-        Destrava no modo exploração.
+        Unlocks in exploration mode.
       unlocks_currency: |
-        Destravar com #{amount} #{currency}
+        Unlock with #{amount} #{currency}
       unlocks_credits: |
-        Destravar com #{amount} Estrelas
-      needs_unlock_player: Você precisa estar com um personagem selecionado para destravar com moedas
+        Unlock with #{amount} Stars
+      needs_unlock_player: You need to be with a selected character to unlock with currency
     select:
       title: Select your character
       none: No character
       none_msg: |
-        <p>Você ainda não possui nenhum personagem. <a href="#{url}">Clique aqui</a> para criar um novo personagem.</p>
-      section_favorite: Escolha seu personagem favorito
-      delete_confirmation: Você realmente deseja excluir esse personagem? Essa ação não pode ser desfeita!
+        <p>You don't have any characters yet. <a href="#{url}">Click here</a> to create a new character.</p>
+      section_favorite: Choose your favorite character
+      delete_confirmation: Do you really want to delete this character? This action cannot be undone!
       labels:
         currency: Currency
         anime: Anime
@@ -307,218 +307,208 @@ en-US:
         faction: Faction
         challenge: Challenge
       errors:
-        banned: Este personagem foi banido!
-        invalid: O personagem especificado é inválido
-        user_match: O personagem especificado não pertence a sua conta
-        pvp_queue: Não é possível trocar de personagem enquanto você estiver na fila de batalhas PVP
+        banned: This character has been banned!
+        invalid: The specified character is invalid
+        user_match: The specified character does not belong to your account
+        pvp_queue: It is not possible to switch characters while you are in the PVP Battle Queue
     removed:
-      success: Remover personagem
-      success_msg: O link de confirmação foi validado e seu personagem foi removido com sucesso
+      success: Remove character
+      success_msg: The confirmation link has been validated and your character has been successfully removed
     remove:
-      not_found: O jogador especificado não foi encontrado ou já está removido.
-      organization: Você não pode excluir esse personagem enquanto ele fizer parte de uma Organização
-      invalid: O jogador especificado é inválido
-      same_user: O jogador especificado não pertence a sua conta
-      same_player: Você não pode remover o personagem na qual está jogando no momento. Troque de personagem e tente novamente.
-      success: Remoção de personagem
+      not_found: The specified player was not found or is already removed.
+      organization: The specified player was not found or has already been removed.
+      invalid: The specified player is invalid
+      same_user: The specified player does not belong to your account
+      same_player: You cannot remove the character you are currently playing on. Change characters and try again.
+      success: Character removal
       success_msg: |
-        <p>Verifique seu e-mail para continuar com a remoção desse personagem.</p>
-      title: Remover personagem
-      error_title: Problema ao remover personagem
+        <p>Check your email to continue removing this character.</p>
+      title: Remove character
+      error_title: Failed to remove character
     status:
       battle: Battles
       pet: Pets
       title: Character Status
       section_attributes: ATTRIBUTES .........................
       section_formula: FÓRMULAS ..........................
-      wins_pvp: PVP wins
-      wins_npc: NPC wins
-      draws_pvp: PVP draws
-      draws_npc: NPC draws
-      losses_pvp: PVP losses
-      losses_npc: NPC defeats
+      wins_pvp: PVP Wins
+      wins_npc: NPC Wins
+      draws_pvp: PVP Draws
+      draws_npc: NPC Draws
+      losses_pvp: PVP Losses
+      losses_npc: NPC Losses
       time: Time
       interativas: Interactive
       especiais: PVP
       daily: Daily
-      account: Acount
+      account: Account
       tarefas: Tasks
       total_tempo: Total Training
       pts_distribuidos: Distributed Points
       change_image:
         errors:
-          invalid: Imagem inválida
-          belongs: A imagem especificada não pertence ao tema/personagem atual
-          theme: A imagem especificada não pertence ao tema atual
+          invalid: Invalid image
+          belongs: The specified image does not belong to the current theme/character
+          theme: The specified image does not belong to the current theme
     themes:
-      choose: Escolha o tema abaixo
-      use_this: Usar esse tema
-      unavailable: Tema indisponível
-      liberado: Destrava no Modo Aventura
-      liberado2: Destrava no Modo Exploração
+      choose: Choose the theme below
+      use_this: Use this theme
+      unavailable: Theme unavailable
+      liberado: Unlocks in Adventure Mode
+      liberado2: Unlocks in Exploration Mode
       buy_credits: |
-        Comprar por <br />#{price} estrela(s)
+        Buy for <br />#{price} Stars
       buy_currency: |
-        Comprar por <br />#{price} #{currency}
-      buy_free: Adquirir
-      already_bought: Tema já adquirido
-      back: Voltar
-      theme_info_click: Clique para ver os detalhes
-      images: Imagens do tema
+        Buy for <br />#{price} #{currency}
+      buy_free: Buy
+      already_bought: Theme already acquired
+      back: Back
+      theme_info_click: Click for details
+      images: Theme images
       errors:
-        invalid: Tema inválido
-        character: O tema especificado não pertence ao seu personagem
-        enough_credits: Você não possui estrelas suficientes
+        invalid: Invalid theme
+        character: The specified theme does not belong to your character
+        enough_credits: You don't have enough stars
         enough_currency: |
-          Você não possui #{currency} suficientes
-        not_bought: Você não possui o tema especificado
-        operation: Ação desconhecida
+          You don't have enough #{currency}
+        not_bought: You do not have the specified theme
+        operation: Unknown action
     talents:
-      title: Talentos
+      title: Talents
       errors:
-        already: Você já possui esse talento
-        requirements: Você não tem os requerimentos necessários para aprender esse talento
-        tree_level: Você já aprendeu um talento para esse nível
-        invalid: Talento inválido
+        already: You already have this talent
+        requirements: You do not have the necessary requirements to learn this talent
+        tree_level: You've already learned a talent for that level
+        invalid: Invalid talent
     next_level:
-      title: Próximo nível
+      title: Next level
       message_title: |
-        PARABÉNS, SUA FORÇA ESTÁ AUMENTANDO!
+        CONGRATULATIONS, YOUR STRENGTH IS INCREASING!
       message: |
-        Você se esforçou bastante para poder chegar nesse momento e ver as gratificações de seu treino e empenho. Os seus inimigos vão temer sua força e suas novas habilidades.
-      next: Ir para o próximo nível
+        You worked hard to be able to arrive at that moment and see the rewards of your training and commitment.
+        Your enemies will fear your strength and your new abilities.
+      next: Go to next level
     inventory:
-      empty: Seu inventário está vazio =(
+      empty: Your inventory is empty =(
       errors:
-        allowed: O uso desse item não é permitido
-        invalid: Item inválido
-        existent: O item especificado não existe. Por favor reabra seu inventário
-        hospital: Você não pode usar itens do seu inventário enquanto estiver no hospital
-        battle: Você não pode usar itens do seu inventário enquanto estiver em batalha
+        allowed: The use of this item is not allowed
+        invalid: Invalid item
+        existent: The specified item does not exist. Please reopen your inventory
+        hospital: You cannot use items from your inventory while you are in the hospital
+        battle: You cannot use items from your inventory while in battle
     unlock:
       errors:
-        unallowed_method: Método de destravar não permitido
-        not_enough_currency: Você não possui moedas suficiente
-        not_enough_credits: Você não possui Estrelas suficientes
+        unallowed_method: Unlocking method not allowed
+        not_enough_currency: You don't have enough coins
+        not_enough_credits: You don't have enough stars
     change_headline:
       errors:
-        invalid: Título inválido
-        not_belongs: Você não possui esse título
+        invalid: Invalid headline
+        not_belongs: You do not have this headline
   graduations:
     index:
-      title: Graduações
-      graduate: Graduar
-      graduated: Graduado
+      title: Graduations
+      graduate: Graduate
+      graduated: Graduated
     requirements:
       level: |
-        Você precisa ter nível #{level} ou maior
+        You must be level #{level} or higher
       quest_count: |
-        Você precisa ter completado #{count} missões
+        You must have completed #{count} quests
       training_points: |
-        Você precisa ter #{count} pontos de treino ou mais
+        You need to have #{count} training points or more
       wins_pvp: |
-        Você precisa de #{count} vitórias PVP ou mais
+        You need #{count} PVP Wins or more
       wins_npc: |
-        Você precisa de #{count} vitórias NPC ou mais
+        You need #{count} NPC Wins or more
       battles_pvp: |
-        Você precisa de #{count} Batalhas PVP ou mais
-      league_wins: |
-        Você precisa de #{count} vitórias na Liga All-Stars ou mais
+        You need #{count} PVP battles or more
       technique_count: |
-        Você precisa ter treinado #{count} golpes ou mais
-      technique_l1_count: |
-        Você precisa ter treinado #{count} golpes nível 1 ou maior
-      technique_l2_count: |
-        Você precisa ter treinado #{count} golpes nível 2 ou maior
-      technique_l3_count: |
-        Você precisa ter treinado #{count} golpes nível 3 ou maior
-      technique_l4_count: |
-        Você precisa ter treinado #{count} golpes nível 4 ou maior
-      technique_l5_count: |
-        Você precisa ter treinado #{count} golpes nível 5 ou maior
+        You must have trained #{count} techniques or more
   techniques:
     index:
-      how_to_title: Como equipar seus golpes
+      how_to_title: How to equip your techniques
       how_to_text: |
-        <p>Para equipar seus golpes, basta arrastar da lista de de golpes disponíveis para uma área dos golpes equipados.</p><br />
-        <p>Se já houver um golpe equipado no slot na qual você quer equipar, o golpe será substituido.</p>
-      title: Golpes
-      learn: Aprender
-      learned: Aprendido
+        <p>To equip your techniques, simply drag from the list of available techniques to an area of the equipped techniques.</p><br />
+        <p>If a technique is already equipped in the slot you want to equip, the technique will be replaced.</p>
+      title: Techniques
+      learn: Learn
+      learned: Learned
       header:
-        name: Nome / Descrição
+        name: Name / Description
         status: Status
-        requirements: Requerimentos
-        enhancements: Aprimoramentos
-      title2: Trocando suas Habilidades e Especialidades
+        requirements: Requirements
+        enhancements: Enhancements
+      title2: Exchanging your Abilities and Specialties
       description2: |
-        Todo personagem vem com 5 Habilidades padrões e 3 Especialidades Padrões. <br /><br /><span class="laranja">Clique com o botão esquerdo para escolher qual usar e/ou escolher o efeito da habilidade/especialidade.</span>
+        Every character comes with 5 Standard Abilities and 3 Standard Specialties.<br /><br />
+        <span class="laranja">Left-click to choose which one to use and / or choose the effect of the ability/specialty.</span>
     learn:
-      learned: Você já aprendeu esse golpe
-      requirements: Você não tem os requerimentos necessários para aprender esse golpe
-      invalid: Golpe inválido
+      learned: You have already learned this technique
+      requirements: You do not have the necessary requirements to learn this technique
+      invalid: Invalid technique
       success: |
-        <p>A Golpe #{name} foi aprendido com sucesso! Como recompensa, você ganhou #{exp} pontos de experiência!</p>
-      success_title: Golpe aprendido!
+        <p>Technique #{name} has been successfully learned! As a reward, you have earned #{exp} experience points!</p>
+      success_title: Technique learned!
     types:
-      attack: Golpe de ataque
-      defense: Golpe defensivo
-      buff: Modificador
-      unique: Única
-      generic: Genérica
-      ability: Habilidade
-      speciality: Especialidade
-      weapons: Amplificadores
-      talent: Talento
+      attack: Attack technique
+      defense: Defensive technique
+      buff: Buff
+      unique: Unique
+      generic: Generic
+      ability: Ability
+      speciality: Speciality
+      weapons: Amplifiers
+      talent: Talent
     # consume: Consumo em combate
-    attack: Ataque
-    defense: Defesa
-    for_inc_crit: Crítico
-    combat_values: Valores para combate
-    usage_requirements: Requerimentos para uso
-    requirements: Requerimentos
-    cooldown: Turnos de espera
-    duration: Duração
+    attack: Attack
+    defense: Defense
+    for_inc_crit: Critical
+    combat_values: Combat Vvalues
+    usage_requirements: Requirements for use
+    requirements: Requirements
+    cooldown: Cooldown
+    duration: Duration
     consume: |
-      Consumo de #{name}
+      #{name} consume
     training:
-      title: Treinamento de golpes
-      weekly_limit: Limite de treino semanal
-      train: Treinar
-      no_technique_title: Nenhum golpe
-      no_technique: Você ainda não aprendeu nenhum golpe. Aprenda um golpe antes e depois volte para treina-lo.
-      max_level_reached: Esse golpe já está no nível máximo
+      title: Techniques training
+      weekly_limit: Weekly training limit
+      train: Train
+      no_technique_title: No technique
+      no_technique: You haven't learned any techniques yet. Learn a technique first and then come back to train it.
+      max_level_reached: This technique is already at the maximum level
       info: |
-        A cada dia da semana é adicionado um valor de treino para que o jogador melhore seus atributos em batalha, esse valor é somado diariamente até que toda terça ele seja resetado.
+        Each day of the week a training value is added for the player to improve his attributes in battle,
+        this value is added daily until every Tuesday he is reset.
       time:
-        1: 30 Minutos
-        2: 1 Hora
-        3: 1 Hora e 30 Minutos
+        1: 00:30:00
+        2: 01:00:00
+        3: 01:30:00
       header:
-        time: Tempo de Treino
+        time: Training Time
       errors:
-        invalid_data: Dados inválidos
-        invalid_technique: Golpe inválido
-        invalid_duration: Duração inválida
-        limit: Você já treinou o limite máximo permitido
-        pvp_queue: Você não pode trainar golpes enquanto estiver na fila de batalha pvp
+        invalid_data: Invalid data
+        invalid_technique: Invalid technique
+        invalid_duration: Invalid duration
+        limit: You have already trained the maximum allowed limit
+        pvp_queue: You cannot train techniques while in the PVP Battle Queue
       wait:
-        title: Treinamento de golpe
+        title: Technique training
         info: |
-
-          <p>Seu golpe está sendo treinado. Por favor aguarde o tempo especificado abaixo para efetuar outras ações no jogo.</p>
+          <p>Your technique is being trained. Please wait for the time specified below to perform other actions in the game.</p>
           <br />
-          <p>Você também pode optar por cancelar o treinamento, porém, não irá ganhar nenhum ponto de treino no seu golpe!</p>
+          <p>You can choose to cancel the training, however, you will not earn any training points for your technique!</p>
         time_left: |
-          <span class="laranja">Tempo para terminar o treino:</span>
-        cancel: Cancelar treino
-        cancel_msg: Você quer cancelar o treinamento de golpe?
-        title_finished: Treinamento concluído
+          <span class="laranja">Time left:</span>
+        cancel: Cancel
+        cancel_msg: Do you really want to cancel the training?
+        title_finished: Training completed
         info_finished: |
-          Parabéns! O treinamento do seu golpe foi finalizado com sucesso.
-        finish: Concluir treino
+          Congratulations! The training was successfully completed.
+        finish: Finish
         errors:
-          non_finished: O trainamento ainda não está finalizado!
+          non_finished: The training is not yet finished!
     tooltip:
       level_req:
         req_use: |
@@ -561,13 +551,13 @@ en-US:
           Aumenta a duração em #{count} turno(s)
   abilities:
     show:
-      click_text_ability: Que ação você gostaria de fazer com essa habilidade ?
-      click_text_speciality: Que ação você gostaria de fazer com essa especialidade ?
-      learn: Aprender
-      modify: Modificar
-    learn_button: Aprender
-    switch_button: Trocar para essa
-    learned_button: Aprendido
+      click_text_ability: Choose an action
+      click_text_speciality: Choose an action
+      learn: Learn
+      modify: Modify
+    learn_button: Learn
+    switch_button: Switch to this
+    learned_button: Learned
     info_text_title: TIPOS DE HABILIDADES
     info_text: |
       Agora você é quem decide qual é o melhor <span class="laranja">Tipo para sua Habilidade</span>, escolha abaixo uma das opções e clique

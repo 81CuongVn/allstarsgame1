@@ -1416,10 +1416,10 @@ pt-BR:
         for_inti: Intimidação
         for_conv: Convicção
         for_init: Iniciativa
-        for_inc_crit: Incremento crítico
-        for_inc_abs: Incremento absorção
-        for_crit_inc: Incremento crítico
-        for_abs_inc: Incremento absorção
+        for_inc_crit: Inc. crítico
+        for_inc_abs: Inc. absorção
+        for_crit_inc: Inc. crítico
+        for_abs_inc: Inc. absorção
       description:
         for_life: Esse é o total de sua vida fora de combate
         for_mana: |
@@ -1501,8 +1501,8 @@ pt-BR:
     for_inti: Intimidação
     for_conv: Convicção
     for_init: Iniciativa
-    for_inc_crit: Incremento crítico
-    for_inc_abs: Incremento absorção
+    for_inc_crit: Inc. crítico
+    for_inc_abs: Inc. absorção
   bonuses:
     bonus_food_discount: |
       Desconto de #{value}% #{currency} na compra de alimentos
@@ -1595,6 +1595,9 @@ pt-BR:
       <p>Você não tem privilégios suficiente para acessar a página solicitada.</p>
       <p>Se você acha que isso é um problema, por favor entre em contato com o administrador</p>
   global:
+    wanted: Procurado
+    wanted_reward: Recompensa
+    guild: Organização
     player: Jogador
     character: Personagem
     points: Pontos
@@ -1762,16 +1765,19 @@ pt-BR:
       attack: Ataque
       defense: Defesa
       buff: Modificadores
-    2: Arvore [LEGACY]
-    3: Habilidade
+    2: Árvore
+    3: Mascote
     4: Especialidade
     5: Alimentos
     6: Talentos
     7: Amplificadores
+    8: Equipamentos
+    9: Item VIP
     10: Fragmento das Almas
     11: Página de Magia
     12: Areia Estelar
     13: Sangue de Deus
+    14: Itens de Mapa
     16: Eventos
   paginator:
     first: Primeira
@@ -1890,8 +1896,9 @@ pt-BR:
       hit: |
         <img src="#{image}" width="16px"/><span style="margin-left:3px">Chance de acerto:</span> #{value} ( #{orig_value} - #{reduced} )
   factions:
-    heroes: Herói
-    villains: Vilão
+    1: Herói
+    2: Vilão
+    3: Pacifista
   treasure:
     error1: Esse item é inválido!
     error2: Você não tem tesouros suficientes para essa troca!

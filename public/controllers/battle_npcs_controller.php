@@ -330,6 +330,8 @@ class BattleNpcsController extends Controller {
 
 					$battle_instance->run();
 
+					$npc->shared_less_life += $npc->less_life - $enemy_original_less_life;
+
 					// Consumes
 					if (!$is_copy && !$is_kill) {
 						$should_consume_mana	= true;

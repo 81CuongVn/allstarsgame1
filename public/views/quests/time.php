@@ -1,37 +1,28 @@
-<?php
-echo partial('shared/title', array('title' => 'quests.time.title', 'place' => 'quests.time.title'));
-if (!$player_tutorial->missoes_tempo) {
-?>
-<script type="text/javascript">
-	$(function () {
-		$("#conteudo.with-player").css("z-index", 'initial');
-		$(".info").css("z-index", 'initial');
-		$("#background-topo2").css("z-index", 'initial');
+<?php echo partial('shared/title', array('title' => 'quests.time.title', 'place' => 'quests.time.title')); ?>
+<?php if (!$player_tutorial->missoes_tempo) { ?>
+	<script type="text/javascript">
+		$(function () {
+			var tour = new Tour({
+				backdrop: true,
+				page: 12,
+				steps: [{
+					element: "#time-quests-list-tabs",
+					title: "Tempo para Descansar",
+					content: "Ao aceitar uma Missão de Tempo, você não poderá mais ir lutar até o tempo da Missão acabar, então use esse tempo para dar uma pausa e ir descansar!",
+					placement: "top"
+				}, {
+					element: "#time-quests-list-content",
+					title: "Conseguindo Recompensas",
+					content: "Ao completar sua primeira Missão, você receberá um Equipamento que poderá ser equipado no menu Personagem > Equipamentos! Fique de olho das recompensas de cada missão!",
+					placement: "top"
+				}]
+			});
 
-		var tour = new Tour({
-			backdrop: true,
-			page: 12,
-			steps: [{
-				element: "#time-quests-list-tabs",
-				title: "Tempo para Descansar",
-				content: "Ao aceitar uma Missão de Tempo, você não poderá mais ir lutar até o tempo da Missão acabar, então use esse tempo para dar uma pausa e ir descansar!",
-				placement: "top"
-			}, {
-				element: "#time-quests-list-content",
-				title: "Conseguindo Recompensas",
-				content: "Ao completar sua primeira Missão, você receberá um Equipamento que poderá ser equipado no menu Personagem > Equipamentos! Fique de olho das recompensas de cada missão!",
-				placement: "top"
-			}]
+			tour.restart();
+			tour.init(true);
+			tour.start(true);
 		});
-
-		//Renicia o Tour
-		tour.restart();
-		// Initialize the tour
-		tour.init(true);
-		// Start the tour
-		tour.start(true);
-	});
-</script>	
+	</script>
 <?php } ?>
 <ul class="nav nav-pills" id="time-quests-list-tabs">
 	<?php

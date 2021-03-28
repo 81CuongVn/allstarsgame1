@@ -62,8 +62,9 @@ $(document).ready(function() {
 	);
 
 	function parseResponse(response) {
-		if (response.messages)
+		if (response.messages) {
 			alert(response.messages.join("\n"));
+		}
 
 		if (response.reload) {
 			location.reload();
@@ -81,8 +82,9 @@ $(document).ready(function() {
 
 			foundIds.push(parseInt(player.id));
 
-			if (!popoverContent[popoverKey])
+			if (!popoverContent[popoverKey]) {
 				popoverContent[popoverKey] = '';
+			}
 
 			if (parseInt(player.id) == myself) {
 				myX = parseInt(player.x);
@@ -207,8 +209,9 @@ $(document).ready(function() {
 				popoverContent[popoverKey] += '<div class="row"><div class="col-sm-3"><img src="' + iconSrc + '" /></div><div class="col-sm-9">' + player.name + '</div></div>';
 
 				image.show();
-			} else
+			} else {
 				image.hide();
+			}
 		});
 
 		mapContainer.find('.block').removeClass('sharedchest chest door npc sharednpc');
@@ -239,8 +242,9 @@ $(document).ready(function() {
 				objekt.name = '<a href="javascript:;" data-object="' + objekt.id + '" class="attack">' + objekt.name + '</a>';
 			}
 
-			if (!popoverContent[popoverKey])
+			if (!popoverContent[popoverKey]) {
 				popoverContent[popoverKey] = '';
+			}
 
 			if (!image.length) {
 				var image = $(document.createElement('img'));
@@ -257,8 +261,8 @@ $(document).ready(function() {
 			}
 
 			image.css({
-				left: objekt.x * boxWidth,
-				top: objekt.y * boxHeight
+				left:	objekt.x * boxWidth,
+				top:	objekt.y * boxHeight
 			});
 
 			if (visible) {
@@ -266,8 +270,9 @@ $(document).ready(function() {
 
 				image.show();
 				mapContainer.find('.block[data-x=' + objekt.x + '][data-y=' + objekt.y + ']').addClass(objectClass);
-			} else
+			} else {
 				image.hide();
+			}
 		});
 
 		mapContainer.find('[data-player]')
@@ -351,7 +356,8 @@ $(document).ready(function() {
 				content: popoverContent[popoverKey],
 				trigger: 'manual',
 				title: 'O que tem aqui?',
-				html: true
+				html: true,
+				// container: 'body'
 			});
 
 			self.popover('show');

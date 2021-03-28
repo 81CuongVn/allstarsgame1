@@ -1,39 +1,28 @@
 <?php echo partial('shared/title', array('title' => 'menus.quests_account', 'place' => 'menus.quests_account')) ?>
-<?php if(!$player_tutorial->missoes_conta){?>
-<script>
-$(function () {
-	 $("#conteudo.with-player").css("z-index", 'initial');
-	 $(".info").css("z-index", 'initial');
-	 $("#background-topo2").css("z-index", 'initial');
-	
-    var tour = new Tour({
-	  backdrop: true,
-	  page: 22,
-	 
-	  steps: [
-	  {
-		element: ".msg-container",
-		title: "Trabalho em Equipe",
-		content: "Essas Missões são compartilhadas entre todos os personagens da sua conta, e ao completá-las você irá receber Experiência de Conta!",
-		placement: "top"
-	  },{
-		element: ".msg-container",
-		title: "Atenção",
-		content: "No dia que você criou seu personagem você não irá ter nenhuma Missão Diária, mas à meia noite você já irá receber suas quatro primeiras missões!",
-		placement: "bottom"
-	  }
-	]});
-	//Renicia o Tour
-	tour.restart();
-	
-	// Initialize the tour
-	tour.init(true);
-	
-	// Start the tour
-	tour.start(true);
-	
-});
-</script>	
+<?php if (!$player_tutorial->missoes_conta) { ?>
+	<script type="text/javascript">
+		$(function () {
+			var tour = new Tour({
+				backdrop: true,
+				page: 22,
+				steps: [{
+					element: ".msg-container",
+					title: "Trabalho em Equipe",
+					content: "Essas Missões são compartilhadas entre todos os personagens da sua conta, e ao completá-las você irá receber Experiência de Conta!",
+					placement: "top"
+				}, {
+					element: ".msg-container",
+					title: "Atenção",
+					content: "No dia que você criou seu personagem você não irá ter nenhuma Missão Diária, mas à meia noite você já irá receber suas quatro primeiras missões!",
+					placement: "bottom"
+				}]
+			});
+
+			tour.restart();
+			tour.init(true);
+			tour.start(true);
+		});
+	</script>	
 <?php }?>
 <?php
 	echo partial('shared/info', [

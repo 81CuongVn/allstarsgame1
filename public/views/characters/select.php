@@ -95,11 +95,11 @@
 					<?php
 					$counter	= 1;
 					foreach ($players as $player):
-						?>
-						<a data-id="<?=$player->id;?>" data-map-id="<?=($player->map_id ? $player->map_id : 0);?>" class="player page-item page-item-<?=ceil($counter++ / 10);?> <?=($player->banned ? 'locked' : '');?>">
-							<?php /*if ($player->banned) { ?>
+					?>
+						<a data-toggle="tooltip" title="<?=make_tooltip($player->name . ' [ ' . $player->level . ' ]')?>" data-placement="top" data-id="<?=$player->id;?>" data-map-id="<?=($player->map_id ? $player->map_id : 0);?>" class="player page-item page-item-<?=ceil($counter++ / 10);?> <?=($player->banned ? 'locked' : '');?>">
+							<?php if ($player->banned) { ?>
 								<span class="glyphicon glyphicon-ban-circle"></span>
-							<?php }*/ ?>
+							<?php } ?>
 							<img src="<?=image_url($player->small_image(true));?>" width="120" />
 						</a>
 					<?php endforeach ?>

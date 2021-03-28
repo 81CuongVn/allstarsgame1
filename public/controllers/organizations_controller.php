@@ -11,6 +11,607 @@ class OrganizationsController extends Controller {
 		parent::__construct();
 	}
 
+	function events() {
+		$player	= Player::get_instance();
+		$events	= OrganizationEvent::find("removed=0");
+		
+		$this->assign('player', $player);
+		$this->assign('events', $events);
+	}
+	function unlock() {
+		$this->as_json			= true;
+		$this->json->success	= false;
+		$errors					= [];
+
+		if (!isset($_POST['event_id']) || (isset($_POST['event_id']) && !is_numeric($_POST['event_id']))) {
+			$errors[]	= t('history_mode.unlock.errors.invald');
+		} else {
+			$player	= Player::get_instance();
+			$event	= OrganizationEvent::find($_POST['event_id']);
+
+			if ($event->removed) {
+				$event	= false;
+			}
+
+			if (!$event) {
+				$errors[]	= t('history_mode.unlock.errors.invalid');
+			} else {
+				if ($_POST['mode'] == 1 && $player->currency < $event->currency) {
+					$errors[]	= t('history_mode.unlock.errors.not_enough_currency');
+				} elseif ($_POST['mode'] != 1 && $player->user()->credits < $event->credits) {
+					$errors[]	= t('history_mode.unlock.errors.not_enough_vip');
+				}
+			}
+		}
+
+		if (!sizeof($errors)) {
+			$this->json->success	= true;
+
+			if ($_POST['mode'] == 1) {
+				$player->spend($event->currency);
+			} else {
+				$player->user()->spend($event->credits);
+			}
+
+			// Salva o Id na Tabela de Organização aceita		
+			$acccepted_event = new OrganizationAcceptedEvent();
+			$acccepted_event->organization_id = $player->organization_id;
+			$acccepted_event->organization_event_id = $event->id;
+			$acccepted_event->player_id = $player->id;
+			$acccepted_event->save();
+		} else {
+			$this->json->messages	= $errors;
+		}
+	}
+	function dungeon() {
+		$player		= Player::get_instance();
+		$position	= $player->position();
+		$map		= OrganizationMap::find_first($player->position()->organization_map_id);
+
+		$_SESSION['organization_dungeon_key']	= uniqid('', true);
+		
+		$this->assign('player', $player);
+		$this->assign('position', $position);
+		$this->assign('map', $map);
+	}
+	function dungeon_move() {
+		$this->as_json			= true;
+		$this->json->success	= false;
+		$this->json->players	= [];
+		$this->json->objects	= [];
+
+		$player		= Player::get_instance();
+		$position	= $player->position();
+		$map		= OrganizationMap::find_first($position->organization_map_id);
+		$errors		= [];
+		
+		if ($_POST) {
+			if (!isset($_POST['key']) || (isset($_POST['key']) && $_POST['key'] != $_SESSION['organization_dungeon_key'])) {
+				$errors[] = 'Chave de autenticação do mapa é inválida, possivelmente você abriu outra aba >:(';
+			}
+
+			if (!sizeof($errors)) {
+				$this->json->success = true;
+
+				// upate my own position
+				if (isset($_POST['x']) && isset($_POST['y']) && is_numeric($_POST['x']) && is_numeric($_POST['y'])) {
+					$something = $map->at($_POST['x'], $_POST['y']);
+
+					if ($something) {
+						if ($something->kind == 'door') {
+							$position->xpos = $something->target_xpos;
+							$position->ypos = $something->target_ypos;
+							$position->organization_map_id = $something->target_organization_map_id;
+
+							$this->json->reload = true;
+						} elseif ($something->kind == 'shareditem') {
+
+						} elseif ($something->kind == 'uniqueitem') {
+
+						}
+					} else {
+						$position->xpos = $_POST['x'];
+						$position->ypos = $_POST['y'];
+					}
+
+					$position->save();
+				}
+
+				$players = PlayerPosition::from_organization_with_map($player->organization_id, $position->organization_map_id, $player->organization_accepted_event_id);
+				foreach ($players as $p) {
+					$this->json->players[] = [
+						'id' 		=> $p->player_id,
+						'name' 		=> $p->player_name,
+						'theme' 	=> $p->character_theme_id,
+						'character' => $p->character_id,
+						'x' 		=> $p->xpos,
+						'y' 		=> $p->ypos
+					];
+				}
+
+				foreach($map->objects() as $object) {
+					if ($object->kind == 'sharednpc') {
+						if (OrganizationMapObjectSession::find('player_id=0 AND down=1 AND organization_accepted_event_id=' . $player->organization_accepted_event_id . ' AND organization_id=' . $player->organization_id . ' AND organization_map_object_id=' . $object->id)) {
+							continue;
+						}
+					} elseif($object->kind == 'chest') {
+						if (OrganizationMapObjectSession::find('down=1 AND organization_accepted_event_id=' . $player->organization_accepted_event_id . ' AND organization_id=' . $player->organization_id . ' AND organization_map_object_id=' . $object->id)) {
+							continue;
+						}
+					} elseif($object->kind == 'sharedchest') {
+						if (OrganizationMapObjectSession::find('player_id=' . $player->id . ' AND down=1 AND organization_accepted_event_id=' . $player->organization_accepted_event_id . ' AND organization_id=' . $player->organization_id . ' AND organization_map_object_id=' . $object->id)) {
+							continue;
+						}
+					} else {
+						if (OrganizationMapObjectSession::find('down=1 AND player_id=' . $player->id . ' AND organization_accepted_event_id=' . $player->organization_accepted_event_id . ' AND organization_id=' . $player->organization_id . ' AND organization_map_object_id=' . $object->id)) {
+							continue;
+						}
+					}
+
+					$objekt = [
+						'id'	=> $object->id,
+						'name'	=> $object->name,
+						'kind'	=> $object->kind,
+						'x'		=> $object->xpos,
+						'y'		=> $object->ypos
+					];
+
+					if ($object->kind == 'npc' || $object->kind == 'sharednpc') {
+						$objekt['theme']		= $object->character_theme_id;
+						$objekt['character']	= CharacterTheme::find_first($object->character_theme_id)->character_id;
+					}
+
+					$this->json->objects[]	= $objekt;
+				}
+			} else {
+				$this->json->messages		= $errors;
+			}
+		}
+	}
+	function dungeon_take() {
+		$this->as_json			= true;
+		$this->json->success	= false;
+
+		$player		= Player::get_instance();
+		$user		= User::get_instance();
+		$position	= $player->position();
+		$errors		= [];
+
+		$object = OrganizationMapObject::find_first('organization_map_id=' . $position->organization_map_id . ' AND id=' . $_POST['id']);
+		if ($object) {
+			if ($object->kind == 'sharedchest') {
+				if (OrganizationMapObjectSession::find('player_id=' . $player->id . ' AND down=1 AND organization_accepted_event_id=' . $player->organization_accepted_event_id . ' AND organization_id=' . $player->organization_id . ' AND organization_map_object_id=' . $object->id)) {
+					$errors[] = t('organizations.errors.dungeon.dungeon_took_sharedchest');
+				}
+			} elseif($object->kind == 'chest') {
+				if (OrganizationMapObjectSession::find('down=1 AND organization_accepted_event_id=' . $player->organization_accepted_event_id . ' AND organization_id=' . $player->organization_id . ' AND organization_map_object_id=' . $object->id)) {
+					$errors[] = t('organizations.errors.dungeon.dungeon_took_chest');
+				}
+			} else {
+				$errors[] = $errors[] = t('organizations.errors.dungeon.invalid_object');
+			}
+		} else {
+			$errors[] = $errors[] = t('organizations.errors.dungeon.invalid_object');
+		}
+
+		if (!sizeof($errors)) {
+			$this->json->success = true;
+
+			$took = new OrganizationMapObjectSession();
+			$took->player_id						= $player->id;
+			$took->organization_id					= $player->organization_id;
+			$took->organization_map_object_id		= $object->id;
+			$took->organization_accepted_event_id	= $player->organization_accepted_event_id;
+			$took->down = 1;
+			$took->save();
+
+			// Recompensa para o caboclo
+			$object_reward  = OrganizationRewardMap::find_first("organization_map_objects_id=". $object->id);
+			
+			// Prêmios ( EXP )
+			if ($object_reward->exp) {
+				$player->exp	+= $object_reward->exp;
+			}
+
+			// Enchant Points
+			if ($object_reward->enchant_points) {
+				$player->enchant_points_total	+= $object_reward->quantity;
+			}
+
+			// Prêmios ( GOLD )
+			if ($object_reward->currency) {
+				$player->earn($object_reward->currency);
+			}
+
+			// Prêmios ( VIPS )
+			if ($object_reward->credits) {
+				$user->earn($object_reward->credits);
+				
+				// Verifica os créditos do jogador.
+				$player->achievement_check("credits");
+				// Objetivo de Round
+				$player->check_objectives("credits");
+			}
+
+			// Prêmios ( EQUIPS )
+			if ($object_reward->equipment) {
+				if($object_reward->equipment == 1) {
+					$dropped  = Item::generate_equipment($player);
+				} elseif ($object_reward->equipment == 2) {
+					$dropped  = Item::generate_equipment($player,0); 
+				} elseif ($object_reward->equipment == 3) {
+					$dropped  = Item::generate_equipment($player,1); 
+				} elseif ($object_reward->equipment == 4) {
+					$dropped  = Item::generate_equipment($player,2); 
+				}
+			}
+
+			// Prêmios ( PETS )
+			if ($object_reward->item_id && $object_reward->pets) {
+				$npc_pet = Item::find($object_reward->item_id);
+				
+				$player_pet				= new PlayerItem();
+				$player_pet->item_id	= $npc_pet->id;
+				$player_pet->player_id	= $player->id;
+				$player_pet->save();
+			}
+
+			// Prêmios ( ITEMS )
+			if ($object_reward->item_id && !$object_reward->pets) {
+				$player_item_exist			= PlayerItem::find_first("item_id=".$object_reward->item_id." AND player_id=". $player->id);
+				if (!$player_item_exist) {
+					$player_item			= new PlayerItem();
+					$player_item->item_id	= $object_reward->item_id;
+					$player_item->quantity	= $object_reward->quantity;
+					$player_item->player_id	= $player->id;
+					$player_item->save();
+				} else {
+					$player_item_exist->quantity += $object_reward->quantity;
+					$player_item_exist->save();
+				}
+				
+			}
+
+			// Prêmios ( CHARACTERS )
+			if ($object_reward->character_id) {
+				$reward_character				= new UserCharacter();
+				$reward_character->user_id		= $player->user_id;
+				$reward_character->character_id	= $object_reward->character_id;
+				$reward_character->was_reward	= 1;
+				$reward_character->save();
+			}
+
+			// Prêmios ( THEME )
+			if ($object_reward->character_theme_id) {
+				$reward_theme						= new UserCharacterTheme();
+				$reward_theme->user_id				= $player->user_id;
+				$reward_theme->character_theme_id	= $object_reward->character_theme_id;
+				$reward_theme->was_reward			= 1;
+				$reward_theme->save();
+			}
+
+			// Prêmios ( TITULOS )
+			if ($object_reward->headline_id) {
+				$reward_headline				= new UserHeadline();
+				$reward_headline->user_id		= $player->user_id;
+				$reward_headline->headline_id	= $object_reward->headline_id;
+				$reward_headline->save();
+			}
+
+			$player->save();
+			$user->save();
+
+			$this->json->reward 	= $object_reward->name;
+		} else {
+			$this->json->messages	= $errors;
+		}
+	}
+	function dungeon_fight() {
+		$this->as_json			= true;
+		$this->json->success	= false;
+
+		$player		= Player::get_instance();
+		$position	= $player->position();
+		$errors		= [];
+
+		$object = OrganizationMapObject::find_first('organization_map_id=' . $position->organization_map_id . ' AND id=' . $_POST['id']);
+		if ($object) {
+			if (!isset($_POST['key']) || (isset($_POST['key']) && $_POST['key'] != $_SESSION['organization_dungeon_key'])) {
+				$errors[] = 'Chave de autenticação do mapa é inválida, possivelmente você abriu outra aba >:(';
+			}
+
+			if (abs($position->xpos - $object->xpos) > 2 || abs($position->ypos - $object->ypos) > 2) {
+				$errors[] = 'Este alvo está muito longe';
+			}
+
+			if($player->is_pvp_queued) {
+				$errors[]	= t('battles.npc.errors.pvp_queue');
+			}
+
+			if($player->at_low_stat()) {
+				$errors[]	= t('battles.errors.low_stat');
+			}
+
+			if ($object->kind == 'npc') {
+				if ($player->for_stamina() < NPC_COST) {
+					$errors[]	= t('battles.errors.no_stamina');
+				}
+			} else if($object->kind == 'sharednpc') {
+				if ($player->for_stamina() < (NPC_COST * 2)) {
+					$errors[]	= t('battles.errors.no_stamina');
+				}
+			}
+		} else {
+			$errors[] = 'Objeto inválido';
+		}
+
+		if (!sizeof($errors)) {
+			$this->json->success = true;
+
+			$battle = new BattleNpc();
+			$npc = new NpcInstance(
+				$player,
+				$object->anime_id,
+				null,
+				$object->ability_id,
+				$object->speciality_id,
+				$object->pet_id,
+				false,
+				CharacterTheme::find_first($object->character_theme_id)->character_id, 
+				$object->character_theme_id,
+				$object->id
+			);
+
+			if ($object->kind == 'sharednpc') {
+				$session = OrganizationMapObjectSession::find_first('player_id=0 AND organization_accepted_event_id=' . $player->organization_accepted_event_id . ' AND organization_id=' . $player->organization_id . ' AND organization_map_object_id=' . $object->id);
+
+				if (!$session) {
+					$session = new OrganizationMapObjectSession();
+					$session->organization_id = $player->organization_id;
+					$session->organization_map_object_id = $object->id;
+					$session->organization_accepted_event_id = $player->organization_accepted_event_id;
+					$session->save();
+				}
+			}
+
+			if (!has_chance($player->get_parsed_effects()['no_consume_stamina'])) {
+				$player->less_stamina	+= NPC_COST * ($object->kind == 'npc' ? 1 : 2);
+			}
+
+			// Cleanups -->
+				SharedStore::S('last_battle_item_of_' . $player->id, 0);
+				SharedStore::S('last_battle_npc_item_of_' . $player->id, 0);
+
+				$player->clear_ability_lock();
+				$player->clear_speciality_lock();
+				$player->clear_technique_locks();
+				$player->clear_effects();
+			// <--
+
+			$battle->player_id = $player->id;
+			$battle->battle_type_id	= $object->kind == 'npc' ? 7 : 8;
+			$battle->save();
+
+			$player->battle_npc_id	= $battle->id;
+			$player->save();
+
+			$npc->battle_npc_id	= $battle->id;
+			$npc->organization_map_object_id = $object->id;
+			$npc->name = $object->name;
+			$player->save_npc($npc);
+		} else {
+			$this->json->messages = $errors;
+		}
+	}
+	function dungeon_invite() {
+		$this->as_json			= true;
+		$this->json->success	= false;
+
+		$player			= Player::get_instance();
+		$organization	= $player->organization();
+		$errors			= [];
+
+		$redis = new Redis();
+		$redis->pconnect(REDIS_SERVER);
+		$redis->auth(REDIS_PASS);
+		$redis->select(0);
+
+		if (isset($_POST['dungeon_id']) && is_numeric($_POST['dungeon_id'])) {
+			$event = OrganizationEvent::find($_POST['dungeon_id']);
+
+			if (!($unlocked = $event->unlocked($player->organization_id, $event->id, $player->id))) {
+				$errors[]	= t('organizations.errors.dungeon.dungeon_not_unlocked');
+			}
+
+			$queue_id	= md5("aasg" . $unlocked->id);
+		} else {
+			$errors[]	= t('organizations.errors.dungeon.invalid_dungeon');
+		}
+
+		if (isset($_POST['list']) && $_POST['list']) {
+			if (!sizeof($errors)) {
+				$player_list = [];
+				$accepts = $redis->lRange("od_accepts_" . $queue_id, 0, -1);
+				$refuses = $redis->lRange("od_refuses_" . $queue_id, 0, -1);
+				$invites = $redis->lRange("od_targets_" . $queue_id, 0, -1);
+
+				foreach ($player->organization()->players() as $organization_player) {
+					if ($organization_player->player_id != $player->id) {
+						$player_list[] = [
+							'id'		=> $organization_player->player_id,
+							'name'		=> $organization_player->player()->name,
+							'accepted'	=> in_array($organization_player->player_id, $accepts),
+							'refused'	=> in_array($organization_player->player_id, $refuses),
+							'invited'	=> in_array($organization_player->player_id, $invites)
+						];
+					}
+				}
+
+				$this->json->success	= true;
+				$this->json->players	= $player_list;
+				$this->json->started	= $redis->get("od_id_{$queue_id}") || false;
+			} else {
+				$this->json->messages = $errors;
+			}
+		} else {
+			if (!isset($_POST['players']) || (isset($_POST['players']) && !is_array($_POST['players']))) {
+				$errors[]	= t('organizations.errors.dungeon.invalid_players_list');
+			}
+
+			if (!sizeof($errors)) {
+				$redis->del("od_accepts_"		. $queue_id);
+				$redis->del("od_refuses_"		. $queue_id);
+				$redis->del("od_targets_"		. $queue_id);
+
+				$redis->rPush("aasg_od_invites", $queue_id);
+
+				$redis->set("od_name_"			. $queue_id, $event->name);
+				$redis->set("od_id_"			. $queue_id, $event->id);
+				$redis->set("od_event_"			. $queue_id, $unlocked->id);
+				$redis->set("od_organization_"	. $queue_id, $player->organization_id);
+				$redis->set("od_needed_"		. $queue_id, $event->players_required);
+
+				// put myself on the accept list
+				$redis->rPush("od_accepts_"		. $queue_id, $player->id);
+
+				foreach ($_POST['players'] as $target) {
+					$redis->rPush("od_targets_"	. $queue_id, $target);
+				}
+
+				$this->json->success = true;
+			} else {
+				$this->json->messages = $errors;
+			}
+		}
+	}
+	function dungeon_accept() {
+		$this->as_json = true;
+		$this->json->success = false;
+		$errors = [];
+
+		if (!isset($_POST['queue_id']) || (isset($_POST['queue_id']) && !$_POST['queue_id'])) {
+			$errors[] = t('organizations.errors.dungeon.invalid_queue');;
+		}
+
+		if (!sizeof($errors)) {
+			$player			= Player::get_instance();
+			$organization	= $player->organization();
+			$queue_id		= $_POST['queue_id'];
+
+			$redis = new Redis();
+			$redis->pconnect(REDIS_SERVER);
+			$redis->auth(REDIS_PASS);
+			$redis->select(0);
+
+			$redis->rPush("od_accepts_" . $queue_id, $player->id);
+
+			$accepts	= $redis->lrange("od_accepts_"	. $queue_id, 0, -1);
+			$needed		= $redis->get("od_needed_"		. $queue_id);
+			$event_id	= $redis->get("od_event_"		. $queue_id);
+
+			$accepted	= OrganizationAcceptedEvent::find($event_id);
+			if (sizeof($accepts) == $needed) {
+				foreach ($accepts as $player_id) {
+					$p = Player::find($player_id);
+					$p->organization_accepted_event_id	= $event_id;
+					$p->save();
+
+					$position = $p->position();
+					$position->organization_map_id		= $accepted->event()->initial_map()->id;
+					$position->save();
+				}
+				$redis->lRem("aasg_od_invites", $queue_id, 0);
+
+				$accepted->accepted = 1;
+				$accepted->save();
+
+				$this->json->redirect = true;
+			}
+
+			$this->json->success	= true;
+		} else {
+			$this->json->messages	= $errors;
+		}
+	}
+	function dungeon_refuse() {
+		$this->as_json			= true;
+		$this->json->success	= false;
+
+		if (!isset($_POST['queue_id']) || (isset($_POST['queue_id']) && !$_POST['queue_id'])) {
+			$errors[] = t('organizations.errors.dungeon.invalid_queue');;
+		}
+
+		if (!sizeof($errors)) {
+			$player		= Player::get_instance();
+			$queue_id	= $_POST['queue_id'];
+
+			$redis = new Redis();
+			$redis->pconnect(REDIS_SERVER);
+			$redis->auth(REDIS_PASS);
+			$redis->select(0);
+
+			$redis->rPush("od_refuses_"	. $queue_id, $player->id);
+
+			$this->json->success	= true;
+		} else {
+			$this->json->messages	= $errors;
+		}
+	}
+	function dungeon_cancel() {
+		$this->as_json			= true;
+		$this->json->success	= false;
+
+		$player			= Player::get_instance();
+		$organization	= $player->organization();
+		$errors			= [];
+
+		$redis = new Redis();
+		$redis->pconnect(REDIS_SERVER);
+		$redis->auth(REDIS_PASS);
+		$redis->select(0);
+
+		if (isset($_POST['dungeon_id']) && is_numeric($_POST['dungeon_id'])) {
+			$event = OrganizationEvent::find($_POST['dungeon_id']);
+
+			if (!($unlocked = $event->unlocked($player->organization_id, $event->id, $player->id))) {
+				$errors[]	= t('organizations.errors.dungeon.dungeon_not_unlocked');
+			}
+		} else {
+			$errors[]	= t('organizations.errors.dungeon.invalid_dungeon');
+		}
+
+		if (!sizeof($errors)) {
+			$queue_id	= md5("aasg" . $unlocked->id);
+
+			// clear up memory
+			$redis->del("od_accepts_"		. $queue_id);
+			$redis->del("od_refuses_"		. $queue_id);
+			$redis->del("od_targets_"		. $queue_id);
+			$redis->del("od_name_"			. $queue_id);
+			$redis->del("od_id_"			. $queue_id);
+			$redis->del("od_event_"			. $queue_id);
+			$redis->del("od_organization_"	. $queue_id);
+			$redis->del("od_needed_"		. $queue_id);
+
+			// remove our queue from the active queues
+			$redis->lRem("aasg_od_invites", $queue_id, 0);
+
+			$this->json->success	= true;
+		} else {
+			$this->json->messages	= $errors;
+		}
+	}
+	function dungeon_start() {
+		$this->as_json			= true;
+		$this->json->success	= false;
+
+		$player		= Player::get_instance();
+
+		$redis = new Redis();
+		$redis->pconnect(REDIS_SERVER);
+		$redis->auth(REDIS_PASS);
+	}
+
 	function search() {
 		$this->assign('player',			Player::get_instance());
 		$this->assign('credits_price',	$this->credits_price);

@@ -1,38 +1,26 @@
 <?php echo partial('shared/title', array('title' => 'objectives.title', 'place' => 'objectives.title')) ?>
-<?php if(!$player_tutorial->objectives){?>
-    <script>
-        $(function () {
-            $("#conteudo.with-player").css("z-index", 'initial');
-            $(".info").css("z-index", 'initial');
-            $("#background-topo2").css("z-index", 'initial');
+<?php if (!$player_tutorial->objectives) { ?>
+	<script type="text/javascript">
+		$(function () {
+			var tour = new Tour({
+				backdrop: true,
+				page: 24,
+                steps: [{
+                    element: "#tutorial-first",
+                    title: "Metas do Jogo",
+                    content: "Todo novo Round você irá receber 10 Objetivos, que deverão ser seu foco principal durante o Round. Complete um objetivo para receber 1 Ponto de Round e gastar com prêmios incríveis!",
+                    placement: "top"
+                }, {
+                    element: "#luck-list-content",
+                    title: "Prêmios Incríveis!",
+                    content: "Use seus Pontos de Round para comprar All-Stars, itens, comidas e até títulos! Mas atenção, você só poderá comprar uma vez do mesmo item por Round!",
+                    placement: "top"
+                }]
+            });
 
-            var tour = new Tour({
-                backdrop: true,
-                page: 24,
-
-                steps: [
-                    {
-                        element: "#tutorial-first",
-                        title: "Metas do Jogo",
-                        content: "Todo novo Round você irá receber 10 Objetivos, que deverão ser seu foco principal durante o Round. Complete um objetivo para receber 1 Ponto de Round e gastar com prêmios incríveis!",
-                        placement: "top"
-                    },
-                    {
-                        element: "#luck-list-content",
-                        title: "Prêmios Incríveis!",
-                        content: "Use seus Pontos de Round para comprar All-Stars, itens, comidas e até títulos! Mas atenção, você só poderá comprar uma vez do mesmo item por Round!",
-                        placement: "top"
-                    }
-                ]});
-            //Renicia o Tour
             tour.restart();
-
-            // Initialize the tour
             tour.init(true);
-
-            // Start the tour
             tour.start(true);
-
         });
     </script>
 <?php } 

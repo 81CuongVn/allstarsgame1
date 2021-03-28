@@ -1722,12 +1722,15 @@ div hr{
 	background-color: rgba(0, 0, 0, .85)
 }
 
-.menu .menu-content ul li ul li:hover {
-	/* background-color: transparent !important; */
+.menu .menu-content ul li ul li:hover,
+.menu .menu-content ul li ul li:active {
 	background-color: rgba(51, 122, 183, .5);
     border-radius: 2px;
 }
-.menu .menu-content ul li ul li:hover a {
+.menu .menu-content ul li ul li:hover a,
+.menu .menu-content ul li ul li:hover a:active,
+.menu .menu-content ul li ul li:active a,
+.menu .menu-content ul li ul li:active a:active {
 	text-decoration: none;
 	color: #fff;
 }
@@ -1915,23 +1918,27 @@ div hr{
 	border-radius: 5px;
 }
 
-.commom{
+.commom {
 	color: #999 !important;	
 }
-.rare{
+.rare {
 	color: #06F !important;
 }
-.legendary{
+.legendary {
 	color: #F60 !important;
 }
-.mega{
+.mega {
 	color: #0F0 !important;
 }
-.faccao{
+.faccao {
 	float: left;
-	width: 120px;	
+	/* width: 120px;*/
 }
-.faccao div{
+.faccao,
+.faccao img {
+    width: 80px;
+}
+.faccao div {
 	margin:0 auto; 
 	text-align: center;
 	font-size: 14px;
@@ -2000,84 +2007,74 @@ div hr{
 .challenge-float li{
 	display: block;	
 }
-/*Conquistas*/
 
-.a-bg{
+/*Conquistas*/
+.a-bg {
 	position: relative;	
 	width: 728px;
 	height: 161px;		
 }
-.a-name{
+.a-name {
 	width: 485px;
 	height: 70px;
 	position: relative;
 	float: left;
 	top: 35px;	
 }
-.on{
-	background-image:url(../images/achievement/bg-on.png);	
-}
-.off{
-	background-image:url(../images/achievement/bg-off.png);	
-}
-.a-req{
+.a-req,
+.a-gift,
+.a-point {
 	position: relative;	
-	width: 59px;
-	height: 70px;
+	width: 35px;
+	height: 40px;
 	float: left;
-	top: 55px;
-	margin-left: 10px;			
+	top: 10px;
+	margin: 0 5px;
 }
-.a-req .off, .a-gift .off, .a-point .off{
-	background-image:url(../images/achievement/square-off.png);
-	width: 59px;
-	height: 59px;
+.a-req .off,
+.a-gift .off,
+.a-point .off {
+	background-color: #353535;
+	border-radius: 5px;
+	width: 40px;
+	height: 40px;
 	text-align: center;		
 }
-.a-req .on, .a-gift .on, .a-point .on{
-	background-image:url(../images/achievement/square-on.png);
-	width: 59px;
-	height: 59px;
+.a-req .on,
+.a-gift .on,
+.a-point .on {
+	width: 40px;
+	height: 40px;
+	background-color: #12304b;
+	border-radius: 5px;
 	text-align: center;	
 }
-.a-gift{
-	position: relative;	
-	width: 59px;
-	height: 70px;
-	float: left;
-	top: 55px;
-	margin-left: 10px;			
-}
-.a-point{
-	position: relative;	
-	width: 59px;
-	height: 70px;
-	float: left;
-	top: 55px;
-	margin-left: 10px;			
-}
-.a-point-off{
-	color: #6a6a6a;
-	font-size: 28px;
-	text-align: center;
-	position: relative;
-	top: 23px;
-}
-.a-point-on{
-	color: #f3d44e;
-	font-size: 28px;
-	text-align: center;
-	position: relative;
-	top: 23px;
-}
-.a-name-off{
+
+.a-point-off {
 	color: #6a6a6a;
 	font-size: 20px;
+	text-align: center;
+	position: relative;
+	top: 13px;
 }
-.a-name-on{
+.a-point-on {
 	color: #f3d44e;
 	font-size: 20px;
+	text-align: center;
+	position: relative;
+	top: 13px;
 }
+.a-name-off {
+	color: #6a6a6a;
+	font-size: 16px;
+    line-height: 18px;
+}
+.a-name-on {
+	color: #f3d44e;
+	font-size: 16px;
+    line-height: 18px;
+}
+
 /*Navegação do mapa*/
 .directions{
   top: -5px;
@@ -2309,4 +2306,7 @@ ul.requirement-list li:last-child {
 }
 .requirement-popover {
 	/* cursor: help; */
+}
+.opacity {
+    opacity: 0.1;
 }

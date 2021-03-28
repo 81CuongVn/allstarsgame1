@@ -452,7 +452,7 @@ class BattlePvpsController extends Controller {
 				$player->less_stamina	= 0;
 			}
 
-			$player->pvp_queue_found	= now();
+			$player->pvp_queue_found	= NULL;
 			$player->is_pvp_queued		= 0;
 			$player->save();
 

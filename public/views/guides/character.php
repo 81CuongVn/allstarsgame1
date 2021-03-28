@@ -1,3 +1,13 @@
+<style type="text/css">
+	div#theme-list-ajax {
+		text-align: left;
+		padding-left: 9px;
+	}
+	div#theme-list-ajax img {
+		width: 55px;
+		margin: 0 -1px;
+	}
+</style>
 <?php echo partial('shared/title', array('title' => 'menus.character_guide', 'place' => 'menus.character_guide')) ?>
 <form id="f-create-character">
 	<input type="hidden" name="faction_id" value="1" />
@@ -13,7 +23,7 @@
 						$counter	= 1;
 					?>
 					<?php foreach ($animes as $anime): ?>
-						<a class="anime page-item page-item-<?php echo ceil($counter++ / 12) ?>" data-id="<?php echo $anime->id ?>" style="padding-left: 10px !important">
+						<a data-toggle="tooltip" title="<?=make_tooltip($anime->description()->name);?>" data-placement="bottom" class="anime page-item page-item-<?php echo ceil($counter++ / 12) ?>" data-id="<?php echo $anime->id ?>" style="padding-left: 10px !important">
 							<img src="<?php echo image_url('anime/' . $anime->id . '.jpg') ?>" alt="<?php echo $anime->description()->name ?>" width="50"/>
 						</a>
 					<?php endforeach ?>
@@ -35,14 +45,12 @@
 								$characters	= $anime->characters($_SESSION['universal'] ? '' : ' AND active=1');
 							?>
 							<?php foreach ($characters as $character): ?>
-								<?php 
-									$character_themes  = $character->themes_default($character->id);
-								?>
-									<?php foreach ($character_themes as $character_theme): ?>
-										<a class="themes-uniques character page-item page-item-<?php echo ceil($counter++ / 10) ?>" data-id="<?php echo $character->id ?>" data-theme-id="<?php echo $character_theme->id ?>" style="height: 70px !important; width: 73px !important; padding-left: 7px !important">
-											<?php echo $character->small_image2() ?>
-										</a>
-									<?php endforeach ?>	
+								<?php $character_themes  = $character->themes_default($character->id); ?>
+								<?php foreach ($character_themes as $character_theme): ?>
+									<a data-toggle="tooltip" title="<?=make_tooltip($character->description()->name);?>" data-placement="top" class="themes-uniques character page-item page-item-<?php echo ceil($counter++ / 10) ?>" data-id="<?php echo $character->id ?>" data-theme-id="<?php echo $character_theme->id ?>" style="height: 70px; width: 70px;">
+										<?php echo $character->small_image2() ?>
+									</a>
+								<?php endforeach ?>	
 							<?php endforeach ?>
 							<div class="break"></div>
 							<div class="character-paginator" data-target-container="#anime-characters-<?php echo $anime->id ?>">
@@ -59,6 +67,7 @@
 				<img width="235" height="281" id="character-profile-image" />
 				<div id="name-character" class="nome-personagem"></div>
 				<input class="button btn btn-sm btn-primary" type="button" id="theme-view-image" data-url="<?php echo make_url('characters#list_images_only') ?>" value="Imagens" style="position:relative; top: -30px" />
+				<div class="titulo-home4" style="margin-top: -30px;"><p>Temas</p></div>
 				<div id="theme-list-ajax"></div>
 			</div>
 			<div style="width:495px; height:auto; float: left; position: relative; top: 10px; left: 3px">

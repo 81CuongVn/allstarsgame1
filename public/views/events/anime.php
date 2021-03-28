@@ -1,43 +1,44 @@
 <?php echo partial('shared/title', array('title' => 'menus.events_anime', 'place' => 'menus.events_anime')) ?>
-<?php if(!$player_tutorial->battle_village){?>
-<script>
-$(function () {
-	 $("#conteudo.with-player").css("z-index", 'initial');
-	 $(".info").css("z-index", 'initial');
-	 $("#background-topo2").css("z-index", 'initial');
+<?php if (!$player_tutorial->battle_village) { ?>
+	<script type="text/javascript">
+		$(function () {
+			var tour = new Tour({
+				backdrop: true,
+				page: 19,
+				steps: [{
+					element: ".ev-main",
+					title: "Ajude seu Anime!",
+					content: "Dois animes serão sorteados a cada três horas para a luta, se ao término das três horas, nenhum anime estiver zerado, será declarado vencedor o que tiver mais pontos."+
+					"O anime zerado perde a batalha instantaneamente, porém, uma nova batalha só terá início após as três horas.",
+					placement: "top"
+				}, {
+					element: ".ev-reward",
+					title: "Seja Recompensado!",
+					content: "O Anime vencedor receberá um bônus de 24 horas de Experiência, Moedas e Chance de conseguir Itens em cada batalha! Aproveite!",
+					placement: "left"
+				}, {
+					element: ".anime-ranking",
+					title: "Ranking de Animes!",
+					content: "Aqui você poderá acompanhar o ranking da Batalha de Animes!",
+					placement: "top"
+				}]
+			});
 
-	var tour = new Tour({
-		backdrop: true,
-		page: 19,
-		steps: [{
-			element: ".ev-main",
-			title: "Ajude seu Anime!",
-			content: "Dois animes serão sorteados a cada três horas para a luta, se ao término das três horas, nenhum anime estiver zerado, será declarado vencedor o que tiver mais pontos."+
-			"O anime zerado perde a batalha instantaneamente, porém, uma nova batalha só terá início após as três horas.",
-			placement: "top"
-		}, {
-			element: ".ev-reward",
-			title: "Seja Recompensado!",
-			content: "O Anime vencedor receberá um bônus de 24 horas de Experiência, Moedas e Chance de conseguir Itens em cada batalha! Aproveite!",
-			placement: "left"
-		}]
-	});
-
-	tour.restart();
-	tour.init(true);
-	tour.start(true);
-});
-</script>	
-<?php }?>
+			tour.restart();
+			tour.init(true);
+			tour.start(true);
+		});
+	</script>	
+<?php } ?>
 <?php
-	echo partial('shared/info', [
-		'id'		=> 1,
-		'title'		=> 'event.title',
-		'message'	=> t('event.description')
-	]);
+echo partial('shared/info', [
+	'id'		=> 1,
+	'title'		=> 'event.title',
+	'message'	=> t('event.description')
+]);
 
-	if ($activeEvent) {
-		$points = ($activeEvent->points_a)  / 2000;
+if ($activeEvent) {
+	$points = ($activeEvent->points_a)  / 2000;
 ?>
 <div class="ev-main">
 	<div class="ev-logo">
@@ -112,39 +113,24 @@ $(function () {
 		</div>			
 	</div>
 </div>
-<!-- <div style="clear: left" class="titulo-home3">
+<div style="clear: left" class="titulo-home3">
 	<p><?=t('event.e10');?></p>
-</div><br /> -->
-<div class="ev-ranking">
-	<div style="clear:left; float: left" class="barra-secao barra-secao-<?=$player->character()->anime_id;?>">
-	<table width="725" border="0" cellpadding="0" cellspacing="0">
-		<tr>
-			<td width="200">&nbsp;</td>
-			<td width="60" align="center"><?=t('rankings.players.header.posicao');?></td>
-			<td width="200" align="center"><?=t('rankings.players.header.nome');?></td>
-			<td width="100" align="center"><?=t('rankings.players.header.score');?></td>
-		</tr>
-	</table>
+</div><br />
+<?php $counter = 0; foreach ($animes as $anime) { ?>
+	<div class="<?=($counter++ == 0 ? 'anime-ranking' : '');?> ability-speciality-box" style="width: 175px !important; height: 220px !important; padding-bottom: 40px">
+		<div>
+			<div class="image">
+				<img src="<?=image_url('events/anime/' . $anime->id . '.png');?>" width="150"/>
+			</div>
+			<div class="name" style="height: 40px !important;">
+				<span class="amarelo">
+					<?=$anime->description()->name;?>
+				</span>
+			</div>
+			<div class="description">
+				<b class="laranja">Vitórias</b><br />
+				<?=highamount($anime->score);?>
+			</div>
+		</div>
 	</div>
-	<table width="725" border="0" cellpadding="0" cellspacing="0">
-		<?php
-		$counter = 0;
-		foreach ($animes as $anime) {
-			$color	= $counter++ % 2 ? '091e30' : '173148';
-		?>
-			<tr bgcolor="<?=$color;?>">
-				<td width="200" align="center"><b style="font-size:16px">
-					<img src="<?=image_url('events/anime/' . $anime->id . '.png');?>" width="150"/>
-				</td>
-				<td width="60" align="center">
-					<b style="font-size:16px"><?=$counter;?>º</b>
-				</td>
-				<td width="200" align="center">
-					<span style="font-size:16px" class="amarelo"><?=$anime->description()->name;?></span>
-				</td>
-				<td width="100" align="center"><?=highamount($anime->score);?></td>
-			</tr>
-			<tr height="4"></tr>
-		<?php } ?>
-	</table>
-</div>
+<?php } ?>

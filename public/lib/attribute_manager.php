@@ -38,6 +38,14 @@ trait AttributeManager {
     function for_life($max = false, $raw = false) {
         $total = 1000;
 
+        if (isset($this->organization_map_object_id) && $this->organization_map_object_id) {
+            $object = OrganizationMapObject::find_first($this->organization_map_object_id);
+
+            if ($object->kind == 'sharednpc') {
+                $total = $object->max_life;
+            }
+        }
+
         if (!$raw) {
             $total	+= $this->attributes()->sum_for_life;
         }
@@ -51,6 +59,14 @@ trait AttributeManager {
 
     function for_mana($max = false, $raw = false) {
         $total = 20;
+
+        if (isset($this->organization_map_object_id) && $this->organization_map_object_id) {
+            $object = OrganizationMapObject::find_first($this->organization_map_object_id);
+
+            if ($object->kind == 'sharednpc') {
+                $total = 9999;
+            }
+        }
 
         if (!$raw) {
             $total	+= $this->attributes()->sum_for_mana;

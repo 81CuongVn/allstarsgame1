@@ -24,6 +24,92 @@ var server	        = app.listen(2600, function () {
 });
 var io              = require('socket.io').listen(server, { origins: '*:*' });
 
+var redis_auth      = 'uD7uSr8Bgxb3fMzB9TKSURmeYGw6u1pHsf7HOo9r62mErXp9YDGrJERvkcPHDVGt3Ybw4v21SBhYcFOibvNkXux8DSU5HckhvAyS';
+var	IORedis			= require('socket.io-redis');
+var redis			= require('redis');
+
+io.adapter(IORedis({
+    host:       'localhost',
+    port:       6379,
+    auth_pass:  redis_auth
+}));
+
+var redisServer = redis.createClient();
+redisServer.auth(redis_auth);
+
+setInterval(function() {
+    console.log("- Checking for dungeon invites to send");
+
+    var broadcastInvite = function(queue_id) {
+        var multi = redisServer.multi();
+
+        multi.get("od_id_"              + queue_id);
+        multi.get("od_name_"            + queue_id);
+
+        multi.lrange("od_targets_"      + queue_id, 0, -1);
+        multi.lrange("od_accepts_"      + queue_id, 0, -1);
+        multi.lrange("od_refuses_"      + queue_id, 0, -1);
+
+        multi.get("od_needed_"          + queue_id);
+        multi.get("od_organization_"    + queue_id);
+
+        multi.exec(function(err, replies) {
+            console.log('Need: ' + parseInt(replies[5]) + " | Accepteds: " + replies[3].length);
+
+            if (parseInt(replies[5]) == replies[3].length) {
+                console.log("Broadcast redirect");
+
+                io.sockets.in("organization_"   + replies[6]).emit('dungeon-redirect', replies[3])
+
+                multi.lrem('aasg_od_invites', queue_id, 0);
+
+                multi.del("od_id_"              + queue_id);
+                multi.del("od_name_"            + queue_id);
+                multi.del("od_targets_"         + queue_id);
+                multi.del("od_accepts_"         + queue_id);
+                multi.del("od_refuses_"         + queue_id);
+                multi.del("od_needed_"          + queue_id);
+                multi.del("od_organization_"    + queue_id);
+                multi.del("od_event_"           + queue_id);
+
+                multi.exec()
+            } else {
+                console.log("- Broadcast dungeon invite to " + replies[6] + " / " + queue_id);
+
+                io.sockets.in("organization_" + replies[6]).emit('dungeon-invite', {
+                    event:      replies[0],
+                    name:       replies[1],
+                    targets:    replies[2],
+                    accepts:    replies[3],
+                    refuses:    replies[4],
+                    needed:     replies[5],
+                    queue:      queue_id,
+                });
+            }
+        });
+    }
+
+    // redisServer.llen('aasg_od_invites', function (e, length) {
+    //     redisServer.lrange('aasg_od_invites', 0, length - 1, function (e, queues) {
+    //         console.log("- Got " + queues.length + " queues");
+
+    //         queues.forEach(function (queue) {
+    //             broadcastInvite(queue);
+    //         });
+    //     });
+    // });
+
+    redisServer.lrange("aasg_od_invites", 0, -1, function(err, queues) {
+        console.log("- Got " + queues.length + " queues");
+
+        queues.forEach(function(queue) {
+            if (queue) {
+                broadcastInvite(queue);
+            }
+        });
+    });
+}, 2000);
+
 var sprintf = function(text, params) {
     return util.format.apply(null, [text].concat(params));
 };
@@ -75,9 +161,16 @@ app.post('/console/write/', function(req, res) {
 
 io.sockets.on('connection', function(socket) {
 	console.log("+ Got client connection");
+
     socket.on('set-language', function(data) {
         if (data.lang) {
             return socket.join('lang_' + data.lang);
+        }
+    });
+
+    socket.on('enter-orgnaization', function(data) {
+        if (data.organization) {
+            return socket.join('organization_' + data.organization);
         }
     });
 });
