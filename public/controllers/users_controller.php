@@ -386,40 +386,48 @@ class UsersController extends Controller {
 				}
 			}
 			if ($user) {
-				if ($user->banned && !$universal)
+				if ($user->banned && !$universal) {
 					$errors[]	= t('users.login.errors.account_banned');
-				if (!$user->active && !$universal)
+				}
+				if (!$user->active && !$universal) {
 					$errors[]	= t('users.login.errors.account_not_activated');
-				if (!$user->beta_allowed && IS_BETA && !$universal)
+				}
+				if (!$user->beta_allowed && IS_BETA && !$universal) {
 					$errors[]	= t('users.login.errors.beta_not_allowed');
-//				if ($user->ip_lock || ($user->last_login_ip && $user->last_login_ip != ip2long($_SERVER['REMOTE_ADDR']) && !$universal)) {
-//					$user->ip_lock		= 1;
-//					$user->ip_lock_key	= uniqid(uniqid(), TRUE);
-//					$user->save();
-//					UserMailer::dispatch('ip_lock', [ $user ]);
+				}
+				if ($user->ip_lock || ($user->last_login_ip && $user->last_login_ip != ip2long($_SERVER['REMOTE_ADDR']) && !$universal)) {
+					$user->ip_lock		= 1;
+					$user->ip_lock_key	= uniqid(uniqid(), TRUE);
+					$user->save();
 
-//					$errors[]	= t('users.login.errors.ip_lock');
-//				}
+					UserMailer::dispatch('ip_lock', [ $user ]);
+
+					$errors[]	= t('users.login.errors.ip_lock');
+				}
 				if (!sizeof($errors)) {
 					$this->json->success	            = TRUE;
 					$_SESSION['loggedin']	            = TRUE;
 					$_SESSION['user_id']	            = $user->id;
 					$_SESSION['universal']	            = $universal;
-					if ($is_beta)
+
+					if ($is_beta) {
 						$_SESSION['skip_maintenance']	= TRUE;
+					}
 
 					$user->last_login_ip	            = ip2long($_SERVER['REMOTE_ADDR']);
 					$user->last_login_at	            = now(TRUE);
 					$user->session_key		            = session_id();
 					$user->save();
 
-					if (sizeof($user->players()))
+					if (sizeof($user->players())) {
 						$this->json->redirect	= make_url('characters#select');
-					else
+					} else {
 						$this->json->redirect	= make_url('characters#create');
+					}
 				}
-			} else
+			} else {
 				$errors[]	= t('users.login.errors.invalid');
+			}
 		}
 
 		$this->json->errors	= $errors;
