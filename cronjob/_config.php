@@ -10,7 +10,7 @@ define('BACKTRACE_DELETES',         TRUE);
 define('ROOT',						dirname(dirname(__FILE__)));
 define('RECORDSET_CACHE_OFF_FORCE', TRUE);
 
-$env = 'dev';
+$env = 'prod';
 if (array_key_exists('SERVER_ADDR', $_SERVER) && in_array($_SERVER['SERVER_ADDR'], [ '127.0.0.1' ])) {
 	$env = 'dev';
 }
