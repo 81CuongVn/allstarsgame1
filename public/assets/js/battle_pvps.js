@@ -194,7 +194,7 @@
 						var progress = '<div class="timer progress progress-striped active"><div class="progress-bar" style="width: 100%"></div></div>'
 						timer = result.seconds;
 						queue_alert = bootbox.dialog({
-							message: "<h3>" + I18n.t('battles.pvp.queue_found') + "</h3><br /><br />" + progress,
+							message: "<h4>" + I18n.t('battles.pvp.queue_found') + "</h4><br /><br />" + progress,
 							buttons: {
 								'accept': {
 									label: I18n.t('battles.pvp.queue_accept'),
