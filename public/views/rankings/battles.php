@@ -160,7 +160,7 @@
 						</div>
 					</div>
 					<div class="button" style="position:relative; top: 15px;">
-							<img src="<?=image_url($p->faction_id . ".png");?>" width="25" />
+						<img src="<?=image_url('factions/icons/big/' . $p->faction_id . ".png");?>" width="25" />
 					</div>
 				</div>
 			</div>

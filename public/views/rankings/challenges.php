@@ -123,7 +123,7 @@
 					<?php endif ?>
 					<b><?=$p->name;?></b>
 				</div>
-				<img src="<?=image_url($p->faction_id . ".png");?>" width="25" />
+				<img src="<?=image_url('factions/icons/big/' . $p->faction_id . ".png");?>" width="25" />
 			</div>
 			<div class="description" style="height: auto; font-size:11px">
 					<span style="font-size:12px">
