@@ -15,6 +15,7 @@
 
 # UMA VEZ POR DIA
 0 0 * * * php /var/www/allstarsgame/cronjob/account_quests.php
+0 0 * * * php /var/www/allstarsgame/cronjob/combat_quests.php
 0 0 * * * php /var/www/allstarsgame/cronjob/daily_quests.php
 0 0 * * * php /var/www/allstarsgame/cronjob/organization_requests.php
 0 0 * * * php /var/www/allstarsgame/cronjob/pets_daily_quests.php
@@ -22,6 +23,7 @@
 # AS 5H DA MANHÃ
 0 5 * * * php /var/www/allstarsgame/cronjob/statistic_players.php
 
+# AO FINAL DO DIA
 55 23 * * * php /var/www/allstarsgame/cronjob/combat_quests_rewards.php
 
 # A CADA 3 HORAS

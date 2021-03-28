@@ -1063,15 +1063,13 @@ div.box-mini .body {
 	font-weight: bold;
 	color: #fff;	
 }
-table hr{
-	border: 2px dashed #0b263a;
-	position: relative;
-	top: 5px;
-}
-div hr{
+
+div hr,
+table hr {
 	border: 1px dashed #14374b;
 	position: relative;
 	top: 3px;
+	margin: 5px 0;
 }
 /* PERSONAGEM SELECIONAR */
 

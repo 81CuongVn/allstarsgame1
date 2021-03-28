@@ -22,7 +22,9 @@
 			<td width="85" align="center">
 				<img src="<?php echo image_url($item->image(true)) ?>" class="shop-item-popover" data-source="#shop-item-content-<?php echo $item->id ?>" data-title="<?php echo $item->description()->name ?>" data-trigger="hover" data-placement="right" />
 				<div class="shop-item-container" id="shop-item-content-<?php echo $item->id ?>">
-					<?php echo $item->tooltip() ?>
+					<div style="min-width: 200px;">
+						<?php echo $item->tooltip() ?>
+					</div>
 				</div>
 			</td>
 			<td align="left">

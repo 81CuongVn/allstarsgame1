@@ -28,7 +28,7 @@
 			<img src="<?=image_url(is_player_online($player_combat_quest->player_id) ? 'on.png' : 'off.png');?>" />
 			<b style="font-size:16px"><?=$player_combat_quest->name;?></b><br />
 			<?=$player_combat_quest->anime()->description()->name;?> / <br />
-			<?=$player_combat_quest->graduation()->description()->name;?><br /><br />
+			<?=$player_combat_quest->graduation()->description($player_combat_quest->anime_id)->name;?><br /><br />
 			<span class="laranja"><?=($player_combat_quest->$type . ' ' . $player_quest->status_br);?></span>
 		</div>
 	</div>
@@ -66,7 +66,7 @@
 					<img src="<?=image_url(is_player_online($p->player_id) ? 'on.png' : 'off.png');?>" />
 					<?=$p->name;?>
 				</b><br />
-				<?=$p->anime()->description()->name;?> / <?=$p->graduation()->description()->name;?>
+				<?=$p->anime()->description()->name;?> / <?=$p->graduation($p->anime_id)->description()->name;?>
 			</td>
 			<td width="240" align="center" class="laranja" style="padding: 10px;">
 				<b style="font-size: 14px"><?=$quest_combat->name_br;?></b>

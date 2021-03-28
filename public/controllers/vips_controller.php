@@ -142,8 +142,12 @@ class VipsController extends Controller {
 						}
 					}
 				}
-				if(isset($_POST["faction"])){
-					if($player->organization_id){
+				if (isset($_POST["faction"])) {
+					$faction = Faction::find($_POST["faction"]);
+					if (!$faction || !$faction->active) {
+						$errors[]	= t("vips.errors.invalid_faction");
+					}
+					if ($player->organization_id) {
 						$errors[]	= t('organizations.create.errors.change');
 					}
 				}
@@ -309,11 +313,7 @@ class VipsController extends Controller {
 
 				break;
 				case 1746:
-					if ($player->faction_id == 1) {
-						$player->faction_id = 2;
-					} else {
-						$player->faction_id = 1;
-					}
+					$player->faction_id = $faction->id;
 					$player->save();
 
 				break;
