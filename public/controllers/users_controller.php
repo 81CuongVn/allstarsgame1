@@ -395,15 +395,15 @@ class UsersController extends Controller {
 				if (!$user->beta_allowed && IS_BETA && !$universal) {
 					$errors[]	= t('users.login.errors.beta_not_allowed');
 				}
-				if ($user->ip_lock || ($user->last_login_ip && $user->last_login_ip != ip2long($_SERVER['REMOTE_ADDR']) && !$universal)) {
-					$user->ip_lock		= 1;
-					$user->ip_lock_key	= uniqid(uniqid(), TRUE);
-					$user->save();
+				// if ($user->ip_lock || ($user->last_login_ip && $user->last_login_ip != ip2long($_SERVER['REMOTE_ADDR']) && !$universal)) {
+				// 	$user->ip_lock		= 1;
+				// 	$user->ip_lock_key	= uniqid(uniqid(), TRUE);
+				// 	$user->save();
 
-					UserMailer::dispatch('ip_lock', [ $user ]);
+				// 	UserMailer::dispatch('ip_lock', [ $user ]);
 
-					$errors[]	= t('users.login.errors.ip_lock');
-				}
+				// 	$errors[]	= t('users.login.errors.ip_lock');
+				// }
 				if (!sizeof($errors)) {
 					$this->json->success	            = TRUE;
 					$_SESSION['loggedin']	            = TRUE;
