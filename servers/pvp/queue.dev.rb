@@ -46,10 +46,9 @@ puts "Waiting for players..."
 
 	case current_player['method']
 		when 'enter_queue'
-			puts "#{current_player['id']} entered the queue."
+			puts "[#{current_player['id']}]#{current_player['name']} entered the queue."
 
 			@players[current_player['id']]	= current_player if @players[current_player['id']].nil?
-			puts "Player queue size: " + @players.keys.size.to_s
 
 			if @players.keys.length >= @match_size
 				player		= nil
@@ -99,7 +98,7 @@ puts "Waiting for players..."
 				end
 
 				if choosen
-					puts "Match found! #{choosen['id']} x #{current_player['id']}"
+					puts "Match found! [#{choosen['id']}]#{choosen['name']} x [#{current_player['id']}]#{current_player['name']}"
 
 					# Battle counter
 					battle_counter1	= @mysql.query "SELECT COUNT(`id`) AS `max` FROM `player_battle_pvps` WHERE `player_id` = #{choosen['id']} AND `enemy_id` = #{current_player['id']}"
@@ -107,7 +106,7 @@ puts "Waiting for players..."
 					battle_total	= battle_counter1.to_a[0]['max'].to_i + battle_counter2.to_a[0]['max'].to_i
 
 					if battle_total > 0
-						puts "We found #{battle_total} battles between #{choosen['id']} and #{current_player['id']} in the last hour"
+						puts "We found #{battle_total} battles between [#{choosen['id']}]#{choosen['name']} and [#{current_player['id']}]#{current_player['name']} in the last hour"
 					end
 					# next if battle_total >= 5
 
@@ -156,7 +155,7 @@ puts "Waiting for players..."
 									accepted		= true
 									should_break	= true
 
-									puts "Starting the battle: #{current_player['id']} x #{choosen['id']}"
+									puts "Starting the battle: [#{current_player['id']}]#{current_player['name']} x [#{choosen['id']}]#{choosen['name']}"
 								end
 
 								if @queues[uuid][choosen['id']][:canceled] || @queues[uuid][current_player['id']][:canceled]
@@ -212,8 +211,6 @@ puts "Waiting for players..."
 						else
 							@queues.delete_if { |k, v| k == uuid }
 							@players.delete_if { |k, p| [current_player['id'], choosen['id']].include?(k) }
-
-							puts "Player queue size: " + @players.keys.size.to_s
 						end
 
 						mysql.close
@@ -230,13 +227,12 @@ puts "Waiting for players..."
 				if player['queue_id']
 					@queues[player['queue_id']][player['id']][:canceled]	= true
 
-					puts "#{player['id']} refused the battle!"
+					puts "[#{player['id']}]#{player['´name']} refused the battle!"
 				else
-					puts "#{player['id']} left the queue."
+					puts "[#{player['id']}]#{player['name']} left the queue."
 				end
 
 				@players.delete_if{ |k, v| k == player['id'] }
-				puts "Player queue size: " + @players.keys.size.to_s
 			rescue
 				puts "Failure on exit"
 			end
@@ -246,7 +242,7 @@ puts "Waiting for players..."
 				player													= @players[current_player['id']]
 				@queues[player['queue_id']][player['id']][:accepted]	= true
 
-				puts "#{player['name']} accepted the battle!"
+				puts "[#{player['id']}]#{player['name']} accepted the battle!"
 			rescue
 				puts "Failure on accept"
 
