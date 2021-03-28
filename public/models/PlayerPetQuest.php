@@ -25,7 +25,7 @@ class PlayerPetQuest extends Relation {
 		if($player_pet_quest){
 			$can_finish			= now() >= strtotime($player_pet_quest[0]->finish_at) ? true : false;
 			if($can_finish && !$p_pet_quest->success_at){
-				$numero_random = rand(1,100);
+				$numero_random = rand(1, 100);
 				if($numero_random <= $p_pet_quest->success_percent){
 					$p_pet_quest->success = 1;	
 				}

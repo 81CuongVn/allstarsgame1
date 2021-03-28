@@ -87,7 +87,7 @@ define('REDIS_PASS',			'uD7uSr8Bgxb3fMzB9TKSURmeYGw6u1pHsf7HOo9r62mErXp9YDGrJERv
 # PvP Server settings
 define('PVP_SERVER',			'127.0.0.1');
 define('PVP_PORT',				5672);
-define('PVP_CHANNEL',			'allstars_pvp_queue');
+define('PVP_CHANNEL',			'allstars_queue');
 
 # Initial settings
 define('INITIAL_MONEY',			500);

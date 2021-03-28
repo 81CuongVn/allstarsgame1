@@ -632,7 +632,8 @@
 						class:		'btn btn-sm btn-default',
 						callback:	function () {
 							lock_screen(true);
-							location.href	= parseInt(result.end_type) ? result.redirect : make_url('hospital') ;
+							location.href	= result.redirect;
+							// location.href	= parseInt(result.end_type) ? result.redirect : make_url('hospital') ;
 						}
 					}
 				]});

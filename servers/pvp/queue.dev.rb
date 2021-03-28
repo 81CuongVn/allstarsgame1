@@ -13,7 +13,7 @@ require 'securerandom'
 @connection.start
 
 @channel		= @connection.create_channel
-@queue			= @channel.queue('allstars_pvp_queue')
+@queue			= @channel.queue('allstars_queue')
 @match_size		= 2
 @players		= {}
 @queues			= {}
@@ -23,7 +23,7 @@ require 'securerandom'
 	'host'	=> 'localhost',
 	'user'	=> 'root',
 	'pass'	=> '',
-	'name'	=> 'aasg_dev'
+	'name'	=> 'allstars_db'
 }
 
 # PvP range settings
@@ -32,89 +32,98 @@ level_range		= 5;
 Thread.abort_on_exception = true
 
 begin
-	@mysql		= Mysql2::Client.new host: @db['host'], username: @db['user'], password: @db['pass'], reconnect: true, init_command: "USE #{@db['name']};"
-	@mysql.query "USE #{@db['name']};"
-
-	puts "[+] Main mysql connection started"
+	@mysql		= Mysql2::Client.new host: @db['host'], username: @db['user'], password: @db['pass'], reconnect: true, init_command: "USE `#{@db['name']}`;"
+	@mysql.query "USE `#{@db['name']}`;"
 rescue Mysql2::Error => e
-	puts "[+] MySQL Error #{e.errno} - #{e.error}"
+	puts "MySQL Error #{e.errno} - #{e.error}"
 end
 
-puts "[+] Waiting for players..."
+puts "PvP Battle queue was successfully started!"
+puts "Waiting for players..."
 
 @queue.subscribe(block: true) do |delivery_info, properties, body|
 	current_player	= JSON.parse(body)
 
 	case current_player['method']
 		when 'enter_queue'
-			puts 'Someone entred the queue'
+			puts "#{current_player['id']} entered the queue."
 
 			@players[current_player['id']]	= current_player if @players[current_player['id']].nil?
+			puts "Player queue size: " + @players.keys.size.to_s
 
 			if @players.keys.length >= @match_size
 				player		= nil
-				got_match	= false
-				got_victory	= false
-				got_loss	= false
+				choosen		= nil
+
+				allplayers	= []
+				outrange	= []
+				availables	= []
 				victorious	= []
 				losers		= []
-				choosen		= nil
+
 				min_level	= current_player['level'] - level_range
 				max_level	= current_player['level'] + level_range
 
+				battle_type	= current_player['battle_type_id'];
+
 				@players.each do |key, player|
 					next if player['id'] == current_player['id']
+
+					allplayers.push(player)
+
 					next unless player['queue_id'].nil?
 
 					if player['level'] >= min_level && player['level'] <= max_level
-						if player['won'].to_i == 1
+						availables.push(player)
+
+						if player['won'].to_i > 0
 							victorious.push(player)
-						else
+						elsif player['won'].to_i < 0
 							losers.push(player)
 						end
+					else
+						outrange.push(player)
 					end
 				end
 
-				if current_player['won'].to_i == 1 && victorious.any?
+				if current_player['won'].to_i > 0 && victorious.any?
 					choosen = victorious.sample
-				elsif current_player['won'].to_i == 0 && losers.any?
+				elsif current_player['won'].to_i < 0 && losers.any?
 					choosen = losers.sample
 				else
-					choosen = (victorious + losers).sample
+					choosen = availables.sample
 				end
 
 				unless choosen
-					choosen = @players[@players.keys.sample]
+					choosen = outrange.sample
 				end
 
-				# Battle counter
-				battle_counter1	= @mysql.query "SELECT COUNT(id) AS max FROM player_battle_pvps WHERE player_id=#{choosen['id']} AND enemy_id=#{current_player['id']}"
-				battle_counter2	= @mysql.query "SELECT COUNT(id) AS max FROM player_battle_pvps WHERE enemy_id=#{choosen['id']} AND player_id=#{current_player['id']}"
-				battle_total	= battle_counter1.to_a[0]['max'].to_i + battle_counter2.to_a[0]['max'].to_i
+				if choosen
+					puts "Match found! #{choosen['id']} x #{current_player['id']}"
 
-				puts " - Found count of #{battle_total} against #{choosen['id']} and #{current_player['id']}"
+					# Battle counter
+					battle_counter1	= @mysql.query "SELECT COUNT(`id`) AS `max` FROM `player_battle_pvps` WHERE `player_id` = #{choosen['id']} AND `enemy_id` = #{current_player['id']}"
+					battle_counter2	= @mysql.query "SELECT COUNT(`id`) AS `max` FROM `player_battle_pvps` WHERE `enemy_id` = #{choosen['id']} AND `player_id` = #{current_player['id']}"
+					battle_total	= battle_counter1.to_a[0]['max'].to_i + battle_counter2.to_a[0]['max'].to_i
 
-				next if battle_total >= 5
+					if battle_total > 0
+						puts "We found #{battle_total} battles between #{choosen['id']} and #{current_player['id']} in the last hour"
+					end
+					# next if battle_total >= 5
 
-				if choosen && choosen['id'] != current_player['id']
 					uuid = SecureRandom.uuid
-					puts 'Match found'
 
 					@queues[uuid]						= {}
-					@queues[uuid][choosen['id']]			= {accepted: false, canceled: false}
+					@queues[uuid][choosen['id']]		= {accepted: false, canceled: false}
 					@queues[uuid][current_player['id']]	= {accepted: false, canceled: false}
 
 					@players[current_player['id']]['queue_id']	= uuid
 					@players[choosen['id']]['queue_id']			= uuid
 
 					thread	= Thread.new do
-						puts 'Thread started'
-
 						begin
-							mysql	= Mysql2::Client.new host: @db['host'], username: @db['user'], password: @db['pass'], init_command: "USE #{@db['name']};"
-							mysql.query  "USE #{@db['name']};"
-							
-							puts 'Theard mysql connection started'
+							mysql	= Mysql2::Client.new host: @db['host'], username: @db['user'], password: @db['pass'], init_command: "USE `#{@db['name']}`;"
+							mysql.query  "USE `#{@db['name']}`;"
 						rescue Mysql2::Error => e
 							puts "MySQL Error #{e.errno} - #{e.error}"
 						end
@@ -124,7 +133,7 @@ puts "[+] Waiting for players..."
 						accepted	= false
 						time_queue	= Time.now.to_i + timer
 
-						mysql.query "UPDATE players SET pvp_queue_found='#{time_queue}' WHERE id IN(#{current_player['id']}, #{choosen['id']})"
+						mysql.query "UPDATE `players` SET `pvp_queue_found` = '#{time_queue}' WHERE `id` IN(#{current_player['id']}, #{choosen['id']})"
 
 						while timer > 0 do
 							sleep(1)
@@ -132,20 +141,30 @@ puts "[+] Waiting for players..."
 
 							@semaphore.synchronize do
 								if @queues[uuid][choosen['id']][:accepted] && @queues[uuid][current_player['id']][:accepted]
-									puts "ACCEPT!"
+									if current_player['init'] > choosen['init']
+										who_start = current_player['id']
+									elsif current_player['init'] < choosen['init']
+										who_start = choosen['id']
+									else
+										who_start = [ choosen['id'], current_player['id']].sample
+									end
 
-									who_start	= current_player['init'] > choosen['init'] ? current_player['id'] : choosen['id']
-
-									mysql.query "INSERT INTO battle_pvps(battle_type_id, player_id, enemy_id, current_id, last_atk) VALUES(#{current_player['battle_type_id']}, #{current_player['id']}, #{choosen['id']}, #{who_start}, NOW())"
-									mysql.query "UPDATE players SET pvp_queue_found=NULL, is_pvp_queued=0, battle_pvp_id=#{mysql.last_id} WHERE id IN(#{current_player['id']}, #{choosen['id']})"
-									mysql.query "INSERT INTO player_battle_pvps(player_id, enemy_id) VALUES(#{current_player['id']}, #{choosen['id']})"
+									mysql.query "INSERT INTO `battle_pvps` (`battle_type_id`,`player_id`,`enemy_id`,`current_id`,`last_atk`) VALUES(#{battle_type},#{current_player['id']},#{choosen['id']},#{who_start},NOW())"
+									mysql.query "UPDATE `players` SET `pvp_queue_found` = NULL, `is_pvp_queued` = 0, `battle_pvp_id` = #{mysql.last_id} WHERE `id` IN(#{current_player['id']}, #{choosen['id']})"
+									mysql.query "INSERT INTO `player_battle_pvps` (`player_id`,`enemy_id`) VALUES(#{current_player['id']}, #{choosen['id']})"
 									
 									accepted		= true
 									should_break	= true
+
+									puts "Starting the battle: #{current_player['id']} x #{choosen['id']}"
 								end
 
 								if @queues[uuid][choosen['id']][:canceled] || @queues[uuid][current_player['id']][:canceled]
-									puts "CANCEL!"
+									if (@queues[uuid][choosen['id']][:canceled])
+										@players[current_player['id']]['queue_id']	= nil
+									elsif @queues[uuid][current_player['id']][:canceled]
+										@players[choosen['id']]['queue_id']	= nil
+									end
 
 									timeout			= false
 									should_break	= true
@@ -155,56 +174,47 @@ puts "[+] Waiting for players..."
 							break if should_break
 
 							timer	-= 1
-
-							#puts 'Timer ' + timer.to_s
 						end
 
 						unless accepted
-							mysql.query "UPDATE players SET pvp_queue_found=NULL WHERE id IN(#{current_player['id']}, #{choosen['id']})"
+							mysql.query "UPDATE `players` SET `pvp_queue_found` = NULL WHERE `id` IN(#{current_player['id']}, #{choosen['id']})"
 
 							@semaphore.synchronize do
-								@queues[uuid].keys.each do |queue_key|
+								@queues[uuid].keys.each do |player_id|
 									if timeout
-										# Was timeout, but if player have choosend to accept or cancel, he'll be still queued
-										if @queues[uuid][queue_key][:accepted] || @queues[uuid][queue_key][:canceled]
+										# Was timeout, but if player have choosend to accept, he'll be still queued
+										if @queues[uuid][player_id][:accepted]
 											begin
-												@players[queue_key]['queue_id']	= nil
+												@players[player_id]['queue_id']	= nil
 											rescue
-												puts 'Player queue key not found after timeouting a match'
+												puts "Queue key of #{player_id} not found after timeouting a match."
 											end
 										else
-											@players.delete_if { |k, p|
-												k == queue_key
-											}
+											@players.delete_if{ |k, v| k == player_id }
 
-											mysql.query "UPDATE players SET is_pvp_queued=0 WHERE id=#{queue_key}"
+											puts "Player queue size: " + @players.keys.size.to_s
+
+											mysql.query "UPDATE `players` SET `is_pvp_queued` = 0, `pvp_queue_found` = NULL WHERE `id` = #{player_id}"
 										end
 									else
-										begin
-											@players[queue_key]['queue_id']	= nil
-										rescue
-											puts 'Player queue key not found after accepting a match'
+										if @queues[uuid][player_id][:accepted]
+											begin
+												@players[player_id]['queue_id']	= nil
+											rescue
+												puts "Queue key of #{player_id} not found after accepting a match."
+											end
 										end
 									end
 								end
 
 								@queues.delete_if { |key, v| key == uuid }
 							end
-
-							if timeout
-								puts 'Timeout'
-							else
-								puts 'Cancel'
-							end
 						else
 							@queues.delete_if { |k, v| k == uuid }
 							@players.delete_if { |k, p| [current_player['id'], choosen['id']].include?(k) }
-						end
 
-						#@semaphore.synchronize do
-						#	puts @players.inspect
-						#	puts @queues.inspect
-						#end
+							puts "Player queue size: " + @players.keys.size.to_s
+						end
 
 						mysql.close
 					end
@@ -219,14 +229,15 @@ puts "[+] Waiting for players..."
 
 				if player['queue_id']
 					@queues[player['queue_id']][player['id']][:canceled]	= true
+
+					puts "#{player['id']} refused the battle!"
 				else
-					@players.delete_if{ |k, v| k == current_player['id'] }
+					puts "#{player['id']} left the queue."
 				end
 
-				@mysql.query "UPDATE players SET pvp_queue_found=NULL, is_pvp_queued=0 WHERE id=#{current_player['id']}"
-				puts "Player cancelled"
+				@players.delete_if{ |k, v| k == player['id'] }
+				puts "Player queue size: " + @players.keys.size.to_s
 			rescue
-				@mysql.query "UPDATE players SET pvp_queue_found=NULL, is_pvp_queued=0 WHERE id=#{current_player['id']}"
 				puts "Failure on exit"
 			end
 
@@ -235,12 +246,11 @@ puts "[+] Waiting for players..."
 				player													= @players[current_player['id']]
 				@queues[player['queue_id']][player['id']][:accepted]	= true
 
-				puts "Player aceepted"
+				puts "#{player['name']} accepted the battle!"
 			rescue
-				@mysql.query "UPDATE players SET pvp_queue_found=NULL, is_pvp_queued=0 WHERE id=#{current_player['id']}"
 				puts "Failure on accept"
+
+				# @mysql.query "UPDATE `players` SET `pvp_queue_found` = NULL WHERE `id` = #{current_player['id']}"
 			end
 	end
-
-	puts "Player queue size: " + @players.keys.size.to_s
 end

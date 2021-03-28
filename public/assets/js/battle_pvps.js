@@ -260,6 +260,8 @@
 								queue_alert = false;
 
 								clearInterval(timer_iv);
+
+								window.location.reload();
 							}
 						}, 1000);
 					}

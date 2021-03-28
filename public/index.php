@@ -140,6 +140,7 @@ require_once ROOT . '/helpers/user_helper.php';
 require_once ROOT . '/helpers/ranked_helper.php';
 require_once ROOT . '/helpers/pagseguro_helper.php';
 require_once ROOT . '/helpers/facebook_helper.php';
+require_once ROOT . '/helpers/reputation_helper.php';
 
 $___memory['after_helpers']	= memory_get_usage();
 $___memory['before_mailers']	= memory_get_usage();
