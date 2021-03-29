@@ -2411,9 +2411,9 @@ pt-BR:
   welcome_message:
     subject: Seja bem vindo(a)!
     content: |
-      Olá <b>#{player}</b>, seja bem vindo(a) ao <b>#{game_name}</b>!
+      Olá <b>#{player}</b>, seja bem vindo(a)!
 			Lhe desejamos muita sorte neste mundo cheio de aventuras e batalhas, onde você irá vivenciar seu anime favorito.
 			Caso tenha dúvidas, sugestões ou precise de ajuda, não deixe de falar com nossa equipe, abra um ticket em <a href="#{link}"><b>Principal &raquo; Suporte</b></a>.
 
 			Atenciosamente,
-			Equipe <b>#{game_name}</b>!
+			Equipe <b>#{game}</b>!

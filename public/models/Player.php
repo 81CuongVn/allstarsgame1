@@ -132,7 +132,7 @@ class Player extends Relation {
 		$message->content	= t('welcome_message.content', [
 			'link'		=> make_url('support'),
 			'player'	=> $this->name,
-			'game_name'	=> GAME_NAME
+			'game'		=> GAME_NAME
 		]);
 		$message->save();
 	}
