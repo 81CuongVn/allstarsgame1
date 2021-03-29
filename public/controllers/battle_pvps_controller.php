@@ -402,6 +402,22 @@ class BattlePvpsController extends Controller {
 		$player			= Player::get_instance();
 
 		if ($player->pvp_queue_found) {
+			// Cleanups -->
+			SharedStore::S('last_battle_item_of_' . $player->id, 0);
+
+			$player->clear_ability_lock();
+			$player->clear_speciality_lock();
+			$player->clear_technique_locks();
+			$player->clear_effects();
+			// <--
+
+			$player->refresh_talents();
+
+			$_SESSION['pvp_used_buff']			= FALSE;
+			$_SESSION['pvp_used_ability']		= FALSE;
+			$_SESSION['pvp_used_speciality']	= FALSE;
+			$_SESSION['pvp_time_reduced']		= 0;
+
 			$connection = new AMQPConnection(PVP_SERVER, PVP_PORT, 'guest', 'guest');
 			$channel	= $connection->channel();
 			$channel->queue_declare(PVP_CHANNEL, FALSE, FALSE, FALSE, FALSE);
