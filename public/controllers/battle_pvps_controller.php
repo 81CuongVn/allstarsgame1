@@ -538,13 +538,14 @@ class BattlePvpsController extends Controller {
 	}
 
 	function attack($is_copy = null, $is_kill = null) {
+		$this->as_json				= true;
+
 		$player						= Player::get_instance();
 		$battle						= $player->battle_pvp();
 		$enemy						= $battle->enemy();
 		$log						= @unserialize($battle->battle_log);
 		$errors						= [];
 		$is_skip					= isset($_POST['item']) && $_POST['item'] == 'skip';
-		$this->as_json				= true;
 		$is_copy					= $is_copy == 'copy';
 		$is_kill					= $is_kill == 'kill';
 		$can_run_action				= true;
@@ -613,7 +614,7 @@ class BattlePvpsController extends Controller {
 					$errors[]	= t('battles.errors.not_my_turn');
 				}
 
-				if($can_run_action) {
+				if ($can_run_action) {
 					if ($item->is_buff) {
 						$_SESSION['pvp_used_buff']	= true;
 					}

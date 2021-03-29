@@ -372,7 +372,7 @@ if ($_SESSION['user_id']) {
 	<button class="btn btn-primary btn-cookies">Aceitar!</button>
 </div>
 
-<?php if ($player) { ?>
+<?php if ($player && FW_ENV != 'dev') { ?>
 	<?php echo partial('shared/chat', ['player' => $player]); ?>
 	<script type="text/javascript" src="<?=asset_url('js/highlights.js');?>"></script>
 <?php } ?>

@@ -1,0 +1,20 @@
+<?php
+trait BattleLogger {
+	function get_battle_log($battle_id, $type) {
+		$file = ROOT . "/logs/battles/{$type}/{$battle_id}.log";
+		if (file_exists($file)) {
+			$log = file_get_contents($file);
+			if ($log) {
+				return unserialize($log);
+			}
+		}
+		return [];
+	}
+	function add_battle_log($battle_id, $type, $log) {
+		$file = ROOT . "/logs/battles/{$type}/{$battle_id}.log";
+
+		$open_file = fopen($file, "w+");
+		fwrite($open_file, serialize($log));
+		fclose($open_file);
+	}
+}

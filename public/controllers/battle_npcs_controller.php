@@ -212,12 +212,12 @@ class BattleNpcsController extends Controller {
 			
 		// <--
 
-		$this->assign('player', $player);
-		$this->assign('npc', $npc);
-		$this->assign('techniques', $player->get_techniques());
-		$this->assign('target_url', make_url('battle_npcs'));
-		$this->assign('log', @unserialize($player->battle_npc()->battle_log));
-		$this->assign('player_tutorial', $player->player_tutorial());
+		$this->assign('player',				$player);
+		$this->assign('npc',				$npc);
+		$this->assign('techniques',			$player->get_techniques());
+		$this->assign('target_url',			make_url('battle_npcs'));
+		$this->assign('log',				$player->battle_npc()->get_log());
+		$this->assign('player_tutorial',	$player->player_tutorial());
 	}
 
 	function attack($is_copy = null, $is_kill = null) {
@@ -231,14 +231,14 @@ class BattleNpcsController extends Controller {
 			$challenge  			= PlayerChallenge::find_first('player_id='. $player->id .' AND challenge_id='.$player->challenge_id .' AND complete = 0');
 		}
 
-		$log						= @unserialize($battle->battle_log);
+		$log						= $battle->get_log();
 		$errors						= [];
 		$is_skip					= isset($_POST['item']) && $_POST['item'] == 'skip';
 		$this->as_json				= true;
 		$is_copy					= $is_copy == 'copy';
 		$is_kill					= $is_kill == 'kill';
 
-		if(!is_array($log)) {
+		if (!is_array($log)) {
 			$log	= [];
 		}
 
@@ -478,14 +478,13 @@ class BattleNpcsController extends Controller {
 					}else{
 						$player->save_npc($npc);
 					}
-					
-					$battle->battle_log	= serialize(array_merge($log, $battle_log));
+
+					$battle->save_log(array_merge($log, $battle_log));
 
 					function __check_dead(&$who) {
 						return $who->for_life() <= 0;
 					}
 
-					$currency_name	= t('currencies.' . $player->character_theme()->anime()->id);
 					$finished		= false;
 					$was_draw		= false;
 					$can_draw		= $player_init == $enemy_init;
@@ -828,7 +827,7 @@ class BattleNpcsController extends Controller {
 			}
 		}
 
-		$this->json->log		= unserialize($battle->battle_log);
+		$this->json->log		= $battle->get_log();
 		$this->json->messages	= $errors;
 		$this->_stats_to_json($player, $npc, $battle);
 		$this->_techniques_to_json($player);

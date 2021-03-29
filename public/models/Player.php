@@ -5069,7 +5069,6 @@ class Player extends Relation {
 
 	function battle_pvp() {
 		$battle	= BattlePvp::find($this->battle_pvp_id);
-
 		if (!$battle) {
 			return false;
 		}
