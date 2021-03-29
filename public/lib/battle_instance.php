@@ -429,28 +429,28 @@
 					'enemy'		=> $enemy->name,
 					'item'		=> $effect . $item->description()->name,
 					'tooltip'	=> $tooltip_id
-				]);
+				]) . '&nbsp;';
 
 				if ($item->is_buff || $item->is_turn_skip) {
 					if ($bleeding_damage) {
-						$entry				.= $bleeding_image . t('battles.bleeding_text_only', ['damage' => $bleeding_damage]);
+						$entry				.= $bleeding_image . t('battles.bleeding_text_only', ['damage' => $bleeding_damage]) . '&nbsp;';
 						$enemy->less_life	+= $bleeding_damage;
 					}
 
 					$is_kill	= false;
 				} else {
 					if($is_error) {
-						$entry	.= t('battles.error_text');
+						$entry	.= t('battles.error_text') . '&nbsp;';
 					} elseif($is_null) {
-						$entry	.= t('battles.null_text');
+						$entry	.= t('battles.null_text') . '&nbsp;';
 					} elseif($is_dodge) {	
-						$entry	.= t('battles.dodge_text');
+						$entry	.= t('battles.dodge_text') . '&nbsp;';
 					} else {
 						if(!$item->is_defensive) {
 							if($damage == 0) {
-								$entry	.= t('battles.defense_text');
+								$entry	.= t('battles.defense_text') . '&nbsp;';
 							} elseif($damage > 0) {
-								$entry				.= t('battles.damage_text', ['damage' => $damage, 'bleeding_damage' => $bleeding_text]);
+								$entry				.= t('battles.damage_text', ['damage' => $damage, 'bleeding_damage' => $bleeding_text]) . '&nbsp;';
 								$enemy->less_life	+= $damage + $bleeding_damage;
 								
 								// Recupera vida batendo
@@ -464,13 +464,13 @@
 								}
 									
 							} elseif($damage < 0) {
-								$entry				.= t('battles.counter_text', ['damage' => abs($damage)]);
+								$entry				.= t('battles.counter_text', ['damage' => abs($damage)]) . '&nbsp;';
 								$player->less_life	+= -$damage;
 								$counter_damage		= $damage;
 							}
 						} else {
 							if ($bleeding_damage) {
-								$entry				.= $bleeding_image . t('battles.bleeding_text_only', ['damage' => $bleeding_damage]);
+								$entry				.= $bleeding_image . t('battles.bleeding_text_only', ['damage' => $bleeding_damage]) . '&nbsp;';
 								$enemy->less_life	+= $bleeding_damage;
 							}
 						}
@@ -636,7 +636,7 @@
 					}
 				*/
 
-				$entry	.= partial('shared/battle_item', ['player' => $player, 'item' => $item, 'id' => $tooltip_id]);
+				$entry	.= partial('shared/battle_item', ['player' => $player, 'item' => $item, 'id' => $tooltip_id]) . '&nbsp;';
 				$log[]	= $entry;
 				
 				if(!$i) {
