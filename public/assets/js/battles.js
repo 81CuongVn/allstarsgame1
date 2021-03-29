@@ -300,10 +300,10 @@
 					$('.activatables-player .modifier-turn-data').remove();
 					$('.activatables-player .technique-popover').css({opacity: 1});
 
-					//if ($('.activatables-enemy .modifier-turn-data').length && result.enemy.update_existent_locks) {
+					if ($('.activatables-enemy .modifier-turn-data').length && result.enemy.update_existent_locks) {
 						$('.activatables-enemy .modifier-turn-data').remove();
 						$('.activatables-enemy .technique-popover').css({opacity: 1});
-					//}
+					}
 
 					result.enemy.locks.forEach(function (item) {
 						if (item.type == 'speciality' || item.type == 'ability') {

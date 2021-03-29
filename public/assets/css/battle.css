@@ -147,10 +147,10 @@
 }
 
 #battle-container .log {
-	margin: 6px auto 0px auto;
-	width: 226px;
+	margin: 0 auto;
+	width: 230px;
 	height: 110px;
-	overflow: hidden;
+	overflow: overlay;
 }
 
 #battle-container .player-box {
