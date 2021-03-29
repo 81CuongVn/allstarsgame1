@@ -44,7 +44,7 @@
 						<?php
 							$sql_time	= 0;
 							foreach (Recordset::$sqls as $sql) {
-								if (array_key_exists('duration', $sql)) {
+								if (array_key_exists('duration', $sql) && is_numeric($sql['duration'])) {
 									$sql_time	+= $sql['duration'];
 								}
 							}
