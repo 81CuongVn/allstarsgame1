@@ -213,6 +213,16 @@ if ($_SESSION['user_id']) {
 					<div id="tooltip-queue" class="status-popover-container">
 						<div id="tooltip-queue-data" class="status-popover-content">
 							<?=t('popovers.description.queue.' . ($player->is_pvp_queued ? 'queued' : 'normal'));?>
+							<?php if (is_menu_accessible(Menu::find(54), $player)) { ?>
+								<hr />
+								<div align="center">
+									<?php if ($player->is_pvp_queued) { ?>
+										<a href="javascript:;" class="btn btn-sm btn-block btn-danger">Sair da fila</a>
+									<?php } else { ?>
+										<a href="javascript:;" class="btn btn-sm btn-block btn-primary">Entrar na fila</a>
+									<?php } ?>
+								</div>
+							<?php } ?>
 						</div>
 					</div>
 				</div>
