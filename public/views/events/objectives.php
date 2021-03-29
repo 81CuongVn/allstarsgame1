@@ -178,9 +178,9 @@ $daysLeft = ceil((strtotime(ROUND_END) - now()) / 86400);
                 //Barrinhas de Progresso dos wanted
                 //Barrinhas de Progresso do Modo Aventura
                 if($objective->achievement()->history_mode > 1){
-                    $user_history_mode_subgroup = UserHistoryModeSubgroup::find("history_mode_subgroup_id=".$objective->achievement()->history_mode." AND user_id=".$player->user_id." AND complete=1");
+                    $user_history_mode_subgroup = UserHistoryModeSubgroup::find_first("history_mode_subgroup_id=".$objective->achievement()->history_mode." AND user_id=".$player->user_id." AND complete=1");
                     // var_dump($user_history_mode_subgroup);
-                    if (sizeof($user_history_mode_subgroup) && !$objective->complete) {
+                    if (!$user_history_mode_subgroup && !$objective->complete) {
                         echo exp_bar('0/1', 1, 175);
                     } else {
                         echo exp_bar('1/1', 1, 175);
