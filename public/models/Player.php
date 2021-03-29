@@ -129,7 +129,7 @@ class Player extends Relation {
 		$message			= new PrivateMessage();
 		$message->to_id		= $this->id;
 		$message->subject	= t('welcome_message.subject');
-		$message->content	= t('welcome_message.subject', [
+		$message->content	= t('welcome_message.content', [
 			'link'		=> make_url('support'),
 			'player'	=> $this->name,
 			'game_name'	=> GAME_NAME
