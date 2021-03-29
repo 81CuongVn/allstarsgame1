@@ -21,4 +21,4 @@ foreach ($stats->result_array() as $stat) {
     ]);
 }
 
-echo '[Statistics Players] Cron executada com sucesso!';
+echo "[Statistics Players] Cron executada com sucesso!\n";

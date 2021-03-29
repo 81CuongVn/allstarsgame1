@@ -634,13 +634,23 @@ class CharactersController extends Controller {
 		$player	=& Player::get_instance();
 
 		if ($_POST) {
-			// $player->exp				-= $player->level_exp();
-			// $player->level_screen_seen	= 1;
-			// $player->less_mana	        = 0;
-			// $player->less_life	        = 0;
-			// $player->less_stamina	    = 0;
-			// $player->level++;
-			// $player->save();
+			if ($player->is_next_level()) {
+				// while ($this->is_next_level()) {
+					$player->level			+= 1;
+					$player->exp			-= $player->level_exp();
+
+					$player->less_mana		= 0;
+					$player->less_life		= 0;
+					$player->less_stamina	= 0;
+
+					// $player->level_screen_seen	= 1;
+
+					// Checa a conquista de level do player
+					$player->achievement_check('level_player');
+					// Checa a conquista de level do player
+					$player->check_objectives('level_player');
+				// }
+			}
 
 			redirect_to('characters#status');
 		} else {

@@ -75,4 +75,4 @@ foreach ($challenges->result_array() as $challenge) {
         }
     }
 }
-echo '[Ranking Challenges] Cron executada com sucesso!';
+echo "[Ranking Challenges] Cron executada com sucesso!\n";

@@ -11,4 +11,4 @@ foreach ($organization_requests->result_array() as $organization_request) {
     }
 }
 
-echo '[Organization Requests] Cron executada com sucesso!';
+echo "[Organization Requests] Cron executada com sucesso!\n";

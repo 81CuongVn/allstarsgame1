@@ -27,4 +27,4 @@ foreach ($players->result_array() as $player) {
         ]);
     }
 }
-echo '[Daily Quests] Cron executada com sucesso!';
+echo "[Daily Quests] Cron executada com sucesso!\n";

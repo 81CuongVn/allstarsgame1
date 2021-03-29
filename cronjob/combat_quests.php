@@ -21,4 +21,4 @@ $combatDaily->period				= $questDaily->period;
 $combatDaily->combat_quest_id		= $questDaily->id;
 $combatDaily->save();
 
-echo '[Combat Quests] Cron executada com sucesso!';
+echo "[Combat Quests] Cron executada com sucesso!\n";

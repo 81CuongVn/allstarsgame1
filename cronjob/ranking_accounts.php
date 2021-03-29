@@ -54,14 +54,10 @@ foreach ($users->result_array() as $user) {
 
 $rank	= 1;
 $users	= Recordset::query('SELECT `id`,`score`,`level` FROM `ranking_accounts` ORDER BY `score` DESC, `level` DESC');
-foreach($users->result_array() as $user) {
-    // if ($user->score <= 0)
-        // $user->delete();
-    // else {
-        Recordset::update('ranking_accounts', [
-            'position_general'  => $rank++
-        ], ['id' => $user['id']]);
-    // }
+foreach ($users->result_array() as $user) {
+    Recordset::update('ranking_accounts', [
+        'position_general'  => $rank++
+    ], ['id' => $user['id']]);
 }
 
-echo '[Ranking Accounts] Cron executada com sucesso!';
+echo "[Ranking Accounts] Cron executada com sucesso!\n";

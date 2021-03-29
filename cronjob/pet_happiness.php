@@ -19,4 +19,4 @@ foreach ($players->result_array() as $player) {
         ]);
     }
 }
-echo '[Pet Happiness] Cron executada com sucesso!';
+echo "[Pet Happiness] Cron executada com sucesso!\n";

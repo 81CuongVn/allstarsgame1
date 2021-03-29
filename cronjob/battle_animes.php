@@ -46,4 +46,4 @@ if (date('G') >= 9 && date('G') <= 23) {
 		'points_b'		=> 1000
 	]);
 }
-echo '[Battle Animes] Cron executada com sucesso!';
+echo "[Battle Animes] Cron executada com sucesso!\n";

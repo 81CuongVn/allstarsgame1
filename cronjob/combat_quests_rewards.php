@@ -58,3 +58,4 @@ if ($combat_quests_diario) {
     Recordset::query("UPDATE player_quest_counters SET combat_total = combat_total +1 WHERE player_id=". $player_rank[0]['player_id']);
 
 }
+echo "[Combat Quests Rewards] Cron executada com sucesso!\n";

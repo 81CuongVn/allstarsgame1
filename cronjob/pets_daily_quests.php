@@ -17,4 +17,4 @@ foreach ($players->result_array() as $player) {
         ]);
     }
 }
-echo '[Pet Daily Quests] Cron executada com sucesso!';
+echo "[Pet Daily Quests] Cron executada com sucesso!\n";

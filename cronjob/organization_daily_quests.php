@@ -27,4 +27,4 @@ foreach ($organizations->result_array() as $organization) {
         ]);
     }
 }
-echo '[Organization Daily Quests] Cron executada com sucesso!';
+echo "[Organization Daily Quests] Cron executada com sucesso!\n";

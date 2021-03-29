@@ -66,4 +66,4 @@ foreach ($animes->result_array() as $anime) {
         ]);
     }
 }
-echo '[Hall Of Fame] Cron executada com sucesso!';
+echo "[Hall Of Fame] Cron executada com sucesso!\n";

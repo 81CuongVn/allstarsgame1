@@ -54,29 +54,27 @@ foreach ($animes->result_array() as $anime) {
         $points +=  $player['combat_total']     * 200;
         $points +=  $boss_score;
 
-        // if ($points > 0) {
-            Recordset::insert('ranking_players', [
-                'player_id'				=> $player['id'],
-                'anime_id'				=> $player['anime_id'],
-                'character_id'			=> $player['character_id'],
-                'character_theme_id'	=> $player['character_theme_id'],
-                'graduation_id'			=> $player['graduation_id'],
-                'headline_id'			=> $player['headline_id'],
-                'faction_id'			=> $player['faction_id'],
-                'name'					=> $player['name'],
-                'level'					=> $player['level'],
-                'score'					=> $points,
-                'detail'				=> $player['wins_pvp'] . "," .
-                                           $player['wins_npc'] . "," .
-                                           $player['graduation_level'] . "," .
-                                           $player['time_total'] . "," .
-                                           $player['pvp_total'] . "," .
-                                           $player['daily_total'] . "," .
-                                           $player['pet_total'] . "," .
-                                           $player['combat_total'] . "," .
-                                           $boss_score
-            ]);
-        // }
+        Recordset::insert('ranking_players', [
+            'player_id'				=> $player['id'],
+            'anime_id'				=> $player['anime_id'],
+            'character_id'			=> $player['character_id'],
+            'character_theme_id'	=> $player['character_theme_id'],
+            'graduation_id'			=> $player['graduation_id'],
+            'headline_id'			=> $player['headline_id'],
+            'faction_id'			=> $player['faction_id'],
+            'name'					=> $player['name'],
+            'level'					=> $player['level'],
+            'score'					=> $points,
+            'detail'				=> $player['wins_pvp'] . "," .
+                                        $player['wins_npc'] . "," .
+                                        $player['graduation_level'] . "," .
+                                        $player['time_total'] . "," .
+                                        $player['pvp_total'] . "," .
+                                        $player['daily_total'] . "," .
+                                        $player['pet_total'] . "," .
+                                        $player['combat_total'] . "," .
+                                        $boss_score
+        ]);
     }
 
     $position	= 1;
@@ -100,4 +98,4 @@ foreach ($players->result_array() as $player) {
     ]);
 }
 
-echo '[Ranking Players] Cron executada com sucesso!';
+echo "[Ranking Players] Cron executada com sucesso!\n";

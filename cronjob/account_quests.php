@@ -24,4 +24,4 @@ foreach ($users as $user) {
         ]);
     }
 }
-echo '[Account Quests] Cron executada com sucesso!';
+echo "[Account Quests] Cron executada com sucesso!\n";

@@ -17,4 +17,4 @@ foreach ($users->result_array() as $user) {
     ]);
 }
 
-echo '[Objectives] Cron executada com sucesso!';
+echo "[Objectives] Cron executada com sucesso!\n";

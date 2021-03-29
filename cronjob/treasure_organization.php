@@ -17,4 +17,4 @@ foreach ($organizations->result_array() as $organization) {
     }
 }
 
-echo '[Treasure Organization] Cron executada com sucesso!';
+echo "[Treasure Organization] Cron executada com sucesso!\n";

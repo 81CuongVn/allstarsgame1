@@ -1252,15 +1252,17 @@ pt-BR:
     failed: Falha
     completed: Concluída
     cancel: Cancelar missão
-    finish: Finalizar
+    finish: Finalizar missão
     finish_text: |
-      <span class="laranja">Missão finalizada!</span><br /><br />Você ganhou <span class="verde">#{currency} #{currency_name} e #{exp} Exp</span>
+      <h4 class="laranja">Missão Concluída!</h4>
+      <p>Por completar a missão, você recebeu <span class="verde">#{currency} #{currency_name} e #{exp} de experiência</span>.</p>
     finish_pvp_text: |
-      <span class="laranja">Missão finalizada!</span><br /><br />Você ganhou <span class="verde">#{currency} #{currency_name}, #{exp} Exp</span>
+      <h4 class="laranja">Missão Concluída!</h4>
+      <p>Por completar a missão, você recebeu <span class="verde">#{currency} #{currency_name} e #{exp} de experiência</span>.</p>
     finish_pet_text: |
-      e encontrou o mascote <span class="verde">#{pet}</span>
+      <p>Você também encontrou o mascote <span class="verde">#{pet}</span>.</p>
     finish_equipment_text: |
-      e encontrou um equipamento que será dado após a finalização da missão
+      <p>Você também encontrou um equipamento aleatório, que será dado após a encerrar a missão.</p>
   equipments:
     same_value: Mesmo valor
     title: Equipamentos
