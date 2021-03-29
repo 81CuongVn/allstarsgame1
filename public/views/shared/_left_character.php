@@ -150,13 +150,18 @@
 		</div>
 		<?php if ($_SESSION['universal']) { ?>
 			<div class="bg_menu_esquerdo">
-				<div class="menu_esquerdo_divisao" style="width: 100%">
-					<b class="amarelo">Jogadores Online</b>
-					<?php
-					$timeout	= now() - (15 * 60);
-					$online		= Recordset::query("SELECT `id` FROM `players` WHERE `last_activity` > {$timeout}", FALSE)->num_rows;
-					?>
+				<?php
+				$timeout	= now() - (15 * 60);
+				$online		= Recordset::query("SELECT `id` FROM `players` WHERE `last_activity` > {$timeout}", FALSE)->num_rows;
+				$queueds	= Recordset::query("SELECT `id` FROM `players` WHERE `is_pvp_queued` = 1 AND `last_activity` > {$timeout}", FALSE)->num_rows;
+				?>
+				<div class="menu_esquerdo_divisao">
+					<b class="amarelo">Online</b>
 					<b class=""><?=highamount($online);?></b>
+				</div>
+				<div class="menu_esquerdo_divisao">
+					<b class="amarelo">Fila PvP</b>
+					<b class=""><?=highamount($queueds);?></b>
 				</div>
 			</div>
 		<?php } ?>
