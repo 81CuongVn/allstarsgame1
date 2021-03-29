@@ -543,7 +543,7 @@ class BattlePvpsController extends Controller {
 		$player						= Player::get_instance();
 		$battle						= $player->battle_pvp();
 		$enemy						= $battle->enemy();
-		$log						= @unserialize($battle->battle_log);
+		$log						= $battle->get_log();
 		$errors						= [];
 		$is_skip					= isset($_POST['item']) && $_POST['item'] == 'skip';
 		$is_copy					= $is_copy == 'copy';
@@ -831,8 +831,8 @@ class BattlePvpsController extends Controller {
 
 						$battle_log	= join('<br />', $battle_log);
 						$battle_log	= [$battle_log];
+						$battle->save_log(array_merge($log, $battle_log));
 
-						$battle->battle_log			= serialize(array_merge($log, $battle_log));
 						$battle->current_id			= $enemy->id;
 						$battle->{$field_copy_enemy}	= 0;
 						$battle->{$field_copy_mine}	= 0;
