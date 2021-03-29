@@ -301,7 +301,6 @@
 					$('.activatables-player .technique-popover').css({opacity: 1});
 
 					if ($('.activatables-enemy .modifier-turn-data').length && result.enemy.update_existent_locks) {
-						console.log('ooopa');
 						$('.activatables-enemy .modifier-turn-data').remove();
 						$('.activatables-enemy .technique-popover').css({opacity: 1});
 					}
@@ -401,10 +400,9 @@
 
 				if (result.effects_roundup) {
 					['p', 'e'].forEach(function (word) {
-						if (word == 'e' && !result.enemy.update_existent_locks) {
-							console.log('parei aqui');
-							return;
-						}
+						// if (word == 'e' && !result.enemy.update_existent_locks) {
+						// 	return;
+						// }
 
 						var fixed_values_positive	= '';
 						var fixed_values_negative	= '';
