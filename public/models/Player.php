@@ -6233,6 +6233,11 @@ class Player extends Relation {
 	}
 
 	function update_online() {
+		if ($this->last_activity <= now() - (15 * 60)) {
+			$this->last_activity = now();
+			$this->save();
+		}
+
 		$redis = new Redis();
 		if ($redis->pconnect(REDIS_SERVER, REDIS_PORT)) {
 			$redis->auth(REDIS_PASS);

@@ -148,8 +148,17 @@
 				</b>
 			</div>
 		</div>
+		<?php if ($_SESSION['universal']) { ?>
+			<div class="bg_menu_esquerdo">
+				<div class="menu_esquerdo_divisao" style="width: 100%">
+					<b class="amarelo">Jogadores Online</b>
+					<?php $online = Player::find('last_activity > ' . now() - (15 * 60)); ?>
+					<b class=""><?=highamount(sizeof($online));?></b>
+				</div>
+			</div>
+		<?php } ?>
 	</div>	
-<?php }else{?>	
+<?php } else { ?>
 	<div style="height: 680px;"></div>	
-<?php }?>
+<?php } ?>
 <div style="clear:both; float: left"></div>
