@@ -1782,16 +1782,16 @@ trait BattleSharedMethods {
 		$this->json->enemy->effects		= $e_effects;
 		$this->json->current_turn		= $battle->current_turn;
 
-		if (isset($_GET['initial']) || !$is_pvp)
-			$this->json->enemy->update_existent_locks		= TRUE;
-		else {
-			// So quando a trigger fizer a ação que não zera os dados
-			if ($is_pvp && $battle->should_process) {
-				$this->json->enemy->locks					= [];
-				$this->json->enemy->effects					= [];
-				$this->json->enemy->update_existent_locks	= FALSE;
-			} elseif($is_pvp && !$battle->should_process)
-				$this->json->enemy->update_existent_locks	= TRUE;
-		}
+		// if (isset($_GET['initial']) || !$is_pvp)
+		// 	$this->json->enemy->update_existent_locks		= TRUE;
+		// else {
+		// 	// So quando a trigger fizer a ação que não zera os dados
+		// 	if ($is_pvp && $battle->should_process) {
+		// 		$this->json->enemy->locks					= [];
+		// 		$this->json->enemy->effects					= [];
+		// 		$this->json->enemy->update_existent_locks	= FALSE;
+		// 	} elseif($is_pvp && !$battle->should_process)
+		// 		$this->json->enemy->update_existent_locks	= TRUE;
+		// }
 	}
 }
