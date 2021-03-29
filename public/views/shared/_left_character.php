@@ -152,8 +152,11 @@
 			<div class="bg_menu_esquerdo">
 				<div class="menu_esquerdo_divisao" style="width: 100%">
 					<b class="amarelo">Jogadores Online</b>
-					<?php $online = Player::find('last_activity > ' . now() - (15 * 60)); ?>
-					<b class=""><?=highamount(sizeof($online));?></b>
+					<?php
+					$timeout	= now() - (15 * 60);
+					$online		= Recordset::query("SELECT `id` FROM `players` WHERE `last_activity` > {$timeout}", FALSE)->num_rows;
+					?>
+					<b class=""><?=highamount($online);?></b>
 				</div>
 			</div>
 		<?php } ?>
