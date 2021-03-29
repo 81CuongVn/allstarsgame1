@@ -278,6 +278,7 @@
 	bottom: 14px;
 	left: 62px;
 	z-index: 500;
+	display: none;
 }
 
 #battle-container .log-scroller span {
@@ -372,7 +373,7 @@
 #battle-container #attack-text {
 	position: absolute;
 	bottom: 15px;
-	left: 98px;
+	left: 62px;
 }
 
 #battle-container #activatables {
