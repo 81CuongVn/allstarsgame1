@@ -142,7 +142,7 @@
 				<b class="amarelo">Round Caos</b>
 				<b class="">
 					<?php
-					$daysLeft = ceil((strtotime(ROUND_END) - time()) / 86400);
+					$daysLeft = ceil((strtotime(ROUND_END) - now()) / 86400);
 					echo 'acaba em ' . $daysLeft . ' dia(s)';
 					?>
 				</b>

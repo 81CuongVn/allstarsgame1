@@ -53,7 +53,7 @@ function str_limit($value, $limit = 100, $end = '...')
 }
 
 function format_date($date, $show_secs = FALSE){
-	$time		= time();
+	$time		= now();
 	$date		= strtotime($date);
 
 	$today		= date("d", $time);
@@ -79,7 +79,7 @@ function format_date($date, $show_secs = FALSE){
 
 function timeago($date) {
 	$time = strtotime($date);
-	$time_difference = (time() - 3600) - $time;
+	$time_difference = (now() - 3600) - $time;
 	if ($time_difference < 1)
 		return 'agora mesmo';
 
@@ -195,7 +195,7 @@ function time_round($date){
 	$date=strtotime($datestr);//Converted to a PHP date (a second count)
 
 	//Calculate difference
-	$diff=$date-time();//time returns current time in seconds
+	$diff=$date-now();//time returns current time in seconds
 	$days=floor($diff/(60*60*24));//seconds/minute*minutes/hour*hours/day)
 	$hours=round(($diff-$days*60*60*24)/(60*60));
 

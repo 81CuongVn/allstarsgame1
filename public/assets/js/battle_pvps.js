@@ -1,12 +1,9 @@
 (function() {
-	var queue_alert = false;
-	var timer_iv = null;
-	var timer = 30;
-	var queue_icon = $('.menu .values .queue-1x');
-	var queue_tooltip = $('#tooltip-1x-queue-data');
-	var audio = $(document.createElement('AUDIO')).attr('src', resource_url('media/found.mp3')).attr('type', 'audio/mpeg');
-	var room_search_friend = $('#room-search-friend');
-	var results = $('#room-search-results');
+	var queue_alert			= false;
+	var timer_iv			= null;
+	var timer				= 30;
+	var audio				= $(document.createElement('AUDIO')).attr('src', resource_url('media/found.mp3')).attr('type', 'audio/mpeg');
+	var room_search_friend	= $('#room-search-friend');
 
 	// Filtro da página de ligas
 	$('#leagues').on('change', function () {
@@ -128,7 +125,7 @@
 		//room_search_friend.trigger('submit');
 	}
 
-	$(document).on('click', '#tooltip-1x-queue-data .btn-primary', function() {
+	$(document).on('click', '#tooltip-queue-data .btn-primary', function() {
 		lock_screen(true);
 
 		$.ajax({
@@ -144,7 +141,7 @@
 		});
 	});
 
-	$(document).on('click', '#tooltip-1x-queue-data .btn-danger', function() {
+	$(document).on('click', '#tooltip-queue-data .btn-danger', function() {
 		lock_screen(true);
 
 		$.ajax({
@@ -176,11 +173,6 @@
 	});
 	setInterval(function() {
 		if (_check_pvp_queue) {
-			if (queue_icon.hasClass('disabled')) {
-				queue_icon.removeClass('disabled');
-				queue_tooltip.addClass('queued');
-			}
-
 			$.ajax({
 				url: make_url('battle_pvps#check_queue'),
 				dataType: 'json',
@@ -274,11 +266,6 @@
 					}
 				}
 			});
-		} else {
-			if (!queue_icon.hasClass('disabled')) {
-				queue_icon.addClass('disabled');
-				queue_tooltip.removeClass('queued');
-			}
 		}
 	}, 2000);
 })();

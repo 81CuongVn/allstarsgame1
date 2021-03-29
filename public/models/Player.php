@@ -65,19 +65,6 @@ class Player extends Relation {
 		$this->graduation_id	= Graduation::find_first('1=1', ['cache' => true])->id;
 		$this->save();
 	}
-	public function welcome() {
-		# Welcome Message
-		$message			= new PrivateMessage();
-		$message->to_id		= $this->id;
-		$message->subject	= 'Seja Bem vindo(a)!';
-		$message->content	= 'Olá <b>' . $this->name . '</b>, seja bem vindo(a) ao <b>' . GAME_NAME . '</b>!
-			Lhe desejamos muita sorte neste mundo cheio de aventuras e batalhas, onde você irá vivenciar seu anime favorito.
-			Caso tenha dúvidas, sugestões ou precise de ajuda, não deixe de falar com nossa equipe, abra um ticket em <a href="' . make_url('support') . '"><b>Principal &raquo; Suporte</b></a>.
-
-			Atenciosamente,
-			Equipe <b>' . GAME_NAME . '</b>!';
-		$message->save();
-	}
 
 	protected function after_destroy() {
 		$this->removed_at	= date('Y-m-d H:i:s');
@@ -136,6 +123,65 @@ class Player extends Relation {
 			}
 		}
 	}
+	
+	function welcome_message() {
+		# Welcome Message
+		$message			= new PrivateMessage();
+		$message->to_id		= $this->id;
+		$message->subject	= t('welcome_message.subject');
+		$message->content	= t('welcome_message.subject', [
+			'link'		=> make_url('support'),
+			'player'	=> $this->name,
+			'game_name'	=> GAME_NAME
+		]);
+		$message->save();
+	}
+
+	function first_login() {
+		# Add default character thechniques for this player
+		$slot_id	= 0;
+		$techniques		= Item::find('is_initial = 1 and item_type_id = 1', [
+			'reorder'	=> 'id asc',
+			'limit'		=> '10'
+		]);
+		foreach ($techniques as $technique) {
+			$insert				= new PlayerItem();
+			$insert->player_id	= $this->id;
+			$insert->item_id	= $technique->id;
+			$insert->equipped	= 1;
+			$insert->slot_id	= $slot_id;
+			$insert->save();
+
+			++$slot_id;
+		}
+
+		# Add initial currency and update player
+		$this->currency			= INITIAL_MONEY;
+		$this->first_actions	= 1;
+		$this->save();
+
+		# Send welcome message to player
+		$this->welcome_message();
+
+		# If need, ass round objectives to user account
+		$user	= User::find_first('id=' . $this->user_id);
+		if (!$user->objectives) {
+			$objectives = Achievement::find("type = 'objectives'", [
+				'reorder'	=> 'RAND()',
+				'limit'		=> 10
+			]);
+			foreach ($objectives as $objective) {
+				$insert	= new UserObjective();
+				$insert->user_id		= $user->id;
+				$insert->objective_id	= $objective->id;
+				$insert->save();
+			}
+
+			$user->objectives = 1;
+			$user->save();
+		}
+	}
+
 	function check_objectives($arch_type = NULL){
 		switch($arch_type) {
 			case "level_player":

@@ -53,7 +53,7 @@
 		<?php endif ?>
 		<?php if ($formula->cooldown): ?>
 			<?php ob_start() ?>
-				<img src="<?php echo image_url('icons/esp.png') ?>" />
+				<img src="<?php echo image_url('icons/cooldown.png') ?>" />
 			<?php $heads[]	= ob_get_clean() ?>
 			<?php ob_start() ?>
 				<?php echo $formula->cooldown ?>
@@ -63,7 +63,7 @@
 		<?php if ($item->is_buff): ?>
 			<?php if ($formula->duration): ?>
 				<?php ob_start() ?>
-					<img src="<?php echo image_url('icons/dur.png') ?>" />
+					<img src="<?php echo image_url('icons/duration.png') ?>" />
 				<?php $heads[]	= ob_get_clean() ?>
 				<?php ob_start() ?>
 					<?php echo $formula->duration ?>

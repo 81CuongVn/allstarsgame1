@@ -24,7 +24,7 @@
         });
     </script>
 <?php } 
-$daysLeft = ceil((strtotime(ROUND_END) - time()) / 86400);
+$daysLeft = ceil((strtotime(ROUND_END) - now()) / 86400);
 ?>
 <div id="tutorial-first">
 	<?php

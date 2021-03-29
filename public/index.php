@@ -1,9 +1,11 @@
 <?php
 session_start();
 
+
 $env = 'dev';
-if (!in_array($_SERVER['SERVER_ADDR'], [ '127.0.0.1' ]))
-	$env = 'prod';
+if (in_array($_SERVER['HTTP_HOST'], ['allstarsgame.com.br'])) {
+    $env = 'prod';
+}
 
 define('FW_ENV',                    $env);
 define('ROOT',						dirname(__FILE__));
@@ -16,12 +18,12 @@ if (isset($_SERVER['REDIRECT_URL']) && $_SERVER['REDIRECT_URL']) {
     $_SERVER['PATH_INFO'] = $_SERVER['REDIRECT_URL'];
 }
 
-define('DB_LOGGING',		        TRUE);
+define('DB_LOGGING',		        FALSE);
 define('BACKTRACE_SELECTS',	        TRUE);
 define('BACKTRACE_UPDATES',	        TRUE);
 define('BACKTRACE_DELETES',	        TRUE);
 
-// define('RECORDSET_CACHE_OFF_FORCE',	$env == 'dev');
+define('RECORDSET_CACHE_OFF_FORCE',	$env == 'dev');
 
 $___clear_cache_key				= 'vaMALORuhvCTTiCGvnDehblfdIJnPNbUak7OxcE1knbPGuwwTuPrpTGCGzdbYVwXBusrqhXcvqqIjhBIetDDPvzOvPaqzLHVE7eb';
 $___start						= microtime(TRUE);

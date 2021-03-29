@@ -6,8 +6,8 @@
 		<table width="100%">
 			<tr>
 				<td width="33%" align="center"><img src="<?php echo image_url('icons/for_mana.png') ?>" /></td>
-				<td width="33%" align="center"><img src="<?php echo image_url('icons/esp.png') ?>" /></td>
-				<td width="33%" align="center"><img src="<?php echo image_url('icons/dur.png') ?>" /></td>
+				<td width="33%" align="center"><img src="<?php echo image_url('icons/cooldown.png') ?>" /></td>
+				<td width="33%" align="center"><img src="<?php echo image_url('icons/duration.png') ?>" /></td>
 			</tr>
 			<tr>
 				<td align="center"><?php echo $target->consume_mana ?></td>

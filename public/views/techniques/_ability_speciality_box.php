@@ -29,7 +29,7 @@
 				<span style="font-size: 13px; color: #fff"><?php echo $target->consume_mana ?></span>
 			</div>
 			<div style="display: inline-block; padding-left: 5px;">
-				<img src="<?php echo image_url('icons/esp.png') ?>" />
+				<img src="<?php echo image_url('icons/cooldown.png') ?>" />
 				<span style="font-size: 13px; color: #fff"><?php echo $target->cooldown ?></span>
 			</div>
 		</div>

@@ -10,9 +10,11 @@ define('BACKTRACE_DELETES',         TRUE);
 define('ROOT',						dirname(dirname(__FILE__)));
 define('RECORDSET_CACHE_OFF_FORCE', TRUE);
 
-$env = 'prod';
-if (array_key_exists('SERVER_ADDR', $_SERVER) && in_array($_SERVER['SERVER_ADDR'], [ '127.0.0.1' ])) {
-	$env = 'dev';
+$_SERVER["HTTP_HOST"] = isset($argv[1]) ? $argv[1] : "allstarsgame.com.br";
+
+$env = 'dev';
+if (in_array($_SERVER['HTTP_HOST'], ['allstarsgame.com.br'])) {
+    $env = 'prod';
 }
 
 define('FW_ENV',                    $env);

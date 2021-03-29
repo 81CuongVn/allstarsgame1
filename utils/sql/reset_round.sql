@@ -67,6 +67,7 @@ UPDATE `players` SET
 	`draws`								= 0,
 	`won_last_battle`					= 0,
 	`first_actions`						= 0;
+DELETE FROM `player_achievements` WHERE `achievement_id` IN (SELECT `id` FROM `achievements` WHERE `type` = 'achievements');
 UPDATE `player_attributes` SET
 	`for_atk`							= 0,
 	`for_def`							= 0,
@@ -172,6 +173,7 @@ DELETE FROM `player_item_attributes` WHERE `player_item_id` NOT IN (SELECT `id` 
 DELETE FROM `player_item_gems` WHERE `item_id` NOT IN (SELECT `item_id` FROM `player_items`);
 DELETE FROM `player_item_stats` WHERE `player_item_id` NOT IN (SELECT `id` FROM `player_items`);
 TRUNCATE TABLE `player_kills`;
+DELETE FROM `player_luck_logs` WHERE `luck_reward_id` NOT IN (SELECT `id` FROM `luck_rewards` WHERE `type` = 3);
 TRUNCATE TABLE `player_map_animes`;
 TRUNCATE TABLE `player_map_logs`;
 TRUNCATE TABLE `player_pet_quests`;
@@ -206,7 +208,9 @@ TRUNCATE TABLE `player_store_logs`;
 TRUNCATE TABLE `player_time_quests`;
 TRUNCATE TABLE `player_treasure_logs`;
 TRUNCATE TABLE `player_wanteds`;
+
 TRUNCATE TABLE `private_messages`;
+
 TRUNCATE TABLE `ranking_challenges`;
 TRUNCATE TABLE `ranking_organizations`;
 TRUNCATE TABLE `ranking_players`;

@@ -14,7 +14,7 @@
 				<span style="font-size: 13px; color: #fff"><?php echo $ability->consume_mana ?></span>
 			</div>
 			<div style="display: inline-block; padding-left: 5px;">
-				<img src="<?php echo image_url('icons/esp.png') ?>" />
+				<img src="<?php echo image_url('icons/cooldown.png') ?>" />
 				<span style="font-size: 13px; color: #fff"><?php echo $ability->cooldown ?></span>
 			</div>
 		</div>

@@ -202,19 +202,17 @@ if ($_SESSION['user_id']) {
 						<div class="status-popover-content">
 							<?=($player_fidelity_topo->reward ? t('fidelity.topo_description2') : t('fidelity.topo_description', [
 									'link' => make_url('events#fidelity')
-							]));?></div>
+							]));?>
+						</div>
 					</div>
 				</div>
-				<div class="queue-1x absolute <?=($player->is_pvp_queued ? '' : 'disabled');?>">
-					<a href="<?=make_url('battle_pvps')?>" class="requirement-popover" data-source="#tooltip-1x-queue" data-title="<?=t('popovers.titles.1x_queue');?>" data-trigger="hover" data-placement="bottom">
-						<span class="img"></span>
+				<div class="queue absolute">
+					<a href="<?=make_url('battle_pvps')?>" class="requirement-popover" data-source="#tooltip-queue" data-title="<?=t('popovers.titles.queue');?>" data-trigger="hover" data-placement="bottom">
+						<img src="<?=image_url('icons/queue-' . ($player->is_pvp_queued ? 'on' : 'off') . '.png');?>" />
 					</a>
-					<div id="tooltip-1x-queue" class="status-popover-container">
-						<div class="status-popover-content">
-							<div id="tooltip-1x-queue-data" class="<?=(!$player->is_pvp_queued ? 'no-' : '');?>queued">
-								<div class="queued"><?=t('popovers.description.1x_queue.queued');?></div>
-								<div class="normal"><?=t('popovers.description.1x_queue.normal');?></div>
-							</div>
+					<div id="tooltip-queue" class="status-popover-container">
+						<div id="tooltip-queue-data" class="status-popover-content">
+							<?=t('popovers.description.queue.' . ($player->is_pvp_queued ? 'queued' : 'normal'));?>
 						</div>
 					</div>
 				</div>
@@ -223,33 +221,25 @@ if ($_SESSION['user_id']) {
 					$newMessages	= PrivateMessage::find('removed=0 AND to_id=' . $player->id . ' AND read_at IS NULL');
 					if (sizeof($newMessages)) {
 					?>
-					<a href="<?=make_url('private_messages');?>" class="badge">
-						<!-- <?=sizeof($newMessages);?> -->
-						<i class="fa fa-exclamation fa-fw"></i>
-					</a>
+						<a href="<?=make_url('private_messages');?>" class="badge">
+							<i class="fa fa-exclamation fa-fw"></i>
+						</a>
 					<?php } ?>
 					<a href="<?=make_url('private_messages');?>"><img src="<?=image_url('icons/email.png');?>" /></a>
 				</div>
-				<div class="friend absolute">
-					<?php
-					$friendRequests	= PlayerFriendRequest::find('friend_id=' . $player->id);
-					if (sizeof($friendRequests)) {
-					?>
-					<a href="<?=make_url('friend_lists/search');?>" class="badge"><?=sizeof($friendRequests);?></a>
-					<?php } ?>
-					<a href="<?=make_url('friend_lists/search');?>"><img src="<?=image_url('icons/friend.png');?>" /></a>
-				</div>
 				<div class="vip absolute">
-					<img src="<?php echo image_url('icons/Vip.png')?>" class="requirement-popover" data-source="#tooltip-vip" data-title="<?php echo t('popovers.titles.credits') ?>" data-trigger="hover" data-placement="bottom" />
+					<a href="<?=make_url('vips');?>">
+						<img src="<?=image_url('icons/vip-on.png');?>" class="requirement-popover" data-source="#tooltip-vip" data-title="<?php echo t('popovers.titles.credits') ?>" data-trigger="hover" data-placement="bottom" />
+					</a>
 					<div id="tooltip-vip" class="status-popover-container">
 						<div class="status-popover-content">
-							Você possui <a href="<?php echo make_url('vips') ?>"><?php echo highamount($user->credits); ?> estrelas</a>.
+							Você possui <b><?=highamount($user->credits);?></b> estrelas.
 						</div>
 					</div>
 				</div>
 				<div class="logout absolute">
 					<a href="<?=make_url('users#logout');?>" name="Logout" title="Logout">
-						<img src="<?=image_url('icons/log-out.png');?>" border="0" alt="Logout" />
+						<img src="<?=image_url('icons/logout.png');?>" border="0" alt="Logout" />
 					</a>
 				</div>
 			</div>

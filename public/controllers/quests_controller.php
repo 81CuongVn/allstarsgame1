@@ -221,7 +221,7 @@ class QuestsController extends Controller {
 			$player_quest->time_quest_id	= $quest->id;
 			$player_quest->player_id		= $player->id;
 			$player_quest->duration			= $_POST['duration'];
-			$player_quest->finish_at		= date('Y-m-d H:i:s', time() + $duration->total_time);
+			$player_quest->finish_at		= date('Y-m-d H:i:s', now() + $duration->total_time);
 
 			$this->_add_reward($quest, $player, $player_quest);
 
@@ -260,7 +260,7 @@ class QuestsController extends Controller {
 
 			$player_pet_quest					= PlayerPetQuest::find_first('completed = 0  AND pet_quest_id='.$quest->id.' AND player_id='.$player->id);
 			$player_pet_quest->duration			= $quest->durations;
-			$player_pet_quest->finish_at		= date('Y-m-d H:i:s', time() + $duration->total_time);
+			$player_pet_quest->finish_at		= date('Y-m-d H:i:s', now() + $duration->total_time);
 			$player_pet_quest->save();
 
 		} else

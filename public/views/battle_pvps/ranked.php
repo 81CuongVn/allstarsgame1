@@ -33,7 +33,7 @@
 				<b>
 				<?php
 				if (!$league->finished) {
-					$daysLeft = ceil((strtotime($league->finish_date) - time()) / 86400);
+					$daysLeft = ceil((strtotime($league->finish_date) - now()) / 86400);
 					echo "Progressão da Liga {$league->league} - Restam {$daysLeft} dia(s)";
 				} else {
 					echo "Liga {$league->league} Concluída em " . date('d/m/Y H:i:s', strtotime($league->finish_date));

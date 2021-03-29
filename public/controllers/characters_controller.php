@@ -150,7 +150,7 @@ class CharactersController extends Controller {
 					$user_items = UserPlayerItem::find("user_id=".$player->user_id);
 					if ($user_items) {
 						foreach ($user_items as $user_item) {
-							$player_item_exists		= PlayerItem::find_first("item_id=". $user_item->item_id." AND player_id=".$player->id);
+							$player_item_exists		= PlayerItem::find_first("item_id=" . $user_item->item_id . " AND player_id=".$player->id);
 							if (!$player_item_exists) {
 								$player_item			= new PlayerItem();
 								$player_item->item_id	= $user_item->item_id;
@@ -162,40 +162,18 @@ class CharactersController extends Controller {
 					}
 				}
 
-				/* Primeiro acesso após reset */
+				# If it is the player's first access, do the first actions
 				if (!$player->first_actions) {
-					# Add os Golpes
-					$slotId	= 0;
-					$techniques		= Item::find('is_initial = 1 and item_type_id = 1', [
-						'cache'		=> TRUE,
-						'reorder'	=> 'id asc',
-						'limit'		=> '10'
-					]);
-					foreach ($techniques as $technique) {
-						$playerTechnique				= new PlayerItem();
-						$playerTechnique->player_id		= $player->id;
-						$playerTechnique->item_id		= $technique->id;
-						$playerTechnique->equipped		= 1;
-						$playerTechnique->slot_id		= $slotId;
-						$playerTechnique->save();
-
-						++$slotId;
-					}
-
-					# Atualiza personagem
-					$player->currency			= INITIAL_MONEY;
-					$player->first_actions		= 1;
-					$player->save();
-
-					$player->welcome();
+					$player->first_login();
 				}
-				/* /Primeiro acesso após reset */
-			} else
+			} else {
 				$this->json->errors	= $errors;
-		} else
+			}
+		} else {
 			$this->assign('players', Player::find('user_id=' . $_SESSION['user_id'], [
 				'reorder'	=> 'level DESC'
 			]));
+		}
 	}
 	function remove($id	= null, $key = null) {
 		if (is_numeric($id) && $key) {
@@ -635,21 +613,21 @@ class CharactersController extends Controller {
 
 		if ($_POST) {
 			if ($player->is_next_level()) {
-				// while ($this->is_next_level()) {
-					$player->level			+= 1;
-					$player->exp			-= $player->level_exp();
+				$player->level				+= 1;
+				$player->exp				-= $player->level_exp();
 
-					$player->less_mana		= 0;
-					$player->less_life		= 0;
-					$player->less_stamina	= 0;
+				$player->less_mana			= 0;
+				$player->less_life			= 0;
+				$player->less_stamina		= 0;
 
-					// $player->level_screen_seen	= 1;
+				$player->level_screen_seen	= 1;
 
-					// Checa a conquista de level do player
-					$player->achievement_check('level_player');
-					// Checa a conquista de level do player
-					$player->check_objectives('level_player');
-				// }
+				$player->save();
+
+				// Checa a conquista de level do player
+				$player->achievement_check('level_player');
+				// Checa a conquista de level do player
+				$player->check_objectives('level_player');
 			}
 
 			redirect_to('characters#status');
