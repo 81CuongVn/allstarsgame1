@@ -1177,13 +1177,12 @@ pt-BR:
         duration: Duração
       errors:
         pvp_queue: Você não pode aceitar missões de tempo enquanto estiver na fila PVP
-        invalid: Missão inválida
-
-        duration: Duração inválida
-        graduation: Sua graduação não é suficiente para essa missão
-        level: Nível insuficiente
-        already: Você já concluiu essa missão de tempo
-        not_ready: Ainda falta tempo para essa missão acabar
+        invalid: Missão inválida!
+        duration: Duração inválida!
+        graduation: Sua graduação não é suficiente para essa missão!
+        level: Nível insuficiente!
+        already: Você já concluiu essa missão de tempo!
+        not_ready: Ainda falta tempo para essa missão acabar!
       wait:
         title: |
           Missão de tempo - Espera

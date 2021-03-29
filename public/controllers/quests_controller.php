@@ -209,8 +209,13 @@ class QuestsController extends Controller {
 				if ($quest->req_graduation_sorting > $player->graduation()->sorting)
 					$errors[]	= t('quests.time.errors.graduation');
 			}
-		} else
+		} else {
 			$errors[]	= t('quests.time.errors.invalid');
+		}
+
+		if ($player->is_pvp_queued) {
+			$errors[]	= t('quests.time.errors.pvp_queue');
+		}
 
 		if (!sizeof($errors)) {
 			$this->json->success		= TRUE;
