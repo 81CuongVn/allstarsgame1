@@ -122,17 +122,15 @@
 						<?=$happiness;?> / 100
 						<?php 
 							switch ($pet->rarity) {
-								// case "common":
-								//  	$exp_total = 2500;
-								//  	break;
+								case "common":
+								 	$exp_total = 2500;
+								 	break;
 								 case "rare":
 									 $exp_total = 7500;
 								 	break;
 								 case "legendary":
 									$exp_total = 20000;
-								 	break;	
-								default:
-									$exp_total = 2500;
+								 	break;
 							}
 						?>	
 						<?php if ($pet->rarity != "mega") { ?>
