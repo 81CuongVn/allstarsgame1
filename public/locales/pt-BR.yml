@@ -1953,6 +1953,7 @@ pt-BR:
         locked: Você não destravou o grupo na qual esse npc pertence
         invalid: Npc inválido
         requirements: Você não possui os requerimentos necessários para essa batalha
+        not_enough_stamina: Você não tem stamina suficiente para entrar em batalha
   difficulties:
     normal: Normal
     easy: | 

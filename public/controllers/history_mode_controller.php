@@ -89,14 +89,14 @@
 					$group->set_player($player);
 
 					if (!$group->unlocked()) {
-						$errors[]	= t('history_mode.errors.accept.locked');
+						$errors[]	= t('history_mode.accept.errors.locked');
 					} else {
 						if (!$npc->can_battle()) {
-							$errors[]	= t('history_mode.errors.accept.requirements');
+							$errors[]	= t('history_mode.accept.errors.requirements');
 						}
 
 						if ($player->for_stamina() < $npc->stamina_cost) {
-							$errors[]	= t('history_mode.errors.accept.not_enough_stamina');
+							$errors[]	= t('history_mode.accept.errors.not_enough_stamina');
 						}
 					}
 				} else {
@@ -105,7 +105,7 @@
 			}
 
 			if ($player->is_pvp_queued) {
-				$errors[]	= t('history_mode.unlock.accept.pvp_queue');
+				$errors[]	= t('history_mode.accept.errors.pvp_queue');
 			}
 
 			if (!sizeof($errors)) {
