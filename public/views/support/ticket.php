@@ -35,9 +35,9 @@
 				</tr>
 				<tr>
 					<td width="25%" height="30" align="center"><?php echo $ticket_user->email ?></td>
-					<td width="25%" align="center"><?php echo SupportTicketCategory::find_first($ticket->support_ticket_category_id)->name ?></td>
-					<td width="25%" align="center"><?php echo SupportTicketStatus::find_first($ticket->support_ticket_status_id)->name ?></td>
-					<td width="25%" align="center"><?php echo $ticket->last_replied_at ? date('d/m/Y H:i:s', strtotime($ticket->last_replied_at)) : '--' ?></td>
+					<td width="25%" align="center"><?=$ticket->category()->name;?></td>
+					<td width="25%" align="center"><?=$ticket->status()->name;?></td>
+					<td width="25%" align="center"><?php echo $ticket->last_replied_at ? date('d/m/Y H:i:s', strtotime($ticket->last_replied_at)) : date('d/m/Y H:i:s', strtotime($ticket->created_at)) ?></td>
 				</tr>
 				<tr>
 					<td width="25%" height="30" align="center"><b class="laranja" style="font-size: 13px;"><?php echo t('support.ticket.created_at') ?></b></td>
@@ -47,14 +47,14 @@
 				<tr>
 					<td width="25%" height="30" align="center"><?php echo date('d/m/Y H:i:s', strtotime($ticket->created_at)) ?></td>
 					<td width="55%" align="center" colspan="2"><?php echo $ticket->user_agent ?></td>
-					<td width="25%" align="center"><?php echo $ticket->last_replied_id ? User::find($ticket->last_replied_id)->name : '--' ?></td>
+					<td width="25%" align="center"><?php echo $ticket->last_replied_id ? User::find($ticket->last_replied_id)->name : $ticket_user->name ?></td>
 				</tr>
 			</table>
 		</td>
 	</tr>
 </table>
 <?php if ($_SESSION['universal'] && !$_SESSION['orig_user_id']): ?>
-    <hr />
+    <br />
 	<div align="center" id="support-command-extras">
 		<a href="javascript:;" class="btn btn-sm btn-primary alternate" data-id="<?php echo $ticket->id ?>">Acessar Conta</a>
 		<?php if ($ticket->player_id): ?>

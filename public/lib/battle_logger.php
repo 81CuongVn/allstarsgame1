@@ -5,7 +5,7 @@ trait BattleLogger {
 		if (file_exists($file)) {
 			$log = file_get_contents($file);
 			if ($log) {
-				return unserialize($log);
+				return json_decode($log);
 			}
 		}
 		return [];
@@ -14,7 +14,7 @@ trait BattleLogger {
 		$file = ROOT . "/logs/battles/{$type}/{$battle_id}.log";
 
 		$open_file = fopen($file, "w+");
-		fwrite($open_file, serialize($log));
+		fwrite($open_file, json_encode($log, JSON_PRETTY_PRINT));
 		fclose($open_file);
 	}
 }
