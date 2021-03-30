@@ -1843,9 +1843,9 @@ pt-BR:
       fail: |
         <span class='p'>#{player}</span> tenta fugir da batalha porém não consegue
     finished:
-      character_map:
+      character_map: |
         <br /><br />Adicionalmente você ganhou o personagem:
-      character_theme_map:
+      character_theme_map: |
         <br /><br />Adicionalmente você ganhou o tema:
       win_title: Parabéns!
       win_text: |
@@ -1949,6 +1949,7 @@ pt-BR:
       recompensas: Recompensa(s)
     accept:
       errors:
+        pvp_queue: Você não pode batalhar com NPCs enquanto estiver na fila de batalhas PVP
         locked: Você não destravou o grupo na qual esse npc pertence
         invalid: Npc inválido
         requirements: Você não possui os requerimentos necessários para essa batalha

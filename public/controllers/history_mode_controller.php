@@ -104,6 +104,10 @@
 				}
 			}
 
+			if ($player->is_pvp_queued) {
+				$errors[]	= t('history_mode.unlock.accept.pvp_queue');
+			}
+
 			if (!sizeof($errors)) {
 				$this->json->success	= true;
 
