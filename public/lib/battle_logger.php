@@ -1,7 +1,7 @@
 <?php
 trait BattleLogger {
 	function get_battle_log($battle_id, $type) {
-		$file = ROOT . "/logs/battles/{$type}/{$battle_id}.log";
+		$file = ROOT . "/logs/battles/{$type}/{$battle_id}.json";
 		if (file_exists($file)) {
 			$log = file_get_contents($file);
 			if ($log) {
@@ -11,7 +11,7 @@ trait BattleLogger {
 		return [];
 	}
 	function add_battle_log($battle_id, $type, $log) {
-		$file = ROOT . "/logs/battles/{$type}/{$battle_id}.log";
+		$file = ROOT . "/logs/battles/{$type}/{$battle_id}.json";
 
 		$open_file = fopen($file, "w+");
 		fwrite($open_file, json_encode($log, JSON_PRETTY_PRINT));
