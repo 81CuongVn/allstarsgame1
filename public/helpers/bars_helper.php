@@ -1,8 +1,8 @@
 <?php
 function exp_bar_windth($v, $m, $w) {
-    $r = (($w / $m) * $v);
+    $r = @(($w / $m) * $v);
 
-    return (int)($r > $w ? $w : $r);
+    return $r > $w ? $w : $r;
 }
 
 function top_exp_bar($player, $user) {
@@ -99,6 +99,6 @@ function pet_exp_bar($value, $max, $max_width, $text = null) {
 
     return	'<div class="pet-exp-bar pet-exp-bar-' . $max_width . '" style="width: ' . $max_width . 'px">' .
         '<div class="fill" style="width: ' . $width . 'px"></div>' .
-        '<div class="text">' . highamount($text) . '</div>' .
+        '<div class="text">' . $text . '</div>' .
     '</div>';
 }

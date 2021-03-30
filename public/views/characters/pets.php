@@ -137,7 +137,7 @@
 						?>	
 						<?php if ($pet->rarity != "mega") { ?>
 							<div style="margin-top:10px">
-								<?=pet_exp_bar($exp_pet, $exp_total, 150, $exp_pet . '/' . $exp_total);?>
+								<?=pet_exp_bar($exp_pet, $exp_total, 150, highamount($exp_pet) . '/' . highamount($exp_total));?>
 							</div>
 						<?php }?>	
 					</div>
