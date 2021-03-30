@@ -5525,9 +5525,9 @@ class Player extends Relation {
 	}
 	function happiness_int($item_id){
 		$happiness = PlayerItem::find_first('item_id='.$item_id.' AND player_id='. $this->id);
-		if($happiness){
+		if ($happiness) {
 			return $happiness;
-		}else{
+		} else {
 			return 0;
 		}
 	}

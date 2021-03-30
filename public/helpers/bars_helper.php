@@ -1,6 +1,6 @@
 <?php
 function exp_bar_windth($v, $m, $w) {
-    $r = @(($w / $m) * $v);
+    $r = (($w / $m) * $v);
 
     return (int)($r > $w ? $w : $r);
 }
