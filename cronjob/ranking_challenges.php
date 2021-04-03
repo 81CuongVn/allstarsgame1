@@ -8,29 +8,29 @@ $challenges	= Recordset::query('SELECT id FROM challenges WHERE active=1');
 foreach ($challenges->result_array() as $challenge) {
     foreach ($animes->result_array() as $anime) {
         $players	= Recordset::query('
-				SELECT
-					a.id,
-					a.name,
-					a.headline_id,
-					a.graduation_id,
-					c.anime_id,
-					a.character_theme_id,
-					a.faction_id,
-					a.level,
-					d.sorting AS graduation_level,
-					 MAX(e.quantity) as quantity,
-					e.challenge_id
-	
-				FROM
-					players a JOIN character_themes b ON b.id=a.character_theme_id
-					JOIN characters c ON c.id=a.character_id
-					JOIN graduations d ON d.id=a.graduation_id
-					JOIN player_challenges e ON e.player_id=a.id
-	
-				WHERE
-					c.anime_id=' . $anime['id'].' AND e.challenge_id='.$challenge['id'].'
-					GROUP BY a.id
-				  ');
+            SELECT
+                a.id,
+                a.name,
+                a.headline_id,
+                a.graduation_id,
+                c.anime_id,
+                a.character_theme_id,
+                a.faction_id,
+                a.level,
+                d.sorting AS graduation_level,
+                MAX(e.quantity) as quantity,
+                e.challenge_id
+
+            FROM
+                players a JOIN character_themes b ON b.id=a.character_theme_id
+                JOIN characters c ON c.id=a.character_id
+                JOIN graduations d ON d.id=a.graduation_id
+                JOIN player_challenges e ON e.player_id=a.id
+
+            WHERE
+                c.anime_id=' . $anime['id'].' AND a.banned = 0 AND e.challenge_id='.$challenge['id'].'
+                GROUP BY a.id
+        ');
         foreach($players->result_array() as $player) {
             Recordset::insert('ranking_challenges', [
                 'player_id'				=> $player['id'],

@@ -31,9 +31,9 @@ foreach ($rankeds->result_array() as $ranked) {
 				JOIN player_rankeds e ON e.player_id=a.id
 
 			WHERE
-				c.anime_id=' . $anime['id'].' AND e.league='.$ranked['league'].' AND a.removed=0
+				c.anime_id=' . $anime['id'].' AND e.league = '.$ranked['league'].' AND a.removed = 0 AND a.banned = 0
 				GROUP BY a.id
-				');	
+		');	
 				
 
 		foreach($players->result_array() as $player) {

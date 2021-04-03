@@ -33,7 +33,7 @@ foreach ($animes->result_array() as $anime) {
 				JOIN animes e ON e.id = c.anime_id
 				JOIN player_quest_counters pqc ON pqc.player_id = a.id
 			WHERE
-				c.anime_id = ' . $anime['id'] . ' AND e.active = 1 AND a.level >= 1 AND a.removed = 0');
+				c.anime_id = ' . $anime['id'] . ' AND e.active = 1 AND a.level >= 1 AND a.banned = 0 AND a.removed = 0');
 
     foreach ($players->result_array() as $player) {
         // Calcula os bosses mortos pelo player

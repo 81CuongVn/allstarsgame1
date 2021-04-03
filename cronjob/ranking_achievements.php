@@ -27,7 +27,7 @@ foreach ($animes->result_array() as $anime) {
 				JOIN graduations d ON d.id=a.graduation_id
 				JOIN animes e ON e.id = c.anime_id
 			WHERE
-				c.anime_id=' . $anime['id'].' AND e.active= 1 AND a.level >= 1 AND a.removed=0');
+				c.anime_id=' . $anime['id'].' AND e.active= 1 AND a.level >= 1 AND a.banned = 0 AND a.removed=0');
     foreach($players->result_array() as $player) {
         $players_achievement	= Recordset::query('select sum(points) as total from achievements WHERE id in (select achievement_id from player_achievements WHERE player_id='.$player['id'].')')->result_array();
         $points	= $players_achievement[0]['total'];

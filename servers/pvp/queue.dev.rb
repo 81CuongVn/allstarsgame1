@@ -227,7 +227,7 @@ puts "Waiting for players..."
 				if player['queue_id']
 					@queues[player['queue_id']][player['id']][:canceled]	= true
 
-					puts "[#{player['id']}]#{player['´name']} refused the battle!"
+					puts "[#{player['id']}]#{player['name']} refused the battle!"
 				else
 					puts "[#{player['id']}]#{player['name']} left the queue."
 				end

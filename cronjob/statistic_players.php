@@ -11,7 +11,7 @@ $stats	= Recordset::query('
 	FROM
 		players a JOIN characters b ON b.id=a.character_id  
 	WHERE 
-		b.active = 1	      
+		b.active = 1 AND a.banned = 0
 	GROUP BY 1, 2');
 foreach ($stats->result_array() as $stat) {
     Recordset::insert('statistic_players', [
