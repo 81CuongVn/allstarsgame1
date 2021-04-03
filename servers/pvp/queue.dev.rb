@@ -149,13 +149,15 @@ puts "Waiting for players..."
 									end
 
 									mysql.query "INSERT INTO `battle_pvps` (`battle_type_id`,`player_id`,`enemy_id`,`current_id`,`last_atk`) VALUES(#{battle_type},#{current_player['id']},#{choosen['id']},#{who_start},NOW())"
-									mysql.query "UPDATE `players` SET `pvp_queue_found` = NULL, `is_pvp_queued` = 0, `battle_pvp_id` = #{mysql.last_id} WHERE `id` IN(#{current_player['id']}, #{choosen['id']})"
-									mysql.query "INSERT INTO `player_battle_pvps` (`player_id`,`enemy_id`) VALUES(#{current_player['id']}, #{choosen['id']})"
+
+									battle_id		= mysql.last_id
+									mysql.query	"UPDATE `players` SET `pvp_queue_found` = NULL, `is_pvp_queued` = 0, `battle_pvp_id` = #{battle_id} WHERE `id` IN(#{current_player['id']}, #{choosen['id']})"
+									mysql.query	"INSERT INTO `player_battle_pvps` (`player_id`,`enemy_id`) VALUES(#{current_player['id']}, #{choosen['id']})"
 									
 									accepted		= true
 									should_break	= true
 
-									puts "Starting the battle: [#{current_player['id']}]#{current_player['name']} x [#{choosen['id']}]#{choosen['name']}"
+									puts "Starting the battle (#{battle_id}): [#{current_player['id']}]#{current_player['name']} x [#{choosen['id']}]#{choosen['name']}"
 								end
 
 								if @queues[uuid][choosen['id']][:canceled] || @queues[uuid][current_player['id']][:canceled]
