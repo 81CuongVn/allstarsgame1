@@ -191,12 +191,11 @@
 			html:		true,
 			trigger:	is_chat ? 'manual' : 'hover',
 			title:		equipment_title($(source)),
-			placement:	'auto ' + (is_chat ? 'right' : 'bottom'),
+			placement:	(is_chat ? 'right' : 'bottom'),
 			content:	function () {
 				var	base	= _equipments[parseInt($(this).data('id'))];
 				return generate_equipment_tooltip(base, comparison);
-			},
-            container: 'body'
+			}
 		}).on("mouseenter", function () {
 			var _this = this;
 			

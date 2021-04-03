@@ -63,8 +63,7 @@
 							content:	function () {
 								return $($(this).data('source')).html();
 							},
-							html:		true,
-							container:	'body'
+							html:		true
 						});
 					}).on('shown.bs.popover', function () {
 						var _		= $(this);

@@ -6,8 +6,7 @@
 			content:	function () {
 				return $($(this).data('source')).html();
 			},
-			html:		true,
-			container:	'body'
+			html:		true
 		}).on("mouseenter", function () {
 			var _this = this;
 			$(this).popover("show");
