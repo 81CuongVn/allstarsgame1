@@ -168,7 +168,7 @@
 		<div class="clearfix"></div>
 		<a href="https://discord.gg/8UWqgt9Z" target="_blank">
 			<div class="discord cursor_pointer"></div>
-		</a>
+		</a><br />
 	</div>
 <?php } else { ?>
 	<div style="height: 680px;"></div>	
