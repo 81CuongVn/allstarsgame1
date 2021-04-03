@@ -101,14 +101,13 @@ puts "Waiting for players..."
 					puts "Match found! [#{choosen['id']}]#{choosen['name']} x [#{current_player['id']}]#{current_player['name']}"
 
 					# Battle counter
-					battle_counter1	= @mysql.query "SELECT COUNT(`id`) AS `max` FROM `player_battle_pvps` WHERE `player_id` = #{choosen['id']} AND `enemy_id` = #{current_player['id']}"
-					battle_counter2	= @mysql.query "SELECT COUNT(`id`) AS `max` FROM `player_battle_pvps` WHERE `enemy_id` = #{choosen['id']} AND `player_id` = #{current_player['id']}"
-					battle_total	= battle_counter1.to_a[0]['max'].to_i + battle_counter2.to_a[0]['max'].to_i
+					battle_counter	= @mysql.query "SELECT COUNT(`id`) AS `max` FROM `player_battle_pvps` WHERE (`player_id` = #{choosen['id']} AND `enemy_id` = #{current_player['id']}) OR (`player_id` = #{current_player['id']} AND `enemy_id` = #{choosen['id']}) AND `created_at` > DATE_SUB(NOW(), INTERVAL 1 HOUR);"
+					battle_total	= battle_counter.to_a[0]['max'].to_i
 
-					if battle_total > 0
+					if battle_total >= 5
 						puts "We found #{battle_total} battles between [#{choosen['id']}]#{choosen['name']} and [#{current_player['id']}]#{current_player['name']} in the last hour"
 					end
-					# next if battle_total >= 5
+					next if battle_total >= 5
 
 					uuid = SecureRandom.uuid
 
