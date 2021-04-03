@@ -34,7 +34,7 @@
 		<div style="width: 341px; text-align: center; padding-top: 22px; font-size: 12px !important; line-height: 15px;">
 			<span class="verde"><?php echo t('organizations.name_leader') ?>: </span> <?php echo $rank_org ? $rank_org->leader_name : '-'?><br />
 			<span class="verde"><?php echo t('organizations.total_members') ?>:</span> <?php echo highamount($organization->member_count) ?><br />
-			<span class="verde"><?php echo t('organizations.faction') ?>:</span> <?php echo $organization->faction_id==1? "Herois" : "Vilões" ?><br />
+			<span class="verde"><?php echo t('organizations.faction') ?>:</span> <?php echo $organization->faction()->description()->name ?><br />
 			<span class="verde"><?php echo t('organizations.score') ?>: </span> <?php echo $rank_org ? highamount($rank_org->score) : '-' ?><br />
 			<span class="verde"><?php echo t('organizations.rank_faction') ?>: </span> <?php echo $rank_org ? highamount($rank_org->position_faction) : '-' ?>º<br />
 			<span class="verde"><?php echo t('organizations.rank_general') ?>: </span> <?php echo $rank_org ? highamount($rank_org->position_general) : '-'?>º<br />

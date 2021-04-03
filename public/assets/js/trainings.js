@@ -22,7 +22,8 @@
 						content:	function () {
 							return $($(this).data('source')).html();
 						},
-						html:		true
+						html:		true,
+						container:	'body'
 					});
 				});
 			}

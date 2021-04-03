@@ -86,7 +86,7 @@
 							}
 						?>
 						<div class="item item-type-<?php echo $item->item_type_id ?> <?php echo $class ?> <?php echo $item->is_buff ? 'buff' : 'normal' ?>" id="item-container-<?php echo $item->id ?>" data-item="<?php echo $item->id ?>">
-							<img src="<?php echo image_url($item->image(true)) ?>" class="technique-popover" data-source="#technique-content-<?php echo $item->id ?>" data-title="<?php echo $item->description()->name ?>" data-trigger="hover" data-placement="bottom" />
+							<img src="<?php echo image_url($item->image(true)) ?>" class="technique-popover" data-source="#technique-content-<?php echo $item->id ?>" data-title="<?php echo $item->description()->name ?>" data-trigger="hover" data-placement="top" />
 							<div class="modifier-turn-data"></div>
 							<div class="technique-container" id="technique-content-<?php echo $item->id ?>">
 								<?php echo $item->technique_tooltip(true) ?>

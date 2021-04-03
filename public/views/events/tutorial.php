@@ -194,7 +194,7 @@
 		<div class="ev-req2 requirement-popover" data-source="#tooltip-req-exp" data-trigger="hover" data-placement="bottom">
 			<img src="<?php echo image_url('events/exp.png')?>"/>
 			<div id="tooltip-req-exp" class="status-popover-container">
-				<div class="status-popover-content" style="margin: 10px">
+				<div class="status-popover-content">
 					<?php echo t('event.e15');?>
 				</div>
 			</div>	
@@ -202,7 +202,7 @@
 		<div class="ev-req2 requirement-popover" data-source="#tooltip-req-gold" data-trigger="hover" data-placement="bottom">
 			<img src="<?php echo image_url('events/gold.png')?>"/>
 			<div id="tooltip-req-gold" class="status-popover-container">
-				<div class="status-popover-content" style="margin: 10px">
+				<div class="status-popover-content">
 					<?php echo t('event.e11');?>
 				</div>
 			</div>	
@@ -210,7 +210,7 @@
 		<div class="ev-req2 requirement-popover" data-source="#tooltip-req-drop"  data-trigger="hover" data-placement="bottom">
 			<img src="<?php echo image_url('events/drop.png')?>"/>
 			<div id="tooltip-req-drop" class="status-popover-container">
-				<div class="status-popover-content" style="margin: 10px">
+				<div class="status-popover-content">
 					<?php echo t('event.e12');?>
 				</div>
 			</div>	
@@ -218,7 +218,7 @@
 		<div class="ev-req2 requirement-popover" data-source="#tooltip-req-ramen" data-trigger="hover" data-placement="bottom">
 			<img src="<?php echo image_url('events/ramen.png')?>"/>
 			<div id="tooltip-req-ramen" class="status-popover-container">
-				<div class="status-popover-content" style="margin: 10px">
+				<div class="status-popover-content">
 					<?php echo t('event.e13');?>
 				</div>
 			</div>	
@@ -226,7 +226,7 @@
 		<div class="ev-req2 requirement-popover" data-source="#tooltip-req-pets" data-trigger="hover" data-placement="bottom">
 			<img src="<?php echo image_url('events/pets.png')?>"/>
 			<div id="tooltip-req-pets" class="status-popover-container">
-				<div class="status-popover-content" style="margin: 10px">
+				<div class="status-popover-content">
 					<?php echo t('event.e14');?>
 				</div>
 			</div>	

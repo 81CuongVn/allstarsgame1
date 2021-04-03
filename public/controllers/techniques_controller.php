@@ -15,88 +15,87 @@
 			$this->assign('player_tutorial', $player->player_tutorial());
 		}
 		function list_golpes() {
-			$this->layout	= false;
+			$this->layout	= FALSE;
 			$player			= Player::get_instance();
-			if($_POST) {
-				$this->as_json			= true;
-				$this->render			= false;
-				$this->json->success	= false;
+			if ($_POST) {
+				$this->as_json			= TRUE;
+				$this->render			= FALSE;
+				$this->json->success	= FALSE;
 				$errors					= array();
 				
-				if(is_numeric($_POST['item_id']) && $_POST['item_id']) {
-					$player_item	= PlayerItem::find_first('item_id='.$_POST['item_id'].' AND player_id= '. $player->id);
-		
-					if(!$player_item) {
+				if (is_numeric($_POST['item_id']) && $_POST['item_id']) {
+					$player_item	= PlayerItem::find_first('item_id = ' . $_POST['item_id'] . ' and player_id =  '. $player->id);
+					if (!$player_item) {
 						$errors[]	= t('enchant.errors.semogolpe');
 					} 
 				} else {
 					$errors[]	= t('enchant.errors.invalid');
 				}
 
-				if(!sizeof($errors)) {
-					$this->json->success  = true;
-					//Remove os itens que estão work
-					$player_item_works = PlayerItem::find("player_id=".$player->id." AND working=1");
-					foreach($player_item_works as $player_item_work){
-						$item_work = Item::find_first("id=".$player_item_work->item_id." AND item_type_id=1");
-						if($item_work){
+				if (!sizeof($errors)) {
+					$this->json->success  = TRUE;
+					// Remove os itens que estão work
+					$player_item_works = PlayerItem::find("player_id = " . $player->id . " and working = 1");
+					foreach ($player_item_works as $player_item_work) {
+						$item_work = Item::find_first("id = " . $player_item_work->item_id . " and item_type_id = 1");
+						if ($item_work) {
 							$player_item_work->working = 0;
 							$player_item_work->save();	
 						}
 					}
+
 					// Adiciona o Item para Trabalhar
 					$player_item->working = 1;
 					$player_item->save();
 					
 					// Adiciona o golpe na Player item Gem
-					$player_item_gem = PlayerItemGem::find_first("player_id=".$player->id." AND item_id=".$player_item->item_id);
-					if(!$player_item_gem){
+					$player_item_gem = PlayerItemGem::find_first("player_id = " . $player->id . " and item_id = " . $player_item->item_id);
+					if (!$player_item_gem) {
 						$player_item_gem = new PlayerItemGem();
-						$player_item_gem->player_id = $player->id;
+						$player_item_gem->player_id	= $player->id;
 						$player_item_gem->item_id 	= $player_item->item_id;
 						$player_item_gem->save();
 					}
-					
-					
 				} else {
 					$this->json->errors	= $errors;
 				}
 			} else {
-				$this->assign('player', $player);
-				$this->assign('items', $player->character_theme()->attacks());
+				$this->assign('player',	$player);
+				$this->assign('items',	$player->character_theme()->attacks());
 			}
 		}
 		function enchant() {
 			$player			  = Player::get_instance();
-			$gems 			  = Item::find("item_type_id=15");
-			$player_item_work = Recordset::query("Select * from player_items WHERE working = 1 and player_id=".$player->id." and item_id in ( SELECT id FROM items WHERE item_type_id=1)")->result_array();
-			$there_is_gem	  =	Recordset::query("");
-			
-			if($player_item_work){
-				$item_equipped = Item::find_first("id=".$player_item_work[0]['item_id']);
+			$gems 			  = Item::find("item_type_id = 15");
+			$item_equipped	  = FALSE;
+
+			$player_item_work = Recordset::query("select * from player_items where working = 1 and player_id=" . $player->id . " and item_id in (select id from items where item_type_id = 1)")->result_array();
+			if ($player_item_work) {
+				$item_equipped = Item::find_first("id = " . $player_item_work[0]['item_id']);
 				$item_equipped->set_anime($player->character()->anime_id);
 
-				if(!$item_equipped->is_generic){
+				if (!$item_equipped->is_generic) {
 					$item_equipped->set_character_theme($player->character_theme_id);
 				}
-				$this->assign('item_equipped', $item_equipped);
 							
-				//Retorna as combinações do item equipado
-				$item_combinations = ItemGem::find_first("parent_id=".$player_item_work[0]['item_id']);
-				$this->assign('item_combinations', $item_combinations);
+				// Retorna as combinações do item equipado
+				$item_combinations = ItemGem::find_first("parent_id = " . $player_item_work[0]['item_id']);
+				$this->assign('item_combinations',	$item_combinations);
 				
-				//Busca os Golpes aprimorados do golpe Equipado
-				$item_enchanteds = Item::find("item_type_id = 1 AND parent_id=".$player_item_work[0]['item_id']);
-				$this->assign('item_enchanteds', $item_enchanteds);
+				// Busca os Golpes aprimorados do golpe Equipado
+				$item_enchanteds = Item::find("item_type_id = 1 AND parent_id = "  .$player_item_work[0]['item_id']);
+				$this->assign('item_enchanteds',	$item_enchanteds);
 				
-				//Se tem item trabalhando, vamos puxas suas joias
-				$player_item_gem = PlayerItemGem::find_first("player_id=".$player->id." AND item_id=".$player_item_work[0]['item_id']);
-				$this->assign('player_item_gem', $player_item_gem);
+				// Se tem item trabalhando, vamos puxas suas joias
+				$player_item_gem = PlayerItemGem::find_first("player_id = " . $player->id . " and item_id = " . $player_item_work[0]['item_id']);
+				$this->assign('player_item_gem',	$player_item_gem);
 			}
-			
-			$this->assign('player', $player);
-			$this->assign('gems', $gems);
-			$this->assign('player_tutorial', $player->player_tutorial());
+
+			$this->assign('player',				$player);
+			$this->assign('gems',				$gems);
+			$this->assign('items',				$player->character_theme()->attacks());
+			$this->assign('item_equipped',		$item_equipped);
+			$this->assign('player_tutorial',	$player->player_tutorial());
 		}
 		function remove_gem(){
 			$this->layout			= false;
@@ -120,7 +119,7 @@
 			if(!sizeof($errors)) {
 				$this->json->success		= true;
 				
-				//Remove o Encantamento enquanto o jogador estiver mudando as gemas
+				// Remove o Encantamento enquanto o jogador estiver mudando as gemas
 				$player_item_encantado = PlayerItem::find_first("player_id=".$player->id." AND item_id=".$player_item_gem->item_id);
 				$player_item_encantado->parent_id = 0;
 				$player_item_encantado->save();
@@ -168,19 +167,19 @@
 				$player_item_gem = PlayerItemGem::find_first("player_id=".$player->id." AND item_id=".$player_item_work[0]['item_id']);
 				if($player_item_gem){
 					
-					//Remove o Encantamento enquanto o jogador estiver mudando as gemas
+					// Remove o Encantamento enquanto o jogador estiver mudando as gemas
 					$player_item_encantado = PlayerItem::find_first("player_id=".$player->id." AND item_id=".$player_item_work[0]['item_id']);
 					$player_item_encantado->parent_id = 0;
 					$player_item_encantado->save();
 					
-					//Se tiver pedra no lugar que ele ta pondo, devolve para o player.
+					// Se tiver pedra no lugar que ele ta pondo, devolve para o player.
 					if($player_item_gem->{$gem_slot}){
 						$player_item_old = PlayerItem::find_first("player_id=".$player->id." AND item_id=".$player_item_gem->{$gem_slot});
 						$player_item_old->quantity += 1;
 						$player_item_old->save();
 					}
 					
-					//Remove o item da quantidade da player_item
+					// Remove o item da quantidade da player_item
 					$player_item_new = PlayerItem::find_first("player_id=".$player->id." AND item_id=".$_POST['item']);
 					$player_item_new->quantity--;
 					$player_item_new->save();

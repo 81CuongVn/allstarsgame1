@@ -1,4 +1,4 @@
-<div class="technique-data">
+<div class="technique-data" style="width: 280px; margin: 0;">
 	<div class="type"><?php echo t('consumables.type') ?></div>
 	<div class="clearfix"></div>
 	<?php if ($item->for_life || $item->for_mana || $item->for_stamina) { ?>

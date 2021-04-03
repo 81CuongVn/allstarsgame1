@@ -70,7 +70,7 @@ echo partial('shared/info', [
 					<?php } ?>
 				</div>
 				<div id="pet-container-<?php echo $npc->id ?>-1" class="technique-container">
-					<div class="status-popover-content">
+					<div class="status-popover-content" style="width: 230px;">
 						<ul>
 							<?php if($npc->rarity){?>
 								<li>

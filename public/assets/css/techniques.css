@@ -97,7 +97,7 @@
 	width: 100%;
 	margin-left: -14px;
 	position: absolute;
-	bottom: -20px;
+	bottom: 0px;
 }
 
 .popover-type-container .type {
@@ -133,8 +133,12 @@
 	float: left;
 }
 
-.ability-speciality-box .content, .ability-speciality-box.disabled .content, .ability-speciality-box.disabled .content:hover,
-.pet-box .content, .pet-box.disabled .content, .pet-box.disabled .content:hover {
+.ability-speciality-box .content,
+.ability-speciality-box.disabled .content,
+.ability-speciality-box.disabled .content:hover,
+.pet-box .content,
+.pet-box.disabled .content,
+.pet-box.disabled .content:hover {
 	-webkit-filter: grayscale(100%);
 	-moz-filter: grayscale(100%);
 	filter: grayscale(100%);
@@ -160,7 +164,12 @@
 	background-color: #041626
 }
 
-.ability-speciality-box.active .content, .ability-speciality-box .content:hover, .pet-box.active .content, .pet-box .content:hover {
+.ability-speciality-box.active .content,
+.ability-speciality-box .content:hover,
+.ability-speciality-box:hover .content,
+.pet-box.active .content,
+.pet-box .content:hover,
+.pet-box:hover .content {
 	-webkit-filter: none;
 	-moz-filter: none;
 	filter: none;

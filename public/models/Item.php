@@ -830,7 +830,7 @@
 				$extras				= $additional_chance_by_graduation[$current_grad - 1];
 				$extra_chance		= $extras[$block];
 
-				if(rand(1, 100) <= 25 && rand(1, 100) <= $extra_chance && !$have_extras) {
+				if (rand(1, 100) <= 25 && rand(1, 100) <= $extra_chance && !$have_extras) {
 					$attribute_counter	+= $extras[4];
 					$have_extras		= true;
 				}
@@ -859,12 +859,12 @@
 									$value[0]	+= 2;
 								}
 
-								//$values[$attribute]	= rand($value[0], $value[1] + (($rarity_choosen_id) * 2));
-								//$values[$attribute]	= rand($value[0], $value[1]);
-								$values[$attribute]	= rand($value[0]*10, $value[1]*10)/10;
+								// $values[$attribute]	= rand($value[0], $value[1] + (($rarity_choosen_id) * 2));
+								// $values[$attribute]	= rand($value[0], $value[1]);
+								$values[$attribute]	= rand($value[0] * 10, $value[1] * 10) / 10;
 							} else {
-								//$values[$attribute]	= rand($value[0], $value[1]);
-								$values[$attribute]	= rand($value[0]*10, $value[1]*10)/10;
+								// $values[$attribute]	= rand($value[0], $value[1]);
+								$values[$attribute]	= rand($value[0] * 10, $value[1] * 10) / 10;
 							}
 
 							if (isset($choosables[$attribute])) {
@@ -898,7 +898,7 @@
 			$attribute->have_extra			= $have_extras ? 1 : 0;
 
 			foreach ($values as $property => $value) {
-				$attribute->$property	= $value;
+				$attribute->$property	= round($value, 2);
 			}
 
 			$attribute->save();

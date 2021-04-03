@@ -2,7 +2,7 @@
 	$heads	= [];
 	$values	= [];
 ?>
-<div class="technique-data fix-lines" style="width: 280px">
+<div class="technique-data fix-lines" style="width: 330px;">
 	<div class="type <?php echo $type_class ?>">
 		<?php echo $type ?> -
 		<span class="<?php echo $unique_class ?>"><?php echo $unique ?></span><span class="verde"><?php echo $item->parent_id ? " -  Encantado" : ""?></span>

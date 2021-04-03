@@ -104,12 +104,15 @@
     }
 
     $('.technique-popover, .requirement-popover, .shop-item-popover').each(function () {
+        var placement = $(this).data('placement');
         $(this).popover({
 			trigger:	'manual',
 			content:	function () {
 				return $($(this).data('source')).html();
 			},
-			html:		true
+			html:		true,
+            // container: 'body',
+            placement:  'auto ' + placement
 		}).on("mouseenter", function () {
 		    var _this = this;
 		    $(this).popover("show");

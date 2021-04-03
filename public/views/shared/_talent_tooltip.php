@@ -1,3 +1,8 @@
-<div class="technique-data fix-lines" style="width: 280px">
-	<?php echo partial('shared/effect_tooltip', ['effects' => $effects, 'item' => $item, 'player' => $player, 'fixed_effect' => true]) ?>
+<div class="technique-data" style="margin: 0;">
+	<?=partial('shared/effect_tooltip', [
+		'effects'		=> $effects,
+		'item'			=> $item,
+		'player'		=> $player,
+		'fixed_effect'	=> TRUE
+	]);?>
 </div>

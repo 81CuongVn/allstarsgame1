@@ -16,6 +16,7 @@ class HomeController extends Controller {
 		$page			= (!is_numeric($page) || $page <= 0) ? 1 : $page;
 		$page			= ($page > $total_pages) ? $total_pages : $page;
 		$start			= ceil(($page * $items_per_page) - $items_per_page);
+		$start			= $start < 0 ? 0 : $start;
 		$news			= SiteNew::find("round='eterno2'",[
 			'limit'		=> $start . ', ' . $items_per_page,
 			'reorder'	=> 'id desc'

@@ -31,7 +31,8 @@
 							'<span>' + source.data('type')+' </span><br />' +
 							'<span style="font-size:14px">' + source.data('won') +'</span>' +
 						'</div>' +
-					'</div><div style="clear:both"></div>'
+					'</div><div style="clear:both"></div>',
+			container:	'body'
 		}).on("mouseenter", function () {
 			var _this = this;
 

@@ -207,7 +207,8 @@
 }
 
 .equipment-popover-content {
-	/* padding: 6px; */
+	min-width: 150px;
+	max-width: 170px;
 	font-size: 12px
 }
 .equipment-popover-content .rarity{
@@ -216,7 +217,7 @@
 	/* margin-left: 8px;	 */
 }
 
-.equipment-popover-content .graduation{
+.equipment-popover-content .graduation {
 	padding-top: 5px;
 	font-style: italic;	
 	color: #07c72b;

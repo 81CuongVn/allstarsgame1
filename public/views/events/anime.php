@@ -90,7 +90,7 @@ if ($activeEvent) {
 		<div class="ev-req requirement-popover" data-source="#tooltip-req-exp" data-title="<?=t('event.e4');?>" data-trigger="hover" data-placement="bottom">
 			<img src="<?=image_url('events/exp.png');?>"/>
 			<div id="tooltip-req-exp" class="status-popover-container">
-				<div class="status-popover-content" style="margin: 10px">
+				<div class="status-popover-content">
 					<?=t('event.e5');?>
 				</div>
 			</div>	
@@ -98,7 +98,7 @@ if ($activeEvent) {
 		<div class="ev-req requirement-popover" data-source="#tooltip-req-gold" data-title="<?=t('event.e7');?>" data-trigger="hover" data-placement="bottom">
 			<img src="<?=image_url('events/gold.png');?>"/>
 			<div id="tooltip-req-gold" class="status-popover-container">
-				<div class="status-popover-content" style="margin: 10px">
+				<div class="status-popover-content">
 					<?=t('event.e7');?>
 				</div>
 			</div>	
@@ -106,7 +106,7 @@ if ($activeEvent) {
 		<div class="ev-req requirement-popover" data-source="#tooltip-req-drop" data-title="<?=t('event.e8');?>" data-trigger="hover" data-placement="bottom">
 			<img src="<?=image_url('events/drop.png');?>"/>
 			<div id="tooltip-req-drop" class="status-popover-container">
-				<div class="status-popover-content" style="margin: 10px">
+				<div class="status-popover-content">
 					<?=t('event.e9');?>
 				</div>
 			</div>	

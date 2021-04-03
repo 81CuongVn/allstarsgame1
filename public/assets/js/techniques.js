@@ -34,7 +34,29 @@
 			}
 		});
 	});
-	//Adiciona o Golpe para ser Encantado na página
+
+	// Adiciona o Golpe para ser Encantado na página
+	$('.enchant-box').on('click', '.change_golpe_enchant_new', function () {
+		lock_screen(true);
+	
+		$.ajax({
+			url:		make_url('techniques#list_golpes'),
+			type:		'post',
+			data:		{item_id: $(this).data('item')},
+			dataType:	'json',
+			success:	function (result) {
+				if(result.success) {
+					location.href	= make_url('techniques#enchant');
+				} else {
+					lock_screen(false);
+					format_error(result);
+				}
+			}
+		});
+	
+	});
+
+	// Adiciona o Golpe para ser Encantado na página
 	$('.change_golpe_enchant').on('click', function() {
 		var _ = $(this);
 		var win = bootbox.dialog({

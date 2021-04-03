@@ -1,7 +1,7 @@
 <?php if (isset($text_only) && $text_only): ?>
 	<?php echo partial('shared/effect_tooltip', ['effects' => $effects, 'player' => $player]) ?>	
 <?php else: ?>
-	<div class="technique-data fix-lines" style="width: 280px">
+	<div class="technique-data" style="width: 280px; margin: 0;">
 		<span>Valores para Combate</span>
 		<table width="100%">
 			<tr>

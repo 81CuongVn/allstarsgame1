@@ -41,17 +41,25 @@ body{
 .cursor_pointer{
 	cursor: pointer;	
 }
-#esquerda .tutorial{
+#esquerda .discord,
+#esquerda .tutorial {
 	position: relative;
 	width: 230px;
 	height: 58px;
-	background-image:url('../images/buttons/tutorial-off.png');
+	margin: 0 auto;
 }
-#esquerda .tutorial:hover{
-	width: 230px;
-	height: 58px;
-	background-image:url('../images/buttons/tutorial-on.png');
+#esquerda .discord {
+	background-image: url('../images/discord.jpg');
+	background-size: 100% 100%;
+	border-radius: 5px;
 }
+#esquerda .discord:hover {
+	box-shadow: inset 0px 0px 10px 0px rgba(0, 0, 0, .75),
+				0px 0px 10px 0px rgba(0, 0, 0, .75);
+}
+#esquerda .tutorial { background-image: url('../images/buttons/tutorial-off.png'); }
+#esquerda .tutorial:hover { background-image: url('../images/buttons/tutorial-on.png'); }
+
 .cursor_context_menu{
 	cursor: context-menu;	
 }
@@ -1304,9 +1312,9 @@ table hr {
 }
 
 .technique-data {
-	/* margin: -11px 15px 10px 15px; */
-	/* margin-bottom: 10px; */
-	max-width: 330px
+	margin-bottom: 20px;
+	min-width: 280px;
+	max-width: 100%;
 }
 .technique-data td img {
 	margin-bottom: 5px;
@@ -1896,11 +1904,10 @@ table hr {
 }
 
 .status-popover-content {
-	/* padding: 6px; */
-	min-width: 250px;
-	/* margin: 0 15px; */
+	max-width: 280px;
+	min-width: 200px;
 }
-.filtros b{
+.filtros b {
 	font-size: 14px;
 }
 .conteudo-news {

@@ -111,6 +111,25 @@
 		</div>	
 	<?php endforeach ?>
 </div><br />
+<div class="barra-secao barra-secao-<?php echo $player->character()->anime_id ?>">
+	<p><?php echo t('enchant.enchant') ?></p>
+</div>
+<div id="technique-list" class="technique-list-box" style="text-align: center;">
+	<?php
+	foreach ($items as $item) {
+		$item->set_player($player);
+		$item->formula(true);
+		
+		echo partial('item_enchant', [
+			'item'		=> $item,
+			'player'	=> $player,
+			'type'		=> 'source', 
+			'equipped'	=> $item_equipped
+		]);
+	}
+	?>
+	<div class="clearfix"></div>
+</div><br />
 <?php
 	if (isset($item_equipped) && $item_equipped) {
 		$image						= image_url($item_equipped->image(true));
@@ -129,10 +148,112 @@
 	}
 ?>
 <div class="enchant">
+	<?php 
+	if (isset($item_equipped) && $item_equipped) {
+		$counter = 1;
+		foreach ($item_enchanteds as $item_enchanted) {
+			$verification = TRUE;
+			$item_enchanted->set_anime($player->character()->anime_id);
+			if (!$item_enchanted->is_generic) {
+				$item_enchanted->set_character_theme($player->character_theme_id);
+			}
+
+			switch ($counter) {
+				case 1:
+					$verifica_gem = $player_item_gem->gem_1;
+					if ($verifica_gem == 0) {
+						$verification = FALSE;
+					}
+
+					$combination = $item_combinations_item_1;
+					if (isset($player_item_gem) && $player_item_gem) {
+						if ($player_item_gem->gem_4 || $player_item_gem->gem_3) {
+							$verification = FALSE;
+						}
+					}
+					$enchanted = $player_item_gem->enchanted;
+					break;
+
+				case 2:
+					$combination = $item_combinations_item_2;
+					if (isset($player_item_gem) && $player_item_gem) {
+						if ($player_item_gem->gem_4) {
+							$verification = FALSE;
+						}
+					}
+					$enchanted = $player_item_gem->enchanted;
+					break;
+
+				case 3:
+					$combination = $item_combinations_item_3;
+					$enchanted = $player_item_gem->enchanted;
+					break;
+			}
+	?>
+	<div class="ability-speciality-box" style="width: 231px !important; height: 270px !important; padding-bottom: 40px">
+		<div class="image">
+			<img data-source="#technique-content-<?=$item_enchanted->id;?>" data-title="<?=$item_enchanted->description()->name;?>" data-trigger="hover" data-placement="bottom" class="technique-popover item-image" data-url="<?=make_url('techniques#list_golpes');?>" data-item="<?=$item_enchanted->id;?>" src="<?=image_url($item_enchanted->image(true));?>" />
+			<div class="technique-container" id="technique-content-<?php echo $item_enchanted->id ?>">
+				<?=$item_enchanted->tooltip();?>
+			</div>
+		</div>
+		<div class="name" style="height: 40px !important;">
+			<?=$item_enchanted->description()->name;?>
+		</div>
+		<div class="description" style="height: auto; font-size:11px">
+			<?php $item_combinations = 'item_combinations_item_' . $counter; ?>
+			<?php foreach ($$item_combinations as $item_combination) { ?>
+				<img class="" data-item="<?=$item_enchanted->id;?>" data-message="Você realmente gostaria de remover esse Treinamento? Seu golpe deixará de ser aprimorado!" src="<?=image_url('items/' . $item_combination . '.png')?>" width="48" />
+			<?php } ?>
+		</div>
+		<div class="button" style="position:relative; top: 15px;">
+			<?php $has_gems	= $player->has_gems($item_equipped->id, $counter); ?>
+			<?php if ($has_gems && !$enchanted) { ?>
+				<a class="btn btn-sm btn-primary enchant_item_gem" data-counter="<?=$counter;?>" data-enchanted="<?=$item_equipped->id;?>" data-item="<?=$item_enchanted->id;?>">
+					<?=t('enchant.encantar');?>
+				</a>
+			<?php } elseif ($enchanted && !sizeof($result) && $verification) { ?>
+				<a class="btn btn-sm btn-success">
+					<?=t('enchant.encantado');?>
+				</a>
+			<?php } else { ?>
+				<a class="btn btn-danger disabled">
+					<?=t('enchant.encantar');?></a>
+			<?php } ?>
+		</div>
+	</div>
+	<?php 
+			$counter++;
+		}
+	}
+	?>
+	<?php /*foreach ($item_combinations as $combination) { ?>
+	<div class="ability-speciality-box" style="width: 231px !important; height: 270px !important; padding-bottom: 40px">
+		<div class="image">
+			<img data-source="#technique-content-<?php echo $item_enchanted->id ?>" data-title="<?php echo $item_enchanted->description()->name; ?>" data-trigger="hover" data-placement="bottom" class="technique-popover item-image" data-url="<?php echo make_url('techniques#list_golpes') ?>" data-item="<?php echo $item_enchanted->id?>" src="<?php echo image_url($item_enchanted->image(true)) ?>" />
+			<div class="technique-container" id="technique-content-<?php echo $item_enchanted->id ?>">
+				<?php echo $item_enchanted->tooltip() ?>
+			</div>
+		</div>
+		<div class="name" style="height: 40px !important;">
+			Dynamic Kick
+		</div>
+		<div class="description" style="height: auto; font-size:11px">
+			<img oncontextmenu="return false;" class="" data-item="1" data-message="Você realmente gostaria de remover esse Treinamento? Seu golpe deixará de ser aprimorado!" src="http://borutogame.com.br/assets/images/items/1870.png" width="48">
+			<img oncontextmenu="return false;" class="" data-item="1" data-message="Você realmente gostaria de remover esse Treinamento? Seu golpe deixará de ser aprimorado!" src="http://borutogame.com.br/assets/images/items/1871.png" width="48">
+		</div>
+		<div class="button" style="position:relative; top: 15px;">
+			<a class="btn btn-danger">Aprimorar</a>
+		</div>
+	</div>
+	<?php }*/ ?>
+	<div class="clearfix"></div>
+</div>
+<div class="enchant" style="display: none;">
 	<div class="enchant-golpe">
 		<img style="cursor:pointer" data-source="#technique-content-<?php echo $id ?>" data-title="<?php echo $name ?>" data-trigger="hover" data-placement="bottom" class="change_golpe_enchant technique-popover item-image" data-url="<?php echo make_url('techniques#list_golpes') ?>" data-item="<?php echo $id?>" src="<?php echo $image ?>" />
 		<div class="technique-container" id="technique-content-<?php echo $id ?>">
-			<div style="min-width: 250px">
+			<div style="width: 250px">
 				<?php echo $tooltip ?>
 			</div>
 		</div>

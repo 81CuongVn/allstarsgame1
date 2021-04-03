@@ -1,4 +1,4 @@
-# Initialization --->
+# Initialization
 express				= require 'express'
 http				= require 'http'
 cluster				= require 'cluster'
@@ -8,14 +8,13 @@ fs					= require 'fs'
 crypto				= require 'crypto'
 sio					= require('socket.io')
 emoticons			= require './emoticons'
-# db					= require('mysql-native').createTCPClient() # When using this one with node-cluster, this should stay in the forked code
-# db_sync				= require './db_sync'
+mysql				= require 'mysql'
+config				= require './config'
+db					= require './db'
 
-# Mysql config
-# mysql_config		= db: 'narutoga_prod', user: 'narutoga_prod', password: 'xc88%a3j'
-
-users				= {}
-users_by_name		= {}
+# Chat variables
+players				= {}
+players_by_name		= {}
 channels			= {}
 privates			= {}
 counters			= {}
@@ -32,20 +31,18 @@ express_server		= express()
 server				= http.createServer express_server
 io					= sio.listen server
 
-
 Array::contains	= (k) ->
 	for i, item of @
 		if item == k
 			return true
-	
+
 	return false
 
 bootstrap	= ->
 	channels['system']	= []
 	channels['world']	= []
-	
-	# db.auth mysql_config.db, mysql_config.user, mysql_config.password
-	# db_sync.connect mysql_config
+
+	db.connect config.db
 
 	server.listen 2934
 
@@ -75,7 +72,7 @@ diff_in_secs	= (d1, d2) ->
 	minutes			= 0
 	hours			= 0
 	days			= 0
-	
+
 	diff	/= sign
 	diff	= (diff-(milliseconds = diff%1000))/1000
 	diff	= (diff-(seconds = diff%60))/60
@@ -87,29 +84,26 @@ diff_in_secs	= (d1, d2) ->
 io.sockets.on 'connection', (socket) ->
 	# We got a user connection
 	socket.on 'register', (data) ->
-		# console.log data
-
 		# We should decrypt the user data
 		data	= decrypt_json data.data
-		# console.log data
 
 		# If the user data is valid
 		if data
 			# We subscribe the user to the channels
-			socket.join 'faction_' + data.faction
-			socket.join 'guild_' + data.guild
-			socket.join 'battle_' + data.battle
+			socket.join 'faction_'	+ data.faction
+			socket.join 'guild_'	+ data.guild
+			socket.join 'battle_'	+ data.battle
 			socket.join 'world_0'
 			socket.join 'system_0'
-			
-			data.last_activity						= new Date()
-			users[data.uid]							= data
-			users_by_name[data.name.toLowerCase()]	= users[data.uid]
 
-			socket._uid								= data.uid
-			socket._user							= users[data.uid]
+			data.last_activity							= new Date()
+			players[data.uid]							= data
+			players_by_name[data.name.toLowerCase()]	= players[data.uid]
 
-			counters[data.uid]						= true;
+			socket._uid									= data.uid
+			socket._player								= players[data.uid]
+
+			counters[data.uid]							= true;
 
 			# For every new connection we should broadcast the message history for every channel(now it's aync bitch)
 			process.nextTick ->
@@ -118,12 +112,19 @@ io.sockets.on 'connection', (socket) ->
 						channel_id	= 0
 					else
 						channel_id	= data[channel]
-	
+
 					if channels[channel] && channels[channel][channel_id]
 						for i, message of channels[channel][channel_id].messages
 							return if message instanceof Function
-	
+
 							socket.emit 'broadcast', message
+		else
+			socket.emit 'broadcast',
+				from: 'Sistema',
+				message: 'Falha ao autenticar no chat!',
+				channel: 'warn'
+
+			return
 
 	# Mark a private message as read
 	socket.on 'pvt-was-read', (data) ->
@@ -132,107 +133,126 @@ io.sockets.on 'connection', (socket) ->
 
 	# User want to send a message
 	socket.on 'message', (data) ->
-		user	= users[@_uid]
-		
-		unless user
+		player	= players[@_uid]
+
+		unless player
 			console.log 'invalid user trying to send a message'
 			return
 
 		# Word filter for non-gm users
-		unless user.gm		
+		unless player.gm		
 			for i, word of blacklist
 				if data.message.match new RegExp word, 'img'
 					socket.emit 'broadcast',
 						from: 'Sistema',
-						message: 'A mensagem contem palavras impróprias',
+						message: 'A mensagem contem palavras impróprias!',
 						channel: 'warn'
-					
+
 					return
 
-		data.message = phpjs.htmlspecialchars data.message unless user.gm
+		data.message = phpjs.htmlspecialchars data.message unless player.gm
 
-		if data.channel == 'system' && !user.gm
+		if data.channel == 'system' && !player.gm
 			return
 
 		# User is sending a private message
 		if data.channel == 'private'
 			if isNaN(data.dest)
 				data.dest	= data.dest.replace /\s/, ''
-			
-				unless users_by_name[data.dest.toLowerCase()]
+
+				unless players_by_name[data.dest.toLowerCase()]
 					socket.emit 'broadcast',
 						from: 'Sistema',
-						message: 'Usuário "' + data.dest + '" indisponível para enviar mensagens',
+						message: 'Usuário "' + data.dest + '" indisponível para enviar mensagens!',
 						channel: 'warn'					
-					
+
 					return
 
-				data.dest	= users_by_name[data.dest.toLowerCase()].uid
-			
-			# if users[data.dest]
-			# 	if(db_sync.row_of('SELECT id FROM chat_blocked WHERE id_user=' + users[data.dest].user_id + ' AND id_user_blocked=' + user.user_id))
-			# 		socket.emit 'broadcast',
-			# 			from: 'Sistema',
-			# 			message: 'Você não pode enviar mensagens para esse usuário',
-			# 			channel: 'warn'					
-				
-			# 		return					
+				data.dest	= players_by_name[data.dest.toLowerCase()].uid
 
-			privates[data.dest]	= {} unless privates[data.dest]
-			privates[data.dest][Math.random() * 512384] = name: user.name, message: data.message, id: user.uid
-			
-			return
-		
+			if players[data.dest]
+				if players[data.dest].user_id == player.user_id
+					socket.emit 'broadcast',
+						from: 'Sistema',
+						message: 'Você não pode enviar uma mensagem privada para você mesmo!',
+						channel: 'warn'					
+
+					return
+				else
+					db.query "SELECT `id` FROM `chat_blocked` WHERE `user_id` = " + players[data.dest].user_id + " AND `user_blocked` = " + player.user_id, (error, results, fields) ->
+						if results
+							socket.emit 'broadcast',
+								from: 'Sistema',
+								message: 'Você não pode enviar mensagens para esse usuário!',
+								channel: 'warn'
+
+							return
+						else
+							privates[data.dest]	= {} unless privates[data.dest]
+							privates[data.dest][Math.random() * 512384] = name: player.name, message: data.message, id: player.uid
+
+							return
+
+
 		if data.channel == 'block'
-			u	= users_by_name[data.message.toLowerCase()]
-		
-			unless u
+			p	= players_by_name[data.message.toLowerCase()]
+
+			unless p
 				socket.emit 'broadcast',
 					from: 'Sistema',
-					message: 'Usuário "' + data.message + '" não encontrado',
+					message: 'Usuário "' + data.message + '" não encontrado!',
 					channel: 'warn'					
-				
+
 				return
 
-			if u.gm
+			if p.gm
 				socket.emit 'broadcast',
 					from: 'Sistema',
-					message: 'Você não pode bloquear esse jogador pois ele pertence a STAFF',
+					message: 'Você não pode bloquear um membro da Administração!',
 					channel: 'warn'					
-				
+
 				return
-				
-			# db_sync.query_only('INSERT INTO chat_blocked(player_id, player_blocked) VALUES(' + user.user_id + ', ' + u.user_id + ')');
+
+			if p.user_id == player.user_id
+				socket.emit 'broadcast',
+					from: 'Sistema',
+					message: 'Você não pode bloquear a sua propria conta!',
+					channel: 'warn'					
+
+				return
+
+			db.query 'INSERT INTO `chat_blocked` (`user_id`, `user_blocked`) VALUES (' + player.user_id + ', ' + p.user_id + ')'
 
 			socket.emit 'broadcast',
 				from: 'Sistema',
-				message: 'Usuário "' + data.message + '" bloqueado com sucesso',
-				channel: 'warn'					
+				message: 'Usuário "' + data.message + '" bloqueado com sucesso!',
+				channel: 'success'
+			return
 
-		switch(data.channel)
-			when 'faction'	then channel_id = user.faction
-			when 'guild'	then channel_id = user.guild
-			when 'battle'	then channel_id = user.battle
+		switch (data.channel)
+			when 'faction'	then channel_id = player.faction
+			when 'guild'	then channel_id = player.guild
+			when 'battle'	then channel_id = player.battle
 
 		if !channel_id and !['world', 'system'].contains(data.channel)
 			console.log 'channel error'
-			
+
 			return
 
-		if user.user_id && banned[user.user_id]
+		if player.user_id && banned[player.user_id]
 			socket.emit 'broadcast',
 				from: 'Sistema',
-				message: 'Você foi banido do chat',
+				message: 'Você foi banido do chat!',
 				channel: 'warn'
-			
+
 			return
-		
-		if user.gm
-			data.message	= emoticons.parse(data.message, user.gm)			
+
+		if player.gm
+			data.message	= emoticons.parse(data.message, player.gm)			
 		else
 			now	= new Date()
 
-			if(last_messages[user.user_id] && diff_in_secs(last_messages[user.user_id], now) < 10)
+			if (last_messages[player.user_id] && diff_in_secs(last_messages[player.user_id], now) < 10)
 				socket.emit 'broadcast',
 					from: 'Sistema',
 					message: 'Você deve aguardar 10 segundos antes de enviar uma nova mensagem',
@@ -240,28 +260,26 @@ io.sockets.on 'connection', (socket) ->
 
 				return
 
-			last_messages[user.user_id]	= now;
-
-			if user.gm
-				user_message_size = 500
+			last_messages[player.user_id]	= now;
 
 			# Character limtit for non-gm users
-			data.message	= emoticons.parse(data.message.substr(0, user_message_size), user.gm)
+			data.message	= data.message.substr(0, user_message_size)
+			data.message	= emoticons.parse(data.message, player.gm)
 
 		channel_id		= 0 unless channel_id
-		broadcast		= from: user.name, message: data.message, channel: data.channel, channel_id: channel_id, id: user.uid, user_id: user.user_id, gm: user.gm, when: new Date()
+		broadcast		= from: player.name, message: data.message, channel: data.channel, channel_id: channel_id, id: player.uid, user_id: player.user_id, gm: player.gm, when: new Date()
 
 		if data.channel == 'faction'
-			broadcast.color	= user.color
-			broadcast.icon	= user.icon
+			broadcast.color	= player.color
+			broadcast.icon	= player.icon
 
-		if (data.channel == 'guild' && user.guild_owner)
+		if (data.channel == 'guild' && player.guild_owner)
 			broadcast.color	= '#BF2121'
 
 		# Channel allocation
 		channels[data.channel]				= {} unless channels[data.channel]
 		channels[data.channel][channel_id]	= {last: new Date(), messages: []} unless channels[data.channel][channel_id]
-		
+
 		# Updates the channel with the last message
 		channels[data.channel][channel_id].messages.last	= new Date()
 		channels[data.channel][channel_id].messages.push broadcast
@@ -273,26 +291,27 @@ io.sockets.on 'connection', (socket) ->
 			[0..message_diff].forEach -> channels[data.channel][channel_id].messages.shift()
 
 		io.sockets.in(data.channel + '_' + channel_id).emit('broadcast', broadcast)
-	
-	# socket.on 'blocked-query', (data) ->
-	# 	return unless users[@_uid]
 
-	# 	players	= []
-		
-	# 	db_sync.result_of('SELECT player_blocked FROM chat_blocked WHERE player_id=' + users[@_uid].user_id).forEach (row) ->
-	# 		players.push row.player_blocked
-		
-	# 	socket.emit 'blocked-broadcast', players
-	
+	socket.on 'blocked-query', (data) ->
+		return unless players[@_uid]
+		user_id = players[@_uid].user_id
+
+		users	= []
+		db.query 'SELECT `user_blocked` FROM `chat_blocked` WHERE `user_id` = ' + user_id, (error, results, fields) ->
+			for row in results
+				users.push row.user_blocked
+
+		socket.emit 'blocked-broadcast', users
+
 	# User queries for private messages
 	socket.on 'pvt-query', (data) ->
-		return unless users[@_uid]
+		return unless players[@_uid]
 
 		broadcast	= []
-		
+
 		for i, message of privates[@_uid]
 			return unless message
-		
+
 			broadcast.push
 				from:		message.name,
 				message:	message.message,
@@ -301,57 +320,52 @@ io.sockets.on 'connection', (socket) ->
 
 		if broadcast.length
 			@emit 'pvt-broadcast', broadcast
-	
+
 	socket.on 'disconnect', ->
-		return unless users[@_uid]
+		return unless players[@_uid]
 
 		counters[@_uid]	= false
-	
-		socket.leave 'faction_' + users[@_uid].faction
-		socket.leave 'guild' + users[@_uid].guild
-		socket.leave 'battle_' + users[@_uid].battle
+
+		socket.leave 'faction_'	+ players[@_uid].faction
+		socket.leave 'guild'	+ players[@_uid].guild
+		socket.leave 'battle_'	+ players[@_uid].battle
 		socket.leave 'world_0'
 		socket.leave 'system_0'
 
-# setInterval -> # Blacklist timer
-# 	blacklist	= []
+setInterval -> # Blacklist timer
+	blacklist	= []
+	db.query 'SELECT * FROM `chat_word_blacklist`', (error, words, fields) ->
+		for row in words
+			blacklist.push row.expr
+, 2000
 
-# 	words	= db.query 'SELECT * FROM chat_word_blacklist'
-# 	words.addListener 'row', (row) ->
-# 		blacklist.push row.expr
-# , 2000
-
-# setInterval -> # Ban Hammer Timer =D
-# 	banned	= []
-
-# 	banlist	= db.query 'SELECT * FROM chat_banned'
-# 	banlist.addListener 'row', (row) ->
-# 		banned[row.player_id]	= true	
-# , 5000
+setInterval -> # Ban Hammer Timer =D
+	banned	= []
+	db.query 'SELECT * FROM `chat_banned`', (error, users, fields) ->
+		for row in users
+			banned[row.user_id]	= true
+, 5000
 
 setInterval -> # Channel GC timer
 	return unless channels['battle']?
 
 	proc	= (key, channel) ->
 		process.nextTick -> delete channels['battle'][key]
-	
+
 	for key, channel of channels['battle']
 		past	= new Date((new Date()).setMinutes((new Date()).getMinutes() - 30));
-		
+
 		proc(key, channel) if channel.last < past
 , 5000
 
-# setInterval -> # Played time
-# 	console.log 'Played time'
+setInterval -> # Played time
+	proc	= (user) ->
+		process.nextTick ->
+			db.query 'UPDATE `played_time` SET `minutes` = `minutes` + 1 WHERE `player_id` = ' + user
 
-# 	proc	= (user) ->
-# 		process.nextTick ->
-# 			db.query('UPDATE played_time SET minutes=minutes+1 WHERE player_id=' + user)
-
-# 	for user, state of counters
-# 		proc user if state
-# , 60000
-
+	for user, state of counters
+		proc user if state
+, 60000
 
 # Startup =)
 bootstrap()

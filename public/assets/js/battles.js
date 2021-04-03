@@ -30,8 +30,9 @@
             _.popover({
 				content:	$(document.getElementById(_.data('tooltip'))).html(),
 				html:		true,
-				placement:	'bottom',
-				trigger:	'hover'
+				placement:	'auto bottom',
+				trigger:	'hover',
+				container:	'body'
 			});
 		});
 	}
@@ -81,7 +82,8 @@
 				},
 				html:		true,
 				placement:	_.data('placement'),
-				trigger:	'hover'
+				trigger:	'hover',
+				container:	'body'
 			});
 		});
 	}
@@ -113,7 +115,8 @@
 				},
 				html:		true,
 				placement:	_.data('placement'),
-				trigger:	'hover'
+				trigger:	'hover',
+				container:	'body'
 			});
 		});
 		
@@ -149,7 +152,8 @@
 				},
 				html:		true,
 				placement:	_.data('placement'),
-				trigger:	'hover'
+				trigger:	'hover',
+				container:	'body'
 			});
 		});
 		
@@ -492,7 +496,8 @@
 									},
 									html:		true,
 									placement:	_.data('placement'),
-									trigger:	'hover'
+									trigger:	'hover',
+									container:	'body'
 								});
 							});
 						}
@@ -518,7 +523,8 @@
 									},
 									html:		true,
 									placement:	_.data('placement'),
-									trigger:	'hover'
+									trigger:	'hover',
+									container:	'body'
 								});
 							});
 						}
@@ -544,7 +550,8 @@
 									},
 									html:		true,
 									placement:	_.data('placement'),
-									trigger:	'hover'
+									trigger:	'hover',
+									container:	'body'
 								});
 							});
 						}
@@ -571,7 +578,8 @@
 									},
 									html:		true,
 									placement:	_.data('placement'),
-									trigger:	'hover'
+									trigger:	'hover',
+									container:	'body'
 								});
 							});
 						}
@@ -613,7 +621,8 @@
 									},
 									html:		true,
 									placement:	_.data('placement'),
-									trigger:	'hover'
+									trigger:	'hover',
+									container:	'body'
 								});
 							});
 						});

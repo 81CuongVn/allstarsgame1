@@ -337,7 +337,6 @@ $registration   = openssl_encrypt(json_encode($chat_data), 'AES-256-CBC', $key, 
 				if (e.keyCode == 32) {
 					$('#chat-v2 .selector ul li').each(function () {
 						var _	= $(this);
-						console.log(new RegExp('\^/' + _.data('cmd')));
 
 						if (message.val().match(new RegExp('\^/' + _.data('cmd')))) {
 							_.trigger('click');	

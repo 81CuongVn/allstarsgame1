@@ -294,7 +294,83 @@ class CharactersController extends Controller {
 		$player_ranked	= $player->ranked();
 		$best_rank		= PlayerRanked::find_first("player_id={$player->id} order by rank asc limit 1");
 		$player_stat	= PlayerStat::find_first("player_id=". $player->id);
-		
+
+		if ($_SESSION['universal']) {
+			$pages  = Item::find('item_type_id = 11');
+			foreach ($pages as $page) {
+				if (!$player->has_item($page->id)) {
+					$player_grimoire_card				= new PlayerItem();
+					$player_grimoire_card->item_id		= $page->id;
+					$player_grimoire_card->player_id	= $player->id;
+					$player_grimoire_card->save();
+				}
+			}
+
+			$characters	= Character::all();
+			foreach ($characters as $character) {
+				if (!$user->is_character_bought($character->id)) {
+					$insert = new UserCharacter();
+					$insert->user_id		= $user->id;
+					$insert->character_id	= $character->id;
+					$insert->save();
+				}
+			}
+
+			$themes	= CharacterTheme::all();
+			foreach ($themes as $theme) {
+				if (!$user->is_theme_bought($theme->id)) {
+					$insert = new UserCharacterTheme();
+					$insert->user_id			= $user->id;
+					$insert->character_theme_id	= $theme->id;
+					$insert->save();
+				}
+			}
+
+			$images	= CharacterThemeImage::all();
+			foreach ($images as $image) {
+				if (!$user->is_theme_image_bought($image->id)) {
+					$insert = new UserCharacterThemeImage();
+					$insert->user_id					= $user->id;
+					$insert->character_theme_image_id	= $image->id;
+					$insert->save();
+				}
+			}
+
+			$headlines	= Headline::all();
+			foreach ($headlines as $headline) {
+				if (!$user->is_headline_bought($headline->id)) {
+					$insert = new UserHeadline();
+					$insert->user_id		= $user->id;
+					$insert->headline_id	= $headline->id;
+					$insert->save();
+				}
+			}
+
+			foreach ([
+				'head',
+				'shoulder',
+				'chest',
+				'neck',
+				'hand',
+				'leggings'
+			] as $slot) {
+				for ($i = 1; $i <= 5; $i++) {
+					Item::generate_equipment($player, 2, $slot);
+				}
+			}
+
+			$items	= Item::find('item_type_id = 3 and is_initial = 1');
+			foreach ($items as $item) {
+				if (!$player->has_item($item->id)) {
+					$insert 			= new PlayerItem();
+					$insert->player_id	= $player->id;
+					$insert->item_id	= $item->id;
+					$insert->exp		= 50000;
+					$insert->save();
+				}
+			}
+		}
+
 		// Começando o novo modulo de missão de conta
 		$user_quest_counter = UserQuestCounter::find_first("user_id=". $player->user_id);
 		if (!$user_quest_counter) {
@@ -758,7 +834,7 @@ class CharactersController extends Controller {
 		$this->assign('total', $total);
 		$this->assign('player_tutorial', $player->player_tutorial());	
 	}
-	function fragments_change(){
+	function fragments_change() {
 		$this->as_json			= true;
 		$this->json->success	= false;
 
@@ -902,33 +978,35 @@ class CharactersController extends Controller {
 		$limit		= 20;
 		$filter		= '';
 		
-		if(!$_POST) {
-			$filter				.= '';
-			$name				= '';
-			$description		= '';
-			$raridade			= 'todos';
-			$active				= 1;
-		}else{
-			if(isset($_POST['name']) && strlen(trim($_POST['name']))) {
+		if (!$_POST) {
+			$name			= '';
+			$description	= '';
+			$rarity			= 'all';
+			$active			= 1;
+		} else {
+			if (isset($_POST['name']) && strlen(trim($_POST['name']))) {
 				$filter	.= ' AND a.name LIKE "%' . addslashes($_POST['name']) . '%"';
 				$name	= $_POST['name'];
 			} else {
 				$name	= '';
 			}
-			if(isset($_POST['description']) && strlen(trim($_POST['description']))) {
+
+			if (isset($_POST['description']) && strlen(trim($_POST['description']))) {
 				$filter	.= ' AND a.description LIKE "%' . addslashes($_POST['description']) . '%"';
 				$description	= $_POST['description'];
 			} else {
 				$description	= '';
 			}
-			if(isset($_POST['raridade']) && strlen(trim($_POST['raridade'])) && ($_POST['raridade']!="todos")) {
-				$filter	.= ' AND b.rarity ="' . addslashes($_POST['raridade']) . '"';
-				$raridade	= $_POST['raridade'];
+
+			if (isset($_POST['rarity']) && strlen(trim($_POST['rarity'])) && ($_POST['rarity'] != 'all')) {
+				$filter	.= ' AND b.rarity = "' . addslashes($_POST['rarity']) . '"';
+				$rarity	= $_POST['rarity'];
 			} else {
-				$raridade	= 'todos';
+				$rarity	= 'all';
 			}
-			if(isset($_POST['active']) && is_numeric($_POST['active'])) {
-				if($_POST['active'] != 0) {
+
+			if (isset($_POST['active']) && is_numeric($_POST['active'])) {
+				if ($_POST['active'] != 0) {
 					
 				}
 				$active	= $_POST['active'];
@@ -943,26 +1021,23 @@ class CharactersController extends Controller {
 
 			if ($pet->equipped) {
 				$active_pet	= $pet->item_id;
+				break;
 			}
 		}
 
-		$result		= (new Character)->filter($filter, $mine_pets, $player->id, $active, $page, $limit);
-		$animes		= Anime::find('active=1', ['cache' => true]);
+		$result	= Character::filter($filter, $mine_pets, $player->id, $active, $page, $limit);
 		
-		$this->assign('mine_pets', $mine_pets);
-		$this->assign('active_pet', $active_pet);
-		$this->assign('player', $player);
-		$this->assign('animes', $animes);
-		//$this->assign('pets', Item::find('item_type_id=3'));
-		//$this->assign('pets', $result['pets']->result_array());
-		$this->assign('pages', $result['pages']);
-		$this->assign('page', $page);
-		$this->assign('pets', $result);
-		$this->assign('name', $name);
-		$this->assign('description', $description);
-		$this->assign('raridade', $raridade);
-		$this->assign('active', $active);
-		$this->assign('player_tutorial', $player->player_tutorial());
+		$this->assign('mine_pets',			$mine_pets);
+		$this->assign('active_pet',			$active_pet);
+		$this->assign('player',				$player);
+		$this->assign('pets',				$result);
+		$this->assign('pages',				$result['pages']);
+		$this->assign('page',				$page);
+		$this->assign('name',				$name);
+		$this->assign('description',		$description);
+		$this->assign('rarity',				$rarity);
+		$this->assign('active',				$active);
+		$this->assign('player_tutorial',	$player->player_tutorial());
 	}
 	function remove_pet() {
 		$this->as_json			= true;

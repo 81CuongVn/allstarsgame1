@@ -5523,8 +5523,8 @@ class Player extends Relation {
 		}
 		return $has_talents;
 	}
-	function happiness_int($item_id){
-		$happiness = PlayerItem::find_first('item_id='.$item_id.' AND player_id='. $this->id);
+	function happiness_int($item_id) {
+		$happiness	= PlayerItem::find_first('item_id=' . $item_id . ' AND player_id=' . $this->id);
 		if ($happiness) {
 			return $happiness;
 		} else {
@@ -5651,19 +5651,15 @@ class Player extends Relation {
 	function pets() {
 		$result	= [];
 		$items	= Recordset::query('
-				SELECT
-					a.id,
-					a.happiness
-
-				FROM
-					player_items a JOIN items b ON b.id=a.item_id AND b.item_type_id=3
-
-				WHERE
-					a.removed=0 AND a.working=0 AND
-					a.player_id=' . $this->id
+			SELECT
+				a.id,
+				a.happiness
+			FROM
+				player_items a JOIN items b ON b.id=a.item_id AND b.item_type_id=3
+			WHERE
+				a.removed = 0 AND a.working = 0 AND a.player_id = ' . $this->id
 		);
-
-		foreach($items->result_array() as $item) {
+		foreach ($items->result_array() as $item) {
 			$result[]	= PlayerItem::find($item['id']);
 		}
 
@@ -5772,23 +5768,25 @@ class Player extends Relation {
 
 			# Adiciona o Novo Pet para o jogador
 			$itemParent 		= Item::find_first("parent_id=" . $pet->item_id);
-			$newPet 			= new PlayerItem();
-			$newPet->player_id	= $pet->player()->id;
-			$newPet->item_id	= $itemParent->id;
-			$newPet->happiness	= $pet->happiness;
-			$newPet->equipped	= $equipped ? 1 : 0;
-			$newPet->exp		= $expPet;
-			$newPet->save();
+			if ($itemParent) {
+				$newPet 			= new PlayerItem();
+				$newPet->player_id	= $pet->player()->id;
+				$newPet->item_id	= $itemParent->id;
+				$newPet->happiness	= $pet->happiness;
+				$newPet->equipped	= $equipped ? 1 : 0;
+				$newPet->exp		= $expPet;
+				$newPet->save();
 
-			# Remove o pet anterior
-			$pet->removed 		= 1;
+				# Remove o pet anterior
+				$pet->removed 		= 1;
 
-			# Manda Mensagem ao jogador avisando sobre a evolução
-			$newPM				= new PrivateMessage();
-			$newPM->to_id		= $pet->player()->id;
-			$newPM->subject		= "Seu Mascote Evoluiu!";
-			$newPM->content 	= "Seu Mascote {$petItem->description()->name} evoluiu para raridade {$expName}";
-			$newPM->save();
+				# Manda Mensagem ao jogador avisando sobre a evolução
+				$newPM				= new PrivateMessage();
+				$newPM->to_id		= $pet->player()->id;
+				$newPM->subject		= "Seu Mascote Evoluiu!";
+				$newPM->content 	= "Seu Mascote {$petItem->description()->name} evoluiu para raridade {$expName}";
+				$newPM->save();
+			}
 
 		}
 		return $pet->save();
@@ -6137,6 +6135,31 @@ class Player extends Relation {
 				}
 			}
 		}
+	}
+	function has_gems($item_id, $counter) {
+		$item_combinations = ItemGem::find_first("parent_id = " . $item_id);
+		$item_combinations = explode(",", $item_combinations->combination);
+		$item_combinations = explode("-", $item_combinations[$counter - 1]);
+
+		$gems = [];
+		foreach ($item_combinations as $combination) {
+			if (!array_key_exists($combination, $gems)) {
+				$gems[$combination] = 1;
+			} else {
+				$gems[$combination]++;
+			}
+		}
+
+		$has_gems	= TRUE;
+		foreach ($gems as $gem_id => $need) {
+			$player_gems = PlayerItem::find_first('player_id = ' . $this->id . ' and item_id = ' . $gem_id);
+			if (!$player_gems || $player_gems->quantity < $need) {
+				$has_gems	= FALSE;
+				break;
+			}
+		}
+
+		return $has_gems;
 	}
 	function valid_gem_combination($item_id, $combination, $ordem){
 		$player_item_gem 		= PlayerItemGem::find_first("item_id=".$item_id." AND player_id=".$this->id);

@@ -26,10 +26,10 @@
 					<div class="pet-tooltip">
 						<?php 
 							$info_pet = $player->happiness_int($pet->id);
-							if($info_pet){
+							if ($info_pet) {
 								$happiness = $info_pet->happiness;
 								$exp_pet  =	$info_pet->exp;
-							}else{
+							} else {
 								$happiness = 0;
 								$exp_pet  =	0;
 							}	
@@ -37,7 +37,7 @@
 						<?php echo $player->happiness($pet->id)?><br />
 						<?php echo $happiness ?> / 100
 						<?php 
-							switch($pet->rarity){
+							switch ($pet->rarity) {
 								case "common":
 								 	$exp_total = 2500;
 								 break;
@@ -49,11 +49,11 @@
 								 break;	
 							}
 						?>	
-						<?php if($pet->rarity!="mega"){?>
+						<?php if ($pet->rarity != "mega") { ?>
 							<div style="margin-top:10px">
-								<?php echo pet_exp_bar( $exp_pet.'/'.$exp_total,$exp_total,150)?>
+								<?=pet_exp_bar($exp_pet, $exp_total, 150, highamount($exp_pet) . '/' . highamount($exp_total));?>
 							</div>
-						<?php }?>	
+						<?php } ?>
 					</div>
 				</div>
 				<div>

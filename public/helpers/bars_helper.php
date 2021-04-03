@@ -30,7 +30,7 @@ function top_exp_bar($player, $user) {
         $msg_talents    = t('alerts.talents', array('link' => make_url('characters#talents')));
     }
     if (!empty($msg_talents) && !empty($msg_points)) {
-        $msg_points .= '<hr />';
+        $msg_points .= '<br /><br />';
     }
 
     $alerts = '';
@@ -41,7 +41,9 @@ function top_exp_bar($player, $user) {
                 <a href="javascript:void(0);" class="badge"><i class="fa fa-exclamation fa-fw"></i></a>
             </div>
 			<div id="alert-user-container-'. $player->id .'" class="technique-container">
-				' . $message . '
+                <div class="status-popover-content" style="width: 170px;">
+				    ' . $message . '
+                </div>
 			</div>';
     }
 
@@ -51,7 +53,9 @@ function top_exp_bar($player, $user) {
             <div class="number">' . $player->level . '</div>
         </div>
         <div id="level-container-'. $player->id .'" class="technique-container">
-            ' . t('level.player') . '
+            <div class="status-popover-content" style="width: 200px;">
+                ' . t('level.player') . '
+            </div>
         </div>
         '.$alerts.'
         <div style="cursor: help;" class="level level-user technique-popover" data-source="#level-user-container-'.$player->id .'" data-title="Nível da Conta" data-trigger="click" data-placement="bottom">
@@ -59,7 +63,9 @@ function top_exp_bar($player, $user) {
             <div class="number">' . $user->level . '</div>
         </div>
         <div id="level-user-container-'. $player->id .'" class="technique-container">
-            ' . t('level.user') . '
+            <div class="status-popover-content" style="width: 200px;">
+                ' . t('level.user') . '
+            </div>
         </div>
         <div class="frame" style="background-image: url(' . image_url('top_exp_bar/frame_' . $frame_id . '.png') . ')"></div>
         <div class="top-progress top-progress-player">
@@ -86,7 +92,7 @@ function section_bar($text, $anime = null) {
 
 function exp_bar($value, $max, $max_width, $text = null) {
     $width              = exp_bar_windth($value, $max, $max_width);
-    if (!$text)  $text  = round($value, 1);
+    if (!$text)  $text  = round($value, 2);
 
     return	'<div class="exp-bar exp-bar-' . $max_width . '" style="width: ' . $max_width . 'px">' .
         '<div class="fill" style="width: ' . $width . 'px"></div>' .

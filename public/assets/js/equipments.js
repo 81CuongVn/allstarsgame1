@@ -126,9 +126,11 @@
 						html += '<tr><td><span class="same">+' + show_value + '</span> ' + (with_in ? I18n.t('global.em') : '') + ' ' + translation + '</td></tr>';
 					}
 				} else {
-					var sign = comparison_value < value ? '+' : '';
-					var status = comparison_value < value ? 'plus' : 'less';
-					var show_value = comparison_value < value ? value - comparison_value : value - comparison_value;
+					var sign		= comparison_value < value ? '+' : '';
+					var status		= comparison_value < value ? 'plus' : 'less';
+
+					var show_value	= comparison_value < value ? value - comparison_value : value - comparison_value;
+					show_value		= Math.round(show_value * 100) / 100
 
 					if (is_percent) {
 						show_value += '%';
@@ -189,11 +191,12 @@
 			html:		true,
 			trigger:	is_chat ? 'manual' : 'hover',
 			title:		equipment_title($(source)),
-			placement:	'' + (is_chat ? 'right' : 'bottom'),
+			placement:	'auto ' + (is_chat ? 'right' : 'bottom'),
 			content:	function () {
 				var	base	= _equipments[parseInt($(this).data('id'))];
 				return generate_equipment_tooltip(base, comparison);
-			}
+			},
+            container: 'body'
 		}).on("mouseenter", function () {
 			var _this = this;
 			

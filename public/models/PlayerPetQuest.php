@@ -20,22 +20,23 @@ class PlayerPetQuest extends Relation {
 		$player_pet_quest	= $player->player_pet_quest_wait($pet_quest_id);
 		$quest				= PetQuest::find($pet_quest_id);
 		$duration			= $quest->duration($quest->durations);
-		
-		$p_pet_quest = PlayerPetQuest::find_first("completed = 0  AND player_id=".$player->id." AND pet_quest_id=".$pet_quest_id);
-		if($player_pet_quest){
-			$can_finish			= now() >= strtotime($player_pet_quest[0]->finish_at) ? true : false;
-			if($can_finish && !$p_pet_quest->success_at){
-				$numero_random = rand(1, 100);
-				if($numero_random <= $p_pet_quest->success_percent){
+
+		$p_pet_quest = PlayerPetQuest::find_first("completed = 0 and player_id = " . $player->id . " and pet_quest_id = " . $pet_quest_id);
+		if ($player_pet_quest) {
+			$can_finish			= now() >= strtotime($player_pet_quest[0]->finish_at) ? TRUE : FALSE;
+			if ($can_finish && !$p_pet_quest->success_at) {
+				if (rand(1, 100) <= $p_pet_quest->success_percent) {
 					$p_pet_quest->success = 1;	
 				}
-					$p_pet_quest->success_at		= date('Y-m-d H:i:s', strtotime('+' . $duration->hours . ' hour, +' . $duration->minutes . ' minute'));
-					$p_pet_quest->save();
+				// print_r($duration);
+				$p_pet_quest->success_at		= date('Y-m-d H:i:s', strtotime('+' . $duration->time['hours'] . ' hour, +' . $duration->time['minutes'] . ' minute'));
+				$p_pet_quest->save();
 			}
 			
-		}else{
+		} else {
 			$can_finish = 0;	
 		}
+
 		return $can_finish;
 	}
 	function pet_success($pet_quest_id) {

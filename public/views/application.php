@@ -346,9 +346,9 @@ if ($_SESSION['user_id']) {
 						</div>
 					<?php } ?>
                     <?php if (FW_ENV != 'dev') { ?>
-                    <div style="width: <?php echo ($player ? '240px' : '100%');?>; text-align: center">
-                       	<div class="fb-like" data-href="https://www.facebook.com/AllStarsGame" data-width="70" data-layout="box_count" data-action="like" data-size="small" data-share="true"></div>
-                    </div>
+						<div style="width: <?php echo ($player ? '240px' : '100%');?>; text-align: center">
+							<div class="fb-like" data-href="https://www.facebook.com/AllStarsGame" data-width="70" data-layout="box_count" data-action="like" data-size="small" data-share="true"></div>
+						</div>
                     <?php } ?>
 				</div>
 			<?php } ?>
@@ -372,9 +372,9 @@ if ($_SESSION['user_id']) {
 	<button class="btn btn-primary btn-cookies">Aceitar!</button>
 </div>
 
-<?php if ($player && FW_ENV != 'dev') { ?>
+<?php if ($player) { ?>
 	<?php echo partial('shared/chat', ['player' => $player]); ?>
-	<script type="text/javascript" src="<?=asset_url('js/highlights.js');?>"></script>
+	<!-- <script type="text/javascript" src="<?=asset_url('js/highlights.js');?>"></script> -->
 <?php } ?>
 <script type="text/javascript" src="<?=asset_url('js/bootstrap.min.js');?>"></script>
 <script type="text/javascript" src="<?=asset_url('js/select2.js');?>"></script>
