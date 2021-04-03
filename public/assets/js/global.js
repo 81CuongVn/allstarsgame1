@@ -103,7 +103,7 @@
         $('[data-toggle="popover"]').popover({html: true});
     }
 
-    $('.technique-popover, .requirement-popover, .shop-item-popover').each(function () {
+    $('.technique-popover').each(function () {
         var placement = $(this).data('placement');
         $(this).popover({
 			trigger:	'manual',
@@ -111,7 +111,32 @@
 				return $($(this).data('source')).html();
 			},
 			html:		true,
-            // container: 'body',
+            container: 'body',
+            placement:  'auto ' + placement
+		}).on("mouseenter", function () {
+		    var _this = this;
+		    $(this).popover("show");
+		    $(this).siblings(".popover").on("mouseleave", function () {
+		        $(_this).popover('hide');
+		    });
+		}).on("mouseleave", function () {
+		    var _this = this;
+		    setTimeout(function () {
+		        if (!$(".popover:hover").length) {
+		            $(_this).popover("hide")
+		        }
+		    }, 100);
+		});
+    });
+
+    $('.requirement-popover, .shop-item-popover').each(function () {
+        var placement = $(this).data('placement');
+        $(this).popover({
+			trigger:	'manual',
+			content:	function () {
+				return $($(this).data('source')).html();
+			},
+			html:		true,
             placement:  'auto ' + placement
 		}).on("mouseenter", function () {
 		    var _this = this;
