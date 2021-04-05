@@ -41,19 +41,23 @@ body{
 .cursor_pointer{
 	cursor: pointer;	
 }
+#esquerda .discord { background-image: url('../images/discord.jpg'); }
+#esquerda .whatsapp { background-image: url('../images/whatsapp.png'); }
 #esquerda .discord,
+#esquerda .whatsapp,
 #esquerda .tutorial {
 	position: relative;
 	width: 230px;
 	height: 58px;
 	margin: 0 auto;
 }
-#esquerda .discord {
-	background-image: url('../images/discord.jpg');
+#esquerda .discord,
+#esquerda .whatsapp {
 	background-size: 100% 100%;
-	border-radius: 5px;
+	border-radius: 10px;
 }
-#esquerda .discord:hover {
+#esquerda .discord:hover,
+#esquerda .whatsapp:hover {
 	box-shadow: inset 0px 0px 10px 0px rgba(0, 0, 0, .75),
 				0px 0px 10px 0px rgba(0, 0, 0, .75);
 }

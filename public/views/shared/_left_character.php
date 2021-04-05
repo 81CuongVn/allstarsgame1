@@ -166,6 +166,9 @@
 			</div>
 		<?php } ?>
 		<div class="clearfix"></div>
+		<a href="https://chat.whatsapp.com/LFT74CxmNJz3nVmTQGQi98" target="_blank">
+			<div class="whatsapp cursor_pointer"></div>
+		</a><br />
 		<a href="https://discord.gg/ME8ugpZwSw" target="_blank">
 			<div class="discord cursor_pointer"></div>
 		</a><br />
