@@ -20,7 +20,7 @@
             <?php endif; ?>
         </ul>
         <div class="selector-trigger">Mundo</div>
-        <input type="text" id="message" autocomplete="off" name="message" <?php if ($_SESSION['universal']): ?>maxlength="60"<?php endif; ?> />
+        <input type="text" id="message" autocomplete="off" name="message" <?php if (!$_SESSION['universal']) { ?>maxlength="60"<?php } ?> />
         <input type="checkbox" id="as" checked="checked" class="auto-scroll" />
     </div>
 </div>

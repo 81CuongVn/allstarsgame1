@@ -8,11 +8,11 @@ $rewrite_enabled	= TRUE;
 
 # Game settings
 define('GAME_NAME', 			'All-Stars Game');
-define('GAME_VERSION', 			'2.0.19');
+define('GAME_VERSION', 			'2.0.35');
 define('GLOBAL_PASSWORD', 		'dev2@21');
 
 # Round settings
-define('ROUND_END',				'2021-03-31 23:59:59');
+define('ROUND_END',				'2021-04-07 23:59:59');
 
 # Beta / Maintenance
 $maintenance		= ROUND_END <= date('Y-m-d H:i:s');
