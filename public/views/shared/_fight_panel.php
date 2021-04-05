@@ -1,12 +1,12 @@
 <div id="finished-message"></div>
-<div id="battle-container" data-target="<?php echo $target_url ?>" data-mana-player="<?php echo t('formula.for_mana.' . $player->character()->anime_id) ?>"  data-mana-enemy="<?php echo t('formula.for_mana.' . $enemy->character()->anime_id) ?>" <?php if ($player->battle_pvp_id): ?>data-ping="<?php echo $player->id ?>"<?php endif ?>>
-	<?php if(!$player->battle_npc_id): ?>
-		<?php if($player->no_talent || $enemy->no_talent){?>
+<div id="battle-container" <?php if (!$is_watch) { ?>data-target="<?=$target_url;?>" data-mana-player="<?=t('formula.for_mana.' . $player->character()->anime_id);?>" data-mana-enemy="<?=t('formula.for_mana.' . $enemy->character()->anime_id);?>" <?php if ($player->battle_pvp_id) { ?>data-ping="<?=$player->id;?>"<?php } } else { echo 'class="watch-battle" data-battle="' . $battle->id . '"'; } ?>>
+	<?php if (!$player->battle_npc_id && !$is_watch): ?>
+		<?php if ($player->no_talent || $enemy->no_talent) { ?>
 			<div style="float: left; height: 70px; padding: 7px; margin-left: 5px;">
 				<img src="<?=image_url('items/1715.png');?>" class="technique-popover" style="cursor: help;" data-source="#no_talent-player" data-title="" data-trigger="hover" data-placement="right" />
 				<div class="technique-container" id="no_talent-player">
 					<div class="technique-data" style="width: 200px; margin: 0; padding: 5px 15px;">
-						<?php echo ($player->no_talent==1 || $enemy->no_talent==1) ? t('battles.pvp.no_talent') : t('battles.pvp.no_talent2')?>
+						<?php echo ($player->no_talent == 1 || $enemy->no_talent == 1) ? t('battles.pvp.no_talent') : t('battles.pvp.no_talent2')?>
 					</div>
 				</div>
 			</div>
@@ -14,11 +14,11 @@
 				<img src="<?=image_url('items/1715.png');?>" class="technique-popover" style="cursor: help;" data-source="#no_talent-enemy" data-title="" data-trigger="hover" data-placement="left" />
 				<div class="technique-container" id="no_talent-enemy">
 					<div class="technique-data" style="width: 200px; margin: 0; padding: 5px 15px;">
-						<?php echo ($player->no_talent==1 || $enemy->no_talent==1) ? t('battles.pvp.no_talent') : t('battles.pvp.no_talent2')?>
+						<?php echo ($player->no_talent == 1 || $enemy->no_talent == 1) ? t('battles.pvp.no_talent') : t('battles.pvp.no_talent2')?>
 					</div>
 				</div>	
 			</div>
-		<?php }?>	
+		<?php } ?>	
 		<div id="ranking">
 			<div class="text"><?php echo t('battles.stats.text') ?></div>
 			<div class="wins"><?php echo t('battles.stats.wins') ?><br /><span><?php echo highamount($stats->wins) ?></span></div>
@@ -29,7 +29,7 @@
 	<div class="top"></div>
 	<div class="player-container">
 		<div class="chains"></div>
-		<div id="players">
+		<div id="players" style="<?=($is_watch ? 'height: auto; padding-bottom: 15px' : '');?>">
 			<div id="vs">
 				<div class="log" style="margin-top: 296px;">
 					<?php if (is_array($log)): ?>
@@ -72,31 +72,33 @@
 				</div>
 			</div>
 			<div class="clearfix"></div>
-			<div id="technique-container">
-				<div class="technique-list-box">
-					<?php foreach ($techniques as $technique): ?>
-					<?php $item	= $technique->item() ?>
-						<?php
-							if($item->is_defensive){
-								$class = "defense";
-							}else if(!$item->is_defensive && $item->is_generic){
-								$class = "attack";
-							}else{
-								$class = "unique";
-							}
-						?>
-						<div class="item item-type-<?php echo $item->item_type_id ?> <?php echo $class ?> <?php echo $item->is_buff ? 'buff' : 'normal' ?>" id="item-container-<?php echo $item->id ?>" data-item="<?php echo $item->id ?>">
-							<img src="<?php echo image_url($item->image(true)) ?>" class="technique-popover" data-source="#technique-content-<?php echo $item->id ?>" data-title="<?php echo $item->description()->name ?>" data-trigger="hover" data-placement="bottom" />
-							<div class="modifier-turn-data"></div>
-							<div class="technique-container" id="technique-content-<?php echo $item->id ?>">
-								<?php echo $item->technique_tooltip(true) ?>
+			<?php if (!$is_watch) { ?>
+				<div id="technique-container">
+					<div class="technique-list-box">
+						<?php foreach ($techniques as $technique): ?>
+						<?php $item	= $technique->item() ?>
+							<?php
+								if($item->is_defensive){
+									$class = "defense";
+								}else if(!$item->is_defensive && $item->is_generic){
+									$class = "attack";
+								}else{
+									$class = "unique";
+								}
+							?>
+							<div class="item item-type-<?php echo $item->item_type_id ?> <?php echo $class ?> <?php echo $item->is_buff ? 'buff' : 'normal' ?>" id="item-container-<?php echo $item->id ?>" data-item="<?php echo $item->id ?>">
+								<img src="<?php echo image_url($item->image(true)) ?>" class="technique-popover" data-source="#technique-content-<?php echo $item->id ?>" data-title="<?php echo $item->description()->name ?>" data-trigger="hover" data-placement="bottom" />
+								<div class="modifier-turn-data"></div>
+								<div class="technique-container" id="technique-content-<?php echo $item->id ?>">
+									<?php echo $item->technique_tooltip(true) ?>
+								</div>
 							</div>
-						</div>
-					<?php endforeach ?>
+						<?php endforeach ?>
+					</div>
+					<div id="skip-turn" data-item="skip">Pular Turno</div>
+					<div class="clearfix"></div>
 				</div>
-				<div id="skip-turn" data-item="skip">Pular Turno</div>
-				<div class="clearfix"></div>
-			</div>
+			<?php } ?>
 		</div>
 
 	</div>

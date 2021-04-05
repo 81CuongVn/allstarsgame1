@@ -23,7 +23,7 @@ define('BACKTRACE_SELECTS',	        TRUE);
 define('BACKTRACE_UPDATES',	        TRUE);
 define('BACKTRACE_DELETES',	        TRUE);
 
-define('RECORDSET_CACHE_OFF_FORCE',	$env == 'dev');
+// define('RECORDSET_CACHE_OFF_FORCE',	$env == 'dev');
 
 $___clear_cache_key				= 'vaMALORuhvCTTiCGvnDehblfdIJnPNbUak7OxcE1knbPGuwwTuPrpTGCGzdbYVwXBusrqhXcvqqIjhBIetDDPvzOvPaqzLHVE7eb';
 $___start						= microtime(TRUE);

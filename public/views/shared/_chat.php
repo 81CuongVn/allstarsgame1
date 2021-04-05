@@ -294,7 +294,7 @@ $registration   = openssl_encrypt(json_encode($chat_data), 'AES-256-CBC', $key, 
 				if (e.keyCode == 13 && this.value) {
 					<?php if (!$_SESSION['universal']): ?>
 						var now	= new Date();
-						if (diff_in_secs(last_msg, now) < 10) {
+						if (last_msg && diff_in_secs(last_msg, now) < 10) {
 							return;
 						}
 					<?php endif; ?>
@@ -317,20 +317,20 @@ $registration   = openssl_encrypt(json_encode($chat_data), 'AES-256-CBC', $key, 
 							}
 						});
 					} else {
-                        <?php if (!$_SESSION['universal']): ?>
+                        <?php if (!$_SESSION['universal']) { ?>
                             message.attr('disabled', 'disabled');
                             last_msg	= now;
                             var _iv1	= setInterval(function () {
                                 var	now	= new Date();
 
-                                if (diff_in_secs(last_msg, now) < 10) {
+                                if (last_msg && diff_in_secs(last_msg, now) < 10) {
                                     message.attr('placeholder', 'Aguarde ' + (10 - diff_in_secs(last_msg, now)) + ' segundo(s)');
                                 } else {
                                     message.removeAttr('disabled').attr('placeholder', '');
                                     clearInterval(_iv1);
                                 }
                             }, 1000);
-                        <?php endif; ?>
+                        <?php } ?>
                     }
 				}
 

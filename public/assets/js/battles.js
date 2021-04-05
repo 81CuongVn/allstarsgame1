@@ -18,10 +18,7 @@
 	var	audio				= $(document.createElement('AUDIO')).attr('src', resource_url('media/battle.mp3')).attr('type', 'audio/mpeg');
 	var negatives			= ['attack_speed', 'attack_speed_percent', 'slowness', 'slowness_percent', 'bleeding', 'bleeding_percent', 'next_mana_cost', 'stun','reduce_critical_damage','reduce_critical_damage_percent'];
 	var hidden				= ['bonus_exp_mission','bonus_exp_mission_percent','bonus_gold_mission','bonus_gold_mission_percent','bonus_stamina_max','currency_reward_extra','exp_reward_extra','currency_reward_extra_percent','exp_reward_extra_percent','bonus_stamina_heal','no_consume_stamina','fragment_find','item_find','pets_find'];
-	var	images				= {
-		rn:	{element: null, url: 'battle/bars/battle_lb_right.png', loaded: false},
-		rf:	{element: null, url: 'battle/bars/battle_lb_right_fill.png', loaded: false}
-	};
+	var	images				= [];
 
 	function update_log_tooltip() {
 		$('.log .i', battle_container).each(function () {
@@ -621,13 +618,16 @@
 				}
 			}
 
-			if(result.finished) {
+			if (result.finished) {
+				clearInterval(ping_iv);
+
 				// $('#finished-message').html(result.finished);
 				$('#battle-container #technique-container').html('').hide();
 				$('#battle-container .player-container #players').css({ height: '430px' });
 
-				var	win	= bootbox.dialog({message: result.finished, buttons: [
-					{
+				var	win	= bootbox.dialog({
+					message: result.finished,
+					buttons: [{
 						label:		'Fechar',
 						class:		'btn btn-sm btn-default',
 						callback:	function () {
@@ -635,18 +635,18 @@
 							location.href	= result.redirect;
 							// location.href	= parseInt(result.end_type) ? result.redirect : make_url('hospital') ;
 						}
-					}
-				]});
+					}]
+				});
 
 				$('.modal-dialog', win).addClass('pattern-container');
 				$('.modal-content', win).addClass('with-pattern');
 			}
 
-			if(result.messages && result.messages.length) {
+			if (result.messages && result.messages.length) {
 				format_error(result);
 			}
 
-			if(result.attack_text) {
+			if (result.attack_text) {
 				$('#attack-text', battle_container).html(result.attack_text);
 				$('.log-timer', battle_container).css({color: result.my_turn ? '#BA1C1C' : '#1CBA26'});
 
@@ -680,24 +680,25 @@
 			parse_technique.apply(this, []);
 		})
 
-		if(parseInt(battle_container.data('ping'))) {
+		if (parseInt(battle_container.data('ping'))) {
 			ping_iv	= setInterval(function () {
-				if(!can_ping) {
+				if (!can_ping) {
 					return;
 				}
 
 				can_ping	= false;
 
 				$.ajax({
-					url:	absolute_url('pvp_ping.php?uuid=' + battle_container.data('ping')),
+					url:		absolute_url('pvp_ping.php?uuid=' + battle_container.data('ping')),
 					dataType:	'json',
 					success:	function (result) {
-						can_ping	= true;
-
-						if(result.ping) {
+						if (result.ping) {
 							ping();
 						}
-					}, error:	function (result) {
+
+						can_ping	= true;
+					},
+					error:		function (result) {
 						can_ping	= true;
 					}
 				});

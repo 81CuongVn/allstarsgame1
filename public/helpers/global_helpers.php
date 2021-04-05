@@ -352,3 +352,13 @@ function format_time($seconds) {
 		'string'	=> sprintf("%02s", $hours) . ":" . sprintf("%02s", $minutes) . ":" . sprintf("%02s", $seconds)
 	];
 }
+function get_ip() {
+	// Get the forwarded IP if it exists
+	if (array_key_exists('X-Forwarded-For', $_SERVER) && filter_var($_SERVER['X-Forwarded-For'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
+		return $_SERVER['X-Forwarded-For'];
+	} elseif (array_key_exists('HTTP_X_FORWARDED_FOR', $_SERVER) && filter_var($_SERVER['HTTP_X_FORWARDED_FOR'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
+		return $_SERVER['HTTP_X_FORWARDED_FOR'];
+	} else {
+		return filter_var($_SERVER['REMOTE_ADDR'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4);
+	}
+}

@@ -1,14 +1,5 @@
 (function() {
 	var comparison_targets = [];
-	var names = null;
-
-	$.ajax({
-		url: make_url('equipments#get_names'),
-		dataType: 'json',
-		success: function(result) {
-			names = result.techniques;
-		}
-	});
 
 	window._equipments = [];
 	window.generate_equipment_tooltip = function(base, comparison) {
@@ -80,7 +71,7 @@
 
 			if (!translation) {
 				if (is_id) {
-					assigns.name = names[base[i + '_id']];
+					assigns.name = _equipments_names[base[i + '_id']];
 				}
 
 				translation = I18n.tb('equipments.attributes.' + i, assigns);

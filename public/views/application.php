@@ -26,6 +26,16 @@ if ($_SESSION['user_id']) {
 				if ($player && ($player->battle_npc_id || $player->battle_pvp_id) && preg_match('/battle/', $controller)) {
 					$with_battle	= TRUE;
 				}
+
+				if ($player && preg_match('/battle/', $action)) {
+					$with_battle	= TRUE;
+				}
+
+				$equipments		= [];
+				$techniques		= $player->character_theme()->attacks();
+				foreach ($techniques as $technique) {
+					$equipments[$technique->id]	= $technique->description()->name;
+				}
 			}
 		} else {
 			$player	= FALSE;
@@ -90,6 +100,7 @@ if ($_SESSION['user_id']) {
 			_current_organization	= <?=$player->organization_id;?>,
 			_current_player			= <?=$player->id;?>,
 			_is_organization_leader = <?=(($player->organization_id && $player->organization_id == $player->organization()->player_id) ? 'true' : 'false');?>,
+			_equipments_names		= <?=json_encode($equipments);?>,
 			_graduations			= [];
 
 		<?php

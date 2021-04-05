@@ -2415,3 +2415,6 @@ pt-BR:
       
       Atenciosamente,
       Equipe <b>#{game}</b>!
+  watch:
+    battle:
+      title: Assistindo Batalha PvP

@@ -615,13 +615,13 @@
 		}
 
 		function exp_needed_for_level() {
-			$rates	= array(
-				2	=> array(2400, 3000, 3600, 4200, 4800, 5400),
-				3	=> array(3400, 4200, 5000, 5800, 6600, 7400),
-				4	=> array(4400, 5400, 6400, 7400, 8400, 9400),
-				5	=> array(5400, 6600, 7800, 9000, 10200, 11800),
-				6	=> array(6800, 7800, 9400, 10200, 11600, 13400)
-			);
+			$rates	= [
+				2	=> [2400, 3000, 3600, 4200, 4800, 5400],
+				3	=> [3400, 4200, 5000, 5800, 6600, 7400],
+				4	=> [4400, 5400, 6400, 7400, 8400, 9400],
+				5	=> [5400, 6600, 7800, 9000, 10200, 11800],
+				6	=> [6800, 7800, 9400, 10200, 11600, 13400]
+			];
 
 			return $rates[$this->_player_item->level + 1][$this->req_graduation_sorting - 1];
 		}
@@ -634,12 +634,6 @@
 			return '';
 		}
 		static function generate_equipment($player, $rarity_fragment = NULL, $slot = NULL) {
-			$rarities	= [
-				'common',
-				'rare',
-				'legendary'
-			];
-
 			$slots	= [
 				'head',
 				'shoulder',
@@ -649,19 +643,15 @@
 				'leggings'
 			];
 
-			$attributes_by_slot	= [
-				'head'		=> [],
-				'shoulder'	=> [],
-				'chest'		=> [],
-				'neck'		=> [],
-				'hand'		=> [],
-				'leggings'	=> []
-			];
+			$attributes_by_slot	= [];
+			foreach ($slots as $slot) {
+				$attributes_by_slot[$slot]	= [];
+			}
 
 			$ignore_sums	= ['cooldown_reduction', 'for_stamina', 'npc_battle_count'];
-			if(!$slot){
+			if (!$slot) {
 				$choosen_slot	= $slots[rand(0, sizeof($slots) - 1)];
-			}else{
+			} else {
 				$choosen_slot	= $slot;
 			}
 
@@ -699,24 +689,18 @@
 			];
 
 			$bonuses_by_rarity	= [
-				'common'	=> [1],
-				'rare'		=> [2],
-				'legendary'	=> [3]
-			];
-
-			$additional_by_graduation	= [
-				'common'	=> 1,
-				'rare'		=> 2,
-				'legendary'	=> 3
+				'common'	=> [ 1 ],
+				'rare'		=> [ 2 ],
+				'legendary'	=> [ 3 ]
 			];
 
 			$additional_chance_by_graduation	= [
-				[10, 35, 50, 5, 1],
-				[15, 30, 45, 10, 1],
-				[20, 25, 40, 15, 1],
-				[25, 20, 35, 20, 1],
-				[30, 15, 30, 25, 1],
-				[35, 10, 25, 30, 1]
+				[ 10,	35,	50,	5,	1 ],
+				[ 15,	30,	45,	10,	1 ],
+				[ 20,	25,	40,	15,	1 ],
+				[ 25,	20,	35,	20,	1 ],
+				[ 30,	15,	30,	25,	1 ],
+				[ 35,	10,	25,	30,	1 ]
 			];
 
 			$choosables	= [
@@ -738,7 +722,7 @@
 						'for_inc_abs'	=> [1, 3],
 						'for_prec'		=> [1, 2],
 						'for_init'		=> [1, 2]
-					], 					[
+					], [
 						'for_atk'		=> [1, 2, 3, 5],
 						'for_def'		=> [1, 2, 3, 5],
 						'for_crit'		=> [1, 2],
@@ -792,14 +776,14 @@
 
 			$rarity_base			= $rarity_drop_by_graduation[$current_grad];
 			$rarity_choosen_name	= '';
-			$have_extras			= false;
+			$have_extras			= FALSE;
 			
-			if(is_null($rarity_fragment)){
-				while(true) {
+			if (is_null($rarity_fragment)) {
+				while (TRUE) {
 					$rarity_choosen_id	= 0;
 	
 					foreach ($rarity_base as $rarity => $chance) {
-						if(rand(1, 100) <= $chance) {
+						if (rand(1, 100) <= $chance) {
 							$rarity_choosen_name	= $rarity;
 							break 2;
 						}
@@ -807,76 +791,70 @@
 						$rarity_choosen_id++;
 					}
 				}
-			}else{
-				switch($rarity_fragment){
+			} else {
+				switch ($rarity_fragment) {
 					case 0:
-						$rarity_choosen_name = "common";
-						$rarity_choosen_id = 0;
-					break;
+						$rarity_choosen_name	= "common";
+						$rarity_choosen_id		= 0;
+						break;
 					case 1:
-						$rarity_choosen_name = "rare";
-						$rarity_choosen_id = 1;
-					break;
+						$rarity_choosen_name	= "rare";
+						$rarity_choosen_id		= 1;
+						break;
 					case 2:
-						$rarity_choosen_name = "legendary";
-						$rarity_choosen_id = 2;
+						$rarity_choosen_name	= "legendary";
+						$rarity_choosen_id		= 2;
 					break;
 				}	
 			}
 
 			foreach ($bases as $block => $base) {
 				$attribute_counter	= $bonuses_by_rarity[$rarity_choosen_name][$block];
-				$choosen_attributes	= $base[$current_grad - 1];
 				$extras				= $additional_chance_by_graduation[$current_grad - 1];
 				$extra_chance		= $extras[$block];
 
 				if (rand(1, 100) <= 25 && rand(1, 100) <= $extra_chance && !$have_extras) {
 					$attribute_counter	+= $extras[4];
-					$have_extras		= true;
+					$have_extras		= TRUE;
 				}
 
 				if ($attribute_counter) {
-					while(true) {
+					while (TRUE) {
 						foreach ($base[$current_grad - 1] as $attribute => $value) {
-							if(in_array($attribute, $attributes_by_slot[$choosen_slot])) {
+							if (in_array($attribute, $attributes_by_slot[$choosen_slot])) {
 								continue;
 							}
 
-							if(isset($values[$attribute])) {
+							if (isset($values[$attribute])) {
 								continue;
 							}
 
-							if(rand(1, 100) > 10) {
+							if (rand(1, 100) > 10) {
 								continue;
 							}
 
-							if(!in_array($attribute, $ignore_sums)) {
-								if($rarity_choosen_id == 2) {
+							if (!in_array($attribute, $ignore_sums)) {
+								if ($rarity_choosen_id == 2) {
 									$value[0]++;
 								}
 
-								if($rarity_choosen_id == 3 || $rarity_choosen_id == 4) {
+								if ($rarity_choosen_id == 3 || $rarity_choosen_id == 4) {
 									$value[0]	+= 2;
 								}
 
-								// $values[$attribute]	= rand($value[0], $value[1] + (($rarity_choosen_id) * 2));
-								// $values[$attribute]	= rand($value[0], $value[1]);
 								$values[$attribute]	= rand($value[0] * 10, $value[1] * 10) / 10;
 							} else {
-								// $values[$attribute]	= rand($value[0], $value[1]);
 								$values[$attribute]	= rand($value[0] * 10, $value[1] * 10) / 10;
 							}
 
 							if (isset($choosables[$attribute])) {
-								$items_query	= Recordset::query('SELECT id FROM items WHERE item_type_id=1 AND id NOT IN(112, 113)', true)->result_array();
-
-								//$values[$attribute]					= 1;
+								$items_query	= Recordset::query('SELECT id FROM items WHERE item_type_id = 1 AND id NOT IN (112, 113)', TRUE)->result_array();
 								$values[$choosables[$attribute]]	= $items_query[rand(0, sizeof($items_query) - 1)]['id'];
 							}
 
 							$attribute_counter--;
 
-							if(!$attribute_counter) {
+							if (!$attribute_counter) {
 								break 2;
 							}
 						}

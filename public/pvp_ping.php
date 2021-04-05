@@ -10,8 +10,9 @@ define('ROOT',						dirname(__FILE__));
 define('RECORDSET_CACHE_OFF_FORCE', TRUE);
 
 $env = 'dev';
-if (!in_array($_SERVER['SERVER_ADDR'], [ '127.0.0.1' ]))
-	$env = 'prod';
+if (in_array($_SERVER['HTTP_HOST'], ['allstarsgame.com.br'])) {
+    $env = 'prod';
+}
 
 define('FW_ENV',                    $env);
 require ROOT . '/config.' . $env . '.php';

@@ -61,5 +61,6 @@
 	'enemy'			=> $npc,
 	'techniques'	=> $techniques,
 	'target_url'	=> $target_url,
-	'log'			=> $log
+	'log'			=> $log,
+	'is_watch'		=> FALSE
 ]);?>

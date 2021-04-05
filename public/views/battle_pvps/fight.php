@@ -9,6 +9,7 @@
 		'log'					=> $log,
 		'stats'					=> $stats,
 		'player_wanted'			=> $player_wanted,
-		'enemy_wanted'			=> $enemy_wanted
+		'enemy_wanted'			=> $enemy_wanted,
+		'is_watch'				=> FALSE
 	]);
 ?>

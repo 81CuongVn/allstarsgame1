@@ -6301,10 +6301,12 @@ class Player extends Relation {
 	}
 
 	function update_online() {
-		if ($this->last_activity <= now() - (15 * 60)) {
-			$this->last_activity = now();
+		// if ($this->last_activity <= now() - (15 * 60)) {
+			$this->last_ip			= get_ip();
+			$this->last_page		= $_SERVER['REQUEST_URI'];
+			$this->last_activity	= now();
 			$this->save();
-		}
+		// }
 
 		$redis = new Redis();
 		if ($redis->pconnect(REDIS_SERVER, REDIS_PORT)) {

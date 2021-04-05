@@ -99,6 +99,7 @@ io.sockets.on 'connection', (socket) ->
 			data.last_activity							= new Date()
 			players[data.uid]							= data
 			players_by_name[data.name.toLowerCase()]	= players[data.uid]
+			last_messages[data.user_id]					= null
 
 			socket._uid									= data.uid
 			socket._player								= players[data.uid]
@@ -180,7 +181,7 @@ io.sockets.on 'connection', (socket) ->
 					return
 				else
 					db.query "SELECT `id` FROM `chat_blocked` WHERE `user_id` = " + players[data.dest].user_id + " AND `user_blocked` = " + player.user_id, (error, results, fields) ->
-						if results
+						if results.length
 							socket.emit 'broadcast',
 								from: 'Sistema',
 								message: 'Você não pode enviar mensagens para esse usuário!',

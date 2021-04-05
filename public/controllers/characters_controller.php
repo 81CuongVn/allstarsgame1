@@ -295,81 +295,72 @@ class CharactersController extends Controller {
 		$best_rank		= PlayerRanked::find_first("player_id={$player->id} order by rank asc limit 1");
 		$player_stat	= PlayerStat::find_first("player_id=". $player->id);
 
-		if ($_SESSION['universal']) {
-			$pages  = Item::find('item_type_id = 11');
-			foreach ($pages as $page) {
-				if (!$player->has_item($page->id)) {
-					$player_grimoire_card				= new PlayerItem();
-					$player_grimoire_card->item_id		= $page->id;
-					$player_grimoire_card->player_id	= $player->id;
-					$player_grimoire_card->save();
-				}
-			}
+		// if ($_SESSION['universal']) {
+		// 	$pages  = Item::find('item_type_id = 11');
+		// 	foreach ($pages as $page) {
+		// 		if (!$player->has_item($page->id)) {
+		// 			$player_grimoire_card				= new PlayerItem();
+		// 			$player_grimoire_card->item_id		= $page->id;
+		// 			$player_grimoire_card->player_id	= $player->id;
+		// 			$player_grimoire_card->save();
+		// 		}
+		// 	}
 
-			$characters	= Character::all();
-			foreach ($characters as $character) {
-				if (!$user->is_character_bought($character->id)) {
-					$insert = new UserCharacter();
-					$insert->user_id		= $user->id;
-					$insert->character_id	= $character->id;
-					$insert->save();
-				}
-			}
+		// 	$characters	= Character::all();
+		// 	foreach ($characters as $character) {
+		// 		if (!$user->is_character_bought($character->id)) {
+		// 			$insert = new UserCharacter();
+		// 			$insert->user_id		= $user->id;
+		// 			$insert->character_id	= $character->id;
+		// 			$insert->save();
+		// 		}
+		// 	}
 
-			$themes	= CharacterTheme::all();
-			foreach ($themes as $theme) {
-				if (!$user->is_theme_bought($theme->id)) {
-					$insert = new UserCharacterTheme();
-					$insert->user_id			= $user->id;
-					$insert->character_theme_id	= $theme->id;
-					$insert->save();
-				}
-			}
+		// 	$themes	= CharacterTheme::all();
+		// 	foreach ($themes as $theme) {
+		// 		if (!$user->is_theme_bought($theme->id)) {
+		// 			$insert = new UserCharacterTheme();
+		// 			$insert->user_id			= $user->id;
+		// 			$insert->character_theme_id	= $theme->id;
+		// 			$insert->save();
+		// 		}
+		// 	}
 
-			$images	= CharacterThemeImage::all();
-			foreach ($images as $image) {
-				if (!$user->is_theme_image_bought($image->id)) {
-					$insert = new UserCharacterThemeImage();
-					$insert->user_id					= $user->id;
-					$insert->character_theme_image_id	= $image->id;
-					$insert->save();
-				}
-			}
+		// 	$images	= CharacterThemeImage::all();
+		// 	foreach ($images as $image) {
+		// 		if (!$user->is_theme_image_bought($image->id)) {
+		// 			$insert = new UserCharacterThemeImage();
+		// 			$insert->user_id					= $user->id;
+		// 			$insert->character_theme_image_id	= $image->id;
+		// 			$insert->save();
+		// 		}
+		// 	}
 
-			$headlines	= Headline::all();
-			foreach ($headlines as $headline) {
-				if (!$user->is_headline_bought($headline->id)) {
-					$insert = new UserHeadline();
-					$insert->user_id		= $user->id;
-					$insert->headline_id	= $headline->id;
-					$insert->save();
-				}
-			}
+		// 	$headlines	= Headline::all();
+		// 	foreach ($headlines as $headline) {
+		// 		if (!$user->is_headline_bought($headline->id)) {
+		// 			$insert = new UserHeadline();
+		// 			$insert->user_id		= $user->id;
+		// 			$insert->headline_id	= $headline->id;
+		// 			$insert->save();
+		// 		}
+		// 	}
 
-			foreach ([
-				'head',
-				'shoulder',
-				'chest',
-				'neck',
-				'hand',
-				'leggings'
-			] as $slot) {
-				for ($i = 1; $i <= 5; $i++) {
-					Item::generate_equipment($player, 2, $slot);
-				}
-			}
+			// for ($i = 1; $i <= 5; $i++) {
+			// 	Item::generate_equipment($player);
+			// }
 
-			$items	= Item::find('item_type_id = 3 and is_initial = 1');
-			foreach ($items as $item) {
-				if (!$player->has_item($item->id)) {
-					$insert 			= new PlayerItem();
-					$insert->player_id	= $player->id;
-					$insert->item_id	= $item->id;
-					$insert->exp		= 50000;
-					$insert->save();
-				}
-			}
-		}
+		// 	$items	= Item::find('item_type_id = 3 and is_initial = 1');
+		// 	foreach ($items as $item) {
+		// 		if (!$player->has_item($item->id)) {
+		// 			$insert 			= new PlayerItem();
+		// 			$insert->player_id	= $player->id;
+		// 			$insert->item_id	= $item->id;
+		// 			$insert->exp		= 50000;
+		// 			$insert->save();
+		// 		}
+		// 	}
+		// }
 
 		// Começando o novo modulo de missão de conta
 		$user_quest_counter = UserQuestCounter::find_first("user_id=". $player->user_id);
