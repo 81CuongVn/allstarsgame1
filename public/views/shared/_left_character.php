@@ -166,7 +166,7 @@
 			</div>
 		<?php } ?>
 		<div class="clearfix"></div>
-		<a href="https://discord.gg/8UWqgt9Z" target="_blank">
+		<a href="https://discord.gg/ME8ugpZwSw" target="_blank">
 			<div class="discord cursor_pointer"></div>
 		</a><br />
 	</div>
