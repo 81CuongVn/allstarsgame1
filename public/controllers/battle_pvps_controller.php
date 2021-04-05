@@ -363,7 +363,8 @@ class BattlePvpsController extends Controller {
 				'init'				=> (int)$player->for_init(),
 				'graduation'		=> $player->graduation()->sorting,
 				'won'				=> $player->won_last_battle,
-				'battle_type_id'	=> $battle_type_id
+				'battle_type_id'	=> $battle_type_id,
+				'ip'				=> $player->last_ip
 			]), [
 				'delivery_mode'	=> 2 # persistent mode
 			]);

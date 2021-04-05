@@ -97,6 +97,8 @@ puts "Waiting for players..."
 					choosen = outrange.sample
 				end
 
+				next if current_player['ip'] == choosen['ip']
+
 				if choosen
 					puts "Match found! [#{choosen['id']}]#{choosen['name']} x [#{current_player['id']}]#{current_player['name']}"
 
@@ -148,7 +150,7 @@ puts "Waiting for players..."
 										who_start = [ choosen['id'], current_player['id']].sample
 									end
 
-									mysql.query "INSERT INTO `battle_pvps` (`battle_type_id`,`player_id`,`enemy_id`,`current_id`,`last_atk`) VALUES(#{battle_type},#{current_player['id']},#{choosen['id']},#{who_start},NOW())"
+									mysql.query "INSERT INTO `battle_pvps` (`battle_type_id`,`player_id`,`enemy_id`,`current_id`,`player_ip`,`enemy_ip`,`last_atk`) VALUES(#{battle_type},#{current_player['id']},#{choosen['id']},'#{current_player['ip']}','#{choosen['ip']}',#{who_start},NOW())"
 
 									battle_id		= mysql.last_id
 									mysql.query	"UPDATE `players` SET `pvp_queue_found` = NULL, `is_pvp_queued` = 0, `battle_pvp_id` = #{battle_id} WHERE `id` IN(#{current_player['id']}, #{choosen['id']})"
