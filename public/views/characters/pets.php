@@ -1,4 +1,7 @@
-<?php echo partial('shared/title', array('title' => 'menus.pets', 'place' => 'menus.pets')) ?>
+<?=partial('shared/title', [
+    'title' => 'menus.pets',
+    'place' => 'menus.pets'
+]);?>
 <?php if (!$player_tutorial->pets) { ?>
 	<script type="text/javascript">
 		$(function () {
@@ -19,106 +22,71 @@
 		});
 	</script>
 <?php } ?>
-<?php
-	echo partial('shared/info', [
-		'id'		=> 1,
-		'title'		=> 'quests.pets.title',
-		'message'	=> t('quests.pets.description')
-	]);
-?>
-<br />
+<?=partial('shared/info', [
+    'id'		=> 1,
+    'title'		=> 'quests.pets.title',
+    'message'	=> t('quests.pets.description')
+]);?><br />
 <div class="barra-secao barra-secao-<?php echo $player->character()->anime_id ?>">
-	<p>Filtro do Ranking</p>
+	<p>Filtro de Mascotes</p>
 </div>
 <form id="pets-filter-form" method="post">
-	<input type="hidden" name="page" value="<?php echo $page ?>" />
-	<table width="725" border="0" cellpadding="0" cellspacing="0" class="filtros">
-		<tr>
-			<td width="0%" align="center">
-				<b><?php echo t('rankings.players.header.nome') ?></b><br />
-				<input type="text" class="form-control input-sm" style="max-width: 150px" name="name" value="<?php echo $name ?>" />
-			</td>
-			<td width="0%" align="center">
-				<b><?php echo t('rankings.players.header.description') ?></b><br />	
-				<input type="text" class="form-control input-sm" style="max-width: 150px" name="description" value="<?php echo $description ?>" />
-			</td>
-			<td width="0%" align="center">
-				<b><?php echo t('rankings.players.header.raridade') ?></b><br />
-				<select name="rarity" class="form-control input-sm" style="max-width: 100px">
-					<option value="all"><?php echo t('global.all') ?></option>
-					<option value="common" <?php if ('common' == $rarity): ?>selected="selected"<?php endif ?>>Comum</option>
-					<option value="rare" <?php if ('rare' == $rarity): ?>selected="selected"<?php endif ?>>Raro</option>
-					<option value="legendary" <?php if ('legendary' == $rarity): ?>selected="selected"<?php endif ?>>Lendário</option>
-					<option value="mega" <?php if ('mega' == $rarity): ?>selected="selected"<?php endif ?>>Mega</option>
-				</select>
-			</td>
-			<td width="0%" align="center">
-				<b><?php echo t('rankings.players.header.active') ?></b><br />
-				<select name="active" class="form-control" style="max-width: 100px">
-					<option value="0"><?php echo t('global.all') ?></option>
-					<option value="1" <?php if ('1' == $active): ?>selected="selected"<?php endif ?>>Adquirido</option>
-					<option value="2" <?php if ('2' == $active): ?>selected="selected"<?php endif ?>>Não Adquirido</option>
-				</select>
-			</td>
-			<td width="0%" align="center">
-				<a href="javascript:;" class="btn btn-sm btn-primary filter" style="margin-top: 14px"><?php echo t('buttons.filtrar') ?></a>
-			</td>
-		</tr>
-	</table><br />
-	<div id="pet-list">
-		<?php
-			$others		= '';
-			$actives	= '';
-			
-			unset($pets['pages']);
-			unset($pets['pets']);
-		?>
-		<?php foreach ($pets as $pet) { ?>
-			<?php
-				$class		= '';
-				$attrbiutes	= '';
-				$active		= false;
-
-				if (isset($mine_pets[$pet->id])) {
-					$attrbiutes	= 'data-id="' . $mine_pets[$pet->id] . '"';
-
-					if ($active_pet == $pet->id) {
-						$class	= 'active';
-					}
-
-					$active	= true;
-				} else {
-					$attrbiutes	= '';
-					$class		= 'disabled locked';
-				}
-
-				ob_start();
-			?>
-			<div class="pet-box <?php echo $class ?>" <?php echo $attrbiutes ?> data-item="<?php echo $pet->id ?>" style="height: 200px !important; cursor: pointer;" data-message="<?php echo t('quests.pets.message');?>">
-				<div class="content technique-popover" data-source="#pet-container-<?php echo $pet->id ?>" data-title="<?php echo $pet->description()->name ?>" data-trigger="click" data-placement="bottom">
+	<input type="hidden" name="page" value="<?=$page;?>" />
+    <div class="row filtros">
+        <div class="col-xs-4 text-center">
+            <b><?=t('rankings.players.header.nome');?></b><br />
+            <input type="text" class="form-control input-sm" name="name" value="<?=$name;?>" />
+        </div>
+        <div class="col-xs-3 text-center">
+            <b><?=t('characters.create.labels.anime');?></b><br />
+            <select name="anime" class="form-control input-sm select2" style="margin-bottom: 15px;">
+                <option value="all"><?=t('global.all');?></option>
+                <?php foreach ($animes as $a) { ?>
+                    <option value="<?=$a->id;?>" <?=($a->id == $anime ? 'selected' : '');?>><?=$a->description()->name;?></option>
+                <?php } ?>
+            </select>
+        </div>
+        <div class="col-xs-3 text-center">
+            <b><?=t('rankings.players.header.raridade');?></b><br />
+            <select name="rarity" class="form-control input-sm">
+                <option value="all"><?=t('global.all');?></option>
+                <option value="common" <?php if ('common' == $rarity): ?>selected="selected"<?php endif ?>>Comum</option>
+                <option value="rare" <?php if ('rare' == $rarity): ?>selected="selected"<?php endif ?>>Raro</option>
+                <option value="legendary" <?php if ('legendary' == $rarity): ?>selected="selected"<?php endif ?>>Lendário</option>
+                <option value="mega" <?php if ('mega' == $rarity): ?>selected="selected"<?php endif ?>>Mega</option>
+            </select>
+        </div>
+        <div class="col-xs-2 text-center">
+            <a href="javascript:void(0);" class="btn btn-sm btn-primary filter" style="margin-top: 14px"><?=t('buttons.filtrar');?></a>
+        </div>
+    </div>
+    <div id="pet-list">
+        <?php foreach ($pets as $pet) { ?>
+            <?php $item = Item::find_first('id = ' . $pet['item_id']); ?>
+            <div class="pet-box <?=($pet['equipped'] ? 'active' : '');?>" data-item="<?=$item->id;?>" style="height: 200px !important; cursor: pointer;" data-message="<?=t('quests.pets.message');?>">
+				<div class="content technique-popover" data-source="#pet-container-<?=$item->id;?>" data-title="<?=$item->description()->name;?>" data-trigger="click" data-placement="bottom">
 					<div class="image">
-						<div class="lock"><span class="glyphicon glyphicon-lock"></span></div>
-						<?php echo $pet->image() ?>
+						<?=$item->image();?>
 					</div>
-					<div class="name <?php echo $pet->rarity ?>" style="height: 33px !important">
-						<?php echo $pet->description()->name ?><br />
-						<span style="font-size: 11px">(<?php echo $pet->anime_description($pet->description()->anime_id)->name ?>)</span>
+					<div class="name <?=$item->rarity;?>" style="height: 33px !important">
+						<?=$item->description()->name;?><br />
+						<span style="font-size: 11px">(<?=$item->anime_description()->name;?>)</span>
 					</div>
 					<div class="details">
 						<div class="pet-tooltip">
 							<?php 
 								$exp_pet	= 0;
 								$happiness	= 0;
-								$info_pet	= $player->happiness_int($pet->id);
+								$info_pet	= $player->happiness_int($item->id);
 								if ($info_pet) {
 									$exp_pet	= $info_pet->exp;
 									$happiness	= $info_pet->happiness;
 								}	
 							?>
-							<?=$player->happiness($pet->id);?><br />
+							<?=$player->happiness($item->id);?><br />
 							<?=$happiness;?> / 100
 							<?php 
-								switch ($pet->rarity) {
+								switch ($item->rarity) {
 									case "common":
 										$exp_total = 2500;
 										break;
@@ -130,29 +98,29 @@
 										break;
 								}
 							?>	
-							<?php if ($pet->rarity != "mega") { ?>
+							<?php if ($item->rarity != "mega") { ?>
 								<div style="margin-top:10px">
 									<?=pet_exp_bar($exp_pet, $exp_total, 150, highamount($exp_pet) . '/' . highamount($exp_total));?>
 								</div>
 							<?php }?>	
 						</div>
 					</div>
-					<div id="pet-container-<?php echo $pet->id ?>" class="technique-container">
-						<div class="status-popover-content"><?php echo $pet->tooltip() ?></div>
+					<div id="pet-container-<?=$item->id;?>" class="technique-container">
+						<div class="status-popover-content"><?=$item->tooltip();?></div>
 					</div>
 				</div>
 			</div>
-			
-			<?php
-				if ($active) {
-					$actives	.= ob_get_clean();
-				} else {
-					$others		.= ob_get_clean();
-				}
-			?>
-		<?php } ?>
-		<?php echo $actives . $others ?>
-		<div class="clearfix"></div><br />
-	</div>
-	<?php echo partial('shared/paginator', ['pages' => $pages, 'current' => $page + 1]) ?>
+        <?php } ?>
+        <div class="clearfix"></div>
+        <?php if (!sizeof($pets)) { ?>
+            <div class="alert alert-info">
+                <h4>Oops!</h4>
+                <p>Hmmm. Parece que não encontramos nenhum mascote por aqui!</p>
+            </div>
+        <?php } ?>
+    </div><br />
+    <?=partial('shared/paginator', [
+        'pages'     => $pages,
+        'current'   => ($page + 1)
+    ]);?>
 </form>

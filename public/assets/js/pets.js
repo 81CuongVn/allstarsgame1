@@ -6,7 +6,7 @@
 			url:		make_url('characters/learn_pet'),
 			dataType:	'json',
 			type:		'post',
-			data:		{ id: element.data('id') },
+			data:		{ id: element.data('item') },
 			success:	function (response) {
 				if (response.success) {
 					location.reload();
@@ -27,7 +27,7 @@
 			data:		{id: element.data('item')},
 			success:	function (result) {
 				if(result.success) {
-					location.href	= make_url('characters#pets');
+					location.reload();
 				} else {
 					lock_screen(false);
 					format_error(result);

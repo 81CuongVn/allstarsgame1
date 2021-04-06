@@ -271,7 +271,10 @@
 
 			return Anime::find($this->_anime_id);
 		}
-		function anime_description($anime_id) {
+		function anime_description($anime_id = FALSE) {
+			if (!$anime_id) {
+				$anime_id = $this->description()->anime_id;
+			}
 			return AnimeDescription::find_first('anime_id=' . $anime_id . ' AND language_id=' . $_SESSION['language_id'], array('cache' => true));
 		}
 

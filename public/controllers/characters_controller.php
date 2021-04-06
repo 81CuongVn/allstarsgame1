@@ -963,12 +963,53 @@ class CharactersController extends Controller {
 
 	function pets() {
 		$player		= Player::get_instance();
+		$page		= isset($_POST['page']) && is_numeric($_POST['page']) ? $_POST['page'] : 0;
+		$limit		= 20;
+		$filter		= '';
+		$name		= '';
+		$anime		= 'all';
+		$rarity		= 'all';
+
+		if ($_POST) {
+			if (isset($_POST['name']) && strlen(trim($_POST['name']))) {
+				$filter		.= ' AND c.name LIKE "%' . addslashes($_POST['name']) . '%"';
+				$name		= $_POST['name'];
+			}
+			if (isset($_POST['anime']) && strlen(trim($_POST['anime'])) && ($_POST['anime'] != "all")) {
+				$filter		.= ' AND c.anime_id = ' . addslashes($_POST['anime']);
+				$anime		= $_POST['anime'];
+			}
+			if (isset($_POST['rarity']) && strlen(trim($_POST['rarity'])) && ($_POST['rarity'] != "all")) {
+				$filter		.= ' AND b.rarity = "' . addslashes($_POST['rarity']) . '"';
+				$rarity		= $_POST['rarity'];
+			}
+		}
+
+		$result		= Character::pets($player->id, $filter, $page, $limit);
+		$animes		= Anime::find($_SESSION['universal'] ? '1 = 1' : 'active = 1', [
+			'cache'		=> true,
+			'reorder'	=> 'id ASC'
+		]);
+		
+		$this->assign('animes',				$animes);
+		$this->assign('player',				$player);
+		$this->assign('name',				$name);
+		$this->assign('anime',				$anime);
+		$this->assign('rarity',				$rarity);
+		$this->assign('page',				$page);
+		$this->assign('pages',				$result['pages']);
+		$this->assign('pets',				$result['pets']);
+		$this->assign('player_tutorial',	$player->player_tutorial());
+	}
+
+	function pets_old() {
+		$player		= Player::get_instance();
 		$mine_pets	= [];
 		$active_pet	= 0;
 		$page		= isset($_POST['page']) && is_numeric($_POST['page']) ? $_POST['page'] : 0;
 		$limit		= 20;
 		$filter		= '';
-		
+
 		if (!$_POST) {
 			$filter			.= '';
 			$name			= '';
@@ -996,15 +1037,14 @@ class CharactersController extends Controller {
 			}
 			if (isset($_POST['active']) && is_numeric($_POST['active'])) {
 				if ($_POST['active'] != 0) {
-					
+
 				}
 				$active	= $_POST['active'];
 			} else {
 				$active	= 1;
 			}
 		}
-		
-					
+
 		foreach ($player->pets() as $pet) {
 			$mine_pets[$pet->item_id]	= $pet->id;
 
@@ -1041,11 +1081,7 @@ class CharactersController extends Controller {
 			$errors[]	= t('quests.pets.errors.invalid');
 		} else {
 			$item	= PlayerItem::find_first('player_id=' . $player->id . ' AND item_id=' . $_POST['id']);
-			if($item){
-				if ($item->item()->item_type_id != 3 || $item->equipped == 0) {
-					$errors[]	= t('quests.pets.errors.invalid');
-				}
-			}else{
+			if (!$item || $item->item()->item_type_id != 3 || $item->equipped == 0) {
 				$errors[]	= t('quests.pets.errors.invalid');
 			}
 		}
@@ -1068,9 +1104,8 @@ class CharactersController extends Controller {
 		if (!isset($_POST['id']) || (isset($_POST['id']) && !is_numeric($_POST['id']))) {
 			$errors[]	= t('quests.pets.errors.invalid');
 		} else {
-			$item	= PlayerItem::find_first('player_id=' . $player->id . ' AND id=' . $_POST['id']);
-				
-			if ($item->item()->item_type_id != 3 || $item->working == 1) {
+			$item	= PlayerItem::find_first('player_id=' . $player->id . ' AND item_id=' . $_POST['id']);
+			if (!$item || $item->item()->item_type_id != 3 || $item->working == 1) {
 				$errors[]	= t('quests.pets.errors.invalid');
 			}
 		}

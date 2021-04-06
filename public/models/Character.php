@@ -100,6 +100,35 @@ class Character extends Relation {
 			return true;
 		}
 	}
+	public static function pets($player, $filter = '', $page = 0, $limit = FALSE) {
+		$result				= [];
+		$result['pages']	= ceil(Recordset::query("
+			SELECT
+				COUNT(a.id) AS _max
+			FROM
+				player_items a
+				INNER JOIN items b ON b.id = a.item_id
+				INNER JOIN item_descriptions c ON b.id = c.item_id
+			WHERE
+				a.removed != 1 AND b.item_type_id = 3 AND a.player_id = {$player} {$filter}")->row()->_max / $limit);
+		$result['pets']		= Recordset::query("
+			SELECT
+				a.id,
+				a.item_id,
+				a.equipped
+			FROM
+				player_items a
+				INNER JOIN items b ON b.id = a.item_id
+				INNER JOIN item_descriptions c ON b.id = c.item_id
+			WHERE
+				a.removed != 1 AND b.item_type_id = 3 AND a.player_id = {$player} {$filter}
+			ORDER BY
+				a.equipped DESC
+			LIMIT
+				" . ($page * $limit) . ", {$limit}
+		")->result_array();
+		return $result;
+	}
 	public static function filter($where, $mine_pets, $player, $active, $page, $limit) {
 		$mine_pets2	= $mine_pets;
 		$mine_pets	= implode(",", array_keys($mine_pets));
