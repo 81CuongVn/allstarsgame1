@@ -328,12 +328,15 @@ class EventsController extends Controller {
         $player		= Player::get_instance();
         $page		= isset($_POST['page']) && is_numeric($_POST['page']) ? $_POST['page'] : 0;
         $limit		= 4;
-        $wanteds	= array();
+        $wanteds	= [];
 
         $result	= PlayerWanted::filter($page, $limit);
         if ($result['players']) {
             foreach ($result['players'] as $player_wanted) {
-                $wanteds[] = Player::find_first($player_wanted->player_id);
+                $p = Player::find_first($player_wanted->player_id);
+                if (!$p->banned) {
+                    $wanteds[] = $p;
+                }
             }
         }
         $this->assign('player',				$player);
