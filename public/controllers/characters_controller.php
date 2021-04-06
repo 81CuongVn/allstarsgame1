@@ -970,6 +970,7 @@ class CharactersController extends Controller {
 		$filter		= '';
 		
 		if (!$_POST) {
+			$filter			.= '';
 			$name			= '';
 			$description	= '';
 			$rarity			= 'all';
@@ -981,21 +982,18 @@ class CharactersController extends Controller {
 			} else {
 				$name	= '';
 			}
-
 			if (isset($_POST['description']) && strlen(trim($_POST['description']))) {
 				$filter	.= ' AND a.description LIKE "%' . addslashes($_POST['description']) . '%"';
 				$description	= $_POST['description'];
 			} else {
 				$description	= '';
 			}
-
-			if (isset($_POST['rarity']) && strlen(trim($_POST['rarity'])) && ($_POST['rarity'] != 'all')) {
-				$filter	.= ' AND b.rarity = "' . addslashes($_POST['rarity']) . '"';
+			if (isset($_POST['rarity']) && strlen(trim($_POST['rarity'])) && ($_POST['rarity'] != "all")) {
+				$filter	.= ' AND b.rarity ="' . addslashes($_POST['rarity']) . '"';
 				$rarity	= $_POST['rarity'];
 			} else {
 				$rarity	= 'all';
 			}
-
 			if (isset($_POST['active']) && is_numeric($_POST['active'])) {
 				if ($_POST['active'] != 0) {
 					
@@ -1012,18 +1010,21 @@ class CharactersController extends Controller {
 
 			if ($pet->equipped) {
 				$active_pet	= $pet->item_id;
-				break;
 			}
 		}
 
-		$result	= Character::filter($filter, $mine_pets, $player->id, $active, $page, $limit);
+		$result		= Character::filter($filter, $mine_pets, $player->id, $active, $page, $limit);
+		$animes		= Anime::find('active = 1', [
+			'cache' => TRUE
+		]);
 		
 		$this->assign('mine_pets',			$mine_pets);
 		$this->assign('active_pet',			$active_pet);
 		$this->assign('player',				$player);
-		$this->assign('pets',				$result);
+		$this->assign('animes',				$animes);
 		$this->assign('pages',				$result['pages']);
 		$this->assign('page',				$page);
+		$this->assign('pets',				$result);
 		$this->assign('name',				$name);
 		$this->assign('description',		$description);
 		$this->assign('rarity',				$rarity);

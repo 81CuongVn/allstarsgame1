@@ -104,7 +104,7 @@ class Character extends Relation {
 		$mine_pets2	= $mine_pets;
 		$mine_pets	= implode(",", array_keys($mine_pets));
 		
-		if (!$active){
+		if (!$active) {
 			$where2 = "";	
 			$where3 = "";	
 		} elseif ($active == 1) {
@@ -118,20 +118,23 @@ class Character extends Relation {
 			if (!$mine_pets) {
 				$mine_pets = 0;	
 			}
-			$where2 = " AND b.parent_id = 0 AND a.item_id not in (". $mine_pets.")";
+			$where2 = " AND b.parent_id = 0 AND a.item_id not in (". $mine_pets . ")";
 			$where3 = "";
 		}
-
 		$result		= [];
+		
 		$result['pages']  = ceil(Recordset::query('
 			SELECT
-					COUNT(b.id) AS _max    
+				COUNT(b.id) AS _max    
+
 			FROM
 				item_descriptions a JOIN
-				items b ON b.id=a.item_id 
+				items b ON b.id = a.item_id 
 				' . $where3 . '
+
 			WHERE
-				b.parent_id = 0 AND b.item_type_id = 3 ' . $where . $where2 ,true)->row()->_max / $limit);
+				1 = 1 AND b.parent_id = 0 AND b.item_type_id = 3 ' . $where . $where2, TRUE)->row()->_max / $limit);
+														
 		$result['pets']	= Recordset::query('
 			SELECT
 				a.item_id,
@@ -139,18 +142,22 @@ class Character extends Relation {
 				a.description,
 				b.rarity,
 				b.parent_id       
+			
 			FROM
 				item_descriptions a JOIN
-				items b ON b.id=a.item_id 
+				items b ON b.id = a.item_id 
 				' . $where3 . '
+
 			WHERE
-				b.parent_id = 0 AND b.item_type_id = 3 '. $where . $where2 ." LIMIT ".$page * $limit.",". $limit);
+				1 = 1 AND b.item_type_id = 3 ' . $where . $where2 . " LIMIT " . $page * $limit . "," . $limit);
+				
+							
 		foreach ($result['pets']->result_array() as $item) {
-			if (array_key_exists($item['item_id'],$mine_pets2)) {
+			if (array_key_exists($item['item_id'], $mine_pets2)) {
 				$result[] = Item::find($item['item_id']);
 			} else {
-				$can = TRUE;
-				$all_items = ItemDescription::find('image="'.$item['item_id'].'.png"');
+				$can		= TRUE;
+				$all_items	= ItemDescription::find('image=" ' .$item['item_id'] . '.png"');
 				foreach ($all_items as $all_item) {
 					if (array_key_exists($all_item->item_id, $mine_pets2)) {
 						$can = FALSE;
@@ -160,7 +167,6 @@ class Character extends Relation {
 				if ($can && $item['parent_id'] == 0) {
 					$result[] = Item::find_first('id='.$item['item_id']);
 				}
-				
 			}
 		}
 
