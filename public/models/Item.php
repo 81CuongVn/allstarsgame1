@@ -633,7 +633,7 @@
 		function chat_embed() {
 			return '';
 		}
-		static function generate_equipment($player, $rarity_fragment = NULL, $slot = NULL) {
+		static function generate_equipment($player, $rarity_fragment = NULL, $slot = FALSE) {
 			$slots	= [
 				'head',
 				'shoulder',
@@ -643,12 +643,16 @@
 				'leggings'
 			];
 
-			$attributes_by_slot	= [];
-			foreach ($slots as $slot) {
-				$attributes_by_slot[$slot]	= [];
-			}
+			$attributes_by_slot	= [
+				'head'		=> [],
+				'shoulder'	=> [],
+				'chest'		=> [],
+				'neck'		=> [],
+				'hand'		=> [],
+				'leggings'	=> []
+			];
 
-			$ignore_sums	= ['cooldown_reduction', 'for_stamina', 'npc_battle_count'];
+			$ignore_sums	= [ 'cooldown_reduction', 'for_stamina', 'npc_battle_count' ];
 			if (!$slot) {
 				$choosen_slot	= $slots[rand(0, sizeof($slots) - 1)];
 			} else {
@@ -779,7 +783,7 @@
 			$have_extras			= FALSE;
 			
 			if (is_null($rarity_fragment)) {
-				while (TRUE) {
+				while (true) {
 					$rarity_choosen_id	= 0;
 	
 					foreach ($rarity_base as $rarity => $chance) {
