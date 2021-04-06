@@ -6309,6 +6309,7 @@ class Player extends Relation {
 		$check = PlayerLogin::find_first("player_id = {$this->id} and ip = '{$this->last_ip}'");
 		if (!$check) {
 			$insert				= new PlayerLogin();
+			$insert->user_id	= $this->user_id;
 			$insert->player_id	= $this->id;
 			$insert->ip			= $this->last_ip;
 			$insert->browser	= json_encode(getBrowser());
