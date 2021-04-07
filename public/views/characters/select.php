@@ -47,11 +47,13 @@
 					</table>
 				</div>
 				<div style="float: left; clear:both; position: relative; top: 40px; width: 490px; text-align: center">
-					<div  id="playerButtons" style="display: none;">
+					<div id="playerButtons" style="display: none;">
+						<?php if (ROUND_END > date('Y-m-d H:i:s') || $_SESSION['universal']) { ?>
 						<input class="button btn btn-sm btn-primary play" type="button" value="<?php echo t('buttons.play') ?>" style="width:80px;" />
 						<input class="button btn btn-sm btn-danger remove" type="button" value="<?php echo t('buttons.remove') ?>" style="width:80px;" data-message="<?php echo t('characters.select.delete_confirmation') ?>" />
+						<?php } ?>
 					</div>
-					<div  id="playerBanned" style="display: none; text-transform: uppercase;">
+					<div id="playerBanned" style="display: none; text-transform: uppercase;">
 						<button class="button btn btn-sm btn-danger btn-disabled" type="button" style="text-transform: uppercase;" disabled>
 							Este personagem foi banido!
 						</button>

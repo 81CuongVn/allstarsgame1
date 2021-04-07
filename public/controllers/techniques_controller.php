@@ -1,28 +1,28 @@
 <?php
 	class TechniquesController extends Controller {
 		function index() {
-			$player		= Player::get_instance();
-			
-			$player_stats = PlayerStat::find_first("player_id=".$player->id);
-			
-			if(!$player_stats->view_golpes){
+			$player			= Player::get_instance();
+			$player_stats	= PlayerStat::find_first("player_id=".$player->id);
+			if (!$player_stats->view_golpes) {
 				$player_stats->view_golpes = 1;
 				$player_stats->save();
 			}
 			
-			$this->assign('player', $player);
-			$this->assign('items', $player->character_theme()->attacks());
-			$this->assign('player_tutorial', $player->player_tutorial());
+			$this->assign('player',				$player);
+			$this->assign('items',				$player->character_theme()->attacks());
+			$this->assign('player_tutorial',	$player->player_tutorial());
 		}
 		function list_golpes() {
 			$this->layout	= FALSE;
 			$player			= Player::get_instance();
+
 			if ($_POST) {
 				$this->as_json			= TRUE;
 				$this->render			= FALSE;
 				$this->json->success	= FALSE;
-				$errors					= array();
-				
+
+				$errors					= [];
+
 				if (is_numeric($_POST['item_id']) && $_POST['item_id']) {
 					$player_item	= PlayerItem::find_first('item_id = ' . $_POST['item_id'] . ' and player_id =  '. $player->id);
 					if (!$player_item) {
@@ -34,6 +34,7 @@
 
 				if (!sizeof($errors)) {
 					$this->json->success  = TRUE;
+
 					// Remove os itens que estão work
 					$player_item_works = PlayerItem::find("player_id = " . $player->id . " and working = 1");
 					foreach ($player_item_works as $player_item_work) {
@@ -47,7 +48,7 @@
 					// Adiciona o Item para Trabalhar
 					$player_item->working = 1;
 					$player_item->save();
-					
+
 					// Adiciona o golpe na Player item Gem
 					$player_item_gem = PlayerItemGem::find_first("player_id = " . $player->id . " and item_id = " . $player_item->item_id);
 					if (!$player_item_gem) {
@@ -77,15 +78,15 @@
 				if (!$item_equipped->is_generic) {
 					$item_equipped->set_character_theme($player->character_theme_id);
 				}
-							
+
 				// Retorna as combinações do item equipado
 				$item_combinations = ItemGem::find_first("parent_id = " . $player_item_work[0]['item_id']);
 				$this->assign('item_combinations',	$item_combinations);
-				
+
 				// Busca os Golpes aprimorados do golpe Equipado
 				$item_enchanteds = Item::find("item_type_id = 1 AND parent_id = "  .$player_item_work[0]['item_id']);
 				$this->assign('item_enchanteds',	$item_enchanteds);
-				
+
 				// Se tem item trabalhando, vamos puxas suas joias
 				$player_item_gem = PlayerItemGem::find_first("player_id = " . $player->id . " and item_id = " . $player_item_work[0]['item_id']);
 				$this->assign('player_item_gem',	$player_item_gem);
@@ -97,43 +98,42 @@
 			$this->assign('item_equipped',		$item_equipped);
 			$this->assign('player_tutorial',	$player->player_tutorial());
 		}
-		function remove_gem(){
+		function remove_gem() {
 			$this->layout			= false;
 			$this->as_json			= true;
 			$this->json->success	= false;
+
 			$player					= Player::get_instance();
-			$errors					= array();
-			
+			$errors					= [];
+
 			if(isset($_POST['item_id']) && is_numeric($_POST['item_id']) && isset($_POST['counter']) && is_numeric($_POST['counter'])) {
 				$player_item_gem		= PlayerItemGem::find_first("player_id=".$player->id." AND item_id=".$_POST['item_id']);
-				$gem_slot 				= "gem_".$_POST['counter']; 
+				$gem_slot 				= "gem_" . $_POST['counter']; 
 
-				if(!$player_item_gem) {
+				if (!$player_item_gem) {
 					$errors[]	= t('techniques.learn.learned');
 				}
-
 			} else {
 				$errors[]	= t('techniques.learn.invalid');
 			}
 
-			if(!sizeof($errors)) {
+			if (!sizeof($errors)) {
 				$this->json->success		= true;
-				
+
 				// Remove o Encantamento enquanto o jogador estiver mudando as gemas
 				$player_item_encantado = PlayerItem::find_first("player_id=".$player->id." AND item_id=".$player_item_gem->item_id);
 				$player_item_encantado->parent_id = 0;
 				$player_item_encantado->save();
-				
+
 				// Adiciona o contador na pedra que ta sendo removida
 				$player_item_old =  PlayerItem::find_first("player_id=".$player->id." AND item_id=".$player_item_gem->{$gem_slot});
 				$player_item_old->quantity += 1;
 				$player_item_old->save();
-				
+
 				// Remove a pedra do gems
 				$player_item_gem->{$gem_slot} = 0;
 				$player_item_gem->enchanted = 0;
 				$player_item_gem->save();
-				
 			} else {
 				$this->json->errors		= $errors;
 			}
@@ -142,53 +142,51 @@
 			$this->layout			= false;
 			$this->as_json			= true;
 			$this->json->success	= false;
+
 			$player					= Player::get_instance();
 			$errors					= array();
 
-			if(isset($_POST['item']) && is_numeric($_POST['item']) && is_numeric($_POST['slot'])) {
+			if (isset($_POST['item']) && is_numeric($_POST['item']) && is_numeric($_POST['slot'])) {
 				$player_item_gem_show		= PlayerItem::find_first("player_id=".$player->id." AND item_id=".$_POST['item']);
 				$gem_slot 					= "gem_".$_POST['slot']; 
 
-				if($player_item_gem_show->quantity < 1) {
+				if ($player_item_gem_show->quantity < 1) {
 					$errors[]	= t('techniques.learn.learned');
 				}
-
 			} else {
 				$errors[]	= t('techniques.learn.invalid');
 			}
 
-			if(!sizeof($errors)) {
+			if (!sizeof($errors)) {
 				$this->json->success		= true;
-				
+
 				// Procura o item que esta trabalhando
 				$player_item_work = Recordset::query("Select * from player_items WHERE working = 1 and player_id=".$player->id." and item_id in ( SELECT id FROM items WHERE item_type_id=1)")->result_array();
 
 				// adicionando a gema no slot
 				$player_item_gem = PlayerItemGem::find_first("player_id=".$player->id." AND item_id=".$player_item_work[0]['item_id']);
-				if($player_item_gem){
-					
+				if ($player_item_gem) {
 					// Remove o Encantamento enquanto o jogador estiver mudando as gemas
 					$player_item_encantado = PlayerItem::find_first("player_id=".$player->id." AND item_id=".$player_item_work[0]['item_id']);
 					$player_item_encantado->parent_id = 0;
 					$player_item_encantado->save();
-					
+
 					// Se tiver pedra no lugar que ele ta pondo, devolve para o player.
-					if($player_item_gem->{$gem_slot}){
+					if ($player_item_gem->{$gem_slot}) {
 						$player_item_old = PlayerItem::find_first("player_id=".$player->id." AND item_id=".$player_item_gem->{$gem_slot});
 						$player_item_old->quantity += 1;
 						$player_item_old->save();
 					}
-					
+
 					// Remove o item da quantidade da player_item
 					$player_item_new = PlayerItem::find_first("player_id=".$player->id." AND item_id=".$_POST['item']);
 					$player_item_new->quantity--;
 					$player_item_new->save();
-					
+
 					$player_item_gem->{$gem_slot} = $_POST['item'];
 					$player_item_gem->enchanted = 0;
 					$player_item_gem->save();
 				}
-				
 			} else {
 				$this->json->errors		= $errors;
 			}
@@ -202,46 +200,42 @@
 			if (isset($_POST['item_id']) && is_numeric($_POST['item_id']) && isset($_POST['enchanted_id']) && is_numeric($_POST['enchanted_id']) && isset($_POST['combination']) && is_numeric($_POST['combination'])) {
 				$item_gem 			= ItemGem::find_first("parent_id=".$_POST['enchanted_id']);
 				$player_item_gems 	= PlayerItemGem::find_first("player_id=". $player->id." AND item_id=". $_POST['enchanted_id']);
+
 				//Combinação original do item
-				$combinations_gems	= explode(",",$item_gem->combination);
+				$combinations_gems	= explode(",", $item_gem->combination);
 					
-				switch($_POST['combination']){
-					case 1:
-						$item_id = $item_gem->item_id_1;
-					break;
-					case 2:
-						$item_id = $item_gem->item_id_2;
-					break;
-					case 3:
-						$item_id = $item_gem->item_id_3;
-					break;
+				switch ($_POST['combination']) {
+					case 1:	$item_id = $item_gem->item_id_1;	break;
+					case 2:	$item_id = $item_gem->item_id_2;	break;
+					case 3:	$item_id = $item_gem->item_id_3;	break;
 				}
 				
-				if($item_id  != $_POST['item_id']){
+				if ($item_id  != $_POST['item_id']) {
 					$errors[]	= t('enchant.errors.stamina_invalida');
 				}
-				if($_POST['combination']==1){
-					$player_combination_atual = $player_item_gems->gem_1.'-'.$player_item_gems->gem_2; 
-					if($player_item_gems->gem_1 == 0  ||  $player_item_gems->gem_2 == 0){
+
+				if ($_POST['combination'] == 1) {
+					$player_combination_atual = $player_item_gems->gem_1 . '-' . $player_item_gems->gem_2;
+					if ($player_item_gems->gem_1 == 0  ||  $player_item_gems->gem_2 == 0) {
 						$errors[]	= "Você precisa equipar as Gemas para encantar seu golpe.";
 					}
-					if($combinations_gems[0]!=$player_combination_atual){
+					if ($combinations_gems[0] != $player_combination_atual) {
 						$errors[]	= "A combinação de Gemas é inválida para esse item";
 					}
-				}elseif($_POST['combination']==2){
-					$player_combination_atual = $player_item_gems->gem_1.'-'.$player_item_gems->gem_2.'-'.$player_item_gems->gem_3; 
-					if($player_item_gems->gem_1 == 0  ||  $player_item_gems->gem_2 == 0  ||  $player_item_gems->gem_3 == 0){
+				} elseif ($_POST['combination'] == 2) {
+					$player_combination_atual = $player_item_gems->gem_1 . '-' . $player_item_gems->gem_2 . '-' . $player_item_gems->gem_3;
+					if ($player_item_gems->gem_1 == 0  ||  $player_item_gems->gem_2 == 0  ||  $player_item_gems->gem_3 == 0) {
 						$errors[]	= "Você precisa equipar as Gemas para encantar seu golpe.";
 					}
-					if($combinations_gems[1]!=$player_combination_atual){
+					if ($combinations_gems[1] != $player_combination_atual) {
 						$errors[]	= "A combinação de Gemas é inválida para esse item";
 					}
-				}else{
+				} else {
 					$player_combination_atual = $player_item_gems->gem_1.'-'.$player_item_gems->gem_2.'-'.$player_item_gems->gem_3.'-'.$player_item_gems->gem_4; 
-					if($player_item_gems->gem_1 == 0  ||  $player_item_gems->gem_2 == 0  ||  $player_item_gems->gem_3 == 0 ||  $player_item_gems->gem_4 == 0){
+					if ($player_item_gems->gem_1 == 0  ||  $player_item_gems->gem_2 == 0  ||  $player_item_gems->gem_3 == 0 ||  $player_item_gems->gem_4 == 0) {
 						$errors[]	= "Você precisa equipar as Gemas para encantar seu golpe.";
 					}
-					if($combinations_gems[2]!=$player_combination_atual){
+					if ($combinations_gems[2] != $player_combination_atual) {
 						$errors[]	= "A combinação de Gemas é inválida para esse item";
 					}
 				}
@@ -251,26 +245,22 @@
 
 			if (!sizeof($errors)) {
 				$this->json->success	= true;
-				
-				
-				/*$items		= Recordset::query('SELECT * FROM player_items_gems WHERE "player_id=".$player->id."');*/
-				
+
 				// Adiciona o Enchant na Player Item do Jogador
 				$player_item = PlayerItem::find_first("player_id=".$player->id." AND item_id=".$item_gem->parent_id);
 				$player_item->parent_id = $item_id;
 				$player_item->save();
-				
+
 				// Marca o golpe como encantado
 				$player_item_gem = PlayerItemGem::find_first("player_id=".$player->id." AND item_id=".$_POST['enchanted_id']);
 				$player_item_gem->enchanted = 1;
 				$player_item_gem->save();
-				
-				if($player_item_gem->enchanted = 1 && $player_item_gem->gem_1 = 0){
+
+				if ($player_item_gem->enchanted = 1 && $player_item_gem->gem_1 = 0) {
 					$player_item_gem->enchanted = 0;
 					$player_item = PlayerItem::find_first("player_id=".$player->id." AND item_id=0");
 					$player_item_gem->save();	
 				}
-				
 			} else {
 				$this->json->messages	= $errors;
 			}
@@ -291,19 +281,17 @@
 
 			if (!sizeof($errors)) {
 				$this->json->success	= true;
-				
-				//Sorteia a joia
-				$gems = Item::find("item_type_id=15 ORDER BY RAND()");
-				foreach($gems as $gem){
-					
-					$rand 	= rand(1,100);
-					
-					if($rand <= $gem->drop_chance){
+
+				// Sorteia a joia
+				$gems = Item::find("item_type_id = 15 ORDER BY RAND()");
+				foreach ($gems as $gem) {
+					$rand 	= rand(1, 100);
+					if ($rand <= $gem->drop_chance) {
 						$player_item = PlayerItem::find_first("item_id=".$gem->id." AND player_id=".$player->id);
-						if($player_item){
+						if ($player_item) {
 							$player_item->quantity += 1;
 							$player_item->save();
-						}else{
+						} else {
 							$player_item = new PlayerItem();
 							$player_item->player_id = $player->id;
 							$player_item->item_id	= $gem->id;
@@ -313,36 +301,38 @@
 						}
 						break;
 					}
-				}				
+				}
+
 				// Remove os pontos da Player
 				$player->enchant_points_total -= 2000;
 				$player->save();
-				
+
 				// Manda o id do premio para o json
 				$this->json->premio	= $gem->id;
-		
 			} else {
 				$this->json->messages	= $errors;
 			}
 		}
 		function enchant_trainner() {
-			$player					= Player::get_instance();
 			$this->as_json			= true;
 			$this->json->success	= false;
+
+			$player					= Player::get_instance();
 			$errors					= [];
 
 			if (isset($_POST['stamina']) && is_numeric($_POST['stamina']) && $_POST['stamina'] > 0) {
-				if($player->enchant_points >= 3000){
+				if ($player->enchant_points >= 3000) {
 					$errors[]	= t('enchant.errors.nao_pode_treinar');	
 				}
-				if($player->enchant_points_total >= 50000){
+
+				if ($player->enchant_points_total >= 50000) {
 					$errors[]	= t('enchant.errors.nao_pode_treinar2');	
 				}
+
 				//$stamina = ( 10 + $player->level ) - $player->less_stamina;
-				if($player->for_stamina() < $_POST['stamina']){
+				if ($player->for_stamina() < $_POST['stamina']) {
 					$errors[]	= t('enchant.errors.sem_stamina');	
 				}
-				
 			} else {
 				$errors[]	= t('enchant.errors.stamina_invalida');
 			}
@@ -350,30 +340,28 @@
 			if (!sizeof($errors)) {
 				$this->json->success	= true;
 				$pontos_ganhos = $_POST['stamina'] * (15 * 60 / $player->level);
-				
-									
 
-				
 				// Adiciona na player os pontos e remove a stamina
-				if($pontos_ganhos + $player->enchant_points > 3000){
+				if ($pontos_ganhos + $player->enchant_points > 3000) {
 					$pontos_ganhos = 3000 - $player->enchant_points;
 					$player->enchant_points = 3000;
-				}else{
+				} else {
 					$player->enchant_points += $pontos_ganhos;
 				}
-				if($pontos_ganhos + $player->enchant_points_total > 50000){
+
+				if ($pontos_ganhos + $player->enchant_points_total > 50000) {
 					$player->enchant_points_total += 50000 - $player->enchant_points_total;
-				}else{
+				} else {
 					$player->enchant_points_total += $pontos_ganhos;
 				}
+
 				$player->less_stamina += $_POST['stamina'];
 				$player->save();
-		
 			} else {
 				$this->json->messages	= $errors;
 			}
 		}
-		function grimoire(){
+		function grimoire() {
 			$player		= Player::get_instance();
 			$anime_id	= $player->character()->anime_id;
 			
@@ -383,23 +371,21 @@
 				FROM
 					item_descriptions a JOIN
 					items b ON b.id=a.item_id
-
 				WHERE
 					a.anime_id=' . $anime_id . ' AND b.item_type_id = 1 AND b.locked = 1 AND parent_id = 0 AND b.id not in (36,447,1714,1722,1723,1858,2104) AND 
 					a.language_id=' . $_SESSION['language_id'] . '
-
 				ORDER BY b.mana_cost ASC
-				', true);
-		
+			', TRUE);
+
 			foreach ($items->result_array() as $item) {
 				$instance	= Item::find($item['item_id'], array('cache' => true));
 				$instance->set_anime($anime_id);
 				$result[]	= $instance;
 			}	
 
-			$this->assign('player', $player);
-			$this->assign('items', $result);
-			$this->assign('player_tutorial', $player->player_tutorial());
+			$this->assign('player',				$player);
+			$this->assign('items',				$result);
+			$this->assign('player_tutorial',	$player->player_tutorial());
 		}
 		function learn_grimoire(){
 			$player					= Player::get_instance();
