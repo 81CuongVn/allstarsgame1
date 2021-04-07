@@ -11,7 +11,7 @@
 		<input class="button btn btn-sm btn-warning" type="button" id="current-player-change-theme" data-url="<?php echo make_url('characters#list_themes') ?>" value="Temas" style="position:relative; top: -30px" />
 		<input class="button btn btn-sm btn-primary" type="button" id="current-player-change-image" data-url="<?php echo make_url('characters#list_images') ?>" value="Imagens" style="position:relative; top: -30px" />
 	</div>
-	<?php $next_level_menu = Menu::find(41) ?>
+	<?php $next_level_menu = Menu::find(41); ?>
 	<?php if (is_menu_accessible($next_level_menu, $player)): ?>
 		<div align="center" style="margin-left: -22px">
 			<a href="<?php echo make_url($next_level_menu->href) ?>" class="btn btn-sm btn-primary" style="width: 242px"><?php echo t($next_level_menu->name) ?></a>
@@ -33,25 +33,27 @@
 				</div>
 			</div>
 			</a>
-			<?php if($pet): ?>
+			<?php if ($pet) { ?>
 			<?php $pet_item = $pet->item() ?>
-			<div style="position: absolute; top: 19px; left: 74px;">
-				<a href="<?=make_url('characters#pets');?>" style="cursor:pointer">
-				<div class="technique-popover" data-source="#pet-container-<?php echo $player->id ?>" data-title="<?php echo $pet_item->description()->name ?>" data-trigger="click" data-placement="bottom"><?php echo $pet_item->image() ?></div>
-				<div id="pet-container-<?php echo $player->id ?>" class="technique-container">
-					<?php echo $pet_item->tooltip($player) ?>
+				<div style="position: absolute; top: 35px; left: 75px;">
+					<a href="<?=make_url('characters#pets');?>" style="cursor:pointer">
+						<div class="technique-popover" data-source="#pet-container-<?php echo $player->id ?>" data-title="<?php echo $pet_item->description()->name ?>" data-trigger="click" data-placement="bottom">
+							<?=$pet_item->image();?>
+						</div>
+						<div id="pet-container-<?php echo $player->id ?>" class="technique-container">
+							<?php echo $pet_item->tooltip($player) ?>
+						</div>
+					</a>
 				</div>
-				</a>
-			</div>
-			<?php else: ?>
-			<div style="position: absolute; top: 19px; left: 74px;">
-				<a href="<?=make_url('characters#pets');?>" style="cursor:pointer">
-					<img src="<?php echo image_url("battle/center.png" ) ?>" border="0"/>
-				</a>	
-			</div>
-			<?php endif; ?>
+			<?php } else { ?>
+				<div style="position: absolute; top: 35px; left: 75px;">
+					<a href="<?=make_url('characters#pets');?>" style="cursor:pointer">
+						<img src="<?php echo image_url("battle/center.png" ) ?>" border="0"/>
+					</a>	
+				</div>
+			<?php } ?>
 	
-			<div style="position: absolute; width: 288px; top: 65px; text-align: center; z-index: 1">
+			<div style="position: absolute; width: 288px; top: 75px; text-align: center; z-index: 1">
 				<b style="font-size: 13px !important"><?php echo $player->name ?></b>
 			</div>
 			<a href="<?=make_url('techniques#abilities_and_specialities');?>" style="cursor:pointer">
