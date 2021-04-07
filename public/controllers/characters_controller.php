@@ -121,10 +121,13 @@ class CharactersController extends Controller {
 			$this->as_json			= true;
 			$this->render			= false;
 			$this->json->success	= false;
-			$errors					= array();
+
+			$errors					= [];
 			$current_player			= $_SESSION['player_id'] ? Player::get_instance() : false;
-			
-			if (!isset($_POST['id']) || (isset($_POST['id']) && !is_numeric($_POST['id'])))
+
+			if (ROUND_END <= date('Y-m-d H:i:s') && !$_SESSION['universal']) {
+				$errors[]	= t('characters.select.errors.now_allowed');
+			} elseif (!isset($_POST['id']) || (isset($_POST['id']) && !is_numeric($_POST['id'])))
 				$errors[]	= t('characters.select.errors.invalid');
 			else {
 				$player					= Player::find($_POST['id']);

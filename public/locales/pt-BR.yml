@@ -308,6 +308,16 @@ pt-BR:
         <p>Você ainda não possui nenhum personagem. <a href="#{url}">Clique aqui</a> para criar um novo personagem.</p>
       section_favorite: Escolha seu personagem favorito
       delete_confirmation: Você realmente deseja excluir esse personagem? Essa ação não pode ser desfeita!
+      end_round: Round finalizado!
+      end_round_message: |
+        No dia <span class="verde">#{date}</span>, chegamos ao fim de mais um round!<br />
+        No momento estamos trabalhando nos acertos para o próximo round, salvar o Hall da Fama e realizar a entrega das premiações.<br /><br />
+
+        Para mais Informações sobre o próximo round, fique ligados em nossos canais de comunicação:
+          <a href="https://discord.gg/ME8ugpZwSw" target="_blank">Discord</a>,
+          <a href="https://chat.whatsapp.com/LFT74CxmNJz3nVmTQGQi98" target="_blank">WhatsApp</a>,
+          <a href="https://fb.com/AllStarsGame" target="_blank">Facebook</a> e
+          <a href="https://instagram.com/allstarsgame.oficial" target="_blank">Instagram</a>.
       labels:
         currency: Grana
         anime: Anime
@@ -315,10 +325,11 @@ pt-BR:
         faction: Facção
         challenge: Arena do Céu
       errors:
+        now_allowed: Acesso não autorizado!
         banned: Este personagem foi banido!
-        invalid: O personagem especificado é inválido
-        user_match: O personagem especificado não pertence a sua conta
-        pvp_queue: Não é possível trocar de personagem enquanto você estiver na fila de batalhas PVP
+        invalid: O personagem especificado é inválido!
+        user_match: O personagem especificado não pertence a sua conta!
+        pvp_queue: Não é possível trocar de personagem enquanto você estiver na fila de batalhas PvP!
     removed:
       success: Remover personagem
       success_msg: O link de confirmação foi validado e seu personagem foi removido com sucesso

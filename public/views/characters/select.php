@@ -11,6 +11,15 @@
 	<?php if (isset($_GET['deleted_ok'])): ?>
 		<?php echo partial('shared/info', array('id'=> 3, 'title' => 'characters.removed.success', 'message' => t('characters.removed.success_msg'))) ?>
 	<?php endif ?>
+	<?php if (ROUND_END <= date('Y-m-d H:i:s')): ?>
+		<?=partial('shared/info', [
+			'id'		=> 1,
+			'title'		=> 'characters.select.end_round',
+			'message'	=> t('characters.select.end_round_message', [
+				'date'	=> date('d/m/Y à\s H:i:s', strtotime(ROUND_END))
+			])
+		]);?><hr />
+	<?php endif ?>
 	<div style="width: 730px; position: relative;">
 		<div style="width:231px; height:300px; float: left; position: relative; top: 20px;" id="current-player-info">
 			<div id="current-player-image"></div>
@@ -49,9 +58,11 @@
 				<div style="float: left; clear:both; position: relative; top: 40px; width: 490px; text-align: center">
 					<div id="playerButtons" style="display: none;">
 						<?php if (ROUND_END > date('Y-m-d H:i:s') || $_SESSION['universal']) { ?>
-						<input class="button btn btn-sm btn-primary play" type="button" value="<?php echo t('buttons.play') ?>" style="width:80px;" />
-						<input class="button btn btn-sm btn-danger remove" type="button" value="<?php echo t('buttons.remove') ?>" style="width:80px;" data-message="<?php echo t('characters.select.delete_confirmation') ?>" />
+							<input class="button btn btn-sm btn-primary play" type="button" value="<?=t('buttons.play');?>" style="width:80px;" />
+						<?php } else { ?>
+							<input class="button btn btn-sm btn-primary" type="button" value="<?=t('buttons.play');?>" style="width: 80px;" disabled />
 						<?php } ?>
+						<input class="button btn btn-sm btn-danger remove" type="button" value="<?=t('buttons.remove');?>" style="width: 80px;" data-message="<?=t('characters.select.delete_confirmation');?>" />
 					</div>
 					<div id="playerBanned" style="display: none; text-transform: uppercase;">
 						<button class="button btn btn-sm btn-danger btn-disabled" type="button" style="text-transform: uppercase;" disabled>
@@ -98,7 +109,7 @@
 					$counter	= 1;
 					foreach ($players as $player):
 					?>
-						<a data-toggle="tooltip" title="<?=make_tooltip($player->name . ' [ ' . $player->level . ' ]')?>" data-placement="top" data-id="<?=$player->id;?>" data-map-id="<?=($player->map_id ? $player->map_id : 0);?>" class="player page-item page-item-<?=ceil($counter++ / 10);?> <?=($player->banned ? 'locked' : '');?>">
+						<a data-toggle="tooltip" title="<?=make_tooltip($player->name)?>" data-placement="top" data-id="<?=$player->id;?>" data-map-id="<?=($player->map_id ? $player->map_id : 0);?>" class="player page-item page-item-<?=ceil($counter++ / 10);?> <?=($player->banned ? 'locked' : '');?>">
 							<?php if ($player->banned) { ?>
 								<span class="glyphicon glyphicon-ban-circle"></span>
 							<?php } ?>
