@@ -1,27 +1,20 @@
 <?php
 class BattleNpcsController extends Controller {
 	use BattleSharedMethods;
-	//private $npc_limit	= 20;
-
-	function boss() {
-
-	}
+	// private $npc_limit	= 20;
 
 	function index() {
 		$player	= Player::get_instance();
-		
-		//Nova regra de npc
+
+		// Nova regra de npc
 		$player_stats = PlayerStat::find_first('player_id='.$player->id);
-		
-		if ($player_stats->npc_anime_id && $player_stats->npc_character_id)
+		if ($player_stats->npc_anime_id && $player_stats->npc_character_id) {
 			$npc	= new NpcInstance($player, $player_stats->npc_anime_id, [], NULL, NULL, NULL, NULL, $player_stats->npc_character_id, NULL);
-		else {
+		} else {
 			$npc	= new NpcInstance($player);
-			
-			//Salva o NPC atual no player
-			
-			$anime = Character::find_first("id=".$npc->character_id);
-			
+
+			// Salva o NPC atual no player
+			$anime = Character::find_first("id=" . $npc->character_id);
 			$player_stats->npc_anime_id 	= $anime->anime_id;
 			$player_stats->npc_character_id = $npc->character_id;
 			$player_stats->save();
@@ -40,47 +33,50 @@ class BattleNpcsController extends Controller {
 
 		$player->refresh_talents();
 
-		$this->assign('player', $player);
-		$this->assign('npc', $npc);
-		$this->assign("animes", Anime::find($_SESSION['universal'] ? '1=1' : 'active=1', ['cache' => true, 'reorder' => 'id ASC']));
-		$this->assign("player_battle_stats", PlayerBattleStat::find_first("player_id=".$player->id));
+		$this->assign('player',					$player);
+		$this->assign('npc',					$npc);
+		$this->assign("animes",					Anime::find($_SESSION['universal'] ? '1=1' : 'active=1', ['cache' => true, 'reorder' => 'id ASC']));
+		$this->assign("player_battle_stats",	PlayerBattleStat::find_first("player_id=".$player->id));
 
-		//$this->assign('max_npc_count', $this->npc_limit + $player->attributes()->sum_bonus_daily_npc);
-		//$this->assign('current_npc_count', $player->battle_counters()->current_npc_made);
+		// $this->assign('max_npc_count',		$this->npc_limit + $player->attributes()->sum_bonus_daily_npc);
+		// $this->assign('current_npc_count',	$player->battle_counters()->current_npc_made);
 	}
 	function change_oponent() {
 		$this->as_json			= true;
 		$this->json->success	= false;
+
 		$player					= Player::get_instance();
 		$user					= User::get_instance();
 		$errors					= [];
+
 		if(!isset($_POST['character_id']) || (isset($_POST['character_id']) && !is_numeric($_POST['character_id']))) {
 			$errors[]	= t('battles.errors.invalid');
 		} else {
-			if($user->credits < 1) {
+			if ($user->credits < 1) {
 				$errors[]	= t("battles.errors.not_enough_credits");
 			}
 		}
-		if(!sizeof($errors)) {
-			$character = Character::find_first("id=".$_POST['character_id']);
-			
+		if (!sizeof($errors)) {
+			$character = Character::find_first("id=" . $_POST['character_id']);
+
 			// Gasta Créditos do Jogador.
 			$user->spend(1);
-			
+
 			// Troca o NPC Salvo do Cara.
 			$npc = PlayerStat::find_first("player_id=".$player->id);
 			$npc->npc_anime_id = $character->anime_id;
 			$npc->npc_character_id = $character->id;
 			$npc->save();
-			
+
 			$this->json->success	= true;
 		} else {
 			$this->json->messages	= $errors;
 		}
-	}	
+	}
 	function accept() {
 		$this->as_json			= true;
 		$this->json->success	= false;
+
 		$player					= Player::get_instance();
 		$npc					= $player->get_npc();
 		$errors					= [];
@@ -89,19 +85,19 @@ class BattleNpcsController extends Controller {
 		$counters				= $player->battle_counters();
 		$limit_npc 				= $counters->current_npc_made;
 		
-		if(!is_a($npc, 'NpcInstance')) {
+		if (!is_a($npc, 'NpcInstance')) {
 			$errors[]	= t('battles.npc.errors.no_instance');
 		}
 
-		if($player->is_pvp_queued) {
+		if ($player->is_pvp_queued) {
 			$errors[]	= t('battles.npc.errors.pvp_queue');
 		}
 
-		if($limit_npc >= 10 && $_POST['type'] != 6) {
+		if ($limit_npc >= NPC_DAILY_LIMIT && $_POST['type'] != 6) {
 			$errors[]	= t('battles.npc.errors.limit');
 		}
 
-		if($player->at_low_stat()) {
+		if ($player->at_low_stat()) {
 			$errors[]	= t('battles.errors.low_stat');
 		}
 
@@ -112,7 +108,7 @@ class BattleNpcsController extends Controller {
 			$errors[]	= "Luta inválida";
 		}
 
-		if(!sizeof($errors)) {
+		if (!sizeof($errors)) {
 			$battle					= new BattleNpc();
 			$battle->player_id		= $player->id;
 			$battle->battle_type_id	= $_POST['type'];
@@ -121,19 +117,19 @@ class BattleNpcsController extends Controller {
 			if (!has_chance($player->get_parsed_effects()['no_consume_stamina'])) {
 				$player->less_stamina	+= NPC_COST;
 			}
-			if($_POST['type'] != 6){
+			if ($_POST['type'] != 6){
 				// Adiciona o total de npc diário
 				$counters->current_npc_made++;
 				$counters->save();
 			}
-			
+
 			$player->battle_npc_id	= $battle->id;
 			$player->save();
 
 			$npc				= $player->get_npc();
 			$npc->battle_npc_id	= $battle->id;
 			$player->save_npc($npc);
-			
+
 			$this->json->success	= true;
 		} else {
 			$this->json->messages	= $errors;
@@ -146,26 +142,26 @@ class BattleNpcsController extends Controller {
 		$npc					= $player->get_npc_challenge();
 		$errors					= [];
 		
-		if(!is_a($npc, 'NpcInstance')) {
+		if (!is_a($npc, 'NpcInstance')) {
 			$errors[]	= t('battles.npc.errors.no_instance');
 		}
 
-		if($player->is_pvp_queued) {
+		if ($player->is_pvp_queued) {
 			$errors[]	= t('battles.npc.errors.pvp_queue');
 		}
 
-		/*if($player->battle_counters()->current_npc_made >= ($this->npc_limit + $player->attributes()->sum_bonus_daily_npc)) {
-			$errors[]	= t('battles.npc.errors.limit');
-		}*/
+		// if ($player->battle_counters()->current_npc_made >= ($this->npc_limit + $player->attributes()->sum_bonus_daily_npc)) {
+		// 	$errors[]	= t('battles.npc.errors.limit');
+		// }
 
-		if($player->at_low_stat()) {
+		if ($player->at_low_stat()) {
 			$errors[]	= t('battles.errors.low_stat');
 		}
 
 		if ($player->for_stamina() < NPC_COST) {
 			$errors[]	= t('battles.errors.no_stamina');
 		}
-		if ($_POST['type']!=3) {
+		if ($_POST['type'] != 3) {
 			$errors[]	= "Luta inválida";
 		}
 
@@ -186,7 +182,7 @@ class BattleNpcsController extends Controller {
 			$npc				= $player->get_npc_challenge();
 			$npc->battle_npc_id	= $battle->id;
 			$player->save_npc_challenge($npc);
-			
+
 			$this->json->success	= true;
 		} else {
 			$this->json->messages	= $errors;
@@ -203,13 +199,12 @@ class BattleNpcsController extends Controller {
 
 			$player->apply_battle_effects($npc);
 			$npc->apply_battle_effects($player);
-			
-			if($player->battle_npc_challenge){
+
+			if ($player->battle_npc_challenge) {
 				$player->save_npc_challenge($npc);
-			}else{
+			} else {
 				$player->save_npc($npc);
-			}	
-			
+			}
 		// <--
 
 		$this->assign('player',				$player);
@@ -246,7 +241,7 @@ class BattleNpcsController extends Controller {
 			$_POST['item']	= 0;
 		}
 
-		if(!isset($_POST['item']) || (isset($_POST['item']) && !is_numeric($_POST['item']))) {
+		if (!isset($_POST['item']) || (isset($_POST['item']) && !is_numeric($_POST['item']))) {
 			$errors[]	= t('battles.errors.invalid');
 		} else {
 			if ($is_skip) {
@@ -262,7 +257,7 @@ class BattleNpcsController extends Controller {
 					} else {
 						$item->set_anime($npc->character()->anime_id);
 					}
-				}elseif($is_kill){
+				} elseif ($is_kill){
 					$player_item	= $player->get_technique($_POST['item']);
 					$item			= $player_item->item();
 				} else {
@@ -279,12 +274,12 @@ class BattleNpcsController extends Controller {
 				$can_run_action	= true;
 
 				if (!$is_copy && !$is_kill) {
-					if($item->formula()->consume_mana > $player->for_mana()) {
+					if ($item->formula()->consume_mana > $player->for_mana()) {
 						$can_run_action	= false;
 						$errors[]	= t('battles.errors.no_mana', ['mana' => strtolower(t('formula.for_mana.' . $item->anime()->id))]);
 					}
 
-					if($player->has_technique_lock($item->id) && !$is_skip) {
+					if ($player->has_technique_lock($item->id) && !$is_skip) {
 						$can_run_action	= false;
 						$errors[]	= t('battles.errors.locked');
 					}
@@ -297,7 +292,7 @@ class BattleNpcsController extends Controller {
 					}
 				}
 
-				if($can_run_action) {
+				if ($can_run_action) {
 					SharedStore::S('battle_used_ability_' . $player->id, false);
 					SharedStore::S('battle_used_speciality_' . $player->id, false);
 
@@ -353,9 +348,9 @@ class BattleNpcsController extends Controller {
 							$player->less_mana	+= $consume_half ? floor($item->formula()->consume_mana / 2) : $item->formula()->consume_mana;
 						}
 					}
-					if($challenge){
-						$npc->less_mana		+= $enemy_item->formula()->consume_mana - floor($challenge->quantity/25);
-					}else{
+					if ($challenge) {
+						$npc->less_mana		+= $enemy_item->formula()->consume_mana - floor($challenge->quantity / 25);
+					} else {
 						$npc->less_mana		+= $enemy_item->formula()->consume_mana;
 					}
 
@@ -407,48 +402,54 @@ class BattleNpcsController extends Controller {
 
 					// Restore attribute
 					if ($player->less_mana > 0) {
-						if(!$player_effects['cancel_regen_mana']){
+						if (!$player_effects['cancel_regen_mana']) {
 							$player->less_mana	-= $player->less_mana == 1 ? 1 : 2;
 						}
+
 						// Remove 2 de mana do jogador e adiciona ao npc.
-						if($player_effects['steal_mana']){
+						if ($player_effects['steal_mana']) {
 							$player->less_mana	+= $player_effects['steal_mana'];
 							$npc->less_mana		-= $player_effects['steal_mana'];
-							
+
 							// trava para arrumar a mana negativa do npc
 							$npc->less_mana		= $npc->less_mana > $npc->for_mana(true) ? $npc->for_mana(true) : $npc->less_mana;
 						}
+
 						// Remove 2 de mana do enemy.
-						if($player_effects['remove_mana']){
+						if ($player_effects['remove_mana']) {
 							$npc->less_mana	-= $player_effects['remove_mana'];
-							
+
 							// trava para arrumar a mana negativa do npc
 							$npc->less_mana		= $npc->less_mana > $npc->for_mana(true) ? $npc->for_mana(true) : $npc->less_mana;
 						}
 					}
-					if($player->less_mana > $player->for_mana(true)){
+
+					if ($player->less_mana > $player->for_mana(true)){
 						$player->less_mana = $player->for_mana(true);
 					}
 
 					if ($npc->less_mana > 0) {
-						if(!$enemy_effects['cancel_regen_mana']){
-							if($challenge){
-								$npc->less_mana	-= (2 + floor($challenge->quantity/20));
+						if (!$enemy_effects['cancel_regen_mana']) {
+							if ($challenge) {
+								$npc->less_mana	-= (2 + floor($challenge->quantity / 20));
 							}else{
 								$npc->less_mana	-= $npc->less_mana == 1 ? 1 : 2;
 							}
 						}
+
 						// Remove 2 de mana do jogador e adiciona ao npc.
 						if($enemy_effects['steal_mana']){
 							$npc->less_mana			+= $enemy_effects['steal_mana'];
 							$player->less_mana		-= $enemy_effects['steal_mana'];
 						}
+
 						// Remove 2 de mana do enemy.
-						if($enemy_effects['remove_mana']){
+						if ($enemy_effects['remove_mana']) {
 							$player->less_mana	-= $enemy_effects['remove_mana'];
 						}
 					}
-					if($npc->less_mana > $npc->for_mana(true)){
+
+					if ($npc->less_mana > $npc->for_mana(true)){
 						$npc->less_mana = $npc->for_mana(true);
 					}
 
@@ -471,11 +472,11 @@ class BattleNpcsController extends Controller {
 					}
 
 					$battle_log	= join('<br />', $battle_log);
-					$battle_log	= [$battle_log];
-					
-					if($player->battle_npc_challenge){
+					$battle_log	= [ $battle_log ];
+
+					if ($player->battle_npc_challenge) {
 						$player->save_npc_challenge($npc);
-					}else{
+					} else {
 						$player->save_npc($npc);
 					}
 
@@ -489,58 +490,60 @@ class BattleNpcsController extends Controller {
 					$was_draw		= false;
 					$can_draw		= $player_init == $enemy_init;
 
-					if($can_draw && __check_dead($npc) && __check_dead($player)) {
+					// Empate
+					if ($can_draw && __check_dead($npc) && __check_dead($player)) {
 						$battle->won	= 0;
 						$battle->draw	= 1;
 						$finished		= true;
 						$was_draw		= true;	
-						
-						//Verifica se o jogador continua no desafio
-						if($battle->battle_type_id == 3 && $player->challenge_id){
+
+						// Verifica se o jogador continua no desafio
+						if ($battle->battle_type_id == 3 && $player->challenge_id) {
 							$player_challenge	= PlayerChallenge::find_first("player_id =". $player->id. " AND challenge_id=". $player->challenge_id." AND complete=0");
 							$challenge			= Challenge::find_first($player->challenge_id);
 
 							$player_challenge->complete = 1;
 							$player_challenge->completed_at = now(true);
 							$player_challenge->save();	
-							
+
 							$player->challenge_id = 0;
 							$player->save();
-							
-							//Prêmios do Arena do Céu
-							
-							//Exp
-							if($player_challenge->quantity > 5){	
+
+							// Prêmios do Arena do Céu
+
+							// Exp
+							if ($player_challenge->quantity > 5) {
 								$challenge_exp = $challenge->reward_exp * $player_challenge->quantity;
-								if ($challenge_exp > 0)
+								if ($challenge_exp > 0) {
 									$challenge_exp = 0;
+								}
 								$player->earn_exp($challenge_exp);
 							}
-							//Dinheiro
-							if($player_challenge->quantity > 5){
+							// Dinheiro
+							if ($player_challenge->quantity > 5) {
 								$challenge_money = $challenge->reward_gold * $player_challenge->quantity;
-								if ($challenge_money > 0)
+								if ($challenge_money > 0) {
 									$challenge_money = 0;
+								}
 								$player->earn($challenge_money);
 							}
-							//Equipamento
-							if($player_challenge->quantity > 10 && $player_challenge->quantity < 21){
+							// Equipamento
+							if ($player_challenge->quantity > 10 && $player_challenge->quantity < 21) {
 								Item::generate_equipment($player, 0);
-							}else if($player_challenge->quantity > 20 && $player_challenge->quantity < 46){
+							} elseif ($player_challenge->quantity > 20 && $player_challenge->quantity < 46) {
 								Item::generate_equipment($player, 1);
-							}else if($player_challenge->quantity > 65){
+							} elseif ($player_challenge->quantity > 65) {
 								Item::generate_equipment($player, 2);
 							}
-							//Mascote
-							if($player_challenge->quantity > 45 && $player_challenge->quantity < 81){
+							// Mascote
+							if ($player_challenge->quantity > 45 && $player_challenge->quantity < 81) {
 								if (!$player->has_item($challenge->reward_pet_1)) {
 									$player_pet				= new PlayerItem();
 									$player_pet->item_id	= $challenge->reward_pet_1;
 									$player_pet->player_id	= $player->id;
 									$player_pet->save();
 								}
-							
-							}else if($player_challenge->quantity > 80){
+							} elseif ($player_challenge->quantity > 80) {
 								if (!$player->has_item($challenge->reward_pet_2)) {
 									$player_pet				= new PlayerItem();
 									$player_pet->item_id	= $challenge->reward_pet_2;
@@ -548,8 +551,8 @@ class BattleNpcsController extends Controller {
 									$player_pet->save();
 								}
 							}
-							//Titulo
-							if($player_challenge->quantity > 45 && $player_challenge->quantity < 81){
+							// Titulo
+							if ($player_challenge->quantity > 45 && $player_challenge->quantity < 81) {
 								$user_headline	= UserHeadline::find_first("headline_id=".$challenge->reward_title_1." and user_id=".$player->user_id);	
 								if (!$user_headline) {
 									$reward_headline				= new UserHeadline();
@@ -557,7 +560,7 @@ class BattleNpcsController extends Controller {
 									$reward_headline->headline_id	= $challenge->reward_title_1;
 									$reward_headline->save();
 								}
-							}else if($player_challenge->quantity > 80){
+							} elseif ($player_challenge->quantity > 80) {
 								$user_headline	= UserHeadline::find_first("headline_id=".$challenge->reward_title_2." and user_id=".$player->user_id);	
 								if (!$user_headline) {
 									$reward_headline				= new UserHeadline();
@@ -565,18 +568,19 @@ class BattleNpcsController extends Controller {
 									$reward_headline->headline_id	= $challenge->reward_title_2;
 									$reward_headline->save();
 								}
-							}		
-							//Estrelas
-							if($player_challenge->quantity > 100){	
+							}
+							// Estrelas
+							if ($player_challenge->quantity > 100) {
 								$user = $player->user();
 								$user->credits += 3;
 								$user->save();
-								
+
 								// Verifica os créditos do jogador.
 								$player->achievement_check("credits");
 								// Objetivo de Round
 								$player->check_objectives("credits");
 							}
+
 							// Verifica a arena do jogador.
 							$player->achievement_check("challenges");	
 							// Objetivo de Round
@@ -584,74 +588,76 @@ class BattleNpcsController extends Controller {
 						}						
 					}
 
+					// Não empatou
 					if (!$was_draw) {
-						if($player_init >= $enemy_init) {
-							if(__check_dead($npc)) {
+						if ($player_init >= $enemy_init) {
+							if (__check_dead($npc)) {
 								$battle->won	= $player->id;
 								$finished		= true;
-								
-								//Verifica se o jogador continua no desafio									
-								if($battle->battle_type_id == 3 && $player->challenge_id){
+
+								// Verifica se o jogador continua no desafio									
+								if ($battle->battle_type_id == 3 && $player->challenge_id) {
 									$player_challenge	= PlayerChallenge::find_first("player_id =". $player->id. " AND challenge_id=". $player->challenge_id." AND complete=0");
 									$player_challenge->quantity += 1;
 									$player_challenge->save();	
-									
+
 									// Verifica a arena do jogador.
 									$player->achievement_check("challenges");
 									// Objetivo de Round
 									$player->check_objectives("challenges");	
 								}
-								
 							} else {
-								if(__check_dead($player)) {
+								if (__check_dead($player)) {
 									$battle->won	= 0;
 									$finished		= true;
-									
-									//Verifica se o jogador continua no desafio
-									if($battle->battle_type_id == 3 && $player->challenge_id){
+
+									// Verifica se o jogador continua no desafio
+									if ($battle->battle_type_id == 3 && $player->challenge_id) {
 										$player_challenge	= PlayerChallenge::find_first("player_id =". $player->id. " AND challenge_id=". $player->challenge_id." AND complete=0");
 										$challenge			= Challenge::find_first($player->challenge_id);
 										$player_challenge->complete = 1;
 										$player_challenge->completed_at = now(true);
 										$player_challenge->save();	
-										
+
 										$player->challenge_id = 0;
 										$player->save();
-										
+
 										//Prêmios do Arena do Céu
-							
-										//Exp
-										if($player_challenge->quantity > 5){	
+
+										// Exp
+										if ($player_challenge->quantity > 5) {	
 											$challenge_exp = $challenge->reward_exp * $player_challenge->quantity;
-											if ($challenge_exp > 0)
+											if ($challenge_exp > 0) {
 												$challenge_exp = 0;
+											}
 											$player->earn_exp($challenge_exp);
 										}
-										//Dinheiro
-										if($player_challenge->quantity > 5){
+										// Dinheiro
+										if ($player_challenge->quantity > 5){
 											$challenge_money = $challenge->reward_gold * $player_challenge->quantity;
-											if ($challenge_money > 0)
+											if ($challenge_money > 0) {
 												$challenge_money = 0;
+											}
 											$player->earn($challenge_money);
 										}
-										//Equipamento
-										if($player_challenge->quantity > 10 && $player_challenge->quantity < 21){
+										// Equipamento
+										if ($player_challenge->quantity > 10 && $player_challenge->quantity < 21) {
 											Item::generate_equipment($player, 0);
-										}else if($player_challenge->quantity > 20 && $player_challenge->quantity < 46){
+										} elseif ($player_challenge->quantity > 20 && $player_challenge->quantity < 46) {
 											Item::generate_equipment($player, 1);
-										}else if($player_challenge->quantity > 65){
+										} elseif ($player_challenge->quantity > 65) {
 											Item::generate_equipment($player, 2);
 										}
-										//Mascote
-										if($player_challenge->quantity > 45 && $player_challenge->quantity < 81){
+										// Mascote
+										if ($player_challenge->quantity > 45 && $player_challenge->quantity < 81) {
 											if (!$player->has_item($challenge->reward_pet_1)) {
 												$player_pet				= new PlayerItem();
 												$player_pet->item_id	= $challenge->reward_pet_1;
 												$player_pet->player_id	= $player->id;
 												$player_pet->save();
 											}
-										
-										}else if($player_challenge->quantity > 80){
+
+										} elseif ($player_challenge->quantity > 80) {
 											if (!$player->has_item($challenge->reward_pet_2)) {
 												$player_pet				= new PlayerItem();
 												$player_pet->item_id	= $challenge->reward_pet_2;
@@ -659,8 +665,8 @@ class BattleNpcsController extends Controller {
 												$player_pet->save();
 											}
 										}
-										//Titulo
-										if($player_challenge->quantity > 45 && $player_challenge->quantity < 81){
+										// Titulo
+										if ($player_challenge->quantity > 45 && $player_challenge->quantity < 81) {
 											$user_headline	= UserHeadline::find_first("headline_id=".$challenge->reward_title_1." and user_id=".$player->user_id);	
 											if (!$user_headline) {
 												$reward_headline				= new UserHeadline();
@@ -668,7 +674,7 @@ class BattleNpcsController extends Controller {
 												$reward_headline->headline_id	= $challenge->reward_title_1;
 												$reward_headline->save();
 											}
-										}else if($player_challenge->quantity > 80){
+										} elseif ($player_challenge->quantity > 80) {
 											$user_headline	= UserHeadline::find_first("headline_id=".$challenge->reward_title_2." and user_id=".$player->user_id);	
 											if (!$user_headline) {
 												$reward_headline				= new UserHeadline();
@@ -676,18 +682,19 @@ class BattleNpcsController extends Controller {
 												$reward_headline->headline_id	= $challenge->reward_title_2;
 												$reward_headline->save();
 											}
-										}		
-										//Estrelas
-										if($player_challenge->quantity > 100){	
+										}
+										// Estrelas
+										if ($player_challenge->quantity > 100) {
 											$user = $player->user();
 											$user->credits += 3;
 											$user->save();
-											
+
 											// Verifica os créditos do jogador.
 											$player->achievement_check("credits");
 											// Objetivo de Round
 											$player->check_objectives("credits");
 										}
+
 										// Verifica a arena do jogador.
 										$player->achievement_check("challenges");	
 										// Objetivo de Round
@@ -695,56 +702,57 @@ class BattleNpcsController extends Controller {
 									}
 								}
 							}
-						} elseif($player_init < $enemy_init) {
-							if(__check_dead($player)) {
+						} elseif ($player_init < $enemy_init) {
+							if (__check_dead($player)) {
 								$battle->won	= 0;
 								$finished		= true;	
-								
-								//Verifica se o jogador continua no desafio
-								if($battle->battle_type_id == 3 && $player->challenge_id){
+
+								// Verifica se o jogador continua no desafio
+								if ($battle->battle_type_id == 3 && $player->challenge_id) {
 									$player_challenge	= PlayerChallenge::find_first("player_id =". $player->id. " AND challenge_id=". $player->challenge_id." AND complete=0");
 									$challenge			= Challenge::find_first($player->challenge_id);
 									$player_challenge->complete = 1;
 									$player_challenge->completed_at = now(true);
 									$player_challenge->save();	
-									
+
 									$player->challenge_id = 0;
 									$player->save();
-									
+
 									//Prêmios do Arena do Céu
-							
-									//Exp
-									if($player_challenge->quantity > 5){	
+
+									// Exp
+									if ($player_challenge->quantity > 5){	
 										$challenge_exp = $challenge->reward_exp * $player_challenge->quantity;
-										if ($challenge_exp > 0)
+										if ($challenge_exp > 0) {
 											$challenge_exp = 0;
+										}
 										$player->earn_exp($challenge_exp);
 									}
-									//Dinheiro
-									if($player_challenge->quantity > 5){
+									// Dinheiro
+									if ($player_challenge->quantity > 5) {
 										$challenge_money = $challenge->reward_gold * $player_challenge->quantity;
-										if ($challenge_money > 0)
+										if ($challenge_money > 0) {
 											$challenge_money = 0;
+										}
 										$player->earn($challenge_money);
 									}
-									//Equipamento
-									if($player_challenge->quantity > 10 && $player_challenge->quantity < 21){
+									// Equipamento
+									if ($player_challenge->quantity > 10 && $player_challenge->quantity < 21) {
 										Item::generate_equipment($player, 0);
-									}else if($player_challenge->quantity > 20 && $player_challenge->quantity < 46){
+									} elseif ($player_challenge->quantity > 20 && $player_challenge->quantity < 46) {
 										Item::generate_equipment($player, 1);
-									}else if($player_challenge->quantity > 65){
+									} elseif ($player_challenge->quantity > 65) {
 										Item::generate_equipment($player, 2);
 									}
-									//Mascote
-									if($player_challenge->quantity > 45 && $player_challenge->quantity < 81){
+									// Mascote
+									if ($player_challenge->quantity > 45 && $player_challenge->quantity < 81) {
 										if (!$player->has_item($challenge->reward_pet_1)) {
 											$player_pet				= new PlayerItem();
 											$player_pet->item_id	= $challenge->reward_pet_1;
 											$player_pet->player_id	= $player->id;
 											$player_pet->save();
 										}
-									
-									}else if($player_challenge->quantity > 80){
+									} elseif ($player_challenge->quantity > 80) {
 										if (!$player->has_item($challenge->reward_pet_2)) {
 											$player_pet				= new PlayerItem();
 											$player_pet->item_id	= $challenge->reward_pet_2;
@@ -752,8 +760,8 @@ class BattleNpcsController extends Controller {
 											$player_pet->save();
 										}
 									}
-									//Titulo
-									if($player_challenge->quantity > 45 && $player_challenge->quantity < 81){
+									// Titulo
+									if ($player_challenge->quantity > 45 && $player_challenge->quantity < 81) {
 										$user_headline	= UserHeadline::find_first("headline_id=".$challenge->reward_title_1." and user_id=".$player->user_id);	
 										if (!$user_headline) {
 											$reward_headline				= new UserHeadline();
@@ -761,7 +769,7 @@ class BattleNpcsController extends Controller {
 											$reward_headline->headline_id	= $challenge->reward_title_1;
 											$reward_headline->save();
 										}
-									}else if($player_challenge->quantity > 80){
+									} elseif ($player_challenge->quantity > 80) {
 										$user_headline	= UserHeadline::find_first("headline_id=".$challenge->reward_title_2." and user_id=".$player->user_id);	
 										if (!$user_headline) {
 											$reward_headline				= new UserHeadline();
@@ -769,48 +777,48 @@ class BattleNpcsController extends Controller {
 											$reward_headline->headline_id	= $challenge->reward_title_2;
 											$reward_headline->save();
 										}
-									}		
-									//Estrelas
-									if($player_challenge->quantity > 100){	
+									}
+									// Estrelas
+									if ($player_challenge->quantity > 100) {
 										$user = $player->user();
 										$user->credits += 3;
 										$user->save();
-										
+
 										// Verifica os créditos do jogador.
 										$player->achievement_check("credits");
 										// Objetivo de Round
 										$player->check_objectives("credits");
 									}
+
 									// Verifica a arena do jogador.
 									$player->achievement_check("challenges");	
 									// Objetivo de Round
 									$player->check_objectives("challenges");
 								}
 							} else {
-								if(__check_dead($npc)) {
+								if (__check_dead($npc)) {
 									$battle->won	= $player->id;
 									$finished		= true;
-									
-									//Verifica se o jogador continua no desafio
-									if($battle->battle_type_id == 3 && $player->challenge_id){
+
+									// Verifica se o jogador continua no desafio
+									if ($battle->battle_type_id == 3 && $player->challenge_id) {
 										$player_challenge	= PlayerChallenge::find_first("player_id =". $player->id. " AND challenge_id=". $player->challenge_id." AND complete=0");
 										$player_challenge->quantity += 1;
 										$player_challenge->save();
-										
+
 										// Verifica a arena do jogador.
 										$player->achievement_check("challenges");
 										// Objetivo de Round
 										$player->check_objectives("challenges");
-												
 									}
 								}
 							}
 						}
 					}
-					
-					if($finished) {
-						$battle->finished_at	= now(true);
-						$player->battle_npc_challenge = 0;
+
+					if ($finished) {
+						$battle->finished_at			= now(true);
+						$player->battle_npc_challenge	= 0;
 					}
 
 					$battle->player_effect_log	= null;

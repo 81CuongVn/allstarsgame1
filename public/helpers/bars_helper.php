@@ -96,7 +96,7 @@ function exp_bar($value, $max, $max_width, $text = null) {
 
     return	'<div class="exp-bar exp-bar-' . $max_width . '" style="width: ' . $max_width . 'px">' .
         '<div class="fill" style="width: ' . $width . 'px"></div>' .
-        '<div class="text">' . highamount($text) . '</div>' .
+        '<div class="text">' . $text . '</div>' .
     '</div>';
 }
 function pet_exp_bar($value, $max, $max_width, $text = null) {

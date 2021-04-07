@@ -40,7 +40,7 @@
         <div class="col-xs-3 text-center">
             <b><?=t('characters.create.labels.anime');?></b><br />
             <select name="anime" class="form-control input-sm select2" style="margin-bottom: 15px;">
-                <option value="all"><?=t('global.all');?></option>
+                <option value="all" <?=('all' == $anime ? 'selected' : '');?>><?=t('global.all');?></option>
                 <?php foreach ($animes as $a) { ?>
                     <option value="<?=$a->id;?>" <?=($a->id == $anime ? 'selected' : '');?>><?=$a->description()->name;?></option>
                 <?php } ?>
@@ -49,11 +49,11 @@
         <div class="col-xs-3 text-center">
             <b><?=t('rankings.players.header.raridade');?></b><br />
             <select name="rarity" class="form-control input-sm">
-                <option value="all"><?=t('global.all');?></option>
-                <option value="common" <?php if ('common' == $rarity): ?>selected="selected"<?php endif ?>>Comum</option>
-                <option value="rare" <?php if ('rare' == $rarity): ?>selected="selected"<?php endif ?>>Raro</option>
-                <option value="legendary" <?php if ('legendary' == $rarity): ?>selected="selected"<?php endif ?>>Lendário</option>
-                <option value="mega" <?php if ('mega' == $rarity): ?>selected="selected"<?php endif ?>>Mega</option>
+                <option value="all" <?=('all' == $rarity ? 'selected' : '');?>><?=t('global.all');?></option>
+                <option value="common" <?=('common' == $rarity ? 'selected' : '');?>>Comum</option>
+                <option value="rare" <?=('rare' == $rarity ? 'selected' : '');?>>Raro</option>
+                <option value="legendary" <?=('legendary' == $rarity ? 'selected' : '');?>>Lendário</option>
+                <option value="mega" <?=('mega' == $rarity ? 'selected' : '');?>>Mega</option>
             </select>
         </div>
         <div class="col-xs-2 text-center">

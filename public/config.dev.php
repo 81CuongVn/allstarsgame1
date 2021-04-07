@@ -106,6 +106,9 @@ define('PVP_TURN_TIME',			90);
 define('NPC_COST',				2);
 define('PVP_COST',				2);
 
+# NPC daily limit
+define('NPC_DAILY_LIMIT',		10);
+
 # Event settings
 define('EVENT_ACTIVE', 			TRUE);
 define('EVENT_ITEM', 			2059);

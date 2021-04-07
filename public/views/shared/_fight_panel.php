@@ -78,7 +78,9 @@
 							<div class="life-fill"></div>
 							<div class="text"></div>
 						</div>
-						<div class="level"><?=$player->level;?></div>
+						<div class="level">
+							<!-- <?=$player->level;?> -->
+						</div>
 					</div>
 				</div>
 			</div>
@@ -106,7 +108,9 @@
 							<div class="life-fill"></div>
 							<div class="text"></div>
 						</div>
-						<div class="level"><?=$enemy->level;?></div>
+						<div class="level">
+							<!-- <?=$enemy->level;?> -->
+						</div>
 					</div>
 				</div>
 			</div>

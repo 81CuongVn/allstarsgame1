@@ -969,6 +969,7 @@ class CharactersController extends Controller {
 		$name		= '';
 		$anime		= 'all';
 		$rarity		= 'all';
+		$status		= 'all';
 
 		if ($_POST) {
 			if (isset($_POST['name']) && strlen(trim($_POST['name']))) {
@@ -996,6 +997,7 @@ class CharactersController extends Controller {
 		$this->assign('name',				$name);
 		$this->assign('anime',				$anime);
 		$this->assign('rarity',				$rarity);
+		$this->assign('status',				$status);
 		$this->assign('page',				$page);
 		$this->assign('pages',				$result['pages']);
 		$this->assign('pets',				$result['pets']);

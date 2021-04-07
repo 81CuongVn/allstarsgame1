@@ -43,7 +43,7 @@
 <div class="tutorial-aprimoramento">
 	<div style="float:left; width:370px">
 		<p align="center"><?php echo t('enchant.limite')?></p>
-		<?php echo exp_bar($player->enchant_points . '/3000', 3000, 350);?>
+		<?=exp_bar($player->enchant_points, 3000, 350, highamount($player->enchant_points) . '/3.000');?>
 	</div>
 	<form id="treino-stamina-filter-form" method="post">
 		<div style="float:left; width:260px">
@@ -78,10 +78,10 @@
 			<b><?php echo t('enchant.pontos')?></b>
 			<div class="content">
 				<p><?php echo t('enchant.frase')?></p><br />
-				<?php echo exp_bar($player->enchant_points_total . '/50000', 50000, 350);?><br />
+				<?php echo exp_bar($player->enchant_points_total, 50000, 350, highamount($player->enchant_points_total) . '/50.000');?><br />
 				<?php $total_gem = floor($player->enchant_points_total / 2000);?>
 				<p class="laranja">
-					<?php echo $total_gem >=1 ? t('enchant.frase1')." ". $total_gem . " " . t('enchant.frase2'). " <a class='btn btn-sm btn-success create_gem'>".t('enchant.criar')."</a>" : t('enchant.frase3')?><br />
+					<?php echo $total_gem >= 1 ? t('enchant.frase1')." ". $total_gem . " " . t('enchant.frase2'). " <a class='btn btn-sm btn-success create_gem'>".t('enchant.criar')."</a>" : t('enchant.frase3')?><br />
 				</p>
 				<?php if(isset($_GET['joia']) && $_GET['joia']){?>
 					<div style="position: absolute; float: right; right: 61px; top: 72px;">
