@@ -12,7 +12,7 @@ define('GAME_VERSION', 			'2.0.0');
 define('GLOBAL_PASSWORD', 		'dev2@21');
 
 # Round settings
-define('ROUND_END',				'2021-12-31 23:59:59');
+define('ROUND_END',				'2021-08-09 18:00:00');
 
 # Beta / Maintenance
 define('IS_BETA',					FALSE);

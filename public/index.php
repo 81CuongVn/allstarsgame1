@@ -115,7 +115,7 @@ if (IS_MAINTENANCE) {
     }
 }
 
-$___memory['before_libs']	= memory_get_usage();
+$___memory['before_libs']	    = memory_get_usage();
 
 if (is_dir(ROOT . '/lib')) {
     foreach (glob(ROOT . '/lib/*.php') as $lib) {
@@ -124,7 +124,7 @@ if (is_dir(ROOT . '/lib')) {
 }
 
 $___memory['after_libs']		= memory_get_usage();
-$___memory['before_langs']	= memory_get_usage();
+$___memory['before_langs']	    = memory_get_usage();
 
 require_once ROOT . '/includes/lang.php';
 
@@ -144,7 +144,7 @@ require_once ROOT . '/helpers/pagseguro_helper.php';
 require_once ROOT . '/helpers/facebook_helper.php';
 require_once ROOT . '/helpers/reputation_helper.php';
 
-$___memory['after_helpers']	= memory_get_usage();
+$___memory['after_helpers']     = memory_get_usage();
 $___memory['before_mailers']	= memory_get_usage();
 
 if (is_dir(ROOT . '/mailers')) {
@@ -153,7 +153,7 @@ if (is_dir(ROOT . '/mailers')) {
 	}
 }
 
-$___memory['after_mailers']	= memory_get_usage();
+$___memory['after_mailers']     = memory_get_usage();
 
 $controller_file	= 'controllers/' . $controller . '_controller.php';
 $controller_class	= '';
@@ -273,7 +273,7 @@ if ($view_file && !$instance->as_json) {
 
 if ($layout) {
     if ($_SESSION['universal']) {
-		$view	.= render_file('views/debug.php', array());
+		$view	.= render_file('views/debug.php', []);
 	}
 
     echo str_replace('@yield', $view, $layout);
@@ -281,7 +281,7 @@ if ($layout) {
     if ($instance->as_json) {
         header('Content-Type: application/json');
 
-        echo json_encode($instance->json);
+        echo json_encode($instance->json, JSON_PRETTY_PRINT);
     } else {
         echo $view;
     }
