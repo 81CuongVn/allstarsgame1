@@ -528,7 +528,7 @@ class QuestsController extends Controller {
 			$this->json->messages	= $errors;
 		}
 	}
-	function account_change(){
+	function account_change() {
 		$player					= Player::get_instance();
 		$user					= User::get_instance();
 		$this->as_json			= true;
@@ -540,53 +540,48 @@ class QuestsController extends Controller {
 		$animes					= 0;
 		$personagens			= 0;
 
-		if(isset($_POST['id']) && is_numeric($_POST['id']) && isset($_POST['quest']) && is_numeric($_POST['quest'])) {
+		if (isset($_POST['id']) && is_numeric($_POST['id']) && isset($_POST['quest']) && is_numeric($_POST['quest'])) {
 			$daily				= DailyQuest::find($_POST['quest']);
 
-			if(!$daily) {
+			if (!$daily) {
 				$errors[]	= t('quests.time.errors.invalid');
 			} else {
 				$user_daily 		= UserDailyQuest::find($_POST['id']);
 				$buy_mode_change 	= UserChange::find_first("user_id=" . $user->id);
 
-				if($user_daily->complete==1){
+				if ($user_daily->complete == 1) {
 					$errors[]	= t('quests.time.errors.invalid');
 				}
-				if($buy_mode_change){
-					if($buy_mode_change->daily == 0){
+				if ($buy_mode_change) {
+					if ($buy_mode_change->daily == 0) {
 						$buy_change = 0;
-					}elseif($buy_mode_change->daily > 0 && $buy_mode_change->daily < 5){
-
+					} elseif ($buy_mode_change->daily > 0 && $buy_mode_change->daily < 5) {
 						$valor_change = $buy_mode_change->daily * 500;
-
 						if ($player->currency < $valor_change) {
 							$errors[]	= t("quests.time.errors.not_enough_currency");
-						}else{
+						} else {
 							$buy_change = 1;
 						}
-
-					}elseif($buy_mode_change->daily > 4){
-
-						if($buy_mode_change->daily > 4   && $buy_mode_change->daily < 10){
+					} elseif ($buy_mode_change->daily > 4) {
+						if ($buy_mode_change->daily > 4   && $buy_mode_change->daily < 10) {
 							$valor_change = 1;
-						}elseif($buy_mode_change->daily > 9  && $buy_mode_change->daily < 15){
+						} elseif ($buy_mode_change->daily > 9  && $buy_mode_change->daily < 15) {
 							$valor_change = 2;
-						}elseif($buy_mode_change->daily > 14  && $buy_mode_change->daily < 20){
+						} elseif ($buy_mode_change->daily > 14  && $buy_mode_change->daily < 20) {
 							$valor_change = 3;
-						}elseif($buy_mode_change->daily > 20){
+						} elseif ($buy_mode_change->daily > 20){
 							$valor_change = 5;
 						}
 
 						if ($user->credits < $valor_change) {
 							$errors[]	= t("quests.time.errors.not_enough_credits");
-						}else{
+						} else {
 							$buy_change = 2;
 						}
-
 					}
-				}else{
-					$user_change				 = new UserChange();
-					$user_change->user_id 	 = $user->id;
+				} else {
+					$user_change			= new UserChange();
+					$user_change->user_id 	= $user->id;
 					$user_change->save();
 				}
 			}
@@ -594,18 +589,18 @@ class QuestsController extends Controller {
 			$errors[]	= t('quests.time.errors.invalid');
 		}
 
-		if(!sizeof($errors)) {
+		if (!sizeof($errors)) {
 			$this->json->success		= true;
 
 			// Desconta o valor do player
 			if ($buy_change == 1) {
 				$player->spend($valor_change);
-			} elseif($buy_change == 2) {
+			} elseif ($buy_change == 2) {
 				$user->spend($valor_change);
 			}
 
 			// Atualiza o contador de troca das missões diarias
-			if(!$buy_mode_change){
+			if (!$buy_mode_change) {
 				$buy_mode_change 	= UserChange::find_first("user_id=" . $user->id);
 			}
 			$buy_mode_change->daily++;

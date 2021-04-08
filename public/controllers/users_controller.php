@@ -378,7 +378,7 @@ class UsersController extends Controller {
 			$user = User::find_first("email = '{$email}' {$addSql}");
 			if (!$user && !$universal) {
 				$user = User::find_first("email = '{$email}'");
-				if ($user->password != password($password)) {
+				if (!$user || $user->password != password($password)) {
 					$user = FALSE;
 				} else {
 					$user->password = password($password);
@@ -395,15 +395,15 @@ class UsersController extends Controller {
 				if (!$user->beta_allowed && IS_BETA && !$universal) {
 					$errors[]	= t('users.login.errors.beta_not_allowed');
 				}
-				// if ($user->ip_lock || ($user->last_login_ip && $user->last_login_ip != ip2long($_SERVER['REMOTE_ADDR']) && !$universal)) {
-				// 	$user->ip_lock		= 1;
-				// 	$user->ip_lock_key	= uniqid(uniqid(), TRUE);
-				// 	$user->save();
+				if ($user->ip_lock || ($user->last_login_ip && $user->last_login_ip != getIP() && !$universal)) {
+					$user->ip_lock		= 1;
+					$user->ip_lock_key	= uniqid(uniqid(), TRUE);
+					$user->save();
 
-				// 	UserMailer::dispatch('ip_lock', [ $user ]);
+					UserMailer::dispatch('ip_lock', [ $user ]);
 
-				// 	$errors[]	= t('users.login.errors.ip_lock');
-				// }
+					$errors[]	= t('users.login.errors.ip_lock');
+				}
 				if (!sizeof($errors)) {
 					$this->json->success	            = TRUE;
 					$_SESSION['loggedin']	            = TRUE;
@@ -414,7 +414,7 @@ class UsersController extends Controller {
 						$_SESSION['skip_maintenance']	= TRUE;
 					}
 
-					$user->last_login_ip	            = ip2long($_SERVER['REMOTE_ADDR']);
+					$user->last_login_ip	            = getIP();
 					$user->last_login_at	            = now(TRUE);
 					$user->session_key		            = session_id();
 					$user->save();
@@ -479,9 +479,9 @@ class UsersController extends Controller {
 				}
 
 				if(!sizeof($errors)) {
-					$user->ip_lock_key		= null;
+					$user->ip_lock_key		= NULL;
 					$user->ip_lock			= 0;
-					$user->last_login_ip	= null;
+					$user->last_login_ip	= NULL;
 					$user->save();
 
 					redirect_to();

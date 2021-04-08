@@ -15,7 +15,6 @@ define('GLOBAL_PASSWORD', 		'dev2@21');
 define('ROUND_END',				'2021-04-07 18:00:00');
 
 # Beta / Maintenance
-$maintenance		= ROUND_END <= date('Y-m-d H:i:s');
 define('IS_BETA',					FALSE);
 define('IS_MAINTENANCE',			FALSE);
 
