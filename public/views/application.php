@@ -79,7 +79,7 @@ if (preg_match('/read_news/', $action)) {
 	<meta property="article:published_time" content="<?=$article->created_at;?>" />
 	<?php } ?>
 
-	<meta property="og:image" itemprop="image" content="<?=image_url('social/cover2.png');?>" />
+	<meta property="og:image" itemprop="image" content="<?=image_url('social/cover.jpg');?>" />
 	<meta property="og:locale" content="<?=str_replace('-', '_', $language->header);?>" />
 	<meta property="fb:app_id" content="<?=FB_APP_ID;?>" />
 
