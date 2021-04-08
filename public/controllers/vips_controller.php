@@ -343,13 +343,13 @@ class VipsController extends Controller {
 		if ($is_dbl) {
 			$this->assign("is_dbl", $is_dbl);
 		} else {
-			$this->assign("is_dbl", false);	
+			$this->assign("is_dbl", FALSE);	
 		}
 
 		$methods	= [
 			'pagseguro'		=> 'BRL',
-			'paypal_euro'	=> 'EUR',
-			'paypal_dollar'	=> 'USD',
+			'paypal_eur'	=> 'EUR',
+			'paypal_usd'	=> 'USD',
 			// 'paypal_brl'	=> 'BRL'
 		];
 		$symbols	= [
@@ -366,8 +366,8 @@ class VipsController extends Controller {
 	function pay_donation(){
 		$player = Player::get_instance();
 		
-		$this->as_json			= true;
-		$this->json->success	= false;
+		$this->as_json			= TRUE;
+		$this->json->success	= FALSE;
 		$errors					= [];
 		
 		if(!isset($_POST['mode']) || (isset($_POST['mode']) && !is_numeric($_POST['mode']))) {
@@ -379,8 +379,7 @@ class VipsController extends Controller {
 			}
 		}
 		
-		if(!sizeof($errors)) {
-			
+		if (!sizeof($errors)) {
 			//Adiciona o Plano Vip na tabela de aguarde do Usuário
 			$star_purchase = new StarPurchase();
 			$star_purchase->user_id 		= $player->user_id;
@@ -388,7 +387,7 @@ class VipsController extends Controller {
 			$star_purchase->star_method		= $_POST['valor'];
 			$star_purchase->save();
 			
-			$this->json->success	= true;
+			$this->json->success	= TRUE;
 		} else {
 			$this->json->errors	= $errors;
 		}
@@ -404,8 +403,8 @@ class VipsController extends Controller {
 			$star_plan	= StarPlan::find_first("id = " . $star_purchase->star_plan_id);
 			$coins		= [
 				'pagseguro'		=> 'BRL',
-				'paypal_euro'	=> 'EUR',
-				'paypal_dollar'	=> 'USD',
+				'paypal_eur'	=> 'EUR',
+				'paypal_usd'	=> 'USD',
 				'paypal_brl'	=> 'BRL'
 			];
 			$price		= 'price_' . strtolower($coins[$star_purchase->star_method]);
