@@ -4,6 +4,7 @@ function render_file($__view_file, $vars) {
 	global $rewrite_enabled;
 	global $controller;
 	global $action;
+	global $params;
 
 	if(!file_exists($__view_file))
 		throw new Exception('View was not found at "' . $__view_file . '"');

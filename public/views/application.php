@@ -45,6 +45,12 @@ if ($_SESSION['user_id']) {
 	$user	= FALSE;
 	$player	= FALSE;
 }
+
+$article = FALSE;
+if (preg_match('/read_news/', $action)) {
+	$article_id = $params[0];
+	$article = SiteNew::find_first('id = ' . $article_id);
+}
 ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -56,11 +62,23 @@ if ($_SESSION['user_id']) {
     <title><?=GAME_NAME;?> - Seja o Herói de nossa História</title>
     <meta name="description" content="<?=GAME_NAME;?> é o novo jogo para fãs de anime, em nosso jogo você será um dos personagens emblemáticos dos principais animes que fizeram e fazem parte de nossa vida." />
     <meta name="keywords" content="aasg, naruto, boruto, one, piece, cdz, anime, all, stars, game, jogo, online" />
+	<?php if (!preg_match('/read_news/', $action)) { ?>
 
 	<meta property="og:url" content="<?=make_url('/')?>" />
 	<meta property="og:type" content="website" />
 	<meta property="og:title" content="<?=GAME_NAME;?> - Seja o Herói de nossa História" />
 	<meta property="og:description" content="<?=GAME_NAME;?> é o novo jogo para fãs de anime, em nosso jogo você será um dos personagens emblemáticos dos principais animes que fizeram e fazem parte de nossa vida." />
+	<?php } else { ?>
+
+	<meta property="og:url" content="<?=make_url('home#read_news/' . $article->id)?>" />
+	<meta property="og:title" content="<?=$article->title;?>" />
+	<meta property="og:description" content="<?=str_limit(strip_tags($article->description), 100, '');?>" />
+	<meta property="og:type" content="article" />
+	<meta property="article:author" content="<?=$article->user()->name;?>" />
+	<meta property="article:section" content="<?=$article->type;?>" />
+	<meta property="article:published_time" content="<?=$article->created_at;?>" />
+	<?php } ?>
+
 	<meta property="og:image" itemprop="image" content="<?=image_url('social/cover2.png');?>" />
 	<meta property="og:locale" content="<?=str_replace('-', '_', $language->header);?>" />
 	<meta property="fb:app_id" content="<?=FB_APP_ID;?>" />
