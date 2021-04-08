@@ -192,10 +192,10 @@ class PayPal {
 		$logText .= "\n";
 
 		// Write to log
-		/*file_put_contents(
+		file_put_contents(
 			$this->log_file_dir . "/IPN-{$logDate}.log",
 			$logText,
 			FILE_APPEND
-		);*/
+		);
 	}
 }
