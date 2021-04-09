@@ -4,7 +4,6 @@
 0 * * * * php /var/www/allstarsgame/cronjob/ranking_achievements.php
 0 * * * * php /var/www/allstarsgame/cronjob/ranking_accounts.php
 0 * * * * php /var/www/allstarsgame/cronjob/ranking_challenges.php
-0 * * * * php /var/www/allstarsgame/cronjob/ranking_combats.php
 0 * * * * php /var/www/allstarsgame/cronjob/ranking_organizations.php
 0 * * * * php /var/www/allstarsgame/cronjob/ranking_rankeds.php
 
@@ -19,6 +18,7 @@
 0 0 * * * php /var/www/allstarsgame/cronjob/daily_quests.php
 0 0 * * * php /var/www/allstarsgame/cronjob/organization_requests.php
 0 0 * * * php /var/www/allstarsgame/cronjob/pets_daily_quests.php
+0 0 * * * php /var/www/allstarsgame/cronjob/ranking_combats.php
 
 # AS 5H DA MANHÃ
 0 5 * * * php /var/www/allstarsgame/cronjob/statistic_players.php

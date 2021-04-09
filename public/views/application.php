@@ -27,10 +27,6 @@ if ($_SESSION['user_id']) {
 					$with_battle	= TRUE;
 				}
 
-				if ($player && preg_match('/battle/', $action)) {
-					$with_battle	= TRUE;
-				}
-
 				$equipments		= [];
 				$techniques		= $player->character_theme()->attacks();
 				foreach ($techniques as $technique) {
