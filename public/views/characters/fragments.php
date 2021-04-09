@@ -41,16 +41,27 @@
 <?php
 $total = $total ? $total->quantity : 0;
 
-$color			= [ 'commom', 'commom', 'commom', 'commom' ];
-$rarities		= [ '0', '1', '2', '3' ];
-$prices			= [ '100', '100', '100', '100' ];
-$names			= [ 'Equipamento Aleatório', 'Mascote Aleatório', 'Personagem Aleatório', 'Tema Aleatório' ];
-$descriptions	= [
-	'Transforme 100 Fragmentos das Almas em um Equipamento aleatório',
-	'Transforme 100 Fragmentos das Almas em um Mascote aleatório',
-	'Transforme 100 Fragmentos das Almas em um Personagem Aleatório',
-	'Transforme 100 Fragmentos das Almas em um Tema Aleatório'
-];
+if ($_SESSION['universal']) {
+	$color			= [ 'commom', 'commom', 'commom', 'commom' ];
+	$rarities		= [ '0', '1', '2', '3' ];
+	$prices			= [ '100', '100', '100', '100' ];
+	$names			= [ 'Equipamento Aleatório', 'Mascote Aleatório', 'Personagem Aleatório', 'Tema Aleatório' ];
+	$descriptions	= [
+		'Transforme 100 Fragmentos das Almas em um Equipamento aleatório',
+		'Transforme 100 Fragmentos das Almas em um Mascote aleatório',
+		'Transforme 100 Fragmentos das Almas em um Personagem Aleatório',
+		'Transforme 100 Fragmentos das Almas em um Tema Aleatório'
+	];
+} else {
+	$color			= [ 'commom', 'commom' ];
+	$rarities		= [ '0', '1' ];
+	$prices			= [ '100', '100' ];
+	$names			= [ 'Equipamento Aleatório', 'Mascote Aleatório' ];
+	$descriptions	= [
+		'Transforme 100 Fragmentos das Almas em um Equipamento aleatório',
+		'Transforme 100 Fragmentos das Almas em um Mascote aleatório'
+	];
+}
 ?>
 <?php foreach ($rarities as $rarity){ ?>
 	<div class="ability-speciality-box" data-id="<?=$rarity;?>" style="width: 236px !important; height: 290px !important">

@@ -836,12 +836,20 @@ class CharactersController extends Controller {
 		$player					= Player::get_instance();
 		$errors					= [];
 
+		$items					= [ '0', '1' ];
+		$prices					= [ '100', '100' ];
+		if ($_SESSION['universal']) {
+			$items				= [ '0', '1', '2', '3' ];
+			$prices				= [ '100', '100', '100', '100' ];
+		}
+
 		if (!isset($_POST['mode']) || (isset($_POST['mode']) && !is_numeric($_POST['mode']))) {
 			$errors[]	= t('fragments.error1');
+		} elseif (!in_array($_POST['mode'], $items)) {
+			$errors[]	= t('fragments.error1');
 		} else {
-			$item_446 = PlayerItem::find_first("player_id =". $player->id. " AND item_id=446");
-			$prices	= [ '100', '100', '100', '100' ];
-			if ($item_446->quantity < $prices[$_POST['mode']]) {
+			$item_446 = PlayerItem::find_first("player_id =". $player->id. " AND item_id = 446");
+			if (!$item_446 || $item_446->quantity < $prices[$_POST['mode']]) {
 				$errors[]	= t('fragments.error2');
 			}
 			
