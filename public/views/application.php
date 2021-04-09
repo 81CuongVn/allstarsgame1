@@ -145,12 +145,9 @@ if (preg_match('/read_news/', $action)) {
         	I18n.translations		= <?=Lang::toJSON()?>;
 		});
     </script>
-	<?php if (FW_ENV != 'dev') { ?>
-
-	<script data-ad-client="ca-pub-6665062829379662" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-	<?php } ?>
 </head>
 <body>
+<div id="fb-root"></div>
 <!-- Topo -->
 <?php if (!$_SESSION['player_id']) { ?>
 <div id="background-topo">
@@ -346,6 +343,14 @@ if (preg_match('/read_news/', $action)) {
 									</div>
 								<?php } else { ?>
 									<div id="login" style="background-image:url('<?=image_url('bg-login-0.png');?>');">
+										<div id="form-login">
+											<div style="left: -7px; position: relative; top: 7px; min-height: 48px;">
+												<div class="fb-like" data-href="http://www.facebook.com/<?=FB_PAGE_USER;?>" data-send="false" data-layout="box_count" data-width="70" data-show-faces="false"></div>
+											</div>
+											<div style="position: relative; top: 25px; left: -7px;">
+												<b><span style="color: #ede4af"><?=highamount($user->credits)?></span><br /> Estrelas</b>
+											</div>
+										</div>
 									</div>
 								<?php } ?>
 							<?php } ?>
@@ -374,11 +379,6 @@ if (preg_match('/read_news/', $action)) {
 							</div>
 						</div>
 					<?php } ?>
-                    <?php if (FW_ENV != 'dev') { ?>
-						<div style="width: <?php echo ($player ? '240px' : '100%');?>; text-align: center">
-							<div class="fb-like" data-href="https://www.facebook.com/AllStarsGame" data-width="70" data-layout="box_count" data-action="like" data-size="small" data-share="true"></div>
-						</div>
-                    <?php } ?>
 				</div>
 			<?php } ?>
 			<div id="direita" class="<?=($player ? 'with-player' : '');?>">
@@ -442,6 +442,12 @@ if (preg_match('/read_news/', $action)) {
 <script type="text/javascript" src="<?=asset_url('js/vips.js');?>"></script>
 <script type="text/javascript" src="<?=asset_url('js/png_animator.js');?>"></script>
 <script type="text/javascript" src="<?=asset_url('js/tournaments.js');?>"></script>
+
+<script async defer crossorigin="anonymous"
+    src="https://connect.facebook.net/pt_BR/sdk.js#xfbml=1
+            &version=v10.0&appId=<?=FB_APP_ID;?>&autoLogAppEvents=1"
+    nonce="z3ba4zPG">
+</script>
 <?php
 if ($player) {
 	$redis = new Redis();

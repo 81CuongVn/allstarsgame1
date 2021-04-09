@@ -126,6 +126,7 @@ define('PAYPAL_SANDBOX',		TRUE);
 define('PAYPAL_LOG_FOLDER',		ROOT . '/logs/paypal');
 
 # Facebook settings
+define('FB_PAGE_USER',			'AllStarsGame');
 define('FB_APP_ID',				'871809436995595');
 define('FB_APP_SECRET',			'7381e66f91500385865ea313ebe4f8c3');
 define('FB_CALLBACK_URL',		'callback/facebook');

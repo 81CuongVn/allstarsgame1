@@ -174,6 +174,9 @@
 		<a href="https://discord.gg/ME8ugpZwSw" target="_blank">
 			<div class="discord cursor_pointer"></div>
 		</a><br />
+		<div style="width: 240px; text-align: center">
+			<div class="fb-like" data-href="https://www.facebook.com/<?=FB_PAGE_USER;?>" data-width="70" data-layout="box_count" data-action="like" data-size="small" data-share="true"></div>
+		</div>
 	</div>
 <?php } else { ?>
 	<div style="height: 680px;"></div>	
