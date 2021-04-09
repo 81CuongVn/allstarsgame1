@@ -396,8 +396,8 @@ class VipsController extends Controller {
 		$this->render	= false;
         $this->layout	= false;
 
-		$player 		= Player::get_instance();
-		$star_purchase	= StarPurchase::find_first("user_id=".$player->user_id." AND completed_at is null ORDER BY id DESC");
+		$user 		= User::get_instance();
+		$star_purchase	= StarPurchase::find_first("user_id=".$user->id." AND completed_at is null ORDER BY id DESC");
 		
 		if ($star_purchase) {
 			$star_plan	= StarPlan::find_first("id = " . $star_purchase->star_plan_id);
