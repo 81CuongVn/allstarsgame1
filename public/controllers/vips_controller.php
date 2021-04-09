@@ -364,7 +364,7 @@ class VipsController extends Controller {
 		$this->assign("player",		Player::get_instance());
 	}
 	function pay_donation(){
-		$player = Player::get_instance();
+		$user = User::get_instance();
 		
 		$this->as_json			= TRUE;
 		$this->json->success	= FALSE;
@@ -373,7 +373,7 @@ class VipsController extends Controller {
 		if(!isset($_POST['mode']) || (isset($_POST['mode']) && !is_numeric($_POST['mode']))) {
 			$errors[]	= t('vips.errors.plan_invalid');
 		}else{
-			$star_plan = StarPlan::find_first("id=".$_POST['mode']);
+			$star_plan = StarPlan::find_first("id=" . $_POST['mode']);
 			if(!$star_plan){
 				$errors[]	= t('vips.errors.plan_invalid');
 			}
@@ -382,7 +382,7 @@ class VipsController extends Controller {
 		if (!sizeof($errors)) {
 			//Adiciona o Plano Vip na tabela de aguarde do Usuário
 			$star_purchase = new StarPurchase();
-			$star_purchase->user_id 		= $player->user_id;
+			$star_purchase->user_id 		= $user->id;
 			$star_purchase->star_plan_id 	= $star_plan->id;
 			$star_purchase->star_method		= $_POST['valor'];
 			$star_purchase->save();
