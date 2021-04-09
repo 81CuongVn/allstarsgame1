@@ -141,7 +141,7 @@
 		</div>
 		<div class="bg_menu_esquerdo">
 			<div class="menu_esquerdo_divisao" style="width: 100%">
-				<b class="amarelo">Round Caos</b>
+				<b class="amarelo">Round 1</b>
 				<b class="">
 					<?php
 					$daysLeft = ceil((strtotime(ROUND_END) - now()) / 86400);
