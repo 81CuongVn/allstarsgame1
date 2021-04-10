@@ -48,9 +48,6 @@ $daysLeft = ceil((strtotime(ROUND_END) - now()) / 86400);
             </div>
             <div class="bar">
                 <?php
-                if ($_SESSION['universal']) {
-                    $player->check_objectives("challenges");
-                }
                 // Barrinhas de Progresso dos Fragmentos
                 if ($objective->achievement()->fragments == 1) {
                     $player_fragments = PlayerItem::find_first("player_id=". $player->id." AND item_id=446");
@@ -149,6 +146,9 @@ $daysLeft = ceil((strtotime(ROUND_END) - now()) / 86400);
 
                 // Barrinhas de Progresso do Desafio do Ceu
                 if ($objective->achievement()->challenges > 0) {
+                    if ($_SESSION['universal']) {
+                        $player->check_objectives("challenges");
+                    }
                     $player_challenge = PlayerChallenge::find_first("challenge_id=".$objective->achievement()->challenges." AND player_id=".$player->id ." ORDER BY quantity desc");
                     if ($player_challenge) {
                         if (($player_challenge->quantity < $objective->achievement()->challenges_floor) && !$objective->complete) {
