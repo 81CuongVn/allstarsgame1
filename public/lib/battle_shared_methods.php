@@ -1663,20 +1663,22 @@ trait BattleSharedMethods {
 						if ($effect_data->secret && !$effect_data->revealed) {
 							$item		= Item::find($effect_data->soruce_id);
 							if (!$item) {
-								$content	= json_encode([
+								$player_id	= $$target->id;
+								$content	= serialize([
 									'effect_data'	=> $effect_data,
 									'item'			=> $item
 								]);
-								Recordset::query("INSERT INTO `log` (`user_id`, `player_id`, `content`) VALUES ({$$target->user_id}, {$$target->id}, '{$content}')");
+								Recordset::query("INSERT INTO `log` (`user_id`, `player_id`, `content`) VALUES (0, {$player_id}, '{$content}')");
 							} else {
+								$player_id	= $$target->id;
 								$effects	= $item->effects();
 								if (!$effects) {
-									$content	= json_encode([
+									$content	= serialize([
 										'effects'		=> $effects,
 										'effect_data'	=> $effect_data,
 										'item'			=> $item
 									]);
-									Recordset::query("INSERT INTO `log` (`user_id`, `player_id`, `content`) VALUES ({$$target->user_id}, {$$target->id}, '{$content}')");
+									Recordset::query("INSERT INTO `log` (`user_id`, `player_id`, `content`) VALUES (0, {$player_id}, '{$content}')");
 								} else {
 									if ($effects[0]->effect_direction == 'buff') {
 										if ($effect_data->direction != 'enemy') {
