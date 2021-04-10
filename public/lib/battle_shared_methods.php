@@ -1662,15 +1662,15 @@ trait BattleSharedMethods {
 					foreach ($effect_list as $effect_id => $effect_data) {
 						if ($effect_data->secret && !$effect_data->revealed) {
 							$item		= Item::find($effect_data->soruce_id);
+
+							$player_id	= is_numeric($$target->id) ? $$target->id : 0;
 							if (!$item) {
-								$player_id	= $$target->id;
 								$content	= serialize([
 									'effect_data'	=> $effect_data,
 									'item'			=> $item
 								]);
 								Recordset::query("INSERT INTO `log` (`user_id`, `player_id`, `content`) VALUES (0, {$player_id}, '{$content}')");
 							} else {
-								$player_id	= $$target->id;
 								$effects	= $item->effects();
 								if (!$effects) {
 									$content	= serialize([
