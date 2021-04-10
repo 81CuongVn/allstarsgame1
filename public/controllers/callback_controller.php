@@ -16,28 +16,8 @@ class CallbackController extends Controller {
             $graph          = @file_get_contents($graph_url);
             if ($graph) {
                 $fb_user       = json_decode($graph);
-
-                $user = User::find_first('fb_id = ' . $fb_user->id);
-                if ($user) {
-                    if ($user->banned) {
-                        redirect_to('?banned');
-                    } elseif (IS_BETA && !$user->beta_allowed) {
-                        redirect_to('?not_allowed');
-                    } else {
-                        $_SESSION['loggedin']	= TRUE;
-					    $_SESSION['user_id']	= $user->id;
-
-                        $user->last_login_ip	= getIP();
-                        $user->last_login_at    = now(TRUE);
-                        $user->session_key      = session_id();
-                        $user->active           = 1;
-                        $user->save();
-
-                        if (sizeof($user->players()))   redirect_to('characters/select');
-                        else                            redirect_to('characters/create');
-                    }
-                } else {
-                    $user = User::find_first("email = '{$fb_user->email}'");
+                if (isset($fb_user->id) && isset($fb_user->email) && isset($fb_user->name)) {
+                    $user = User::find_first('fb_id = ' . $fb_user->id);
                     if ($user) {
                         if ($user->banned) {
                             redirect_to('?banned');
@@ -47,46 +27,69 @@ class CallbackController extends Controller {
                             $_SESSION['loggedin']	= TRUE;
                             $_SESSION['user_id']	= $user->id;
 
-                            $user->last_login_ip    = getIPO();
+                            $user->last_login_ip	= getIP();
                             $user->last_login_at    = now(TRUE);
                             $user->session_key      = session_id();
                             $user->active           = 1;
-                            $user->fb_id            = $fb_user->id;
                             $user->save();
 
                             if (sizeof($user->players()))   redirect_to('characters/select');
                             else                            redirect_to('characters/create');
                         }
                     } else {
-                        // Cadastro
-                        $user					= new User();
-                        $user->name				= $fb_user->name;
-                        $user->email			= $fb_user->email;
-                        $user->password			= random_str(8);
-                        $user->user_key			= uniqid(uniqid(), true);
-                        $user->activation_key	= uniqid(uniqid(), true);
-                        $user->fb_id            = $fb_user->id;
-                        $user->active           = 1;
+                        $user = User::find_first("email = '{$fb_user->email}'");
+                        if ($user) {
+                            if ($user->banned) {
+                                redirect_to('?banned');
+                            } elseif (IS_BETA && !$user->beta_allowed) {
+                                redirect_to('?not_allowed');
+                            } else {
+                                $_SESSION['loggedin']	= TRUE;
+                                $_SESSION['user_id']	= $user->id;
 
-                        if (!IS_BETA) {
-                            // Login
-                            $user->last_login_ip    = getIP();
-                            $user->last_login_at    = now(TRUE);
-                            $user->session_key      = session_id();
+                                $user->last_login_ip    = getIPO();
+                                $user->last_login_at    = now(TRUE);
+                                $user->session_key      = session_id();
+                                $user->active           = 1;
+                                $user->fb_id            = $fb_user->id;
+                                $user->save();
 
-                            // Segunda parte do login
-                            $_SESSION['loggedin']	= TRUE;
-                            $_SESSION['user_id']	= $user->id;
+                                if (sizeof($user->players()))   redirect_to('characters/select');
+                                else                            redirect_to('characters/create');
+                            }
+                        } else {
+                            // Cadastro
+                            $user					= new User();
+                            $user->name				= $fb_user->name;
+                            $user->email			= $fb_user->email;
+                            $user->password			= random_str(8);
+                            $user->user_key			= uniqid(uniqid(), true);
+                            $user->activation_key	= uniqid(uniqid(), true);
+                            $user->fb_id            = $fb_user->id;
+                            $user->active           = 1;
+
+                            if (!IS_BETA) {
+                                // Login
+                                $user->last_login_ip    = getIP();
+                                $user->last_login_at    = now(TRUE);
+                                $user->session_key      = session_id();
+
+                                // Segunda parte do login
+                                $_SESSION['loggedin']	= TRUE;
+                                $_SESSION['user_id']	= $user->id;
+                            }
+
+                            // Salva dados
+                            $user->save();
+
+                            // Dispara o email de cadastro com fb, informando a senha gerada
+                            UserMailer::dispatch('send_join_fb', [ $user ]);
+
+                            redirect_to('characters/create');
                         }
-
-                        // Salva dados
-                        $user->save();
-
-                        // Dispara o email de cadastro com fb, informando a senha gerada
-                        UserMailer::dispatch('send_join_fb', [ $user ]);
-
-                        redirect_to('characters/create');
                     }
+                } else {
+                    redirect_to('?without_data');
                 }
             } else {
                 redirect_to('?graph_error');
