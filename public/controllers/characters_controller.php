@@ -566,7 +566,7 @@ class CharactersController extends Controller {
 						$theme->description()->name
 					]);
 					
-					if($_POST['mode'] == 1){
+					if ($_POST['mode'] == 1) {
 						if ($theme->price_credits) {
 							$user->spend($theme->price_credits);
 						}

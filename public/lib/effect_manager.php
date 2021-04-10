@@ -745,6 +745,14 @@ trait EffectManager {
 
 		$visible	= true;
 		$effects	= $this->get_effects();
+		$content	= json_encode([
+			'effects'	=> $effects
+		]);
+		Recordset::insert('log', [
+			'user_id'	=> 0,
+			'player_id'	=> 0,
+			'content'	=> $content
+		]);
 
 		foreach (['player', 'enemy'] as $type) {
 			// print_r($effects);
