@@ -150,7 +150,7 @@
 				</b>
 			</div>
 		</div>
-		<?php if ($_SESSION['universal']) { ?>
+		<?php // if ($_SESSION['universal']) { ?>
 			<div class="bg_menu_esquerdo">
 				<?php
 				$timeout	= now() - (15 * 60);
@@ -159,7 +159,11 @@
 				?>
 				<div class="menu_esquerdo_divisao">
 					<b class="amarelo">Online</b>
-					<b class=""><?=highamount($online);?></b>
+					<?php if ($_SESSION['universal']) { ?>
+						<b class=""><?=highamount($online);?></b>
+					<?php } else { ?>
+						<b class=""><?=highamount(round((1 + $online) * 1.3));?></b>
+					<?php } ?>
 				</div>
 				<div class="menu_esquerdo_divisao">
 					<b class="amarelo">Fila PvP</b>
@@ -170,10 +174,14 @@
 				<?php $battles_pvp	= Recordset::query("SELECT `id` FROM `battle_pvps` WHERE `finished_at` IS NULL ", FALSE)->num_rows; ?>
 				<div class="menu_esquerdo_divisao" style="width: 100%">
 					<b class="amarelo">PvP em Andamento</b>
-					<b class=""><?=highamount($battles_pvp);?></b>
+					<?php if ($_SESSION['universal']) { ?>
+						<b class=""><?=highamount($battles_pvp);?></b>
+					<?php } else { ?>
+						<b class=""><?=highamount(round((1 + $battles_pvp) * 1.5));?></b>
+					<?php } ?>
 				</div>
 			</div>
-		<?php } ?>
+		<?php // } ?>
 		<div class="clearfix"></div>
 		<a href="https://chat.whatsapp.com/LFT74CxmNJz3nVmTQGQi98" target="_blank">
 			<div class="whatsapp cursor_pointer"></div>
