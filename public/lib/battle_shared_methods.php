@@ -1663,29 +1663,27 @@ trait BattleSharedMethods {
 			$parsed		= $who->get_parsed_effects(true);
 
 			foreach (['player', 'enemy'] as $effect_direction) {
-				$this->json->{$effect_direction . '_' . $container . '_' . $target} = $who->get_effects();
+				$getEffects = $who->get_effects();
+				if (!$getEffects) {
+					$content	= serialize([
+						'getEffects'	=> $getEffects
+					]);
+					Recordset::insert('log', [
+						'user_id'	=> 0,
+						'player_id'	=> 0,
+						'content'	=> $content
+					]);
+				} else {
+					$this->json->{$effect_direction . '_' . $container . '_' . $target} = $getEffects;
 
-				foreach ($who->get_effects()[$effect_direction] as $key => $effect_list) {
-					foreach ($effect_list as $effect_id => $effect_data) {
-						if ($effect_data->secret && !$effect_data->revealed) {
-							$item		= Item::find($effect_data->soruce_id);
+					foreach ($getEffects[$effect_direction] as $key => $effect_list) {
+						foreach ($effect_list as $effect_id => $effect_data) {
+							if ($effect_data->secret && !$effect_data->revealed) {
+								$item		= Item::find($effect_data->soruce_id);
 
-							$player_id	= is_numeric($$target->id) ? $$target->id : '0';
-							if (!$item) {
-								$content	= serialize([
-									'effect_data'	=> $effect_data,
-									'item'			=> $item
-								]);
-								Recordset::insert('log', [
-									'user_id'	=> 0,
-									'player_id'	=> $player_id,
-									'content'	=> $content
-								]);
-							} else {
-								$effects	= $item->effects();
-								if (!$effects) {
+								$player_id	= is_numeric($$target->id) ? $$target->id : '0';
+								if (!$item) {
 									$content	= serialize([
-										'effects'		=> $effects,
 										'effect_data'	=> $effect_data,
 										'item'			=> $item
 									]);
@@ -1695,29 +1693,43 @@ trait BattleSharedMethods {
 										'content'	=> $content
 									]);
 								} else {
-									if ($effects[0]->effect_direction == 'buff') {
-										if ($effect_data->direction != 'enemy') {
-											$condition = $who->id != Player::get_instance()->id;
-										} else {
-											$condition = $who->id == Player::get_instance()->id;
-										}
+									$itemEffects	= $item->effects();
+									if (!$itemEffects) {
+										$content	= serialize([
+											'itemEffects'	=> $itemEffects,
+											'effect_data'	=> $effect_data,
+											'item'			=> $item
+										]);
+										Recordset::insert('log', [
+											'user_id'	=> 0,
+											'player_id'	=> 0,
+											'content'	=> $content
+										]);
 									} else {
-										if ($effect_data->direction != 'enemy') {
-											$condition = $who->id != Player::get_instance()->id;
+										if ($itemEffects->effect_direction == 'buff') {
+											if ($effect_data->direction != 'enemy') {
+												$condition = $who->id != Player::get_instance()->id;
+											} else {
+												$condition = $who->id == Player::get_instance()->id;
+											}
 										} else {
-											$condition = $who->id == Player::get_instance()->id;
+											if ($effect_data->direction != 'enemy') {
+												$condition = $who->id != Player::get_instance()->id;
+											} else {
+												$condition = $who->id == Player::get_instance()->id;
+											}
 										}
-									}
-	
-									if ($condition) {
-										$secrets[]	= $effect_data->id;
-										continue;
+		
+										if ($condition) {
+											$secrets[]	= $effect_data->id;
+											continue;
+										}
 									}
 								}
 							}
-						}
 
-						$effects[]	= $effect_data;
+							$effects[]	= $effect_data;
+						}
 					}
 				}
 			}

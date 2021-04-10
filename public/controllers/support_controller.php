@@ -247,6 +247,9 @@
 		}
 
 		function alternate($full = false) {
+			$this->layout   = FALSE;
+			$this->render   = FALSE;
+
 			if(!$_SESSION['universal']) {
 				$this->denied	= true;
 				return;
