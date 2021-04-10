@@ -296,6 +296,9 @@ class QuestsController extends Controller {
 		$this->assign('effects',		$player->get_parsed_effects());
 	}
 	function time_cancel() {
+		$this->layout   = FALSE;
+		$this->render   = FALSE;
+
 		$player			= Player::get_instance();
 		$quest			= $player->character()->anime()->time_quest($player->time_quest_id);
 		$player_quest	= $player->player_time_quest($player->time_quest_id);

@@ -1,27 +1,32 @@
 <?php
 require '_config.php';
 
-$users	= User::find('active = 1');
+$maxQuests  = 4;
+$users      = User::find('active = 1 and banned = 0');
 foreach ($users as $user) {
 	// Verifica se o jogador tem 4 missões ativas
-    $totalQuests		= sizeof(UserDailyQuest::find('user_id = ' . $user->id));
-    if ($totalQuests < 4) {
-        $dailyQuest		= DailyQuest::find_first("of = 'account'", [
+    $totalQuests	= sizeof(UserDailyQuest::find('user_id = ' . $user->id));
+    $diff           = $maxQuests - $totalQuests;
+    if ($diff > 0) {
+        $quests		= DailyQuest::find("of = 'account'", [
 			'reorder'	=> 'RAND()',
-			'limit'		=> 1
+			'limit'		=> $diff
 		]);
-        if ($dailyQuest->anime && !$dailyQuest->personagem)
-            $anime = Anime::find_first('active = 1', [
-				'reorder'	=> 'RAND()',
-				'limit'		=> 1
-			]);
+        foreach ($quests as $quest) {
+            if ($quest->anime && !$quest->personagem) {
+                $anime = Anime::find_first('active = 1', [
+                    'reorder'	=> 'RAND()',
+                    'limit'		=> 1
+                ]);
+            }
 
-        Recordset::insert('user_daily_quests', [
-            'user_id'				=> $user->id,
-            'daily_quest_id'		=> $dailyQuest->id,
-            'type'					=> $dailyQuest->type,
-            'anime_id'				=> $anime->id ? $anime->id : 0
-        ]);
+            $insert = new UserDailyQuest();
+            $insert->user_id        = $user->id;
+            $insert->daily_quest_id = $quest->id;
+            $insert->type           = $quest->type;
+            $insert->anime_id       = $anime ? $anime->id : 0;
+            $insert->save();
+        }
     }
 }
 echo "[Account Quests] Cron executada com sucesso!\n";

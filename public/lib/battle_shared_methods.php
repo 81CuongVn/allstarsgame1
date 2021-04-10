@@ -1661,9 +1661,10 @@ trait BattleSharedMethods {
 				foreach ($who->get_effects()[$effect_direction] as $key => $effect_list) {
 					foreach ($effect_list as $effect_id => $effect_data) {
 						if ($effect_data->secret && !$effect_data->revealed) {
-							$item = Item::find($effect_data->soruce_id);
+							$item		= Item::find($effect_data->soruce_id);
+							$effects	= $item->effects();
 
-							if (@$item->effects()[0]->effect_direction == 'buff') {
+							if (sizeof($effects) && $effects[0]->effect_direction == 'buff') {
 								if ($effect_data->direction != 'enemy')
 									$condition = $who->id != Player::get_instance()->id;
 								else

@@ -1,20 +1,20 @@
 <?php
 require '_config.php';
 
-$users = Recordset::query("SELECT * FROM `users` WHERE `active` = 1 AND `removed` = 0 AND `objectives` = 0");
-foreach ($users->result_array() as $user) {
-    $objectives = Recordset::query("SELECT * FROM `achievements` WHERE `type` = 'objectives' ORDER BY RAND() LIMIT 10");
-    foreach ($objectives->result_array() as $objective) {
-        Recordset::insert('user_objectives', [
-            'user_id'		=> $user['id'],
-            'objective_id'	=> $objective['id']
-        ]);
-    }
-    Recordset::update('users', [
-        'objectives'        => 1
-    ], [
-        'id'                => $user['id']
+$users      = User::find('active = 1 and banned = 0 and objectives = 0');
+foreach ($users as $user) {
+    $objectives = Achievement::find("type = 'objectives'", [
+        'reorder'	=> 'RAND()',
+        'limit'		=> 10
     ]);
+    foreach ($objectives as $objective) {
+        $insert = new UserObjective();
+        $insert->user_id        = $user->id;
+        $insert->objective_id   = $objective->id;
+    }
+
+    $user->objectives   = 1;
+    $user->save();
 }
 
 echo "[Objectives] Cron executada com sucesso!\n";
