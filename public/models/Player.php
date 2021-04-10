@@ -560,13 +560,9 @@ class Player extends Relation {
 				break;
 			case "challenges":
 				$achievements = Achievement::find("challenges > 0 and type = 'objectives'");
-				if ($_SESSION['universal']) {
-					echo '<pre>';
-					print_r($user_objective);
-					echo '</pre>';
-				}
 				foreach ($achievements as $achievement) {
-					$user_objective = UserObjective::find_first("objective_id = {$achievement->id} and user_id = {$this->user_id} and complete = 0");
+					// $user_objective = UserObjective::find_first("objective_id = {$achievement->id} and user_id = {$this->user_id} and complete = 0");
+					$user_objective = UserObjective::find_first("objective_id = {$achievement->id} and user_id = {$this->user_id}");
 					if ($_SESSION['universal']) {
 						echo '<pre>';
 						print_r($user_objective);
