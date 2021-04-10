@@ -562,12 +562,24 @@ class Player extends Relation {
 				$achievements = Achievement::find("challenges > 0 and type='objectives'");
 				foreach ($achievements as $achievement) {
 					$user_objective = UserObjective::find_first("objective_id = {$achievement->id} and user_id = {$this->user_id} and complete = 0");
+					if ($_SESSION['universal']) {
+						echo '<pre>';
+						print_r($user_objective);
+						echo '</pre>';
+					}
 					if ($user_objective) {
 						$player_challenge = PlayerChallenge::find_first("challenge_id = {$achievement->challenges} and player_id = ".$this->id, [
 							'order'	=> 'quantity desc'
 						]);
+
+						if ($_SESSION['universal']) {
+							echo '<pre>';
+							print_r($player_challenge);
+							echo '</pre>';
+						}
 						if ($player_challenge) {
 							if ($player_challenge->quantity >= $achievement->challenges_floor) {
+								if ($_SESSION['universal']) { echo 'cheguei aqui'; }
 								$user_objective->complete = 1;
 								$user_objective->completed_at = now(true);
 								$user_objective->save();
@@ -579,8 +591,8 @@ class Player extends Relation {
 								// Envia uma mensagem para o jogador avisando do prêmio
 								$pm				= new PrivateMessage();
 								$pm->to_id		= $this->id;
-								$pm->subject	= "Objetivo: ". $achievement->description()->name;
-								$pm->content	= "Você completou o Objetivo de Round: <b>". $achievement->description()->name ."</b> ";
+								$pm->subject	= "Objetivo: {$achievement->description()->name}";
+								$pm->content	= "Você completou o Objetivo de Round: <b>{$achievement->description()->name}</b>";
 								$pm->save();
 							}
 						}
