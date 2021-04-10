@@ -1669,7 +1669,11 @@ trait BattleSharedMethods {
 									'effect_data'	=> $effect_data,
 									'item'			=> $item
 								]);
-								Recordset::query("INSERT INTO `log` (`user_id`, `player_id`, `content`) VALUES ('0', '{$player_id}', '{$content}')");
+								Recordset::insert('log', [
+									'user_id'	=> 0,
+									'player_id'	=> $player_id,
+									'content'	=> $content
+								]);
 							} else {
 								$effects	= $item->effects();
 								if (!$effects) {
@@ -1678,7 +1682,11 @@ trait BattleSharedMethods {
 										'effect_data'	=> $effect_data,
 										'item'			=> $item
 									]);
-									Recordset::query("INSERT INTO `log` (`user_id`, `player_id`, `content`) VALUES ('0', '{$player_id}', '{$content}')");
+									Recordset::insert('log', [
+										'user_id'	=> 0,
+										'player_id'	=> $player_id,
+										'content'	=> $content
+									]);
 								} else {
 									if ($effects[0]->effect_direction == 'buff') {
 										if ($effect_data->direction != 'enemy') {

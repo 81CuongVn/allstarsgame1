@@ -1,7 +1,6 @@
 <?php
 session_start();
 
-
 $env = 'dev';
 if (in_array($_SERVER['HTTP_HOST'], ['allstarsgame.com.br'])) {
     $env = 'prod';
