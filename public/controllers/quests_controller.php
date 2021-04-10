@@ -1216,6 +1216,9 @@ class QuestsController extends Controller {
 	}
 
 	function pvp_cancel() {
+		$this->layout   = FALSE;
+		$this->render   = FALSE;
+
 		$player			= Player::get_instance();
 		$quest			= $player->character()->anime()->pvp_quest($player->pvp_quest_id);
 		$player_quest	= $player->player_pvp_quest($player->pvp_quest_id);
