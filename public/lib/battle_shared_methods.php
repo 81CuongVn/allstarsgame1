@@ -1670,21 +1670,32 @@ trait BattleSharedMethods {
 								Recordset::query("INSERT INTO `log` (`user_id`, `player_id`, `content`) VALUES ({$$target->user_id}, {$$target->id}, '{$content}')");
 							} else {
 								$effects	= $item->effects();
-								if ($effects[0]->effect_direction == 'buff') {
-									if ($effect_data->direction != 'enemy')
-										$condition = $who->id != Player::get_instance()->id;
-									else
-										$condition = $who->id == Player::get_instance()->id;
+								if (!$effects) {
+									$content	= json_encode([
+										'effects'		=> $effects,
+										'effect_data'	=> $effect_data,
+										'item'			=> $item
+									]);
+									Recordset::query("INSERT INTO `log` (`user_id`, `player_id`, `content`) VALUES ({$$target->user_id}, {$$target->id}, '{$content}')");
 								} else {
-									if ($effect_data->direction != 'enemy')
-										$condition = $who->id != Player::get_instance()->id;
-									else
-										$condition = $who->id == Player::get_instance()->id;
-								}
+									if ($effects[0]->effect_direction == 'buff') {
+										if ($effect_data->direction != 'enemy') {
+											$condition = $who->id != Player::get_instance()->id;
+										} else {
+											$condition = $who->id == Player::get_instance()->id;
+										}
+									} else {
+										if ($effect_data->direction != 'enemy') {
+											$condition = $who->id != Player::get_instance()->id;
+										} else {
+											$condition = $who->id == Player::get_instance()->id;
+										}
+									}
 	
-								if ($condition) {
-									$secrets[]	= $effect_data->id;
-									continue;
+									if ($condition) {
+										$secrets[]	= $effect_data->id;
+										continue;
+									}
 								}
 							}
 						}
