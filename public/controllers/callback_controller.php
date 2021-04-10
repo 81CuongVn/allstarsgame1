@@ -47,7 +47,7 @@ class CallbackController extends Controller {
                                 $_SESSION['loggedin']	= TRUE;
                                 $_SESSION['user_id']	= $user->id;
 
-                                $user->last_login_ip    = getIPO();
+                                $user->last_login_ip    = getIP();
                                 $user->last_login_at    = now(TRUE);
                                 $user->session_key      = session_id();
                                 $user->active           = 1;
