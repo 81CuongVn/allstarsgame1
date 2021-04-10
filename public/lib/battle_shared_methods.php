@@ -284,8 +284,15 @@ trait BattleSharedMethods {
 			# Adiciona Felicidade em seu Mascote
 			$activePet = $p->get_active_pet();
 			if ($activePet) {
+				if ($activePet->happiness < 100){
+					if (($activePet->happiness + 2) >= 100){
+						$activePet->happiness = 100;
+					} else {
+						$activePet->happiness += 2;
+					}
+				}
 				# Adiciona exp para o mascote porque esta ativo em luta.
-				$petAddExp = percent(20, $e->battle_exp() / EXP_RATE);
+				$petAddExp = percent(20, $e->battle_exp() * EXP_RATE);
 				$activePet->exp += $petAddExp > 0 ? $petAddExp : 0;
 				$activePet->save();
 
