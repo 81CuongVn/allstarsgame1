@@ -559,41 +559,26 @@ class Player extends Relation {
 				}
 				break;
 			case "challenges":
-				$achievements = Achievement::find("challenges > 0 and type = 'objectives'");
-				foreach ($achievements as $achievement) {
-					// $user_objective = UserObjective::find_first("objective_id = {$achievement->id} and user_id = {$this->user_id} and complete = 0");
-					$user_objective = UserObjective::find_first("objective_id = {$achievement->id} and user_id = {$this->user_id}");
-					if ($_SESSION['universal']) {
-						echo '<pre>';
-						print_r($user_objective);
-						echo '</pre>';
-					}
-					if ($user_objective) {
-						$player_challenge = PlayerChallenge::find_first("challenge_id = {$achievement->challenges} and player_id = ".$this->id, [
-							'order'	=> 'quantity desc'
-						]);
-
-						if ($_SESSION['universal']) {
-							echo '<pre>';
-							print_r($player_challenge);
-							echo '</pre>';
-						}
-						if ($player_challenge) {
-							if ($player_challenge->quantity >= $achievement->challenges_floor) {
-								if ($_SESSION['universal']) { echo 'cheguei aqui'; }
+				$achievements = Achievement::find("challenges > 0 AND type='objectives'");
+				foreach($achievements as $achievement){
+					$user_objective = UserObjective::find_first("objective_id=".$achievement->id." AND user_id=".$this->user_id." AND complete=0");
+					if($user_objective){
+						$player_challenge = PlayerChallenge::find_first("challenge_id=".$achievement->challenges." AND player_id=".$this->id ." ORDER BY quantity desc");
+						if($player_challenge){
+							if($player_challenge->quantity >= $achievement->challenges_floor){
 								$user_objective->complete = 1;
 								$user_objective->completed_at = now(true);
 								$user_objective->save();
 
-								// Recompensa
+								//Recompensa
 								$user	= User::get_instance();
 								$user->round_points(1);
 
 								// Envia uma mensagem para o jogador avisando do prêmio
 								$pm				= new PrivateMessage();
 								$pm->to_id		= $this->id;
-								$pm->subject	= "Objetivo: {$achievement->description()->name}";
-								$pm->content	= "Você completou o Objetivo de Round: <b>{$achievement->description()->name}</b>";
+								$pm->subject	= "Objetivo: ". $achievement->description()->name;
+								$pm->content	= "Você completou o Objetivo de Round: <b>". $achievement->description()->name ."</b> ";
 								$pm->save();
 							}
 						}
