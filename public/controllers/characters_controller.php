@@ -298,6 +298,8 @@ class CharactersController extends Controller {
 		$best_rank		= PlayerRanked::find_first("player_id={$player->id} order by rank asc limit 1");
 		$player_stat	= PlayerStat::find_first("player_id=". $player->id);
 
+		Item::generate_equipment($player);
+
 		// if ($_SESSION['universal']) {
 		// 	$pages  = Item::find('item_type_id = 11');
 		// 	foreach ($pages as $page) {
