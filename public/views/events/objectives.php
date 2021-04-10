@@ -48,6 +48,9 @@ $daysLeft = ceil((strtotime(ROUND_END) - now()) / 86400);
             </div>
             <div class="bar">
                 <?php
+                if ($_SESSION['universal']) {
+                    $player->check_objectives("challenges");
+                }
                 // Barrinhas de Progresso dos Fragmentos
                 if ($objective->achievement()->fragments == 1) {
                     $player_fragments = PlayerItem::find_first("player_id=". $player->id." AND item_id=446");
