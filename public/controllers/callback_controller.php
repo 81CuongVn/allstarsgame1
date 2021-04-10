@@ -68,7 +68,7 @@ class CallbackController extends Controller {
                             $user->fb_id            = $fb_user->id;
                             $user->active           = 1;
 
-                            if (!IS_BETA) {
+                            if (!IS_BETA && $user->id) {
                                 // Login
                                 $user->last_login_ip    = getIP();
                                 $user->last_login_at    = now(TRUE);
