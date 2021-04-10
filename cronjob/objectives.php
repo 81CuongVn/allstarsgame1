@@ -11,6 +11,7 @@ foreach ($users as $user) {
         $insert = new UserObjective();
         $insert->user_id        = $user->id;
         $insert->objective_id   = $objective->id;
+        $insert->save();
     }
 
     $user->objectives   = 1;
