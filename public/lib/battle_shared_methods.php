@@ -1664,7 +1664,7 @@ trait BattleSharedMethods {
 							$item		= Item::find($effect_data->soruce_id);
 							$effects	= $item->effects();
 
-							if (sizeof($effects) && $effects[0]->effect_direction == 'buff') {
+							if ($effects[0]->effect_direction == 'buff') {
 								if ($effect_data->direction != 'enemy')
 									$condition = $who->id != Player::get_instance()->id;
 								else
