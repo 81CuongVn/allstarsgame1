@@ -1662,7 +1662,18 @@ trait BattleSharedMethods {
 					foreach ($effect_list as $effect_id => $effect_data) {
 						if ($effect_data->secret && !$effect_data->revealed) {
 							$item		= Item::find($effect_data->soruce_id);
-							$effects	= $item->effects();
+							$effects	= @$item->effects();
+
+							$content2	= [
+								'item'		=> [],
+								'effects'	=> []
+							];
+							foreach ($item as $itemm) {
+								$content2['item'][]	= $itemm;
+								$content2['effects'][]	= $effects;
+							}
+							$content2 = json_encode($content2);
+							Recordset::query("INSERT INTO `log` (`user_id`,`player_id`,`content`) VALUES (0, 0, '{$content2}')");
 
 							if ($effects[0]->effect_direction == 'buff') {
 								if ($effect_data->direction != 'enemy')
