@@ -779,7 +779,7 @@ trait EffectManager {
 		$effects		= $this->get_effects();
 		if (!$effects) {
 			$content	= json_encode([
-				'hasVisibleEffect'	=> $effects
+				'getSumEffect'	=> $effects
 			]);
 			Recordset::insert('log', [
 				'user_id'	=> 0,
