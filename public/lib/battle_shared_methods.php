@@ -1694,18 +1694,17 @@ trait BattleSharedMethods {
 									]);
 								} else {
 									$itemEffects	= $item->effects();
-									if (!$itemEffects) {
-										$content	= serialize([
-											'itemEffects'	=> $itemEffects,
-											'effect_data'	=> $effect_data,
-											'item'			=> $item
-										]);
-										Recordset::insert('log', [
-											'user_id'	=> 0,
-											'player_id'	=> 0,
-											'content'	=> $content
-										]);
-									} else {
+									$content	= serialize([
+										'itemEffects'	=> $itemEffects,
+										'effect_data'	=> $effect_data,
+										'item'			=> $item
+									]);
+									Recordset::insert('log', [
+										'user_id'	=> 0,
+										'player_id'	=> 0,
+										'content'	=> $content
+									]);
+									if ($itemEffects) {
 										if ($itemEffects->effect_direction == 'buff') {
 											if ($effect_data->direction != 'enemy') {
 												$condition = $who->id != Player::get_instance()->id;

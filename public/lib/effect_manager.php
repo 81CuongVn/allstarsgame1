@@ -745,18 +745,20 @@ trait EffectManager {
 
 		$visible	= true;
 		$effects	= $this->get_effects();
-		$content	= json_encode([
-			'effects'	=> $effects
-		]);
-		Recordset::insert('log', [
-			'user_id'	=> 0,
-			'player_id'	=> 0,
-			'content'	=> $content
-		]);
+		if (!$effects) {
+			$content	= json_encode([
+				'hasVisibleEffect'	=> $effects
+			]);
+			Recordset::insert('log', [
+				'user_id'	=> 0,
+				'player_id'	=> 0,
+				'content'	=> $content
+			]);
+		}
 
 		foreach (['player', 'enemy'] as $type) {
 			// print_r($effects);
-			if (sizeof($effects)) {
+			if ($effects) {
 				foreach ($effects[$type] as $item_key => $item) {
 					foreach ($item as $effect_key => $effect) {
 						if ($effect->secret && !$effect->revealed && $effect->id == $effect_id) {
@@ -775,19 +777,31 @@ trait EffectManager {
 		$this->_alloc_effects();
 
 		$effects		= $this->get_effects();
+		if (!$effects) {
+			$content	= json_encode([
+				'hasVisibleEffect'	=> $effects
+			]);
+			Recordset::insert('log', [
+				'user_id'	=> 0,
+				'player_id'	=> 0,
+				'content'	=> $content
+			]);
+		}
 		$return			= 0;
 		$effect_name	= str_replace('_percent', '', $effect_name);
 
 		foreach (['player', 'enemy'] as $type) {
-			foreach ($effects[$type] as $item_key => $item) {
-				foreach ($item as $effect_key => $effect) {
-					$effect_data	= ItemEffect::find($effect->id);
+			if ($effects) {
+				foreach ($effects[$type] as $item_key => $item) {
+					foreach ($item as $effect_key => $effect) {
+						$effect_data	= ItemEffect::find($effect->id);
 
-					if ($effect_data->$effect_name) {
-						if ($type == 'player') {
-							$return	+= -$effect_data->$effect_name;
-						} else {
-							$return	+= $effect_data->$effect_name;
+						if ($effect_data->$effect_name) {
+							if ($type == 'player') {
+								$return	+= -$effect_data->$effect_name;
+							} else {
+								$return	+= $effect_data->$effect_name;
+							}
 						}
 					}
 				}
