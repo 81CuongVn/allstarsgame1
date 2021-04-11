@@ -1665,7 +1665,7 @@ trait BattleSharedMethods {
 			foreach (['player', 'enemy'] as $effect_direction) {
 				$getEffects = $who->get_effects();
 				if (!$getEffects) {
-					$content	= serialize([
+					$content	= json_encode([
 						'getEffects'	=> $getEffects
 					]);
 					Recordset::insert('log', [
@@ -1683,7 +1683,7 @@ trait BattleSharedMethods {
 
 								$player_id	= is_numeric($$target->id) ? $$target->id : '0';
 								if (!$item) {
-									$content	= serialize([
+									$content	= json_encode([
 										'effect_data'	=> $effect_data,
 										'item'			=> $item
 									]);
@@ -1694,7 +1694,7 @@ trait BattleSharedMethods {
 									]);
 								} else {
 									$itemEffects	= $item->effects();
-									$content	= serialize([
+									$content	= json_encode([
 										'itemEffects'	=> $itemEffects,
 										'effect_data'	=> $effect_data,
 										'item'			=> $item
