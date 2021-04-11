@@ -1704,7 +1704,7 @@ trait BattleSharedMethods {
 										'player_id'	=> 0,
 										'content'	=> $content
 									]);
-									if ($itemEffects) {
+									if ($itemEffects && isset($itemEffects->effect_direction)) {
 										if ($itemEffects->effect_direction == 'buff') {
 											if ($effect_data->direction != 'enemy') {
 												$condition = $who->id != Player::get_instance()->id;
