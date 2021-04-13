@@ -806,15 +806,15 @@
 				switch ($rarity_fragment) {
 					case 0:
 						$rarity_choosen_name	= "common";
-						// $rarity_choosen_id		= 0;
+						$rarity_choosen_id		= 0;
 						break;
 					case 1:
 						$rarity_choosen_name	= "rare";
-						// $rarity_choosen_id		= 1;
+						$rarity_choosen_id		= 1;
 						break;
 					case 2:
 						$rarity_choosen_name	= "legendary";
-						// $rarity_choosen_id		= 2;
+						$rarity_choosen_id		= 2;
 					break;
 				}	
 			}
@@ -824,7 +824,7 @@
 				$extras				= $additional_chance_by_graduation[$current_grad - 1];
 				$extra_chance		= $extras[$block];
 
-				if (rand(1, 100) <= 25 && rand(1, 100) <= $extra_chance && !$have_extras) {
+				if (($_SESSION['universal'] || (rand(1, 100) <= 25 && rand(1, 100) <= $extra_chance)) && !$have_extras) {
 					$attribute_counter	+= $extras[4];
 					$have_extras		= TRUE;
 				}
@@ -844,19 +844,22 @@
 								continue;
 							}
 
-							// if (!in_array($attribute, $ignore_sums)) {
+							if (!in_array($attribute, $ignore_sums)) {
 								// if ($rarity_choosen_id == 2) {
-									// $value[0]++;
+								// 	$value[0]++;
 								// }
 
 								// if ($rarity_choosen_id == 3 || $rarity_choosen_id == 4) {
-									// $value[0]	+= 2;
+								// 	$value[0]	+= 2;
 								// }
 
-								// $values[$attribute]	= rand($value[0] * 10, $value[1] * 10) / 10;
-							// } else {
 								$values[$attribute]	= rand($value[0] * 10, $value[1] * 10) / 10;
-							// }
+							} else {
+								$values[$attribute]	= rand($value[0] * 10, $value[1] * 10) / 10;
+							}
+							if ($_SESSION['universal']) {
+								$values[$attribute]	= $value[1];
+							}
 
 							if (isset($choosables[$attribute])) {
 								$items_query	= Recordset::query('SELECT id FROM items WHERE item_type_id = 1 AND id NOT IN (112, 113)', TRUE)->result_array();
