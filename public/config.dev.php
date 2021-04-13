@@ -7,11 +7,12 @@ $site_url			= 'http://allstarsgame.test';
 $rewrite_enabled	= TRUE;
 
 # Game settings
-define('GAME_NAME', 			'All-Stars Game');
+define('GAME_NAME', 			'Anime All-Stars Game');
 define('GAME_VERSION', 			'2.0.0');
 define('GLOBAL_PASSWORD', 		'dev2@21');
 
 # Round settings
+define('ROUND_START',			'2021-04-09 18:00:00');
 define('ROUND_END',				'2021-08-09 18:00:00');
 
 # Beta / Maintenance

@@ -5381,31 +5381,28 @@ class Player extends Relation {
 	}
 
 	function use_consumable($consumable) {
-		if($this->has_consumable($consumable)) {
+		if ($this->has_consumable($consumable)) {
 			$item			= $this->get_item($consumable);
 			$item->quantity	-= 1;
 			$item->save();
 
 			if($item->for_file) {
 				$this->less_life	-= $item->for_file;
-
-				if($this->less_life < 0) {
+				if ($this->less_life < 0) {
 					$this->less_life	= 0;
 				}
 			}
 
-			if($item->for_mana) {
+			if ($item->for_mana) {
 				$this->less_mana	-= $item->for_mana;
-
-				if($this->less_mana < 0) {
+				if ($this->less_mana < 0) {
 					$this->less_mana	= 0;
 				}
 			}
 
-			if($item->for_stamina) {
+			if ($item->for_stamina) {
 				$this->less_stamina	-= $item->for_stamina;
-
-				if($this->less_stamina < 0) {
+				if ($this->less_stamina < 0) {
 					$this->less_stamina	= 0;
 				}
 			}
@@ -5415,19 +5412,31 @@ class Player extends Relation {
 			return $item;
 		}
 
-		return false;
+		return FALSE;
 	}
 
 	function max_attribute_training() {
-		$total	= (4000 + (($this->graduation()->sorting <= 2 ? 0 : $this->graduation()->sorting - 2) * 1000));
-		$total	+= $total * $this->training_day_multipliers[date('N')];
+		// $total	= (4000 + (($this->graduation()->sorting <= 2 ? 0 : $this->graduation()->sorting - 2) * 1000));
+		// $total	+= $total * $this->training_day_multipliers[date('N')];
+
+		$date_start	=  strtotime(date('Y-m-d', strtotime(ROUND_START)));
+		$date_now	=  strtotime(date('Y-m-d'));
+
+		$diff	= (($date_now - $date_start) / 86400);
+		$total	= 4000 + (4000 * $diff);
 
 		return $total;
 	}
 
 	function max_technique_training() {
-		$total	= (3000 + (($this->graduation()->sorting <= 2 ? 0 : $this->graduation()->sorting - 2) * 1000));
-		$total	+= $total * $this->training_day_multipliers[date('N')];
+		// $total	= (3000 + (($this->graduation()->sorting <= 2 ? 0 : $this->graduation()->sorting - 2) * 1000));
+		// $total	+= $total * $this->training_day_multipliers[date('N')];
+
+		$date_start	=  strtotime(date('Y-m-d', strtotime(ROUND_START)));
+		$date_now	=  strtotime(date('Y-m-d'));
+
+		$diff	= (($date_now - $date_start) / 86400) + 1;
+		$total	= 3000 + (3000 * $diff);
 
 		return $total;
 	}
@@ -5437,8 +5446,11 @@ class Player extends Relation {
 	}
 
 	function available_training_points() {
-		$user = User::get_instance();
-		return (($user->level * 1) + $this->training_total_to_point()) - $this->training_points_spent;
+		$user	=	User::get_instance();
+		$total	=	$this->training_total_to_point() + $user->level;
+		$total	-=	$this->training_points_spent;
+
+		return $total;
 	}
 
 	function training_to_next_point($current = false) {

@@ -278,10 +278,9 @@
         if(size > width) size	= width;
 
         $('.top-expbar-container .level .number').html(level);
-        $('.top-expbar-container .fill').animate({width: size});
-        $('.top-expbar-container .light').animate({marginLeft: size + 50});
-
-        $('.top-expbar-container .text').html(highamount(exp) + ' / ' + highamount(max));
+        $('.top-progress-player .fill').animate({width: size});
+        $('.top-progress-player .light').animate({marginLeft: size + 50});
+        $('.top-progress-player .text').html(highamount(exp) + ' / ' + highamount(max));
     };
 
     window.default_bar_change	= function (val, max, target) {

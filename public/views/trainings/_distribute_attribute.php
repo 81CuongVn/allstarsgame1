@@ -15,10 +15,9 @@
 					?>
 				<?php else: ?>
 					<?php echo t('attributes.distribute.no_points') ?>
-				<?php endif ?>
-				<?php /*<br /><br />
-				<?php echo exp_bar($current_exp, $point_exp, 455, $current_exp . ' / ' . $point_exp) ?><br />
-				<span class="laranja"><?php echo t('attributes.distribute.info') ?></span>*/ ?>
+				<?php endif ?><br /><br />
+				<?php echo exp_bar($current_exp, $point_exp, 455, highamount($current_exp) . ' / ' . highamount($point_exp)) ?><br />
+				<span class="laranja"><?php echo t('attributes.distribute.info') ?></span>
 			</div>
 		</div>
 	</div>

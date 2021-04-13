@@ -87,13 +87,18 @@
 		});
 
 		distribute_container.on('click', '.distribute-general', function () {
-			var	post	= {general: 1, data: []};
-			var	selects	= $('select', distribute_container);
+			var	post	= {
+				general:	1,
+				data:		[]
+			},
+				selects	= $('select', distribute_container);
 
 			selects.each(function () {
 				var	_	= $(this);
-
-				post.data.push({attribute: _.attr('name').replace('_val', ''), quantity: this.value});
+				post.data.push({
+					attribute:	_.attr('name').replace('_val', ''),
+					quantity:	this.value
+				});
 			});
 
 			_distribute_points(post);
@@ -102,39 +107,37 @@
 		_distribute_points();
 	}
 
+	$('#training-attribute-basic select').on('change', function () {
+		var	_ = $(this);
+
+		$('#training-attribute-basic .stamina').html(_.val());
+	}).trigger('change');
+
 	var	training_attribute	= $('#training-attribute-basic');
-	if(training_attribute.length) {
-		training_attribute.on('change', 'select', function () {
-			var	_ = $(this);
-
-			$('.mana', training_attribute).html(_.val() * _.data('consume-mana'));
-			$('.stamina', training_attribute).html(_.val() * _.data('consume-stamina'));
-		}).trigger('change');
-
+	if (training_attribute.length) {
 		training_attribute.on('click', '.train', function () {
+			console.log('Treinar');
 			lock_screen(true);
 
 			$.ajax({
 				url:		make_url('trainings#train_attribute'),
-				data:		$('#training-attribute-basic').serialize(),
+				data:		training_attribute.serialize(),
 				type:		'post',
 				dataType:	'json',
 				success:	function (result) {
 					lock_screen(false);
 
-					if(result.level_redirect) {
+					if (result.level_redirect) {
 						location.href	= make_url('characters#next_level');
 						return;
 					}
 
-					if(result.success) {
+					if (result.success) {
 						$('#traning-limit-container').html(result.view);
 						_distribute_points();
 
 						character_exp(result.exp_player, result.level_exp, result.level);
 						character_stats({
-							mana:			result.mana,
-							max_mana:		result.max_mana,
 							stamina:		result.stamina,
 							max_stamina:	result.max_stamina
 						});
@@ -152,7 +155,10 @@
 
 		$.ajax({
 			url:		make_url('trainings#techniques'),
-			data:		{item: _.data('item'), duration: $('#technique-training-duration-' + _.data('item')).val()},
+			data:		{
+				item:		_.data('item'),
+				duration:	$('#technique-training-duration-' + _.data('item')).val()
+			},
 			type:		'post',
 			dataType:	'json',
 			success:	function (result) {

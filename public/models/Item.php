@@ -394,11 +394,15 @@
 			$ok				= true;
 			$log			= '<ul class="requirement-list">';
 			$error			= '<li class="error"><i class="fa fa-times fa-fw"></i> %result</li>';
-			$success		= '<li class="success"><i class="fa fa-ok fa-fw"></i> %result</li>';
+			$success		= '<li class="success"><i class="fa fa-check fa-fw"></i> %result</li>';
 
 			if ($this->item_type_id == 6) {
 				$ok		= $this->mana_cost > $user->level ? false : $ok;
 				$log	.= str_replace('%result', t('items.requirements.level', array('level' => $this->mana_cost)), $this->mana_cost > $user->level ? $error : $success);
+			}
+			if ($this->item_type_id == 5) {
+				$ok		= $this->mana_cost > $player->level ? false : $ok;
+				$log	.= str_replace('%result', t('items.requirements.level', array('level' => $this->mana_cost)), $this->mana_cost > $player->level ? $error : $success);
 			}
 
 			return array('has_requirement' => $ok, 'requirement_log' => $log . "</ul>");
@@ -664,14 +668,14 @@
 
 			$rarity_drop_by_graduation	= [
 				1	=> [
-					'common'	=> 95,
+					'common'	=> 94,
 					'rare'		=> 5,
-					'legendary'	=> 0
+					'legendary'	=> 1
 				],
 				2	=> [
-					'common'	=> 80,
-					'rare'		=> 20,
-					'legendary'	=> 0
+					'common'	=> 79,
+					'rare'		=> 19,
+					'legendary'	=> 2
 				],
 				3	=> [
 					'common'	=> 65,
