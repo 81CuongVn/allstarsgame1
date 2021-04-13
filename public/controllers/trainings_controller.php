@@ -100,7 +100,7 @@ class TrainingsController extends Controller {
 			}
 
 			if (!sizeof($errors)) {
-				$player->$_POST['attribute']	+= $_POST['quantity'];
+				$player->{$_POST['attribute']}	+= $_POST['quantity'];
 				$player->training_points_spent	+= $_POST['quantity'];
 				$player->save();	
 				
