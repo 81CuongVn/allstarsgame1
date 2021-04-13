@@ -8,7 +8,7 @@ $rewrite_enabled	= TRUE;
 
 # Game settings
 define('GAME_NAME', 			'Anime All-Stars Game');
-define('GAME_VERSION', 			'2.0.0');
+define('GAME_VERSION', 			'2.0.1');
 define('GLOBAL_PASSWORD', 		'dev2@21');
 
 # Round settings

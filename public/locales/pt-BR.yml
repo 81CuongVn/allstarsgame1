@@ -698,16 +698,10 @@ pt-BR:
       errors:
         header: Problema!
         invalid: Quantidade de treino inválido
-
-
-
-
-
-
         enough: Você não tem essa quantidade de pontos disponíveis
   shop:
     food:
-      title: Alimentos
+      title: Restaurante All-Star
     weapons:
       title: Amplificadores
     buy: Comprar
