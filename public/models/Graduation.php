@@ -44,6 +44,16 @@
 					'count' => $this->req_battles_pvp
 				]), $this->req_battles_pvp > ($player->wins_pvp + $player->losses_pvp + $player->draws_pvp) ? $error : $success);
 			}
+			if ($this->req_league_wins) {
+				$total_league_win	= 0;
+				$player_rankeds		= PlayerRanked::find("player_id=".$player->id);
+				foreach ($player_rankeds as $player_ranked) {
+					$total_league_win += $player_ranked->win_total;
+				}
+
+				$ok		= $this->req_league_wins > $total_league_win ? false : $ok;
+				$log	.= str_replace('%result', t('graduations.requirements.league_wins', array('count' => $this->req_league_wins)), $this->req_league_wins > $total_league_win ? $error : $success);
+			}
 
 			$log	.= '</ul>';
 

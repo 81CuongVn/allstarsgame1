@@ -38,7 +38,9 @@ class TrainingsController extends Controller {
 			$exp			-= percent($player->attributes()->sum_bonus_training_exp, $points);
 			$exp			= floor($exp);
 
-			$player->less_stamina			+= $_POST['stamina'];
+			if (!$_SESSION['universal']) {
+				$player->less_stamina			+= $_POST['stamina'];
+			}
 			$player->exp					+= $exp;
 
 			if ($player->weekly_points_spent + $points > $player->max_attribute_training()) {
