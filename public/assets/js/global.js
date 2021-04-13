@@ -277,7 +277,7 @@
 
         if(size > width) size	= width;
 
-        $('.top-expbar-container .level .number').html(level);
+        $('.top-expbar-container .level-player .level .number').html(level);
         $('.top-progress-player .fill').animate({width: size});
         $('.top-progress-player .light').animate({marginLeft: size + 50});
         $('.top-progress-player .text').html(highamount(exp) + ' / ' + highamount(max));

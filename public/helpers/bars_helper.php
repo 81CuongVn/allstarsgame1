@@ -48,7 +48,7 @@ function top_exp_bar($player, $user) {
     }
 
     return '<div class="top-expbar-container">
-        <div style="cursor: help;" class="level technique-popover" data-source="#level-container-'.$player->id .'" data-title="Nível do Personagem" data-trigger="click" data-placement="bottom">
+        <div style="cursor: help;" class="level level-player technique-popover" data-source="#level-container-'.$player->id .'" data-title="Nível do Personagem" data-trigger="click" data-placement="bottom">
             <span>NV</span>
             <div class="number">' . $player->level . '</div>
         </div>
