@@ -321,16 +321,16 @@
 			$errors					= [];
 
 			if (isset($_POST['stamina']) && is_numeric($_POST['stamina']) && $_POST['stamina'] > 0) {
-				if ($player->enchant_points >= 3000) {
+				if ($player->enchant_points >= 3000 && !$_SESSION['universal']) {
 					$errors[]	= t('enchant.errors.nao_pode_treinar');	
 				}
 
-				if ($player->enchant_points_total >= 50000) {
+				if ($player->enchant_points_total >= 50000 && !$_SESSION['universal']) {
 					$errors[]	= t('enchant.errors.nao_pode_treinar2');	
 				}
 
 				//$stamina = ( 10 + $player->level ) - $player->less_stamina;
-				if ($player->for_stamina() < $_POST['stamina']) {
+				if ($player->for_stamina() < $_POST['stamina'] && !$_SESSION['universal']) {
 					$errors[]	= t('enchant.errors.sem_stamina');	
 				}
 			} else {
@@ -355,7 +355,9 @@
 					$player->enchant_points_total += $pontos_ganhos;
 				}
 
-				$player->less_stamina += $_POST['stamina'];
+				if (!$_SESSION['universal']) {
+					$player->less_stamina += $_POST['stamina'];
+				}
 				$player->save();
 			} else {
 				$this->json->messages	= $errors;
