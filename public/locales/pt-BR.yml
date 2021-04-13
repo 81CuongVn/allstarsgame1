@@ -57,7 +57,7 @@ pt-BR:
     specialities: Especialidades
     abilities_specialities: Habilidades e Especialidades
     attribute_training: Treinamento de Atributos
-    shop: Alimentos
+    shop: Restaurante All-Star
     shop_weapon: Amplificadores
     train_techniques: Treinamento de Golpes
     train_technique_status: Treinamento de Golpes - Status
@@ -677,7 +677,7 @@ pt-BR:
       exp2: |
         pontos de experiência
       points: |
-        #{points} pontos de habilidade
+        #{points} pontos de treino
       errors:
         mana: |
           Você não tem #{name} suficiente para treinar essa quantidade!
