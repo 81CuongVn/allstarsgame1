@@ -944,13 +944,14 @@ div.box-mini {
 div.box-mini .title {
 	font-size: 13px;
 	text-align: center;
-	padding: 10px;
+	padding: 11px;
 	color: #ffe9a5;
 	font-weight: bold;
 }
 div.box-mini .body {
 	font-size: 12px;
 	padding: 10px;
+	text-align: center;
 }
 .h-combates,
 .h-missoes,
