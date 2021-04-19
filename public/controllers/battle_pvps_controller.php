@@ -15,7 +15,7 @@ class BattlePvpsController extends Controller {
 
 		if (!$_POST)	$league				= Ranked::find_first('started = 1 order by league desc');
 		else			$league				= Ranked::find_first($_POST['leagues']);
-		
+
 		if ($league)	$player_ranked		= $player->ranked($league->league);
 		else			$player_ranked		= FALSE;
 
@@ -24,7 +24,7 @@ class BattlePvpsController extends Controller {
 		$this->assign('leagues',			$leagues);
 		$this->assign('player_ranked',		$player_ranked);
 		$this->assign('player_tutorial',	$player->player_tutorial());
-		
+
 		if ($best_rank) {
 			$ranked_total					= Recordset::query("SELECT SUM(wins) AS total_wins, SUM(losses) AS total_losses, SUM(draws) AS total_draws FROM player_rankeds WHERE player_id = {$player->id}");
 			$this->assign('best_rank',		$best_rank);
@@ -115,7 +115,7 @@ class BattlePvpsController extends Controller {
 
 					$content .= highamount($rewards->quantity) ."x ". Item::find($rewards->item_id)->description()->name . "<br />";
 				}
-				
+
 				$pm				= new PrivateMessage();
 				$pm->to_id		= $player->id;
 				$pm->subject	= t("ranked.reward_league") . " - ". ($player_ranked->rank == 0 ? "Rank All-Star" : "Rank {$player_ranked->rank}");
@@ -347,7 +347,7 @@ class BattlePvpsController extends Controller {
 			$connection				= new AMQPConnection(PVP_SERVER, PVP_PORT, 'guest', 'guest');
 			$channel				= $connection->channel();
 			$channel->queue_declare(PVP_CHANNEL, FALSE, FALSE, FALSE, FALSE);
-			
+
 			if (date('w') == 0 || date('w') == 2 || date('w') == 4) {
 				$battle_type_id = 5;
 			} else {
@@ -387,7 +387,7 @@ class BattlePvpsController extends Controller {
 
 		if ($player->pvp_queue_found > now()) {
 			$diff = $player->pvp_queue_found - now();
-			
+
 			$this->json->found		= TRUE;
 			$this->json->seconds	= $diff;
 		} else {

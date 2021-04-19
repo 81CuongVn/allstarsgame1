@@ -3,7 +3,7 @@ class Inflector {
 	private static $plurals	= array(
 		'([aeiouy]o)$'		=> '$1s',
 		'([^aeiouy]o)$'		=> '$1es',
-		'([aeiou]y)$'	=> '$1s',
+		'([aeiou]y)$'		=> '$1s',
 		'y$'				=> 'ies',
 		'(ch|s|sh|x|z)$'	=> '$1es',
 		'(f|fe)$'			=> 'ves',
@@ -42,7 +42,7 @@ class Inflector {
 
 						break;
 					}
-				}					
+				}
 			}
 
 			if(!$found) {

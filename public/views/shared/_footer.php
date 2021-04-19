@@ -10,6 +10,19 @@
                 <b>&copy; 2013-<?=date('Y');?> <a href="<?=make_url('/');?>"><?=GAME_NAME;?></a> - Todos os direitos reservados sobre o sistema e gráficos</b>
             </p>
         </div>
-        <div id="outros-jogos"></div>
+        <div id="outros-jogos">
+			<div style="padding-top: 12px;">
+				<a href="https://sugoigame.com.br" target="_blank">
+					<img src="<?=image_url('logos/sugoi-logo.png')?>" alt="Sugoi Game" />
+				</a>
+				<div class="clearfix"></div>
+			</div>
+			<div style="padding-top: 20px;">
+				<a href="https://bleach.sugoigame.com.br" target="_blank">
+					<img src="<?=image_url('logos/bg-logo.png')?>" alt="Bleach Game" />
+				</a>
+				<div class="clearfix"></div>
+			</div>
+		</div>
     </div>
 </div>

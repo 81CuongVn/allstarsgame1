@@ -1,10 +1,16 @@
 <?php
-class AchievementsController extends Controller {
-	function index() {
-		$this->assign('categories', AchievementCategory::find("language_id=" . $_SESSION['language_id'] . " ORDER BY ordem ASC"));
+class AchievementsController extends Controller
+{
+	public function index()
+	{
+		$categories = AchievementCategory::find("language_id = " . $_SESSION['language_id'], [
+			'reorder'	=> 'ordem asc'
+		]);
+
+		$this->assign('categories',	$categories);
 	}
-	
-	function make_list() {
+	public function make_list()
+	{
 		$this->layout			= false;
 		$this->json->success	= true;
 
@@ -13,11 +19,12 @@ class AchievementsController extends Controller {
 		$achievement_id	= AchievementCategory::find_first('ordem = ' . $achievement->ordem)->id;
 		$player			= Player::get_instance();
 		$user			= User::get_instance();
+		$achievements	= Achievement::find("type = 'achievement' and achievement_category_id = " . $achievement_id, [
+			'reorder'	=> 'ordem asc'
+		]);
 
 		$this->assign('player',			$player);
 		$this->assign('user',			$user);
-		$this->assign('achievements',	Achievement::find("type='achievement' AND achievement_category_id=" . $achievement_id . " ORDER BY ordem ASC"));
-	
+		$this->assign('achievements',	$achievements);
 	}
 }
-?>	

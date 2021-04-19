@@ -2,7 +2,7 @@
 trait AttributeManager {
 	public	$enemy_intimidation	= 0;
 	private	$attrRate			= [];
-	
+
 	public function __construct() {
 		global $attrRate;
 		$attrRate = $attrRate;

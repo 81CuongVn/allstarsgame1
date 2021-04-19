@@ -685,10 +685,11 @@ li {
 }
 #outros-jogos {
 	position: relative;
-	width: 500px;
-	height: auto;
-	top: 140px;
-	margin-left: 284px;
+    width: 500px;
+    top: 140px;
+    margin: 0 auto;
+    height: 70px;
+    padding: 0 120px;
 }
 #outros-jogos div {
 	float: left;

@@ -16,8 +16,8 @@ define('ROUND_START',			'2021-04-09 18:00:00');
 define('ROUND_END',				'2021-08-09 18:00:00');
 
 # Beta / Maintenance
-define('IS_BETA',					FALSE);
-define('IS_MAINTENANCE',			FALSE);
+define('IS_BETA',				FALSE);
+define('IS_MAINTENANCE',		FALSE);
 
 # Database settings
 define('RECORDSET_APC',			1);

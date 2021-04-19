@@ -3,7 +3,7 @@
 <div class="titulo-home3">
 	<div style="float:left">
 		<b><?php echo $new->title ?></b>
-	</div>	
+	</div>
 	<div style="float:right">
 		<span class="laranja"><?=t('news.posted_by', [
 			'name'	=> $new->user()->name
@@ -11,7 +11,7 @@
 		<span class="azul"><?=t('news.post_date', [
 			'date'	=> date("d/m/Y", strtotime($new->created_at)) . " &agrave;s " . date("H:i:s", strtotime($new->created_at))
 		]);?></span>
-	</div>	
+	</div>
 </div>
 <div class="conteudo-news">
 	<?php echo nl2br($new->description) ?>

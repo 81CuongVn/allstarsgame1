@@ -53,7 +53,7 @@ class UsersController extends Controller {
 			if ($_POST['password_new'] != $_POST['password_new_confirmation']) {
 				$errors[]	= t('users.join.validators.password_match');
 			}
-	
+
 			if (strlen($_POST['password_new']) < 6) {
 				$errors[]	= t('users.join.validators.password_length');
 			}

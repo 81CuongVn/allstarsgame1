@@ -65,7 +65,7 @@ function ps_paymentStatus($id) {
 		case 3:	$status = 'Paga';					break;
 		case 4:	$status = 'Disponível';				break;
 		case 5:	$status = 'Em disputa';				break;
-		case 8:	$status = 'Devolvida';				break;
+		case 6:	$status = 'Devolvida';				break;
 		case 7:	$status = 'Cancelada';				break;
 		case 8:	$status = 'Debitado';				break;
 		case 9:	$status = 'Retenção temporária';	break;

@@ -3,7 +3,7 @@ class CharactersController extends Controller {
 	function create() {
 		$user	= User::get_instance();
 		$total	= Player::find("user_id=".$user->id);
-		
+
 		if($_POST) {
 			$this->layout			= false;
 			$this->as_json			= true;
@@ -62,9 +62,9 @@ class CharactersController extends Controller {
 				$player->character_theme_image_id	= $theme->images()[0]->id;
 				$player->last_login					= now(true);
 				$player->save();
-				
+
 				//Adiciona as Habilidades do jogador
-				$character_abilities = CharacterAbility::find("character_id=" . $player->character_id);	
+				$character_abilities = CharacterAbility::find("character_id=" . $player->character_id);
 				foreach ($character_abilities as $character_ability){
 					$player_character_ability = new PlayerCharacterAbility();
 					$player_character_ability->player_id = $player->id;
@@ -77,10 +77,10 @@ class CharactersController extends Controller {
 					$player_character_ability->cooldown = $character_ability->cooldown;
 					$player_character_ability->is_initial = $character_ability->is_initial;
 					$player_character_ability->save();
-					
-				} 
+
+				}
 				//Adiciona as Especialidades do jogador
-				$character_specialities = CharacterSpeciality::find("character_id=" . $player->character_id);	
+				$character_specialities = CharacterSpeciality::find("character_id=" . $player->character_id);
 				foreach ($character_specialities as $character_speciality){
 					$player_character_speciality = new PlayerCharacterSpeciality();
 					$player_character_speciality->player_id = $player->id;
@@ -93,7 +93,7 @@ class CharactersController extends Controller {
 					$player_character_speciality->cooldown = $character_speciality->cooldown;
 					$player_character_speciality->is_initial = $character_speciality->is_initial;
 					$player_character_speciality->save();
-					
+
 				}
 			} else
 				$this->json->errors	= $errors;
@@ -133,7 +133,7 @@ class CharactersController extends Controller {
 				$player					= Player::find($_POST['id']);
 				$player->last_login		= now(true);
 				$player->save();
-				
+
 				if ($player->user_id != $_SESSION['user_id']) {
 					$errors[]	= t('characters.select.errors.user_match');
 				}
@@ -161,7 +161,7 @@ class CharactersController extends Controller {
 								$player_item->removed	= 1;
 								$player_item->save();
 							}
-						}	
+						}
 					}
 				}
 
@@ -207,7 +207,7 @@ class CharactersController extends Controller {
 				// Exclui suas amizades da lista de pendencia
 				$friend_players_requests = PlayerFriendRequest::find("friend_id=". $player->id);
 				$player_friends_requests = PlayerFriendRequest::find("player_id=". $player->id);
-				
+
 				if ($friend_players_requests) {
 					foreach ($friend_players_requests as $friend_players_request) {
 						$friend_players_request->destroy();
@@ -218,11 +218,11 @@ class CharactersController extends Controller {
 						$player_friends_request->destroy();
 					}
 				}
-				
+
 				// Exclui suas amizades
 				$friend_players = PlayerFriendList::find("friend_id=". $player->id);
 				$player_friends = PlayerFriendList::find("player_id=". $player->id);
-				
+
 				if($friend_players){
 					foreach($friend_players as $friend_player){
 						$friend_player->destroy();
@@ -233,9 +233,9 @@ class CharactersController extends Controller {
 						$player_friend->destroy();
 					}
 				}
-				
+
 				$player->destroy();
-				
+
 				redirect_to('characters#select?deleted_ok');
 			} else {
 				$messages	= [];
@@ -258,7 +258,7 @@ class CharactersController extends Controller {
 				$player	= Player::find($_POST['id']);
 				$user	= User::get_instance();
 				$player_removed = Recordset::query('select * from players WHERE user_id='.$user->id.' AND removed=1')->result_array();
-									
+
 				if(!$player) {
 					$errors[]	= t('characters.remove.not_found');
 				} else {
@@ -276,7 +276,7 @@ class CharactersController extends Controller {
 					}
 				}
 			} else {
-				$errors[]	= t('characters.remove.invalid');				
+				$errors[]	= t('characters.remove.invalid');
 			}
 
 			if(!sizeof($errors)) {
@@ -362,13 +362,13 @@ class CharactersController extends Controller {
 			$user_quest_counter->user_id = $player->user_id;
 			$user_quest_counter->save();
 		}
-		
+
 		// Começando o novo modulo de recompensa diária
 		$player_fidelity = PlayerFidelity::find_first("player_id=". $player->id);
 		if (!$player_fidelity) {
 			$player_fidelity = new PlayerFidelity();
 			$player_fidelity->player_id = $player->id;
-			$player_fidelity->day = 1;	
+			$player_fidelity->day = 1;
 			$player_fidelity->save();
 		}
 
@@ -376,7 +376,7 @@ class CharactersController extends Controller {
 			$ranked_total					= Recordset::query("SELECT SUM(wins) AS total_wins, SUM(losses) AS total_losses, SUM(draws) AS total_draws FROM player_rankeds WHERE player_id = {$player->id}");
 			$this->assign('ranked_total',	$ranked_total->result_array()[0]);
 		}
-		
+
 		$formulas	= [
 			'for_atk'		=> t('formula.for_atk'),
 			'for_def'		=> t('formula.for_def'),
@@ -391,7 +391,7 @@ class CharactersController extends Controller {
 		$max	= 0;
 		foreach ($formulas as $_ => $formula) {
 			$value	= $player->{$_}();
-			
+
 			if($value > $max) {
 				$max	= $value;
 			}
@@ -411,7 +411,7 @@ class CharactersController extends Controller {
 	function list_images_only() {
 		$this->layout	= false;
 		$player			= Player::get_instance();
-		
+
 		$this->assign('images', CharacterTheme::find($_GET['theme_id'], array('cache' => true))->images());
 	}
 	function list_images() {
@@ -450,7 +450,7 @@ class CharactersController extends Controller {
 
 			if(!sizeof($errors)) {
 				$this->json->success				= true;
-				
+
 				if($image->is_buyable){
 					if(!$user_image){
 						$user_character_theme_image								= new UserCharacterThemeImage();
@@ -458,13 +458,13 @@ class CharactersController extends Controller {
 						$user_character_theme_image->character_theme_image_id	= $_POST['id'];
 						$user_character_theme_image->price_credits				= $image->price_credits;
 						$user_character_theme_image->save();
-						
+
 						$user->credits -= 5;
 						$user->save();
 					}
-						
+
 				}
-				
+
 				$player->character_theme_image_id	= $_POST['id'];
 				$player->save();
 			} else {
@@ -491,7 +491,7 @@ class CharactersController extends Controller {
 				if(!$theme) {
 					$errors[]	= t('characters.themes.errors.invalid');
 				} else {
-					if($_POST['type']){	
+					if($_POST['type']){
 						if($theme->character()->id != $player->character()->id) {
 							$errors[]	= t('characters.themes.errors.character');
 						}
@@ -529,7 +529,7 @@ class CharactersController extends Controller {
 				}
 			} else {
 				$errors[]	= t('characters.themes.errors.invalid');
-			}					
+			}
 
 			if (!sizeof($errors)) {
 				$this->json->success	= true;
@@ -539,9 +539,9 @@ class CharactersController extends Controller {
 					$user_theme->user_id			= $user->id;
 					$user_theme->character_theme_id	= $_POST['theme'];
 					$user_theme->price_credits		= $theme->price_credits;
-					$user_theme->price_currency		= $theme->price_currency;						
+					$user_theme->price_currency		= $theme->price_currency;
 					$user_theme->save();
-					
+
 					if ($_POST['type']){
 						$image								= $theme->first_image();
 						$player->character_theme_id			= $theme->id;
@@ -553,7 +553,7 @@ class CharactersController extends Controller {
 						$player->name,
 						$theme->description()->name
 					]);
-					
+
 					if ($_POST['mode'] == 1) {
 						if ($theme->price_credits) {
 							$user->spend($theme->price_credits);
@@ -563,7 +563,7 @@ class CharactersController extends Controller {
 							$player->spend($theme->price_currency);
 						}
 					}
-					
+
 					// Verifica se o jogador comprou o tema - Conquista
 					$player->achievement_check("character_theme");
 					// Objetivo de Round
@@ -597,7 +597,7 @@ class CharactersController extends Controller {
 				$this->assign('character', $player->character());
 				$this->assign('themes', CharacterTheme::find('character_id=' . $player->character_id . $filter));
 			}
-		}			
+		}
 	}
 
 	function talents() {
@@ -746,7 +746,7 @@ class CharactersController extends Controller {
 				if($item->item_type_id == 5 && $player->less_stamina <= 0 && $item->for_stamina > 0) {
 					$errors[]	= t('characters.create.errors.stamina');
 				}
-					
+
 				if($player->hospital) {
 					$errors[]	= t('characters.inventory.errors.hospital');
 				}
@@ -813,10 +813,10 @@ class CharactersController extends Controller {
 	function fragments(){
 		$player		= Player::get_instance();
 		$total		= PlayerItem::find_first("player_id=". $player->id ." AND item_id=446");
-		
+
 		$this->assign('player', $player);
 		$this->assign('total', $total);
-		$this->assign('player_tutorial', $player->player_tutorial());	
+		$this->assign('player_tutorial', $player->player_tutorial());
 	}
 	function fragments_change() {
 		$this->as_json			= true;
@@ -842,10 +842,10 @@ class CharactersController extends Controller {
 			if (!$item_446 || $item_446->quantity < $prices[$_POST['mode']]) {
 				$errors[]	= t('fragments.error2');
 			}
-			
+
 			if (!sizeof($errors)) {
 				$item_446->quantity -= $prices[$_POST['mode']];
-				$item_446->save(); 
+				$item_446->save();
 
 				// Faz a premiação referente ao mode que o jogador escolheu!
 				switch ($_POST['mode']) {
@@ -873,14 +873,14 @@ class CharactersController extends Controller {
 								$item_446->quantity 	+= 25;
 								$item_446->save();
 							} else {
-								$item_446				= new PlayerItem();						
+								$item_446				= new PlayerItem();
 								$item_446->item_id		= 446;
 								$item_446->player_id	= $player->id;
 								$item_446->quantity 	= 25;
 								$item_446->save();
 							}
-							
-							$message = "Você já possuia o Mascote sorteado e por isso ganhou <b>25 Fragmentos de Almas</b>.";	
+
+							$message = "Você já possuia o Mascote sorteado e por isso ganhou <b>25 Fragmentos de Almas</b>.";
 							$message = urlencode($message);
 						}
 					break;
@@ -892,7 +892,7 @@ class CharactersController extends Controller {
 							$player_pet->character_id	= $character->id;
 							$player_pet->user_id		= $user->id;
 							$player_pet->save();
-							
+
 							$message = "Você ganhou o Personagem: <b>". $character->description()->name . '</b>';
 							$message = urlencode($message);
 						} else {
@@ -901,14 +901,14 @@ class CharactersController extends Controller {
 								$item_446->quantity		+= 25;
 								$item_446->save();
 							} else {
-								$item_446				= new PlayerItem();						
+								$item_446				= new PlayerItem();
 								$item_446->item_id		= 446;
 								$item_446->player_id	= $player->id;
 								$item_446->quantity 	= 25;
 								$item_446->save();
 							}
-							
-							$message = "Você já possuia o Personagem sorteado e por isso ganhou <b>25 Fragmentos de Almas</b>.";	
+
+							$message = "Você já possuia o Personagem sorteado e por isso ganhou <b>25 Fragmentos de Almas</b>.";
 							$message = urlencode($message);
 						}
 					break;
@@ -920,7 +920,7 @@ class CharactersController extends Controller {
 							$player_pet->character_theme_id	= $theme->id;
 							$player_pet->user_id			= $user->id;
 							$player_pet->save();
-							
+
 							$message = "Você ganhou o Tema: <b>". $theme->description()->name . '</b>';
 							$message = urlencode($message);
 						} else {
@@ -929,30 +929,30 @@ class CharactersController extends Controller {
 								$item_446->quantity		+= 25;
 								$item_446->save();
 							} else {
-								$item_446				= new PlayerItem();						
+								$item_446				= new PlayerItem();
 								$item_446->item_id		= 446;
 								$item_446->player_id	= $player->id;
 								$item_446->quantity 	= 25;
 								$item_446->save();
 							}
-							
-							$message = "Você já possuia o Tema sorteado e por isso ganhou <b>25 Fragmentos de Almas</b>.";	
+
+							$message = "Você já possuia o Tema sorteado e por isso ganhou <b>25 Fragmentos de Almas</b>.";
 							$message = urlencode($message);
 						}
 					break;
 				}
-				
+
 				// Adiciona o contador de aprimoramentos
 				$upgrade_counter = PlayerStat::find_first("player_id=".$player->id);
-				$upgrade_counter->fragments++;	
+				$upgrade_counter->fragments++;
 				$upgrade_counter->save();
 				// Adiciona o contador de aprimoramentos
-				
+
 				// Verifica a conquista de fragmentos - Conquista
 				$player->achievement_check("fragments");
 				// Objetivo de Round
 				$player->check_objectives("fragments");
-				
+
 				// Manda o id do premio para o json
 				$this->json->message	= $message;
 				$this->json->success	= TRUE;
@@ -992,7 +992,7 @@ class CharactersController extends Controller {
 			'cache'		=> true,
 			'reorder'	=> 'id ASC'
 		]);
-		
+
 		$this->assign('animes',				$animes);
 		$this->assign('player',				$player);
 		$this->assign('name',				$name);
@@ -1060,7 +1060,7 @@ class CharactersController extends Controller {
 		$animes		= Anime::find('active = 1', [
 			'cache' => TRUE
 		]);
-		
+
 		$this->assign('mine_pets',			$mine_pets);
 		$this->assign('active_pet',			$active_pet);
 		$this->assign('player',				$player);
@@ -1079,7 +1079,7 @@ class CharactersController extends Controller {
 		$this->json->success	= false;
 		$errors					= [];
 		$player					= Player::get_instance();
-		
+
 		if (!isset($_POST['id']) || (isset($_POST['id']) && !is_numeric($_POST['id']))) {
 			$errors[]	= t('quests.pets.errors.invalid');
 		} else {
@@ -1193,14 +1193,14 @@ class CharactersController extends Controller {
 					$user_character->user_id		= $user->id;
 					$user_character->character_id	= $id;
 					$user_character->save();
-					
+
 					if($player){
 						// verifica se desbloqueou novo personagem - conquista
 						$player->achievement_check("character");
 						// Objetivo de Round
 						$player->check_objectives("character");
 					}
-					
+
 				} else {
 					$this->json->messages	= $errors;
 				}
@@ -1228,29 +1228,29 @@ class CharactersController extends Controller {
 
 		if (!sizeof($errors)) {
 			$this->json->success	= true;
-			
+
 			$player->headline_id	= $_POST['headline'] ? $headline->headline_id : 0;
 			$player->save();
 		} else {
 			$this->json->messages	= $errors;
 		}
 	}
-	
+
 	function tutorial() {
 		$this->layout	= false;
 		$player			= Player::get_instance();
-		
+
 		if($_POST) {
 			$this->as_json			= true;
 			$this->render			= false;
 			$this->json->success	= false;
 			$errors					= array();
-			
+
 			if(!sizeof($errors)) {
 				$this->json->success  = true;
-				
+
 				$player_tutorial = PlayerTutorial::find_first("player_id=". $player->id);
-				
+
 				switch($_POST['id']){
 					case 1:
 						$player_tutorial->status = 1;
@@ -1263,13 +1263,13 @@ class CharactersController extends Controller {
 					break;
 					case 4:
 						$player_tutorial->equips = 1;
-					break;	
+					break;
 					case 5:
 						$player_tutorial->escola = 1;
 					break;
 					case 6:
 						$player_tutorial->mercado = 1;
-					break;	
+					break;
 					case 7:
 						$player_tutorial->ramen = 1;
 					break;
@@ -1323,13 +1323,13 @@ class CharactersController extends Controller {
 					break;
 					case 24:
 						$player_tutorial->objectives = 1;
-					break;	
-						
+					break;
+
 				}
-				$player_tutorial->save();	
+				$player_tutorial->save();
 			} else {
 				$this->json->errors	= $errors;
-			}	
+			}
 		}
 	}
 }
