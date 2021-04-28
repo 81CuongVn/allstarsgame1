@@ -60,7 +60,7 @@ trait EffectManager {
 		SharedStore::S($this->build_effects_uid(), $effects);
 	}
 
-	function add_ability_speciality_effect($source, $type = 'ability', $effect, $chance, $duration, $direction = 'player') {	
+	function add_ability_speciality_effect($source, $type, $effect, $chance, $duration, $direction) {
 		if (has_chance($chance)) {
 			$this->_alloc_effects();
 			$effects	= $this->get_effects();
@@ -77,7 +77,7 @@ trait EffectManager {
 				$effect->removes_stun || $effect->remove_slowness || $effect ->remove_bleeding || $effect->remove_confusion ||
 				$effect->increase_bleeding_duration || $effect->increase_slowness_duration || $effect->increase_confusion_duration ||
 				$effect->heals_mana || $effect->heals_life) {
-				
+
 				if ($fetch_condition($direction, $effect->removes_stun)) {
 					$this->_remove_effects_with(['stun']);
 				}
@@ -299,7 +299,7 @@ trait EffectManager {
 
 			'damage_increase_in_confusion'	=> 0,
 			'damage_increase_in_slowness'	=> 0,
-			
+
 			//Novos efeitos
 			'kill_with_one_hit'		=> 0,
 			'cancel_regen_mana'		=> 0,
@@ -316,7 +316,7 @@ trait EffectManager {
 			'reduce_critical_damage'		=> 0,
 			'mana_half_life'				=> 0,
 			'bonus_stamina_heal'			=> 0,
-			
+
 			'bonus_stamina_max_percent'		=> 0,
 			'bonus_stamina_heal_percent'	=> 0,
 
@@ -386,11 +386,11 @@ trait EffectManager {
 							}
 
 							if ($fetch_condition($type, $value)) {
-								if ($type == 'player') { // we need to invert the sign for debuff + player, ebemies already have a minus sign
-									$value	= -$value;
-								}
-
 								if (array_key_exists($key, $return)) {
+									if ($type == 'player') { // we need to invert the sign for debuff + player, ebemies already have a minus sign
+										$value	= -$value;
+									}
+
 									if ($return_with_duration) {
 										if (!is_array($return[$choosen_key])) {
 											$return[$choosen_key]	= [];
@@ -552,7 +552,7 @@ trait EffectManager {
 						if ($fetch_condition($type, $effect_data->mana_half_life)) {
 							if (has_chance($effect_data->mana_half_life) && $this->for_mana() <= $this->for_mana(true) / 2) {
 								$this->less_mana	+= 1;
-								
+
 								if ($this->less_mana > $this->for_mana(true)) {
 									$this->less_mana	= $this->for_mana(true);
 								}
@@ -635,7 +635,7 @@ trait EffectManager {
 		foreach ($keys as $key) {
 			foreach (['player', 'enemy'] as $type) {
 				foreach ($this->get_effects()[$type] as $item_key => $item) {
-					foreach ($item as $effect) {			
+					foreach ($item as $effect) {
 						$effect_data	= ItemEffect::find($effect->id);
 
 						if ($fetch_condition($type, $effect_data->$key)) {
@@ -705,11 +705,11 @@ trait EffectManager {
 			//$this->refresh_talents($enemy);
 			}else{
 				$this->refresh_talents($enemy);
-			}	
+			}
 		}else{
 			$this->refresh_talents($enemy);
 		}
-		
+
 	}
 
 	public function clear_fixed_effects($kind) {
@@ -721,7 +721,7 @@ trait EffectManager {
 			if (!isset($new_effects[$type])) {
 				$new_effects[$type]	= [];
 			}
-			
+
 			if (isset($effects[$type])) {
 				foreach ($effects[$type] as $item_key => $item) {
 					if (!isset($new_effects[$type][$item_key])) {

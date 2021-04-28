@@ -58,12 +58,12 @@ $registration   = openssl_encrypt(json_encode($chat_data), 'AES-256-CBC', $key, 
 		var last_msg		= null;
 		var blocked			= [];
 		var pm_total		= 0;
-		
+
 		function resize_selector() {
 			var	tw	= $('#chat-v2 .selector-trigger').outerWidth() + 15;
 			$('#chat-v2 input[name=message]').css({
 				paddingLeft: tw
-			});		
+			});
 		}
 
 		function diff_in_secs(d1, d2) {
@@ -74,7 +74,7 @@ $registration   = openssl_encrypt(json_encode($chat_data), 'AES-256-CBC', $key, 
 				minutes,
 				hours,
 				days;
-			
+
 			diff	/= sign;
 			diff	= (diff-(milliseconds=diff%1000))/1000;
 			diff	= (diff-(seconds=diff%60))/60;
@@ -83,80 +83,80 @@ $registration   = openssl_encrypt(json_encode($chat_data), 'AES-256-CBC', $key, 
 
 			return seconds;
 		}
-		
+
 		__chat_socket.on('error', function () {
 			$('#chat-v2 .messages').html(
 				'<div style="padding: 10px">Ocorreu um problema ao conectar ao chat.<br /><br />Você pode ter algum firewall(isso inclui programas anti-hack de jogos on-line)' +
 				' ou anti-vírus bloqueando o chat.<br /><br />Se sua rede está conectada através de um proxy, o proxy pode estar bloqueando as conexões ou não suporta conexões via websocket</div>'
 			);
 		});
-	
+
 		__chat_socket.on('connect', function () {
 			__chat_socket.emit('register', {
                 data: '<?=$registration;?>'
 			});
-			
+
 			$('#chat-v2 .messages .wait').remove();
 		});
-		
+
 		__chat_socket.on('blocked-broadcast', function (data) {
 			blocked	= data;
 		});
 		__chat_socket.on('pvt-broadcast', function (data) {
 			var	container	= $('.chat-pvt .r');
-			
+
 			pvt_data	= data;
-			
+
 			if (!container.length) {
 				if (!data.length) {
 					return;
 				}
-				
+
 				var	l	= $(document.createElement('DIV')).addClass('l');
 				var	r	= $(document.createElement('DIV')).addClass('r');
 				var	c	= $(document.createElement('DIV')).addClass('chat-pvt');
-			
+
 				c.append(l, r);
 				container	= r;
 
 				$(document.body).append(c);
-				
+
 				c.on('click', function () {
 					function dispatch_pvt_read(id) {
 						__chat_socket.emit('pvt-was-read', {index: id});
 					}
 
-					if(this.shown) {
+					if (this.shown) {
 						$('.reply-box').remove();
 						this.shown	= false;
-						
+
 						return;
 					}
-					
+
 					this.shown			= true;
 					var	_this			= this;
-					
+
 					var	msg_container	= $(document.createElement('DIV')).addClass('reply-box');
 					var	msg_reply		= $(document.createElement('A')).html('Responder').addClass('reply');
 					var	msg_next		= $(document.createElement('A')).html(pvt_data.length == 1 ? 'Fechar' : 'Próxima').addClass(pvt_data.length == 1 ? 'close-pv' : 'next');
 					var	msg_from		= $(document.createElement('SPAN')).html(pvt_data[0].from).addClass('from');
 					var	msg_text		= $(document.createElement('SPAN')).html(pvt_data[0].message).addClass('text');
-					
+
 					msg_reply.on('click', function () {
 						$('#chat-v2 .selector-trigger')
 							.html(pvt_data[0].from)[0].shown = false;
-	
+
 						channel		= 'private';
 						pvt_dest	= pvt_data[0].id;
-		
+
 						$('#chat-v2 input[name=message]').focus();
 						resize_selector();
 					});
-					
+
 					if (pvt_data.length == 1) {
 						msg_next.on('click', function () {
 							dispatch_pvt_read(last_pvt_index);
-							
+
 							msg_container.remove();
 							c.remove();
 						});
@@ -170,38 +170,38 @@ $registration   = openssl_encrypt(json_encode($chat_data), 'AES-256-CBC', $key, 
 							// No próximo broadcast ele recarrega =)
 							trigger_pvt	= true;
 							_this.shown	= false;
-							
+
 							msg_container.append('<div class="wait">Aguarde...</div>');
 
 							dispatch_pvt_read(last_pvt_index);
 							pm_total--;
 						});
 					}
-					
+
 
 					msg_container.append(msg_from, msg_text, msg_reply, msg_next);
-					$(document.body).append(msg_container);					
+					$(document.body).append(msg_container);
 				});
 			}
-			
+
 			container.html(data.length);
-			
+
             if (data.length > pm_total) {
 				pm_total	= data.length;
 				$(document.body).append('<audio autoplay><source src="' + resource_url('media/pm.mp3') + '" type="audio/mp3" /></audio>');
 			}
-						
+
 			if (!data.length && container.length) {
 				pm_total	= 0;
-				
+
 				container.remove();
 			}
-			
+
 			last_pvt_index	= data[0].index;
-			
+
 			if (trigger_pvt) {
 				$('.reply-box').remove();
-				
+
 				if (data.length) {
 					container.trigger('click');
 				}
@@ -217,11 +217,11 @@ $registration   = openssl_encrypt(json_encode($chat_data), 'AES-256-CBC', $key, 
 		});
 		__chat_socket.on('broadcast', function (data) {
 			if (data.channel == 'system' || data.channel == 'warn') {
-				$('#chat-v2 .messages').append('<div class="chat-message chat-' + data.channel + '"><div>Aviso de sistema</div><div>' + data.message + '</div></div>')				
-			
-				return;	
+				$('#chat-v2 .messages').append('<div class="chat-message chat-' + data.channel + '"><div>Aviso de sistema</div><div>' + data.message + '</div></div>')
+
+				return;
 			}
-			
+
 			// GLobal user block -->
 				var is_blocked	= false;
 
@@ -245,9 +245,9 @@ $registration   = openssl_encrypt(json_encode($chat_data), 'AES-256-CBC', $key, 
                     '<span ' + (data.color ? 'style="color: ' + data.color + '!important"' : '') + ' class="chat-user" data-id="' + data.id + '" data-from="' + data.from + '">' +
                         (data.icon || '') + data.from +
                     ':</span>' +
-                    '<span>' + data.message + '</span>' + 
+                    '<span>' + data.message + '</span>' +
                 '</div>');
-	
+
 			$('#chat-v2 .messages .chat-user').each(function() {
 				if (this.with_callback) {
 					return;
@@ -290,7 +290,7 @@ $registration   = openssl_encrypt(json_encode($chat_data), 'AES-256-CBC', $key, 
         $(document).ready(function(e) {
 			$('#chat-v2 input[name=message]').on('keyup', function(e) {
 				var	message	= $(this);
-				
+
 				if (e.keyCode == 13 && this.value) {
 					<?php if (!$_SESSION['universal']): ?>
 						var now	= new Date();
@@ -313,7 +313,7 @@ $registration   = openssl_encrypt(json_encode($chat_data), 'AES-256-CBC', $key, 
 					if (channel == 'private') {
 						$('#chat-v2 .selector ul li').each(function () {
 							if ($(this).data('channel') == real_channel) {
-								$(this).trigger('click');	
+								$(this).trigger('click');
 							}
 						});
 					} else {
@@ -339,7 +339,7 @@ $registration   = openssl_encrypt(json_encode($chat_data), 'AES-256-CBC', $key, 
 						var _	= $(this);
 
 						if (message.val().match(new RegExp('\^/' + _.data('cmd')))) {
-							_.trigger('click');	
+							_.trigger('click');
 
 							message.val('');
 						}

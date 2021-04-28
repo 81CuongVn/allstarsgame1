@@ -127,11 +127,11 @@ class CallbackController extends Controller {
 
                             $star_purchase->status  = 'aprovado';
                         }
-                    } elseif ($paymentData['payment_status'] == 'Completed') {
+                    }/* elseif ($paymentData['payment_status'] == 'Completed') {
                         $user->spend($credits);
 
                         $star_purchase->status      = 'estornado';
-                    }
+                    }*/
                     $star_purchase->transid         = $paymentData['txn_id'];
                     $star_purchase->completed_at    = now(TRUE);
                     $star_purchase->save();

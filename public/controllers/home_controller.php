@@ -26,15 +26,15 @@ class HomeController extends Controller {
 	}
 	function league_list($league) {
 		$this->layout	= false;
-		if ($league > 0) {
+		if (is_numeric($league) && $league > 0) {
 			$ranked_rankings = RankingRanked::find("league_id={$league} order by position_general asc limit 3");
 		} else {
 			$ranked_rankings = [];
 		}
-		
+
 		$this->assign("ranked_rankings", $ranked_rankings);
 	}
-	function rank_list($page = 1, $type) {
+	function rank_list($page = 1, $type = '') {
 		$this->layout	= FALSE;
 
 		$list			= [];
@@ -80,7 +80,7 @@ class HomeController extends Controller {
 			'limit' => ($items_per_page * ($page - 1)) . ', ' . $items_per_page,
 			'reorder' => 'total DESC'
 		]));
-	}		
+	}
 	function read_news($id = NULL){
 		$new	= SiteNew::find_first($id);
 		if (!$new)
@@ -89,7 +89,7 @@ class HomeController extends Controller {
 		$this->assign('new',		$new);
 		$this->assign('comments',	$new->comments());
 	}
-	
+
 	function make_comment($news_id = NULL) {
 		$this->layout	= false;
 

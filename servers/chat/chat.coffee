@@ -130,7 +130,7 @@ io.sockets.on 'connection', (socket) ->
 	# Mark a private message as read
 	socket.on 'pvt-was-read', (data) ->
 		if privates[@_uid] && privates[@_uid][data.index]
-			delete privates[@_uid][data.index] 
+			delete privates[@_uid][data.index]
 
 	# User want to send a message
 	socket.on 'message', (data) ->
@@ -141,7 +141,7 @@ io.sockets.on 'connection', (socket) ->
 			return
 
 		# Word filter for non-gm users
-		unless player.gm		
+		unless player.gm
 			for i, word of blacklist
 				if data.message.match new RegExp word, 'img'
 					socket.emit 'broadcast',
@@ -164,8 +164,8 @@ io.sockets.on 'connection', (socket) ->
 				unless players_by_name[data.dest.toLowerCase()]
 					socket.emit 'broadcast',
 						from: 'Sistema',
-						message: 'Usuário "' + data.dest + '" indisponível para enviar mensagens!',
-						channel: 'warn'					
+						message: 'Usuário "' + data.dest + '" indisponível para enviar mensagens',
+						channel: 'warn'
 
 					return
 
@@ -176,7 +176,7 @@ io.sockets.on 'connection', (socket) ->
 					socket.emit 'broadcast',
 						from: 'Sistema',
 						message: 'Você não pode enviar uma mensagem privada para você mesmo!',
-						channel: 'warn'					
+						channel: 'warn'
 
 					return
 				else
@@ -202,7 +202,7 @@ io.sockets.on 'connection', (socket) ->
 				socket.emit 'broadcast',
 					from: 'Sistema',
 					message: 'Usuário "' + data.message + '" não encontrado!',
-					channel: 'warn'					
+					channel: 'warn'
 
 				return
 
@@ -210,7 +210,7 @@ io.sockets.on 'connection', (socket) ->
 				socket.emit 'broadcast',
 					from: 'Sistema',
 					message: 'Você não pode bloquear um membro da Administração!',
-					channel: 'warn'					
+					channel: 'warn'
 
 				return
 
@@ -218,7 +218,7 @@ io.sockets.on 'connection', (socket) ->
 				socket.emit 'broadcast',
 					from: 'Sistema',
 					message: 'Você não pode bloquear a sua propria conta!',
-					channel: 'warn'					
+					channel: 'warn'
 
 				return
 
@@ -249,7 +249,7 @@ io.sockets.on 'connection', (socket) ->
 			return
 
 		if player.gm
-			data.message	= emoticons.parse(data.message, player.gm)			
+			data.message	= emoticons.parse(data.message, player.gm)
 		else
 			now	= new Date()
 

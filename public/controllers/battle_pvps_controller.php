@@ -823,15 +823,25 @@ class BattlePvpsController extends Controller {
 						$battle_log	= $battle_instance->log;
 
 						if ($battle_instance->first == 'player') {
-							$battle_log[0]	= @join('', @unserialize($battle->{$player_effect_log_field})) . @$battle_log[0];
-							$battle_log[1]	= @join('', @unserialize($battle->{$enemy_effect_log_field})) . @$battle_log[1];
+							if ($battle->player_effect_log) {
+								$battle_log[0]	= join('', unserialize($battle->player_effect_log)) . $battle_log[0];
+							}
+
+							if ($battle->enemy_effect_log) {
+								$battle_log[1]	= join('', unserialize($battle->enemy_effect_log)) . $battle_log[1];
+							}
 						} else {
-							$battle_log[0]	= @join('', @unserialize($battle->{$enemy_effect_log_field})) . @$battle_log[0];
-							$battle_log[1]	= @join('', @unserialize($battle->{$player_effect_log_field})) . @$battle_log[1];
+							if ($battle->enemy_effect_log) {
+								$battle_log[0]	= join('', unserialize($battle->enemy_effect_log)) . $battle_log[0];
+							}
+
+							if ($battle->player_effect_log) {
+								$battle_log[1]	= join('', unserialize($battle->player_effect_log)) . $battle_log[1];
+							}
 						}
 
 						$battle_log	= join('<br />', $battle_log);
-						$battle_log	= [$battle_log];
+						$battle_log	= [ $battle_log ];
 						$battle->save_log(array_merge($log, $battle_log));
 
 						$battle->current_id			= $enemy->id;
