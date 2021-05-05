@@ -1,0 +1,11 @@
+########################################################################
+### RECURSOS NECESSÁRIOS PARA INSTALAÇÃO E CONFIGURAÇÃO DA APLICAÇÃO ###
+########################################################################
+
+PHP             >= 7.2
+Redis		2.2.7
+NodeJS		8.16.2		(nodemon, n)
+CoffeeScript	2.4.1
+Ruby	    	2.6.5p114	(bunny, mysql2, activesupport, daemons)
+RabbitMQ
+Erlang

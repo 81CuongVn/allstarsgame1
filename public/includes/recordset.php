@@ -94,7 +94,7 @@ class Recordset {
 		}
 
 		try {
-			Recordset::$connections[$name]	= new PDO('mysql:host=' . $host . ';dbname=' . $db, $user, $pass, array(
+			Recordset::$connections[$name]	= new PDO('mysql:host=' . $host . ';dbname=' . $db . ';charset=utf8', $user, $pass, array(
 				PDO::ATTR_PERSISTENT => true
 			));
 		} catch (PDOException $e) {
