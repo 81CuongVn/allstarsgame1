@@ -239,13 +239,17 @@ trait BattleSharedMethods {
 			}
 
 			if ($battle->battle_type_id == 7 || $battle->battle_type_id == 8) {
-				$link = make_url('organizations#dungeon');
+				$link		= make_url('organizations#dungeon');
+				$link_text	= 'Voltar para Dungeon';
 			} else if ($battle->battle_type_id == 3) {
 				$link = make_url('challenges#show/' . $p->challenge_id);
+				$link_text	= 'Voltar para Arena do Céu';
 			} elseif ($battle->battle_type_id == 6) {
 				$link = make_url('maps#preview');
+				$link_text	= 'Voltar para Exploração';
 			} else {
 				$link = make_url('characters#status');
+				$link_text	= 'Status do Personagem';
 			}
 
 			$this->json->redirect	= $link;
@@ -678,17 +682,15 @@ trait BattleSharedMethods {
 					$currency_text .= ')';
 				}
 				$finished_message		= partial('shared/info', [
-						'id'		=> 3,
-						'title'		=> 'battles.finished.draw_title',
-						'message'	=> t('battles.finished.draw_text', [
-									'value'		=> $currency_text,
-									'exp'		=> $exp_text,
-									'link'		=> $link,
-									'currency'	=> $currency_name
-								]
-							) . $drop_message
-					]
-				);
+					'id'		=> 3,
+					'title'		=> 'battles.finished.draw_title',
+					'message'	=> t('battles.finished.draw_text', [
+						'value'		=> $currency_text,
+						'exp'		=> $exp_text,
+						'link'		=> $link,
+						'currency'	=> $currency_name
+					]) . $drop_message . '<br /><br /><a href="' . $link . '" class="btn btn-primary close-button">' . $link_text . '</a>'
+				]);
 			} else {
 				if($battle->won == $p->id) {
 					$exp			= $e->battle_exp(true);
@@ -1427,30 +1429,30 @@ trait BattleSharedMethods {
 							$currency_text .= ')';
 						}
 						$finished_message		= partial('shared/info', [
-								'id'		=> 5,
-								'title'		=> 'battles.finished.win_title',
-								'message'	=> t('battles.finished.win_text', [
-											'value'		=> $currency_text,
-											'exp'		=> $exp_text,
-											'link'		=> $link,
-											'currency'	=> $currency_name]
-									) . $drop_message]
-						);
-					}else{
+							'id'		=> 5,
+							'title'		=> 'battles.finished.win_title',
+							'message'	=> t('battles.finished.win_text', [
+								'value'		=> $currency_text,
+								'exp'		=> $exp_text,
+								'link'		=> $link,
+								'currency'	=> $currency_name
+							]) . $drop_message . '<br /><br /><a href="' . $link . '" class="btn btn-primary close-button">' . $link_text . '</a>'
+						]);
+					} else {
 						$p->currency	+= 0;
 						$p->exp			+= 0;
 
 						$this->json->end_type	= 1;
 						$finished_message		= partial('shared/info', [
-								'id'		=> 5,
-								'title'		=> 'battles.finished.win_title',
-								'message'	=> t('battles.finished.win_text', [
-											'value'		=> "0",
-											'exp'		=> "0",
-											'link'		=> $link,
-											'currency'	=> $currency_name]
-									) . $drop_message]
-						);
+							'id'		=> 5,
+							'title'		=> 'battles.finished.win_title',
+							'message'	=> t('battles.finished.win_text', [
+								'value'		=> "0",
+								'exp'		=> "0",
+								'link'		=> $link,
+								'currency'	=> $currency_name
+							]) . $drop_message . '<br /><br /><a href="' . $link . '" class="btn btn-primary close-button">' . $link_text . '</a>'
+						]);
 					}
 				} else {
 					$drop_message_e = "";
@@ -1551,15 +1553,15 @@ trait BattleSharedMethods {
 						$p->exp			+= 0;
 
 						$finished_message		= partial('shared/info', [
-								'id'		=> 3,
-								'title'		=> 'battles.finished.loss_title',
-								'message'	=> t('battles.finished.loss_text', [
-											'value'		=> "0",
-											'exp'		=> "0",
-											'link'		=> $link,
-											'currency'	=> $currency_name]
-									). $drop_message_e]
-						);
+							'id'		=> 3,
+							'title'		=> 'battles.finished.loss_title',
+							'message'	=> t('battles.finished.loss_text', [
+								'value'		=> "0",
+								'exp'		=> "0",
+								'link'		=> $link,
+								'currency'	=> $currency_name
+							]) . $drop_message_e . '<br /><br /><a href="' . $link . '" class="btn btn-primary close-button">' . $link_text . '</a>'
+						]);
 					} else {
 						// $p->hospital	= 1;
 
@@ -1582,15 +1584,15 @@ trait BattleSharedMethods {
 							$currency_text .= ')';
 						}
 						$finished_message		= partial('shared/info', [
-								'id'		=> 3,
-								'title'		=> 'battles.finished.loss_title',
-								'message'	=> t('battles.finished.loss_text', [
-											'value'		=> $currency_text,
-											'exp'		=> $exp_text,
-											'link'		=> $link,
-											'currency'	=> $currency_name]
-									). $drop_message_e . $drop_message]
-						);
+							'id'		=> 3,
+							'title'		=> 'battles.finished.loss_title',
+							'message'	=> t('battles.finished.loss_text', [
+								'value'		=> $currency_text,
+								'exp'		=> $exp_text,
+								'link'		=> $link,
+								'currency'	=> $currency_name
+							]) . $drop_message_e . $drop_message . '<br /><br /><a href="' . $link . '" class="btn btn-primary close-button">' . $link_text . '</a>'
+						]);
 					}
 				}
 			}
@@ -1718,7 +1720,7 @@ trait BattleSharedMethods {
 												$condition = $who->id == Player::get_instance()->id;
 											}
 										}
-		
+
 										if ($condition) {
 											$secrets[]	= $effect_data->id;
 											continue;
