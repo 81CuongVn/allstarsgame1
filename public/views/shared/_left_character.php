@@ -4,9 +4,9 @@
 		$ranking_achievement 	= $player->ranking_achievement();
 		$ranking_organization 	= $player->ranking_organization();
 		$ranking_account 		= $player->ranking_account();
-		$tutorial				= $player->tutorial();	
+		$tutorial				= $player->tutorial();
 	?>
-	<div style="width:242px; height:285px; float: left; text-align: center" class="tutorial_profile">	
+	<div style="width:242px; height:285px; float: left; text-align: center" class="tutorial_profile">
 		<?php echo $player->profile_image() ?>
 		<input class="button btn btn-sm btn-warning" type="button" id="current-player-change-theme" data-url="<?php echo make_url('characters#list_themes') ?>" value="Temas" style="position:relative; top: -30px" />
 		<input class="button btn btn-sm btn-primary" type="button" id="current-player-change-image" data-url="<?php echo make_url('characters#list_images') ?>" value="Imagens" style="position:relative; top: -30px" />
@@ -49,10 +49,10 @@
 				<div style="position: absolute; top: 35px; left: 75px;">
 					<a href="<?=make_url('characters#pets');?>" style="cursor:pointer">
 						<img src="<?php echo image_url("battle/center.png" ) ?>" border="0"/>
-					</a>	
+					</a>
 				</div>
 			<?php } ?>
-	
+
 			<div style="position: absolute; width: 288px; top: 75px; text-align: center; z-index: 1">
 				<b style="font-size: 13px !important"><?php echo $player->name ?></b>
 			</div>
@@ -159,11 +159,7 @@
 				?>
 				<div class="menu_esquerdo_divisao">
 					<b class="amarelo">Online</b>
-					<?php if ($_SESSION['universal']) { ?>
-						<b class=""><?=highamount($online);?></b>
-					<?php } else { ?>
-						<b class=""><?=highamount(round((1 + $online) * 1.3));?></b>
-					<?php } ?>
+					<b class=""><?=highamount($online);?></b>
 				</div>
 				<div class="menu_esquerdo_divisao">
 					<b class="amarelo">Fila PvP</b>
@@ -174,18 +170,11 @@
 				<?php $battles_pvp	= Recordset::query("SELECT `id` FROM `battle_pvps` WHERE `finished_at` IS NULL ", FALSE)->num_rows; ?>
 				<div class="menu_esquerdo_divisao" style="width: 100%">
 					<b class="amarelo">PvP em Andamento</b>
-					<?php if ($_SESSION['universal']) { ?>
-						<b class=""><?=highamount($battles_pvp);?></b>
-					<?php } else { ?>
-						<b class=""><?=highamount(round((1 + $battles_pvp) * 1.5));?></b>
-					<?php } ?>
+					<b class=""><?=highamount($battles_pvp);?></b>
 				</div>
 			</div>
 		<?php // } ?>
 		<div class="clearfix"></div>
-		<a href="https://chat.whatsapp.com/LFT74CxmNJz3nVmTQGQi98" target="_blank">
-			<div class="whatsapp cursor_pointer"></div>
-		</a><br />
 		<a href="https://discord.gg/ME8ugpZwSw" target="_blank">
 			<div class="discord cursor_pointer"></div>
 		</a><br />
@@ -194,6 +183,6 @@
 		</div>
 	</div>
 <?php } else { ?>
-	<div style="height: 680px;"></div>	
+	<div style="height: 680px;"></div>
 <?php } ?>
 <div style="clear:both; float: left"></div>
