@@ -1467,6 +1467,11 @@ trait BattleSharedMethods {
 					$exp			= $e->battle_exp();
 					$currency		= $e->battle_currency();
 
+					if (in_array($battle->battle_type_id, [1, 3, 6, 7, 8, 9])) {
+						$exp		/= 2;
+						$currency	/= 2;
+					}
+
 					$exp_extra		= percent($extras->exp_battle + ($bonus_active ? 10 : 0), $exp);
 					$currency_extra	= percent($extras->currency_battle + ($bonus_active ? 10 : 0), $currency);
 
