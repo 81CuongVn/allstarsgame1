@@ -1467,32 +1467,32 @@ trait BattleSharedMethods {
 					$currency_extra	+= percent($effects['currency_reward_extra_percent'], $currency) + $effects['currency_reward_extra'];
 
 					// Não faz quando for batalha de treino.
-					if($battle->battle_type_id != 4){
-						if($is_pvp){
-							if($p->organization_id != $e->organization_id && $p->organization_id && $e->organization_id){
-								if($p->treasure_atual > 0){
+					if ($battle->battle_type_id != 4){
+						if ($is_pvp){
+							if ($p->organization_id != $e->organization_id && $p->organization_id && $e->organization_id){
+								if ($p->treasure_atual > 0){
 									$drop_message_e	.= t('battles.finished.treasure2');
 								}
 							}
 						}
 						// Missões Diarias
 						$player_quests_daily   = $p->daily_quests();
-						if($player_quests_daily){
+						if ($player_quests_daily) {
 							foreach ($player_quests_daily as $player_quest_daily):
-								switch($player_quest_daily->type){
+								switch ($player_quest_daily->type) {
 									case "battle":
-										//Duelar PVP ou NPC de um anime
-										if($player_quest_daily->anime_id && !$player_quest_daily->character_id){
-											if($player_quest_daily->anime_id == $e->character()->anime_id){
+										// Duelar PVP ou NPC de um anime
+										if ($player_quest_daily->anime_id && !$player_quest_daily->character_id){
+											if ($player_quest_daily->anime_id == $e->character()->anime_id){
 												$player_quest_daily->total++;
 											}
 											//Duelar PVP ou NPC de um anime e com personagem
-										}elseif($player_quest_daily->anime_id && $player_quest_daily->character_id){
-											if($player_quest_daily->character_id == $e->character_id){
+										} elseif ($player_quest_daily->anime_id && $player_quest_daily->character_id){
+											if ($player_quest_daily->character_id == $e->character_id){
 												$player_quest_daily->total++;
 											}
 											//Duelar com qualquer um
-										}else{
+										} else {
 											$player_quest_daily->total++;
 										}
 										break;

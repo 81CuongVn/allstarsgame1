@@ -243,15 +243,24 @@ class BattleNpcsController extends Controller
 		}
 
 		if ($is_skip) {
-			$_POST['item']	= 0;
+			if (!isset($_SESSION['skipped'])) {
+				$_SESSION['skipped']	= 0;
+			}
+
+			$_SESSION['skipped']		+= 1;
+			$_POST['item']				= 0;
 		}
 
 		if (!isset($_POST['item']) || (isset($_POST['item']) && !is_numeric($_POST['item']))) {
 			$errors[]	= t('battles.errors.invalid');
+		} elseif ($is_skip && $_SESSION['skipped'] > 2) {
+			$errors[]	= t('battles.errors.can_not_skip');
 		} else {
 			if ($is_skip) {
 				$item	= new SkipTurnItem();
 			} else {
+				$_SESSION['skipped'] = 0;
+
 				if ($is_copy) {
 					$player_item	= new FakePlayerItem($_POST['item'], $player);
 					$item			= $player_item->item();
@@ -308,7 +317,7 @@ class BattleNpcsController extends Controller
 					$enemy_init		= $npc->for_init();
 					$enemy_item		= $npc->choose_technique($item);
 
-					$battle_instance		= new BattleInstance();
+					$battle_instance				= new BattleInstance();
 					$battle_instance->battle_npc_id	= $player->battle_npc_id;
 
 					// Technique locks

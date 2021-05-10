@@ -217,7 +217,7 @@ class NpcInstance {
 			$anime		= Anime::find($anime_id_for_generics);
 			$attacks	= array_merge($attacks, $anime->attacks());
 
-			//$this->character_theme = CharacterTheme::find_first('character_id=' . $this->character->id, ['cache' => true]);
+			// $this->character_theme = CharacterTheme::find_first('character_id=' . $this->character->id, ['cache' => true]);
 
 			$this->anime	= $anime;
 		} else {
@@ -300,11 +300,10 @@ class NpcInstance {
 		$retries	= 0;
 		$technique	= null;
 
-		while($retries++ < 500) {
+		while ($retries++ < 500) {
 			$choosen	= $this->attacks[rand(0, sizeof($this->attacks) - 1)];
-
-			if(!$choosen->is_buff) {
-				if($choosen->formula()->consume_mana <= $this->for_mana()) {
+			if (!$choosen->is_buff) {
+				if ($choosen->formula()->consume_mana <= $this->for_mana()) {
 					$technique	= $choosen;
 					break;
 				}
@@ -327,19 +326,26 @@ class NpcInstance {
 		return $this->ai_random_technique();
 	}
 
-	private function ai_can_kill_in_next_hit($source_technique) {
+	private function ai_can_kill_in_next_hit($technique) {
+		$formule = $technique->formula(true);
+		// echo $this->for_life();
+		// print_r($this->attacks[0]->formula(true));
 		return FALSE;
 	}
 
-	private function ai_can_defend_this_hit($source_technique) {
+	private function ai_can_defend_this_hit($technique) {
 		return FALSE;
 	}
 
-	private function ai_will_die($source_technique) {
+	private function ai_will_die($technique) {
+		$formule = $technique->formula(true);
+		// if ($formule->demage >= $this->for_life()) {
+		// 	return TRUE;
+		// }
 		return FALSE;
 	}
 
-	private function ai_worth_heal($source_technique) {
+	private function ai_worth_heal($technique) {
 		return FALSE;
 	}
 
@@ -413,7 +419,6 @@ class NpcInstance {
 
 	function get_techniques() {
 		$return	= [];
-
 		foreach ($this->attacks as $attack) {
 			if (!is_a($attack, 'SkipTurnItem')) {
 				$return[]	= $attack->player_item();

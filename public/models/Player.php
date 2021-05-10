@@ -5366,12 +5366,11 @@ class Player extends Relation {
 
 	function equip_equipment($player_item, $slot) {
 		// Unequip other items in the same slot -->
-		$equippeds	= PlayerItem::find('player_id=' . $this->id . ' AND slot_name="' . $slot . '"');
-
-		foreach ($equippeds as $equipped) {
-			$equipped->equipped	= 0;
-			$equipped->save();
-		}
+			$equippeds	= PlayerItem::find('player_id=' . $this->id . ' AND slot_name="' . $slot . '"');
+			foreach ($equippeds as $equipped) {
+				$equipped->equipped	= 0;
+				$equipped->save();
+			}
 		// <--
 
 		$player_item->equipped	= 1;
@@ -5524,12 +5523,12 @@ class Player extends Relation {
 			return '<img src="'.image_url("icons/happiness_0.png").'"  />';
 		}
 	}
-	function has_talents(){
+	function has_talents() {
 		$items			= Item::find_all_by_item_type_id(6);
 		$has_talents 	= 0;
 
-		foreach($items as $item){
-			if($this->has_item($item->id)){
+		foreach ($items as $item) {
+			if ($this->has_item($item->id)){
 				$has_talents++;
 			}
 		}
