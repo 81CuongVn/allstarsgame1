@@ -123,7 +123,7 @@ class Player extends Relation {
 			}
 		}
 	}
-	
+
 	function welcome_message() {
 		# Welcome Message
 		$message			= new PrivateMessage();
@@ -6091,7 +6091,7 @@ class Player extends Relation {
 			if ($league) {
 				$player_ranked	= PlayerRanked::find_last("player_id={$this->id} and league = {$league->league}");
 				if (!$player_ranked) {
-					$player_ranked				= new PlayerRanked(); 
+					$player_ranked				= new PlayerRanked();
 					$player_ranked->player_id 	= $this->id;
 					$player_ranked->rank		= 10;
 					$player_ranked->league		= $league->league;
@@ -6262,7 +6262,7 @@ class Player extends Relation {
 
 		$num_runs	= floor((($heal_diff->d * (24 * 60)) + ($heal_diff->h * 60) + $heal_diff->i / 5));
 		if ($num_runs) {
-			// ($this->less_life > 0 || $this->less_mana > 0 || $this->less_stamina > 0) && 
+			// ($this->less_life > 0 || $this->less_mana > 0 || $this->less_stamina > 0) &&
 			if (!$this->battle_npc_id && !$this->battle_pvp_id) {
 				// $max_life		= $this->for_life(true);
 				// $max_mana		= $this->for_mana(true);

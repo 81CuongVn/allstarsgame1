@@ -21,7 +21,7 @@ class NpcInstance {
 	public	$character_id				= 0;
 
 	public	$name						= '';
-	
+
 	public	$for_atk					= 0;
 	public	$for_def					= 0;
 	public	$for_crit					= 0;
@@ -30,7 +30,7 @@ class NpcInstance {
 	public	$for_init					= 0;
 	public	$for_inc_crit				= 0;
 	public	$for_inc_abs				= 0;
-	
+
 	# History mode specific npc
 	public	$specific_image				= false;
 	public	$specific_id				= 0;
@@ -51,23 +51,23 @@ class NpcInstance {
 	function __construct($player, $anime_id_for_generics = null, $theme_ids = [],
 						$specific_ability_id = null, $specific_speciality_id = null, $specific_pet_id = null,
 						$is_challenge = null, $character_id = null,$character_theme_id = null, $organization_map_object_id = null) {
-		
+
 		if($anime_id_for_generics){
 			$animes							= Anime::find('id='. $anime_id_for_generics .' AND active=1', ['cache' => true]);
 		}else{
 			$animes							= Anime::find('active=1', ['cache' => true]);
 		}
 		$anime								= $animes[rand(0, sizeof($animes) - 1)];
-		
+
 		if($character_id){
 			$characters						= $anime->characters(' AND id='. $character_id);
-			
+
 		}else{
 			$characters						= $anime->characters(' AND active=1');
 		}
-		
+
 		$character							= $characters[rand(0, sizeof($characters) - 1)];
-		
+
 		if($character_theme_id){
 			$themes							= $character->themes(" AND id=".$character_theme_id);
 		}else{
@@ -94,15 +94,18 @@ class NpcInstance {
 		if ($this->organization_map_object_id) {
 			$map_object = $this->organization_map_object_id;
 			$map_object_session = OrganizationMapObjectSession::find_first('player_id=0 AND organization_accepted_event_id=' . $player->organization_accepted_event_id . ' AND organization_id=' . $player->organization_id . ' AND organization_map_object_id=' . $this->organization_map_object_id);
-
-			$this->less_life = $map_object_session->less_life;
+			if ($map_object_session) {
+				$this->less_life = $map_object_session->less_life;
+			} else {
+				$this->less_life = 0;
+			}
 		} else {
 			$map_object = null;
 		}
 
 		$character		= $player->character();
 		$total_points	= $player->for_atk() + $player->for_def() + $player->for_crit() + $player->for_abs() + $player->for_prec() + $player->for_init();
-		
+
 		if ($is_challenge) {
 			$challenge  	= PlayerChallenge::find_first('player_id='. $player->id .' AND challenge_id='.$is_challenge." AND complete=0");
 			$total_points 	= $total_points + ($challenge->quantity * 2);
@@ -111,7 +114,7 @@ class NpcInstance {
 					$total_hp = $challenge->quantity * 10;
 				} else {
 					if ($challenge->quantity > 25 ) {
-						$total_hp = ($challenge->quantity - 25)  * 10;	
+						$total_hp = ($challenge->quantity - 25)  * 10;
 					} else {
 						$total_hp = 0;
 					}
@@ -120,12 +123,12 @@ class NpcInstance {
 				// $total_hp 		= $challenge->quantity % 5 == 0  ? $challenge->quantity * 10 : 0;
 			// }
 			$total_mana		= $challenge->quantity % 5 == 0  ? $challenge->quantity / 5 : 0;
-			
+
 		}else{
 			$total_hp		= 0;
-			$total_mana		= 0;	
+			$total_mana		= 0;
 		}
-		
+
 		$total_points	-= $character->for_atk + $character->for_def + $character->for_crit + $character->for_abs + $character->for_prec + $character->for_init;
 		$types			= [
 			[50, 10, 10, 10, 10, 10],
@@ -150,7 +153,7 @@ class NpcInstance {
 		$this->clear_effects();
 
 		$at	= new stdClass();
-		
+
 		$at->for_atk							= 0;
 		$at->for_def							= 0;
 		$at->for_crit							= 0;
@@ -159,7 +162,7 @@ class NpcInstance {
 		$at->for_init							= 0;
 		$at->for_inc_crit						= 0;
 		$at->for_inc_abs						= 0;
-			
+
 		$at->sum_at_for							= 0;
 		$at->sum_at_int							= 0;
 		$at->sum_at_res							= 0;
@@ -181,11 +184,11 @@ class NpcInstance {
 		$at->sum_for_inti						= 0;
 		$at->sum_for_conv						= 0;
 
-		
+
 		$at->generic_technique_damage			= 0;
 		$at->unique_technique_damage			= 0;
 		$at->defense_technique_extra			= 0;
-		
+
 		$at->sum_bonus_food_discount			= 0;
 		$at->sum_bonus_weapon_discount			= 0;
 		$at->sum_bonus_luck_discount			= 0;
@@ -209,13 +212,13 @@ class NpcInstance {
 		$this->_attributes	= $at;
 
 		$attacks	= [];
-					
+
 		if ($anime_id_for_generics) {
 			$anime		= Anime::find($anime_id_for_generics);
 			$attacks	= array_merge($attacks, $anime->attacks());
-			
+
 			//$this->character_theme = CharacterTheme::find_first('character_id=' . $this->character->id, ['cache' => true]);
-			
+
 			$this->anime	= $anime;
 		} else {
 			$attacks	= array_merge($attacks, $this->character_theme->attacks());
@@ -235,7 +238,7 @@ class NpcInstance {
 				$attack->set_player($this);
 				$attack->set_player_item($fake);
 			}
-			
+
 			$this->attacks[]	= $attack;
 		}
 	}
@@ -296,7 +299,7 @@ class NpcInstance {
 
 		$retries	= 0;
 		$technique	= null;
-		
+
 		while($retries++ < 500) {
 			$choosen	= $this->attacks[rand(0, sizeof($this->attacks) - 1)];
 
@@ -382,7 +385,7 @@ class NpcInstance {
 		}
 
 		if ($exp < 0) {
-			$exp = 0;	
+			$exp = 0;
 		}
 
 		return floor($exp * EXP_RATE);
@@ -410,7 +413,7 @@ class NpcInstance {
 
 	function get_techniques() {
 		$return	= [];
-		
+
 		foreach ($this->attacks as $attack) {
 			if (!is_a($attack, 'SkipTurnItem')) {
 				$return[]	= $attack->player_item();
@@ -438,6 +441,6 @@ class NpcInstance {
 	}
 
 	function refresh_talents() {
-		
+
 	}
 }
