@@ -1581,8 +1581,8 @@ trait BattleSharedMethods {
 						// $p->hospital	= 1;
 
 						// Não faz quando for batalha de treino.
-						$p->exp			+= $exp + $exp_extra;
-						$p->currency	+= $currency + $currency_extra;
+						$p->exp			+= round($exp + $exp_extra);
+						$p->currency	+= round($currency + $currency_extra);
 
 						$exp_text = ($exp + $exp_extra);
 						if ($exp_extra) {
