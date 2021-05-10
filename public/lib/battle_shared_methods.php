@@ -247,6 +247,13 @@ trait BattleSharedMethods {
 			} elseif ($battle->battle_type_id == 6) {
 				$link = make_url('maps#preview');
 				$link_text	= 'Voltar para Exploração';
+			} elseif ($battle->battle_type_id == 8) {
+				$link = make_url('boss');
+				$link_text	= 'Voltar para Exploração';
+			} elseif ($battle->battle_type_id == 9) {
+				$link = make_url('history_mode#show/' . $_SESSION['history_mode']);
+				$link_text	= 'Voltar para Modo Aventura';
+				unset($_SESSION['history_mode']);
 			} else {
 				$link = make_url('characters#status');
 				$link_text	= 'Status do Personagem';
@@ -1546,7 +1553,10 @@ trait BattleSharedMethods {
 					}
 
 					// Não da premiação para o jogador que inativa
-					if(($battle->won != $p->id && $battle->inactivity == 1) || $battle->battle_type_id == 4){
+					if (
+						($battle->won != $p->id && $battle->inactivity == 1) ||
+						$battle->battle_type_id == 4 || $battle->battle_type_id == 9
+					) {
 						// $p->hospital	= 1;
 
 						$p->currency	+= 0;

@@ -247,7 +247,7 @@ class BattleNpcsController extends Controller
 				$_SESSION['skipped']	= 0;
 			}
 
-			$_SESSION['skipped']		+= 1;
+			// $_SESSION['skipped']		+= 1;
 			$_POST['item']				= 0;
 		}
 

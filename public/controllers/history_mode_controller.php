@@ -121,9 +121,11 @@
 					$player->clear_effects();
 				// <--
 
+				$_SESSION['history_mode']	= $group->id;
+
 				$battle					= new BattleNpc();
 				$battle->player_id		= $player->id;
-				$battle->battle_type_id	= 1;
+				$battle->battle_type_id	= 9;
 				$battle->save();
 
 				$player->battle_npc_id	= $battle->id;
