@@ -82,9 +82,7 @@ function top_exp_bar($player, $user) {
             <div class="fill" style="width: ' . $width2 . 'px"></div>
             <div class="text">' . highamount($user->exp) . '/' . highamount($user->level_exp()) . '</div>
         </div>
-        <div class="graduation">' . t('top.graduation', [
-            'grad'  => $player->graduation()->description($player->character()->anime_id)->name
-        ]) . '</div>
+        <div class="graduation">' . $player->graduation()->description($player->character()->anime_id)->name . '</div>
     </div>';
 }
 

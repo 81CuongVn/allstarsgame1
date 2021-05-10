@@ -64,20 +64,20 @@
 	<input type="hidden" name="page" value="<?php echo $page ?>" />
   <?php
 	foreach ($players as $p) {
-		if ($anime_id) {
-			if($p->position_anime == 1) {
+		if ($faction_id) {
+			if($p->position_faction == 1) {
 				$cor_fundo = "#f9e1a7";
 				$cor	   = "ouro";
 				$class	   = "league-img-1";
-			} elseif ($p->position_anime == 2) {
+			} elseif ($p->position_faction == 2) {
 				$cor_fundo = "#dddddd";
 				$cor	   = "prata";
 				$class	   = "league-img-2";
-			} elseif ($p->position_anime == 3) {
+			} elseif ($p->position_faction == 3) {
 				$cor_fundo = "#f89b52";
 				$cor	   = "bronzeado";
 				$class	   = "league-img-3";
-			} elseif ($p->position_anime > 3) {
+			} elseif ($p->position_faction > 3) {
 				$cor_fundo = "#232323";
 				$cor	   = "branco";
 				$class	   = "league-img-4";
@@ -107,8 +107,8 @@
 				<div class="image" align="center">
 					<div class="<?=$class;?>">
 						<div class="position">
-						<?php if ($anime_id) { ?>
-							<b class="<?=$cor;?>"><?=highamount($p->position_anime);?>º</b>
+						<?php if ($faction_id) { ?>
+							<b class="<?=$cor;?>"><?=highamount($p->position_faction);?>º</b>
 						<?php } else { ?>
 							<b class="<?=$cor;?>"><?=highamount($p->position_general);?>º</b>
 						<?php } ?>
@@ -141,7 +141,7 @@
 			</div>
 		</div>
 	<?php } ?>
-	<div class="break"></div>	
+	<div class="break"></div>
 	<?=partial('shared/paginator', [
     	'pages'		=> $pages,
 		'current'	=> $page + 1

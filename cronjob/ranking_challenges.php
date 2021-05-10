@@ -3,10 +3,10 @@ require '_config.php';
 
 Recordset::query('TRUNCATE TABLE ranking_challenges;');
 
-$animes		= Recordset::query('SELECT id FROM animes WHERE active=1');
+$factions		= Recordset::query('SELECT id FROM factions WHERE active = 1');
 $challenges	= Recordset::query('SELECT id FROM challenges WHERE active=1');
 foreach ($challenges->result_array() as $challenge) {
-    foreach ($animes->result_array() as $anime) {
+    foreach ($factions->result_array() as $faction) {
         $players	= Recordset::query('
             SELECT
                 a.id,
@@ -28,7 +28,7 @@ foreach ($challenges->result_array() as $challenge) {
                 JOIN player_challenges e ON e.player_id=a.id
 
             WHERE
-                c.anime_id=' . $anime['id'].' AND a.banned = 0 AND e.challenge_id='.$challenge['id'].'
+                a.faction_id=' . $faction['id'].' AND a.banned = 0 AND e.challenge_id='.$challenge['id'].'
                 GROUP BY a.id
         ');
         foreach($players->result_array() as $player) {
@@ -47,31 +47,23 @@ foreach ($challenges->result_array() as $challenge) {
         }
 
         $position	= 1;
-        $players	= Recordset::query('SELECT id, score FROM ranking_challenges WHERE challenge_id='.$challenge['id'].' AND anime_id=' . $anime['id'] . ' ORDER BY 2 DESC');
+        $players	= Recordset::query('SELECT id, score FROM ranking_challenges WHERE challenge_id = ' . $challenge['id'] . ' AND faction_id = ' . $faction['id'] . '  ORDER BY `score` DESC, `level` DESC');
         foreach($players->result_array() as $player) {
-            // if ($player->score <= 0)
-                // $player->delete();
-            // else {
-                Recordset::update('ranking_challenges', [
-                    'position_anime'	=> $position++
-                ], [
-                    'id'				=> $player['id']
-                ]);
-            // }
+			Recordset::update('ranking_challenges', [
+				'position_faction'	=> $position++
+			], [
+				'id'				=> $player['id']
+			]);
         }
 
         $position	= 1;
-        $players	= Recordset::query('SELECT id, score FROM ranking_challenges WHERE challenge_id='.$challenge['id'].'  ORDER BY 2 DESC');
+        $players	= Recordset::query('SELECT id, score FROM ranking_challenges WHERE challenge_id = ' . $challenge['id'] . '  ORDER BY `score` DESC, `level` DESC');
         foreach($players->result_array() as $player) {
-            // if ($player->score <= 0)
-                // $player->delete();
-            // else {
-                Recordset::update('ranking_challenges', [
-                    'position_general'	=> $position++
-                ], [
-                    'id'				=> $player['id']
-                ]);
-            // }
+			Recordset::update('ranking_challenges', [
+				'position_general'	=> $position++
+			], [
+				'id'				=> $player['id']
+			]);
         }
     }
 }

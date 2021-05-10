@@ -3,10 +3,10 @@ require '_config.php';
 
 Recordset::query('TRUNCATE TABLE ranking_rankeds');
 
-$animes		= Recordset::query('SELECT id FROM animes WHERE active = 1');
+$factions		= Recordset::query('SELECT id FROM factions WHERE active = 1');
 $rankeds	= Recordset::query('SELECT league FROM rankeds WHERE finished = 0');
 foreach ($rankeds->result_array() as $ranked) {
-	foreach ($animes->result_array() as $anime) {
+	foreach ($factions->result_array() as $faction) {
 		$players	= Recordset::query('
 			SELECT
 				a.id,
@@ -31,15 +31,11 @@ foreach ($rankeds->result_array() as $ranked) {
 				JOIN player_rankeds e ON e.player_id=a.id
 
 			WHERE
-				c.anime_id=' . $anime['id'].' AND e.league = '.$ranked['league'].' AND a.removed = 0 AND a.banned = 0
+				a.faction_id=' . $faction['id'].' AND e.league = '.$ranked['league'].' AND a.removed = 0 AND a.banned = 0
 				GROUP BY a.id
-		');	
-				
-
-		foreach($players->result_array() as $player) {
-			$points	= 
-				( $player['rank'] ==  0 ? 200000 : (100000 / $player['rank']) )  + 
-				( $player['wins'] * 50 );
+		');
+		foreach ($players->result_array() as $player) {
+			$points	= ($player['rank'] ==  0 ? 200000 : (100000 / $player['rank'])) + ( $player['wins'] * 50 );
 			Recordset::insert('ranking_rankeds', [
 				'player_id'				=> $player['id'],
 				'anime_id'				=> $player['anime_id'],
@@ -59,33 +55,25 @@ foreach ($rankeds->result_array() as $ranked) {
 		}
 
 		$position	= 1;
-		$players	= Recordset::query('SELECT id, score FROM ranking_rankeds WHERE league_id='.$ranked['league'].' AND anime_id=' . $anime['id'] . ' ORDER BY 2 DESC');
-		foreach($players->result_array() as $player) {
-			// if ($player->score <= 0)
-				// $player->delete();
-			// else {
-				Recordset::update('ranking_rankeds', [
-					'position_anime'	=> $position++
-				], [
-					'id'				=> $player['id']
-				]);
-			// }
-		}
-	
-	$position	= 1;
-	$players	= Recordset::query('SELECT id, score FROM ranking_rankeds WHERE league_id='.$ranked['league'].'  ORDER BY 2 DESC');
-	foreach($players->result_array() as $player) {
-		// if ($player->score <= 0)
-			// $player->delete();
-		// else {
+		$players	= Recordset::query('SELECT id FROM ranking_rankeds WHERE league_id='.$ranked['league'].' AND faction_id=' . $faction['id'] . '  ORDER BY `score` DESC, `level` DESC');
+		foreach ($players->result_array() as $player) {
 			Recordset::update('ranking_rankeds', [
-				'position_general'	=> $position++
+				'position_faction'	=> $position++
 			], [
 				'id'				=> $player['id']
 			]);
-		// }
+		}
+
+	$position	= 1;
+	$players	= Recordset::query('SELECT id FROM ranking_rankeds WHERE league_id='.$ranked['league'].' ORDER BY `score` DESC, `level` DESC');
+	foreach($players->result_array() as $player) {
+		Recordset::update('ranking_rankeds', [
+			'position_general'	=> $position++
+		], [
+			'id'				=> $player['id']
+		]);
 	}
 }
-}	
+}
 
 echo "[Ranking Ranked] Cron executada com sucesso!\n";

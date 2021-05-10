@@ -11,9 +11,15 @@ class RankingRanked extends Relation {
 	function anime() {
 		return Anime::find($this->anime_id);
 	}
+
+	function faction() {
+		return Faction::find($this->faction_id);
+	}
+
 	function challenge() {
 		return Challenge::find($this->challenge_id);
 	}
+
 	function character_theme() {
 		return CharacterTheme::find($this->character_theme_id);
 	}
@@ -21,8 +27,8 @@ class RankingRanked extends Relation {
 	static function filter($where,$where2, $page, $limit) {
 		$result	= [];
 		$where3 = $where2;
-		$where2 = $where2 ? "position_anime" : "position_general";
-			
+		$where2 = $where2 ? "position_faction" : "position_general";
+
 		if(!$where && !$where3) {
 			$result['pages']	= ceil(Recordset::query('SELECT COUNT(id) AS _max FROM ranking_rankeds')->row()->_max / $limit);
 			$result['players']	= RankingRanked::all(['limit' => ($page * $limit) . ', ' . $limit, 'reorder' => ''.$where2.' ASC']);

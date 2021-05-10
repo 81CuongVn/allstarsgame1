@@ -3,8 +3,8 @@ require '_config.php';
 
 Recordset::query('TRUNCATE TABLE ranking_players;');
 
-$animes	= Recordset::query('SELECT id FROM animes');
-foreach ($animes->result_array() as $anime) {
+$factions	= Recordset::query('SELECT id FROM factions');
+foreach ($factions->result_array() as $faction) {
     $players	= Recordset::query('
 			SELECT
 				a.id,
@@ -33,12 +33,12 @@ foreach ($animes->result_array() as $anime) {
 				JOIN animes e ON e.id = c.anime_id
 				JOIN player_quest_counters pqc ON pqc.player_id = a.id
 			WHERE
-				c.anime_id = ' . $anime['id'] . ' AND e.active = 1 AND a.level >= 1 AND a.banned = 0 AND a.removed = 0');
+				a.faction_id = ' . $faction['id'] . ' AND e.active = 1 AND a.level >= 1 AND a.banned = 0 AND a.removed = 0');
 
     foreach ($players->result_array() as $player) {
         // Calcula os bosses mortos pelo player
         $boss_score = 0;
-        $challenges = Recordset::query('SELECT quantity FROM player_challenges WHERE  player_id = '. $player['id']);
+        $challenges = Recordset::query('SELECT quantity FROM player_challenges WHERE player_id = '. $player['id']);
         foreach ($challenges->result_array() as $challenge) {
             $boss_score += floor($challenge['quantity'] / 5) * 100;
         }
@@ -78,7 +78,20 @@ foreach ($animes->result_array() as $anime) {
     }
 
     $position	= 1;
-    $players	= Recordset::query('SELECT `id`,`score`,`level` FROM `ranking_players` WHERE `anime_id`=' . $anime['id'] . ' ORDER BY `score` DESC, `level` DESC');
+    $players	= Recordset::query("SELECT `id` FROM `ranking_players` WHERE `faction_id` = {$faction['id']} ORDER BY `score` DESC, `level` DESC");
+    foreach ($players->result_array() as $player) {
+        Recordset::update('ranking_players', [
+            'position_faction'	=> $position++
+        ], [
+            'id' => $player['id']
+        ]);
+    }
+}
+
+$animes	= Recordset::query('SELECT id FROM animes WHERE active = 1');
+foreach ($animes->result_array() as $anime) {
+    $position	= 1;
+    $players	= Recordset::query("SELECT `id` FROM `ranking_players` WHERE `anime_id` = {$anime['id']} ORDER BY `score` DESC, `level` DESC");
     foreach ($players->result_array() as $player) {
         Recordset::update('ranking_players', [
             'position_anime'	=> $position++
@@ -89,7 +102,7 @@ foreach ($animes->result_array() as $anime) {
 }
 
 $position	= 1;
-$players	= Recordset::query('SELECT `id`,`score`,`level` FROM `ranking_players` ORDER BY `score` DESC, `level` DESC');
+$players	= Recordset::query('SELECT `id` FROM `ranking_players` ORDER BY `score` DESC, `level` DESC');
 foreach ($players->result_array() as $player) {
     Recordset::update('ranking_players', [
         'position_general'	=> $position++

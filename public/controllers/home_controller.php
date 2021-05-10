@@ -69,6 +69,7 @@ class HomeController extends Controller {
 
 		$items_per_page	= 10;
 		$this->assign('tops',		RankingPlayer::find('position_anime=1', [
+			'reorder'	=> 'score desc',
 			'limit' => ($items_per_page * ($page - 1)) . ', ' . $items_per_page
 		]));
 	}

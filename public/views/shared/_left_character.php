@@ -111,8 +111,8 @@
 		</div>
 		<div class="bg_menu_esquerdo">
 			<div class="menu_esquerdo_divisao">
-				<b class="amarelo">Rank Anime</b>
-				<b class=""><?php echo $ranking ? highamount($ranking->position_anime) . "&ordm;" : "-" ?></b>
+				<b class="amarelo">Rank Facção</b>
+				<b class=""><?php echo $ranking ? highamount($ranking->position_faction) . "&ordm;" : "-" ?></b>
 			</div>
 			<div class="menu_esquerdo_divisao">
 				<b class="amarelo">Rank Conta</b>
@@ -140,6 +140,29 @@
 			</div>
 		</div>
 		<div class="bg_menu_esquerdo">
+			<?php
+			$timeout	= now() - (15 * 60);
+			$online		= Recordset::query("SELECT `id` FROM `players` WHERE `last_activity` > {$timeout}", FALSE)->num_rows;
+			$queueds	= Recordset::query("SELECT `id` FROM `players` WHERE `is_pvp_queued` = 1 AND `last_activity` > {$timeout}", FALSE)->num_rows;
+			?>
+			<div class="menu_esquerdo_divisao">
+				<b class="amarelo">Online</b>
+				<b class=""><?=highamount($online);?></b>
+			</div>
+			<div class="menu_esquerdo_divisao">
+				<b class="amarelo">Fila PvP</b>
+				<b class=""><?=highamount($queueds);?></b>
+			</div>
+		</div>
+		<div class="bg_menu_esquerdo">
+			<?php $battles_pvp	= Recordset::query("SELECT `id` FROM `battle_pvps` WHERE `finished_at` IS NULL ", FALSE)->num_rows; ?>
+			<div class="menu_esquerdo_divisao" style="width: 100%">
+				<b class="amarelo">PvP em Andamento</b>
+				<b class=""><?=highamount($battles_pvp);?></b>
+			</div>
+		</div>
+		<?php if (!$_SESSION['universal']) { ?>
+		<div class="bg_menu_esquerdo">
 			<div class="menu_esquerdo_divisao" style="width: 100%">
 				<b class="amarelo">Round 1</b>
 				<b class="">
@@ -150,37 +173,8 @@
 				</b>
 			</div>
 		</div>
-		<?php // if ($_SESSION['universal']) { ?>
-			<div class="bg_menu_esquerdo">
-				<?php
-				$timeout	= now() - (15 * 60);
-				$online		= Recordset::query("SELECT `id` FROM `players` WHERE `last_activity` > {$timeout}", FALSE)->num_rows;
-				$queueds	= Recordset::query("SELECT `id` FROM `players` WHERE `is_pvp_queued` = 1 AND `last_activity` > {$timeout}", FALSE)->num_rows;
-				?>
-				<div class="menu_esquerdo_divisao">
-					<b class="amarelo">Online</b>
-					<b class=""><?=highamount($online);?></b>
-				</div>
-				<div class="menu_esquerdo_divisao">
-					<b class="amarelo">Fila PvP</b>
-					<b class=""><?=highamount($queueds);?></b>
-				</div>
-			</div>
-			<div class="bg_menu_esquerdo">
-				<?php $battles_pvp	= Recordset::query("SELECT `id` FROM `battle_pvps` WHERE `finished_at` IS NULL ", FALSE)->num_rows; ?>
-				<div class="menu_esquerdo_divisao" style="width: 100%">
-					<b class="amarelo">PvP em Andamento</b>
-					<b class=""><?=highamount($battles_pvp);?></b>
-				</div>
-			</div>
-		<?php // } ?>
+		<?php } ?>
 		<div class="clearfix"></div>
-		<a href="https://discord.gg/ME8ugpZwSw" target="_blank">
-			<div class="discord cursor_pointer"></div>
-		</a><br />
-		<div style="width: 240px; text-align: center">
-			<div class="fb-like" data-href="https://www.facebook.com/<?=FB_PAGE_USER;?>" data-width="70" data-layout="box_count" data-action="like" data-size="small" data-share="true"></div>
-		</div>
 	</div>
 <?php } else { ?>
 	<div style="height: 680px;"></div>

@@ -3,32 +3,34 @@ require '_config.php';
 
 Recordset::query('TRUNCATE TABLE ranking_achievements;');
 
-$animes	= Recordset::query('SELECT id FROM animes');
-foreach ($animes->result_array() as $anime) {
-    $players	= Recordset::query('
-			SELECT
-				a.id,
-				a.name,
-				a.headline_id,
-				a.graduation_id,
-				c.anime_id,
-				e.active,
-				a.character_theme_id,
-				a.character_id,
-				a.faction_id,
-				a.level,
-				a.training_total,
-				a.wins_pvp,
-				a.wins_npc,
-				d.sorting AS graduation_level
-
-			FROM
-				players a JOIN characters c ON c.id=a.character_id
-				JOIN graduations d ON d.id=a.graduation_id
-				JOIN animes e ON e.id = c.anime_id
-			WHERE
-				c.anime_id=' . $anime['id'].' AND e.active= 1 AND a.level >= 1 AND a.banned = 0 AND a.removed=0');
-    foreach($players->result_array() as $player) {
+$factions	= Recordset::query('SELECT id FROM factions');
+foreach ($factions->result_array() as $faction) {
+    $players	= Recordset::query("SELECT
+			a.id,
+			a.name,
+			a.headline_id,
+			a.graduation_id,
+			c.anime_id,
+			e.active,
+			a.character_theme_id,
+			a.character_id,
+			a.faction_id,
+			a.level,
+			a.training_total,
+			a.wins_pvp,
+			a.wins_npc,
+			d.sorting AS graduation_level
+		FROM
+			players a JOIN characters c ON c.id=a.character_id
+			JOIN graduations d ON d.id=a.graduation_id
+			JOIN animes e ON e.id = c.anime_id
+		WHERE
+			a.faction_id = {$faction['id']} AND
+			e.active= 1 AND
+			a.level >= 1 AND
+			a.banned = 0 AND
+			a.removed = 0");
+    foreach ($players->result_array() as $player) {
         $players_achievement	= Recordset::query('select sum(points) as total from achievements WHERE id in (select achievement_id from player_achievements WHERE player_id='.$player['id'].')')->result_array();
         $points	= $players_achievement[0]['total'];
 
@@ -46,11 +48,11 @@ foreach ($animes->result_array() as $anime) {
         ]);
     }
 
-    $players	= Recordset::query('SELECT id, score FROM ranking_achievements WHERE anime_id=' . $anime['id'] . ' ORDER BY 2 DESC');
-    $position	= 1;
-    foreach($players->result_array() as $player) {
+	$position	= 1;
+	$players	= Recordset::query("SELECT `id` FROM `ranking_achievements` WHERE `faction_id` = {$faction['id']} ORDER BY `score` DESC, `level` DESC");
+    foreach ($players->result_array() as $player) {
         Recordset::update('ranking_achievements', [
-            'position_anime'	=> $position++
+            'position_faction'	=> $position++
         ], [
             'id'				=> $player['id']
         ]);
@@ -58,7 +60,7 @@ foreach ($animes->result_array() as $anime) {
 }
 
 $position	= 1;
-$players	= Recordset::query('SELECT id, score FROM ranking_achievements ORDER BY score DESC');
+$players	= Recordset::query('SELECT `id` FROM `ranking_achievements` ORDER BY `score` DESC, `level` DESC');
 foreach ($players->result_array() as $player) {
     Recordset::update('ranking_achievements', [
         'position_general'	=> $position++

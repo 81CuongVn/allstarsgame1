@@ -64,20 +64,20 @@
 	<input type="hidden" name="page" value="<?=$page;?>" />
 	<?php
 	foreach ($players as $p) {
-		if ($anime_id) {
-			if($p->position_anime == 1) {
+		if ($faction_id) {
+			if($p->position_faction == 1) {
 				$cor_fundo = "#f9e1a7";
 				$cor	   = "ouro";
 				$class	   = "league-img-1";
-			} elseif ($p->position_anime == 2) {
+			} elseif ($p->position_faction == 2) {
 				$cor_fundo = "#dddddd";
 				$cor	   = "prata";
 				$class	   = "league-img-2";
-			} elseif ($p->position_anime == 3) {
+			} elseif ($p->position_faction == 3) {
 				$cor_fundo = "#f89b52";
 				$cor	   = "bronzeado";
 				$class	   = "league-img-3";
-			} elseif ($p->position_anime > 3) {
+			} elseif ($p->position_faction > 3) {
 				$cor_fundo = "#232323";
 				$cor	   = "branco";
 				$class	   = "league-img-4";
@@ -102,12 +102,12 @@
 			}
 		}
 		?>
-		<div class="ability-speciality-box" style="width: 175px !important; height: 250px !important; padding-bottom: 40px">
+		<div class="ability-speciality-box" style="width: 175px; height: 250px; padding-bottom: 40px">
 			<div class="image" align="center">
 				<div class="<?=$class;?>">
 					<div class="position">
-						<?php if ($anime_id) { ?>
-							<b class="<?=$cor;?>"><?=highamount($p->position_anime);?>º</b>
+						<?php if ($faction_id) { ?>
+							<b class="<?=$cor;?>"><?=highamount($p->position_faction);?>º</b>
 						<?php } else { ?>
 							<b class="<?=$cor;?>"><?=highamount($p->position_general);?>º</b>
 						<?php } ?>
@@ -115,7 +115,7 @@
 					<?=$p->character_theme()->first_image()->small_image();?>
 				</div>
 			</div>
-			<div class="name" style="height: 45px !important;">
+			<div class="name" style="height: 45px;">
 				<div class="amarelo" style="margin-bottom: 6px;">
 					<?php if (is_player_online($p->player_id)): ?>
 						<img src="<?php echo image_url("on.png" ) ?>"/>
@@ -135,7 +135,7 @@
 			</div>
 			<div class="details">
 				<div class="technique-popover buff" data-source="#ranking-container-<?=$p->id;?>" data-title="Extrato de Pontuação" data-trigger="click" data-placement="bottom">
-					<b class="laranja" style="cursor: pointer; font-size: 14px"><?=highamount($p->score);?></b>
+					<b class="laranja" style="cursor: pointer; font-size: 14px;"><?=highamount($p->score);?></b>
 					<div id="ranking-container-<?=$p->id;?>" class="technique-container">
 						<?php $detail = explode(",", $p->detail);?>
 						<div class="status-popover-content" style="min-width: 150px;">
@@ -149,9 +149,9 @@
 							Missão de Mascote: <span class="verde" style="float: right;"><?=highamount($detail[6] * 50);?></span><br />
 							Missão de Combate: <span class="verde" style="float: right;"><?=highamount($detail[7] * 200);?></span><br /><br />
 							Total de Pontos: <span class="laranja" style="float: right;"><?=highamount($p->score);?></span>
-						</div>	
-					</div>	
-				</div>	
+						</div>
+					</div>
+				</div>
 			</div>
 			<div class="button" style="position:relative; top: 15px;"></div>
 		</div>
