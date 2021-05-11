@@ -988,7 +988,7 @@ class CharactersController extends Controller {
 		}
 
 		$result		= Character::pets($player->id, $filter, $page, $limit);
-		$animes		= Anime::find($_SESSION['universal'] ? '1 = 1' : 'active = 1', [
+		$animes		= Anime::all([
 			'cache'		=> true,
 			'reorder'	=> 'id ASC'
 		]);
