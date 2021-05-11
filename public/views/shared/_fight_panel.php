@@ -16,9 +16,9 @@
 					<div class="technique-data" style="width: 200px; margin: 0; padding: 5px 15px;">
 						<?=(($player->no_talent == 1 || $enemy->no_talent == 1) ? t('battles.pvp.no_talent') : t('battles.pvp.no_talent2'));?>
 					</div>
-				</div>	
+				</div>
 			</div>
-		<?php } ?>	
+		<?php } ?>
 		<div id="ranking">
 			<div class="text"><?=t('battles.stats.text');?></div>
 			<div class="wins">
@@ -40,12 +40,13 @@
 		<div class="chains"></div>
 		<div id="players">
 			<div id="vs">
-				<div class="log" style="margin-top: 296px;">
-					<?php if (is_array($log)): ?>
-						<?php foreach ($log as $entry): ?>
+				<img src="<?=image_url('battle/vs' . (isset($battle) && $battle->battle_type_id == 5 ? '-ranked' : '') . '.gif');?>" width="349" height="290" />
+				<div class="log" style="margin-top: 5px;">
+					<?php if (is_array($log)) { ?>
+						<?php foreach ($log as $entry) { ?>
 							<div><?=$entry;?></div><hr />
-						<?php endforeach ?>
-					<?php endif ?>
+						<?php } ?>
+					<?php } ?>
 				</div>
 				<div class="log-scroller">
 					<span class="up glyphicon glyphicon-chevron-up"></span>
@@ -61,7 +62,7 @@
 				</div>
 				<div class="name">
 					<?=$player->name;?><br />
-					<span style="font-size:11px; font-weight: none; color:#09F">
+					<span style="font-size:11px; font-weight: none; color: #09F;">
 						<?=($player->headline_id ? $player->headline()->description()->name : '--');?>
 					</span>
 				</div>
@@ -91,7 +92,7 @@
 				</div>
 				<div class="name">
 					<?=$enemy->name;?><br />
-					<span style="font-size:11px; font-weight: none; color:#09F">
+					<span style="font-size:11px; font-weight: none; color: #09F;">
 						<?=(is_a($enemy, 'Player') && $enemy->headline_id ? $enemy->headline()->description()->name : '--');?>
 					</span>
 				</div>
@@ -154,5 +155,5 @@
 			draw_battle_mb(<?php echo $enemy->for_mana() ?>, <?php echo $enemy->for_mana(true) ?>);
 			draw_battle_mb(<?php echo $player->for_mana() ?>, <?php echo $player->for_mana(true) ?>, 'l');
 		});
-</script>	
+</script>
 <?php } ?>
