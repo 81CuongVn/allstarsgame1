@@ -849,17 +849,17 @@ class BattlePvpsController extends Controller {
 						$battle_log	= [ $battle_log ];
 						$battle->save_log(array_merge($log, $battle_log));
 
-						$battle->current_id			= $enemy->id;
+						$battle->current_id				= $enemy->id;
 						$battle->{$field_copy_enemy}	= 0;
-						$battle->{$field_copy_mine}	= 0;
+						$battle->{$field_copy_mine}		= 0;
 						$battle->{$field_kill_enemy}	= 0;
-						$battle->{$field_kill_mine}	= 0;
-						$battle->should_process		= 0;
-						$battle->player_effect_log	= null;
-						$battle->enemy_effect_log	= null;
+						$battle->{$field_kill_mine}		= 0;
+						$battle->should_process			= 0;
+						$battle->player_effect_log		= null;
+						$battle->enemy_effect_log		= null;
 						$battle->current_turn++;
 
-						$should_update_mana			= true;
+						$should_update_mana				= true;
 
 						function __check_dead(&$who) {
 							return $who->for_life() <= 0;
@@ -878,8 +878,8 @@ class BattlePvpsController extends Controller {
 						if(!$was_draw) {
 							if($player_init >= $enemy_init) {
 								if(__check_dead($enemy)) {
-									$battle->won	= $player->id;
-									$finished		= true;
+									$battle->won		= $player->id;
+									$finished			= true;
 								} else {
 									if(__check_dead($player)) {
 										$battle->won	= $enemy->id;
@@ -888,8 +888,8 @@ class BattlePvpsController extends Controller {
 								}
 							} elseif($player_init < $enemy_init) {
 								if(__check_dead($player)) {
-									$battle->won	= $enemy->id;
-									$finished		= true;
+									$battle->won		= $enemy->id;
+									$finished			= true;
 								} else {
 									if(__check_dead($enemy)) {
 										$battle->won	= $player->id;
