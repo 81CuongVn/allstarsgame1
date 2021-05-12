@@ -829,19 +829,19 @@ class BattlePvpsController extends Controller {
 
 						if ($battle_instance->first == 'player') {
 							if ($battle->player_effect_log) {
-								$battle_log[0]	= join('', unserialize($battle->player_effect_log)) . $battle_log[0];
+								$battle_log[0]	= join('', unserialize($battle->player_effect_log)) . (isset($battle_log[0]) ? $battle_log[0] : '');
 							}
 
 							if ($battle->enemy_effect_log) {
-								$battle_log[1]	= join('', unserialize($battle->enemy_effect_log)) . $battle_log[1];
+								$battle_log[1]	= join('', unserialize($battle->enemy_effect_log)) . (isset($battle_log[1]) ? $battle_log[1] : '');
 							}
 						} else {
 							if ($battle->enemy_effect_log) {
-								$battle_log[0]	= join('', unserialize($battle->enemy_effect_log)) . $battle_log[0];
+								$battle_log[0]	= join('', unserialize($battle->enemy_effect_log)) . (isset($battle_log[0]) ? $battle_log[0] : '');
 							}
 
 							if ($battle->player_effect_log) {
-								$battle_log[1]	= join('', unserialize($battle->player_effect_log)) . $battle_log[1];
+								$battle_log[1]	= join('', unserialize($battle->player_effect_log)) . (isset($battle_log[1]) ? $battle_log[1] : '');
 							}
 						}
 
