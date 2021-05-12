@@ -349,7 +349,12 @@ class BattlePvpsController extends Controller {
 			$channel->queue_declare(PVP_CHANNEL, FALSE, FALSE, FALSE, FALSE);
 
 			if (date('w') == 0 || date('w') == 2 || date('w') == 4) {
-				$battle_type_id = 5;
+				$has_league		= Ranked::find_first('started = 1 and finished = 0 order by league desc');
+				if ($has_league) {
+					$battle_type_id	= 5;
+				} else {
+					$battle_type_id	= 2;
+				}
 			} else {
 				$battle_type_id = 2;
 			}
