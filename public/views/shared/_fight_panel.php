@@ -71,7 +71,7 @@
 				<div class="log-timer"></div>
 				<div id="attack-text"></div>
 			</div>
-			<div class="bijuu_player" style="background: url(<?=image_url('bijuus/battle/3109.png')?>);"></div>
+			<!-- <div class="bijuu_player" style="background: url(<?=image_url('bijuus/battle/3109.png')?>);"></div> -->
 			<div id="player" class="player-box" data-faction="<?=$player->faction_id;?>" data-organization="<?=($player->organization_id ? $player->organization()->name : '-');?>" <?=(!$player->battle_npc_id ? ($player_wanted ? 'data-wanted="1" data-wanted-reward="' . ($player->won_last_battle > 100 ? highamount(100 * 250) : highamount($player->won_last_battle * 250)) . ' ' . t('currencies.' . $player->character()->anime_id) . '" data-wanted-type="' . t('wanted.' . $player_wanted->type_death) . '"' : '') : '');?>>
 				<div class="modifiers" data-placement="right"></div>
 				<div class="image">
@@ -102,7 +102,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="bijuu_enemy" style="background: url(<?=image_url('bijuus/battle/3109-2.png')?>);"></div>
+			<!-- <div class="bijuu_enemy" style="background: url(<?=image_url('bijuus/battle/3109-2.png')?>);"></div> -->
 			<div id="enemy" class="player-box" data-faction="<?=$enemy->faction_id;?>" data-organization="<?=($enemy->organization_id ? $enemy->organization()->name : '-');?>" <?=(!$player->battle_npc_id ? ($enemy_wanted ? 'data-wanted="1" data-wanted-reward="' . ($enemy->won_last_battle > 100 ? highamount(100 * 250) : highamount($enemy->won_last_battle * 250)) . ' ' . t('currencies.' . $player->character()->anime_id) . '" data-wanted-type="' . t('wanted.' . $enemy_wanted->type_death) . '"' : '') : '');?>>
 				<div class="modifiers" data-placement="left"></div>
 				<div class="image">
