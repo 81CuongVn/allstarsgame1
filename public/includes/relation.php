@@ -135,7 +135,7 @@
 			$result	= $class::find($conditions, $options);
 
 			if(is_array($result)) {
-				return sizeof($result) ? $result[0] : false;				
+				return sizeof($result) ? $result[0] : false;
 			} else {
 				return $result ? $result : false;
 			}
@@ -165,7 +165,7 @@
 				if(!isset($this->_values[$property])) {
 					return NULL;
 				} else {
-					return $this->_values[$property];					
+					return $this->_values[$property];
 				}
 			}
 		}
@@ -210,7 +210,7 @@
 					if($this->new_record()) {
 						$insert[$_]	= array('escape' => false, 'value' => '\'' . password($value) . '\'');
 					} else {
-						$insert[$_]	= $value;						
+						$insert[$_]	= $value;
 					}
 				} else {
 					$insert[$_]	= $value;
@@ -292,7 +292,7 @@
 
 		static function all($options = []) {
 			$class	= get_called_class();
-			
+
 			/*
 			$items	= Recordset::query('SELECT id FROM ' . $class::$_table[$class]);
 			$result	= array();
@@ -312,8 +312,8 @@
 		}
 
 		static function includes($id) {
-			$class	= get_called_class();			
-			
+			$class	= get_called_class();
+
 			return Recordset::query('SELECT id FROM ' . $class::$_table[$class] . ' WHERE id="' . addslashes($id) . '"')->num_rows;
 		}
 
@@ -418,14 +418,14 @@
 		}
 
 		static function truncate() {
-			$class	= get_called_class();			
-			
+			$class	= get_called_class();
+
 			Recordset::query('TRUNCATE TABLE ' . $class::$_table[$class]);
 		}
 
 		static function destroy_all($conditions = '1=1') {
-			$class	= get_called_class();			
-			
+			$class	= get_called_class();
+
 			Recordset::query('DELETE FROM ' . $class::$_table[$class] . ' WHERE ' . $conditions);
 		}
 	}

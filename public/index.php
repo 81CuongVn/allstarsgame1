@@ -1,4 +1,14 @@
 <?php
+class WarningWithStacktrace extends ErrorException {}
+set_error_handler(function($severity, $message, $file, $line) {
+    if ((error_reporting() & $severity)) {
+        if ($severity & (E_WARNING | E_NOTICE | E_USER_WARNING | E_USER_NOTICE)) {
+            // $ex = new WarningWithStacktrace($message, 0, $severity, $file, $line);
+			// error_log($ex);
+            throw new ErrorException($message, 0, $severity, $file, $line);
+		}
+    }
+});
 session_start();
 
 $env = 'dev';
