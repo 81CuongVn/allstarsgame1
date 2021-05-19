@@ -347,14 +347,14 @@ class VipsController extends Controller {
 		}
 
 		$methods	= [
-			// 'mercadopago'	=> 'BRL',
-			'pagseguro'		=> 'BRL',
+			'mercadopago'	=> 'BRL',
+			// 'pagseguro'		=> 'BRL',
 			'paypal_eur'	=> 'EUR',
 			'paypal_usd'	=> 'USD',
 			// 'paypal_brl'	=> 'BRL'
 		];
 		if ($_SESSION['universal']) {
-			$methods['mercadopago']	= 'BRL';
+			// $methods['mercadopago']	= 'BRL';
 			$methods['paypal_brl']	= 'BRL';
 		}
 		ksort($methods);
@@ -408,14 +408,14 @@ class VipsController extends Controller {
 		if ($star_purchase) {
 			$star_plan	= StarPlan::find_first("id = " . $star_purchase->star_plan_id);
 			$coins		= [
-				// 'mercadopago'	=> 'BRL',
-				'pagseguro'		=> 'BRL',
+				'mercadopago'	=> 'BRL',
+				// 'pagseguro'		=> 'BRL',
 				'paypal_eur'	=> 'EUR',
 				'paypal_usd'	=> 'USD',
 				// 'paypal_brl'	=> 'BRL'
 			];
 			if ($_SESSION['universal']) {
-				$coins['mercadopago']	= 'BRL';
+				// $coins['mercadopago']	= 'BRL';
 				$coins['paypal_brl']	= 'BRL';
 			}
 			$price		= 'price_' . strtolower($coins[$star_purchase->star_method]);
