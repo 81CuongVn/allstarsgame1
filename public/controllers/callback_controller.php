@@ -180,7 +180,7 @@ class CallbackController extends Controller {
 				}
 			}
 
-			echo '1 - ' . $merchant_order->external_reference . ' | 2 - ' . $merchant_order['external_reference'];
+			echo $merchant_order->external_reference . '<br />';
 			$star_purchase	= StarPurchase::find_first("id=" . $merchant_order->external_reference);
 			// if ($star_purchase) {
 			// 	$is_dbl     = StarDouble::find_first("'{$star_purchase->created_at}' BETWEEN data_init AND data_end");
@@ -214,6 +214,7 @@ class CallbackController extends Controller {
 			// 	$star_purchase->save();
 			// }
 
+			echo '<pre>';
 			// If the payment's transaction amount is equal (or bigger) than the merchant_order's amount you can release your items
 			if ($paid_amount >= $merchant_order->total_amount) {
 				print_r("Totally paid. Release your item.");
@@ -221,7 +222,6 @@ class CallbackController extends Controller {
 				print_r("Not paid yet. Do not release your item.");
 			}
 
-			echo '<pre>';
 			echo json_encode($star_purchase,	JSON_PRETTY_PRINT);
 			echo json_encode($merchant_order,	JSON_PRETTY_PRINT);
 			echo '</pre>';
