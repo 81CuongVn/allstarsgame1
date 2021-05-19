@@ -180,6 +180,39 @@ class CallbackController extends Controller {
 				}
 			}
 
+			$star_purchase	= StarPurchase::find_first("id=" . $merchant_order->external_reference);
+			// if ($star_purchase) {
+			// 	$is_dbl     = StarDouble::find_first("'{$star_purchase->created_at}' BETWEEN data_init AND data_end");
+			// 	$star_plan  = StarPlan::find_first("id = " . $star_purchase->star_plan_id);
+			// 	$user       = User::find($star_purchase->user_id);
+			// 	$credits    = !$is_dbl ? $star_plan->credits : ($star_plan->credits * 2);
+
+			// 	$statusCode = $merchant_order->order_status;
+			// 	if (in_array($statusCode, ['paid'])) {
+			// 		if ($star_purchase->status != 'aprovado') {
+			// 			$user->earn($credits);
+
+			// 			$star_purchase->status  = 'aprovado';
+			// 			echo "[{$star_purchase->star_plan_id}] Estrelas creditadas!";
+			// 		}
+			// 	} elseif (in_array($statusCode, ['reverted'])) {
+			// 		if ($star_purchase->status == 'aprovado') {
+			// 			$user->spend($credits);
+
+			// 			$star_purchase->status      = 'estornado';
+			// 			echo "[{$star_purchase->star_plan_id}] Estrelas debitadas!";
+			// 		}
+			// 	} elseif (in_array($statusCode, [7])) {
+			// 		$star_purchase->status      = 'cancelado';
+
+			// 		echo "[{$star_purchase->star_plan_id}] Pagamento cancelado!";
+			// 	}
+
+			// 	$star_purchase->transid             = $merchant_order->preference_id;
+			// 	$star_purchase->completed_at        = now(TRUE);
+			// 	$star_purchase->save();
+			// }
+
 			// If the payment's transaction amount is equal (or bigger) than the merchant_order's amount you can release your items
 			if ($paid_amount >= $merchant_order->total_amount) {
 				print_r("Totally paid. Release your item.");
@@ -188,13 +221,8 @@ class CallbackController extends Controller {
 			}
 
 			echo '<pre>';
-			echo json_encode($payment, JSON_PRETTY_PRINT);
-			echo json_encode($merchant_order, JSON_PRETTY_PRINT);
-			echo '</pre>';
-
-			echo '<pre>';
-			print_r($payment);
-			print_r($merchant_order);
+			echo json_encode($star_purchase,	JSON_PRETTY_PRINT);
+			echo json_encode($merchant_order,	JSON_PRETTY_PRINT);
 			echo '</pre>';
 		} else {
 			$this->bad_request();
@@ -203,24 +231,6 @@ class CallbackController extends Controller {
 
 		$this->good_request();
 		return;
-
-
-
-
-		// $_POST['type']	= 'payment';
-		// $_POST['id']	= '14857352551';
-
-		// switch ($_POST["type"]) {
-		// 	case "payment":
-		// 		$payment = MercadoPago\Payment::find_by_id($_POST["id"]);
-		// 		break;
-		// }
-		// $merchant_order	= MercadoPago\MerchantOrder::find_by_id($payment->order->id);
-
-		// echo '<pre>';
-		// echo json_encode($payment, JSON_PRETTY_PRINT);
-		// echo json_encode($merchant_order, JSON_PRETTY_PRINT);
-		// echo '</pre>';
 	}
 
     public function pagseguro() {
@@ -275,14 +285,6 @@ class CallbackController extends Controller {
                     $star_purchase->completed_at        = now(TRUE);
                     $star_purchase->save();
                 }
-
-                echo '<br />';
-                echo 'getReference(): ' . $transaction->getReference() . '<br //>';
-                echo 'getStatusType(): ' . $transaction->getStatus() . '<br //>';
-                echo 'getStatusCode(): ' . ps_paymentStatus($transaction->getStatus()) . '<br //>';
-                echo 'getPaymentMethodType(): ' . ps_paymentMethodType($transaction->getPaymentMethod()->getType()) . '<br //>';
-                echo 'getPaymentMethodCode(): ' . ps_paymentMethodCode($transaction->getPaymentMethod()->getCode()) . '<br //>';
-                echo 'getCode(): ' . $transaction->getCode() . '<br //>';
             } else {
                 throw new \InvalidArgumentException($_POST);
             }
