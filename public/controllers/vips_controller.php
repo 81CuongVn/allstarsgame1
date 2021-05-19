@@ -440,7 +440,7 @@ class VipsController extends Controller {
 					// Cria um item na preferência
 					$item				= new MercadoPago\Item();
 					$item->id			= $star_plan->id;
-					$item->title		= 'AASG - ' . $star_plan->name;
+					$item->title		= GAME_NAME . ' - ' . $star_plan->name;
 					$item->description	= $star_plan->description;
 					$item->quantity		= 1;
 					$item->unit_price	= $_SESSION['universal'] ? 1 : $star_plan->$price;
@@ -467,7 +467,7 @@ class VipsController extends Controller {
 					$payment = new \PagSeguro\Domains\Requests\Payment();
 					$payment->addItems()->withParameters(
 						$star_plan->id,
-						'AASG - ' . $star_plan->name,
+						GAME_NAME . ' - ' . $star_plan->name,
 						1,
 						$star_plan->$price
 					);
@@ -487,15 +487,19 @@ class VipsController extends Controller {
 					break;
 				default:
 					$p = new PayPal();
-					if (PAYPAL_SANDBOX) $p->useSandbox();
+
 					$p->addField('business',		PAYPAL_EMAIL);
 					$p->addField('return',			make_url('vips/make_donation?success'));
 					$p->addField('cancel_return',	make_url('vips/make_donation?cancel'));
 					$p->addField('notify_url',		make_url('callback/paypal'));
-					$p->addField('item_name',		$star_plan->name);
+					$p->addField('item_name',		GAME_NAME . ' - ' . $star_plan->name);
 					$p->addField('currency_code',	$coins[$star_purchase->star_method]);
 					$p->addField('amount',			$star_plan->$price);
 					$p->addField('custom',			$star_purchase->id);
+
+					if (PAYPAL_SANDBOX) {
+						$p->useSandbox();
+					}
 
 					$p->submitPayment();
 					break;
