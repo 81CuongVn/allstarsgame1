@@ -180,6 +180,7 @@ class CallbackController extends Controller {
 				}
 			}
 
+			echo '1 - ' . $merchant_order->external_reference . ' | 2 - ' . $merchant_order['external_reference'];
 			$star_purchase	= StarPurchase::find_first("id=" . $merchant_order->external_reference);
 			// if ($star_purchase) {
 			// 	$is_dbl     = StarDouble::find_first("'{$star_purchase->created_at}' BETWEEN data_init AND data_end");
