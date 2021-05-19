@@ -107,7 +107,7 @@ class CallbackController extends Controller {
         header("HTTP/1.1 400 Bad Request");
     }
 
-    function paypal() {
+    public function paypal() {
         $method = $_SERVER['REQUEST_METHOD'];
         if ('POST' == $method) {
             $p = new PayPal();
@@ -149,7 +149,30 @@ class CallbackController extends Controller {
         }
     }
 
-    function pagseguro() {
+	public function mercadopago() {
+		if (MP_SAMDBOX) {
+			MercadoPago\SDK::setAccessToken(MP_SAMDBOX_TOKEN);
+		} else {
+			MercadoPago\SDK::setAccessToken(MP_PROD_TOKEN);
+		}
+
+		$_POST['type']	= 'payment';
+		$_POST['id']	= '14857352551';
+
+		switch ($_POST["type"]) {
+			case "payment":
+				$payment = MercadoPago\Payment::find_by_id($_POST["id"]);
+				break;
+		}
+		$merchant_order	= MercadoPago\MerchantOrder::find_by_id($payment->order->id);
+
+		echo '<pre>';
+		echo json_encode($payment, JSON_PRETTY_PRINT);
+		echo json_encode($merchant_order, JSON_PRETTY_PRINT);
+		echo '</pre>';
+	}
+
+    public function pagseguro() {
         \PagSeguro\Library::initialize();
         \PagSeguro\Library::cmsVersion()->setName(GAME_NAME)->setRelease(GAME_VERSION);
         \PagSeguro\Library::moduleVersion()->setName(GAME_NAME)->setRelease(GAME_VERSION);

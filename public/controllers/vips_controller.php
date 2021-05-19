@@ -8,7 +8,7 @@ class VipsController extends Controller {
 	function index() {
 		$player				= Player::get_instance();
 		$player_vip_items   = PlayerStarItem::find("player_id=".$player->id." AND item_id=429 AND character_id !=0 AND character_id != ".$player->character_id);
-		
+
 		$this->assign("vips",				$this->allowed_items);
 		$this->assign("player",				$player);
 		$this->assign("player_vip_items",	$player_vip_items);
@@ -23,25 +23,25 @@ class VipsController extends Controller {
 
 		if (isset($_POST["id"]) && is_numeric($_POST["id"])) {
 			$player_item = PlayerItem::find_first("player_id=".$player->id." AND item_id=".$_POST["id"]);
-			
+
 			if(!$player_item->quantity){
 				$errors[]	= t("vips.errors.dont_have");
 			}
-			
+
 			if(!$player->has_item(1715)){
 				$errors[]	= t("vips.errors.invalid_item");
 			}
 		} else {
 			$errors[]	= t("vips.errors.invalid_item");
 		}
-		
+
 		if (!sizeof($errors)) {
-			$this->json->success	= true;	
+			$this->json->success	= true;
 			$player->no_talent  = ($player->no_talent ? 0 : 1);
 			$player->save();
 		} else {
 			$this->json->messages	= $errors;
-		}	
+		}
 	}
 	function buy() {
 		$this->as_json		= true;
@@ -65,20 +65,20 @@ class VipsController extends Controller {
 			} else {
 				$item				= Item::find($_POST["id"]);
 				$item_431 = false;
-				
+
 				if($item->id == 431){
 					$item_431 			= PlayerStarItem::find_first("player_id=" . $player->id . " AND item_id=431");
-					
+
 					$buy_mode = 1;
 					$bought_free = false;
 					$bought_currency = false;
-					
+
 					if ($player->currency < $item->price_currency) {
 						$errors[]	= t("vips.errors.not_enough_currency", [
 							'currency'	=> t('currencies.' . $player->character()->anime_id)
 						]);
 					}
-					
+
 				} else if($item->id == 432 || $item->id == 1709 || $item->id == 1715 || $item->id == 1718 || $item->id == 1746  || $item->id == 2112){
 					$buy_mode = 2;
 					$bought_free = false;
@@ -133,7 +133,7 @@ class VipsController extends Controller {
 				if (isset($_POST["name_organization"])) {
 					if($player->organization_id){
 						$player_organization = Organization::find_first('id='.$player->organization_id);
-					
+
 						if($player_organization->player_id != $player->id){
 							$errors[]	= t('organizations.errors.not_leader');
 						}
@@ -181,8 +181,8 @@ class VipsController extends Controller {
 			} elseif($buy_mode == 2) {
 				$user->spend($item->price_credits);
 			}
-			
-			
+
+
 			$bought					= new PlayerStarItem();
 			$bought->item_id		= $item->id;
 			$bought->player_id		= $player->id;
@@ -224,13 +224,13 @@ class VipsController extends Controller {
 					$player->character_speciality_id	= CharacterSpeciality::find_first('character_id=' . $player->character_id . ' AND is_initial=1', ['cache' => true])->id;
 
 					$player->save();
-					
+
 					$player_character_abilities = PlayerCharacterAbility::find("player_id=".$player->id);
 					foreach($player_character_abilities as $player_character_ability){
 						$player_character_ability->destroy();
 					}
 					//Adiciona as Habilidades do jogador
-					$character_abilities = CharacterAbility::find("character_id=".$_POST["character_id"]);	
+					$character_abilities = CharacterAbility::find("character_id=".$_POST["character_id"]);
 					foreach ($character_abilities as $character_ability){
 						$player_character_ability = new PlayerCharacterAbility();
 						$player_character_ability->player_id = $player->id;
@@ -243,14 +243,14 @@ class VipsController extends Controller {
 						$player_character_ability->cooldown = $character_ability->cooldown;
 						$player_character_ability->is_initial = $character_ability->is_initial;
 						$player_character_ability->save();
-						
-					} 
+
+					}
 					$player_character_specialities = PlayerCharacterSpeciality::find("player_id=".$player->id);
 					foreach($player_character_specialities as $player_character_speciality){
 						$player_character_speciality->destroy();
 					}
 					//Adiciona as Especialidades do jogador
-					$character_specialities = CharacterSpeciality::find("character_id=".$_POST["character_id"]);	
+					$character_specialities = CharacterSpeciality::find("character_id=".$_POST["character_id"]);
 					foreach ($character_specialities as $character_speciality){
 						$player_character_speciality = new PlayerCharacterSpeciality();
 						$player_character_speciality->player_id = $player->id;
@@ -263,8 +263,8 @@ class VipsController extends Controller {
 						$player_character_speciality->cooldown = $character_speciality->cooldown;
 						$player_character_speciality->is_initial = $character_speciality->is_initial;
 						$player_character_speciality->save();
-						
-					} 
+
+					}
 
 					break;
 
@@ -273,7 +273,7 @@ class VipsController extends Controller {
 					$player->save();
 
 					break;
-					
+
 				case 431:
 					if(!$player->less_stamina==0){
 						$stamina = percent(50,$player->for_stamina(true));
@@ -300,7 +300,7 @@ class VipsController extends Controller {
 						$player_item  = PlayerItem::find_first("player_id=". $player->id." and item_id=1715");
 						$player_item->quantity	+= 5;
 						$player_item->save();
-						
+
 					}
 				break;
 				case 1718:
@@ -319,23 +319,23 @@ class VipsController extends Controller {
 				break;
 				case 2112:
 					$item_446 = PlayerItem::find_first("player_id =". $player->id. " AND item_id=446");
-					
+
 					if($item_446){
 						$item_446->quantity += 100;
 						$item_446->save();
 					}else{
-						$player_fragment			= new PlayerItem();						
+						$player_fragment			= new PlayerItem();
 						$player_fragment->item_id	= 446;
 						$player_fragment->player_id	= $player->id;
 						$player_fragment->quantity 	= 100;
 						$player_fragment->save();
 					}
-				break;					
+				break;
 			}
 		} else {
 			$this->json->messages	= $errors;
 		}
-		
+
 	}
 
 	function make_donation() {
@@ -343,15 +343,19 @@ class VipsController extends Controller {
 		if ($is_dbl) {
 			$this->assign("is_dbl", $is_dbl);
 		} else {
-			$this->assign("is_dbl", FALSE);	
+			$this->assign("is_dbl", FALSE);
 		}
 
 		$methods	= [
+			// 'mercadopago'	=> 'BRL',
 			'pagseguro'		=> 'BRL',
 			'paypal_eur'	=> 'EUR',
 			'paypal_usd'	=> 'USD',
 			// 'paypal_brl'	=> 'BRL'
 		];
+		if ($_SESSION['universal']) {
+			$methods['mercadopago']	= 'BRL';
+		}
 		$symbols	= [
 			'BRL'			=> 'R$',
 			'EUR'			=> '€',
@@ -365,11 +369,11 @@ class VipsController extends Controller {
 	}
 	function pay_donation(){
 		$user = User::get_instance();
-		
+
 		$this->as_json			= TRUE;
 		$this->json->success	= FALSE;
 		$errors					= [];
-		
+
 		if(!isset($_POST['mode']) || (isset($_POST['mode']) && !is_numeric($_POST['mode']))) {
 			$errors[]	= t('vips.errors.plan_invalid');
 		}else{
@@ -378,15 +382,15 @@ class VipsController extends Controller {
 				$errors[]	= t('vips.errors.plan_invalid');
 			}
 		}
-		
+
 		if (!sizeof($errors)) {
-			//Adiciona o Plano Vip na tabela de aguarde do Usuário
+			// Adiciona o Plano Vip na tabela de aguarde do Usuário
 			$star_purchase = new StarPurchase();
 			$star_purchase->user_id 		= $user->id;
 			$star_purchase->star_plan_id 	= $star_plan->id;
 			$star_purchase->star_method		= $_POST['valor'];
 			$star_purchase->save();
-			
+
 			$this->json->success	= TRUE;
 		} else {
 			$this->json->errors	= $errors;
@@ -398,25 +402,78 @@ class VipsController extends Controller {
 
 		$user 		= User::get_instance();
 		$star_purchase	= StarPurchase::find_first("user_id=".$user->id." AND completed_at is null ORDER BY id DESC");
-		
+
 		if ($star_purchase) {
 			$star_plan	= StarPlan::find_first("id = " . $star_purchase->star_plan_id);
 			$coins		= [
+				// 'mercadopago'	=> 'BRL',
 				'pagseguro'		=> 'BRL',
 				'paypal_eur'	=> 'EUR',
 				'paypal_usd'	=> 'USD',
-				'paypal_brl'	=> 'BRL'
+				// 'paypal_brl'	=> 'BRL'
 			];
+			if ($_SESSION['universal']) {
+				$coins['mercadopago']	= 'BRL';
+			}
 			$price		= 'price_' . strtolower($coins[$star_purchase->star_method]);
 
 			switch ($star_purchase->star_method) {
+				case 'mercadopago':
+					if (MP_SAMDBOX) {
+						MercadoPago\SDK::setAccessToken(MP_SAMDBOX_TOKEN);
+					} else {
+						MercadoPago\SDK::setAccessToken(MP_PROD_TOKEN);
+					}
+
+					// Cria um objeto de preferência
+					$preference	= new MercadoPago\Preference();
+
+					// Cria um item na preferência
+					$item				= new MercadoPago\Item();
+					$item->id			= $star_plan->id;
+					$item->title		= 'AASG - ' . $star_plan->name;
+					$item->description	= $star_plan->description;
+					$item->quantity		= 1;
+					$item->unit_price	= 1;
+					$item->currency_id	= $coins[$star_purchase->star_method];
+
+					// Adiciona os itens na preferência e salva
+					$preference->items					= [ $item ];
+					$preference->back_urls				= [
+						'success'	=> make_url('vips/make_donation?success'),
+						'failure'	=> make_url('vips/make_donation?failure'),
+						'pending'	=> make_url('vips/make_donation?pending')
+					];
+					$preference->statement_descriptor	= 'AASG';
+					$preference->auto_return			= 'approved';
+					$preference->external_reference		= $star_purchase->id;
+					// $preference->notification_url		= make_url('callback/mercadopago?source_news=ipn');
+					$preference->notification_url		= 'https://webhook.site/74a2975e-b749-4136-aecc-e361c6e35112?source_news=ipn';
+					$preference->save();
+
+					$callback_url	= 'init_point';
+					if (MP_SAMDBOX) {
+						$callback_url	= 'sandbox_init_point';
+					}
+
+					// header("Location: " . $preference->$callback_url);
+					echo '<pre>';
+					print_r($preference);
+					echo '</pre>';
+
+					break;
 				case 'pagseguro':
 					\PagSeguro\Library::initialize();
 					\PagSeguro\Library::cmsVersion()->setName(GAME_NAME)->setRelease(GAME_VERSION);
 					\PagSeguro\Library::moduleVersion()->setName(GAME_NAME)->setRelease(GAME_VERSION);
 
 					$payment = new \PagSeguro\Domains\Requests\Payment();
-					$payment->addItems()->withParameters($star_plan->id, $star_plan->name, 1, $star_plan->$price);
+					$payment->addItems()->withParameters(
+						$star_plan->id,
+						'AASG - ' . $star_plan->name,
+						1,
+						$star_plan->$price
+					);
 					$payment->setCurrency($coins[$star_purchase->star_method]);
 					$payment->setReference($star_purchase->id);
 					$payment->setRedirectUrl(make_url('vips/make_donation'));

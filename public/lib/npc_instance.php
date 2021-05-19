@@ -52,30 +52,30 @@ class NpcInstance {
 						$specific_ability_id = null, $specific_speciality_id = null, $specific_pet_id = null,
 						$is_challenge = null, $character_id = null,$character_theme_id = null, $organization_map_object_id = null) {
 
-		if($anime_id_for_generics){
+		if ($anime_id_for_generics) {
 			$animes							= Anime::find('id='. $anime_id_for_generics .' AND active=1', ['cache' => true]);
-		}else{
+		} else {
 			$animes							= Anime::find('active=1', ['cache' => true]);
 		}
 		$anime								= $animes[rand(0, sizeof($animes) - 1)];
 
-		if($character_id){
+		if ($character_id) {
 			$characters						= $anime->characters(' AND id='. $character_id);
 
-		}else{
+		} else {
 			$characters						= $anime->characters(' AND active=1');
 		}
 
 		$character							= $characters[rand(0, sizeof($characters) - 1)];
 
-		if($character_theme_id){
+		if ($character_theme_id) {
 			$themes							= $character->themes(" AND id=".$character_theme_id);
-		}else{
+		} else {
 			$themes							= $character->themes(' AND active=1');
 		}
 		$theme								= $themes[rand(0, sizeof($themes) - 1)];
 
-		$images								=  CharacterThemeImage::find('character_theme_id=' . $theme->id, ['cache' => true]);
+		$images								=  CharacterThemeImage::find('active = 1 and character_theme_id = ' . $theme->id, ['cache' => true]);
 		$image								= $images[rand(0, sizeof($images) - 1)];
 
 		$this->anime						= $anime;

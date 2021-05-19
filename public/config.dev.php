@@ -121,6 +121,10 @@ define('PS_TOKEN_PRODUCTION',   '26247afc-e082-4cf9-8448-eaae9a7349b63013c9b84cf
 define('PS_LOG',				TRUE);
 define('PS_LOG_FILE',			ROOT . '/logs/pagseguro.log');
 
+define('MP_SAMDBOX',			FALSE);
+define('MP_SAMDBOX_TOKEN',		'TEST-8109339744564538-051219-b52093c24cfb57581a381e277f56f841-214407314');
+define('MP_PROD_TOKEN',			'APP_USR-8109339744564538-051219-327a4137a53c0bafe411babf4b0d088a-214407314');
+
 # PayPal settings
 define('PAYPAL_EMAIL',			'medeiros.dev@gmail.com');
 define('PAYPAL_SANDBOX',		TRUE);
