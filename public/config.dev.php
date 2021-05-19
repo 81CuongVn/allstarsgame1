@@ -135,3 +135,6 @@ define('FB_PAGE_USER',			'AllStarsGame');
 define('FB_APP_ID',				'871809436995595');
 define('FB_APP_SECRET',			'7381e66f91500385865ea313ebe4f8c3');
 define('FB_CALLBACK_URL',		'callback/facebook');
+
+# ProxyCheck Token
+define('PROXY_CHECK_KEY',		'j4c1vy-037102-9q9644-32dj0h');

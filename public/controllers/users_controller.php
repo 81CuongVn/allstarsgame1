@@ -368,65 +368,70 @@ class UsersController extends Controller {
 
 		$this->json->uni	= $universal;
 
-		if (!$universal && !($captcha && $captcha_session && $captcha == $captcha_session))
-			$errors[]	= t('users.login.errors.invalid_captcha');
-		if (!sizeof($errors)) {
-			$addSql = '';
-			if (!$universal)
-				$addSql = "AND `password` = PASSWORD('{$password}')";
+		$getIP = getIP();
+		if (isProxy($getIP)) {
+			$errors[]	= t('users.login.errors.cont_use_proxy');
+		} else {
+			if (!$universal && !($captcha && $captcha_session && $captcha == $captcha_session))
+				$errors[]	= t('users.login.errors.invalid_captcha');
+			if (!sizeof($errors)) {
+				$addSql = '';
+				if (!$universal)
+					$addSql = "AND `password` = PASSWORD('{$password}')";
 
-			$user = User::find_first("email = '{$email}' {$addSql}");
-			if (!$user && !$universal) {
-				$user = User::find_first("email = '{$email}'");
-				if (!$user || $user->password != password($password)) {
-					$user = FALSE;
-				} else {
-					$user->password = password($password);
-					$user->save();
-				}
-			}
-			if ($user) {
-				if ($user->banned && !$universal) {
-					$errors[]	= t('users.login.errors.account_banned');
-				}
-				if (!$user->active && !$universal) {
-					$errors[]	= t('users.login.errors.account_not_activated');
-				}
-				if (!$user->beta_allowed && IS_BETA && !$universal) {
-					$errors[]	= t('users.login.errors.beta_not_allowed');
-				}
-				// if ($user->ip_lock || ($user->last_login_ip && $user->last_login_ip != getIP() && !$universal)) {
-				// 	$user->ip_lock		= 1;
-				// 	$user->ip_lock_key	= uniqid(uniqid(), TRUE);
-				// 	$user->save();
-
-				// 	UserMailer::dispatch('ip_lock', [ $user ]);
-
-				// 	$errors[]	= t('users.login.errors.ip_lock');
-				// }
-				if (!sizeof($errors)) {
-					$this->json->success	            = TRUE;
-					$_SESSION['loggedin']	            = TRUE;
-					$_SESSION['user_id']	            = $user->id;
-					$_SESSION['universal']	            = $universal;
-
-					if ($is_beta) {
-						$_SESSION['skip_maintenance']	= TRUE;
-					}
-
-					$user->last_login_ip	            = getIP();
-					$user->last_login_at	            = now(TRUE);
-					$user->session_key		            = session_id();
-					$user->save();
-
-					if (sizeof($user->players())) {
-						$this->json->redirect	= make_url('characters#select');
+				$user = User::find_first("email = '{$email}' {$addSql}");
+				if (!$user && !$universal) {
+					$user = User::find_first("email = '{$email}'");
+					if (!$user || $user->password != password($password)) {
+						$user = FALSE;
 					} else {
-						$this->json->redirect	= make_url('characters#create');
+						$user->password = password($password);
+						$user->save();
 					}
 				}
-			} else {
-				$errors[]	= t('users.login.errors.invalid');
+				if ($user) {
+					if ($user->banned && !$universal) {
+						$errors[]	= t('users.login.errors.account_banned');
+					}
+					if (!$user->active && !$universal) {
+						$errors[]	= t('users.login.errors.account_not_activated');
+					}
+					if (!$user->beta_allowed && IS_BETA && !$universal) {
+						$errors[]	= t('users.login.errors.beta_not_allowed');
+					}
+					// if ($user->ip_lock || ($user->last_login_ip && $user->last_login_ip != getIP() && !$universal)) {
+					// 	$user->ip_lock		= 1;
+					// 	$user->ip_lock_key	= uniqid(uniqid(), TRUE);
+					// 	$user->save();
+
+					// 	UserMailer::dispatch('ip_lock', [ $user ]);
+
+					// 	$errors[]	= t('users.login.errors.ip_lock');
+					// }
+					if (!sizeof($errors)) {
+						$this->json->success	            = TRUE;
+						$_SESSION['loggedin']	            = TRUE;
+						$_SESSION['user_id']	            = $user->id;
+						$_SESSION['universal']	            = $universal;
+
+						if ($is_beta) {
+							$_SESSION['skip_maintenance']	= TRUE;
+						}
+
+						$user->last_login_ip	            = getIP();
+						$user->last_login_at	            = now(TRUE);
+						$user->session_key		            = session_id();
+						$user->save();
+
+						if (sizeof($user->players())) {
+							$this->json->redirect	= make_url('characters#select');
+						} else {
+							$this->json->redirect	= make_url('characters#create');
+						}
+					}
+				} else {
+					$errors[]	= t('users.login.errors.invalid');
+				}
 			}
 		}
 
