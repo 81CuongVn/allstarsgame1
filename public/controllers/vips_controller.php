@@ -430,6 +430,12 @@ class VipsController extends Controller {
 
 					// Cria um objeto de preferência
 					$preference	= new MercadoPago\Preference();
+					// $preference->back_urls				= [
+					// 	'success'	=> make_url('vips/make_donation?success'),
+					// 	'failure'	=> make_url('vips/make_donation?failure'),
+					// 	'pending'	=> make_url('vips/make_donation?pending')
+					// ];
+					// $preference->auto_return			= 'approved';
 
 					// Cria um item na preferência
 					$item				= new MercadoPago\Item();
@@ -442,27 +448,15 @@ class VipsController extends Controller {
 
 					// Adiciona os itens na preferência e salva
 					$preference->items					= [ $item ];
-					$preference->back_urls				= [
-						'success'	=> make_url('vips/make_donation?success'),
-						'failure'	=> make_url('vips/make_donation?failure'),
-						'pending'	=> make_url('vips/make_donation?pending')
-					];
 					$preference->statement_descriptor	= 'AASG';
-					$preference->auto_return			= 'approved';
 					$preference->external_reference		= $star_purchase->id;
-					// $preference->notification_url		= make_url('callback/mercadopago?source_news=ipn');
-					$preference->notification_url		= 'https://webhook.site/74a2975e-b749-4136-aecc-e361c6e35112?source_news=ipn';
+					$preference->notification_url		= make_url('callback/mercadopago?source_news=ipn');
+					// $preference->notification_url		= 'https://webhook.site/74a2975e-b749-4136-aecc-e361c6e35112?source_news=ipn';
 					$preference->save();
 
-					$callback_url	= 'init_point';
-					if (MP_SAMDBOX) {
-						$callback_url	= 'sandbox_init_point';
-					}
+					$callback_url	= !MP_SAMDBOX ? 'init_point' : 'sandbox_init_point';
 
 					header("Location: " . $preference->$callback_url);
-					// echo '<pre>';
-					// print_r($preference);
-					// echo '</pre>';
 
 					break;
 				case 'pagseguro':
