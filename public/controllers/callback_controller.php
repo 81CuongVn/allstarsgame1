@@ -150,38 +150,59 @@ class CallbackController extends Controller {
     }
 
 	public function mercadopago() {
-		if (MP_SAMDBOX) {
-			MercadoPago\SDK::setAccessToken(MP_SAMDBOX_TOKEN);
-		} else {
-			MercadoPago\SDK::setAccessToken(MP_PROD_TOKEN);
-		}
-
-		$merchant_order = NULL;
-
-		switch ($_GET["topic"]) {
-			case "payment":
-				$payment = MercadoPago\Payment::find_by_id($_GET['id']);
-				// Get the payment and the corresponding merchant_order reported by the IPN.
-				$merchant_order = MercadoPago\MerchantOrder::find_by_id($payment->order->id);
-				break;
-			case "merchant_order":
-				$merchant_order = MercadoPago\MerchantOrder::find_by_id($_GET['id']);
-				break;
-		}
-
-		$paid_amount = 0;
-		foreach ($merchant_order->payments as $payment) {
-			if ($payment->status == 'approved') {
-				$paid_amount += $payment->transaction_amount;
+		if (
+			isset($_GET['source_news']) && $_GET['source_news'] == 'ipn' &&
+			isset($_GET['topic']) && isset($_GET['id'])
+		) {
+			if (MP_SAMDBOX) {
+				MercadoPago\SDK::setAccessToken(MP_SAMDBOX_TOKEN);
+			} else {
+				MercadoPago\SDK::setAccessToken(MP_PROD_TOKEN);
 			}
+
+			$merchant_order = NULL;
+
+			switch ($_GET["topic"]) {
+				case "payment":
+					$payment = MercadoPago\Payment::find_by_id($_GET['id']);
+					// Get the payment and the corresponding merchant_order reported by the IPN.
+					$merchant_order = MercadoPago\MerchantOrder::find_by_id($payment->order->id);
+					break;
+				case "merchant_order":
+					$merchant_order = MercadoPago\MerchantOrder::find_by_id($_GET['id']);
+					break;
+			}
+
+			$paid_amount = 0;
+			foreach ($merchant_order->payments as $payment) {
+				if ($payment->status == 'approved') {
+					$paid_amount += $payment->transaction_amount;
+				}
+			}
+
+			// If the payment's transaction amount is equal (or bigger) than the merchant_order's amount you can release your items
+			if ($paid_amount >= $merchant_order->total_amount) {
+				print_r("Totally paid. Release your item.");
+			} else {
+				print_r("Not paid yet. Do not release your item.");
+			}
+
+			echo '<pre>';
+			echo json_encode($payment, JSON_PRETTY_PRINT);
+			echo json_encode($merchant_order, JSON_PRETTY_PRINT);
+			echo '</pre>';
+
+			echo '<pre>';
+			print_r($payment);
+			print_r($merchant_order);
+			echo '</pre>';
+		} else {
+			$this->bad_request();
+			return;
 		}
 
-		// If the payment's transaction amount is equal (or bigger) than the merchant_order's amount you can release your items
-		if ($paid_amount >= $merchant_order->total_amount) {
-			print_r("Totally paid. Release your item.");
-		} else {
-			print_r("Not paid yet. Do not release your item.");
-		}
+		$this->good_request();
+		return;
 
 
 
