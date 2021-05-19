@@ -355,7 +355,9 @@ class VipsController extends Controller {
 		];
 		if ($_SESSION['universal']) {
 			$methods['mercadopago']	= 'BRL';
+			$methods['paypal_brl']	= 'BRL';
 		}
+		ksort($methods);
 		$symbols	= [
 			'BRL'			=> 'R$',
 			'EUR'			=> '€',
@@ -414,6 +416,7 @@ class VipsController extends Controller {
 			];
 			if ($_SESSION['universal']) {
 				$coins['mercadopago']	= 'BRL';
+				$coins['paypal_brl']	= 'BRL';
 			}
 			$price		= 'price_' . strtolower($coins[$star_purchase->star_method]);
 
@@ -447,8 +450,8 @@ class VipsController extends Controller {
 					$preference->statement_descriptor	= 'AASG';
 					$preference->auto_return			= 'approved';
 					$preference->external_reference		= $star_purchase->id;
-					// $preference->notification_url		= make_url('callback/mercadopago?source_news=ipn');
-					$preference->notification_url		= 'https://webhook.site/74a2975e-b749-4136-aecc-e361c6e35112?source_news=ipn';
+					$preference->notification_url		= make_url('callback/mercadopago?source_news=ipn');
+					// $preference->notification_url		= 'https://webhook.site/74a2975e-b749-4136-aecc-e361c6e35112?source_news=ipn';
 					$preference->save();
 
 					$callback_url	= 'init_point';
@@ -456,10 +459,10 @@ class VipsController extends Controller {
 						$callback_url	= 'sandbox_init_point';
 					}
 
-					// header("Location: " . $preference->$callback_url);
-					echo '<pre>';
-					print_r($preference);
-					echo '</pre>';
+					header("Location: " . $preference->$callback_url);
+					// echo '<pre>';
+					// print_r($preference);
+					// echo '</pre>';
 
 					break;
 				case 'pagseguro':

@@ -156,20 +156,50 @@ class CallbackController extends Controller {
 			MercadoPago\SDK::setAccessToken(MP_PROD_TOKEN);
 		}
 
-		$_POST['type']	= 'payment';
-		$_POST['id']	= '14857352551';
+		$merchant_order = NULL;
 
-		switch ($_POST["type"]) {
+		switch ($_GET["topic"]) {
 			case "payment":
-				$payment = MercadoPago\Payment::find_by_id($_POST["id"]);
+				$payment = MercadoPago\Payment::find_by_id($_GET['id']);
+				// Get the payment and the corresponding merchant_order reported by the IPN.
+				$merchant_order = MercadoPago\MerchantOrder::find_by_id($payment->order->id);
+				break;
+			case "merchant_order":
+				$merchant_order = MercadoPago\MerchantOrder::find_by_id($_GET['id']);
 				break;
 		}
-		$merchant_order	= MercadoPago\MerchantOrder::find_by_id($payment->order->id);
 
-		echo '<pre>';
-		echo json_encode($payment, JSON_PRETTY_PRINT);
-		echo json_encode($merchant_order, JSON_PRETTY_PRINT);
-		echo '</pre>';
+		$paid_amount = 0;
+		foreach ($merchant_order->payments as $payment) {
+			if ($payment['status'] == 'approved') {
+				$paid_amount += $payment['transaction_amount'];
+			}
+		}
+
+		// If the payment's transaction amount is equal (or bigger) than the merchant_order's amount you can release your items
+		if ($paid_amount >= $merchant_order->total_amount) {
+			print_r("Totally paid. Release your item.");
+		} else {
+			print_r("Not paid yet. Do not release your item.");
+		}
+
+
+
+
+		// $_POST['type']	= 'payment';
+		// $_POST['id']	= '14857352551';
+
+		// switch ($_POST["type"]) {
+		// 	case "payment":
+		// 		$payment = MercadoPago\Payment::find_by_id($_POST["id"]);
+		// 		break;
+		// }
+		// $merchant_order	= MercadoPago\MerchantOrder::find_by_id($payment->order->id);
+
+		// echo '<pre>';
+		// echo json_encode($payment, JSON_PRETTY_PRINT);
+		// echo json_encode($merchant_order, JSON_PRETTY_PRINT);
+		// echo '</pre>';
 	}
 
     public function pagseguro() {

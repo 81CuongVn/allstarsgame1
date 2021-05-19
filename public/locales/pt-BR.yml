@@ -35,7 +35,7 @@ pt-BR:
     battles_training: Treinamento
     character_guide: Guia de Personagem
     game_guide: Guia do Jogo
-    friend_search: Localizar Amigos 
+    friend_search: Localizar Amigos
     friend_list: Lista de Amigos
     grimoire: Grimório Proibido
     challenges: Arena do Céu
@@ -106,8 +106,9 @@ pt-BR:
         invalid_captcha: Captcha invalido!
         account_not_activated: Sua conta ainda não está ativada, por favor verifique seu e-mail para ativar a sua conta!
         beta_disabled: O acesso beta está desabilitado!
-        beta_not_allowed: Sua conta não foi autorizada a logar no beta ainda!
+        beta_not_allowed: Você ainda não tem permissão para jogar o beta!
         account_banned: Está conta foi banida!
+        cont_use_proxy: Você não pode acessar o jogo utilizando Proxy e/ou VPN!
     beta:
       title: Cadastro para o beta
       submit: Confirmar meu cadastro para o beta
@@ -258,7 +259,7 @@ pt-BR:
     title_chars: Limite de personagens criado
     description_chars: Você atingiu o número máximo de personagens criados, para obter mais personagens você necessita comprar um novo slot na <a href="#{link}">Loja de Estrelas</a> para estender a capacidade de personagens no jogo.
     title: Criando seu personagem
-    description: | 
+    description: |
       Escolha seu personagem favorito e se junte à facção de Herois ou Vilões.<br />Você pode conferir o <a href="#{link}">Guia de Personagens</a> para conhecer tudo o que precisa saber sobre um personagem antes de criá-lo!
     no_headline: Nenhum título
     create:
@@ -551,7 +552,7 @@ pt-BR:
         req_use_low_stat: |
           Usar esse golpe #{have} de #{count} vezes com #{mana} abaixo de 50%
         req_full_defenses: |
-          Usar esse golpe #{have} de #{count} vezes e ainda tomar dano  
+          Usar esse golpe #{have} de #{count} vezes e ainda tomar dano
         req_def_crit: |
           Efetuar #{have} de #{count} defesa(s) críticas(s) com esse golpe
         req_def_counter: |
@@ -785,7 +786,7 @@ pt-BR:
     trocar: Trocar oponente por 1 estrela
     ir_fila: Ir para a fila
     sair_fila: Sair da fila
-    ranked: 
+    ranked:
       title: Liga All-Stars
       description: |
         Este é um dos módulos competitivos do jogo,
@@ -793,9 +794,9 @@ pt-BR:
         Além de ser eternizado na página inicial do jogo.<br /><br />
         Cada <span class="verde">vitória te dá 6 pontos</span>, <span class="verde">empate te dá 3 pontos</span> e <span class="vermelho">derrota você perde 1 ponto</span>.<br />
         Cuidado, caso você zere seus pontos e continue perdendo, ficará com pontuação negativa!<br /><br />
-        
+
         <span class="laranja">A fila irá funcionar juntamenta com a fila PvP todo: <u>Domingo, terça-feira e quinta-feira</u>.</span>
-    waiting: 
+    waiting:
       title: Aguardando oponente
       description: Você está aguardando oponente e isso pode levar alguns minutos e aconselhamos você ficar nessa página, pois, achando oponente você será redirecionado automaticamente para o combate.<br/><br/> Você também pode fechar sua sala quando quiser.<br /><br /><a class="btn btn-danger decline">Fechar Sala</a>
       description2: Você está aguardando oponente e isso pode levar alguns minutos e aconselhamos você ficar nessa página, pois, achando oponente você será redirecionado automaticamente para o combate.<br/><br/> Você também pode sair da fila quando quiser.<br /><br /><a class="btn btn-danger ranked-decline">Sair da Fila</a>
@@ -806,8 +807,8 @@ pt-BR:
         not_name: Você precisa digitar o nome da sala.
         pvp_queue: Ação inválida, você encontra-se em batalha no momento.
         room_not_found: Ação inválida, você não tem mais uma sala para fechar.
-        is_pvp_queued: Você não pode ir na fila no momento, pois, você já está na fila aguardando oponente. 
-    training: 
+        is_pvp_queued: Você não pode ir na fila no momento, pois, você já está na fila aguardando oponente.
+    training:
       title: Batalha de Treinamento
       m1_title: Criando uma Sala de Treinamento
       m1_description: |
@@ -828,9 +829,9 @@ pt-BR:
       queue_exit: Cancelar
       timer: |
         Tempo restante:
-      m1_title: Procurando um oponente 
+      m1_title: Procurando um oponente
       m1_message: |
-        Aqui você poderá colocar seu personagem na fila para um combate pvp. Essa fila poderá demorar alguns minutos, caso demora muito você poderá cancelar a fila à qualquer momento. 
+        Aqui você poderá colocar seu personagem na fila para um combate pvp. Essa fila poderá demorar alguns minutos, caso demora muito você poderá cancelar a fila à qualquer momento.
       fight:
         title: Batalha PVP
     technique_text: Meus golpes
@@ -878,7 +879,7 @@ pt-BR:
       areia: |
         <br />Adicionalmente você conseguiu encontrar uma <span class="azul_claro">Areia Estelar</span>
       fragment: |
-        <br />Adicionalmente você conseguiu encontrar 
+        <br />Adicionalmente você conseguiu encontrar
       fragment2: |
         Fragmentos das Almas</span>
       treasure: |
@@ -1031,8 +1032,8 @@ pt-BR:
     destroy:
       title: Exclusão de sua Organização
       text: Sua organização está sendo deletada, você tem certeza disso?
-      confirm: Sim, eu tenho certeza! 
-    show: 
+      confirm: Sim, eu tenho certeza!
+    show:
       delete: Excluir Organização
       title: Detalhes da organização
       error_title: Problema!
@@ -1200,7 +1201,7 @@ pt-BR:
       help_title3: Entendendo as Missões de Conta
       help_description: Diariamente você receberá uma missão aleatória para ser concluída, mas atenção, o máximo de missões que você pode acumular são apenas quatro, então tente completá-las o mais rápido possível!
       help_description2: Semanalmente sua Organização receberá uma missão aleatória para ser concluída, mas atenção, o máximo de missões que você pode acumular são apenas quatro, então tente completá-las o mais rápido possível!
-      errors: 
+      errors:
         not_ready: Você não tem todos os requerimentos para finalizar essa(s) missão(ões)
         not_mission: Você não tem missões hoje
       finish: Receber Recompensas
@@ -1399,7 +1400,7 @@ pt-BR:
         at_res: Resistência
         at_agi: Agilidade
         at_dex: Destreza
-        at_vit: Vitalidade	
+        at_vit: Vitalidade
       description:
         at_for: Treinando sua força você aumenta o ataque e a sua intimidação
         at_int: |
@@ -1482,7 +1483,7 @@ pt-BR:
       8: Nen
       9: Mana
       10: Mana
-      11: Chi 
+      11: Chi
       12: Energia
       16: Mana
       29: Gás
@@ -1526,7 +1527,7 @@ pt-BR:
     bonus_currency_fight: |
       Aumenta em #{value}% #{currency} a moeda ganha na luta
     bonus_attribute_training_cost: |
-      Reduz o custo de #{mana} em #{value}% no treino de atributo 
+      Reduz o custo de #{mana} em #{value}% no treino de atributo
     bonus_training_earn: |
       Aumenta em #{value}% a quantidade de pontos de habilidade do treino
     bonus_training_exp: |
@@ -1636,7 +1637,7 @@ pt-BR:
     challenges:
       title: Rankings de Arena do Céu
     account:
-      title: Ranking de Contas	
+      title: Ranking de Contas
     battles:
       title: Ranking de Combates
       victory: Vitórias
@@ -1646,7 +1647,7 @@ pt-BR:
     hall:
       title: Hall da Fama
     players:
-      title: Ranking de Personagens 
+      title: Ranking de Personagens
       header:
         andar: Andar
         description: Descrição
@@ -1662,7 +1663,7 @@ pt-BR:
     organizations:
       title: Ranking de Organizações
     rankeds:
-      title: Ranking da Liga All-Stars 
+      title: Ranking da Liga All-Stars
   talents:
     how_to_title: Quando e como aprender seus Talentos
     how_to_text: |
@@ -1681,7 +1682,7 @@ pt-BR:
       at_int: |
         Aumenta a sua inteligência em #{value}
     formula:
-      for_prec: | 
+      for_prec: |
         Aumenta a sua precisão em #{value}
       for_inti: |
         Aumenta a sua intimidação em #{value}
@@ -1811,9 +1812,9 @@ pt-BR:
       queue_exit: Cancelar
       timer: |
         Tempo restante:
-      m1_title: Procurando um oponente 
+      m1_title: Procurando um oponente
       m1_message: |
-        Aqui você poderá colocar seu personagem na fila para um combate pvp. Essa fila poderá demorar alguns minutos, caso demora muito você poderá cancelar a fila à qualquer momento.<br /><br /> <span class="laranja">( Os combates serão criados entre oponentes com range de 1 nível do seu.)</span> <br /><br /> <a id="battle-pvp-enter-queue" href="javascript:;" class="btn btn-primary btn-lg">Ir para fila</a> 
+        Aqui você poderá colocar seu personagem na fila para um combate pvp. Essa fila poderá demorar alguns minutos, caso demora muito você poderá cancelar a fila à qualquer momento.<br /><br /> <span class="laranja">( Os combates serão criados entre oponentes com range de 1 nível do seu.)</span> <br /><br /> <a id="battle-pvp-enter-queue" href="javascript:;" class="btn btn-primary btn-lg">Ir para fila</a>
       fight:
         title: Batalha PVP
     technique_text: Meus golpes
@@ -1962,9 +1963,9 @@ pt-BR:
         not_enough_stamina: Você não tem stamina suficiente para entrar em batalha
   difficulties:
     normal: Normal
-    easy: | 
+    easy: |
       <span style="color: #1eda15">Fácil</span>
-    hard: | 
+    hard: |
       <span style="color: #ee8c00">Difícil</span>
     very_hard: |
       <span style="color: #fc1a1a">Extremo</span>
@@ -1979,7 +1980,7 @@ pt-BR:
       <br /><br />A Arena do Céu é uma torre infinita, onde a cada andar a batalha fica mais difícil, e a cada 5 andares você enfrentará um poderoso Chefe.
       <br /><br />Você paga para entrar, e se perder, está fora. Se quiser tentar novamente, terá que pagar mais uma vez.
       <br /><br />Você está preparado?
-    success: Arena do Céu destravada com sucesso. A página irá recarregar e a Arena do Céu ficará ativa para ver os detalhes e fazer as lutas 	
+    success: Arena do Céu destravada com sucesso. A página irá recarregar e a Arena do Céu ficará ativa para ver os detalhes e fazer as lutas
   fragments:
     change: Transforme agora!
     title: Entendendo os Fragmentos das Almas
@@ -1989,7 +1990,7 @@ pt-BR:
       A Jóia de Quatro Almas é um objeto mágico extremamente poderoso que ao ser criada com a junção de diversos fragmentos, me permitem criar um equipamento aleatório para você. <br /><br />Batalhe contra NPCs e contra Jogadores para juntá-los e traga-os para mim quando tiver a quantidade necessária.
   grimoire:
     title: Grimório Proibido
-    description: Nas profundezas da biblioteca mágica existe um livro que foi banido do mundo, por conter os ensinamentos de magias proibidas no mundo atual.<br />Suas páginas foram rasgadas, então mesmo se alguém encontrar o livro, não adiantará de nada se não conseguir as páginas. Batalhando contra NPCs ou Jogadores, vocês tem uma chance pequena de achar uma dessas páginas de um golpe específico.<br />Ao encontrar todas as páginas do mesmo golpe, você consegue desbloqueá-lo e usá-lo em combate! 
+    description: Nas profundezas da biblioteca mágica existe um livro que foi banido do mundo, por conter os ensinamentos de magias proibidas no mundo atual.<br />Suas páginas foram rasgadas, então mesmo se alguém encontrar o livro, não adiantará de nada se não conseguir as páginas. Batalhando contra NPCs ou Jogadores, vocês tem uma chance pequena de achar uma dessas páginas de um golpe específico.<br />Ao encontrar todas as páginas do mesmo golpe, você consegue desbloqueá-lo e usá-lo em combate!
     desbloquear: Desbloquear
     desbloqueado: Desbloqueado
     status: Status
@@ -2005,10 +2006,10 @@ pt-BR:
     f5: amigo com um
     f6: Equipamento Aleatório
     f7: Presenteie por 1 Estrela
-    f8: 2 Estrelas 
+    f8: 2 Estrelas
     f9: Tema Aleatório
     f10: Presenteie por 2 Estrelas
-    f11: Presenteie por 3 Estrelas    
+    f11: Presenteie por 3 Estrelas
     f12: Mascote Aleatório
     f13: Ver Status
     f14: Remover
@@ -2028,7 +2029,7 @@ pt-BR:
     f23: Presentear com Estrelas
     f24: Presentear com Temas
     f25: Presentear com Mascotes
-    f26: Limite Diário			
+    f26: Limite Diário
     kick_reason: Motivo da Exclusão
     kick: Excluir
     kick_title: Amizade desfeita!
@@ -2068,7 +2069,7 @@ pt-BR:
   level:
     player: |
       Essa experiência é única deste personagem,<br /> e toda recompensa de experiência que <br />você ganhar, virá para cá.<br /><br />Ao evoluir um personagem, sua Stamina<br /> aumenta, você libera mais missões,<br /> pode se graduar e tem chance <br />de ganhar equipamentos melhores.
-    user:  |    
+    user:  |
       Essa experiência é compartilhada entre todos os personagens da sua conta, e uma parte das recompensas de missões e batalhas virá para cá.<br /><br />Ao evoluir sua conta, você libera novos Talentos, ganha um ponto de Treinamento de Atributo e ganha novas opções na Lista de Amigos.
   alerts:
     talents: Você tem pontos de talento disponíveis, <a href='#{link}'>clique aqui</a> para aprendê-los.
@@ -2078,7 +2079,7 @@ pt-BR:
     reward_league: Recompensa da Liga
     points: pontos ou mais
     points2: pontos ou menos
-    points3: pontos 
+    points3: pontos
     exp: Experiência
     exp_account: Experiência para a Conta
     down: Desce de Rank com
@@ -2118,7 +2119,7 @@ pt-BR:
   map:
     store:
       title: Loja da Exploração
-      description: Aqui você poderá adquirir itens especiais com drops exclusivos dos Mapas de Exploração. 
+      description: Aqui você poderá adquirir itens especiais com drops exclusivos dos Mapas de Exploração.
     nenhum_npc: Nenhum NPC Encontrado
     nenhum: Nenhum
     passos: Passos Restantes
@@ -2154,7 +2155,7 @@ pt-BR:
     e4: Experiência Bônus
     e5: 10% a mais de experiência em batalhas!
     e6: Moedas Bônus
-    e7: 10% a mais de moedas em batalhas! 
+    e7: 10% a mais de moedas em batalhas!
     e8: Chance de Drop Bônus
     e9: 10% a mais de chance de dropar itens em batalhas!
     e10: PONTUAÇÃO TOTAL DOS ANIMES
@@ -2162,7 +2163,7 @@ pt-BR:
     e12: 1 Equipamento Comum Aleatório
     e13: 5 Tigela de Arroz
     e14: 1 Mascote Comum Aleatório
-    e15: 500 de Experiência  
+    e15: 500 de Experiência
     title: Batalha de Animes
     description: |
       Dois animes serão sorteados a cada três horas para a luta, se ao término das três horas, nenhum anime estiver zerado, será declarado vencedor o que tiver mais pontos. O anime zerado perde a batalha instantaneamente, porém, uma nova batalha só terá início após as três horas.<br /><br /><span class="verde">Batalhas ocorrerão das 09:00h às 00:00. Durante a madrugada não haverá combates.</span><br /><br />
@@ -2233,17 +2234,17 @@ pt-BR:
       2: 200 de Experiência
       3: x2 Tigela de Arroz
       4: x1 Joia Aleatória
-      5: 200 de 
+      5: 200 de
       6: 400 de Experiência
       7: x2 Ramen Comum
       8: x1 Mascote Aleatório
       9: x1 Equipamento Raro
-      10: 400 de 
+      10: 400 de
       11: 800 de Experiência
       12: x2 Takoyaki
       13: x1 Joia Aleatória
       14: x1 Gema Rara
-      15: 800 de 
+      15: 800 de
       16: 1.600 de Experiência
       17: x2 Nigiri
       18: x1 Mascote Aleatório
@@ -2252,7 +2253,7 @@ pt-BR:
       21: 3.200 de Experiência
       22: x2 Bento
       23: x1 Joia Aleatória
-      24: x1 Sangue de Deus 
+      24: x1 Sangue de Deus
       25: 3.200 de
       26: 6.400 de Experiência
       27: x2 Churrasco
@@ -2283,10 +2284,10 @@ pt-BR:
     frase2: Joia(s) de Encantamento(s)
     criar: Criar Joia
     frase3: Você ainda não tem Pontos de Treino suficientes para criar<br />Joias de Encantamentos
-    criou: | 
+    criou: |
       Você criou:
     escolha: Escolha um Golpe clicando aqui!
-    tooltip: Clicando no ? você terá a lista completa de golpes 
+    tooltip: Clicando no ? você terá a lista completa de golpes
     encantar: Encantar
     encantado: Encantado
     message: Você realmente gostaria de remover essa Joia? Seu golpe deixará de ser encantado!
@@ -2353,7 +2354,7 @@ pt-BR:
     done_donation:
       you_have: Você está preste há fazer uma Doação de
       you_have2: tem certeza disso?
-      donation_by: Doação de 
+      donation_by: Doação de
       title2: Você não tem pagamentos pendentes
       description2: No momento você não tem pagamentos pendentes, você precisa selecionar um plano na página de Doações Vips, <a href="http://animeallstarsgame.com.br/index.php/vips/make_donation">clicando aqui</a>.
       title: Aguarde o redirecionamento
@@ -2418,7 +2419,7 @@ pt-BR:
       Olá <b>#{player}</b>, seja bem vindo(a)!
       Lhe desejamos muita sorte neste mundo cheio de aventuras e batalhas, onde você irá vivenciar seu anime favorito.
       Caso tenha dúvidas, sugestões ou precise de ajuda, não deixe de falar com nossa equipe, abra um ticket em <a href="#{link}"><b>Principal &raquo; Suporte</b></a>.
-      
+
       Atenciosamente,
       Equipe <b>#{game}</b>!
   watch:
