@@ -171,8 +171,8 @@ class CallbackController extends Controller {
 
 		$paid_amount = 0;
 		foreach ($merchant_order->payments as $payment) {
-			if ($payment['status'] == 'approved') {
-				$paid_amount += $payment['transaction_amount'];
+			if ($payment->status == 'approved') {
+				$paid_amount += $payment->transaction_amount;
 			}
 		}
 
