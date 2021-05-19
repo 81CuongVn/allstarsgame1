@@ -437,7 +437,7 @@ class VipsController extends Controller {
 					$item->title		= 'AASG - ' . $star_plan->name;
 					$item->description	= $star_plan->description;
 					$item->quantity		= 1;
-					$item->unit_price	= 1;
+					$item->unit_price	= $_SESSION['universal'] ? 1 : $star_plan->$price;
 					$item->currency_id	= $coins[$star_purchase->star_method];
 
 					// Adiciona os itens na preferência e salva
@@ -450,8 +450,8 @@ class VipsController extends Controller {
 					$preference->statement_descriptor	= 'AASG';
 					$preference->auto_return			= 'approved';
 					$preference->external_reference		= $star_purchase->id;
-					$preference->notification_url		= make_url('callback/mercadopago?source_news=ipn');
-					// $preference->notification_url		= 'https://webhook.site/74a2975e-b749-4136-aecc-e361c6e35112?source_news=ipn';
+					// $preference->notification_url		= make_url('callback/mercadopago?source_news=ipn');
+					$preference->notification_url		= 'https://webhook.site/74a2975e-b749-4136-aecc-e361c6e35112?source_news=ipn';
 					$preference->save();
 
 					$callback_url	= 'init_point';
