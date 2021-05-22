@@ -1,15 +1,43 @@
 <?php echo partial('shared/title', array('title' => 'vips.purchase.title', 'place' => 'vips.purchase.title')) ?>
 <?php
-	if($is_dbl){
-		$timestamp = strtotime($is_dbl->data_end);
-		echo partial('shared/info', [
+if (!$is_dbl) {
+	// $timestamp	= strtotime($is_dbl->data_end);
+	$timestamp	= time();
+	echo partial('shared/info', [
 		'id'		=> 4,
 		'title'		=> 'vips.make_donation.title',
-		'message'	=> t('vips.make_donation.description') . '<span class="laranja">'. date('d/m/Y H:i:s', $timestamp) .'<span>'
-		]);
-	}
+		'message'	=> t('vips.make_donation.description') . ' <span class="laranja">'. date('d/m/Y H:i:s', $timestamp) .'<span>'
+	]);
+}
 ?>
-<br />
+<div class="titulo-home3">
+	<p>Sistema de Estrelas</p>
+</div>
+<div class="conteudo-news" style="padding: 5px 10px;">
+	<p style="text-align: justify;">
+		O <?=GAME_NAME;?> é um jogo gratuito e sem fins lucrativos,
+		e por isso a contribuição de seus jogadores é fundamental para que,
+		cada dia mais, o jogo se desenvolva e melhore suas funcionalidades.
+		Qualquer tipo de arrecadação ou doações feitas ao <?=GAME_NAME;?> serão revertidas em manutenção e melhorias ao site,
+		bem como divulgação deste e dos animes. E contribuindo com sua doação ao jogo,
+		além de nos ajudar a cada dia melhorar o <?=GAME_NAME;?>, você jogador, passa a ser um Jogador Estrela, com acesso à vantagens exclusivas.<br /><br />
+
+		O sistema de Estrelas permite usufluir do valor doado de forma inteligente, e o valor doado é convertido para você em estrelas, conforme descrito abaixo:
+	</p><br />
+	<p>
+		Ao fazer uma doação tenha a certeza que:<br />
+		- Suas estrelas não expiram por falta de uso.<br />
+		- Todos os personagens de sua conta podem usufluir das estrelas.<br />
+		- Estar colaborando com a manuntenção e evolução do jogo.<br /><br />
+
+		Com a opção Mercado Pago, você poderá doar com todos os Cartões de Crédito, Transferências Bancárias e Boletos Bancários e PIX.
+	</p><br />
+	<p class="verde">
+		Todos as estrelas adquiridas só serão liberados após Confirmação da Doação,
+		no caso de depósitos e cartões de créditos o limite é de 24 a 48 horas,
+		no caso de boletos somente após a Confirmação da Doação que pode levar até 4 dias.
+	</p>
+</div><br />
 <ul class="nav nav-pills nav-justified" id="methods-details-tabs">
 	<?php $i = 1; foreach($methods as $method => $currency) { ?>
 	<li class="<?php echo $i == 1 ? 'active' : ''; ?>">
@@ -46,4 +74,4 @@
 		<?php endforeach?>
 	</div>
 	<?php $i++; } ?>
-</div>	
+</div>

@@ -241,7 +241,7 @@ trait BattleSharedMethods {
 			if ($battle->battle_type_id == 7 || $battle->battle_type_id == 8) {
 				$link		= make_url('organizations#dungeon');
 				$link_text	= 'Voltar para Dungeon';
-			} else if ($battle->battle_type_id == 3) {
+			} else if ($battle->battle_type_id == 3 && isset($p->challenge_id)) {
 				$link = make_url('challenges#show/' . $p->challenge_id);
 				$link_text	= 'Voltar para Arena do Céu';
 			} elseif ($battle->battle_type_id == 6) {
@@ -250,7 +250,7 @@ trait BattleSharedMethods {
 			} elseif ($battle->battle_type_id == 8) {
 				$link = make_url('boss');
 				$link_text	= 'Voltar para Exploração';
-			} elseif ($battle->battle_type_id == 9) {
+			} elseif ($battle->battle_type_id == 9 && isset($_SESSION['history_mode'])) {
 				$link = make_url('history_mode#show/' . $_SESSION['history_mode']);
 				$link_text	= 'Voltar para Modo Aventura';
 				unset($_SESSION['history_mode']);
