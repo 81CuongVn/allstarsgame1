@@ -180,7 +180,7 @@ echo partial('shared/info', [
 								<li>
 									<b class="verde"><?php echo t('quests.pet.happiness')?></b><br />
 									<?php if($image_item){?>
-										<?php if($player_item->happiness >= $npc->happiness){?>
+										<?php if($player_item && $player_item->happiness >= $npc->happiness){?>
 											<span style='text-decoration: line-through;' class='verde'><?php echo $npc->happiness ?></span>
 										<?php }else{?>
 											<span class='laranja'><?php echo $npc->happiness ?></span>
