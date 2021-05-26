@@ -918,7 +918,7 @@ trait BattleSharedMethods {
 						}
 						// Missões Diarias
 						$player_quests_daily   = $p->daily_quests();
-						if($player_quests_daily/* && $is_pvp*/){
+						if($player_quests_daily && $is_pvp){
 							foreach ($player_quests_daily as $player_quest_daily):
 								switch($player_quest_daily->type){
 									case "battle":
