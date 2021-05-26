@@ -4,7 +4,10 @@ require '_config.php';
 $maxQuests  = 4;
 $players    = Recordset::query('SELECT * FROM players WHERE banned = 0 AND removed = 0');
 foreach ($players->result_array() as $player) {
-    $totalQuests = sizeof(PlayerDailyQuest::find('complete = 0 and player_id = ' . $player['id']));
+	$anime		= false;
+	$character	= false;
+
+	$totalQuests = sizeof(PlayerDailyQuest::find('complete = 0 and player_id = ' . $player['id']));
     $diff               = $maxQuests - $totalQuests;
     if ($diff > 0) {
         $quests		= DailyQuest::find("of = 'player'", [
