@@ -6026,9 +6026,9 @@ class Player extends Relation {
 
 	function battle_exp($win = false) {
 		if($win) {
-			$exp	= (200 + ($this->level * 5) + $this->level) * 2;
+			$exp	= (200 + ($this->level * 5) + $this->level);
 		} else {
-			$exp	= (150 + ($this->level * 5) + $this->level) * 2;
+			$exp	= (150 + ($this->level * 5) + $this->level);
 		}
 
 		return floor($exp * EXP_RATE);
@@ -6036,9 +6036,9 @@ class Player extends Relation {
 
 	function battle_currency($win = false) {
 		if ($win) {
-			$currency	= (20 + ($this->level * 6) + 1) * 2;
+			$currency	= (20 + ($this->level * 6) + 1);
 		} else {
-			$currency	= (10 + ($this->level * 6) + 1) * 2;
+			$currency	= (10 + ($this->level * 6) + 1);
 		}
 
 		return floor($currency * MONEY_RATE);
