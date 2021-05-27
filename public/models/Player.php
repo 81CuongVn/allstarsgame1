@@ -1102,27 +1102,15 @@ class Player extends Relation {
 	}
 
 	function max_attribute_training() {
-		// $total	= (4000 + (($this->graduation()->sorting <= 2 ? 0 : $this->graduation()->sorting - 2) * 1000));
-		// $total	+= $total * $this->training_day_multipliers[date('N')];
-
-		$date_start	=  strtotime(date('Y-m-d', strtotime(ROUND_START)));
-		$date_now	=  strtotime(date('Y-m-d'));
-
-		$diff	= (($date_now - $date_start) / 86400);
-		$total	= 4000 + (4000 * $diff);
+		$total	= (4000 + (($this->graduation()->sorting <= 2 ? 0 : $this->graduation()->sorting - 2) * 1000));
+		$total	+= $total * $this->training_day_multipliers[date('N')];
 
 		return $total;
 	}
 
 	function max_technique_training() {
-		// $total	= (3000 + (($this->graduation()->sorting <= 2 ? 0 : $this->graduation()->sorting - 2) * 1000));
-		// $total	+= $total * $this->training_day_multipliers[date('N')];
-
-		$date_start	=  strtotime(date('Y-m-d', strtotime(ROUND_START)));
-		$date_now	=  strtotime(date('Y-m-d'));
-
-		$diff	= (($date_now - $date_start) / 86400) + 1;
-		$total	= 3000 + (3000 * $diff);
+		$total	= (3000 + (($this->graduation()->sorting <= 2 ? 0 : $this->graduation()->sorting - 2) * 1000));
+		$total	+= $total * $this->training_day_multipliers[date('N')];
 
 		return $total;
 	}
@@ -1133,14 +1121,19 @@ class Player extends Relation {
 
 	function available_training_points() {
 		$user	=	User::get_instance();
-		$total	=	$user->level * 2; // + $this->training_total_to_point();
+
+		$total	=	($user->level * 2);
+		$total	+=	floor($this->level / 5);
+		$total	+=	$this->training_total_to_point();
 		$total	-=	$this->training_points_spent;
+
+		// $total	= (($user->level * 2) + floor($this->level / 5) + $this->training_total_to_point())  - $this->training_points_spent;
 
 		return $total;
 	}
 
 	function training_to_next_point($current = false) {
-		if(!$current) {
+		if (!$current) {
 			return ($this->training_total_to_point() + 1) * $this->training_base;
 		} else {
 			return $this->training_total - $this->training_total_to_point(true);
@@ -1152,19 +1145,19 @@ class Player extends Relation {
 		$amount			= 0;
 		$amount_next	= 0;
 
-		if($this->training_total < $this->training_base) {
-			if($return_amount) {
+		if ($this->training_total < $this->training_base) {
+			if ($return_amount) {
 				return 0;
 			} else {
 				return 0;
 			}
 		}
 
-		while(true) {
+		while (true) {
 			$points			= $counter * $this->training_base;
 			$amount			+= $points;
 
-			if($this->training_total < $amount) {
+			if ($this->training_total < $amount) {
 				$amount_next	= $amount - $points;
 				break;
 			}
