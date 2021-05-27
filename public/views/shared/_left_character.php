@@ -139,7 +139,7 @@
 				<b class=""><?=MONEY_RATE;?>x</b>
 			</div>
 		</div>
-		<div class="bg_menu_esquerdo">
+		<?php /*<div class="bg_menu_esquerdo">
 			<?php
 			$timeout	= now() - (15 * 60);
 			$online		= Recordset::query("SELECT `id` FROM `players` WHERE `last_activity` > {$timeout}", FALSE)->num_rows;
@@ -160,8 +160,8 @@
 				<b class="amarelo">PvP em Andamento</b>
 				<b class=""><?=highamount($battles_pvp);?></b>
 			</div>
-		</div>
-		<?php if (!$_SESSION['universal']) { ?>
+		</div>*/ ?>
+		<?php // if (!$_SESSION['universal']) { ?>
 		<div class="bg_menu_esquerdo">
 			<div class="menu_esquerdo_divisao" style="width: 100%">
 				<b class="amarelo">Round 1</b>
@@ -173,7 +173,7 @@
 				</b>
 			</div>
 		</div>
-		<?php } ?>
+		<?php // } ?>
 		<div class="clearfix"></div>
 	</div>
 <?php } else { ?>
