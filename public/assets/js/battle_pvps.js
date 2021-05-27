@@ -191,7 +191,7 @@
 
                         timer_iv = setInterval(function () {
                             $('.progress-bar', queue_alert).css({
-                                width: (timer-- * 100 / 30) + '%'
+                                width: (timer-- * 100 / 15) + '%'
                             });
 
                             if (timer <= 0) {

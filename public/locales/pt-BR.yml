@@ -828,7 +828,7 @@ pt-BR:
       no_talent: Os Talentos foram desabilitados por uma vantagem vip
       no_talent2: Os Talentos foram desabilitados porque a diferença de nível de conta é maior que 10.
       title: Batalha PVP
-      queue_found: Um oponente foi encontrado! Deseja aceitar a batalha?
+      queue_found: Um oponente foi encontrado, prepare-se!
       queue_accept: Aceitar batalha
       queue_exit: Cancelar
       timer: |
