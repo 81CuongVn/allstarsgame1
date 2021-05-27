@@ -231,7 +231,7 @@ trait BattleSharedMethods {
 		$this->json->enemy->status		= $status;
 		$this->json->effects_roundup	= new stdClass();
 
-
+		// Batalha acabou!
 		if ($battle->finished_at) {
 			$player_battle_stats	= PlayerBattleStat::find_first("player_id=".$p->id);
 			if ($battle->battle_type_id == 5) {
@@ -241,14 +241,11 @@ trait BattleSharedMethods {
 			if ($battle->battle_type_id == 7 || $battle->battle_type_id == 8) {
 				$link		= make_url('organizations#dungeon');
 				$link_text	= 'Voltar para Dungeon';
-			} else if ($battle->battle_type_id == 3 && isset($p->challenge_id)) {
+			} else if ($battle->battle_type_id == 3 && $p->challenge_id) {
 				$link = make_url('challenges#show/' . $p->challenge_id);
 				$link_text	= 'Voltar para Arena do Céu';
 			} elseif ($battle->battle_type_id == 6) {
 				$link = make_url('maps#preview');
-				$link_text	= 'Voltar para Exploração';
-			} elseif ($battle->battle_type_id == 8) {
-				$link = make_url('boss');
 				$link_text	= 'Voltar para Exploração';
 			} elseif ($battle->battle_type_id == 9 && isset($_SESSION['history_mode'])) {
 				$link = make_url('history_mode#show/' . $_SESSION['history_mode']);
@@ -261,72 +258,137 @@ trait BattleSharedMethods {
 
 			$this->json->redirect	= $link;
 
-			//Variaveis dos drops
+			// Variaveis dos drops
 			$drop_message	= '<br />';
 			$drop_message_e	= '<br />';
 
-			// Carrega o Último ganhador
-			$bonus_active = false;
-			$last_winner = EventAnime::find_first("completed=1 ORDER BY id desc LIMIT 1");
-			if($last_winner){
-				if($last_winner->anime_win_id == $p->character()->anime_id){
+			// Carrega o último ganhador da batalha de animes
+			$bonus_active	= false;
+			$last_winner	= EventAnime::find_first("completed=1 ORDER BY id desc LIMIT 1");
+			if ($last_winner) {
+				if ($last_winner->anime_win_id == $p->character()->anime_id) {
 					$bonus_active = true;
 				}
 			}
 
-			// Carrega o Último ganhador
-			// Carrega o Evento Diário
+			// Carrega a batalha de anime atual
 			$event_anime = EventAnime::find_first("completed=0");
-			// Carrega o Evento Diário
-			// Remove o NPC do Mapa do jogador
-			if (!$is_pvp) {
-				$player_stats = PlayerStat::find_first("player_id=".$p->id);
-				$player_stats->npc = 0;
-				$player_stats->npc_anime_id = 0;
-				$player_stats->npc_character_id = 0;
-				$player_stats->npc_challenge_character_id = 0;
-				$player_stats->npc_challenge_character_theme_id = 0;
-				$player_stats->npc_challenge_anime_id = 0;
-				$player_stats->npc = 0;
-				$player_stats->save();
-			}
-			// Remove o NPC do Mapa do jogador
 
-			# Adiciona Felicidade em seu Mascote
+			// Carrega o contador de batalhas
+			$counters	= $p->battle_counters();
+
+			if ($is_pvp) {
+				// Carrega o stats de batalha entre os dois jogadores
+				$stats	= PlayerBattlePvpLog::find_first('player_id=' . $p->id . ' AND enemy_id=' . $e->id);
+
+				// Incrementa o total de batalhas PVP
+				$counters->total_pvp_made++;
+
+				// Define a quantidade de pontos a ser transferido da batalha de animes
+				$eventAnimePts	= 10;
+
+				// Não executa se for uma batalha de treino
+				if ($battle->battle_type_id != 4) {
+					// Remove um contador da vantagem de sem talentos
+					if ($p->has_item(1715) && $p->no_talent == 1) {
+						$item1715 = PlayerItem::find_first("player_id = {$p->id} AND item_id = 1715");
+						if ($item1715->quantity <= 1) {
+							$item1715->quantity = 0;
+							$p->no_talent = 0;
+						} else {
+							$item1715->quantity--;
+						}
+						$item1715->save();
+					}
+				}
+			} else {
+				// Limpa as informações do NPC atual
+				$player_stats = PlayerStat::find_first("player_id = " . $p->id);
+				$player_stats->npc								= 0;
+				$player_stats->npc_anime_id						= 0;
+				$player_stats->npc_character_id					= 0;
+				$player_stats->npc_challenge_character_id		= 0;
+				$player_stats->npc_challenge_character_theme_id	= 0;
+				$player_stats->npc_challenge_anime_id			= 0;
+				$player_stats->npc								= 0;
+				$player_stats->save();
+
+				// Incrementa o total de batalhas NPC
+				$counters->total_npc_made++;
+
+				// Define a quantidade de pontos a ser transferido da batalha de animes
+				$eventAnimePts	= 1;
+			}
+
+			// Salva as informações do contador de batalha do jogador
+			$counters->save();
+
+			// Faz a transição de pontos para a batalha de animes
+				// Carrega a batalha de anime atual
+				$event_anime = EventAnime::find_first("completed=0");
+				if ($event_anime) {
+					if ($event_anime->anime_a_id == $p->character()->anime_id) {
+						if ($event_anime->points_a + $eventAnimePts > 2000) {
+							$event_anime->points_a = 2000;
+						} else {
+							$event_anime->points_a += $eventAnimePts;
+						}
+
+						if ($event_anime->points_b - $eventAnimePts < 0) {
+							$event_anime->points_b = 0;
+
+							// Marca que o anime A ganhou
+							$event_anime->anime_win_id = $p->character()->anime_id;
+							$event_anime->finished_at = now(true);
+						} else {
+							$event_anime->points_b -= $eventAnimePts;
+						}
+
+						$event_anime->save();
+					} elseif ($event_anime->anime_b_id == $p->character()->anime_id) {
+						if ($event_anime->points_a - $eventAnimePts < 0) {
+							$event_anime->points_a = 0;
+
+							// Marca que o anime B ganhou
+							$event_anime->anime_win_id = $p->character()->anime_id;
+							$event_anime->finished_at = now(true);
+						} else {
+							$event_anime->points_a -= $eventAnimePts;
+						}
+
+						if ($event_anime->points_b + $eventAnimePts > 2000) {
+							$event_anime->points_b = 2000;
+						} else {
+							$event_anime->points_b += $eventAnimePts;
+						}
+
+						$event_anime->save();
+					}
+				}
+			// Faz a transição de pontos para a batalha de animes
+
+			// Adiciona Felicidade em seu Mascote
 			$activePet = $p->get_active_pet();
 			if ($activePet) {
-				if ($activePet->happiness < 100){
-					if (($activePet->happiness + 2) >= 100){
+				// Adiciona 2 pontos de felicidade ao mascote equipado
+				if ($activePet->happiness < 100) {
+					if (($activePet->happiness + 2) >= 100) {
 						$activePet->happiness = 100;
 					} else {
 						$activePet->happiness += 2;
 					}
 				}
-				# Adiciona exp para o mascote porque esta ativo em luta.
+
+				// Adiciona exp para o mascote porque esta ativo em luta.
 				$petAddExp = percent(20, $e->battle_exp() * EXP_RATE);
 				$activePet->exp += $petAddExp > 0 ? $petAddExp : 0;
 				$activePet->save();
 
-				# Evoluir o Pet
-				$p->check_pet_level($activePet, TRUE);
+				// Verifica de o mascote pode evoluir
+				$p->check_pet_level($activePet, true);
 
-				# Conquista para verificar a quantidade de pet / hapiness
+				// Conquista para verificar a quantidade de pet / hapiness
 				$p->achievement_check("pets");
-
-				# Objetivo de Round
-				$p->check_objectives("pets");
-			}
-
-			$counters			= $p->battle_counters();
-			if ($is_pvp) {
-				$stats			= PlayerBattlePvpLog::find_first('player_id=' . $p->id . ' AND enemy_id=' . $e->id);
-
-				$counters->total_pvp_made++;
-				$counters->save();
-			}else{
-				//$counters->current_npc_made++;
-				$counters->total_npc_made++;
-				$counters->save();
 			}
 
 			$p->battle_npc_id	= 0;
@@ -343,8 +405,6 @@ trait BattleSharedMethods {
 			SharedStore::S('battle_used_ability_' . $p->id, false);
 			SharedStore::S('battle_used_speciality_' . $p->id, false);
 
-			// Premiação para todos independente do resultado da batalha
-
 			// Variaveis para as missões de conta
 			$fragment_drop  = false;
 			$blood_drop 	= false;
@@ -354,35 +414,32 @@ trait BattleSharedMethods {
 			$pet_drop 		= false;
 			$wanted_dead 	= false;
 			$treasure_still	= false;
-			// Variaveis para as missões de conta
 
-			$drop_event		= 0;
-			$drop_areia     = 0;
-			$drop_sangue    = 0;
-
-			//Chances diferentes para PVP e NPC
-			if ($is_pvp) {
-				$drop_chance_page		 = $_SESSION['universal'] ? 100 : (10 * 1.5);
-				$drop_chance_fragment	 = $_SESSION['universal'] ? 100 : (15 * 1.5);
-				$drop_chance_equipment	 = $_SESSION['universal'] ? 100 : (10 + ($bonus_active ? 10 : 0) * 1.5);
-				$drop_chance_pet 	 	 = $_SESSION['universal'] ? 100 : (10 + ($bonus_active ? 10 : 0) * 1.5);
-				$drop_areia 			 = $_SESSION['universal'] ? 100 : (5 * 1.5);
-				$drop_sangue			 = $_SESSION['universal'] ? 100 : (1 * 1.5);
-				$drop_event		 		 = $_SESSION['universal'] ? 100 : (1 * 1.5);
-			} else {
-				$drop_chance_page		 = $_SESSION['universal'] ? 100 : (5 * 1.5);
-				$drop_chance_fragment	 = $_SESSION['universal'] ? 100 : (10 * 1.5);
-				$drop_chance_equipment	 = $_SESSION['universal'] ? 100 : (7 + ($bonus_active ? 10 : 0) * 1.5);
-				$drop_chance_pet 	 	 = $_SESSION['universal'] ? 100 : (7 + ($bonus_active ? 10 : 0) * 1.5);
-				$drop_event		 		 = $_SESSION['universal'] ? 100 : (1 * 1.5);
+			// Chances de drop
+			if ($is_pvp) {	// Chance de drop para PvP
+				$drop_chance_page		 = (10	* DROP_RATE);
+				$drop_chance_fragment	 = (15	* DROP_RATE);
+				$drop_chance_equipment	 = (10	* DROP_RATE) + ($bonus_active ? 10 : 0);	// +10% se o anime do jogador tiver ganhado o último evento de anime
+				$drop_chance_pet 	 	 = (10	* DROP_RATE) + ($bonus_active ? 10 : 0);	// +10% se o anime do jogador tiver ganhado o último evento de anime
+				$drop_areia 			 = (5	* DROP_RATE);
+				$drop_sangue			 = (1	* DROP_RATE);
+				$drop_event		 		 = (1	* DROP_RATE);
+			} else {		// Chance de drop para NPC
+				$drop_chance_page		 = (5	* DROP_RATE);
+				$drop_chance_fragment	 = (10	* DROP_RATE);
+				$drop_chance_equipment	 = (7	* DROP_RATE) + ($bonus_active ? 10 : 0);	// +10% se o anime do jogador tiver ganhado o último evento de anime
+				$drop_chance_pet 	 	 = (7	* DROP_RATE) + ($bonus_active ? 10 : 0);	// +10% se o anime do jogador tiver ganhado o último evento de anime
+				$drop_event		 		 = (1	* DROP_RATE);
 			}
-			if(($battle->won != $p->id && $battle->inactivity == 1) || $battle->battle_type_id == 4){
-				//Não dropa nada!
+
+			// Realiza o sorteio e verificação dos drops
+			if (($battle->won != $p->id && $battle->inactivity == 1) || $battle->battle_type_id == 4) {
+				// Não dropa nada!
 			} else {
 				// Só dropa sangue, areia e doce em PVP
 				if ($is_pvp) {
-					//Drop de Areia Estelar
-					if (has_chance($drop_areia + $extras->sum_bonus_drop)){
+					// Drop de Areia Estelar
+					if (has_chance($drop_areia + $extras->sum_bonus_drop)) {
 						$item_1719 = PlayerItem::find_first("player_id =". $p->id. " AND item_id = 1719");
 						if ($item_1719) {
 							$player_areia			= $p->get_item(1719);
@@ -399,18 +456,17 @@ trait BattleSharedMethods {
 							'item'	=> $player_areia->item()->description()->name
 						]);
 
-						//Mensagem Global
+						// Mensagem Global
 						global_message('hightlights.sand', TRUE, [ $p->name ]);
 
-						//Verifica a conquista de areia - Conquista
+						// Verifica a conquista de areia - Conquista
 						$p->achievement_check("sands");
-						// Objetivo de Round
-						$p->check_objectives("sands");
 
-						//Diz que ganhou a Areia
+						// Diz que ganhou a Areia
 						$sand_drop  = true;
 					}
-					//Drop de Sangue de Deus
+
+					// Drop de Sangue de Deus
 					if (has_chance($drop_sangue + $extras->sum_bonus_drop)) {
 						$item_1720 = PlayerItem::find_first("player_id =". $p->id. " AND item_id=1720");
 						if ($item_1720){
@@ -428,15 +484,13 @@ trait BattleSharedMethods {
 							'item'	=> $player_sangue->item()->description()->name
 						]);
 
-						//Mensagem Global
+						// Mensagem Global
 						global_message('hightlights.blood', TRUE, [ $p->name ]);
 
-						//Verifica a conquista de areia - Conquista
+						// Verifica a conquista de areia - Conquista
 						$p->achievement_check("bloods");
-						// Objetivo de Round
-						$p->check_objectives("bloods");
 
-						//Diz que ganhou o Sangue
+						// Diz que ganhou o Sangue
 						$blood_drop  = true;
 					}
 				}
@@ -444,7 +498,7 @@ trait BattleSharedMethods {
 				// Drop de Evento
 				if (EVENT_ACTIVE && has_chance($drop_event + $extras->sum_bonus_drop)) {
 					$item_event = PlayerItem::find_first("player_id =". $p->id. " AND item_id=" . EVENT_ITEM);
-					if ($item_event){
+					if ($item_event) {
 						$player_event				= $p->get_item(EVENT_ITEM);
 						$player_event->quantity 	+= 1;
 						$player_event->save();
@@ -455,13 +509,14 @@ trait BattleSharedMethods {
 						$player_event->quantity 	= 1;
 						$player_event->save();
 					}
+
 					$drop_message	.= t('battles.finished.drop', [
 						'item'	=> $player_event->item()->description()->name
 					]);
 				}
 
-				//Drop de Cartas de Grimorio
-				if(has_chance($drop_chance_page + $effects['grimoire_find'] + $extras->sum_bonus_drop)){
+				// Drop de Pergaminhos de Grimorio
+				if (has_chance($drop_chance_page + $effects['grimoire_find'] + $extras->sum_bonus_drop)){
 					$grimoire_card  = Item::find_first('item_type_id=11', ['reorder' => 'RAND()']);
 					if (!$p->has_item($grimoire_card->id)) {
 						$player_grimoire_card				= new PlayerItem();
@@ -473,56 +528,55 @@ trait BattleSharedMethods {
 							'name' => $grimoire_card->description()->name
 						]);
 					}
-					//Diz que ganhou a Pagina Perdida
+
+					// Diz que ganhou a Pagina Perdida
 					$page_drop  = true;
 				}
-				//Drop de Fragmento de Armadura
-				if(has_chance($drop_chance_fragment + $effects['fragment_find'] + $extras->sum_bonus_drop)){
+
+				// Drop de Fragmento de Alma
+				if (has_chance($drop_chance_fragment + $effects['fragment_find'] + $extras->sum_bonus_drop)) {
 					$item_446 = PlayerItem::find_first("player_id =". $p->id. " AND item_id=446");
-					$fragments = rand(1,10);
-					if($item_446){
+					$fragments = rand(1, 10);
+					if ($item_446) {
 						$player_fragment			= $p->get_item(446);
-						$player_fragment->quantity += $fragments;;
+						$player_fragment->quantity	+= $fragments;
 						$player_fragment->save();
-					}else{
+					} else {
 						$player_fragment	= new PlayerItem();
 						$player_fragment->item_id	= 446;
 						$player_fragment->player_id	= $p->id;
-						$player_fragment->quantity = $fragments;;
+						$player_fragment->quantity	= $fragments;
 						$player_fragment->save();
 					}
 					$drop_message	.= t('battles.finished.drop', [
 						'item'	=> 'x' . $fragments . ' ' . $player_fragment->item()->description()->name
 					]);
 
-					//Verifica a conquista de fragmentos - Conquista
+					// Verifica a conquista de fragmentos - Conquista
 					$p->achievement_check("fragments");
-					// Objetivo de Round
-					$p->check_objectives("fragments");
 
-					//Diz que ganhou a Fragmento
+					// Diz que ganhou o Fragmento
 					$fragment_drop  = true;
 				}
 
 				if (has_chance($drop_chance_equipment + $effects['item_find'] + $extras->sum_bonus_drop)) {
 					$dropped	= Item::generate_equipment($p);
-					if($dropped) {
+					if ($dropped) {
 						$drop_message	.= t('battles.finished.drop_text', [
 							'name'		=> t('slots.' . $p->character()->anime_id) . ' ' . $dropped->attributes()->name(),
 							'rarity'	=> $dropped->rarity
 						]);
 
-						//Verifica a conquista de fragmentos - Conquista
+						// Verifica a conquista de fragmentos - Conquista
 						$p->achievement_check("equipment");
-						// Objetivo de Round
-						$p->check_objectives("equipment");
 
-						//Diz que ganhou a Equip
+						// Diz que ganhou a Equip
 						$equip_drop  = true;
 					}
 				}
+
 				if (has_chance($drop_chance_pet + $effects['pets_find'] + $extras->sum_bonus_drop)) {
-					$pet		= Item::find_first('item_type_id=3 AND is_initial=1', ['reorder' => 'RAND()']);
+					$pet	= Item::find_first('item_type_id=3 AND is_initial=1', ['reorder' => 'RAND()']);
 					if (has_chance($pet->drop_chance + $effects['item_find'])) {
 						if (!$p->has_item($pet->id)) {
 							$player_pet				= new PlayerItem();
@@ -534,94 +588,132 @@ trait BattleSharedMethods {
 								'rarity'	=> $pet->rarity
 							]);
 
-							//Verifica se você tem pets - Conquista
+							// Verifica se você tem pets - Conquista
 							$p->achievement_check("pets");
-							// Objetivo de Round
-							$p->check_objectives("pets");
 
-							//Diz que ganhou o Mascote
+							// Diz que ganhou o Mascote
 							$pet_drop  = true;
 						}
 					}
 				}
+				// Premiação para todos independente do resultado da batalha
 			}
-			// Premiação para todos independente do resultado da batalha
+
 			// Missões de Conta
 			$user_quests   = $p->account_quests();
-			if($user_quests){
-				foreach ($user_quests as $user_quest):
-					switch($user_quest->type){
+			if ($user_quests) {
+				foreach ($user_quests as $user_quest) {
+					switch ($user_quest->type) {
 						case "fragment":
-							//Dropou Fragmento
-							if($fragment_drop && $p->character()->anime_id == $user_quest->anime_id){
+							// Dropou Fragmento
+							if ($fragment_drop && $p->character()->anime_id == $user_quest->anime_id) {
 								$user_quest->total++;
 							}
 							break;
 						case "blood":
-							//Dropou Sangue de Deus
-							if($blood_drop && $p->character()->anime_id == $user_quest->anime_id){
+							// Dropou Sangue de Deus
+							if ($blood_drop && $p->character()->anime_id == $user_quest->anime_id) {
 								$user_quest->total++;
 							}
 							break;
 						case "sand":
-							//Dropou uma Areia Estelar
-							if($sand_drop && $p->character()->anime_id == $user_quest->anime_id){
+							// Dropou uma Areia Estelar
+							if ($sand_drop && $p->character()->anime_id == $user_quest->anime_id) {
 								$user_quest->total++;
 							}
 							break;
 						case "equip":
-							//Dropou Fragmento
-							if($equip_drop && $p->character()->anime_id == $user_quest->anime_id){
+							// Dropou Fragmento
+							if ($equip_drop && $p->character()->anime_id == $user_quest->anime_id) {
 								$user_quest->total++;
 							}
 							break;
 						case "page":
-							//Dropou uma Página Perdida
-							if($page_drop && $p->character()->anime_id == $user_quest->anime_id){
+							// Dropou uma Página Perdida
+							if ($page_drop && $p->character()->anime_id == $user_quest->anime_id) {
 								$user_quest->total++;
 							}
 							break;
 						case "pet":
-							//Dropou um Mascote
-							if($pet_drop && $p->character()->anime_id == $user_quest->anime_id){
+							// Dropou um Mascote
+							if ($pet_drop && $p->character()->anime_id == $user_quest->anime_id) {
 								$user_quest->total++;
 							}
 							break;
 					}
 					$user_quest->save();
-				endforeach;
+				}
 			}
 			// Missões de Conta
 
-			if ($battle->draw) {
-				// Não faz quando for batalha de treino.
-				if($battle->battle_type_id != 4){
-					// Missões Diarias
-					$player_quests_daily   = $p->daily_quests();
-					if($player_quests_daily){
-						foreach ($player_quests_daily as $player_quest_daily):
-							switch($player_quest_daily->type){
-								case "battle":
-									//Duelar PVP ou NPC de um anime
-									if($player_quest_daily->anime_id && !$player_quest_daily->character_id){
-										if($player_quest_daily->anime_id == $e->character()->anime_id){
-											$player_quest_daily->total++;
-										}
-										//Duelar PVP ou NPC de um anime e com personagem
-									}elseif($player_quest_daily->anime_id && $player_quest_daily->character_id){
-										if($player_quest_daily->character_id == $e->character_id){
-											$player_quest_daily->total++;
-										}
-										//Duelar com qualquer um
-									}else{
+			// Não faz quando for batalha de treino.
+			if ($battle->battle_type_id != 4) {
+				// Verifica as missões diarias
+				$player_quests_daily   = $p->daily_quests();
+				if ($player_quests_daily) {
+					foreach ($player_quests_daily as $player_quest_daily) {
+						switch ($player_quest_daily->type) {
+							case "battle":
+								// Duelar PVP ou NPC de um anime
+								if ($player_quest_daily->anime_id && !$player_quest_daily->character_id) {
+									if ($player_quest_daily->anime_id == $e->character()->anime_id) {
 										$player_quest_daily->total++;
 									}
-									break;
-							}
-							$player_quest_daily->save();
-						endforeach;
+								// Duelar PVP ou NPC de um anime e com personagem
+								} elseif ($player_quest_daily->anime_id && $player_quest_daily->character_id) {
+									if ($player_quest_daily->character_id == $e->character_id) {
+										$player_quest_daily->total++;
+									}
+								// Duelar com qualquer um
+								} else {
+									$player_quest_daily->total++;
+								}
+								break;
+							case "battle_npc":
+								if (!$is_pvp) {
+									// Matar NPC de um anime
+									if ($player_quest_daily->anime_id && !$player_quest_daily->character_id) {
+										if ($player_quest_daily->anime_id == $e->character()->anime_id){
+											$player_quest_daily->total++;
+										}
+									// Matar NPC de um anime e com personagem
+									} elseif ($player_quest_daily->anime_id && $player_quest_daily->character_id) {
+										if ($player_quest_daily->character_id == $e->character_id) {
+											$player_quest_daily->total++;
+										}
+									// Matar qualquer NPC
+									} else {
+										$player_quest_daily->total++;
+									}
+								}
+								break;
+							case "battle_pvp":
+								if ($is_pvp) {
+									// Matar PVP de um anime
+									if ($player_quest_daily->anime_id && !$player_quest_daily->character_id) {
+										if ($player_quest_daily->anime_id == $e->character()->anime_id) {
+											$player_quest_daily->total++;
+										}
+									// Matar PVP de um anime e com personagem
+									} elseif ($player_quest_daily->anime_id && $player_quest_daily->character_id) {
+										if ($player_quest_daily->character_id == $e->character_id) {
+											$player_quest_daily->total++;
+										}
+									// Matar qualquer PVP
+									} else {
+										$player_quest_daily->total++;
+									}
+								}
+								break;
+						}
+						$player_quest_daily->save();
 					}
 				}
+			}
+
+			// A batalha empatou
+			if ($battle->draw) {
+				// Por ser empate, recebe apenas 50% das recompemsas de experiencia e moedas
 				$exp			= round($e->battle_exp() / 2);
 				$currency		= round($e->battle_currency() / 2);
 
@@ -632,20 +724,8 @@ trait BattleSharedMethods {
 				$currency_extra	+= percent($effects['currency_reward_extra_percent'], $currency) + $effects['currency_reward_extra'];
 
 				// Não faz quando for batalha de treino.
-				if($battle->battle_type_id != 4){
+				if ($battle->battle_type_id != 4) {
 					if ($is_pvp) {
-						// Remove um contador da vantagem de sem talentos
-						if($p->has_item(1715) && $p->no_talent==1){
-							$item1715 = PlayerItem::find_first("player_id=".$p->id." AND item_id=1715");
-							if($item1715->quantity <= 1){
-								$item1715->quantity = 0;
-								$p->no_talent = 0;
-							}else{
-								$item1715->quantity--;
-							}
-							$item1715->save();
-						}
-
 						if ($battle->battle_type_id == 5) {
 							if ($player_ranked) {
 								$player_ranked->draws++;
@@ -676,18 +756,20 @@ trait BattleSharedMethods {
 
 				$exp_text = ($exp + $exp_extra);
 				if ($exp_extra) {
-					$exp_text .= " ({" . highamount($exp) . "}";
+					$exp_text .= " (" . highamount($exp);
 					if ($exp_extra)
-						$exp_text .= " <span class=\"verde\">+ {" . highamount($exp_extra) . "}</span>";
+						$exp_text .= " <span class=\"verde\">+ " . highamount($exp_extra) . "</span>";
 					$exp_text .= ')';
 				}
+
 				$currency_text = ($currency + $currency_extra);
 				if ($currency_extra) {
-					$currency_text .= " ({" . highamount($currency) . "}";
+					$currency_text .= " (" . highamount($currency);
 					if ($currency_extra)
-						$currency_text .= " <span class=\"verde\">+ {" . highamount($currency_extra) . "}</span>";
+						$currency_text .= " <span class=\"verde\">+ " . highamount($currency_extra) . "</span>";
 					$currency_text .= ')';
 				}
+
 				$finished_message		= partial('shared/info', [
 					'id'		=> 3,
 					'title'		=> 'battles.finished.draw_title',
@@ -699,12 +781,11 @@ trait BattleSharedMethods {
 					]) . $drop_message . '<br /><br /><a href="' . $link . '" class="btn btn-primary close-button">' . $link_text . '</a>'
 				]);
 			} else {
-				if($battle->won == $p->id) {
+				if ($battle->won == $p->id) {
 					$exp			= $e->battle_exp(true);
 					$currency		= $e->battle_currency(true);
 
 					$dropped		= false;
-					$is_pet			= false;
 
 					$exp_extra		= percent($extras->exp_battle + ($bonus_active ? 10 : 0), $exp);
 					$currency_extra	= percent($extras->currency_battle + ($bonus_active ? 10 : 0), $currency);
@@ -713,8 +794,8 @@ trait BattleSharedMethods {
 					$currency_extra	+= percent($effects['currency_reward_extra_percent'], $currency) + $effects['currency_reward_extra'];
 
 					// adiciona as novas flags de como o jogador matou os jogadores
-					if($is_pvp) {
-						if(!@$_SESSION['pvp_used_buff']) {
+					if ($is_pvp) {
+						if (!$_SESSION['pvp_used_buff']) {
 							$player_kills = new PlayerKill();
 							$player_kills->player_id = $p->id;
 							$player_kills->enemy_id  = $e->id;
@@ -722,7 +803,7 @@ trait BattleSharedMethods {
 							$player_kills->save();
 						}
 
-						if(!@$_SESSION['pvp_used_ability']) {
+						if (!$_SESSION['pvp_used_ability']) {
 							$player_kills = new PlayerKill();
 							$player_kills->player_id = $p->id;
 							$player_kills->enemy_id  = $e->id;
@@ -730,7 +811,7 @@ trait BattleSharedMethods {
 							$player_kills->save();
 						}
 
-						if(!@$_SESSION['pvp_used_speciality']) {
+						if(!$_SESSION['pvp_used_speciality']) {
 							$player_kills = new PlayerKill();
 							$player_kills->player_id = $p->id;
 							$player_kills->enemy_id  = $e->id;
@@ -738,339 +819,219 @@ trait BattleSharedMethods {
 							$player_kills->save();
 						}
 					}
-					// Verifica se o jogador matou um alvo dos procurados
-					if($battle->battle_type_id != 4 && $is_pvp){
-						$enemy_wanted = PlayerWanted::find_first("player_id=".$e->id." AND death=0");
 
+					// Verifica se o jogador matou um alvo dos procurados
+					if ($battle->battle_type_id != 4 && $is_pvp) {
 						// Verifica se o inimigo morto era um procurado
-						if($enemy_wanted){
-							switch($enemy_wanted->type_death){
-								case 1:
-									$campo = "kills_with_crit";
-									break;
-								case 2:
-									$campo = "kills_with_precision";
-									break;
-								case 3:
-									$campo = "kills_with_stronger";
-									break;
-								case 4:
-									$campo = "kills_with_slowness";
-									break;
-								case 5:
-									$campo = "kills_with_confusion";
-									break;
-								case 6:
-									$campo = "kills_with_bleeding";
-									break;
-								case 7:
-									$campo = "kills_with_stun";
-									break;
-								case 8:
-									$campo = "kills_wo_buff";
-									break;
-								case 9:
-									$campo = "kills_wo_ability";
-									break;
-								case 10:
-									$campo = "kills_wo_speciality";
-									break;
+						$enemy_wanted = PlayerWanted::find_first("player_id = {$e->id} and death=0");
+						if ($enemy_wanted) {
+							switch ($enemy_wanted->type_death) {
+								case 1:		$campo = "kills_with_crit";			break;
+								case 2:		$campo = "kills_with_precision";	break;
+								case 3:		$campo = "kills_with_stronger";		break;
+								case 4:		$campo = "kills_with_slowness";		break;
+								case 5:		$campo = "kills_with_confusion";	break;
+								case 6:		$campo = "kills_with_bleeding";		break;
+								case 7:		$campo = "kills_with_stun";			break;
+								case 8:		$campo = "kills_wo_buff";			break;
+								case 9:		$campo = "kills_wo_ability";		break;
+								case 10:	$campo = "kills_wo_speciality";		break;
 							}
-							//Verifica se o procurado ficou afk
-							if($battle->won == $p->id && $battle->inactivity==1){
-								//Adiciona a recompensa para o player
+
+							// Verifica se o procurado ficou afk
+							if ($battle->won == $p->id && $battle->inactivity == 1) {
+								// Adiciona a recompensa para o player
 								$p->currency += $e->won_last_battle > 100 ? 100 * 250 : $e->won_last_battle * 250;
 
-								//Marca o Procurado como morto
+								// Marca o procurado como morto
 								$enemy_wanted->death 		= 1;
 								$enemy_wanted->enemy_id 	= $p->id;
 								$enemy_wanted->finished_at  = now(true);
 								$enemy_wanted->save();
 
-								//Mensagem Global
-								global_message('hightlights.wanteds', TRUE, [
+								// Mensagem Global
+								global_message('hightlights.wanteds', true, [
 									$p->name,
 									$e->name
 								]);
 
-								//Reseta o contador de vitorias do jogador inimigo
+								// Reseta o contador de vitorias do jogador inimigo
 								$e->won_last_battle = 0;
 								$e->save();
 
-								//Seta uma flag para dizer que o jogador matou um procurado
+								// Seta uma flag para dizer que o jogador matou um procurado
 								$wanted_dead = true;
-							} else {
-								$players_kills = PlayerKill::find("player_id=".$p->id." AND enemy_id=".$e->id);
-								foreach($players_kills as $player_kill){
-									if(strtotime($player_kill->created_at) >= strtotime($enemy_wanted->created_at)){
-
-										// matou como devia
-										if($player_kill->{$campo}){
-											//Adiciona a recompensa para o player
-											$p->currency += $e->won_last_battle > 100 ? 100 * 250 : $e->won_last_battle * 250;
-
-										}else{
-											// matou sem os requerimentos
-											//Adiciona a recompensa para o player
-											$p->currency += $e->won_last_battle > 100 ? 100 * 125 : $e->won_last_battle * 125;
-										}
-
-
-										//Marca o Procurado como morto
-										$enemy_wanted->death 		= 1;
-										$enemy_wanted->enemy_id 	= $p->id;
-										$enemy_wanted->finished_at  = now(true);
-										$enemy_wanted->save();
-
-										//Mensagem Global
-										global_message('hightlights.wanteds', TRUE, [
-											$p->name,
-											$e->name
-										]);
-
-										//Reseta o contador de vitorias do jogador inimigo
-										$e->won_last_battle = 0;
-										$e->save();
-
-										//Seta uma flag para dizer que o jogador matou um procurado
-										$wanted_dead = true;
-
+							} elseif ($battle->won == $p->id && $battle->inactivity != 1) {
+								$player_kill = PlayerKill::find_last("player_id = {$p->id} and enemy_id = {$e->id} and {$campo} = 1");
+								if ($player_kill) {
+									if (strtotime($player_kill->created_at) >= strtotime($enemy_wanted->created_at)) {
+										// Adiciona a recompensa para o player
+										$p->currency += $e->won_last_battle > 100 ? 100 * 250 : $e->won_last_battle * 250;
 									}
+								} else {
+									// Adiciona a recompensa para o player
+									$p->currency += $e->won_last_battle > 100 ? 100 * 125 : $e->won_last_battle * 125;
 								}
+
+								// Marca o Procurado como morto
+								$enemy_wanted->death 		= 1;
+								$enemy_wanted->enemy_id 	= $p->id;
+								$enemy_wanted->finished_at  = now(true);
+								$enemy_wanted->save();
+
+								// Mensagem Global
+								global_message('hightlights.wanteds', true, [
+									$p->name,
+									$e->name
+								]);
+
+								// Reseta o contador de vitorias do jogador inimigo
+								$e->won_last_battle = 0;
+								$e->save();
+
+								// Seta uma flag para dizer que o jogador matou um procurado
+								$wanted_dead = true;
 							}
 						}
 					}
+
 					// Missões de Conta
 					$user_quests   = $p->account_quests();
-					if($user_quests){
-						foreach ($user_quests as $user_quest):
-							switch($user_quest->type){
+					if ($user_quests) {
+						foreach ($user_quests as $user_quest) {
+							switch ($user_quest->type) {
 								case "wanted":
-									//Matou um Procurado
-									if($wanted_dead && $p->character()->anime_id == $user_quest->anime_id){
+									// Matou um Procurado
+									if ($wanted_dead && $p->character()->anime_id == $user_quest->anime_id) {
 										$user_quest->total++;
 									}
 									break;
 							}
 							$user_quest->save();
-						endforeach;
+						}
 					}
-					// Missões de Conta
-					// Não faz quando for batalha de treino.
-					if($battle->battle_type_id != 4){
 
+					// Não faz quando for batalha de treino.
+					if ($battle->battle_type_id != 4) {
 						// Missões Organização Semanais
 						$organization_quests_daily   = $p->organization_daily_quests();
-						if($organization_quests_daily && $is_pvp){
-							foreach ($organization_quests_daily as $organization_quest_daily):
-								switch($organization_quest_daily->type){
+						if ($organization_quests_daily && $is_pvp) {
+							foreach ($organization_quests_daily as $organization_quest_daily) {
+								switch ($organization_quest_daily->type) {
 									case "kill_g":
-										//Derrotar jogadores de uma determinada Organização
-										if($organization_quest_daily->guild_enemy_id && !$organization_quest_daily->enemy_id){
-											if($organization_quest_daily->guild_enemy_id == $e->organization_id){
+										// Derrotar jogadores de uma determinada Organização
+										if ($organization_quest_daily->guild_enemy_id && !$organization_quest_daily->enemy_id) {
+											if ($organization_quest_daily->guild_enemy_id == $e->organization_id) {
 												$organization_quest_daily->total++;
 											}
 										}
 										break;
 									case "kill_j_g":
-										//Derrotar um jogador especifico de uma determinada Organização
-										if($organization_quest_daily->guild_enemy_id && $organization_quest_daily->enemy_id){
-											if($organization_quest_daily->enemy_id == $e->id && $organization_quest_daily->guild_enemy_id == $e->organization_id){
+										// Derrotar um jogador especifico de uma determinada Organização
+										if ($organization_quest_daily->guild_enemy_id && $organization_quest_daily->enemy_id) {
+											if ($organization_quest_daily->enemy_id == $e->id && $organization_quest_daily->guild_enemy_id == $e->organization_id) {
 												$organization_quest_daily->total++;
 											}
 										}
 										break;
 									case "still_g":
-										//Roubar um tesouro de uma determinada Organização
-										if($organization_quest_daily->guild_enemy_id && !$organization_quest_daily->enemy_id){
-											if($e->treasure_atual > 0 && $organization_quest_daily->guild_enemy_id == $e->organization_id){
+										// Roubar um tesouro de uma determinada Organização
+										if ($organization_quest_daily->guild_enemy_id && !$organization_quest_daily->enemy_id) {
+											if ($e->treasure_atual > 0 && $organization_quest_daily->guild_enemy_id == $e->organization_id) {
 												$organization_quest_daily->total++;
 											}
 										}
 										break;
 									case "still_j_g":
-										//Roubar um tesouro de um Jogado Especifico em uma determinada Organização
-										if($organization_quest_daily->guild_enemy_id && $organization_quest_daily->enemy_id){
-											if($e->treasure_atual > 0 && $organization_quest_daily->enemy_id == $e->id && $organization_quest_daily->guild_enemy_id == $e->organization_id){
+										// Roubar um tesouro de um Jogado Especifico em uma determinada Organização
+										if ($organization_quest_daily->guild_enemy_id && $organization_quest_daily->enemy_id) {
+											if ($e->treasure_atual > 0 && $organization_quest_daily->enemy_id == $e->id && $organization_quest_daily->guild_enemy_id == $e->organization_id) {
 												$organization_quest_daily->total++;
 											}
 										}
 										break;
 									case "kill_a_g":
-										//Derrotar jogadores de qualquer organização
-										if(!$organization_quest_daily->guild_enemy_id && !$organization_quest_daily->enemy_id){
-											if($e->organization_id && $p->organization_id != $e->organization_id){
+										// Derrotar jogadores de qualquer organização
+										if (!$organization_quest_daily->guild_enemy_id && !$organization_quest_daily->enemy_id) {
+											if ($e->organization_id && $p->organization_id != $e->organization_id) {
 												$organization_quest_daily->total++;
 											}
 										}
 										break;
 									case "still_a_g":
-										//Roubar jogadores de qualquer organização
-										if(!$organization_quest_daily->guild_enemy_id && !$organization_quest_daily->enemy_id){
-											if($e->organization_id && $e->treasure_atual > 0 && $p->organization_id != $e->organization_id){
+										// Roubar jogadores de qualquer organização
+										if (!$organization_quest_daily->guild_enemy_id && !$organization_quest_daily->enemy_id) {
+											if ($e->organization_id && $e->treasure_atual > 0 && $p->organization_id != $e->organization_id) {
 												$organization_quest_daily->total++;
 											}
 										}
 										break;
 								}
 								$organization_quest_daily->save();
-							endforeach;
-						}
-						// Missões Diarias
-						$player_quests_daily   = $p->daily_quests();
-						if($player_quests_daily && $is_pvp){
-							foreach ($player_quests_daily as $player_quest_daily):
-								switch($player_quest_daily->type){
-									case "battle":
-										//Duelar PVP ou NPC de um anime
-										if($player_quest_daily->anime_id && !$player_quest_daily->character_id){
-											if($player_quest_daily->anime_id == $e->character()->anime_id){
-												$player_quest_daily->total++;
-											}
-											//Duelar PVP ou NPC de um anime e com personagem
-										}elseif($player_quest_daily->anime_id && $player_quest_daily->character_id){
-											if($player_quest_daily->character_id == $e->character_id){
-												$player_quest_daily->total++;
-											}
-											//Duelar com qualquer um
-										}else{
-											$player_quest_daily->total++;
-										}
-										break;
-									case "battle_pvp":
-										//Matar PVP de um anime
-										if($player_quest_daily->anime_id && !$player_quest_daily->character_id){
-											if($player_quest_daily->anime_id == $e->character()->anime_id){
-												$player_quest_daily->total++;
-											}
-											//Matar PVP de um anime e com personagem
-										}elseif($player_quest_daily->anime_id && $player_quest_daily->character_id){
-											if($player_quest_daily->character_id == $e->character_id){
-												$player_quest_daily->total++;
-											}
-											//Matar qualquer PVP
-										}else{
-											$player_quest_daily->total++;
-										}
-										break;
-								}
-								$player_quest_daily->save();
-							endforeach;
+							}
 						}
 
-						if($is_pvp){
-							if($p->organization_id != $e->organization_id && $p->organization_id && $e->organization_id){
-								if($e->treasure_atual > 0){
+						if ($is_pvp) {
+							if ($p->organization_id != $e->organization_id && $p->organization_id && $e->organization_id) {
+								if ($e->treasure_atual > 0) {
 									$p->treasure_atual++;
 									$p->save();
+
 									$e->treasure_atual--;
 									$e->save();
+
 									$drop_message	.= t('battles.finished.treasure');
 
-									//Verifica se você ganhou treasure - Conquista
+									// Verifica se você ganhou treasure - Conquista
 									$p->achievement_check("treasure");
-									// Objetivo de Round
-									$p->check_objectives("treasure");
 
 									// Seta como roubado um tesouro
 									$treasure_still = true;
 								}
 
 							}
+
 							// Missões de Conta
 							$user_quests   = $p->account_quests();
-							if($user_quests){
-								foreach ($user_quests as $user_quest):
-									switch($user_quest->type){
+							if ($user_quests) {
+								foreach ($user_quests as $user_quest) {
+									switch ($user_quest->type) {
 										case "treasure":
-											//Matou um Procurado
-											if($treasure_still && $p->character()->anime_id == $user_quest->anime_id){
+											if ($treasure_still && $p->character()->anime_id == $user_quest->anime_id) {
 												$user_quest->total++;
 											}
 											break;
 									}
 									$user_quest->save();
-								endforeach;
+								}
 							}
-							// Missões de Conta
 						}
+
 						if ($p->pvp_quest_id && $is_pvp) {
 							$player_quest   = $p->player_pvp_quest($p->pvp_quest_id);
-
-							if($e->level >= $p->level) {
+							if ($e->level >= $p->level) {
 								$player_quest->req_same_level++;
 							}
 
-							if($e->level < $p->level) {
+							if ($e->level < $p->level) {
 								$player_quest->req_low_level++;
 							}
 
-							if(!@$_SESSION['pvp_used_buff']) {
+							if (!$_SESSION['pvp_used_buff']) {
 								$player_quest->req_kill_wo_buff++;
 							}
 
-							if(!@$_SESSION['pvp_used_ability']) {
+							if (!$_SESSION['pvp_used_ability']) {
 								$player_quest->req_kill_wo_ability++;
 							}
 
-							if(!@$_SESSION['pvp_used_speciality']) {
+							if (!$_SESSION['pvp_used_speciality']) {
 								$player_quest->req_kill_wo_speciality++;
 							}
 							$player_quest->save();
 						}
 
 						if ($is_pvp) {
-							//Adiciona e Remove pontos dos animes na Batalha
-							if ($event_anime) {
-								if($event_anime->anime_a_id == $p->character()->anime_id){
-									if($event_anime->points_a + 10 > 2000){
-										$event_anime->points_a = 2000;
-									}else{
-										$event_anime->points_a += 10;
-									}
-									if($event_anime->points_b - 10 < 0){
-										$event_anime->points_b = 0;
-										// Marca que o anime A ganhou
-										$event_anime->anime_win_id = $p->character()->anime_id;
-										$event_anime->finished_at = now(true);
-									}else{
-										$event_anime->points_b -= 10;
-									}
-									$event_anime->save();
-								}
-								if($event_anime->anime_b_id == $p->character()->anime_id){
-									if($event_anime->points_a - 10 < 0){
-										$event_anime->points_a = 0;
-
-										// Marca que o anime B ganhou
-										$event_anime->anime_win_id = $p->character()->anime_id;
-										$event_anime->finished_at = now(true);
-									}else{
-										$event_anime->points_a -= 10;
-									}
-									if($event_anime->points_b + 10 > 2000){
-										$event_anime->points_b = 2000;
-									}else{
-										$event_anime->points_b += 10;
-									}
-									$event_anime->save();
-								}
-							}
-							// Adiciona e Remove pontos dos animes na Batalha
-
-							// Remove um contador da vantagem de sem talentos
-							if($p->has_item(1715) && $p->no_talent == 1){
-								$item1715 = PlayerItem::find_first("player_id=".$p->id." AND item_id=1715");
-								if($item1715->quantity <= 1){
-									$item1715->quantity = 0;
-									$p->no_talent = 0;
-								}else{
-									$item1715->quantity--;
-								}
-								$item1715->save();
-							}
-							// Remove um contador da vantagem de sem talentos
-
 							if ($battle->battle_type_id == 5) {
 								if ($player_ranked) {
 									$player_ranked->wins++;
@@ -1079,10 +1040,8 @@ trait BattleSharedMethods {
 
 								// Verifica a conquista de liga pvp
 								$p->achievement_check("battle_league_pvp");
-
-								// Objetivo de Round
-								$p->check_objectives("battle_league_pvp");
 							}
+
 							$stats->wins++;
 							$p->wins_pvp++;
 							$p->won_last_battle++;
@@ -1093,20 +1052,19 @@ trait BattleSharedMethods {
 							$player_battle_stats->victory_pvp_monthly++;
 
 							// Adiciona a cabeça do jogador nos procurados.
-							if($p->won_last_battle > 9){
-								$wanted = PlayerWanted::find_first("player_id=".$p->id." AND death=0");
-								if(!$wanted){
-									$wanted_new = new PlayerWanted();
-									$wanted_new->player_id = $p->id;
-									$wanted_new->type_death = rand(1,10);
+							if ($p->won_last_battle > 9) {
+								$wanted = PlayerWanted::find_first("player_id = {$p->id} and death = 0");
+								if (!$wanted) {
+									$wanted_new				= new PlayerWanted();
+									$wanted_new->player_id	= $p->id;
+									$wanted_new->type_death	= rand(1, 10);
 									$wanted_new->save();
-
 								}
 							}
 
-							//Adiciona o contador da batalha especifica para a conquista
+							// Adiciona o contador da batalha especifica para a conquista
 							$achievement_stats = PlayerAchievementStat::find_first("player_id=".$p->id." AND anime_id=".$e->character()->anime_id." AND character_id=".$e->character_id." AND faction_id=".$e->faction_id);
-							if(!$achievement_stats){
+							if (!$achievement_stats) {
 								$player_achievement_stats = new PlayerAchievementStat();
 								$player_achievement_stats->player_id 	= $p->id;
 								$player_achievement_stats->anime_id 	= $e->character()->anime_id;
@@ -1114,30 +1072,27 @@ trait BattleSharedMethods {
 								$player_achievement_stats->character_id = $e->character_id;
 								$player_achievement_stats->quantity++;
 								$player_achievement_stats->save();
-							}else{
+							} else {
 								$achievement_stats->quantity++;
 								$achievement_stats->save();
 							}
 
-							//Verifica se você tem batalhas - Conquista
+							// Verifica se você tem batalhas - Conquista
 							$p->achievement_check("battle_pvp");
-							// Objetivo de Round
-							$p->check_objectives("battle_pvp");
 
-							//Verifica se você tem batalhas - Conquista
+							// Verifica se você tem batalhas - Conquista
 							$p->achievement_check("wanted");
-							// Objetivo de Round
-							$p->check_objectives("wanted");
 
 						} else {
 							// Premiação do NPC de Mapa
-							if($battle->battle_type_id == 6){
-								$rewards = MapReward::find_first("map_id =".$p->map_id." AND is_npc = 1");
-								if($rewards){
-									$rand 		= rand(1,100);
-									if($rand <= $rewards->chance){
-										//Prêmios ( CHARACTERS )
-										if ($rewards->character_id) {
+							if ($battle->battle_type_id == 6) {
+								$rewards = MapReward::find_first("map_id = {$p->map_id} and is_npc = 1");
+								if ($rewards) {
+									$rand 		= rand(1, 100);
+									if ($rand <= $rewards->chance) {
+										$user = $p->user();
+										// Prêmios ( CHARACTERS )
+										if ($rewards->character_id && !$user->is_character_bought($rewards->character_id)) {
 											$reward_character				= new UserCharacter();
 											$reward_character->user_id		= $p->user_id;
 											$reward_character->character_id	= $rewards->character_id;
@@ -1148,11 +1103,10 @@ trait BattleSharedMethods {
 
 											// verifica se desbloqueou novo personagem - conquista
 											$p->achievement_check("character");
-											// Objetivo de Round
-											$p->check_objectives("character");
 										}
-										//Prêmios ( THEME )
-										if ($rewards->character_theme_id) {
+
+										// Prêmios ( THEME )
+										if ($rewards->character_theme_id && !$user->is_theme_bought($rewards->character_theme_id)) {
 											$reward_theme						= new UserCharacterTheme();
 											$reward_theme->user_id				= $p->user_id;
 											$reward_theme->character_theme_id	= $rewards->character_theme_id;
@@ -1164,6 +1118,7 @@ trait BattleSharedMethods {
 									}
 								}
 							}
+
 							// Premiação do NPC de Mapa
 							if ($e->specific_id) {
 								$npc_user						= new UserHistoryModeNpc();
@@ -1231,22 +1186,20 @@ trait BattleSharedMethods {
 										}
 
 										if ($npc_subgroup->reward_item_chance && has_chance($npc_subgroup->reward_item_chance + $effects['item_find'])) {
-
 											// Quando o item é comida
-											if($npc_subgroup->reward_quantity){
+											if ($npc_subgroup->reward_quantity) {
 												$player_item_exist			= PlayerItem::find_first("item_id=".$npc_subgroup->reward_item_id." AND player_id=". $p->id);
-
-												if(!$player_item_exist){
+												if (!$player_item_exist) {
 													$player_item			= new PlayerItem();
 													$player_item->item_id	= $npc_subgroup->reward_item_id;
 													$player_item->quantity	= $npc_subgroup->reward_quantity;
 													$player_item->player_id	= $p->id;
 													$player_item->save();
-												}else{
+												} else {
 													$player_item_exist->quantity += $npc_subgroup->reward_quantity;
 													$player_item_exist->save();
 												}
-											}else{
+											} else {
 												// Quando o item é golpe
 												$reward_item_instance	= Item::find_first($npc_subgroup->reward_item_id);
 
@@ -1269,7 +1222,7 @@ trait BattleSharedMethods {
 
 										}
 
-										if ($npc_subgroup->reward_character_id) {
+										if ($npc_subgroup->reward_character_id &&!$user->is_character_bought($npc_subgroup->reward_character_id)) {
 											$reward_character				= new UserCharacter();
 											$reward_character->user_id		= $p->user_id;
 											$reward_character->character_id	= $npc_subgroup->reward_character_id;
@@ -1278,11 +1231,9 @@ trait BattleSharedMethods {
 
 											// verifica se desbloqueou novo personagem - conquista
 											$p->achievement_check("character");
-											// Objetivo de Round
-											$p->check_objectives("character");
 										}
 
-										if ($npc_subgroup->reward_character_theme_id) {
+										if ($npc_subgroup->reward_character_theme_id &&!$user->is_theme_bought($npc_subgroup->reward_character_theme_id)) {
 											$reward_theme						= new UserCharacterTheme();
 											$reward_theme->user_id				= $p->user_id;
 											$reward_theme->character_theme_id	= $npc_subgroup->reward_character_theme_id;
@@ -1291,56 +1242,11 @@ trait BattleSharedMethods {
 
 											// verifica se desbloqueou novo personagem - conquista
 											$p->achievement_check("character_theme");
-											// Objetivo de Round
-											$p->check_objectives("character_theme");
 										}
 										// Verifica se finalizou uma modo historia - Conquista
 										$p->achievement_check("history_mode");
-										// Objetivo de Round
-										$p->check_objectives("history_mode");
 									}
 								}
-							}
-							// Missões Diarias
-							$player_quests_daily   = $p->daily_quests();
-							if($player_quests_daily){
-								foreach ($player_quests_daily as $player_quest_daily):
-									switch($player_quest_daily->type){
-										case "battle":
-											//Duelar PVP ou NPC de um anime
-											if($player_quest_daily->anime_id && !$player_quest_daily->character_id){
-												if($player_quest_daily->anime_id == $e->character()->anime_id){
-													$player_quest_daily->total++;
-												}
-												//Duelar PVP ou NPC de um anime e com personagem
-											}elseif($player_quest_daily->anime_id && $player_quest_daily->character_id){
-												if($player_quest_daily->character_id == $e->character_id){
-													$player_quest_daily->total++;
-												}
-												//Duelar com qualquer um
-											}else{
-												$player_quest_daily->total++;
-											}
-											break;
-										case "battle_npc":
-											//Matar NPC de um anime
-											if($player_quest_daily->anime_id && !$player_quest_daily->character_id){
-												if($player_quest_daily->anime_id == $e->character()->anime_id){
-													$player_quest_daily->total++;
-												}
-												//Matar NPC de um anime e com personagem
-											}elseif($player_quest_daily->anime_id && $player_quest_daily->character_id){
-												if($player_quest_daily->character_id == $e->character_id){
-													$player_quest_daily->total++;
-												}
-												//Matar qualquer NPC
-											}else{
-												$player_quest_daily->total++;
-											}
-											break;
-									}
-									$player_quest_daily->save();
-								endforeach;
 							}
 
 							// Não dá score ao vencer o npc da arena
@@ -1353,47 +1259,9 @@ trait BattleSharedMethods {
 							$player_battle_stats->victory_npc_weekly++;
 							$player_battle_stats->victory_npc_monthly++;
 
-							//Adiciona e Remove pontos dos animes na Batalha
-							if ($event_anime) {
-								if($event_anime->anime_a_id == $p->character()->anime_id){
-									if($event_anime->points_a + 1 > 2000){
-										$event_anime->points_a = 2000;
-									}else{
-										$event_anime->points_a += 1;
-									}
-									if($event_anime->points_b - 1 < 0){
-										$event_anime->points_b = 0;
-									}else{
-										$event_anime->points_b -= 1;
-									}
-
-									$event_anime->save();
-								}
-								if($event_anime->anime_b_id == $p->character()->anime_id){
-									if($event_anime->points_a - 1 < 0){
-										$event_anime->points_a = 0;
-									}else{
-										$event_anime->points_a -= 1;
-									}
-									if($event_anime->points_b + 1 > 2000){
-										$event_anime->points_b = 2000;
-									}else{
-										$event_anime->points_b += 1;
-									}
-									$event_anime->save();
-								}
-							}
-							// Adiciona e Remove pontos dos animes na Batalha
-
-							//Verifica se você tem pets
+							// Verifica se você tem pets
 							$p->achievement_check("battle_npc");
-							// Objetivo de Round
-							$p->check_objectives("battle_npc");
 						}
-					}
-
-					if ($battle->battle_type_id == 3) {
-						$link = make_url('challenges#show/'.$p->challenge_id);
 					}
 
 					if (!$is_pvp && ($battle->battle_type_id == 7 || $battle->battle_type_id == 8)) {
@@ -1480,53 +1348,15 @@ trait BattleSharedMethods {
 
 					// Não faz quando for batalha de treino.
 					if ($battle->battle_type_id != 4){
-						if ($is_pvp){
+						if ($is_pvp) {
 							if ($p->organization_id != $e->organization_id && $p->organization_id && $e->organization_id){
-								if ($p->treasure_atual > 0){
+								if ($p->treasure_atual > 0) {
 									$drop_message_e	.= t('battles.finished.treasure2');
 								}
 							}
 						}
-						// Missões Diarias
-						$player_quests_daily   = $p->daily_quests();
-						if ($player_quests_daily) {
-							foreach ($player_quests_daily as $player_quest_daily):
-								switch ($player_quest_daily->type) {
-									case "battle":
-										// Duelar PVP ou NPC de um anime
-										if ($player_quest_daily->anime_id && !$player_quest_daily->character_id){
-											if ($player_quest_daily->anime_id == $e->character()->anime_id){
-												$player_quest_daily->total++;
-											}
-											//Duelar PVP ou NPC de um anime e com personagem
-										} elseif ($player_quest_daily->anime_id && $player_quest_daily->character_id){
-											if ($player_quest_daily->character_id == $e->character_id){
-												$player_quest_daily->total++;
-											}
-											//Duelar com qualquer um
-										} else {
-											$player_quest_daily->total++;
-										}
-										break;
-								}
-								$player_quest_daily->save();
-							endforeach;
-						}
 
 						if ($is_pvp) {
-							// Remove um contador da vantagem de sem talentos
-							if($p->has_item(1715) && $p->no_talent==1){
-								$item1715 = PlayerItem::find_first("player_id=".$p->id." AND item_id=1715");
-								if($item1715->quantity <= 1){
-									$item1715->quantity = 0;
-									$p->no_talent = 0;
-								}else{
-									$item1715->quantity--;
-								}
-								$item1715->save();
-							}
-							// Remove um contador da vantagem de sem talentos
-
 							if ($battle->battle_type_id == 5) {
 								if ($player_ranked) {
 									$player_ranked->losses++;
@@ -1544,7 +1374,7 @@ trait BattleSharedMethods {
 
 							// Faz alguma coisa sobre os procurados
 							$enemy_player_wanted = PlayerWanted::find_first("player_id=".$p->id." AND death=0");
-							if(!$enemy_player_wanted){
+							if (!$enemy_player_wanted) {
 								$p->won_last_battle	= 0;
 							}
 						} else {
@@ -1636,8 +1466,9 @@ trait BattleSharedMethods {
 			}
 
 			# Corrigi o no_talent
-			if ($p->no_talent == 2)
+			if ($p->no_talent == 2) {
 				$p->no_talent = 0;
+			}
 
 			$p->clear_ability_lock();
 			$p->clear_speciality_lock();
@@ -1656,15 +1487,14 @@ trait BattleSharedMethods {
 
 			// Checa o dinheiro do player - Conquista
 			$p->achievement_check("currency");
-			// Objetivo de Round
-			$p->check_objectives("currency");
 
 			$this->json->finished	= $finished_message;
 
-			if (!$is_pvp)
+			if (!$is_pvp) {
 				$p->save_npc([]);
-			else
+			} else {
 				$stats->save();
+			}
 		}
 
 		$p_effects		= [];

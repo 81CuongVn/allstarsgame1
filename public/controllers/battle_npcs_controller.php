@@ -551,14 +551,18 @@ class BattleNpcsController extends Controller
 								}
 								$player->earn($challenge_money);
 							}
+
 							// Equipamento
-							if ($player_challenge->quantity > 10 && $player_challenge->quantity < 21) {
+							if ($player_challenge->quantity > 20 && $player_challenge->quantity < 25) {
 								Item::generate_equipment($player, 0);
-							} elseif ($player_challenge->quantity > 20 && $player_challenge->quantity < 46) {
+							} elseif ($player_challenge->quantity > 25 && $player_challenge->quantity < 65) {
 								Item::generate_equipment($player, 1);
-							} elseif ($player_challenge->quantity > 65) {
+							} elseif ($player_challenge->quantity > 65 && $player_challenge->quantity < 100) {
 								Item::generate_equipment($player, 2);
+							} elseif ($player_challenge->quantity > 99) {
+								Item::generate_equipment($player, 3);
 							}
+
 							// Mascote
 							if ($player_challenge->quantity > 45 && $player_challenge->quantity < 81) {
 								if (!$player->has_item($challenge->reward_pet_1)) {
@@ -601,14 +605,10 @@ class BattleNpcsController extends Controller
 
 								// Verifica os créditos do jogador.
 								$player->achievement_check("credits");
-								// Objetivo de Round
-								$player->check_objectives("credits");
 							}
 
 							// Verifica a arena do jogador.
 							$player->achievement_check("challenges");
-							// Objetivo de Round
-							$player->check_objectives("challenges");
 						}
 					}
 
@@ -627,8 +627,6 @@ class BattleNpcsController extends Controller
 
 									// Verifica a arena do jogador.
 									$player->achievement_check("challenges");
-									// Objetivo de Round
-									$player->check_objectives("challenges");
 								}
 							} else {
 								if (__check_dead($player)) {
@@ -664,14 +662,18 @@ class BattleNpcsController extends Controller
 											}
 											$player->earn($challenge_money);
 										}
+
 										// Equipamento
-										if ($player_challenge->quantity > 10 && $player_challenge->quantity < 21) {
+										if ($player_challenge->quantity > 20 && $player_challenge->quantity < 25) {
 											Item::generate_equipment($player, 0);
-										} elseif ($player_challenge->quantity > 20 && $player_challenge->quantity < 46) {
+										} elseif ($player_challenge->quantity > 25 && $player_challenge->quantity < 65) {
 											Item::generate_equipment($player, 1);
-										} elseif ($player_challenge->quantity > 65) {
+										} elseif ($player_challenge->quantity > 65 && $player_challenge->quantity < 100) {
 											Item::generate_equipment($player, 2);
+										} elseif ($player_challenge->quantity > 100) {
+											Item::generate_equipment($player, 3);
 										}
+
 										// Mascote
 										if ($player_challenge->quantity > 45 && $player_challenge->quantity < 81) {
 											if (!$player->has_item($challenge->reward_pet_1)) {
@@ -715,14 +717,10 @@ class BattleNpcsController extends Controller
 
 											// Verifica os créditos do jogador.
 											$player->achievement_check("credits");
-											// Objetivo de Round
-											$player->check_objectives("credits");
 										}
 
 										// Verifica a arena do jogador.
 										$player->achievement_check("challenges");
-										// Objetivo de Round
-										$player->check_objectives("challenges");
 									}
 								}
 							}
@@ -760,14 +758,18 @@ class BattleNpcsController extends Controller
 										}
 										$player->earn($challenge_money);
 									}
+
 									// Equipamento
-									if ($player_challenge->quantity > 10 && $player_challenge->quantity < 21) {
+									if ($player_challenge->quantity > 20 && $player_challenge->quantity < 25) {
 										Item::generate_equipment($player, 0);
-									} elseif ($player_challenge->quantity > 20 && $player_challenge->quantity < 46) {
+									} elseif ($player_challenge->quantity > 25 && $player_challenge->quantity < 65) {
 										Item::generate_equipment($player, 1);
-									} elseif ($player_challenge->quantity > 65) {
+									} elseif ($player_challenge->quantity > 65 && $player_challenge->quantity < 100) {
 										Item::generate_equipment($player, 2);
+									} elseif ($player_challenge->quantity > 100) {
+										Item::generate_equipment($player, 3);
 									}
+
 									// Mascote
 									if ($player_challenge->quantity > 45 && $player_challenge->quantity < 81) {
 										if (!$player->has_item($challenge->reward_pet_1)) {
@@ -810,14 +812,10 @@ class BattleNpcsController extends Controller
 
 										// Verifica os créditos do jogador.
 										$player->achievement_check("credits");
-										// Objetivo de Round
-										$player->check_objectives("credits");
 									}
 
 									// Verifica a arena do jogador.
 									$player->achievement_check("challenges");
-									// Objetivo de Round
-									$player->check_objectives("challenges");
 								}
 							} else {
 								if (__check_dead($npc)) {
@@ -832,8 +830,6 @@ class BattleNpcsController extends Controller
 
 										// Verifica a arena do jogador.
 										$player->achievement_check("challenges");
-										// Objetivo de Round
-										$player->check_objectives("challenges");
 									}
 								}
 							}

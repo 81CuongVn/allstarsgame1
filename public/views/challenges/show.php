@@ -7,17 +7,17 @@
 				<span class="challege_amarelo">Melhor jogador:</span><span class="challege_azul"><img src="<?php echo image_url('icons/crown.png')?>" width="16" style="margin-top:-2px"/> <?php echo $player_best_all->name?> - <?php echo $challenge_best_all->quantity?>º Andar</span>
 			</div>
 			<div class="challenge_texto">
-				<span class="challege_amarelo">Seu maior andar:</span><span class="challege_azul"><?php echo $challenge_best->quantity?>º Andar</span>
+				<span class="challege_amarelo">Seu maior andar:</span><span class="challege_azul"><?=($challenge_best->quantity ? $challenge_best->quantity . 'º Andar' : '-');?></span>
 			</div>
 			<div class="challenge_texto">
-				<span class="challege_amarelo">Seu andar atual:</span><span class="challege_azul"><?php echo $challenge_active->quantity?>º Andar</span>
+				<span class="challege_amarelo">Seu andar atual:</span><span class="challege_azul"><?=($challenge_active->quantity ? $challenge_active->quantity . 'º Andar' : '-');?></span>
 			</div>
 			<div class="challenge_texto">
 				<span class="challege_amarelo">Recompensa atual:</span>
 			</div>
 			<div class="challenge-star">
-			
-				<?php 
+
+				<?php
 				foreach($rewards as $reward){
 				?>
 				<div class="challenge-float">
@@ -26,28 +26,36 @@
 					<div id="tooltip-star-<?php echo $reward['quantity']?>" class="status-popover-container">
 						<div class="status-popover-content">
 							<ul>
-								<li>Experiência: <?php echo highamount($reward['exp'])?></li>
+								<?php if (
+									!$reward['exp'] && !$reward['money'] && !$reward['equipments'] &&
+									!$reward['pets'] && !$reward['title'] && !$reward['star']
+								) { ?>
+									<li style="text-align: center;">Nenhuma recompensa</li>
+								<?php } ?>
+								<?php if ($reward['exp']) { ?>
+									<li>Experiência: <span class="branco"><?php echo highamount($reward['exp'])?></span></li>
+								<?php } ?>
 								<?php if($reward['money']){?>
-									<li><?php echo t('currencies.' . $player->character()->anime_id) ?>: <?php echo highamount($reward['money'])?></li>
+									<li><?php echo t('currencies.' . $player->character()->anime_id) ?>: <span class="branco"><?php echo highamount($reward['money'])?></span></li>
 								<?php }?>
-								<?php if($reward['equipments']){?>	
-									<li>Equipamento: <?php echo $reward['equipments']?></li>
+								<?php if($reward['equipments']){?>
+									<li>Equipamento: <span class="branco"><?php echo $reward['equipments']?></span></li>
 								<?php }?>
 								<?php if($reward['pets']){?>
-									<li>Mascote: <?php echo $reward['pets']?></li>
+									<li>Mascote: <span class="branco"><?php echo $reward['pets']?></span></li>
 								<?php }?>
-								<?php if($reward['title']){?>	
-									<li>Título: <?php echo $reward['title']?></li>
+								<?php if($reward['title']){?>
+									<li>Título: <span class="branco"><?php echo $reward['title']?></span></li>
 								<?php }?>
-								<?php if($reward['star']){?>		
-									<li>Estrela: <?php echo $reward['star']?></li>
-								<?php }?>	
-							</ul> 
+								<?php if($reward['star']){?>
+									<li>Estrela: <span class="branco"><?php echo $reward['star']?></span></li>
+								<?php }?>
+							</ul>
 						</div>
 					</div>
 				</div>
 				<?php }?>
-			</div>	
+			</div>
 		</div>
 	</div>
 </div>

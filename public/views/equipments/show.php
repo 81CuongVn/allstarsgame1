@@ -1,44 +1,38 @@
-<?php if ($is_valid): ?>
-	<?php if (!sizeof($equipments)): ?>
-		<span class="branco"><?php echo t('equipments.show.none') ?></span>
-	<?php else: ?>
+<?php if ($is_valid) { ?>
+	<?php if (!sizeof($equipments)) { ?>
+		<span class="branco"><?=t('equipments.show.none');?></span>
+	<?php } else { ?>
 		<div id="equipment-list">
-			<?php foreach ($equipments as $equipment): 
-				  $destroy = 0;	
+			<?php
+			foreach ($equipments as $equipment) {
+				$item		= $equipment->item();
+				$attributes	= $equipment->attributes();
+
+				$destroy	= 0;
+				switch ($equipment->rarity) {
+					case "common":		$destroy = 20;	break;
+					case "rare":		$destroy = 40;	break;
+					case "epic":		$destroy = 80;	break;
+					case "legendary":	$destroy = 160;	break;
+				}
 			?>
-				<?php
-					$item		= $equipment->item();
-					$attributes	= $equipment->attributes();
-										
-					switch($equipment->rarity){
-						case "common":
-							$destroy = 10;
-						break;
-						case "rare":
-							$destroy = 20;
-						break;
-						case "legendary":
-							$destroy = 40;
-						break;	
-					
-					}
-						
-				?>
 				<div class="equipment">
-					<?php if ($attributes->is_new): ?>
-						<div class="badge" style="margin: 0; margin-top: -13px; width: 48px;"><?php echo t('global.new') ?></div>
+					<?php if ($attributes->is_new) { ?>
+						<div class="badge">
+							<i class="fa fa-exclamation fa-fw"></i>
+						</div>
 						<?php
-							$attributes->is_new	= 0;
-							$attributes->save();
+						$attributes->is_new	= 0;
+						$attributes->save();
 						?>
-					<?php endif ?>
-					<img width="48" src="<?php echo image_url($item->image(true)) ?>" class="equipment-popover" data-placement="bottom" data-destroy="<?php echo $destroy?>" data-price="<?php echo $item->equipment_sell_price() ?>" data-slot="<?php echo $equipment->slot_name ?>" data-id="<?php echo $equipment->id ?>" data-embed="<?php echo $item->embed() ?>" />
-					<?php echo $item->tooltip() ?>
+					<?php } ?>
+					<img width="48" src="<?=image_url($item->image(true));?>" class="equipment-popover" data-placement="bottom" data-destroy="<?=$destroy;?>" data-price="<?=$item->equipment_sell_price();?>" data-slot="<?=$equipment->slot_name;?>" data-id="<?=$equipment->id;?>" data-embed="<?=$item->embed();?>" />
+					<?=$item->tooltip();?>
 				</div>
-			<?php endforeach ?>
+			<?php } ?>
 		</div>
-	<?php endif ?>
-<?php else: ?>
-	<?php echo t('equipments.show.invalid') ?>
-<?php endif ?>
+	<?php } ?>
+<?php } else { ?>
+	<?=t('equipments.show.invalid');?>
+<?php } ?>
 <div class="break"></div>

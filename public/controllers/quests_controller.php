@@ -17,8 +17,6 @@ class QuestsController extends Controller {
 
 		//Verifica a conquista da missão de combate
 		$player->achievement_check("battle_quests");
-		// Objetivo de Round
-		$player->check_objectives("battle_quests");
 
 		$this->assign('player',			$player);
 		$this->assign('quests',			PlayerCombatQuest::find("finished=0 ORDER BY id ASC"));
@@ -143,8 +141,6 @@ class QuestsController extends Controller {
 			}
 			$this->assign('pets', $player->your_pets());
 			$this->assign('player', $player);
-
-
 		}
 	}
 	function organization_daily(){
@@ -165,13 +161,14 @@ class QuestsController extends Controller {
 	function time() {
 		$player	= Player::get_instance();
 
-		$this->assign('player', $player);
-		$this->assign('extras', $player->attributes());
-		$this->assign('effects', $player->get_parsed_effects());
-		$this->assign('graduations', $player->character()->anime()->graduations());
-		$this->assign('quests', $player->character()->anime()->time_quests());
+		$this->assign('player',				$player);
+		$this->assign('extras',				$player->attributes());
+		$this->assign('effects',			$player->get_parsed_effects());
+		$this->assign('graduations',		$player->character()->anime()->graduations());
+		$this->assign('quests',				$player->character()->anime()->time_quests());
+		$this->assign('player_tutorial',	$player->player_tutorial());
+
 		$this->_generate_time_quest_list($player);
-		$this->assign('player_tutorial', $player->player_tutorial());
 	}
 	function pet() {
 		$player	= Player::get_instance();
@@ -206,8 +203,8 @@ class QuestsController extends Controller {
 					$errors[]	= t('quests.time.errors.finished');
 				if ($quest->req_level > $player->level)
 					$errors[]	= t('quests.time.errors.level');
-				if ($quest->req_graduation_sorting > $player->graduation()->sorting)
-					$errors[]	= t('quests.time.errors.graduation');
+				// if ($quest->req_graduation_sorting > $player->graduation()->sorting)
+				// 	$errors[]	= t('quests.time.errors.graduation');
 			}
 		} else {
 			$errors[]	= t('quests.time.errors.invalid');
@@ -280,7 +277,7 @@ class QuestsController extends Controller {
 
 			redirect_to('characters#status');
 		}
-		
+
 		$player_quest	= $player->player_time_quest($player->time_quest_id);
 		$can_finish		= now() >= strtotime($player_quest->finish_at);
 		$diff			= get_time_difference(now(), strtotime($player_quest->finish_at));
@@ -661,8 +658,6 @@ class QuestsController extends Controller {
 
 							//Verifica a conquista de fragmentos - Conquista
 							$player->achievement_check("daily_quests");
-							// Objetivo de Round
-							$player->check_objectives("daily_quests");
 
 							// Level da Conta ( Missão Diaria )
 							$user = User::get_instance();
@@ -717,8 +712,6 @@ class QuestsController extends Controller {
 
 							//Verifica a conquista de fragmentos - Conquista
 							$player->achievement_check("account_quests");
-							// Objetivo de Round
-							$player->check_objectives("account_quests");
 
 						}else{
 							$errors[]	= t('quests.daily.errors.not_ready');
@@ -769,8 +762,6 @@ class QuestsController extends Controller {
 
 							//Verifica a conquista de fragmentos - Conquista
 							$player->achievement_check("weekly_quests");
-							// Objetivo de Round
-							$player->check_objectives("weekly_quests");
 
 						}else{
 							$errors[]	= t('quests.daily.errors.not_ready');
@@ -801,11 +792,11 @@ class QuestsController extends Controller {
 		$this->json->messages	= [];
 		$errors					= [];
 
-		if(!$can_finish) {
+		if (!$can_finish) {
 			$errors[]	= t('quests.time.errors.not_ready');
 		}
 
-		if(!sizeof($errors)) {
+		if (!sizeof($errors)) {
 			$this->json->success		= TRUE;
 
 			$player_quest->finished_at	= now(TRUE);
@@ -842,10 +833,8 @@ class QuestsController extends Controller {
 			$counters->time_total++;
 			$counters->save();
 
-			//Verifica a conquista de fragmentos - Conquista
+			// Verifica a conquista de fragmentos - Conquista
 			$player->achievement_check("time_quests");
-			// Objetivo de Round
-			$player->check_objectives("time_quests");
 
 			$this->_give_item_reward($player, $player_quest);
 		} else {
@@ -853,21 +842,21 @@ class QuestsController extends Controller {
 		}
 	}
 	function pet_finish() {
+		$user					= User::get_instance();
 		$player					= Player::get_instance();
+
 		$this->as_json			= true;
 		$this->json->success	= false;
 		$this->json->messages	= [];
 		$errors					= [];
 
-		if(isset($_POST['id']) && is_numeric($_POST['id'])) {
+		if (isset($_POST['id']) && is_numeric($_POST['id'])) {
 			$quest	= PetQuest::find($_POST['id']);
-
-			if(!$quest) {
+			if (!$quest) {
 				$errors[]				= t('quests.time.errors.invalid');
 			} else {
-				$player_quest_pet		= PlayerPetQuest::find_first("completed = 0 AND player_id=".$player->id." AND success_at is not null AND pet_quest_id=".$quest->id);
-
-				if(!$player_quest_pet){
+				$player_quest_pet		= PlayerPetQuest::find_first("completed = 0 and player_id = {$player->id} and success_at is not null and pet_quest_id = " . $quest->id);
+				if (!$player_quest_pet) {
 					$errors[]	= t('quests.time.errors.invalid');
 				}
 			}
@@ -875,28 +864,25 @@ class QuestsController extends Controller {
 			$errors[]	= t('quests.time.errors.invalid');
 		}
 
-
-		if(!sizeof($errors)) {
+		if (!sizeof($errors)) {
 			$this->json->success	= true;
 
-			//Finaliza a missão!
+			// Finaliza a missão!
 			$player_quest_pet->completed = 1;
 			$player_quest_pet->finished_at	= now(true);
 			$player_quest_pet->save();
 
 			// Adiciona o contador das quests de pets
-			if($player_quest_pet->success){
+			if ($player_quest_pet->success) {
 				$counters	= $player->quest_counters();
 				$counters->pet_total++;
 				$counters->save();
 			}
 
-			//Verifica a conquista de fragmentos - Conquista
+			// Verifica a conquista de fragmentos - Conquista
 			$player->achievement_check("pet_quests");
-			// Objetivo de Round
-			$player->check_objectives("pet_quests");
 
-			# Removendo os pets do trabalho e adicionando a exp e felicidades deles
+			// Removendo os pets do trabalho e adicionando a exp e felicidades deles
 			for ($i = 1; $i <= 3; ++$i) {
 				$petID = 'pet_id_' . $i;
 				$actualPetID = $player_quest_pet->$petID;
@@ -905,9 +891,10 @@ class QuestsController extends Controller {
 					if ($quest->pet_exp && $player_quest_pet->success) {
 						$actualPet->exp	+= $quest->pet_exp;
 
-						# Evolui o Pet
+						// Evolui o Pet
 						$player->check_pet_level($actualPet);
 					}
+
 					if ($quest->pet_happiness && $player_quest_pet->success) {
 						$actualPet->happiness	+= $quest->pet_happiness;
 						$actualPet->happiness	=  $actualPet->happiness > 100 ? 100 : $actualPet->happiness;
@@ -917,86 +904,89 @@ class QuestsController extends Controller {
 				}
 			}
 
-			//Adiciona o Dinheiro do jogador
-			if ($quest->currency && $player_quest_pet->success)
-				$player->earn($quest->currency);
+			// A missão foi bem sucedida
+			if ($player_quest_pet->success) {
+				// Adiciona o Dinheiro do jogador
+				if ($quest->currency)
+					$player->earn($quest->currency);
 
-				//Adiciona a Experiência do jogador
-			if ($quest->exp && $player_quest_pet->success) {
-				$player->exp	+= $quest->exp;
-				$player->save();
-			}
-			//Adiciona créditos para o jogador
-			if($quest->credits && $player_quest_pet->success) {
-				$user = User::find_first("id=". $player->user_id);
-				$user->earn($quest->credits);
-			}
-			//Prêmios ( EQUIPS )
-			if ($quest->equipment && $player_quest_pet->success) {
-				if($quest->equipment == 1){
-					$dropped  = Item::generate_equipment($player);
-				}elseif($quest->equipment==2){
-					$dropped  = Item::generate_equipment($player,0);
-				}elseif($quest->equipment==3){
-					$dropped  = Item::generate_equipment($player,1);
-				}elseif($quest->equipment==4){
-					$dropped  = Item::generate_equipment($player,2);
+				// Adiciona a Experiência do jogador
+				if ($quest->exp) {
+					$player->exp	+= $quest->exp;
+					$player->save();
 				}
-			}
-			//Prêmios ( PETS )
-			if ($quest->item_id && $quest->pets && $player_quest_pet->success) {
-				if (!$player->has_item($quest->item_id)) {
-					$npc_pet = Item::find($quest->item_id);
-
-					$player_pet				= new PlayerItem();
-					$player_pet->item_id	= $npc_pet->id;
-					$player_pet->player_id	= $player->id;
-					$player_pet->save();
-				}
-			}
-			//Prêmios ( CHARACTERS )
-			if ($quest->character_id && $player_quest_pet->success) {
-				$reward_character				= new UserCharacter();
-				$reward_character->user_id		= $player->user_id;
-				$reward_character->character_id	= $quest->character_id;
-				$reward_character->was_reward	= 1;
-				$reward_character->save();
-			}
-			//Prêmios ( THEME )
-			if ($quest->character_theme_id && $player_quest_pet->success) {
-				$reward_theme						= new UserCharacterTheme();
-				$reward_theme->user_id				= $player->user_id;
-				$reward_theme->character_theme_id	= $quest->character_theme_id;
-				$reward_theme->was_reward			= 1;
-				$reward_theme->save();
-			}
-			//Prêmios ( TITULOS )
-			if ($quest->headline_id && $player_quest_pet->success) {
-				$reward_headline				= new UserHeadline();
-				$reward_headline->user_id		= $player->user_id;
-				$reward_headline->headline_id	= $quest->headline_id;
-				$reward_headline->save();
-			}
-			//Prêmios ( ITEMS )
-			if ($quest->item_id && !$quest->pets && $player_quest_pet->success) {
-
-				$player_item_exist			= PlayerItem::find_first("item_id=".$quest->item_id." AND player_id=". $player->id);
-
-				if(!$player_item_exist){
-					$player_item			= new PlayerItem();
-					$player_item->item_id	= $quest->item_id;
-					$player_item->quantity	= $quest->quantity;
-					$player_item->player_id	= $player->id;
-					$player_item->save();
-				}else{
-					$player_item_exist->quantity += $quest->quantity;
-					$player_item_exist->save();
+				// Adiciona créditos para o jogador
+				if ($quest->credits) {
+					$user->earn($quest->credits);
 				}
 
-				/*if ($reward_item_instance->item_type_id == 1) {
-					$player_item->removed	= 1;
-				}*/
+				// Prêmios ( EQUIPS )
+				if ($quest->equipment) {
+					if ($quest->equipment == 1) {
+						$dropped  = Item::generate_equipment($player);
+					} elseif ($quest->equipment == 2) {
+						$dropped  = Item::generate_equipment($player, 0);
+					} elseif ($quest->equipment == 3) {
+						$dropped  = Item::generate_equipment($player, 1);
+					} elseif ($quest->equipment == 4) {
+						$dropped  = Item::generate_equipment($player, 2);
+					} elseif ($quest->equipment == 5) {
+						$dropped  = Item::generate_equipment($player, 3);
+					}
+				}
 
+				// Prêmios ( PETS )
+				if ($quest->item_id && $quest->pets) {
+					if (!$player->has_item($quest->item_id)) {
+						$npc_pet = Item::find($quest->item_id);
+
+						$player_pet				= new PlayerItem();
+						$player_pet->item_id	= $npc_pet->id;
+						$player_pet->player_id	= $player->id;
+						$player_pet->save();
+					}
+				}
+
+				// Prêmios ( CHARACTERS )
+				if ($quest->character_id && !$user->is_character_bought($quest->character_id)) {
+					$reward_character				= new UserCharacter();
+					$reward_character->user_id		= $player->user_id;
+					$reward_character->character_id	= $quest->character_id;
+					$reward_character->was_reward	= 1;
+					$reward_character->save();
+				}
+
+				// Prêmios ( THEME )
+				if ($quest->character_theme_id && !$user->is_theme_bought($quest->character_theme_id)) {
+					$reward_theme						= new UserCharacterTheme();
+					$reward_theme->user_id				= $player->user_id;
+					$reward_theme->character_theme_id	= $quest->character_theme_id;
+					$reward_theme->was_reward			= 1;
+					$reward_theme->save();
+				}
+
+				// Prêmios ( TITULOS )
+				if ($quest->headline_id && !$user->is_headline_bought($quest->headline_id)) {
+					$reward_headline				= new UserHeadline();
+					$reward_headline->user_id		= $player->user_id;
+					$reward_headline->headline_id	= $quest->headline_id;
+					$reward_headline->save();
+				}
+
+				// Prêmios ( ITEMS )
+				if ($quest->item_id && !$quest->pets) {
+					$player_item_exist			= PlayerItem::find_first("item_id=".$quest->item_id." AND player_id=". $player->id);
+					if (!$player_item_exist) {
+						$player_item			= new PlayerItem();
+						$player_item->item_id	= $quest->item_id;
+						$player_item->quantity	= $quest->quantity;
+						$player_item->player_id	= $player->id;
+						$player_item->save();
+					} else {
+						$player_item_exist->quantity += $quest->quantity;
+						$player_item_exist->save();
+					}
+				}
 			}
 		} else {
 			$this->json->messages	= $errors;
@@ -1206,8 +1196,6 @@ class QuestsController extends Controller {
 
 			//Verifica a conquista de fragmentos - Conquista
 			$player->achievement_check("pvp_quests");
-			// Objetivo de Round
-			$player->check_objectives("pvp_quests");
 
 			$this->_give_item_reward($player, $player_quest);
 		} else {

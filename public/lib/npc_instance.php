@@ -385,9 +385,9 @@ class NpcInstance {
 
 	function battle_exp($win = false) {
 		if ($win) {
-			$exp	= (250 - ($this->level * 5) + $this->level) * 2;
+			$exp	= (250 - ($this->level * 5) + $this->level);
 		} else {
-			$exp	= (200 - ($this->level * 5) + $this->level) * 2;
+			$exp	= (200 - ($this->level * 5) + $this->level);
 		}
 
 		if ($exp < 0) {
@@ -399,9 +399,9 @@ class NpcInstance {
 
 	function battle_currency($win = false) {
 		if ($win) {
-			$currency	= (10 + ($this->level * 4) + 1) * 2;
+			$currency	= (10 + ($this->level * 4) + 1);
 		} else {
-			$currency	= (5 + ($this->level * 4) + 1) * 2;
+			$currency	= (5 + ($this->level * 4) + 1);
 		}
 
 		return floor($currency * MONEY_RATE);

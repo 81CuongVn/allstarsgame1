@@ -117,8 +117,6 @@ class Player extends Relation {
 
 					// Checa a conquista de level do player
 					$this->achievement_check('level_player');
-					// Checa a conquista de level do player
-					$this->check_objectives('level_player');
 				// }
 			}
 		}
@@ -162,1160 +160,17 @@ class Player extends Relation {
 
 		# Send welcome message to player
 		$this->welcome_message();
-
-		# If need, ass round objectives to user account
-		$user	= User::find_first('id=' . $this->user_id);
-		if (!$user->objectives) {
-			$objectives = Achievement::find("type = 'objectives'", [
-				'reorder'	=> 'RAND()',
-				'limit'		=> 10
-			]);
-			foreach ($objectives as $objective) {
-				$insert	= new UserObjective();
-				$insert->user_id		= $user->id;
-				$insert->objective_id	= $objective->id;
-				$insert->save();
-			}
-
-			$user->objectives = 1;
-			$user->save();
-		}
 	}
 
-	function check_objectives($arch_type = NULL){
-		switch($arch_type) {
+	function achievement_check($arch_type = NULL) {
+		switch ($arch_type) {
 			case "level_player":
-				$achievements = Achievement::find("level_player > 0 AND type='objectives'");
-				foreach($achievements as $achievement){
-					$user_objective = UserObjective::find_first("objective_id=".$achievement->id." AND user_id=".$this->user_id." AND complete=0");
-					if($user_objective){
-						if($this->level >= $achievement->level_player ){
-							$user_objective->complete = 1;
-							$user_objective->completed_at = now(true);
-							$user_objective->save();
-
-							//Recompensa
-							$user	= User::get_instance();
-							$user->round_points(1);
-
-							// Envia uma mensagem para o jogador avisando do prêmio
-							$pm				= new PrivateMessage();
-							$pm->to_id		= $this->id;
-							$pm->subject	= "Objetivo: ". $achievement->description()->name;
-							$pm->content	= "Você completou o Objetivo de Round: <b>". $achievement->description()->name ."</b>";
-							$pm->save();
-						}
-					}
-				}
-				break;
-			case "level_account":
-				$achievements = Achievement::find("level_account > 0 AND type='objectives'");
-				foreach($achievements as $achievement){
-					$user_objective = UserObjective::find_first("objective_id=".$achievement->id." AND user_id=".$this->user_id." AND complete=0");
-					$user = User::find_first("id=".$this->user_id);
-					if($user_objective){
-						if($user->level >= $achievement->level_account ){
-							$user_objective->complete = 1;
-							$user_objective->completed_at = now(true);
-							$user_objective->save();
-
-							//Recompensa
-							$user	= User::get_instance();
-							$user->round_points(1);
-
-							// Envia uma mensagem para o jogador avisando do prêmio
-							$pm				= new PrivateMessage();
-							$pm->to_id		= $this->id;
-							$pm->subject	= "Objetivo: ". $achievement->description()->name;
-							$pm->content	= "Você completou o Objetivo de Round: <b>". $achievement->description()->name ."</b> ";
-							$pm->save();
-						}
-					}
-				}
-				break;
-			case "tutorial":
-				$achievements = Achievement::find("tutorial > 0 AND type='objectives'");
-				foreach($achievements as $achievement){
-					$user_objective = UserObjective::find_first("objective_id=".$achievement->id." AND user_id=".$this->user_id." AND complete=0");
-					if($user_objective){
-						$player_stat = PlayerStat::find_first("player_id=". $this->id);
-						if($player_stat->tutorial){
-							$user_objective->complete = 1;
-							$user_objective->completed_at = now(true);
-							$user_objective->save();
-
-							//Recompensa
-							$user	= User::get_instance();
-							$user->round_points(1);
-
-							// Envia uma mensagem para o jogador avisando do prêmio
-							$pm				= new PrivateMessage();
-							$pm->to_id		= $this->id;
-							$pm->subject	= "Objetivo: ". $achievement->description()->name;
-							$pm->content	= "Você completou o Objetivo de Round: <b>". $achievement->description()->name ."</b> ";
-							$pm->save();
-						}
-					}
-				}
-				break;
-			case "map":
-				$achievements = Achievement::find("map > 0 AND type='objectives'");
-				foreach($achievements as $achievement){
-					$user_objective = UserObjective::find_first("objective_id=".$achievement->id." AND user_id=".$this->user_id." AND complete=0");
-					if($user_objective){
-						if($achievement->anime_id && $achievement->map==1){
-							$player_map_anime = PlayerMapLog::find("player_id=". $this->id." AND anime_id=".$achievement->anime_id);
-							if(sizeof($player_map_anime) == $achievement->quantity){
-								$user_objective->complete = 1;
-								$user_objective->completed_at = now(true);
-								$user_objective->save();
-
-								//Recompensa
-								$user	= User::get_instance();
-								$user->round_points(1);
-
-								// Envia uma mensagem para o jogador avisando do prêmio
-								$pm				= new PrivateMessage();
-								$pm->to_id		= $this->id;
-								$pm->subject	= "Objetivo: ". $achievement->description()->name;
-								$pm->content	= "Você completou o Objetivo de Round: <b>". $achievement->description()->name ."</b> ";
-								$pm->save();
-							}
-						}else if($achievement->anime_id && $achievement->map==2 ){
-							$player_map_anime = Recordset::query("select sum(quantity) as total from player_map_logs WHERE anime_id=".$achievement->anime_id." and player_id=".$this->id)->result_array();
-							if($player_map_anime[0]['total'] >= $achievement->quantity){
-								$user_objective->complete = 1;
-								$user_objective->completed_at = now(true);
-								$user_objective->save();
-
-								//Recompensa
-								$user	= User::get_instance();
-								$user->round_points(1);
-
-								// Envia uma mensagem para o jogador avisando do prêmio
-								$pm				= new PrivateMessage();
-								$pm->to_id		= $this->id;
-								$pm->subject	= "Objetivo: ". $achievement->description()->name;
-								$pm->content	= "Você completou o Objetivo de Round: <b>". $achievement->description()->name ."</b> ";
-								$pm->save();
-							}
-
-
-						}else if(!$achievement->anime_id && $achievement->map==2){
-							$player_map_anime = Recordset::query("select sum(quantity) as total from player_map_logs WHERE player_id=".$this->id)->result_array();
-							if($player_map_anime[0]['total'] >= $achievement->quantity){
-								$user_objective->complete = 1;
-								$user_objective->completed_at = now(true);
-								$user_objective->save();
-
-								//Recompensa
-								$user	= User::get_instance();
-								$user->round_points(1);
-
-								// Envia uma mensagem para o jogador avisando do prêmio
-								$pm				= new PrivateMessage();
-								$pm->to_id		= $this->id;
-								$pm->subject	= "Objetivo: ". $achievement->description()->name;
-								$pm->content	= "Você completou o Objetivo de Round: <b>". $achievement->description()->name ."</b> ";
-								$pm->save();
-							}
-						}
-					}
-				}
-				break;
-			case "credits":
-				$achievements = Achievement::find("credits > 0 AND type='objectives'");
-				foreach($achievements as $achievement){
-					$user_objective = UserObjective::find_first("objective_id=".$achievement->id." AND user_id=".$this->user_id." AND complete=0");
-					if($user_objective){
-						$user = User::find_first("id=".$this->user_id);
-						if($user->credits >= $achievement->quantity ){
-							$user_objective->complete = 1;
-							$user_objective->completed_at = now(true);
-							$user_objective->save();
-
-							//Recompensa
-							$user	= User::get_instance();
-							$user->round_points(1);
-
-							// Envia uma mensagem para o jogador avisando do prêmio
-							$pm				= new PrivateMessage();
-							$pm->to_id		= $this->id;
-							$pm->subject	= "Objetivo: ". $achievement->description()->name;
-							$pm->content	= "Você completou o Objetivo de Round: <b>". $achievement->description()->name ."</b> ";
-							$pm->save();
-						}
-					}
-				}
-				break;
-			case "currency":
-				$achievements = Achievement::find("currency > 0 AND type='objectives'");
-				foreach($achievements as $achievement){
-					$user_objective = UserObjective::find_first("objective_id=".$achievement->id." AND user_id=".$this->user_id." AND complete=0");
-					if($user_objective){
-						if($this->currency >= $achievement->quantity ){
-							$user_objective->complete = 1;
-							$user_objective->completed_at = now(true);
-							$user_objective->save();
-
-							//Recompensa
-							$user	= User::get_instance();
-							$user->round_points(1);
-
-							// Envia uma mensagem para o jogador avisando do prêmio
-							$pm				= new PrivateMessage();
-							$pm->to_id		= $this->id;
-							$pm->subject	= "Objetivo: ". $achievement->description()->name;
-							$pm->content	= "Você completou o Objetivo de Round: <b>". $achievement->description()->name ."</b> ";
-							$pm->save();
-						}
-					}
-				}
-				break;
-			case "pets":
-				$achievements = Achievement::find("pets > 0 AND type='objectives'");
-				foreach($achievements as $achievement){
-					$user_objective = UserObjective::find_first("objective_id=".$achievement->id." AND user_id=".$this->user_id." AND complete=0");
-					if($user_objective){
-						// Só quer saber a quantidade de pets
-						if($achievement->quantity && !$achievement->item_id && !$achievement->rarity && !$achievement->happiness){
-							if(sizeof($this->your_pets_achievement()) >= $achievement->quantity){
-								$user_objective->complete = 1;
-								$user_objective->completed_at = now(true);
-								$user_objective->save();
-
-								//Recompensa
-								$user	= User::get_instance();
-								$user->round_points(1);
-
-								// Envia uma mensagem para o jogador avisando do prêmio
-								$pm				= new PrivateMessage();
-								$pm->to_id		= $this->id;
-								$pm->subject	= "Objetivo: ". $achievement->description()->name;
-								$pm->content	= "Você completou o Objetivo de Round: <b>". $achievement->description()->name ."</b> ";
-								$pm->save();
-							}
-							// Quer saber um pet especifico
-						}else if($achievement->item_id && !$achievement->happiness && !$achievement->quantity && !$achievement->rarity){
-							if(sizeof($this->your_pets_achievement(NULL, NULL, $achievement->item_id))){
-								$user_objective->complete = 1;
-								$user_objective->completed_at = now(true);
-								$user_objective->save();
-
-								//Recompensa
-								$user	= User::get_instance();
-								$user->round_points(1);
-
-								// Envia uma mensagem para o jogador avisando do prêmio
-								$pm				= new PrivateMessage();
-								$pm->to_id		= $this->id;
-								$pm->subject	= "Objetivo: ". $achievement->description()->name;
-								$pm->content	= "Você completou o Objetivo de Round: <b>". $achievement->description()->name ."</b> ";
-								$pm->save();
-							}
-							// Quer saber a quantidade de pets por raridade
-						}else if($achievement->quantity && !$achievement->item_id && $achievement->rarity && !$achievement->happiness){
-							if(sizeof($this->your_pets_achievement($achievement->rarity)) >= $achievement->quantity){
-								$user_objective->complete = 1;
-								$user_objective->completed_at = now(true);
-								$user_objective->save();
-
-								//Recompensa
-								$user	= User::get_instance();
-								$user->round_points(1);
-
-								// Envia uma mensagem para o jogador avisando do prêmio
-								$pm				= new PrivateMessage();
-								$pm->to_id		= $this->id;
-								$pm->subject	= "Objetivo: ". $achievement->description()->name;
-								$pm->content	= "Você completou o Objetivo de Round: <b>". $achievement->description()->name ."</b> ";
-								$pm->save();
-							}
-						}else if($achievement->quantity && !$achievement->item_id && !$achievement->rarity && $achievement->happiness){
-							if(sizeof($this->your_pets_achievement(NULL, $achievement->happiness)) >= $achievement->quantity){
-								$user_objective->complete = 1;
-								$user_objective->completed_at = now(true);
-								$user_objective->save();
-
-								//Recompensa
-								$user	= User::get_instance();
-								$user->round_points(1);
-
-								// Envia uma mensagem para o jogador avisando do prêmio
-								$pm				= new PrivateMessage();
-								$pm->to_id		= $this->id;
-								$pm->subject	= "Objetivo: ". $achievement->description()->name;
-								$pm->content	= "Você completou o Objetivo de Round: <b>". $achievement->description()->name ."</b> ";
-								$pm->save();
-							}
-						}
-					}
-				}
-				break;
-			case "battle_npc":
-				$achievements = Achievement::find("battle_npc > 0 AND type='objectives'");
-				foreach($achievements as $achievement){
-					$user_objective = UserObjective::find_first("objective_id=".$achievement->id." AND user_id=".$this->user_id." AND complete=0");
-					if($user_objective){
-						// Só quer saber a quantidade de npcs
-						if($achievement->battle_npc && !$achievement->anime_id && !$achievement->character_id){
-							if($this->wins_npc >= $achievement->quantity ){
-								$user_objective->complete = 1;
-								$user_objective->completed_at = now(true);
-								$user_objective->save();
-
-								//Recompensa
-								$user	= User::get_instance();
-								$user->round_points(1);
-
-								// Envia uma mensagem para o jogador avisando do prêmio
-								$pm				= new PrivateMessage();
-								$pm->to_id		= $this->id;
-								$pm->subject	= "Objetivo: ". $achievement->description()->name;
-								$pm->content	= "Você completou o Objetivo de Round: <b>". $achievement->description()->name ."</b> ";
-								$pm->save();
-							}
-						}
-					}
-				}
-				break;
-			case "battle_pvp":
-				$achievements = Achievement::find("battle_pvp > 0 AND type='objectives'");
-				foreach($achievements as $achievement){
-					$can = false;
-					$user_objective = UserObjective::find_first("objective_id=".$achievement->id." AND user_id=".$this->user_id." AND complete=0");
-					if($user_objective){
-
-						// Só quer saber a quantidade de pvps
-						if($achievement->battle_pvp && !$achievement->anime_id && !$achievement->character_id && !$achievement->faction_id){
-
-							if($this->wins_pvp >= $achievement->quantity ){
-								$can = true;
-							}
-							// Quer saber a quantidade de pvps com determinada facção
-						}else if($achievement->battle_pvp && !$achievement->anime_id && !$achievement->character_id && $achievement->faction_id){
-
-							$user_objective_stats = Recordset::query("select sum(quantity) as total from player_achievement_stats WHERE player_id=".$this->id." AND faction_id=".$achievement->faction_id)->result_array();
-
-							if($user_objective_stats[0]['total'] >= $achievement->quantity ){
-
-								$can = true;
-							}
-						}else if($achievement->battle_pvp && $achievement->anime_id && !$achievement->character_id && !$achievement->faction_id){
-							$user_objective_stats = Recordset::query("select sum(quantity) as total from player_achievement_stats WHERE player_id=".$this->id." AND anime_id=".$achievement->anime_id)->result_array();
-
-							if($user_objective_stats[0]['total'] >= $achievement->quantity ){
-								$can = true;
-							}
-						}else if($achievement->battle_pvp && !$achievement->anime_id && $achievement->character_id && !$achievement->faction_id){
-							$user_objective_stats = Recordset::query("select sum(quantity) as total from player_achievement_stats WHERE player_id=".$this->id." AND character_id=".$achievement->character_id)->result_array();
-
-							if($user_objective_stats[0]['total'] >= $achievement->quantity ){
-								$can = true;
-							}
-						}
-						if($can){
-							$user_objective->complete = 1;
-							$user_objective->completed_at = now(true);
-							$user_objective->save();
-
-							//Recompensa
-							$user	= User::get_instance();
-							$user->round_points(1);
-
-							// Envia uma mensagem para o jogador avisando do prêmio
-							$pm				= new PrivateMessage();
-							$pm->to_id		= $this->id;
-							$pm->subject	= "Objetivo: ". $achievement->description()->name;
-							$pm->content	= "Você completou o Objetivo de Round: <b>". $achievement->description()->name ."</b> ";
-							$pm->save();
-						}
-					}
-				}
-				break;
-			case "history_mode":
-				$achievements = Achievement::find("history_mode > 0 AND type='objectives'");
-				foreach($achievements as $achievement){
-					$user_objective = UserObjective::find_first("objective_id=".$achievement->id." AND user_id=".$this->user_id." AND complete=0");
-					if($user_objective){
-						$user_history_mode_subgroup = UserHistoryModeSubgroup::find_first("history_mode_subgroup_id=".$achievement->history_mode." AND user_id=".$this->user_id." AND complete=1");
-						if($user_history_mode_subgroup){
-							$user_objective->complete = 1;
-							$user_objective->completed_at = now(true);
-							$user_objective->save();
-
-							//Recompensa
-							$user	= User::get_instance();
-							$user->round_points(1);
-
-							// Envia uma mensagem para o jogador avisando do prêmio
-							$pm				= new PrivateMessage();
-							$pm->to_id		= $this->id;
-							$pm->subject	= "Objetivo: ". $achievement->description()->name;
-							$pm->content	= "Você completou o Objetivo de Round: <b>". $achievement->description()->name ."</b> ";
-							$pm->save();
-						}
-					}
-				}
-				break;
-			case "challenges":
-				$achievements = Achievement::find("challenges > 0 AND type='objectives'");
-				foreach($achievements as $achievement){
-					$user_objective = UserObjective::find_first("objective_id=".$achievement->id." AND user_id=".$this->user_id." AND complete=0");
-					if($user_objective){
-						$player_challenge = PlayerChallenge::find_first("challenge_id=".$achievement->challenges." AND player_id=".$this->id ." ORDER BY quantity desc");
-						if($player_challenge){
-							if($player_challenge->quantity >= $achievement->challenges_floor){
-								$user_objective->complete = 1;
-								$user_objective->completed_at = now(true);
-								$user_objective->save();
-
-								//Recompensa
-								$user	= User::get_instance();
-								$user->round_points(1);
-
-								// Envia uma mensagem para o jogador avisando do prêmio
-								$pm				= new PrivateMessage();
-								$pm->to_id		= $this->id;
-								$pm->subject	= "Objetivo: ". $achievement->description()->name;
-								$pm->content	= "Você completou o Objetivo de Round: <b>". $achievement->description()->name ."</b> ";
-								$pm->save();
-							}
-						}
-					}
-				}
-				break;
-			case "organization":
-				$achievements = Achievement::find("organization > 0 AND type='objectives'");
-				foreach($achievements as $achievement){
-					$user_objective = UserObjective::find_first("objective_id=".$achievement->id." AND user_id=".$this->user_id." AND complete=0");
-					if($user_objective){
-						if($this->organization_id){
-							$user_objective->complete = 1;
-							$user_objective->completed_at = now(true);
-							$user_objective->save();
-
-							//Recompensa
-							$user	= User::get_instance();
-							$user->round_points(1);
-
-							// Envia uma mensagem para o jogador avisando do prêmio
-							$pm				= new PrivateMessage();
-							$pm->to_id		= $this->id;
-							$pm->subject	= "Objetivo: ". $achievement->description()->name;
-							$pm->content	= "Você completou o Objetivo de Round: <b>". $achievement->description()->name ."</b> ";
-							$pm->save();
-						}
-					}
-				}
-				break;
-			case "treasure":
-				$achievements = Achievement::find("treasure > 0 AND type='objectives'");
-				foreach($achievements as $achievement){
-					$user_objective = UserObjective::find_first("objective_id=".$achievement->id." AND user_id=".$this->user_id." AND complete=0");
-					if($user_objective){
-						if($this->treasure_total >= $achievement->quantity){
-							$user_objective->complete = 1;
-							$user_objective->completed_at = now(true);
-							$user_objective->save();
-
-							//Recompensa
-							$user	= User::get_instance();
-							$user->round_points(1);
-
-							// Envia uma mensagem para o jogador avisando do prêmio
-							$pm				= new PrivateMessage();
-							$pm->to_id		= $this->id;
-							$pm->subject	= "Objetivo: ". $achievement->description()->name;
-							$pm->content	= "Você completou o Objetivo de Round: <b>". $achievement->description()->name ."</b> ";
-							$pm->save();
-						}
-					}
-				}
-				break;
-			case "friends":
-				$achievements = Achievement::find("friends > 0 AND type='objectives'");
-				foreach($achievements as $achievement){
-					$user_objective = UserObjective::find_first("objective_id=".$achievement->id." AND user_id=".$this->user_id." AND complete=0");
-					if($user_objective){
-						if($achievement->friends && !$achievement->friends_send_gifts && !$achievement->friends_received_gifts){
-							$player_friends = Recordset::query("select count(id) as total from player_friend_lists WHERE  player_id=".$this->id)->result_array();
-							if($player_friends[0]['total'] >= $achievement->friends){
-								$user_objective->complete = 1;
-								$user_objective->completed_at = now(true);
-								$user_objective->save();
-
-								//Recompensa
-								$user	= User::get_instance();
-								$user->round_points(1);
-
-								// Envia uma mensagem para o jogador avisando do prêmio
-								$pm				= new PrivateMessage();
-								$pm->to_id		= $this->id;
-								$pm->subject	= "Objetivo: ". $achievement->description()->name;
-								$pm->content	= "Você completou o Objetivo de Round: <b>". $achievement->description()->name ."</b> ";
-								$pm->save();
-							}
-						}else if($achievement->friends && $achievement->friends_send_gifts && !$achievement->friends_received_gifts){
-							$player_send_gifts = Recordset::query("select count(id) as total from player_gift_logs WHERE  player_id=".$this->id)->result_array();
-							if($player_send_gifts[0]['total'] >= $achievement->friends_send_gifts){
-								$user_objective->complete = 1;
-								$user_objective->completed_at = now(true);
-								$user_objective->save();
-
-								//Recompensa
-								$user	= User::get_instance();
-								$user->round_points(1);
-
-								// Envia uma mensagem para o jogador avisando do prêmio
-								$pm				= new PrivateMessage();
-								$pm->to_id		= $this->id;
-								$pm->subject	= "Objetivo: ". $achievement->description()->name;
-								$pm->content	= "Você completou o Objetivo de Round: <b>". $achievement->description()->name ."</b> ";
-								$pm->save();
-							}
-						}else if($achievement->friends && !$achievement->friends_send_gifts && $achievement->friends_received_gifts){
-							$player_receveid_gifts = Recordset::query("select count(id) as total from player_gift_logs WHERE  friend_id=".$this->id)->result_array();
-							if($player_receveid_gifts[0]['total'] >= $achievement->friends_received_gifts){
-								$user_objective->complete = 1;
-								$user_objective->completed_at = now(true);
-								$user_objective->save();
-
-								//Recompensa
-								$user	= User::get_instance();
-								$user->round_points(1);
-
-								// Envia uma mensagem para o jogador avisando do prêmio
-								$pm				= new PrivateMessage();
-								$pm->to_id		= $this->id;
-								$pm->subject	= "Objetivo: ". $achievement->description()->name;
-								$pm->content	= "Você completou o Objetivo de Round: <b>". $achievement->description()->name ."</b> ";
-								$pm->save();
-							}
-						}
-					}
-				}
-				break;
-			case "character":
-				$achievements = Achievement::find("achievements.character > 0 AND type='objectives'");
-				foreach($achievements as $achievement){
-					$user_objective = UserObjective::find_first("objective_id=".$achievement->id." AND user_id=".$this->user_id." AND complete=0");
-					if($user_objective){
-						$user_character = UserCharacter::find_first("user_id=". $this->user_id." AND character_id=".$achievement->character);
-						if($user_character){
-							$user_objective->complete = 1;
-							$user_objective->completed_at = now(true);
-							$user_objective->save();
-
-							//Recompensa
-							$user	= User::get_instance();
-							$user->round_points(1);
-
-							// Envia uma mensagem para o jogador avisando do prêmio
-							$pm				= new PrivateMessage();
-							$pm->to_id		= $this->id;
-							$pm->subject	= "Objetivo: ". $achievement->description()->name;
-							$pm->content	= "Você completou o Objetivo de Round: <b>". $achievement->description()->name ."</b> ";
-							$pm->save();
-						}
-					}
-				}
-				break;
-			case "character_theme":
-				$achievements = Achievement::find("character_theme > 0 AND type='objectives'");
-				foreach($achievements as $achievement){
-					$user_objective = UserObjective::find_first("objective_id=".$achievement->id." AND user_id=".$this->user_id." AND complete=0");
-					if($user_objective){
-						$user_character_theme = UserCharacterTheme::find_first("user_id=". $this->user_id." AND character_theme_id=".$achievement->character_theme);
-						if($user_character_theme){
-							$user_objective->complete = 1;
-							$user_objective->completed_at = now(true);
-							$user_objective->save();
-
-							//Recompensa
-							$user	= User::get_instance();
-							$user->round_points(1);
-
-							// Envia uma mensagem para o jogador avisando do prêmio
-							$pm				= new PrivateMessage();
-							$pm->to_id		= $this->id;
-							$pm->subject	= "Objetivo: ". $achievement->description()->name;
-							$pm->content	= "Você completou o Objetivo de Round: <b>". $achievement->description()->name ."</b> ";
-							$pm->save();
-						}
-					}
-				}
-				break;
-			case "luck":
-				$achievements = Achievement::find("luck > 0 AND type='objectives'");
-				foreach($achievements as $achievement){
-					$user_objective = UserObjective::find_first("objective_id=".$achievement->id." AND user_id=".$this->user_id." AND complete=0");
-					if($user_objective){
-						$player_luck_log = PlayerLuckLog::find_first("player_id=". $this->id." AND luck_reward_id=".$achievement->luck);
-						if($player_luck_log){
-							$user_objective->complete = 1;
-							$user_objective->completed_at = now(true);
-							$user_objective->save();
-
-							//Recompensa
-							$user	= User::get_instance();
-							$user->round_points(1);
-
-							// Envia uma mensagem para o jogador avisando do prêmio
-							$pm				= new PrivateMessage();
-							$pm->to_id		= $this->id;
-							$pm->subject	= "Objetivo: ". $achievement->description()->name;
-							$pm->content	= "Você completou o Objetivo de Round: <b>". $achievement->description()->name ."</b> ";
-							$pm->save();
-						}
-					}
-				}
-				break;
-			case "fragments":
-				$achievements = Achievement::find("fragments > 0 AND type='objectives'");
-				foreach($achievements as $achievement){
-					$user_objective = UserObjective::find_first("objective_id=".$achievement->id." AND user_id=".$this->user_id." AND complete=0");
-					if($user_objective){
-						$player_fragments = PlayerItem::find_first("player_id=". $this->id." AND item_id=446");
-						if($player_fragments){
-							if($achievement->fragments==1){
-								if($player_fragments->quantity >= $achievement->quantity){
-									$user_objective->complete = 1;
-									$user_objective->completed_at = now(true);
-									$user_objective->save();
-
-									//Recompensa
-									$user	= User::get_instance();
-									$user->round_points(1);
-
-									// Envia uma mensagem para o jogador avisando do prêmio
-									$pm				= new PrivateMessage();
-									$pm->to_id		= $this->id;
-									$pm->subject	= "Objetivo: ". $achievement->description()->name;
-									$pm->content	= "Você completou o Objetivo de Round: <b>". $achievement->description()->name ."</b> ";
-									$pm->save();
-								}
-							}
-						}
-						if($achievement->fragments==2){
-							$player_change = PlayerStat::find_first("player_id=".$this->id);
-							if($player_change->fragments >= $achievement->quantity){
-								$user_objective->complete = 1;
-								$user_objective->completed_at = now(true);
-								$user_objective->save();
-
-								//Recompensa
-								$user	= User::get_instance();
-								$user->round_points(1);
-
-								// Envia uma mensagem para o jogador avisando do prêmio
-								$pm				= new PrivateMessage();
-								$pm->to_id		= $this->id;
-								$pm->subject	= "Objetivo: ". $achievement->description()->name;
-								$pm->content	= "Você completou o Objetivo de Round: <b>". $achievement->description()->name ."</b> ";
-								$pm->save();
-							}
-						}
-					}
-				}
-				break;
-			case "wanted":
-				$achievements = Achievement::find("wanted > 0 AND type='objectives'");
-				foreach($achievements as $achievement){
-					$user_objective = UserObjective::find_first("objective_id=".$achievement->id." AND user_id=".$this->user_id." AND complete=0");
-					if($user_objective){
-						if($achievement->wanted==1){
-							$player_wanted = Recordset::query("select count(id) as total from player_wanteds WHERE enemy_id=".$this->id)->result_array();
-							if($player_wanted[0]['total'] >= $achievement->quantity){
-								$user_objective->complete = 1;
-								$user_objective->completed_at = now(true);
-								$user_objective->save();
-
-								//Recompensa
-								$user	= User::get_instance();
-								$user->round_points(1);
-
-								// Envia uma mensagem para o jogador avisando do prêmio
-								$pm				= new PrivateMessage();
-								$pm->to_id		= $this->id;
-								$pm->subject	= "Objetivo: ". $achievement->description()->name;
-								$pm->content	= "Você completou o Objetivo de Round: <b>". $achievement->description()->name ."</b> ";
-								$pm->save();
-							}
-						}
-						if($achievement->wanted==2){
-							$player_change = PlayerStat::find_first("player_id=".$this->id);
-							if($this->won_last_battle >= $achievement->quantity){
-								$user_objective->complete = 1;
-								$user_objective->completed_at = now(true);
-								$user_objective->save();
-
-								//Recompensa
-								$user	= User::get_instance();
-								$user->round_points(1);
-
-								// Envia uma mensagem para o jogador avisando do prêmio
-								$pm				= new PrivateMessage();
-								$pm->to_id		= $this->id;
-								$pm->subject	= "Objetivo: ". $achievement->description()->name;
-								$pm->content	= "Você completou o Objetivo de Round: <b>". $achievement->description()->name ."</b> ";
-								$pm->save();
-							}
-						}
-					}
-				}
-				break;
-			case "sands":
-				$achievements = Achievement::find("sands > 0 AND type='objectives'");
-				foreach($achievements as $achievement){
-					$user_objective = UserObjective::find_first("objective_id=".$achievement->id." AND user_id=".$this->user_id." AND complete=0");
-					if($user_objective){
-						$player_sands = PlayerItem::find_first("player_id=". $this->id." AND item_id=1719");
-						if($player_sands){
-							if($achievement->sands==1){
-								if($player_sands->quantity >= $achievement->quantity){
-									$user_objective->complete = 1;
-									$user_objective->completed_at = now(true);
-									$user_objective->save();
-
-									//Recompensa
-									$user	= User::get_instance();
-									$user->round_points(1);
-
-									// Envia uma mensagem para o jogador avisando do prêmio
-									$pm				= new PrivateMessage();
-									$pm->to_id		= $this->id;
-									$pm->subject	= "Objetivo: ". $achievement->description()->name;
-									$pm->content	= "Você completou o Objetivo de Round: <b>". $achievement->description()->name ."</b> ";
-									$pm->save();
-								}
-							}
-						}
-						if($achievement->sands==2){
-							$player_change = PlayerStat::find_first("player_id=".$this->id);
-							if($player_change->sands >= $achievement->quantity){
-								$user_objective->complete = 1;
-								$user_objective->completed_at = now(true);
-								$user_objective->save();
-
-								//Recompensa
-								$user	= User::get_instance();
-								$user->round_points(1);
-
-								// Envia uma mensagem para o jogador avisando do prêmio
-								$pm				= new PrivateMessage();
-								$pm->to_id		= $this->id;
-								$pm->subject	= "Objetivo: ". $achievement->description()->name;
-								$pm->content	= "Você completou o Objetivo de Round: <b>". $achievement->description()->name ."</b> ";
-								$pm->save();
-							}
-						}
-					}
-				}
-				break;
-			case "bloods":
-				$achievements = Achievement::find("bloods > 0 AND type='objectives'");
-				foreach($achievements as $achievement){
-					$user_objective = UserObjective::find_first("objective_id=".$achievement->id." AND user_id=".$this->user_id." AND complete=0");
-					if($user_objective){
-						$player_bloods = PlayerItem::find_first("player_id=". $this->id." AND item_id=1720");
-						if($player_bloods){
-							if($achievement->bloods==1){
-								if($player_bloods->quantity >= $achievement->quantity){
-									$user_objective->complete = 1;
-									$user_objective->completed_at = now(true);
-									$user_objective->save();
-
-									//Recompensa
-									$user	= User::get_instance();
-									$user->round_points(1);
-
-									// Envia uma mensagem para o jogador avisando do prêmio
-									$pm				= new PrivateMessage();
-									$pm->to_id		= $this->id;
-									$pm->subject	= "Objetivo: ". $achievement->description()->name;
-									$pm->content	= "Você completou o Objetivo de Round: <b>". $achievement->description()->name ."</b> ";
-									$pm->save();
-								}
-							}
-						}
-						if($achievement->bloods==2){
-							$player_change = PlayerStat::find_first("player_id=".$this->id);
-							if($player_change->bloods >= $achievement->quantity){
-								$user_objective->complete = 1;
-								$user_objective->completed_at = now(true);
-								$user_objective->save();
-
-								//Recompensa
-								$user	= User::get_instance();
-								$user->round_points(1);
-
-								// Envia uma mensagem para o jogador avisando do prêmio
-								$pm				= new PrivateMessage();
-								$pm->to_id		= $this->id;
-								$pm->subject	= "Objetivo: ". $achievement->description()->name;
-								$pm->content	= "Você completou o Objetivo de Round: <b>". $achievement->description()->name ."</b> ";
-								$pm->save();
-							}
-						}
-					}
-				}
-				break;
-			case "equipment":
-				$achievements = Achievement::find("equipment > 0 AND type='objectives'");
-				foreach($achievements as $achievement){
-					$user_objective = UserObjective::find_first("objective_id=".$achievement->id." AND user_id=".$this->user_id." AND complete=0");
-					if($user_objective){
-						if($achievement->equipment==1 && $achievement->rarity){
-							$player_equipments = Recordset::query("select count(id) as total from player_items WHERE player_id=".$this->id." AND item_id in (select id from items WHERE item_type_id=8) AND rarity='".$achievement->rarity."'")->result_array();
-							if($player_equipments[0]['total'] >= $achievement->quantity){
-								$user_objective->complete = 1;
-								$user_objective->completed_at = now(true);
-								$user_objective->save();
-
-								//Recompensa
-								$user	= User::get_instance();
-								$user->round_points(1);
-
-								// Envia uma mensagem para o jogador avisando do prêmio
-								$pm				= new PrivateMessage();
-								$pm->to_id		= $this->id;
-								$pm->subject	= "Objetivo: ". $achievement->description()->name;
-								$pm->content	= "Você completou o Objetivo de Round: <b>". $achievement->description()->name ."</b> ";
-								$pm->save();
-							}
-						}elseif($achievement->equipment==1 && !$achievement->rarity){
-							$player_equipments = Recordset::query("select count(id) as total from player_items WHERE player_id=".$this->id." AND item_id in (select id from items WHERE item_type_id=8)")->result_array();
-							if($player_equipments[0]['total'] >= $achievement->quantity){
-								$user_objective->complete = 1;
-								$user_objective->completed_at = now(true);
-								$user_objective->save();
-
-								//Recompensa
-								$user	= User::get_instance();
-								$user->round_points(1);
-
-								// Envia uma mensagem para o jogador avisando do prêmio
-								$pm				= new PrivateMessage();
-								$pm->to_id		= $this->id;
-								$pm->subject	= "Objetivo: ". $achievement->description()->name;
-								$pm->content	= "Você completou o Objetivo de Round: <b>". $achievement->description()->name ."</b> ";
-								$pm->save();
-							}
-						}else{
-							$player_equipments = Recordset::query("select count(id) as total from player_items WHERE player_id=".$this->id." AND item_id in (select id from items WHERE item_type_id=8) AND rarity='".$achievement->rarity."' AND equipped=1")->result_array();
-							if($player_equipments[0]['total'] >= $achievement->quantity){
-								$user_objective->complete = 1;
-								$user_objective->completed_at = now(true);
-								$user_objective->save();
-
-								//Recompensa
-								$user	= User::get_instance();
-								$user->round_points(1);
-
-								// Envia uma mensagem para o jogador avisando do prêmio
-								$pm				= new PrivateMessage();
-								$pm->to_id		= $this->id;
-								$pm->subject	= "Objetivo: ". $achievement->description()->name;
-								$pm->content	= "Você completou o Objetivo de Round: <b>". $achievement->description()->name ."</b> ";
-								$pm->save();
-							}
-						}
-
-					}
-				}
-				break;
-			case "grimoire":
-				$achievements = Achievement::find("grimoire > 0 AND type='objectives'");
-				foreach($achievements as $achievement){
-					$user_objective = UserObjective::find_first("objective_id=".$achievement->id." AND user_id=".$this->user_id." AND complete=0");
-					if($user_objective){
-						$player_grimoire = PlayerItem::find_first("player_id=". $this->id." AND item_id=".$achievement->item_id);
-						if($player_grimoire){
-							$user_objective->complete = 1;
-							$user_objective->completed_at = now(true);
-							$user_objective->save();
-
-							//Recompensa
-							$user	= User::get_instance();
-							$user->round_points(1);
-
-							// Envia uma mensagem para o jogador avisando do prêmio
-							$pm				= new PrivateMessage();
-							$pm->to_id		= $this->id;
-							$pm->subject	= "Objetivo: ". $achievement->description()->name;
-							$pm->content	= "Você completou o Objetivo de Round: <b>". $achievement->description()->name ."</b> ";
-							$pm->save();
-						}
-					}
-				}
-				break;
-			case "time_quests":
-				$achievements = Achievement::find("time_quests > 0 AND type='objectives'");
-				foreach($achievements as $achievement){
-					$user_objective = UserObjective::find_first("objective_id=".$achievement->id." AND user_id=".$this->user_id." AND complete=0");
-					if($user_objective){
-						$player_quest = PlayerQuestCounter::find_first("player_id=". $this->id);
-						if($player_quest->time_total >= $achievement->quantity){
-							$user_objective->complete = 1;
-							$user_objective->completed_at = now(true);
-							$user_objective->save();
-
-							//Recompensa
-							$user	= User::get_instance();
-							$user->round_points(1);
-
-							// Envia uma mensagem para o jogador avisando do prêmio
-							$pm				= new PrivateMessage();
-							$pm->to_id		= $this->id;
-							$pm->subject	= "Objetivo: ". $achievement->description()->name;
-							$pm->content	= "Você completou o Objetivo de Round: <b>". $achievement->description()->name ."</b> ";
-							$pm->save();
-						}
-					}
-				}
-				break;
-			case "battle_quests":
-				$achievements = Achievement::find("battle_quests > 0 AND type='objectives'");
-				foreach($achievements as $achievement){
-					$user_objective = UserObjective::find_first("objective_id=".$achievement->id." AND user_id=".$this->user_id." AND complete=0");
-					if($user_objective){
-						$player_quest = PlayerQuestCounter::find_first("player_id=". $this->id);
-						if($player_quest->combat_total >= $achievement->quantity){
-							$user_objective->complete = 1;
-							$user_objective->completed_at = now(true);
-							$user_objective->save();
-
-							//Recompensa
-							$user	= User::get_instance();
-							$user->round_points(1);
-
-							// Envia uma mensagem para o jogador avisando do prêmio
-							$pm				= new PrivateMessage();
-							$pm->to_id		= $this->id;
-							$pm->subject	= "Objetivo: ". $achievement->description()->name;
-							$pm->content	= "Você completou o Objetivo de Round: <b>". $achievement->description()->name ."</b> ";
-							$pm->save();
-						}
-					}
-				}
-				break;
-			case "pvp_quests":
-				$achievements = Achievement::find("pvp_quests > 0 AND type='objectives'");
-				foreach($achievements as $achievement){
-					$user_objective = UserObjective::find_first("objective_id=".$achievement->id." AND user_id=".$this->user_id." AND complete=0");
-					if($user_objective){
-						$player_quest = PlayerQuestCounter::find_first("player_id=". $this->id);
-						if($player_quest->pvp_total >= $achievement->quantity){
-							$user_objective->complete = 1;
-							$user_objective->completed_at = now(true);
-							$user_objective->save();
-
-							//Recompensa
-							$user	= User::get_instance();
-							$user->round_points(1);
-
-							// Envia uma mensagem para o jogador avisando do prêmio
-							$pm				= new PrivateMessage();
-							$pm->to_id		= $this->id;
-							$pm->subject	= "Objetivo: ". $achievement->description()->name;
-							$pm->content	= "Você completou o Objetivo de Round: <b>". $achievement->description()->name ."</b> ";
-							$pm->save();
-						}
-					}
-				}
-				break;
-			case "daily_quests":
-				$achievements = Achievement::find("daily_quests > 0 AND type='objectives'");
-				foreach($achievements as $achievement){
-					$user_objective = UserObjective::find_first("objective_id=".$achievement->id." AND user_id=".$this->user_id." AND complete=0");
-					if($user_objective){
-						$player_quest = PlayerQuestCounter::find_first("player_id=". $this->id);
-						if($player_quest->daily_total >= $achievement->quantity){
-							$user_objective->complete = 1;
-							$user_objective->completed_at = now(true);
-							$user_objective->save();
-
-							//Recompensa
-							$user	= User::get_instance();
-							$user->round_points(1);
-
-							// Envia uma mensagem para o jogador avisando do prêmio
-							$pm				= new PrivateMessage();
-							$pm->to_id		= $this->id;
-							$pm->subject	= "Objetivo: ". $achievement->description()->name;
-							$pm->content	= "Você completou o Objetivo de Round: <b>". $achievement->description()->name ."</b> ";
-							$pm->save();
-						}
-					}
-				}
-				break;
-			case "account_quests":
-				$achievements = Achievement::find("account_quests > 0 AND type='objectives'");
-				foreach($achievements as $achievement){
-					$user_objective = UserObjective::find_first("objective_id=".$achievement->id." AND user_id=".$this->user_id." AND complete=0");
-					if($user_objective){
-						$player_quest = UserQuestCounter::find_first("user_id=". $this->user_id);
-						if($player_quest->daily_total >= $achievement->quantity){
-							$user_objective->complete = 1;
-							$user_objective->completed_at = now(true);
-							$user_objective->save();
-
-							//Recompensa
-							$user	= User::get_instance();
-							$user->round_points(1);
-
-							// Envia uma mensagem para o jogador avisando do prêmio
-							$pm				= new PrivateMessage();
-							$pm->to_id		= $this->id;
-							$pm->subject	= "Objetivo: ". $achievement->description()->name;
-							$pm->content	= "Você completou o Objetivo de Round: <b>". $achievement->description()->name ."</b> ";
-							$pm->save();
-						}
-					}
-				}
-				break;
-			case "pet_quests":
-				$achievements = Achievement::find("pet_quests > 0 AND type='objectives'");
-				foreach($achievements as $achievement){
-					$user_objective = UserObjective::find_first("objective_id=".$achievement->id." AND user_id=".$this->user_id." AND complete=0");
-					if($user_objective){
-						$player_quest = PlayerQuestCounter::find_first("player_id=". $this->id);
-						if($player_quest->pet_total >= $achievement->quantity){
-							$user_objective->complete = 1;
-							$user_objective->completed_at = now(true);
-							$user_objective->save();
-
-							//Recompensa
-							$user	= User::get_instance();
-							$user->round_points(1);
-
-							// Envia uma mensagem para o jogador avisando do prêmio
-							$pm				= new PrivateMessage();
-							$pm->to_id		= $this->id;
-							$pm->subject	= "Objetivo: ". $achievement->description()->name;
-							$pm->content	= "Você completou o Objetivo de Round: <b>". $achievement->description()->name ."</b> ";
-							$pm->save();
-						}
-					}
-				}
-				break;
-			case "weekly_quests":
-				$achievements = Achievement::find("weekly_quests > 0 AND type='objectives'");
-				foreach($achievements as $achievement){
-					$user_objective = UserObjective::find_first("objective_id=".$achievement->id." AND user_id=".$this->user_id." AND complete=0");
-					if($user_objective){
-						$organization_quest = OrganizationQuestCounter::find_first("organization_id=". $this->organization_id);
-						if($organization_quest->daily_total >= $achievement->quantity){
-							$user_objective->complete = 1;
-							$user_objective->completed_at = now(true);
-							$user_objective->save();
-
-							//Recompensa
-							$user	= User::get_instance();
-							$user->round_points(1);
-
-							// Envia uma mensagem para o jogador avisando do prêmio
-							$pm				= new PrivateMessage();
-							$pm->to_id		= $this->id;
-							$pm->subject	= "Objetivo: ". $achievement->description()->name;
-							$pm->content	= "Você completou o Objetivo de Round: <b>". $achievement->description()->name ."</b> ";
-							$pm->save();
-						}
-					}
-				}
-				break;
-		}
-	}
-	function achievement_check($arch_type = NULL){
-		switch($arch_type) {
-			case "level_player":
-				$achievements = Achievement::find("level_player > 0 AND type='achievement'");
-				foreach($achievements as $achievement){
-					$player_achievement = PlayerAchievement::find_first("achievement_id=".$achievement->id." AND player_id=".$this->id);
-					if(!$player_achievement){
-						if($this->level >= $achievement->level_player ){
-							$new_achievement = new PlayerAchievement();
-							$new_achievement->player_id 	 = $this->id;
-							$new_achievement->achievement_id = $achievement->id;
-							$new_achievement->save();
-
-							//Recompensa
-							$rewards = $achievement->achievement_rewards($achievement->id);
-							$reward = "";
-							if($rewards){
-								$reward .= "e ganhou as seguintes recompensas: <br /><br/>";
-								if($rewards->exp){
-									$reward .= $rewards->exp ." ". t('ranked.exp') ."<br />";
-									//Exp para o Player
-									$this->earn_exp($rewards->exp);
-								}
-								if($rewards->exp_user){
-									$reward .= $rewards->exp_user ." ". t('ranked.exp_account') ."<br />";
-									//Exp para a conta
-									$user	= User::get_instance();
-									$user->exp($rewards->exp_user);
-								}
-								if($rewards->currency){
-									$reward .= $rewards->currency ." ". t('currencies.' . $this->character()->anime_id) ."<br />";
-									// Dinheiro para o player
-									$this->earn($rewards->currency);
-								}
-								if($rewards->credits){
-									$reward .= $rewards->credits ." ". t('treasure.show.credits') ."<br />";
-									//Crédito para a conta
-									$user	= User::get_instance();
-									$user->earn($rewards->credits);
-								}
-								if($rewards->item_id){
-									$reward .= $rewards->quantity ."x ". Item::find($rewards->item_id)->description()->name ."<br />";
-									//Item para o player
-									$player_item_exist	= PlayerItem::find_first("item_id=".$rewards->item_id." AND player_id=". $this->id);
-
-									if(!$player_item_exist){
-										$player_item			= new PlayerItem();
-										$player_item->item_id	= $rewards->item_id;
-										$player_item->quantity	= $rewards->quantity;
-										$player_item->player_id	= $this->id;
-										$player_item->save();
-									}else{
-										$player_item_exist->quantity += $rewards->quantity;
-										$player_item_exist->save();
-									}
-								}
-								if($rewards->character_theme_id){
-									$reward .= t('treasure.show.theme') ." ". CharacterTheme::find($rewards->character_theme_id)->description()->name ."<br />";
-									//Dá o Tema ao player
-									$reward_theme						= new UserCharacterTheme();
-									$reward_theme->user_id				= $this->user_id;
-									$reward_theme->character_theme_id	= $rewards->character_theme_id;
-									$reward_theme->was_reward			= 1;
-									$reward_theme->save();
-								}
-								if($rewards->character_id){
-									$reward .= t('treasure.show.character') ." ". Character::find($rewards->character_id)->description()->name ."<br />";
-									//Dá o Personagem ao player
-									$reward_character					= new UserCharacter();
-									$reward_character->user_id			= $this->user_id;
-									$reward_character->character_id	= $rewards->character_id;
-									$reward_character->was_reward	= 1;
-									$reward_character->save();
-								}
-								if($rewards->headline_id){
-									$reward .= t('treasure.show.headline') ." ". Headline::find($rewards->headline_id)->description()->name ."<br />";
-									// Dá o titulo ao player
-									$reward_headline				= new UserHeadline();
-									$reward_headline->user_id		= $this->user_id;
-									$reward_headline->headline_id	= $rewards->headline_id;
-									$reward_headline->save();
-								}
-							}
-							// Envia uma mensagem para o jogador avisando do prêmio
-							$pm				= new PrivateMessage();
-							$pm->to_id		= $this->id;
-							$pm->subject	= "Conquista: ". $achievement->description()->name;
-							$pm->content	= "Você completou a conquista: <b>". $achievement->description()->name ."</b> ". $reward;
-							$pm->save();
+				$achievements = Achievement::find("level_player > 0 and type='achievement'");
+				foreach ($achievements as $achievement) {
+					$player_achievement = PlayerAchievement::find_first("achievement_id = {$achievement->id} and player_id=".$this->id);
+					if (!$player_achievement) {
+						if ($this->level >= $achievement->level_player) {
+							$this->achievement_reward($this, $achievement);
 						}
 					}
 
@@ -1323,460 +178,47 @@ class Player extends Relation {
 				break;
 			case "level_account":
 				$achievements = Achievement::find("level_account > 0 AND type='achievement'");
-				foreach($achievements as $achievement){
+				foreach ($achievements as $achievement) {
 					$player_achievement = PlayerAchievement::find_first("achievement_id=".$achievement->id." AND player_id=".$this->id);
-					if(!$player_achievement){
+					if (!$player_achievement) {
 						$user = User::find_first("id=".$this->user_id);
-						if($user->level >= $achievement->level_account ){
-							$new_achievement = new PlayerAchievement();
-							$new_achievement->player_id 	 = $this->id;
-							$new_achievement->achievement_id = $achievement->id;
-							$new_achievement->save();
-							//Recompensa
-							$rewards = $achievement->achievement_rewards($achievement->id);
-							$reward = "";
-							if($rewards){
-								$reward .= "e ganhou as seguintes recompensas: <br /><br/>";
-								if($rewards->exp){
-									$reward .= $rewards->exp ." ". t('ranked.exp') ."<br />";
-									//Exp para o Player
-									$this->earn_exp($rewards->exp);
-								}
-								if($rewards->exp_user){
-									$reward .= $rewards->exp_user ." ". t('ranked.exp_account') ."<br />";
-									//Exp para a conta
-									$user	= User::get_instance();
-									$user->exp($rewards->exp_user);
-								}
-								if($rewards->currency){
-									$reward .= $rewards->currency ." ". t('currencies.' . $this->character()->anime_id) ."<br />";
-									// Dinheiro para o player
-									$this->earn($rewards->currency);
-								}
-								if($rewards->credits){
-									$reward .= $rewards->credits ." ". t('treasure.show.credits') ."<br />";
-									//Crédito para a conta
-									$user	= User::get_instance();
-									$user->earn($rewards->credits);
-								}
-								if($rewards->item_id){
-									$reward .= $rewards->quantity ."x ". Item::find($rewards->item_id)->description()->name ."<br />";
-									//Item para o player
-									$player_item_exist	= PlayerItem::find_first("item_id=".$rewards->item_id." AND player_id=". $this->id);
-
-									if(!$player_item_exist){
-										$player_item			= new PlayerItem();
-										$player_item->item_id	= $rewards->item_id;
-										$player_item->quantity	= $rewards->quantity;
-										$player_item->player_id	= $this->id;
-										$player_item->save();
-									}else{
-										$player_item_exist->quantity += $rewards->quantity;
-										$player_item_exist->save();
-									}
-								}
-								if($rewards->character_theme_id){
-									$reward .= t('treasure.show.theme') ." ". CharacterTheme::find($rewards->character_theme_id)->description()->name ."<br />";
-									//Dá o Tema ao player
-									$reward_theme						= new UserCharacterTheme();
-									$reward_theme->user_id				= $this->user_id;
-									$reward_theme->character_theme_id	= $rewards->character_theme_id;
-									$reward_theme->was_reward			= 1;
-									$reward_theme->save();
-								}
-								if($rewards->character_id){
-									$reward .= t('treasure.show.character') ." ". Character::find($rewards->character_id)->description()->name ."<br />";
-									//Dá o Personagem ao player
-									$reward_character					= new UserCharacter();
-									$reward_character->user_id			= $this->user_id;
-									$reward_character->character_id	= $rewards->character_id;
-									$reward_character->was_reward	= 1;
-									$reward_character->save();
-								}
-								if($rewards->headline_id){
-									$reward .= t('treasure.show.headline') ." ". Headline::find($rewards->headline_id)->description()->name ."<br />";
-									// Dá o titulo ao player
-									$reward_headline				= new UserHeadline();
-									$reward_headline->user_id		= $this->user_id;
-									$reward_headline->headline_id	= $rewards->headline_id;
-									$reward_headline->save();
-								}
-							}
-							// Envia uma mensagem para o jogador avisando do prêmio
-							$pm				= new PrivateMessage();
-							$pm->to_id		= $this->id;
-							$pm->subject	= "Conquista: ". $achievement->description()->name;
-							$pm->content	= "Você completou a conquista: <b>". $achievement->description()->name ."</b> ". $reward;
-							$pm->save();
+						if ($user->level >= $achievement->level_account) {
+							$this->achievement_reward($this, $achievement);
 						}
 					}
 				}
 				break;
 			case "tutorial":
 				$achievements = Achievement::find("tutorial > 0 AND type='achievement'");
-				foreach($achievements as $achievement){
+				foreach ($achievements as $achievement) {
 					$player_achievement = PlayerAchievement::find_first("achievement_id=".$achievement->id." AND player_id=".$this->id);
-					if(!$player_achievement){
+					if (!$player_achievement) {
 						$player_stat = PlayerStat::find_first("player_id=". $this->id);
-						if($player_stat->tutorial){
-							$new_achievement = new PlayerAchievement();
-							$new_achievement->player_id 	 = $this->id;
-							$new_achievement->achievement_id = $achievement->id;
-							$new_achievement->save();
-
-							//Recompensa
-							$rewards = $achievement->achievement_rewards($achievement->id);
-							$reward = "";
-							if($rewards){
-								$reward .= "e ganhou as seguintes recompensas: <br /><br/>";
-								if($rewards->exp){
-									$reward .= $rewards->exp ." ". t('ranked.exp') ."<br />";
-									//Exp para o Player
-									$this->earn_exp($rewards->exp);
-								}
-								if($rewards->exp_user){
-									$reward .= $rewards->exp_user ." ". t('ranked.exp_account') ."<br />";
-									//Exp para a conta
-									$user	= User::get_instance();
-									$user->exp($rewards->exp_user);
-								}
-								if($rewards->currency){
-									$reward .= $rewards->currency ." ". t('currencies.' . $this->character()->anime_id) ."<br />";
-									// Dinheiro para o player
-									$this->earn($rewards->currency);
-								}
-								if($rewards->credits){
-									$reward .= $rewards->credits ." ". t('treasure.show.credits') ."<br />";
-									//Crédito para a conta
-									$user	= User::get_instance();
-									$user->earn($rewards->credits);
-								}
-								if($rewards->equipment){
-									$reward .= "Você ganhou 1 Equipamento Comum<br />";
-
-									Item::generate_equipment($this, 0);
-								}
-								if($rewards->pet){
-									$reward .= "Você ganhou 1 Mascote Comum Aleatório<br />";
-									// Dá um pet random!
-									$npc_pet	= Item::find_first('item_type_id=3 AND is_initial=1 AND rarity="common"', ['reorder' => 'RAND()']);
-
-									$player_pet						= new PlayerItem();
-									$player_pet->item_id			= $npc_pet->id;
-									$player_pet->player_id			= $this->id;
-									$player_pet->save();
-								}
-								if($rewards->item_id){
-									$reward .= $rewards->quantity ."x ". Item::find($rewards->item_id)->description()->name ."<br />";
-									//Item para o player
-									$player_item_exist	= PlayerItem::find_first("item_id=".$rewards->item_id." AND player_id=". $this->id);
-
-									if(!$player_item_exist){
-										$player_item			= new PlayerItem();
-										$player_item->item_id	= $rewards->item_id;
-										$player_item->quantity	= $rewards->quantity;
-										$player_item->player_id	= $this->id;
-										$player_item->save();
-									}else{
-										$player_item_exist->quantity += $rewards->quantity;
-										$player_item_exist->save();
-									}
-								}
-								if($rewards->character_theme_id){
-									$reward .= t('treasure.show.theme') ." ". CharacterTheme::find($rewards->character_theme_id)->description()->name ."<br />";
-									//Dá o Tema ao player
-									$reward_theme						= new UserCharacterTheme();
-									$reward_theme->user_id				= $this->user_id;
-									$reward_theme->character_theme_id	= $rewards->character_theme_id;
-									$reward_theme->was_reward			= 1;
-									$reward_theme->save();
-								}
-								if($rewards->character_id){
-									$reward .= t('treasure.show.character') ." ". Character::find($rewards->character_id)->description()->name ."<br />";
-									//Dá o Personagem ao player
-									$reward_character					= new UserCharacter();
-									$reward_character->user_id			= $this->user_id;
-									$reward_character->character_id	= $rewards->character_id;
-									$reward_character->was_reward	= 1;
-									$reward_character->save();
-								}
-								if($rewards->headline_id){
-									$reward .= t('treasure.show.headline') ." ". Headline::find($rewards->headline_id)->description()->name ."<br />";
-									// Dá o titulo ao player
-									$reward_headline				= new UserHeadline();
-									$reward_headline->user_id		= $this->user_id;
-									$reward_headline->headline_id	= $rewards->headline_id;
-									$reward_headline->save();
-								}
-							}
-							// Envia uma mensagem para o jogador avisando do prêmio
-							$pm				= new PrivateMessage();
-							$pm->to_id		= $this->id;
-							$pm->subject	= "Conquista: ". $achievement->description()->name;
-							$pm->content	= "Você completou a conquista: <b>". $achievement->description()->name ."</b> ". $reward;
-							$pm->save();
+						if ($player_stat->tutorial) {
+							$this->achievement_reward($this, $achievement);
 						}
 					}
 				}
 				break;
 			case "map":
 				$achievements = Achievement::find("map > 0 AND type='achievement'");
-				foreach($achievements as $achievement){
+				foreach ($achievements as $achievement) {
 					$player_achievement = PlayerAchievement::find_first("achievement_id=".$achievement->id." AND player_id=".$this->id);
-					if(!$player_achievement){
-						if($achievement->anime_id && $achievement->map==1){
+					if (!$player_achievement) {
+						if ($achievement->anime_id && $achievement->map == 1) {
 							$player_map_anime = PlayerMapLog::find("player_id=". $this->id." AND anime_id=".$achievement->anime_id);
-							if(sizeof($player_map_anime) == $achievement->quantity){
-								$new_achievement = new PlayerAchievement();
-								$new_achievement->player_id 	 = $this->id;
-								$new_achievement->achievement_id = $achievement->id;
-								$new_achievement->save();
-								//Recompensa
-								$rewards = $achievement->achievement_rewards($achievement->id);
-								$reward = "";
-								if($rewards){
-									$reward .= "e ganhou as seguintes recompensas: <br /><br/>";
-									if($rewards->exp){
-										$reward .= $rewards->exp ." ". t('ranked.exp') ."<br />";
-										//Exp para o Player
-										$this->earn_exp($rewards->exp);
-									}
-									if($rewards->exp_user){
-										$reward .= $rewards->exp_user ." ". t('ranked.exp_account') ."<br />";
-										//Exp para a conta
-										$user	= User::get_instance();
-										$user->exp($rewards->exp_user);
-									}
-									if($rewards->currency){
-										$reward .= $rewards->currency ." ". t('currencies.' . $this->character()->anime_id) ."<br />";
-										// Dinheiro para o player
-										$this->earn($rewards->currency);
-									}
-									if($rewards->credits){
-										$reward .= $rewards->credits ." ". t('treasure.show.credits') ."<br />";
-										//Crédito para a conta
-										$user	= User::get_instance();
-										$user->earn($rewards->credits);
-									}
-									if($rewards->item_id){
-										$reward .= $rewards->quantity ."x ". Item::find($rewards->item_id)->description()->name ."<br />";
-										//Item para o player
-										$player_item_exist	= PlayerItem::find_first("item_id=".$rewards->item_id." AND player_id=". $this->id);
-
-										if(!$player_item_exist){
-											$player_item			= new PlayerItem();
-											$player_item->item_id	= $rewards->item_id;
-											$player_item->quantity	= $rewards->quantity;
-											$player_item->player_id	= $this->id;
-											$player_item->save();
-										}else{
-											$player_item_exist->quantity += $rewards->quantity;
-											$player_item_exist->save();
-										}
-									}
-									if($rewards->character_theme_id){
-										$reward .= t('treasure.show.theme') ." ". CharacterTheme::find($rewards->character_theme_id)->description()->name ."<br />";
-										//Dá o Tema ao player
-										$reward_theme						= new UserCharacterTheme();
-										$reward_theme->user_id				= $this->user_id;
-										$reward_theme->character_theme_id	= $rewards->character_theme_id;
-										$reward_theme->was_reward			= 1;
-										$reward_theme->save();
-									}
-									if($rewards->character_id){
-										$reward .= t('treasure.show.character') ." ". Character::find($rewards->character_id)->description()->name ."<br />";
-										//Dá o Personagem ao player
-										$reward_character					= new UserCharacter();
-										$reward_character->user_id			= $this->user_id;
-										$reward_character->character_id	= $rewards->character_id;
-										$reward_character->was_reward	= 1;
-										$reward_character->save();
-									}
-									if($rewards->headline_id){
-										$reward .= t('treasure.show.headline') ." ". Headline::find($rewards->headline_id)->description()->name ."<br />";
-										// Dá o titulo ao player
-										$reward_headline				= new UserHeadline();
-										$reward_headline->user_id		= $this->user_id;
-										$reward_headline->headline_id	= $rewards->headline_id;
-										$reward_headline->save();
-									}
-								}
-								// Envia uma mensagem para o jogador avisando do prêmio
-								$pm				= new PrivateMessage();
-								$pm->to_id		= $this->id;
-								$pm->subject	= "Conquista: ". $achievement->description()->name;
-								$pm->content	= "Você completou a conquista: <b>". $achievement->description()->name ."</b> ". $reward;
-								$pm->save();
+							if (sizeof($player_map_anime) == $achievement->quantity) {
+								$this->achievement_reward($this, $achievement);
 							}
-						}else if($achievement->anime_id && $achievement->map==2 ){
+						} elseif ($achievement->anime_id && $achievement->map == 2) {
 							$player_map_anime = Recordset::query("select sum(quantity) as total from player_map_logs WHERE anime_id=".$achievement->anime_id." and player_id=".$this->id)->result_array();
-							if($player_map_anime[0]['total'] >= $achievement->quantity){
-								$new_achievement = new PlayerAchievement();
-								$new_achievement->player_id 	 = $this->id;
-								$new_achievement->achievement_id = $achievement->id;
-								$new_achievement->save();
-								//Recompensa
-								$rewards = $achievement->achievement_rewards($achievement->id);
-								$reward = "";
-								if($rewards){
-									$reward .= "e ganhou as seguintes recompensas: <br /><br/>";
-									if($rewards->exp){
-										$reward .= $rewards->exp ." ". t('ranked.exp') ."<br />";
-										//Exp para o Player
-										$this->earn_exp($rewards->exp);
-									}
-									if($rewards->exp_user){
-										$reward .= $rewards->exp_user ." ". t('ranked.exp_account') ."<br />";
-										//Exp para a conta
-										$user	= User::get_instance();
-										$user->exp($rewards->exp_user);
-									}
-									if($rewards->currency){
-										$reward .= $rewards->currency ." ". t('currencies.' . $this->character()->anime_id) ."<br />";
-										// Dinheiro para o player
-										$this->earn($rewards->currency);
-									}
-									if($rewards->credits){
-										$reward .= $rewards->credits ." ". t('treasure.show.credits') ."<br />";
-										//Crédito para a conta
-										$user	= User::get_instance();
-										$user->earn($rewards->credits);
-									}
-									if($rewards->item_id){
-										$reward .= $rewards->quantity ."x ". Item::find($rewards->item_id)->description()->name ."<br />";
-										//Item para o player
-										$player_item_exist	= PlayerItem::find_first("item_id=".$rewards->item_id." AND player_id=". $this->id);
-
-										if(!$player_item_exist){
-											$player_item			= new PlayerItem();
-											$player_item->item_id	= $rewards->item_id;
-											$player_item->quantity	= $rewards->quantity;
-											$player_item->player_id	= $this->id;
-											$player_item->save();
-										}else{
-											$player_item_exist->quantity += $rewards->quantity;
-											$player_item_exist->save();
-										}
-									}
-									if($rewards->character_theme_id){
-										$reward .= t('treasure.show.theme') ." ". CharacterTheme::find($rewards->character_theme_id)->description()->name ."<br />";
-										//Dá o Tema ao player
-										$reward_theme						= new UserCharacterTheme();
-										$reward_theme->user_id				= $this->user_id;
-										$reward_theme->character_theme_id	= $rewards->character_theme_id;
-										$reward_theme->was_reward			= 1;
-										$reward_theme->save();
-									}
-									if($rewards->character_id){
-										$reward .= t('treasure.show.character') ." ". Character::find($rewards->character_id)->description()->name ."<br />";
-										//Dá o Personagem ao player
-										$reward_character					= new UserCharacter();
-										$reward_character->user_id			= $this->user_id;
-										$reward_character->character_id	= $rewards->character_id;
-										$reward_character->was_reward	= 1;
-										$reward_character->save();
-									}
-									if($rewards->headline_id){
-										$reward .= t('treasure.show.headline') ." ". Headline::find($rewards->headline_id)->description()->name ."<br />";
-										// Dá o titulo ao player
-										$reward_headline				= new UserHeadline();
-										$reward_headline->user_id		= $this->user_id;
-										$reward_headline->headline_id	= $rewards->headline_id;
-										$reward_headline->save();
-									}
-								}
-								// Envia uma mensagem para o jogador avisando do prêmio
-								$pm				= new PrivateMessage();
-								$pm->to_id		= $this->id;
-								$pm->subject	= "Conquista: ". $achievement->description()->name;
-								$pm->content	= "Você completou a conquista: <b>". $achievement->description()->name ."</b> ". $reward;
-								$pm->save();
+							if ($player_map_anime[0]['total'] >= $achievement->quantity) {
+								$this->achievement_reward($this, $achievement);
 							}
-
-
-						}else if(!$achievement->anime_id && $achievement->map==2){
+						} elseif (!$achievement->anime_id && $achievement->map == 2) {
 							$player_map_anime = Recordset::query("select sum(quantity) as total from player_map_logs WHERE player_id=".$this->id)->result_array();
-							if($player_map_anime[0]['total'] >= $achievement->quantity){
-								$new_achievement = new PlayerAchievement();
-								$new_achievement->player_id 	 = $this->id;
-								$new_achievement->achievement_id = $achievement->id;
-								$new_achievement->save();
-								//Recompensa
-								$rewards = $achievement->achievement_rewards($achievement->id);
-								$reward = "";
-								if($rewards){
-									$reward .= "e ganhou as seguintes recompensas: <br /><br/>";
-									if($rewards->exp){
-										$reward .= $rewards->exp ." ". t('ranked.exp') ."<br />";
-										//Exp para o Player
-										$this->earn_exp($rewards->exp);
-									}
-									if($rewards->exp_user){
-										$reward .= $rewards->exp_user ." ". t('ranked.exp_account') ."<br />";
-										//Exp para a conta
-										$user	= User::get_instance();
-										$user->exp($rewards->exp_user);
-									}
-									if($rewards->currency){
-										$reward .= $rewards->currency ." ". t('currencies.' . $this->character()->anime_id) ."<br />";
-										// Dinheiro para o player
-										$this->earn($rewards->currency);
-									}
-									if($rewards->credits){
-										$reward .= $rewards->credits ." ". t('treasure.show.credits') ."<br />";
-										//Crédito para a conta
-										$user	= User::get_instance();
-										$user->earn($rewards->credits);
-									}
-									if($rewards->item_id){
-										$reward .= $rewards->quantity ."x ". Item::find($rewards->item_id)->description()->name ."<br />";
-										//Item para o player
-										$player_item_exist	= PlayerItem::find_first("item_id=".$rewards->item_id." AND player_id=". $this->id);
-
-										if(!$player_item_exist){
-											$player_item			= new PlayerItem();
-											$player_item->item_id	= $rewards->item_id;
-											$player_item->quantity	= $rewards->quantity;
-											$player_item->player_id	= $this->id;
-											$player_item->save();
-										}else{
-											$player_item_exist->quantity += $rewards->quantity;
-											$player_item_exist->save();
-										}
-									}
-									if($rewards->character_theme_id){
-										$reward .= t('treasure.show.theme') ." ". CharacterTheme::find($rewards->character_theme_id)->description()->name ."<br />";
-										//Dá o Tema ao player
-										$reward_theme						= new UserCharacterTheme();
-										$reward_theme->user_id				= $this->user_id;
-										$reward_theme->character_theme_id	= $rewards->character_theme_id;
-										$reward_theme->was_reward			= 1;
-										$reward_theme->save();
-									}
-									if($rewards->character_id){
-										$reward .= t('treasure.show.character') ." ". Character::find($rewards->character_id)->description()->name ."<br />";
-										//Dá o Personagem ao player
-										$reward_character					= new UserCharacter();
-										$reward_character->user_id			= $this->user_id;
-										$reward_character->character_id	= $rewards->character_id;
-										$reward_character->was_reward	= 1;
-										$reward_character->save();
-									}
-									if($rewards->headline_id){
-										$reward .= t('treasure.show.headline') ." ". Headline::find($rewards->headline_id)->description()->name ."<br />";
-										// Dá o titulo ao player
-										$reward_headline				= new UserHeadline();
-										$reward_headline->user_id		= $this->user_id;
-										$reward_headline->headline_id	= $rewards->headline_id;
-										$reward_headline->save();
-									}
-								}
-								// Envia uma mensagem para o jogador avisando do prêmio
-								$pm				= new PrivateMessage();
-								$pm->to_id		= $this->id;
-								$pm->subject	= "Conquista: ". $achievement->description()->name;
-								$pm->content	= "Você completou a conquista: <b>". $achievement->description()->name ."</b> ". $reward;
-								$pm->save();
+							if ($player_map_anime[0]['total'] >= $achievement->quantity) {
+								$this->achievement_reward($this, $achievement);
 							}
 						}
 					}
@@ -1784,524 +226,50 @@ class Player extends Relation {
 				break;
 			case "credits":
 				$achievements = Achievement::find("credits > 0 AND type='achievement'");
-				foreach($achievements as $achievement){
+				foreach ($achievements as $achievement) {
 					$player_achievement = PlayerAchievement::find_first("achievement_id=".$achievement->id." AND player_id=".$this->id);
-					if(!$player_achievement){
+					if (!$player_achievement) {
 						$user = User::find_first("id=".$this->user_id);
-						if($user->credits >= $achievement->quantity ){
-							$new_achievement = new PlayerAchievement();
-							$new_achievement->player_id 	 = $this->id;
-							$new_achievement->achievement_id = $achievement->id;
-							$new_achievement->save();
-							//Recompensa
-							$rewards = $achievement->achievement_rewards($achievement->id);
-							$reward = "";
-							if($rewards){
-								$reward .= "e ganhou as seguintes recompensas: <br /><br/>";
-								if($rewards->exp){
-									$reward .= $rewards->exp ." ". t('ranked.exp') ."<br />";
-									//Exp para o Player
-									$this->earn_exp($rewards->exp);
-								}
-								if($rewards->exp_user){
-									$reward .= $rewards->exp_user ." ". t('ranked.exp_account') ."<br />";
-									//Exp para a conta
-									$user	= User::get_instance();
-									$user->exp($rewards->exp_user);
-								}
-								if($rewards->currency){
-									$reward .= $rewards->currency ." ". t('currencies.' . $this->character()->anime_id) ."<br />";
-									// Dinheiro para o player
-									$this->earn($rewards->currency);
-								}
-								if($rewards->credits){
-									$reward .= $rewards->credits ." ". t('treasure.show.credits') ."<br />";
-									//Crédito para a conta
-									$user	= User::get_instance();
-									$user->earn($rewards->credits);
-								}
-								if($rewards->item_id){
-									$reward .= $rewards->quantity ."x ". Item::find($rewards->item_id)->description()->name ."<br />";
-									//Item para o player
-									$player_item_exist	= PlayerItem::find_first("item_id=".$rewards->item_id." AND player_id=". $this->id);
-
-									if(!$player_item_exist){
-										$player_item			= new PlayerItem();
-										$player_item->item_id	= $rewards->item_id;
-										$player_item->quantity	= $rewards->quantity;
-										$player_item->player_id	= $this->id;
-										$player_item->save();
-									}else{
-										$player_item_exist->quantity += $rewards->quantity;
-										$player_item_exist->save();
-									}
-								}
-								if($rewards->character_theme_id){
-									$reward .= t('treasure.show.theme') ." ". CharacterTheme::find($rewards->character_theme_id)->description()->name ."<br />";
-									//Dá o Tema ao player
-									$reward_theme						= new UserCharacterTheme();
-									$reward_theme->user_id				= $this->user_id;
-									$reward_theme->character_theme_id	= $rewards->character_theme_id;
-									$reward_theme->was_reward			= 1;
-									$reward_theme->save();
-								}
-								if($rewards->character_id){
-									$reward .= t('treasure.show.character') ." ". Character::find($rewards->character_id)->description()->name ."<br />";
-									//Dá o Personagem ao player
-									$reward_character					= new UserCharacter();
-									$reward_character->user_id			= $this->user_id;
-									$reward_character->character_id	= $rewards->character_id;
-									$reward_character->was_reward	= 1;
-									$reward_character->save();
-								}
-								if($rewards->headline_id){
-									$reward .= t('treasure.show.headline') ." ". Headline::find($rewards->headline_id)->description()->name ."<br />";
-									// Dá o titulo ao player
-									$reward_headline				= new UserHeadline();
-									$reward_headline->user_id		= $this->user_id;
-									$reward_headline->headline_id	= $rewards->headline_id;
-									$reward_headline->save();
-								}
-							}
-							// Envia uma mensagem para o jogador avisando do prêmio
-							$pm				= new PrivateMessage();
-							$pm->to_id		= $this->id;
-							$pm->subject	= "Conquista: ". $achievement->description()->name;
-							$pm->content	= "Você completou a conquista: <b>". $achievement->description()->name ."</b> ". $reward;
-							$pm->save();
+						if ($user->credits >= $achievement->quantity) {
+							$this->achievement_reward($this, $achievement);
 						}
 					}
 				}
 				break;
 			case "currency":
 				$achievements = Achievement::find("currency > 0 AND type='achievement'");
-				foreach($achievements as $achievement){
+				foreach ($achievements as $achievement) {
 					$player_achievement = PlayerAchievement::find_first("achievement_id=".$achievement->id." AND player_id=".$this->id);
-					if(!$player_achievement){
-						if($this->currency >= $achievement->quantity ){
-							$new_achievement = new PlayerAchievement();
-							$new_achievement->player_id 	 = $this->id;
-							$new_achievement->achievement_id = $achievement->id;
-							$new_achievement->save();
-							//Recompensa
-							$rewards = $achievement->achievement_rewards($achievement->id);
-							$reward = "";
-							if($rewards){
-								$reward .= "e ganhou as seguintes recompensas: <br /><br/>";
-								if($rewards->exp){
-									$reward .= $rewards->exp ." ". t('ranked.exp') ."<br />";
-									//Exp para o Player
-									$this->earn_exp($rewards->exp);
-								}
-								if($rewards->exp_user){
-									$reward .= $rewards->exp_user ." ". t('ranked.exp_account') ."<br />";
-									//Exp para a conta
-									$user	= User::get_instance();
-									$user->exp($rewards->exp_user);
-								}
-								if($rewards->currency){
-									$reward .= $rewards->currency ." ". t('currencies.' . $this->character()->anime_id) ."<br />";
-									// Dinheiro para o player
-									$this->earn($rewards->currency);
-								}
-								if($rewards->credits){
-									$reward .= $rewards->credits ." ". t('treasure.show.credits') ."<br />";
-									//Crédito para a conta
-									$user	= User::get_instance();
-									$user->earn($rewards->credits);
-								}
-								if($rewards->item_id){
-									$reward .= $rewards->quantity ."x ". Item::find($rewards->item_id)->description()->name ."<br />";
-									//Item para o player
-									$player_item_exist	= PlayerItem::find_first("item_id=".$rewards->item_id." AND player_id=". $this->id);
-
-									if(!$player_item_exist){
-										$player_item			= new PlayerItem();
-										$player_item->item_id	= $rewards->item_id;
-										$player_item->quantity	= $rewards->quantity;
-										$player_item->player_id	= $this->id;
-										$player_item->save();
-									}else{
-										$player_item_exist->quantity += $rewards->quantity;
-										$player_item_exist->save();
-									}
-								}
-								if($rewards->character_theme_id){
-									$reward .= t('treasure.show.theme') ." ". CharacterTheme::find($rewards->character_theme_id)->description()->name ."<br />";
-									//Dá o Tema ao player
-									$reward_theme						= new UserCharacterTheme();
-									$reward_theme->user_id				= $this->user_id;
-									$reward_theme->character_theme_id	= $rewards->character_theme_id;
-									$reward_theme->was_reward			= 1;
-									$reward_theme->save();
-								}
-								if($rewards->character_id){
-									$reward .= t('treasure.show.character') ." ". Character::find($rewards->character_id)->description()->name ."<br />";
-									//Dá o Personagem ao player
-									$reward_character					= new UserCharacter();
-									$reward_character->user_id			= $this->user_id;
-									$reward_character->character_id	= $rewards->character_id;
-									$reward_character->was_reward	= 1;
-									$reward_character->save();
-								}
-								if($rewards->headline_id){
-									$reward .= t('treasure.show.headline') ." ". Headline::find($rewards->headline_id)->description()->name ."<br />";
-									// Dá o titulo ao player
-									$reward_headline				= new UserHeadline();
-									$reward_headline->user_id		= $this->user_id;
-									$reward_headline->headline_id	= $rewards->headline_id;
-									$reward_headline->save();
-								}
-							}
-							// Envia uma mensagem para o jogador avisando do prêmio
-							$pm				= new PrivateMessage();
-							$pm->to_id		= $this->id;
-							$pm->subject	= "Conquista: ". $achievement->description()->name;
-							$pm->content	= "Você completou a conquista: <b>". $achievement->description()->name ."</b> ". $reward;
-							$pm->save();
+					if (!$player_achievement) {
+						if ($this->currency >= $achievement->quantity) {
+							$this->achievement_reward($this, $achievement);
 						}
 					}
 				}
 				break;
 			case "pets":
 				$achievements = Achievement::find("pets > 0 AND type='achievement'");
-				foreach($achievements as $achievement){
+				foreach ($achievements as $achievement) {
 					$player_achievement = PlayerAchievement::find_first("achievement_id=".$achievement->id." AND player_id=".$this->id);
-					if(!$player_achievement){
+					if (!$player_achievement) {
 						// Só quer saber a quantidade de pets
-						if($achievement->quantity && !$achievement->item_id && !$achievement->rarity && !$achievement->happiness){
-							if(sizeof($this->your_pets_achievement()) >= $achievement->quantity){
-								$new_achievement = new PlayerAchievement();
-								$new_achievement->player_id 	 = $this->id;
-								$new_achievement->achievement_id = $achievement->id;
-								$new_achievement->save();
-								//Recompensa
-								$rewards = $achievement->achievement_rewards($achievement->id);
-								$reward = "";
-								if($rewards){
-									$reward .= "e ganhou as seguintes recompensas: <br /><br/>";
-									if($rewards->exp){
-										$reward .= $rewards->exp ." ". t('ranked.exp') ."<br />";
-										//Exp para o Player
-										$this->earn_exp($rewards->exp);
-									}
-									if($rewards->exp_user){
-										$reward .= $rewards->exp_user ." ". t('ranked.exp_account') ."<br />";
-										//Exp para a conta
-										$user	= User::get_instance();
-										$user->exp($rewards->exp_user);
-									}
-									if($rewards->currency){
-										$reward .= $rewards->currency ." ". t('currencies.' . $this->character()->anime_id) ."<br />";
-										// Dinheiro para o player
-										$this->earn($rewards->currency);
-									}
-									if($rewards->credits){
-										$reward .= $rewards->credits ." ". t('treasure.show.credits') ."<br />";
-										//Crédito para a conta
-										$user	= User::get_instance();
-										$user->earn($rewards->credits);
-									}
-									if($rewards->item_id){
-										$reward .= $rewards->quantity ."x ". Item::find($rewards->item_id)->description()->name ."<br />";
-										//Item para o player
-										$player_item_exist	= PlayerItem::find_first("item_id=".$rewards->item_id." AND player_id=". $this->id);
-
-										if(!$player_item_exist){
-											$player_item			= new PlayerItem();
-											$player_item->item_id	= $rewards->item_id;
-											$player_item->quantity	= $rewards->quantity;
-											$player_item->player_id	= $this->id;
-											$player_item->save();
-										}else{
-											$player_item_exist->quantity += $rewards->quantity;
-											$player_item_exist->save();
-										}
-									}
-									if($rewards->character_theme_id){
-										$reward .= t('treasure.show.theme') ." ". CharacterTheme::find($rewards->character_theme_id)->description()->name ."<br />";
-										//Dá o Tema ao player
-										$reward_theme						= new UserCharacterTheme();
-										$reward_theme->user_id				= $this->user_id;
-										$reward_theme->character_theme_id	= $rewards->character_theme_id;
-										$reward_theme->was_reward			= 1;
-										$reward_theme->save();
-									}
-									if($rewards->character_id){
-										$reward .= t('treasure.show.character') ." ". Character::find($rewards->character_id)->description()->name ."<br />";
-										//Dá o Personagem ao player
-										$reward_character					= new UserCharacter();
-										$reward_character->user_id			= $this->user_id;
-										$reward_character->character_id	= $rewards->character_id;
-										$reward_character->was_reward	= 1;
-										$reward_character->save();
-									}
-									if($rewards->headline_id){
-										$reward .= t('treasure.show.headline') ." ". Headline::find($rewards->headline_id)->description()->name ."<br />";
-										// Dá o titulo ao player
-										$reward_headline				= new UserHeadline();
-										$reward_headline->user_id		= $this->user_id;
-										$reward_headline->headline_id	= $rewards->headline_id;
-										$reward_headline->save();
-									}
-								}
-								// Envia uma mensagem para o jogador avisando do prêmio
-								$pm				= new PrivateMessage();
-								$pm->to_id		= $this->id;
-								$pm->subject	= "Conquista: ". $achievement->description()->name;
-								$pm->content	= "Você completou a conquista: <b>". $achievement->description()->name ."</b> ". $reward;
-								$pm->save();
+						if ($achievement->quantity && !$achievement->item_id && !$achievement->rarity && !$achievement->happiness) {
+							if (sizeof($this->your_pets_achievement()) >= $achievement->quantity) {
+								$this->achievement_reward($this, $achievement);
 							}
-							// Quer saber um pet especifico
-						}else if($achievement->item_id && !$achievement->happiness && !$achievement->quantity && !$achievement->rarity){
-							if(sizeof($this->your_pets_achievement(NULL, NULL, $achievement->item_id))){
-								$new_achievement = new PlayerAchievement();
-								$new_achievement->player_id 	 = $this->id;
-								$new_achievement->achievement_id = $achievement->id;
-								$new_achievement->save();
-								//Recompensa
-								$rewards = $achievement->achievement_rewards($achievement->id);
-								$reward = "";
-								if($rewards){
-									$reward .= "e ganhou as seguintes recompensas: <br /><br/>";
-									if($rewards->exp){
-										$reward .= $rewards->exp ." ". t('ranked.exp') ."<br />";
-										//Exp para o Player
-										$this->earn_exp($rewards->exp);
-									}
-									if($rewards->exp_user){
-										$reward .= $rewards->exp_user ." ". t('ranked.exp_account') ."<br />";
-										//Exp para a conta
-										$user	= User::get_instance();
-										$user->exp($rewards->exp_user);
-									}
-									if($rewards->currency){
-										$reward .= $rewards->currency ." ". t('currencies.' . $this->character()->anime_id) ."<br />";
-										// Dinheiro para o player
-										$this->earn($rewards->currency);
-									}
-									if($rewards->credits){
-										$reward .= $rewards->credits ." ". t('treasure.show.credits') ."<br />";
-										//Crédito para a conta
-										$user	= User::get_instance();
-										$user->earn($rewards->credits);
-									}
-									if($rewards->item_id){
-										$reward .= $rewards->quantity ."x ". Item::find($rewards->item_id)->description()->name ."<br />";
-										//Item para o player
-										$player_item_exist	= PlayerItem::find_first("item_id=".$rewards->item_id." AND player_id=". $this->id);
-
-										if(!$player_item_exist){
-											$player_item			= new PlayerItem();
-											$player_item->item_id	= $rewards->item_id;
-											$player_item->quantity	= $rewards->quantity;
-											$player_item->player_id	= $this->id;
-											$player_item->save();
-										}else{
-											$player_item_exist->quantity += $rewards->quantity;
-											$player_item_exist->save();
-										}
-									}
-									if($rewards->character_theme_id){
-										$reward .= t('treasure.show.theme') ." ". CharacterTheme::find($rewards->character_theme_id)->description()->name ."<br />";
-										//Dá o Tema ao player
-										$reward_theme						= new UserCharacterTheme();
-										$reward_theme->user_id				= $this->user_id;
-										$reward_theme->character_theme_id	= $rewards->character_theme_id;
-										$reward_theme->was_reward			= 1;
-										$reward_theme->save();
-									}
-									if($rewards->character_id){
-										$reward .= t('treasure.show.character') ." ". Character::find($rewards->character_id)->description()->name ."<br />";
-										//Dá o Personagem ao player
-										$reward_character					= new UserCharacter();
-										$reward_character->user_id			= $this->user_id;
-										$reward_character->character_id	= $rewards->character_id;
-										$reward_character->was_reward	= 1;
-										$reward_character->save();
-									}
-									if($rewards->headline_id){
-										$reward .= t('treasure.show.headline') ." ". Headline::find($rewards->headline_id)->description()->name ."<br />";
-										// Dá o titulo ao player
-										$reward_headline				= new UserHeadline();
-										$reward_headline->user_id		= $this->user_id;
-										$reward_headline->headline_id	= $rewards->headline_id;
-										$reward_headline->save();
-									}
-								}
-								// Envia uma mensagem para o jogador avisando do prêmio
-								$pm				= new PrivateMessage();
-								$pm->to_id		= $this->id;
-								$pm->subject	= "Conquista: ". $achievement->description()->name;
-								$pm->content	= "Você completou a conquista: <b>". $achievement->description()->name ."</b> ". $reward;
-								$pm->save();
+						// Quer saber um pet especifico
+						} elseif ($achievement->item_id && !$achievement->happiness && !$achievement->quantity && !$achievement->rarity) {
+							if (sizeof($this->your_pets_achievement(NULL, NULL, $achievement->item_id))) {
+								$this->achievement_reward($this, $achievement);
 							}
-							// Quer saber a quantidade de pets por raridade
-						}else if($achievement->quantity && !$achievement->item_id && $achievement->rarity && !$achievement->happiness){
-							if(sizeof($this->your_pets_achievement($achievement->rarity)) >= $achievement->quantity){
-								$new_achievement = new PlayerAchievement();
-								$new_achievement->player_id 	 = $this->id;
-								$new_achievement->achievement_id = $achievement->id;
-								$new_achievement->save();
-								//Recompensa
-								$rewards = $achievement->achievement_rewards($achievement->id);
-								$reward = "";
-								if($rewards){
-									$reward .= "e ganhou as seguintes recompensas: <br /><br/>";
-									if($rewards->exp){
-										$reward .= $rewards->exp ." ". t('ranked.exp') ."<br />";
-										//Exp para o Player
-										$this->earn_exp($rewards->exp);
-									}
-									if($rewards->exp_user){
-										$reward .= $rewards->exp_user ." ". t('ranked.exp_account') ."<br />";
-										//Exp para a conta
-										$user	= User::get_instance();
-										$user->exp($rewards->exp_user);
-									}
-									if($rewards->currency){
-										$reward .= $rewards->currency ." ". t('currencies.' . $this->character()->anime_id) ."<br />";
-										// Dinheiro para o player
-										$this->earn($rewards->currency);
-									}
-									if($rewards->credits){
-										$reward .= $rewards->credits ." ". t('treasure.show.credits') ."<br />";
-										//Crédito para a conta
-										$user	= User::get_instance();
-										$user->earn($rewards->credits);
-									}
-									if($rewards->item_id){
-										$reward .= $rewards->quantity ."x ". Item::find($rewards->item_id)->description()->name ."<br />";
-										//Item para o player
-										$player_item_exist	= PlayerItem::find_first("item_id=".$rewards->item_id." AND player_id=". $this->id);
-
-										if(!$player_item_exist){
-											$player_item			= new PlayerItem();
-											$player_item->item_id	= $rewards->item_id;
-											$player_item->quantity	= $rewards->quantity;
-											$player_item->player_id	= $this->id;
-											$player_item->save();
-										}else{
-											$player_item_exist->quantity += $rewards->quantity;
-											$player_item_exist->save();
-										}
-									}
-									if($rewards->character_theme_id){
-										$reward .= t('treasure.show.theme') ." ". CharacterTheme::find($rewards->character_theme_id)->description()->name ."<br />";
-										//Dá o Tema ao player
-										$reward_theme						= new UserCharacterTheme();
-										$reward_theme->user_id				= $this->user_id;
-										$reward_theme->character_theme_id	= $rewards->character_theme_id;
-										$reward_theme->was_reward			= 1;
-										$reward_theme->save();
-									}
-									if($rewards->character_id){
-										$reward .= t('treasure.show.character') ." ". Character::find($rewards->character_id)->description()->name ."<br />";
-										//Dá o Personagem ao player
-										$reward_character					= new UserCharacter();
-										$reward_character->user_id			= $this->user_id;
-										$reward_character->character_id	= $rewards->character_id;
-										$reward_character->was_reward	= 1;
-										$reward_character->save();
-									}
-									if($rewards->headline_id){
-										$reward .= t('treasure.show.headline') ." ". Headline::find($rewards->headline_id)->description()->name ."<br />";
-										// Dá o titulo ao player
-										$reward_headline				= new UserHeadline();
-										$reward_headline->user_id		= $this->user_id;
-										$reward_headline->headline_id	= $rewards->headline_id;
-										$reward_headline->save();
-									}
-								}
-								// Envia uma mensagem para o jogador avisando do prêmio
-								$pm				= new PrivateMessage();
-								$pm->to_id		= $this->id;
-								$pm->subject	= "Conquista: ". $achievement->description()->name;
-								$pm->content	= "Você completou a conquista: <b>". $achievement->description()->name ."</b> ". $reward;
-								$pm->save();
+						// Quer saber a quantidade de pets por raridade
+						} elseif ($achievement->quantity && !$achievement->item_id && $achievement->rarity && !$achievement->happiness) {
+							if (sizeof($this->your_pets_achievement($achievement->rarity)) >= $achievement->quantity) {
+								$this->achievement_reward($this, $achievement);
 							}
-						}else if($achievement->quantity && !$achievement->item_id && !$achievement->rarity && $achievement->happiness){
-							if(sizeof($this->your_pets_achievement(NULL, $achievement->happiness)) >= $achievement->quantity){
-								$new_achievement = new PlayerAchievement();
-								$new_achievement->player_id 	 = $this->id;
-								$new_achievement->achievement_id = $achievement->id;
-								$new_achievement->save();
-								//Recompensa
-								$rewards = $achievement->achievement_rewards($achievement->id);
-								$reward = "";
-								if($rewards){
-									$reward .= "e ganhou as seguintes recompensas: <br /><br/>";
-									if($rewards->exp){
-										$reward .= $rewards->exp ." ". t('ranked.exp') ."<br />";
-										//Exp para o Player
-										$this->earn_exp($rewards->exp);
-									}
-									if($rewards->exp_user){
-										$reward .= $rewards->exp_user ." ". t('ranked.exp_account') ."<br />";
-										//Exp para a conta
-										$user	= User::get_instance();
-										$user->exp($rewards->exp_user);
-									}
-									if($rewards->currency){
-										$reward .= $rewards->currency ." ". t('currencies.' . $this->character()->anime_id) ."<br />";
-										// Dinheiro para o player
-										$this->earn($rewards->currency);
-									}
-									if($rewards->credits){
-										$reward .= $rewards->credits ." ". t('treasure.show.credits') ."<br />";
-										//Crédito para a conta
-										$user	= User::get_instance();
-										$user->earn($rewards->credits);
-									}
-									if($rewards->item_id){
-										$reward .= $rewards->quantity ."x ". Item::find($rewards->item_id)->description()->name ."<br />";
-										//Item para o player
-										$player_item_exist	= PlayerItem::find_first("item_id=".$rewards->item_id." AND player_id=". $this->id);
-
-										if(!$player_item_exist){
-											$player_item			= new PlayerItem();
-											$player_item->item_id	= $rewards->item_id;
-											$player_item->quantity	= $rewards->quantity;
-											$player_item->player_id	= $this->id;
-											$player_item->save();
-										}else{
-											$player_item_exist->quantity += $rewards->quantity;
-											$player_item_exist->save();
-										}
-									}
-									if($rewards->character_theme_id){
-										$reward .= t('treasure.show.theme') ." ". CharacterTheme::find($rewards->character_theme_id)->description()->name ."<br />";
-										//Dá o Tema ao player
-										$reward_theme						= new UserCharacterTheme();
-										$reward_theme->user_id				= $this->user_id;
-										$reward_theme->character_theme_id	= $rewards->character_theme_id;
-										$reward_theme->was_reward			= 1;
-										$reward_theme->save();
-									}
-									if($rewards->character_id){
-										$reward .= t('treasure.show.character') ." ". Character::find($rewards->character_id)->description()->name ."<br />";
-										//Dá o Personagem ao player
-										$reward_character					= new UserCharacter();
-										$reward_character->user_id			= $this->user_id;
-										$reward_character->character_id	= $rewards->character_id;
-										$reward_character->was_reward	= 1;
-										$reward_character->save();
-									}
-									if($rewards->headline_id){
-										$reward .= t('treasure.show.headline') ." ". Headline::find($rewards->headline_id)->description()->name ."<br />";
-										// Dá o titulo ao player
-										$reward_headline				= new UserHeadline();
-										$reward_headline->user_id		= $this->user_id;
-										$reward_headline->headline_id	= $rewards->headline_id;
-										$reward_headline->save();
-									}
-								}
-								// Envia uma mensagem para o jogador avisando do prêmio
-								$pm				= new PrivateMessage();
-								$pm->to_id		= $this->id;
-								$pm->subject	= "Conquista: ". $achievement->description()->name;
-								$pm->content	= "Você completou a conquista: <b>". $achievement->description()->name ."</b> ". $reward;
-								$pm->save();
+						} elseif ($achievement->quantity && !$achievement->item_id && !$achievement->rarity && $achievement->happiness) {
+							if (sizeof($this->your_pets_achievement(NULL, $achievement->happiness)) >= $achievement->quantity) {
+								$this->achievement_reward($this, $achievement);
 							}
 						}
 					}
@@ -2309,92 +277,13 @@ class Player extends Relation {
 				break;
 			case "battle_npc":
 				$achievements = Achievement::find("battle_npc > 0 AND type='achievement'");
-				foreach($achievements as $achievement){
+				foreach ($achievements as $achievement) {
 					$player_achievement = PlayerAchievement::find_first("achievement_id=".$achievement->id." AND player_id=".$this->id);
-					if(!$player_achievement){
+					if (!$player_achievement) {
 						// Só quer saber a quantidade de npcs
-						if($achievement->battle_npc && !$achievement->anime_id && !$achievement->character_id){
-							if($this->wins_npc >= $achievement->quantity ){
-								$new_achievement = new PlayerAchievement();
-								$new_achievement->player_id 	 = $this->id;
-								$new_achievement->achievement_id = $achievement->id;
-								$new_achievement->save();
-								//Recompensa
-								$rewards = $achievement->achievement_rewards($achievement->id);
-								$reward = "";
-								if($rewards){
-									$reward .= "e ganhou as seguintes recompensas: <br /><br/>";
-									if($rewards->exp){
-										$reward .= $rewards->exp ." ". t('ranked.exp') ."<br />";
-										//Exp para o Player
-										$this->earn_exp($rewards->exp);
-									}
-									if($rewards->exp_user){
-										$reward .= $rewards->exp_user ." ". t('ranked.exp_account') ."<br />";
-										//Exp para a conta
-										$user	= User::get_instance();
-										$user->exp($rewards->exp_user);
-									}
-									if($rewards->currency){
-										$reward .= $rewards->currency ." ". t('currencies.' . $this->character()->anime_id) ."<br />";
-										// Dinheiro para o player
-										$this->earn($rewards->currency);
-									}
-									if($rewards->credits){
-										$reward .= $rewards->credits ." ". t('treasure.show.credits') ."<br />";
-										//Crédito para a conta
-										$user	= User::get_instance();
-										$user->earn($rewards->credits);
-									}
-									if($rewards->item_id){
-										$reward .= $rewards->quantity ."x ". Item::find($rewards->item_id)->description()->name ."<br />";
-										//Item para o player
-										$player_item_exist	= PlayerItem::find_first("item_id=".$rewards->item_id." AND player_id=". $this->id);
-
-										if(!$player_item_exist){
-											$player_item			= new PlayerItem();
-											$player_item->item_id	= $rewards->item_id;
-											$player_item->quantity	= $rewards->quantity;
-											$player_item->player_id	= $this->id;
-											$player_item->save();
-										}else{
-											$player_item_exist->quantity += $rewards->quantity;
-											$player_item_exist->save();
-										}
-									}
-									if($rewards->character_theme_id){
-										$reward .= t('treasure.show.theme') ." ". CharacterTheme::find($rewards->character_theme_id)->description()->name ."<br />";
-										//Dá o Tema ao player
-										$reward_theme						= new UserCharacterTheme();
-										$reward_theme->user_id				= $this->user_id;
-										$reward_theme->character_theme_id	= $rewards->character_theme_id;
-										$reward_theme->was_reward			= 1;
-										$reward_theme->save();
-									}
-									if($rewards->character_id){
-										$reward .= t('treasure.show.character') ." ". Character::find($rewards->character_id)->description()->name ."<br />";
-										//Dá o Personagem ao player
-										$reward_character					= new UserCharacter();
-										$reward_character->user_id			= $this->user_id;
-										$reward_character->character_id	= $rewards->character_id;
-										$reward_character->was_reward	= 1;
-										$reward_character->save();
-									}
-									if($rewards->headline_id){
-										$reward .= t('treasure.show.headline') ." ". Headline::find($rewards->headline_id)->description()->name ."<br />";
-										// Dá o titulo ao player
-										$reward_headline				= new UserHeadline();
-										$reward_headline->user_id		= $this->user_id;
-										$reward_headline->headline_id	= $rewards->headline_id;
-										$reward_headline->save();
-									}
-								}
-								// Envia uma mensagem para o jogador avisando do prêmio
-								$pm				= new PrivateMessage();
-								$pm->to_id		= $this->id;
-								$pm->subject	= "Conquista: ". $achievement->description()->name;
-								$pm->content	= "Você completou a conquista: <b>". $achievement->description()->name ."</b> ". $reward;
-								$pm->save();
+						if ($achievement->battle_npc && !$achievement->anime_id && !$achievement->character_id) {
+							if ($this->wins_npc >= $achievement->quantity) {
+								$this->achievement_reward($this, $achievement);
 							}
 						}
 					}
@@ -2402,304 +291,60 @@ class Player extends Relation {
 				break;
 			case "battle_pvp":
 				$achievements = Achievement::find("battle_pvp > 0 AND type='achievement'");
-				foreach($achievements as $achievement){
+				foreach ($achievements as $achievement) {
 					$can = false;
 					$player_achievement = PlayerAchievement::find_first("achievement_id=".$achievement->id." AND player_id=".$this->id);
-					if(!$player_achievement){
-
+					if (!$player_achievement) {
 						// Só quer saber a quantidade de pvps
-						if($achievement->battle_pvp && !$achievement->anime_id && !$achievement->character_id && !$achievement->faction_id){
-
-							if($this->wins_pvp >= $achievement->quantity ){
+						if ($achievement->battle_pvp && !$achievement->anime_id && !$achievement->character_id && !$achievement->faction_id) {
+							if ($this->wins_pvp >= $achievement->quantity) {
 								$can = true;
 							}
-							// Quer saber a quantidade de pvps com determinada facção
-						}else if($achievement->battle_pvp && !$achievement->anime_id && !$achievement->character_id && $achievement->faction_id){
-
+						// Quer saber a quantidade de pvps com determinada facção
+						} elseif ($achievement->battle_pvp && !$achievement->anime_id && !$achievement->character_id && $achievement->faction_id) {
 							$player_achievement_stats = Recordset::query("select sum(quantity) as total from player_achievement_stats WHERE player_id=".$this->id." AND faction_id=".$achievement->faction_id)->result_array();
-
-							if($player_achievement_stats[0]['total'] >= $achievement->quantity ){
-
+							if ($player_achievement_stats[0]['total'] >= $achievement->quantity) {
 								$can = true;
 							}
-						}else if($achievement->battle_pvp && $achievement->anime_id && !$achievement->character_id && !$achievement->faction_id){
+						} elseif ($achievement->battle_pvp && $achievement->anime_id && !$achievement->character_id && !$achievement->faction_id) {
 							$player_achievement_stats = Recordset::query("select sum(quantity) as total from player_achievement_stats WHERE player_id=".$this->id." AND anime_id=".$achievement->anime_id)->result_array();
-
-							if($player_achievement_stats[0]['total'] >= $achievement->quantity ){
+							if ($player_achievement_stats[0]['total'] >= $achievement->quantity) {
 								$can = true;
 							}
-						}else if($achievement->battle_pvp && !$achievement->anime_id && $achievement->character_id && !$achievement->faction_id){
+						} elseif ($achievement->battle_pvp && !$achievement->anime_id && $achievement->character_id && !$achievement->faction_id) {
 							$player_achievement_stats = Recordset::query("select sum(quantity) as total from player_achievement_stats WHERE player_id=".$this->id." AND character_id=".$achievement->character_id)->result_array();
-
-							if($player_achievement_stats[0]['total'] >= $achievement->quantity ){
+							if ($player_achievement_stats[0]['total'] >= $achievement->quantity) {
 								$can = true;
 							}
 						}
-						if($can){
-							$new_achievement = new PlayerAchievement();
-							$new_achievement->player_id 	 = $this->id;
-							$new_achievement->achievement_id = $achievement->id;
-							$new_achievement->save();
-							//Recompensa
-							$rewards = $achievement->achievement_rewards($achievement->id);
-							$reward = "";
-							if($rewards){
-								$reward .= "e ganhou as seguintes recompensas: <br /><br/>";
-								if($rewards->exp){
-									$reward .= $rewards->exp ." ". t('ranked.exp') ."<br />";
-									//Exp para o Player
-									$this->earn_exp($rewards->exp);
-								}
-								if($rewards->exp_user){
-									$reward .= $rewards->exp_user ." ". t('ranked.exp_account') ."<br />";
-									//Exp para a conta
-									$user	= User::get_instance();
-									$user->exp($rewards->exp_user);
-								}
-								if($rewards->currency){
-									$reward .= $rewards->currency ." ". t('currencies.' . $this->character()->anime_id) ."<br />";
-									// Dinheiro para o player
-									$this->earn($rewards->currency);
-								}
-								if($rewards->credits){
-									$reward .= $rewards->credits ." ". t('treasure.show.credits') ."<br />";
-									//Crédito para a conta
-									$user	= User::get_instance();
-									$user->earn($rewards->credits);
-								}
-								if($rewards->item_id){
-									$reward .= $rewards->quantity ."x ". Item::find($rewards->item_id)->description()->name ."<br />";
-									//Item para o player
-									$player_item_exist	= PlayerItem::find_first("item_id=".$rewards->item_id." AND player_id=". $this->id);
 
-									if(!$player_item_exist){
-										$player_item			= new PlayerItem();
-										$player_item->item_id	= $rewards->item_id;
-										$player_item->quantity	= $rewards->quantity;
-										$player_item->player_id	= $this->id;
-										$player_item->save();
-									}else{
-										$player_item_exist->quantity += $rewards->quantity;
-										$player_item_exist->save();
-									}
-								}
-								if($rewards->character_theme_id){
-									$reward .= t('treasure.show.theme') ." ". CharacterTheme::find($rewards->character_theme_id)->description()->name ."<br />";
-									//Dá o Tema ao player
-									$reward_theme						= new UserCharacterTheme();
-									$reward_theme->user_id				= $this->user_id;
-									$reward_theme->character_theme_id	= $rewards->character_theme_id;
-									$reward_theme->was_reward			= 1;
-									$reward_theme->save();
-								}
-								if($rewards->character_id){
-									$reward .= t('treasure.show.character') ." ". Character::find($rewards->character_id)->description()->name ."<br />";
-									//Dá o Personagem ao player
-									$reward_character					= new UserCharacter();
-									$reward_character->user_id			= $this->user_id;
-									$reward_character->character_id	= $rewards->character_id;
-									$reward_character->was_reward	= 1;
-									$reward_character->save();
-								}
-								if($rewards->headline_id){
-									$reward .= t('treasure.show.headline') ." ". Headline::find($rewards->headline_id)->description()->name ."<br />";
-									// Dá o titulo ao player
-									$reward_headline				= new UserHeadline();
-									$reward_headline->user_id		= $this->user_id;
-									$reward_headline->headline_id	= $rewards->headline_id;
-									$reward_headline->save();
-								}
-							}
-							// Envia uma mensagem para o jogador avisando do prêmio
-							$pm				= new PrivateMessage();
-							$pm->to_id		= $this->id;
-							$pm->subject	= "Conquista: ". $achievement->description()->name;
-							$pm->content	= "Você completou a conquista: <b>". $achievement->description()->name ."</b> ". $reward;
-							$pm->save();
+						if ($can) {
+							$this->achievement_reward($this, $achievement);
 						}
 					}
 				}
 				break;
 			case "history_mode":
 				$achievements = Achievement::find("history_mode > 0 AND type='achievement'");
-				foreach($achievements as $achievement){
+				foreach ($achievements as $achievement) {
 					$player_achievement = PlayerAchievement::find_first("achievement_id=".$achievement->id." AND player_id=".$this->id);
-					if(!$player_achievement){
+					if (!$player_achievement) {
 						$user_history_mode_subgroup = UserHistoryModeSubgroup::find_first("history_mode_subgroup_id=".$achievement->history_mode." AND user_id=".$this->user_id." AND complete=1");
-						if($user_history_mode_subgroup){
-							$new_achievement = new PlayerAchievement();
-							$new_achievement->player_id 	 = $this->id;
-							$new_achievement->achievement_id = $achievement->id;
-							$new_achievement->save();
-							//Recompensa
-							$rewards = $achievement->achievement_rewards($achievement->id);
-							$reward = "";
-							if($rewards){
-								$reward .= "e ganhou as seguintes recompensas: <br /><br/>";
-								if($rewards->exp){
-									$reward .= $rewards->exp ." ". t('ranked.exp') ."<br />";
-									//Exp para o Player
-									$this->earn_exp($rewards->exp);
-								}
-								if($rewards->exp_user){
-									$reward .= $rewards->exp_user ." ". t('ranked.exp_account') ."<br />";
-									//Exp para a conta
-									$user	= User::get_instance();
-									$user->exp($rewards->exp_user);
-								}
-								if($rewards->currency){
-									$reward .= $rewards->currency ." ". t('currencies.' . $this->character()->anime_id) ."<br />";
-									// Dinheiro para o player
-									$this->earn($rewards->currency);
-								}
-								if($rewards->credits){
-									$reward .= $rewards->credits ." ". t('treasure.show.credits') ."<br />";
-									//Crédito para a conta
-									$user	= User::get_instance();
-									$user->earn($rewards->credits);
-								}
-								if($rewards->item_id){
-									$reward .= $rewards->quantity ."x ". Item::find($rewards->item_id)->description()->name ."<br />";
-									//Item para o player
-									$player_item_exist	= PlayerItem::find_first("item_id=".$rewards->item_id." AND player_id=". $this->id);
-
-									if(!$player_item_exist){
-										$player_item			= new PlayerItem();
-										$player_item->item_id	= $rewards->item_id;
-										$player_item->quantity	= $rewards->quantity;
-										$player_item->player_id	= $this->id;
-										$player_item->save();
-									}else{
-										$player_item_exist->quantity += $rewards->quantity;
-										$player_item_exist->save();
-									}
-								}
-								if($rewards->character_theme_id){
-									$reward .= t('treasure.show.theme') ." ". CharacterTheme::find($rewards->character_theme_id)->description()->name ."<br />";
-									//Dá o Tema ao player
-									$reward_theme						= new UserCharacterTheme();
-									$reward_theme->user_id				= $this->user_id;
-									$reward_theme->character_theme_id	= $rewards->character_theme_id;
-									$reward_theme->was_reward			= 1;
-									$reward_theme->save();
-								}
-								if($rewards->character_id){
-									$reward .= t('treasure.show.character') ." ". Character::find($rewards->character_id)->description()->name ."<br />";
-									//Dá o Personagem ao player
-									$reward_character					= new UserCharacter();
-									$reward_character->user_id			= $this->user_id;
-									$reward_character->character_id	= $rewards->character_id;
-									$reward_character->was_reward	= 1;
-									$reward_character->save();
-								}
-								if($rewards->headline_id){
-									$reward .= t('treasure.show.headline') ." ". Headline::find($rewards->headline_id)->description()->name ."<br />";
-									// Dá o titulo ao player
-									$reward_headline				= new UserHeadline();
-									$reward_headline->user_id		= $this->user_id;
-									$reward_headline->headline_id	= $rewards->headline_id;
-									$reward_headline->save();
-								}
-							}
-							// Envia uma mensagem para o jogador avisando do prêmio
-							$pm				= new PrivateMessage();
-							$pm->to_id		= $this->id;
-							$pm->subject	= "Conquista: ". $achievement->description()->name;
-							$pm->content	= "Você completou a conquista: <b>". $achievement->description()->name ."</b> ". $reward;
-							$pm->save();
+						if ($user_history_mode_subgroup) {
+							$this->achievement_reward($this, $achievement);
 						}
 					}
 				}
 				break;
 			case "challenges":
 				$achievements = Achievement::find("challenges > 0 AND type='achievement'");
-				foreach($achievements as $achievement){
+				foreach($achievements as $achievement) {
 					$player_achievement = PlayerAchievement::find_first("achievement_id=".$achievement->id." AND player_id=".$this->id);
-					if(!$player_achievement){
+					if (!$player_achievement) {
 						$player_challenge = PlayerChallenge::find_first("challenge_id=".$achievement->challenges." AND player_id=".$this->id ." ORDER BY quantity desc");
-						if($player_challenge){
-							if($player_challenge->quantity > $achievement->challenges_floor){
-								$new_achievement = new PlayerAchievement();
-								$new_achievement->player_id 	 = $this->id;
-								$new_achievement->achievement_id = $achievement->id;
-								$new_achievement->save();
-
-								//Recompensa
-								$rewards = $achievement->achievement_rewards($achievement->id);
-								$reward = "";
-								if($rewards){
-									$reward .= "e ganhou as seguintes recompensas: <br /><br/>";
-									if($rewards->exp){
-										$reward .= $rewards->exp ." ". t('ranked.exp') ."<br />";
-										//Exp para o Player
-										$this->earn_exp($rewards->exp);
-									}
-									if($rewards->exp_user){
-										$reward .= $rewards->exp_user ." ". t('ranked.exp_account') ."<br />";
-										//Exp para a conta
-										$user	= User::get_instance();
-										$user->exp($rewards->exp_user);
-									}
-									if($rewards->currency){
-										$reward .= $rewards->currency ." ". t('currencies.' . $this->character()->anime_id) ."<br />";
-										// Dinheiro para o player
-										$this->earn($rewards->currency);
-									}
-									if($rewards->credits){
-										$reward .= $rewards->credits ." ". t('treasure.show.credits') ."<br />";
-										//Crédito para a conta
-										$user	= User::get_instance();
-										$user->earn($rewards->credits);
-									}
-									if($rewards->item_id){
-										$reward .= $rewards->quantity ."x ". Item::find($rewards->item_id)->description()->name ."<br />";
-										//Item para o player
-										$player_item_exist	= PlayerItem::find_first("item_id=".$rewards->item_id." AND player_id=". $this->id);
-
-										if(!$player_item_exist){
-											$player_item			= new PlayerItem();
-											$player_item->item_id	= $rewards->item_id;
-											$player_item->quantity	= $rewards->quantity;
-											$player_item->player_id	= $this->id;
-											$player_item->save();
-										}else{
-											$player_item_exist->quantity += $rewards->quantity;
-											$player_item_exist->save();
-										}
-									}
-									if($rewards->character_theme_id){
-										$reward .= t('treasure.show.theme') ." ". CharacterTheme::find($rewards->character_theme_id)->description()->name ."<br />";
-										//Dá o Tema ao player
-										$reward_theme						= new UserCharacterTheme();
-										$reward_theme->user_id				= $this->user_id;
-										$reward_theme->character_theme_id	= $rewards->character_theme_id;
-										$reward_theme->was_reward			= 1;
-										$reward_theme->save();
-									}
-									if($rewards->character_id){
-										$reward .= t('treasure.show.character') ." ". Character::find($rewards->character_id)->description()->name ."<br />";
-										//Dá o Personagem ao player
-										$reward_character					= new UserCharacter();
-										$reward_character->user_id			= $this->user_id;
-										$reward_character->character_id	= $rewards->character_id;
-										$reward_character->was_reward	= 1;
-										$reward_character->save();
-									}
-									if($rewards->headline_id){
-										$reward .= t('treasure.show.headline') ." ". Headline::find($rewards->headline_id)->description()->name ."<br />";
-										// Dá o titulo ao player
-										$reward_headline				= new UserHeadline();
-										$reward_headline->user_id		= $this->user_id;
-										$reward_headline->headline_id	= $rewards->headline_id;
-										$reward_headline->save();
-									}
-								}
-								// Envia uma mensagem para o jogador avisando do prêmio
-								$pm				= new PrivateMessage();
-								$pm->to_id		= $this->id;
-								$pm->subject	= "Conquista: ". $achievement->description()->name;
-								$pm->content	= "Você completou a conquista: <b>". $achievement->description()->name ."</b> ". $reward;
-								$pm->save();
+						if ($player_challenge) {
+							if ($player_challenge->quantity > $achievement->challenges_floor) {
+								$this->achievement_reward($this, $achievement);
 							}
 						}
 					}
@@ -2707,440 +352,45 @@ class Player extends Relation {
 				break;
 			case "organization":
 				$achievements = Achievement::find("organization > 0 AND type='achievement'");
-				foreach($achievements as $achievement){
+				foreach ($achievements as $achievement) {
 					$player_achievement = PlayerAchievement::find_first("achievement_id=".$achievement->id." AND player_id=".$this->id);
-					if(!$player_achievement){
-						if($this->organization_id){
-							$new_achievement = new PlayerAchievement();
-							$new_achievement->player_id 	 = $this->id;
-							$new_achievement->achievement_id = $achievement->id;
-							$new_achievement->save();
-							//Recompensa
-							$rewards = $achievement->achievement_rewards($achievement->id);
-							$reward = "";
-							if($rewards){
-								$reward .= "e ganhou as seguintes recompensas: <br /><br/>";
-								if($rewards->exp){
-									$reward .= $rewards->exp ." ". t('ranked.exp') ."<br />";
-									//Exp para o Player
-									$this->earn_exp($rewards->exp);
-								}
-								if($rewards->exp_user){
-									$reward .= $rewards->exp_user ." ". t('ranked.exp_account') ."<br />";
-									//Exp para a conta
-									$user	= User::get_instance();
-									$user->exp($rewards->exp_user);
-								}
-								if($rewards->currency){
-									$reward .= $rewards->currency ." ". t('currencies.' . $this->character()->anime_id) ."<br />";
-									// Dinheiro para o player
-									$this->earn($rewards->currency);
-								}
-								if($rewards->credits){
-									$reward .= $rewards->credits ." ". t('treasure.show.credits') ."<br />";
-									//Crédito para a conta
-									$user	= User::get_instance();
-									$user->earn($rewards->credits);
-								}
-								if($rewards->item_id){
-									$reward .= $rewards->quantity ."x ". Item::find($rewards->item_id)->description()->name ."<br />";
-									//Item para o player
-									$player_item_exist	= PlayerItem::find_first("item_id=".$rewards->item_id." AND player_id=". $this->id);
-
-									if(!$player_item_exist){
-										$player_item			= new PlayerItem();
-										$player_item->item_id	= $rewards->item_id;
-										$player_item->quantity	= $rewards->quantity;
-										$player_item->player_id	= $this->id;
-										$player_item->save();
-									}else{
-										$player_item_exist->quantity += $rewards->quantity;
-										$player_item_exist->save();
-									}
-								}
-								if($rewards->character_theme_id){
-									$reward .= t('treasure.show.theme') ." ". CharacterTheme::find($rewards->character_theme_id)->description()->name ."<br />";
-									//Dá o Tema ao player
-									$reward_theme						= new UserCharacterTheme();
-									$reward_theme->user_id				= $this->user_id;
-									$reward_theme->character_theme_id	= $rewards->character_theme_id;
-									$reward_theme->was_reward			= 1;
-									$reward_theme->save();
-								}
-								if($rewards->character_id){
-									$reward .= t('treasure.show.character') ." ". Character::find($rewards->character_id)->description()->name ."<br />";
-									//Dá o Personagem ao player
-									$reward_character					= new UserCharacter();
-									$reward_character->user_id			= $this->user_id;
-									$reward_character->character_id	= $rewards->character_id;
-									$reward_character->was_reward	= 1;
-									$reward_character->save();
-								}
-								if($rewards->headline_id){
-									$reward .= t('treasure.show.headline') ." ". Headline::find($rewards->headline_id)->description()->name ."<br />";
-									// Dá o titulo ao player
-									$reward_headline				= new UserHeadline();
-									$reward_headline->user_id		= $this->user_id;
-									$reward_headline->headline_id	= $rewards->headline_id;
-									$reward_headline->save();
-								}
-							}
-							// Envia uma mensagem para o jogador avisando do prêmio
-							$pm				= new PrivateMessage();
-							$pm->to_id		= $this->id;
-							$pm->subject	= "Conquista: ". $achievement->description()->name;
-							$pm->content	= "Você completou a conquista: <b>". $achievement->description()->name ."</b> ". $reward;
-							$pm->save();
+					if (!$player_achievement) {
+						if ($this->organization_id) {
+							$this->achievement_reward($this, $achievement);
 						}
 					}
 				}
 				break;
 			case "treasure":
 				$achievements = Achievement::find("treasure > 0 AND type='achievement'");
-				foreach($achievements as $achievement){
+				foreach ($achievements as $achievement) {
 					$player_achievement = PlayerAchievement::find_first("achievement_id=".$achievement->id." AND player_id=".$this->id);
-					if(!$player_achievement){
-						if($this->treasure_total >= $achievement->quantity){
-							$new_achievement = new PlayerAchievement();
-							$new_achievement->player_id 	 = $this->id;
-							$new_achievement->achievement_id = $achievement->id;
-							$new_achievement->save();
-							//Recompensa
-							$rewards = $achievement->achievement_rewards($achievement->id);
-							$reward = "";
-							if($rewards){
-								$reward .= "e ganhou as seguintes recompensas: <br /><br/>";
-								if($rewards->exp){
-									$reward .= $rewards->exp ." ". t('ranked.exp') ."<br />";
-									//Exp para o Player
-									$this->earn_exp($rewards->exp);
-								}
-								if($rewards->exp_user){
-									$reward .= $rewards->exp_user ." ". t('ranked.exp_account') ."<br />";
-									//Exp para a conta
-									$user	= User::get_instance();
-									$user->exp($rewards->exp_user);
-								}
-								if($rewards->currency){
-									$reward .= $rewards->currency ." ". t('currencies.' . $this->character()->anime_id) ."<br />";
-									// Dinheiro para o player
-									$this->earn($rewards->currency);
-								}
-								if($rewards->credits){
-									$reward .= $rewards->credits ." ". t('treasure.show.credits') ."<br />";
-									//Crédito para a conta
-									$user	= User::get_instance();
-									$user->earn($rewards->credits);
-								}
-								if($rewards->item_id){
-									$reward .= $rewards->quantity ."x ". Item::find($rewards->item_id)->description()->name ."<br />";
-									//Item para o player
-									$player_item_exist	= PlayerItem::find_first("item_id=".$rewards->item_id." AND player_id=". $this->id);
-
-									if(!$player_item_exist){
-										$player_item			= new PlayerItem();
-										$player_item->item_id	= $rewards->item_id;
-										$player_item->quantity	= $rewards->quantity;
-										$player_item->player_id	= $this->id;
-										$player_item->save();
-									}else{
-										$player_item_exist->quantity += $rewards->quantity;
-										$player_item_exist->save();
-									}
-								}
-								if($rewards->character_theme_id){
-									$reward .= t('treasure.show.theme') ." ". CharacterTheme::find($rewards->character_theme_id)->description()->name ."<br />";
-									//Dá o Tema ao player
-									$reward_theme						= new UserCharacterTheme();
-									$reward_theme->user_id				= $this->user_id;
-									$reward_theme->character_theme_id	= $rewards->character_theme_id;
-									$reward_theme->was_reward			= 1;
-									$reward_theme->save();
-								}
-								if($rewards->character_id){
-									$reward .= t('treasure.show.character') ." ". Character::find($rewards->character_id)->description()->name ."<br />";
-									//Dá o Personagem ao player
-									$reward_character					= new UserCharacter();
-									$reward_character->user_id			= $this->user_id;
-									$reward_character->character_id	= $rewards->character_id;
-									$reward_character->was_reward	= 1;
-									$reward_character->save();
-								}
-								if($rewards->headline_id){
-									$reward .= t('treasure.show.headline') ." ". Headline::find($rewards->headline_id)->description()->name ."<br />";
-									// Dá o titulo ao player
-									$reward_headline				= new UserHeadline();
-									$reward_headline->user_id		= $this->user_id;
-									$reward_headline->headline_id	= $rewards->headline_id;
-									$reward_headline->save();
-								}
-							}
-							// Envia uma mensagem para o jogador avisando do prêmio
-							$pm				= new PrivateMessage();
-							$pm->to_id		= $this->id;
-							$pm->subject	= "Conquista: ". $achievement->description()->name;
-							$pm->content	= "Você completou a conquista: <b>". $achievement->description()->name ."</b> ". $reward;
-							$pm->save();
+					if (!$player_achievement) {
+						if ($this->treasure_total >= $achievement->quantity) {
+							$this->achievement_reward($this, $achievement);
 						}
 					}
 				}
 				break;
 			case "friends":
 				$achievements = Achievement::find("friends > 0 AND type='achievement'");
-				foreach($achievements as $achievement){
+				foreach ($achievements as $achievement) {
 					$player_achievement = PlayerAchievement::find_first("achievement_id=".$achievement->id." AND player_id=".$this->id);
-					if(!$player_achievement){
-						if($achievement->friends && !$achievement->friends_send_gifts && !$achievement->friends_received_gifts){
+					if (!$player_achievement) {
+						if ($achievement->friends && !$achievement->friends_send_gifts && !$achievement->friends_received_gifts) {
 							$player_friends = Recordset::query("select count(id) as total from player_friend_lists WHERE  player_id=".$this->id)->result_array();
-							if($player_friends[0]['total'] >= $achievement->friends){
-								$new_achievement = new PlayerAchievement();
-								$new_achievement->player_id 	 = $this->id;
-								$new_achievement->achievement_id = $achievement->id;
-								$new_achievement->save();
-								//Recompensa
-								$rewards = $achievement->achievement_rewards($achievement->id);
-								$reward = "";
-								if($rewards){
-									$reward .= "e ganhou as seguintes recompensas: <br /><br/>";
-									if($rewards->exp){
-										$reward .= $rewards->exp ." ". t('ranked.exp') ."<br />";
-										//Exp para o Player
-										$this->earn_exp($rewards->exp);
-									}
-									if($rewards->exp_user){
-										$reward .= $rewards->exp_user ." ". t('ranked.exp_account') ."<br />";
-										//Exp para a conta
-										$user	= User::get_instance();
-										$user->exp($rewards->exp_user);
-									}
-									if($rewards->currency){
-										$reward .= $rewards->currency ." ". t('currencies.' . $this->character()->anime_id) ."<br />";
-										// Dinheiro para o player
-										$this->earn($rewards->currency);
-									}
-									if($rewards->credits){
-										$reward .= $rewards->credits ." ". t('treasure.show.credits') ."<br />";
-										//Crédito para a conta
-										$user	= User::get_instance();
-										$user->earn($rewards->credits);
-									}
-									if($rewards->item_id){
-										$reward .= $rewards->quantity ."x ". Item::find($rewards->item_id)->description()->name ."<br />";
-										//Item para o player
-										$player_item_exist	= PlayerItem::find_first("item_id=".$rewards->item_id." AND player_id=". $this->id);
-
-										if(!$player_item_exist){
-											$player_item			= new PlayerItem();
-											$player_item->item_id	= $rewards->item_id;
-											$player_item->quantity	= $rewards->quantity;
-											$player_item->player_id	= $this->id;
-											$player_item->save();
-										}else{
-											$player_item_exist->quantity += $rewards->quantity;
-											$player_item_exist->save();
-										}
-									}
-									if($rewards->character_theme_id){
-										$reward .= t('treasure.show.theme') ." ". CharacterTheme::find($rewards->character_theme_id)->description()->name ."<br />";
-										//Dá o Tema ao player
-										$reward_theme						= new UserCharacterTheme();
-										$reward_theme->user_id				= $this->user_id;
-										$reward_theme->character_theme_id	= $rewards->character_theme_id;
-										$reward_theme->was_reward			= 1;
-										$reward_theme->save();
-									}
-									if($rewards->character_id){
-										$reward .= t('treasure.show.character') ." ". Character::find($rewards->character_id)->description()->name ."<br />";
-										//Dá o Personagem ao player
-										$reward_character					= new UserCharacter();
-										$reward_character->user_id			= $this->user_id;
-										$reward_character->character_id	= $rewards->character_id;
-										$reward_character->was_reward	= 1;
-										$reward_character->save();
-									}
-									if($rewards->headline_id){
-										$reward .= t('treasure.show.headline') ." ". Headline::find($rewards->headline_id)->description()->name ."<br />";
-										// Dá o titulo ao player
-										$reward_headline				= new UserHeadline();
-										$reward_headline->user_id		= $this->user_id;
-										$reward_headline->headline_id	= $rewards->headline_id;
-										$reward_headline->save();
-									}
-								}
-								// Envia uma mensagem para o jogador avisando do prêmio
-								$pm				= new PrivateMessage();
-								$pm->to_id		= $this->id;
-								$pm->subject	= "Conquista: ". $achievement->description()->name;
-								$pm->content	= "Você completou a conquista: <b>". $achievement->description()->name ."</b> ". $reward;
-								$pm->save();
+							if ($player_friends[0]['total'] >= $achievement->friends) {
+								$this->achievement_reward($this, $achievement);
 							}
-						}else if($achievement->friends && $achievement->friends_send_gifts && !$achievement->friends_received_gifts){
+						} elseif ($achievement->friends && $achievement->friends_send_gifts && !$achievement->friends_received_gifts) {
 							$player_send_gifts = Recordset::query("select count(id) as total from player_gift_logs WHERE  player_id=".$this->id)->result_array();
-							if($player_send_gifts[0]['total'] >= $achievement->friends_send_gifts){
-								$new_achievement = new PlayerAchievement();
-								$new_achievement->player_id 	 = $this->id;
-								$new_achievement->achievement_id = $achievement->id;
-								$new_achievement->save();
-								//Recompensa
-								$rewards = $achievement->achievement_rewards($achievement->id);
-								$reward = "";
-								if($rewards){
-									$reward .= "e ganhou as seguintes recompensas: <br /><br/>";
-									if($rewards->exp){
-										$reward .= $rewards->exp ." ". t('ranked.exp') ."<br />";
-										//Exp para o Player
-										$this->earn_exp($rewards->exp);
-									}
-									if($rewards->exp_user){
-										$reward .= $rewards->exp_user ." ". t('ranked.exp_account') ."<br />";
-										//Exp para a conta
-										$user	= User::get_instance();
-										$user->exp($rewards->exp_user);
-									}
-									if($rewards->currency){
-										$reward .= $rewards->currency ." ". t('currencies.' . $this->character()->anime_id) ."<br />";
-										// Dinheiro para o player
-										$this->earn($rewards->currency);
-									}
-									if($rewards->credits){
-										$reward .= $rewards->credits ." ". t('treasure.show.credits') ."<br />";
-										//Crédito para a conta
-										$user	= User::get_instance();
-										$user->earn($rewards->credits);
-									}
-									if($rewards->item_id){
-										$reward .= $rewards->quantity ."x ". Item::find($rewards->item_id)->description()->name ."<br />";
-										//Item para o player
-										$player_item_exist	= PlayerItem::find_first("item_id=".$rewards->item_id." AND player_id=". $this->id);
-
-										if(!$player_item_exist){
-											$player_item			= new PlayerItem();
-											$player_item->item_id	= $rewards->item_id;
-											$player_item->quantity	= $rewards->quantity;
-											$player_item->player_id	= $this->id;
-											$player_item->save();
-										}else{
-											$player_item_exist->quantity += $rewards->quantity;
-											$player_item_exist->save();
-										}
-									}
-									if($rewards->character_theme_id){
-										$reward .= t('treasure.show.theme') ." ". CharacterTheme::find($rewards->character_theme_id)->description()->name ."<br />";
-										//Dá o Tema ao player
-										$reward_theme						= new UserCharacterTheme();
-										$reward_theme->user_id				= $this->user_id;
-										$reward_theme->character_theme_id	= $rewards->character_theme_id;
-										$reward_theme->was_reward			= 1;
-										$reward_theme->save();
-									}
-									if($rewards->character_id){
-										$reward .= t('treasure.show.character') ." ". Character::find($rewards->character_id)->description()->name ."<br />";
-										//Dá o Personagem ao player
-										$reward_character					= new UserCharacter();
-										$reward_character->user_id			= $this->user_id;
-										$reward_character->character_id	= $rewards->character_id;
-										$reward_character->was_reward	= 1;
-										$reward_character->save();
-									}
-									if($rewards->headline_id){
-										$reward .= t('treasure.show.headline') ." ". Headline::find($rewards->headline_id)->description()->name ."<br />";
-										// Dá o titulo ao player
-										$reward_headline				= new UserHeadline();
-										$reward_headline->user_id		= $this->user_id;
-										$reward_headline->headline_id	= $rewards->headline_id;
-										$reward_headline->save();
-									}
-								}
-								// Envia uma mensagem para o jogador avisando do prêmio
-								$pm				= new PrivateMessage();
-								$pm->to_id		= $this->id;
-								$pm->subject	= "Conquista: ". $achievement->description()->name;
-								$pm->content	= "Você completou a conquista: <b>". $achievement->description()->name ."</b> ". $reward;
-								$pm->save();
+							if ($player_send_gifts[0]['total'] >= $achievement->friends_send_gifts) {
+								$this->achievement_reward($this, $achievement);
 							}
-						}else if($achievement->friends && !$achievement->friends_send_gifts && $achievement->friends_received_gifts){
+						} elseif ($achievement->friends && !$achievement->friends_send_gifts && $achievement->friends_received_gifts) {
 							$player_receveid_gifts = Recordset::query("select count(id) as total from player_gift_logs WHERE  friend_id=".$this->id)->result_array();
-							if($player_receveid_gifts[0]['total'] >= $achievement->friends_received_gifts){
-								$new_achievement = new PlayerAchievement();
-								$new_achievement->player_id 	 = $this->id;
-								$new_achievement->achievement_id = $achievement->id;
-								$new_achievement->save();
-								//Recompensa
-								$rewards = $achievement->achievement_rewards($achievement->id);
-								$reward = "";
-								if($rewards){
-									$reward .= "e ganhou as seguintes recompensas: <br /><br/>";
-									if($rewards->exp){
-										$reward .= $rewards->exp ." ". t('ranked.exp') ."<br />";
-										//Exp para o Player
-										$this->earn_exp($rewards->exp);
-									}
-									if($rewards->exp_user){
-										$reward .= $rewards->exp_user ." ". t('ranked.exp_account') ."<br />";
-										//Exp para a conta
-										$user	= User::get_instance();
-										$user->exp($rewards->exp_user);
-									}
-									if($rewards->currency){
-										$reward .= $rewards->currency ." ". t('currencies.' . $this->character()->anime_id) ."<br />";
-										// Dinheiro para o player
-										$this->earn($rewards->currency);
-									}
-									if($rewards->credits){
-										$reward .= $rewards->credits ." ". t('treasure.show.credits') ."<br />";
-										//Crédito para a conta
-										$user	= User::get_instance();
-										$user->earn($rewards->credits);
-									}
-									if($rewards->item_id){
-										$reward .= $rewards->quantity ."x ". Item::find($rewards->item_id)->description()->name ."<br />";
-										//Item para o player
-										$player_item_exist	= PlayerItem::find_first("item_id=".$rewards->item_id." AND player_id=". $this->id);
-
-										if(!$player_item_exist){
-											$player_item			= new PlayerItem();
-											$player_item->item_id	= $rewards->item_id;
-											$player_item->quantity	= $rewards->quantity;
-											$player_item->player_id	= $this->id;
-											$player_item->save();
-										}else{
-											$player_item_exist->quantity += $rewards->quantity;
-											$player_item_exist->save();
-										}
-									}
-									if($rewards->character_theme_id){
-										$reward .= t('treasure.show.theme') ." ". CharacterTheme::find($rewards->character_theme_id)->description()->name ."<br />";
-										//Dá o Tema ao player
-										$reward_theme						= new UserCharacterTheme();
-										$reward_theme->user_id				= $this->user_id;
-										$reward_theme->character_theme_id	= $rewards->character_theme_id;
-										$reward_theme->was_reward			= 1;
-										$reward_theme->save();
-									}
-									if($rewards->character_id){
-										$reward .= t('treasure.show.character') ." ". Character::find($rewards->character_id)->description()->name ."<br />";
-										//Dá o Personagem ao player
-										$reward_character					= new UserCharacter();
-										$reward_character->user_id			= $this->user_id;
-										$reward_character->character_id	= $rewards->character_id;
-										$reward_character->was_reward	= 1;
-										$reward_character->save();
-									}
-									if($rewards->headline_id){
-										$reward .= t('treasure.show.headline') ." ". Headline::find($rewards->headline_id)->description()->name ."<br />";
-										// Dá o titulo ao player
-										$reward_headline				= new UserHeadline();
-										$reward_headline->user_id		= $this->user_id;
-										$reward_headline->headline_id	= $rewards->headline_id;
-										$reward_headline->save();
-									}
-								}
-								// Envia uma mensagem para o jogador avisando do prêmio
-								$pm				= new PrivateMessage();
-								$pm->to_id		= $this->id;
-								$pm->subject	= "Conquista: ". $achievement->description()->name;
-								$pm->content	= "Você completou a conquista: <b>". $achievement->description()->name ."</b> ". $reward;
-								$pm->save();
+							if ($player_receveid_gifts[0]['total'] >= $achievement->friends_received_gifts) {
+								$this->achievement_reward($this, $achievement);
 							}
 						}
 					}
@@ -3148,452 +398,57 @@ class Player extends Relation {
 				break;
 			case "character":
 				$achievements = Achievement::find("achievements.character > 0 AND type='achievement'");
-				foreach($achievements as $achievement){
+				foreach ($achievements as $achievement) {
 					$player_achievement = PlayerAchievement::find_first("achievement_id=".$achievement->id." AND player_id=".$this->id);
-					if(!$player_achievement){
+					if (!$player_achievement) {
 						$user_character = UserCharacter::find_first("user_id=". $this->user_id." AND character_id=".$achievement->character);
-						if($user_character){
-							$new_achievement = new PlayerAchievement();
-							$new_achievement->player_id 	 = $this->id;
-							$new_achievement->achievement_id = $achievement->id;
-							$new_achievement->save();
-							//Recompensa
-							$rewards = $achievement->achievement_rewards($achievement->id);
-							$reward = "";
-							if($rewards){
-								$reward .= "e ganhou as seguintes recompensas: <br /><br/>";
-								if($rewards->exp){
-									$reward .= $rewards->exp ." ". t('ranked.exp') ."<br />";
-									//Exp para o Player
-									$this->earn_exp($rewards->exp);
-								}
-								if($rewards->exp_user){
-									$reward .= $rewards->exp_user ." ". t('ranked.exp_account') ."<br />";
-									//Exp para a conta
-									$user	= User::get_instance();
-									$user->exp($rewards->exp_user);
-								}
-								if($rewards->currency){
-									$reward .= $rewards->currency ." ". t('currencies.' . $this->character()->anime_id) ."<br />";
-									// Dinheiro para o player
-									$this->earn($rewards->currency);
-								}
-								if($rewards->credits){
-									$reward .= $rewards->credits ." ". t('treasure.show.credits') ."<br />";
-									//Crédito para a conta
-									$user	= User::get_instance();
-									$user->earn($rewards->credits);
-								}
-								if($rewards->item_id){
-									$reward .= $rewards->quantity ."x ". Item::find($rewards->item_id)->description()->name ."<br />";
-									//Item para o player
-									$player_item_exist	= PlayerItem::find_first("item_id=".$rewards->item_id." AND player_id=". $this->id);
-
-									if(!$player_item_exist){
-										$player_item			= new PlayerItem();
-										$player_item->item_id	= $rewards->item_id;
-										$player_item->quantity	= $rewards->quantity;
-										$player_item->player_id	= $this->id;
-										$player_item->save();
-									}else{
-										$player_item_exist->quantity += $rewards->quantity;
-										$player_item_exist->save();
-									}
-								}
-								if($rewards->character_theme_id){
-									$reward .= t('treasure.show.theme') ." ". CharacterTheme::find($rewards->character_theme_id)->description()->name ."<br />";
-									//Dá o Tema ao player
-									$reward_theme						= new UserCharacterTheme();
-									$reward_theme->user_id				= $this->user_id;
-									$reward_theme->character_theme_id	= $rewards->character_theme_id;
-									$reward_theme->was_reward			= 1;
-									$reward_theme->save();
-								}
-								if($rewards->character_id){
-									$reward .= t('treasure.show.character') ." ". Character::find($rewards->character_id)->description()->name ."<br />";
-									//Dá o Personagem ao player
-									$reward_character					= new UserCharacter();
-									$reward_character->user_id			= $this->user_id;
-									$reward_character->character_id	= $rewards->character_id;
-									$reward_character->was_reward	= 1;
-									$reward_character->save();
-								}
-								if($rewards->headline_id){
-									$reward .= t('treasure.show.headline') ." ". Headline::find($rewards->headline_id)->description()->name ."<br />";
-									// Dá o titulo ao player
-									$reward_headline				= new UserHeadline();
-									$reward_headline->user_id		= $this->user_id;
-									$reward_headline->headline_id	= $rewards->headline_id;
-									$reward_headline->save();
-								}
-							}
-							// Envia uma mensagem para o jogador avisando do prêmio
-							$pm				= new PrivateMessage();
-							$pm->to_id		= $this->id;
-							$pm->subject	= "Conquista: ". $achievement->description()->name;
-							$pm->content	= "Você completou a conquista: <b>". $achievement->description()->name ."</b> ". $reward;
-							$pm->save();
+						if ($user_character) {
+							$this->achievement_reward($this, $achievement);
 						}
 					}
 				}
 				break;
 			case "character_theme":
 				$achievements = Achievement::find("character_theme > 0 AND type='achievement'");
-				foreach($achievements as $achievement){
+				foreach ($achievements as $achievement) {
 					$player_achievement = PlayerAchievement::find_first("achievement_id=".$achievement->id." AND player_id=".$this->id);
-					if(!$player_achievement){
+					if (!$player_achievement) {
 						$user_character_theme = UserCharacterTheme::find_first("user_id=". $this->user_id." AND character_theme_id=".$achievement->character_theme);
-						if($user_character_theme){
-							$new_achievement = new PlayerAchievement();
-							$new_achievement->player_id 	 = $this->id;
-							$new_achievement->achievement_id = $achievement->id;
-							$new_achievement->save();
-							//Recompensa
-							$rewards = $achievement->achievement_rewards($achievement->id);
-							$reward = "";
-							if($rewards){
-								$reward .= "e ganhou as seguintes recompensas: <br /><br/>";
-								if($rewards->exp){
-									$reward .= $rewards->exp ." ". t('ranked.exp') ."<br />";
-									//Exp para o Player
-									$this->earn_exp($rewards->exp);
-								}
-								if($rewards->exp_user){
-									$reward .= $rewards->exp_user ." ". t('ranked.exp_account') ."<br />";
-									//Exp para a conta
-									$user	= User::get_instance();
-									$user->exp($rewards->exp_user);
-								}
-								if($rewards->currency){
-									$reward .= $rewards->currency ." ". t('currencies.' . $this->character()->anime_id) ."<br />";
-									// Dinheiro para o player
-									$this->earn($rewards->currency);
-								}
-								if($rewards->credits){
-									$reward .= $rewards->credits ." ". t('treasure.show.credits') ."<br />";
-									//Crédito para a conta
-									$user	= User::get_instance();
-									$user->earn($rewards->credits);
-								}
-								if($rewards->item_id){
-									$reward .= $rewards->quantity ."x ". Item::find($rewards->item_id)->description()->name ."<br />";
-									//Item para o player
-									$player_item_exist	= PlayerItem::find_first("item_id=".$rewards->item_id." AND player_id=". $this->id);
-
-									if(!$player_item_exist){
-										$player_item			= new PlayerItem();
-										$player_item->item_id	= $rewards->item_id;
-										$player_item->quantity	= $rewards->quantity;
-										$player_item->player_id	= $this->id;
-										$player_item->save();
-									}else{
-										$player_item_exist->quantity += $rewards->quantity;
-										$player_item_exist->save();
-									}
-								}
-								if($rewards->character_theme_id){
-									$reward .= t('treasure.show.theme') ." ". CharacterTheme::find($rewards->character_theme_id)->description()->name ."<br />";
-									//Dá o Tema ao player
-									$reward_theme						= new UserCharacterTheme();
-									$reward_theme->user_id				= $this->user_id;
-									$reward_theme->character_theme_id	= $rewards->character_theme_id;
-									$reward_theme->was_reward			= 1;
-									$reward_theme->save();
-								}
-								if($rewards->character_id){
-									$reward .= t('treasure.show.character') ." ". Character::find($rewards->character_id)->description()->name ."<br />";
-									//Dá o Personagem ao player
-									$reward_character					= new UserCharacter();
-									$reward_character->user_id			= $this->user_id;
-									$reward_character->character_id	= $rewards->character_id;
-									$reward_character->was_reward	= 1;
-									$reward_character->save();
-								}
-								if($rewards->headline_id){
-									$reward .= t('treasure.show.headline') ." ". Headline::find($rewards->headline_id)->description()->name ."<br />";
-									// Dá o titulo ao player
-									$reward_headline				= new UserHeadline();
-									$reward_headline->user_id		= $this->user_id;
-									$reward_headline->headline_id	= $rewards->headline_id;
-									$reward_headline->save();
-								}
-							}
-							// Envia uma mensagem para o jogador avisando do prêmio
-							$pm				= new PrivateMessage();
-							$pm->to_id		= $this->id;
-							$pm->subject	= "Conquista: ". $achievement->description()->name;
-							$pm->content	= "Você completou a conquista: <b>". $achievement->description()->name ."</b> ". $reward;
-							$pm->save();
+						if ($user_character_theme) {
+							$this->achievement_reward($this, $achievement);
 						}
 					}
 				}
 				break;
 			case "luck":
 				$achievements = Achievement::find("luck > 0 AND type='achievement'");
-				foreach($achievements as $achievement){
+				foreach ($achievements as $achievement) {
 					$player_achievement = PlayerAchievement::find_first("achievement_id=".$achievement->id." AND player_id=".$this->id);
-					if(!$player_achievement){
+					if (!$player_achievement) {
 						$player_luck_log = PlayerLuckLog::find_first("player_id=". $this->id." AND luck_reward_id=".$achievement->luck);
-						if($player_luck_log){
-							$new_achievement = new PlayerAchievement();
-							$new_achievement->player_id 	 = $this->id;
-							$new_achievement->achievement_id = $achievement->id;
-							$new_achievement->save();
-							//Recompensa
-							$rewards = $achievement->achievement_rewards($achievement->id);
-							$reward = "";
-							if($rewards){
-								$reward .= "e ganhou as seguintes recompensas: <br /><br/>";
-								if($rewards->exp){
-									$reward .= $rewards->exp ." ". t('ranked.exp') ."<br />";
-									//Exp para o Player
-									$this->earn_exp($rewards->exp);
-								}
-								if($rewards->exp_user){
-									$reward .= $rewards->exp_user ." ". t('ranked.exp_account') ."<br />";
-									//Exp para a conta
-									$user	= User::get_instance();
-									$user->exp($rewards->exp_user);
-								}
-								if($rewards->currency){
-									$reward .= $rewards->currency ." ". t('currencies.' . $this->character()->anime_id) ."<br />";
-									// Dinheiro para o player
-									$this->earn($rewards->currency);
-								}
-								if($rewards->credits){
-									$reward .= $rewards->credits ." ". t('treasure.show.credits') ."<br />";
-									//Crédito para a conta
-									$user	= User::get_instance();
-									$user->earn($rewards->credits);
-								}
-								if($rewards->item_id){
-									$reward .= $rewards->quantity ."x ". Item::find($rewards->item_id)->description()->name ."<br />";
-									//Item para o player
-									$player_item_exist	= PlayerItem::find_first("item_id=".$rewards->item_id." AND player_id=". $this->id);
-
-									if(!$player_item_exist){
-										$player_item			= new PlayerItem();
-										$player_item->item_id	= $rewards->item_id;
-										$player_item->quantity	= $rewards->quantity;
-										$player_item->player_id	= $this->id;
-										$player_item->save();
-									}else{
-										$player_item_exist->quantity += $rewards->quantity;
-										$player_item_exist->save();
-									}
-								}
-								if($rewards->character_theme_id){
-									$reward .= t('treasure.show.theme') ." ". CharacterTheme::find($rewards->character_theme_id)->description()->name ."<br />";
-									//Dá o Tema ao player
-									$reward_theme						= new UserCharacterTheme();
-									$reward_theme->user_id				= $this->user_id;
-									$reward_theme->character_theme_id	= $rewards->character_theme_id;
-									$reward_theme->was_reward			= 1;
-									$reward_theme->save();
-								}
-								if($rewards->character_id){
-									$reward .= t('treasure.show.character') ." ". Character::find($rewards->character_id)->description()->name ."<br />";
-									//Dá o Personagem ao player
-									$reward_character					= new UserCharacter();
-									$reward_character->user_id			= $this->user_id;
-									$reward_character->character_id	= $rewards->character_id;
-									$reward_character->was_reward	= 1;
-									$reward_character->save();
-								}
-								if($rewards->headline_id){
-									$reward .= t('treasure.show.headline') ." ". Headline::find($rewards->headline_id)->description()->name ."<br />";
-									// Dá o titulo ao player
-									$reward_headline				= new UserHeadline();
-									$reward_headline->user_id		= $this->user_id;
-									$reward_headline->headline_id	= $rewards->headline_id;
-									$reward_headline->save();
-								}
-							}
-							// Envia uma mensagem para o jogador avisando do prêmio
-							$pm				= new PrivateMessage();
-							$pm->to_id		= $this->id;
-							$pm->subject	= "Conquista: ". $achievement->description()->name;
-							$pm->content	= "Você completou a conquista: <b>". $achievement->description()->name ."</b> ". $reward;
-							$pm->save();
+						if ($player_luck_log) {
+							$this->achievement_reward($this, $achievement);
 						}
 					}
 				}
 				break;
 			case "fragments":
 				$achievements = Achievement::find("fragments > 0 AND type='achievement'");
-				foreach($achievements as $achievement){
+				foreach ($achievements as $achievement) {
 					$player_achievement = PlayerAchievement::find_first("achievement_id=".$achievement->id." AND player_id=".$this->id);
-					if(!$player_achievement){
+					if (!$player_achievement) {
 						$player_fragments = PlayerItem::find_first("player_id=". $this->id." AND item_id=446");
-						if($player_fragments){
-							if($achievement->fragments==1){
-								if($player_fragments->quantity >= $achievement->quantity){
-									$new_achievement = new PlayerAchievement();
-									$new_achievement->player_id 	 = $this->id;
-									$new_achievement->achievement_id = $achievement->id;
-									$new_achievement->save();
-									//Recompensa
-									$rewards = $achievement->achievement_rewards($achievement->id);
-									$reward = "";
-									if($rewards){
-										$reward .= "e ganhou as seguintes recompensas: <br /><br/>";
-										if($rewards->exp){
-											$reward .= $rewards->exp ." ". t('ranked.exp') ."<br />";
-											//Exp para o Player
-											$this->earn_exp($rewards->exp);
-										}
-										if($rewards->exp_user){
-											$reward .= $rewards->exp_user ." ". t('ranked.exp_account') ."<br />";
-											//Exp para a conta
-											$user	= User::get_instance();
-											$user->exp($rewards->exp_user);
-										}
-										if($rewards->currency){
-											$reward .= $rewards->currency ." ". t('currencies.' . $this->character()->anime_id) ."<br />";
-											// Dinheiro para o player
-											$this->earn($rewards->currency);
-										}
-										if($rewards->credits){
-											$reward .= $rewards->credits ." ". t('treasure.show.credits') ."<br />";
-											//Crédito para a conta
-											$user	= User::get_instance();
-											$user->earn($rewards->credits);
-										}
-										if($rewards->item_id){
-											$reward .= $rewards->quantity ."x ". Item::find($rewards->item_id)->description()->name ."<br />";
-											//Item para o player
-											$player_item_exist	= PlayerItem::find_first("item_id=".$rewards->item_id." AND player_id=". $this->id);
-
-											if(!$player_item_exist){
-												$player_item			= new PlayerItem();
-												$player_item->item_id	= $rewards->item_id;
-												$player_item->quantity	= $rewards->quantity;
-												$player_item->player_id	= $this->id;
-												$player_item->save();
-											}else{
-												$player_item_exist->quantity += $rewards->quantity;
-												$player_item_exist->save();
-											}
-										}
-										if($rewards->character_theme_id){
-											$reward .= t('treasure.show.theme') ." ". CharacterTheme::find($rewards->character_theme_id)->description()->name ."<br />";
-											//Dá o Tema ao player
-											$reward_theme						= new UserCharacterTheme();
-											$reward_theme->user_id				= $this->user_id;
-											$reward_theme->character_theme_id	= $rewards->character_theme_id;
-											$reward_theme->was_reward			= 1;
-											$reward_theme->save();
-										}
-										if($rewards->character_id){
-											$reward .= t('treasure.show.character') ." ". Character::find($rewards->character_id)->description()->name ."<br />";
-											//Dá o Personagem ao player
-											$reward_character					= new UserCharacter();
-											$reward_character->user_id			= $this->user_id;
-											$reward_character->character_id	= $rewards->character_id;
-											$reward_character->was_reward	= 1;
-											$reward_character->save();
-										}
-										if($rewards->headline_id){
-											$reward .= t('treasure.show.headline') ." ". Headline::find($rewards->headline_id)->description()->name ."<br />";
-											// Dá o titulo ao player
-											$reward_headline				= new UserHeadline();
-											$reward_headline->user_id		= $this->user_id;
-											$reward_headline->headline_id	= $rewards->headline_id;
-											$reward_headline->save();
-										}
-									}
-									// Envia uma mensagem para o jogador avisando do prêmio
-									$pm				= new PrivateMessage();
-									$pm->to_id		= $this->id;
-									$pm->subject	= "Conquista: ". $achievement->description()->name;
-									$pm->content	= "Você completou a conquista: <b>". $achievement->description()->name ."</b> ". $reward;
-									$pm->save();
+						if ($player_fragments){
+							if ($achievement->fragments == 1){
+								if ($player_fragments->quantity >= $achievement->quantity){
+									$this->achievement_reward($this, $achievement);
 								}
 							}
 						}
-						if($achievement->fragments==2){
+						if ($achievement->fragments == 2) {
 							$player_change = PlayerStat::find_first("player_id=".$this->id);
-							if($player_change->fragments >= $achievement->quantity){
-								$new_achievement = new PlayerAchievement();
-								$new_achievement->player_id 	 = $this->id;
-								$new_achievement->achievement_id = $achievement->id;
-								$new_achievement->save();
-								//Recompensa
-								$rewards = $achievement->achievement_rewards($achievement->id);
-								$reward = "";
-								if($rewards){
-									$reward .= "e ganhou as seguintes recompensas: <br /><br/>";
-									if($rewards->exp){
-										$reward .= $rewards->exp ." ". t('ranked.exp') ."<br />";
-										//Exp para o Player
-										$this->earn_exp($rewards->exp);
-									}
-									if($rewards->exp_user){
-										$reward .= $rewards->exp_user ." ". t('ranked.exp_account') ."<br />";
-										//Exp para a conta
-										$user	= User::get_instance();
-										$user->exp($rewards->exp_user);
-									}
-									if($rewards->currency){
-										$reward .= $rewards->currency ." ". t('currencies.' . $this->character()->anime_id) ."<br />";
-										// Dinheiro para o player
-										$this->earn($rewards->currency);
-									}
-									if($rewards->credits){
-										$reward .= $rewards->credits ." ". t('treasure.show.credits') ."<br />";
-										//Crédito para a conta
-										$user	= User::get_instance();
-										$user->earn($rewards->credits);
-									}
-									if($rewards->item_id){
-										$reward .= $rewards->quantity ."x ". Item::find($rewards->item_id)->description()->name ."<br />";
-										//Item para o player
-										$player_item_exist	= PlayerItem::find_first("item_id=".$rewards->item_id." AND player_id=". $this->id);
-
-										if(!$player_item_exist){
-											$player_item			= new PlayerItem();
-											$player_item->item_id	= $rewards->item_id;
-											$player_item->quantity	= $rewards->quantity;
-											$player_item->player_id	= $this->id;
-											$player_item->save();
-										}else{
-											$player_item_exist->quantity += $rewards->quantity;
-											$player_item_exist->save();
-										}
-									}
-									if($rewards->character_theme_id){
-										$reward .= t('treasure.show.theme') ." ". CharacterTheme::find($rewards->character_theme_id)->description()->name ."<br />";
-										//Dá o Tema ao player
-										$reward_theme						= new UserCharacterTheme();
-										$reward_theme->user_id				= $this->user_id;
-										$reward_theme->character_theme_id	= $rewards->character_theme_id;
-										$reward_theme->was_reward			= 1;
-										$reward_theme->save();
-									}
-									if($rewards->character_id){
-										$reward .= t('treasure.show.character') ." ". Character::find($rewards->character_id)->description()->name ."<br />";
-										//Dá o Personagem ao player
-										$reward_character					= new UserCharacter();
-										$reward_character->user_id			= $this->user_id;
-										$reward_character->character_id	= $rewards->character_id;
-										$reward_character->was_reward	= 1;
-										$reward_character->save();
-									}
-									if($rewards->headline_id){
-										$reward .= t('treasure.show.headline') ." ". Headline::find($rewards->headline_id)->description()->name ."<br />";
-										// Dá o titulo ao player
-										$reward_headline				= new UserHeadline();
-										$reward_headline->user_id		= $this->user_id;
-										$reward_headline->headline_id	= $rewards->headline_id;
-										$reward_headline->save();
-									}
-								}
-								// Envia uma mensagem para o jogador avisando do prêmio
-								$pm				= new PrivateMessage();
-								$pm->to_id		= $this->id;
-								$pm->subject	= "Conquista: ". $achievement->description()->name;
-								$pm->content	= "Você completou a conquista: <b>". $achievement->description()->name ."</b> ". $reward;
-								$pm->save();
+							if ($player_change->fragments >= $achievement->quantity) {
+								$this->achievement_reward($this, $achievement);
 							}
 						}
 					}
@@ -3601,177 +456,19 @@ class Player extends Relation {
 				break;
 			case "wanted":
 				$achievements = Achievement::find("wanted > 0 AND type='achievement'");
-				foreach($achievements as $achievement){
+				foreach ($achievements as $achievement) {
 					$player_achievement = PlayerAchievement::find_first("achievement_id=".$achievement->id." AND player_id=".$this->id);
-					if(!$player_achievement){
-						if($achievement->wanted==1){
+					if (!$player_achievement) {
+						if ($achievement->wanted==1){
 							$player_wanted = Recordset::query("select count(id) as total from player_wanteds WHERE enemy_id=".$this->id)->result_array();
-							if($player_wanted[0]['total'] >= $achievement->quantity){
-								$new_achievement = new PlayerAchievement();
-								$new_achievement->player_id 	 = $this->id;
-								$new_achievement->achievement_id = $achievement->id;
-								$new_achievement->save();
-								//Recompensa
-								$rewards = $achievement->achievement_rewards($achievement->id);
-								$reward = "";
-								if($rewards){
-									$reward .= "e ganhou as seguintes recompensas: <br /><br/>";
-									if($rewards->exp){
-										$reward .= $rewards->exp ." ". t('ranked.exp') ."<br />";
-										//Exp para o Player
-										$this->earn_exp($rewards->exp);
-									}
-									if($rewards->exp_user){
-										$reward .= $rewards->exp_user ." ". t('ranked.exp_account') ."<br />";
-										//Exp para a conta
-										$user	= User::get_instance();
-										$user->exp($rewards->exp_user);
-									}
-									if($rewards->currency){
-										$reward .= $rewards->currency ." ". t('currencies.' . $this->character()->anime_id) ."<br />";
-										// Dinheiro para o player
-										$this->earn($rewards->currency);
-									}
-									if($rewards->credits){
-										$reward .= $rewards->credits ." ". t('treasure.show.credits') ."<br />";
-										//Crédito para a conta
-										$user	= User::get_instance();
-										$user->earn($rewards->credits);
-									}
-									if($rewards->item_id){
-										$reward .= $rewards->quantity ."x ". Item::find($rewards->item_id)->description()->name ."<br />";
-										//Item para o player
-										$player_item_exist	= PlayerItem::find_first("item_id=".$rewards->item_id." AND player_id=". $this->id);
-
-										if(!$player_item_exist){
-											$player_item			= new PlayerItem();
-											$player_item->item_id	= $rewards->item_id;
-											$player_item->quantity	= $rewards->quantity;
-											$player_item->player_id	= $this->id;
-											$player_item->save();
-										}else{
-											$player_item_exist->quantity += $rewards->quantity;
-											$player_item_exist->save();
-										}
-									}
-									if($rewards->character_theme_id){
-										$reward .= t('treasure.show.theme') ." ". CharacterTheme::find($rewards->character_theme_id)->description()->name ."<br />";
-										//Dá o Tema ao player
-										$reward_theme						= new UserCharacterTheme();
-										$reward_theme->user_id				= $this->user_id;
-										$reward_theme->character_theme_id	= $rewards->character_theme_id;
-										$reward_theme->was_reward			= 1;
-										$reward_theme->save();
-									}
-									if($rewards->character_id){
-										$reward .= t('treasure.show.character') ." ". Character::find($rewards->character_id)->description()->name ."<br />";
-										//Dá o Personagem ao player
-										$reward_character					= new UserCharacter();
-										$reward_character->user_id			= $this->user_id;
-										$reward_character->character_id	= $rewards->character_id;
-										$reward_character->was_reward	= 1;
-										$reward_character->save();
-									}
-									if($rewards->headline_id){
-										$reward .= t('treasure.show.headline') ." ". Headline::find($rewards->headline_id)->description()->name ."<br />";
-										// Dá o titulo ao player
-										$reward_headline				= new UserHeadline();
-										$reward_headline->user_id		= $this->user_id;
-										$reward_headline->headline_id	= $rewards->headline_id;
-										$reward_headline->save();
-									}
-								}
-								// Envia uma mensagem para o jogador avisando do prêmio
-								$pm				= new PrivateMessage();
-								$pm->to_id		= $this->id;
-								$pm->subject	= "Conquista: ". $achievement->description()->name;
-								$pm->content	= "Você completou a conquista: <b>". $achievement->description()->name ."</b> ". $reward;
-								$pm->save();
+							if ($player_wanted[0]['total'] >= $achievement->quantity) {
+								$this->achievement_reward($this, $achievement);
 							}
 						}
-						if($achievement->wanted==2){
+						if ($achievement->wanted == 2) {
 							$player_change = PlayerStat::find_first("player_id=".$this->id);
-							if($this->won_last_battle >= $achievement->quantity){
-								$new_achievement = new PlayerAchievement();
-								$new_achievement->player_id 	 = $this->id;
-								$new_achievement->achievement_id = $achievement->id;
-								$new_achievement->save();
-								//Recompensa
-								$rewards = $achievement->achievement_rewards($achievement->id);
-								$reward = "";
-								if($rewards){
-									$reward .= "e ganhou as seguintes recompensas: <br /><br/>";
-									if($rewards->exp){
-										$reward .= $rewards->exp ." ". t('ranked.exp') ."<br />";
-										//Exp para o Player
-										$this->earn_exp($rewards->exp);
-									}
-									if($rewards->exp_user){
-										$reward .= $rewards->exp_user ." ". t('ranked.exp_account') ."<br />";
-										//Exp para a conta
-										$user	= User::get_instance();
-										$user->exp($rewards->exp_user);
-									}
-									if($rewards->currency){
-										$reward .= $rewards->currency ." ". t('currencies.' . $this->character()->anime_id) ."<br />";
-										// Dinheiro para o player
-										$this->earn($rewards->currency);
-									}
-									if($rewards->credits){
-										$reward .= $rewards->credits ." ". t('treasure.show.credits') ."<br />";
-										//Crédito para a conta
-										$user	= User::get_instance();
-										$user->earn($rewards->credits);
-									}
-									if($rewards->item_id){
-										$reward .= $rewards->quantity ."x ". Item::find($rewards->item_id)->description()->name ."<br />";
-										//Item para o player
-										$player_item_exist	= PlayerItem::find_first("item_id=".$rewards->item_id." AND player_id=". $this->id);
-
-										if(!$player_item_exist){
-											$player_item			= new PlayerItem();
-											$player_item->item_id	= $rewards->item_id;
-											$player_item->quantity	= $rewards->quantity;
-											$player_item->player_id	= $this->id;
-											$player_item->save();
-										}else{
-											$player_item_exist->quantity += $rewards->quantity;
-											$player_item_exist->save();
-										}
-									}
-									if($rewards->character_theme_id){
-										$reward .= t('treasure.show.theme') ." ". CharacterTheme::find($rewards->character_theme_id)->description()->name ."<br />";
-										//Dá o Tema ao player
-										$reward_theme						= new UserCharacterTheme();
-										$reward_theme->user_id				= $this->user_id;
-										$reward_theme->character_theme_id	= $rewards->character_theme_id;
-										$reward_theme->was_reward			= 1;
-										$reward_theme->save();
-									}
-									if($rewards->character_id){
-										$reward .= t('treasure.show.character') ." ". Character::find($rewards->character_id)->description()->name ."<br />";
-										//Dá o Personagem ao player
-										$reward_character					= new UserCharacter();
-										$reward_character->user_id			= $this->user_id;
-										$reward_character->character_id	= $rewards->character_id;
-										$reward_character->was_reward	= 1;
-										$reward_character->save();
-									}
-									if($rewards->headline_id){
-										$reward .= t('treasure.show.headline') ." ". Headline::find($rewards->headline_id)->description()->name ."<br />";
-										// Dá o titulo ao player
-										$reward_headline				= new UserHeadline();
-										$reward_headline->user_id		= $this->user_id;
-										$reward_headline->headline_id	= $rewards->headline_id;
-										$reward_headline->save();
-									}
-								}
-								// Envia uma mensagem para o jogador avisando do prêmio
-								$pm				= new PrivateMessage();
-								$pm->to_id		= $this->id;
-								$pm->subject	= "Conquista: ". $achievement->description()->name;
-								$pm->content	= "Você completou a conquista: <b>". $achievement->description()->name ."</b> ". $reward;
-								$pm->save();
+							if ($this->won_last_battle >= $achievement->quantity) {
+								$this->achievement_reward($this, $achievement);
 							}
 						}
 					}
@@ -3779,179 +476,21 @@ class Player extends Relation {
 				break;
 			case "sands":
 				$achievements = Achievement::find("sands > 0 AND type='achievement'");
-				foreach($achievements as $achievement){
+				foreach ($achievements as $achievement) {
 					$player_achievement = PlayerAchievement::find_first("achievement_id=".$achievement->id." AND player_id=".$this->id);
-					if(!$player_achievement){
+					if (!$player_achievement) {
 						$player_sands = PlayerItem::find_first("player_id=". $this->id." AND item_id=1719");
-						if($player_sands){
-							if($achievement->sands==1){
-								if($player_sands->quantity >= $achievement->quantity){
-									$new_achievement = new PlayerAchievement();
-									$new_achievement->player_id 	 = $this->id;
-									$new_achievement->achievement_id = $achievement->id;
-									$new_achievement->save();
-									//Recompensa
-									$rewards = $achievement->achievement_rewards($achievement->id);
-									$reward = "";
-									if($rewards){
-										$reward .= "e ganhou as seguintes recompensas: <br /><br/>";
-										if($rewards->exp){
-											$reward .= $rewards->exp ." ". t('ranked.exp') ."<br />";
-											//Exp para o Player
-											$this->earn_exp($rewards->exp);
-										}
-										if($rewards->exp_user){
-											$reward .= $rewards->exp_user ." ". t('ranked.exp_account') ."<br />";
-											//Exp para a conta
-											$user	= User::get_instance();
-											$user->exp($rewards->exp_user);
-										}
-										if($rewards->currency){
-											$reward .= $rewards->currency ." ". t('currencies.' . $this->character()->anime_id) ."<br />";
-											// Dinheiro para o player
-											$this->earn($rewards->currency);
-										}
-										if($rewards->credits){
-											$reward .= $rewards->credits ." ". t('treasure.show.credits') ."<br />";
-											//Crédito para a conta
-											$user	= User::get_instance();
-											$user->earn($rewards->credits);
-										}
-										if($rewards->item_id){
-											$reward .= $rewards->quantity ."x ". Item::find($rewards->item_id)->description()->name ."<br />";
-											//Item para o player
-											$player_item_exist	= PlayerItem::find_first("item_id=".$rewards->item_id." AND player_id=". $this->id);
-
-											if(!$player_item_exist){
-												$player_item			= new PlayerItem();
-												$player_item->item_id	= $rewards->item_id;
-												$player_item->quantity	= $rewards->quantity;
-												$player_item->player_id	= $this->id;
-												$player_item->save();
-											}else{
-												$player_item_exist->quantity += $rewards->quantity;
-												$player_item_exist->save();
-											}
-										}
-										if($rewards->character_theme_id){
-											$reward .= t('treasure.show.theme') ." ". CharacterTheme::find($rewards->character_theme_id)->description()->name ."<br />";
-											//Dá o Tema ao player
-											$reward_theme						= new UserCharacterTheme();
-											$reward_theme->user_id				= $this->user_id;
-											$reward_theme->character_theme_id	= $rewards->character_theme_id;
-											$reward_theme->was_reward			= 1;
-											$reward_theme->save();
-										}
-										if($rewards->character_id){
-											$reward .= t('treasure.show.character') ." ". Character::find($rewards->character_id)->description()->name ."<br />";
-											//Dá o Personagem ao player
-											$reward_character					= new UserCharacter();
-											$reward_character->user_id			= $this->user_id;
-											$reward_character->character_id	= $rewards->character_id;
-											$reward_character->was_reward	= 1;
-											$reward_character->save();
-										}
-										if($rewards->headline_id){
-											$reward .= t('treasure.show.headline') ." ". Headline::find($rewards->headline_id)->description()->name ."<br />";
-											// Dá o titulo ao player
-											$reward_headline				= new UserHeadline();
-											$reward_headline->user_id		= $this->user_id;
-											$reward_headline->headline_id	= $rewards->headline_id;
-											$reward_headline->save();
-										}
-									}
-									// Envia uma mensagem para o jogador avisando do prêmio
-									$pm				= new PrivateMessage();
-									$pm->to_id		= $this->id;
-									$pm->subject	= "Conquista: ". $achievement->description()->name;
-									$pm->content	= "Você completou a conquista: <b>". $achievement->description()->name ."</b> ". $reward;
-									$pm->save();
+						if ($player_sands) {
+							if ($achievement->sands == 1) {
+								if ($player_sands->quantity >= $achievement->quantity) {
+									$this->achievement_reward($this, $achievement);
 								}
 							}
 						}
-						if($achievement->sands==2){
+						if ($achievement->sands == 2) {
 							$player_change = PlayerStat::find_first("player_id=".$this->id);
-							if($player_change->sands >= $achievement->quantity){
-								$new_achievement = new PlayerAchievement();
-								$new_achievement->player_id 	 = $this->id;
-								$new_achievement->achievement_id = $achievement->id;
-								$new_achievement->save();
-								//Recompensa
-								$rewards = $achievement->achievement_rewards($achievement->id);
-								$reward = "";
-								if($rewards){
-									$reward .= "e ganhou as seguintes recompensas: <br /><br/>";
-									if($rewards->exp){
-										$reward .= $rewards->exp ." ". t('ranked.exp') ."<br />";
-										//Exp para o Player
-										$this->earn_exp($rewards->exp);
-									}
-									if($rewards->exp_user){
-										$reward .= $rewards->exp_user ." ". t('ranked.exp_account') ."<br />";
-										//Exp para a conta
-										$user	= User::get_instance();
-										$user->exp($rewards->exp_user);
-									}
-									if($rewards->currency){
-										$reward .= $rewards->currency ." ". t('currencies.' . $this->character()->anime_id) ."<br />";
-										// Dinheiro para o player
-										$this->earn($rewards->currency);
-									}
-									if($rewards->credits){
-										$reward .= $rewards->credits ." ". t('treasure.show.credits') ."<br />";
-										//Crédito para a conta
-										$user	= User::get_instance();
-										$user->earn($rewards->credits);
-									}
-									if($rewards->item_id){
-										$reward .= $rewards->quantity ."x ". Item::find($rewards->item_id)->description()->name ."<br />";
-										//Item para o player
-										$player_item_exist	= PlayerItem::find_first("item_id=".$rewards->item_id." AND player_id=". $this->id);
-
-										if(!$player_item_exist){
-											$player_item			= new PlayerItem();
-											$player_item->item_id	= $rewards->item_id;
-											$player_item->quantity	= $rewards->quantity;
-											$player_item->player_id	= $this->id;
-											$player_item->save();
-										}else{
-											$player_item_exist->quantity += $rewards->quantity;
-											$player_item_exist->save();
-										}
-									}
-									if($rewards->character_theme_id){
-										$reward .= t('treasure.show.theme') ." ". CharacterTheme::find($rewards->character_theme_id)->description()->name ."<br />";
-										//Dá o Tema ao player
-										$reward_theme						= new UserCharacterTheme();
-										$reward_theme->user_id				= $this->user_id;
-										$reward_theme->character_theme_id	= $rewards->character_theme_id;
-										$reward_theme->was_reward			= 1;
-										$reward_theme->save();
-									}
-									if($rewards->character_id){
-										$reward .= t('treasure.show.character') ." ". Character::find($rewards->character_id)->description()->name ."<br />";
-										//Dá o Personagem ao player
-										$reward_character					= new UserCharacter();
-										$reward_character->user_id			= $this->user_id;
-										$reward_character->character_id	= $rewards->character_id;
-										$reward_character->was_reward	= 1;
-										$reward_character->save();
-									}
-									if($rewards->headline_id){
-										$reward .= t('treasure.show.headline') ." ". Headline::find($rewards->headline_id)->description()->name ."<br />";
-										// Dá o titulo ao player
-										$reward_headline				= new UserHeadline();
-										$reward_headline->user_id		= $this->user_id;
-										$reward_headline->headline_id	= $rewards->headline_id;
-										$reward_headline->save();
-									}
-								}
-								// Envia uma mensagem para o jogador avisando do prêmio
-								$pm				= new PrivateMessage();
-								$pm->to_id		= $this->id;
-								$pm->subject	= "Conquista: ". $achievement->description()->name;
-								$pm->content	= "Você completou a conquista: <b>". $achievement->description()->name ."</b> ". $reward;
-								$pm->save();
+							if ($player_change->sands >= $achievement->quantity) {
+								$this->achievement_reward($this, $achievement);
 							}
 						}
 					}
@@ -3959,179 +498,21 @@ class Player extends Relation {
 				break;
 			case "bloods":
 				$achievements = Achievement::find("bloods > 0 AND type='achievement'");
-				foreach($achievements as $achievement){
+				foreach ($achievements as $achievement) {
 					$player_achievement = PlayerAchievement::find_first("achievement_id=".$achievement->id." AND player_id=".$this->id);
-					if(!$player_achievement){
+					if (!$player_achievement) {
 						$player_bloods = PlayerItem::find_first("player_id=". $this->id." AND item_id=1720");
-						if($player_bloods){
-							if($achievement->bloods==1){
-								if($player_bloods->quantity >= $achievement->quantity){
-									$new_achievement = new PlayerAchievement();
-									$new_achievement->player_id 	 = $this->id;
-									$new_achievement->achievement_id = $achievement->id;
-									$new_achievement->save();
-									//Recompensa
-									$rewards = $achievement->achievement_rewards($achievement->id);
-									$reward = "";
-									if($rewards){
-										$reward .= "e ganhou as seguintes recompensas: <br /><br/>";
-										if($rewards->exp){
-											$reward .= $rewards->exp ." ". t('ranked.exp') ."<br />";
-											//Exp para o Player
-											$this->earn_exp($rewards->exp);
-										}
-										if($rewards->exp_user){
-											$reward .= $rewards->exp_user ." ". t('ranked.exp_account') ."<br />";
-											//Exp para a conta
-											$user	= User::get_instance();
-											$user->exp($rewards->exp_user);
-										}
-										if($rewards->currency){
-											$reward .= $rewards->currency ." ". t('currencies.' . $this->character()->anime_id) ."<br />";
-											// Dinheiro para o player
-											$this->earn($rewards->currency);
-										}
-										if($rewards->credits){
-											$reward .= $rewards->credits ." ". t('treasure.show.credits') ."<br />";
-											//Crédito para a conta
-											$user	= User::get_instance();
-											$user->earn($rewards->credits);
-										}
-										if($rewards->item_id){
-											$reward .= $rewards->quantity ."x ". Item::find($rewards->item_id)->description()->name ."<br />";
-											//Item para o player
-											$player_item_exist	= PlayerItem::find_first("item_id=".$rewards->item_id." AND player_id=". $this->id);
-
-											if(!$player_item_exist){
-												$player_item			= new PlayerItem();
-												$player_item->item_id	= $rewards->item_id;
-												$player_item->quantity	= $rewards->quantity;
-												$player_item->player_id	= $this->id;
-												$player_item->save();
-											}else{
-												$player_item_exist->quantity += $rewards->quantity;
-												$player_item_exist->save();
-											}
-										}
-										if($rewards->character_theme_id){
-											$reward .= t('treasure.show.theme') ." ". CharacterTheme::find($rewards->character_theme_id)->description()->name ."<br />";
-											//Dá o Tema ao player
-											$reward_theme						= new UserCharacterTheme();
-											$reward_theme->user_id				= $this->user_id;
-											$reward_theme->character_theme_id	= $rewards->character_theme_id;
-											$reward_theme->was_reward			= 1;
-											$reward_theme->save();
-										}
-										if($rewards->character_id){
-											$reward .= t('treasure.show.character') ." ". Character::find($rewards->character_id)->description()->name ."<br />";
-											//Dá o Personagem ao player
-											$reward_character					= new UserCharacter();
-											$reward_character->user_id			= $this->user_id;
-											$reward_character->character_id	= $rewards->character_id;
-											$reward_character->was_reward	= 1;
-											$reward_character->save();
-										}
-										if($rewards->headline_id){
-											$reward .= t('treasure.show.headline') ." ". Headline::find($rewards->headline_id)->description()->name ."<br />";
-											// Dá o titulo ao player
-											$reward_headline				= new UserHeadline();
-											$reward_headline->user_id		= $this->user_id;
-											$reward_headline->headline_id	= $rewards->headline_id;
-											$reward_headline->save();
-										}
-									}
-									// Envia uma mensagem para o jogador avisando do prêmio
-									$pm				= new PrivateMessage();
-									$pm->to_id		= $this->id;
-									$pm->subject	= "Conquista: ". $achievement->description()->name;
-									$pm->content	= "Você completou a conquista: <b>". $achievement->description()->name ."</b> ". $reward;
-									$pm->save();
+						if ($player_bloods) {
+							if ($achievement->bloods == 1) {
+								if ($player_bloods->quantity >= $achievement->quantity) {
+									$this->achievement_reward($this, $achievement);
 								}
 							}
 						}
-						if($achievement->bloods==2){
+						if ($achievement->bloods == 2) {
 							$player_change = PlayerStat::find_first("player_id=".$this->id);
-							if($player_change->bloods >= $achievement->quantity){
-								$new_achievement = new PlayerAchievement();
-								$new_achievement->player_id 	 = $this->id;
-								$new_achievement->achievement_id = $achievement->id;
-								$new_achievement->save();
-								//Recompensa
-								$rewards = $achievement->achievement_rewards($achievement->id);
-								$reward = "";
-								if($rewards){
-									$reward .= "e ganhou as seguintes recompensas: <br /><br/>";
-									if($rewards->exp){
-										$reward .= $rewards->exp ." ". t('ranked.exp') ."<br />";
-										//Exp para o Player
-										$this->earn_exp($rewards->exp);
-									}
-									if($rewards->exp_user){
-										$reward .= $rewards->exp_user ." ". t('ranked.exp_account') ."<br />";
-										//Exp para a conta
-										$user	= User::get_instance();
-										$user->exp($rewards->exp_user);
-									}
-									if($rewards->currency){
-										$reward .= $rewards->currency ." ". t('currencies.' . $this->character()->anime_id) ."<br />";
-										// Dinheiro para o player
-										$this->earn($rewards->currency);
-									}
-									if($rewards->credits){
-										$reward .= $rewards->credits ." ". t('treasure.show.credits') ."<br />";
-										//Crédito para a conta
-										$user	= User::get_instance();
-										$user->earn($rewards->credits);
-									}
-									if($rewards->item_id){
-										$reward .= $rewards->quantity ."x ". Item::find($rewards->item_id)->description()->name ."<br />";
-										//Item para o player
-										$player_item_exist	= PlayerItem::find_first("item_id=".$rewards->item_id." AND player_id=". $this->id);
-
-										if(!$player_item_exist){
-											$player_item			= new PlayerItem();
-											$player_item->item_id	= $rewards->item_id;
-											$player_item->quantity	= $rewards->quantity;
-											$player_item->player_id	= $this->id;
-											$player_item->save();
-										}else{
-											$player_item_exist->quantity += $rewards->quantity;
-											$player_item_exist->save();
-										}
-									}
-									if($rewards->character_theme_id){
-										$reward .= t('treasure.show.theme') ." ". CharacterTheme::find($rewards->character_theme_id)->description()->name ."<br />";
-										//Dá o Tema ao player
-										$reward_theme						= new UserCharacterTheme();
-										$reward_theme->user_id				= $this->user_id;
-										$reward_theme->character_theme_id	= $rewards->character_theme_id;
-										$reward_theme->was_reward			= 1;
-										$reward_theme->save();
-									}
-									if($rewards->character_id){
-										$reward .= t('treasure.show.character') ." ". Character::find($rewards->character_id)->description()->name ."<br />";
-										//Dá o Personagem ao player
-										$reward_character					= new UserCharacter();
-										$reward_character->user_id			= $this->user_id;
-										$reward_character->character_id	= $rewards->character_id;
-										$reward_character->was_reward	= 1;
-										$reward_character->save();
-									}
-									if($rewards->headline_id){
-										$reward .= t('treasure.show.headline') ." ". Headline::find($rewards->headline_id)->description()->name ."<br />";
-										// Dá o titulo ao player
-										$reward_headline				= new UserHeadline();
-										$reward_headline->user_id		= $this->user_id;
-										$reward_headline->headline_id	= $rewards->headline_id;
-										$reward_headline->save();
-									}
-								}
-								// Envia uma mensagem para o jogador avisando do prêmio
-								$pm				= new PrivateMessage();
-								$pm->to_id		= $this->id;
-								$pm->subject	= "Conquista: ". $achievement->description()->name;
-								$pm->content	= "Você completou a conquista: <b>". $achievement->description()->name ."</b> ". $reward;
-								$pm->save();
+							if ($player_change->bloods >= $achievement->quantity) {
+								$this->achievement_reward($this, $achievement);
 							}
 						}
 					}
@@ -4139,176 +520,18 @@ class Player extends Relation {
 				break;
 			case "equipment":
 				$achievements = Achievement::find("equipment > 0 AND type='achievement'");
-				foreach($achievements as $achievement){
+				foreach ($achievements as $achievement) {
 					$player_achievement = PlayerAchievement::find_first("achievement_id=".$achievement->id." AND player_id=".$this->id);
-					if(!$player_achievement){
-						if($achievement->equipment==1){
+					if (!$player_achievement) {
+						if ($achievement->equipment == 1) {
 							$player_equipments = Recordset::query("select count(id) as total from player_items WHERE player_id=".$this->id." AND item_id in (select id from items WHERE item_type_id=8) AND rarity='".$achievement->rarity."'")->result_array();
-							if($player_equipments[0]['total'] >= $achievement->quantity){
-								$new_achievement = new PlayerAchievement();
-								$new_achievement->player_id 	 = $this->id;
-								$new_achievement->achievement_id = $achievement->id;
-								$new_achievement->save();
-								//Recompensa
-								$rewards = $achievement->achievement_rewards($achievement->id);
-								$reward = "";
-								if($rewards){
-									$reward .= "e ganhou as seguintes recompensas: <br /><br/>";
-									if($rewards->exp){
-										$reward .= $rewards->exp ." ". t('ranked.exp') ."<br />";
-										//Exp para o Player
-										$this->earn_exp($rewards->exp);
-									}
-									if($rewards->exp_user){
-										$reward .= $rewards->exp_user ." ". t('ranked.exp_account') ."<br />";
-										//Exp para a conta
-										$user	= User::get_instance();
-										$user->exp($rewards->exp_user);
-									}
-									if($rewards->currency){
-										$reward .= $rewards->currency ." ". t('currencies.' . $this->character()->anime_id) ."<br />";
-										// Dinheiro para o player
-										$this->earn($rewards->currency);
-									}
-									if($rewards->credits){
-										$reward .= $rewards->credits ." ". t('treasure.show.credits') ."<br />";
-										//Crédito para a conta
-										$user	= User::get_instance();
-										$user->earn($rewards->credits);
-									}
-									if($rewards->item_id){
-										$reward .= $rewards->quantity ."x ". Item::find($rewards->item_id)->description()->name ."<br />";
-										//Item para o player
-										$player_item_exist	= PlayerItem::find_first("item_id=".$rewards->item_id." AND player_id=". $this->id);
-
-										if(!$player_item_exist){
-											$player_item			= new PlayerItem();
-											$player_item->item_id	= $rewards->item_id;
-											$player_item->quantity	= $rewards->quantity;
-											$player_item->player_id	= $this->id;
-											$player_item->save();
-										}else{
-											$player_item_exist->quantity += $rewards->quantity;
-											$player_item_exist->save();
-										}
-									}
-									if($rewards->character_theme_id){
-										$reward .= t('treasure.show.theme') ." ". CharacterTheme::find($rewards->character_theme_id)->description()->name ."<br />";
-										//Dá o Tema ao player
-										$reward_theme						= new UserCharacterTheme();
-										$reward_theme->user_id				= $this->user_id;
-										$reward_theme->character_theme_id	= $rewards->character_theme_id;
-										$reward_theme->was_reward			= 1;
-										$reward_theme->save();
-									}
-									if($rewards->character_id){
-										$reward .= t('treasure.show.character') ." ". Character::find($rewards->character_id)->description()->name ."<br />";
-										//Dá o Personagem ao player
-										$reward_character					= new UserCharacter();
-										$reward_character->user_id			= $this->user_id;
-										$reward_character->character_id	= $rewards->character_id;
-										$reward_character->was_reward	= 1;
-										$reward_character->save();
-									}
-									if($rewards->headline_id){
-										$reward .= t('treasure.show.headline') ." ". Headline::find($rewards->headline_id)->description()->name ."<br />";
-										// Dá o titulo ao player
-										$reward_headline				= new UserHeadline();
-										$reward_headline->user_id		= $this->user_id;
-										$reward_headline->headline_id	= $rewards->headline_id;
-										$reward_headline->save();
-									}
-								}
-								// Envia uma mensagem para o jogador avisando do prêmio
-								$pm				= new PrivateMessage();
-								$pm->to_id		= $this->id;
-								$pm->subject	= "Conquista: ". $achievement->description()->name;
-								$pm->content	= "Você completou a conquista: <b>". $achievement->description()->name ."</b> ". $reward;
-								$pm->save();
+							if ($player_equipments[0]['total'] >= $achievement->quantity) {
+								$this->achievement_reward($this, $achievement);
 							}
-						}else{
+						} else {
 							$player_equipments = Recordset::query("select count(id) as total from player_items WHERE player_id=".$this->id." AND item_id in (select id from items WHERE item_type_id=8) AND rarity='".$achievement->rarity."' AND equipped=1")->result_array();
-							if($player_equipments[0]['total'] >= $achievement->quantity){
-								$new_achievement = new PlayerAchievement();
-								$new_achievement->player_id 	 = $this->id;
-								$new_achievement->achievement_id = $achievement->id;
-								$new_achievement->save();
-								//Recompensa
-								$rewards = $achievement->achievement_rewards($achievement->id);
-								$reward = "";
-								if($rewards){
-									$reward .= "e ganhou as seguintes recompensas: <br /><br/>";
-									if($rewards->exp){
-										$reward .= $rewards->exp ." ". t('ranked.exp') ."<br />";
-										//Exp para o Player
-										$this->earn_exp($rewards->exp);
-									}
-									if($rewards->exp_user){
-										$reward .= $rewards->exp_user ." ". t('ranked.exp_account') ."<br />";
-										//Exp para a conta
-										$user	= User::get_instance();
-										$user->exp($rewards->exp_user);
-									}
-									if($rewards->currency){
-										$reward .= $rewards->currency ." ". t('currencies.' . $this->character()->anime_id) ."<br />";
-										// Dinheiro para o player
-										$this->earn($rewards->currency);
-									}
-									if($rewards->credits){
-										$reward .= $rewards->credits ." ". t('treasure.show.credits') ."<br />";
-										//Crédito para a conta
-										$user	= User::get_instance();
-										$user->earn($rewards->credits);
-									}
-									if($rewards->item_id){
-										$reward .= $rewards->quantity ."x ". Item::find($rewards->item_id)->description()->name ."<br />";
-										//Item para o player
-										$player_item_exist	= PlayerItem::find_first("item_id=".$rewards->item_id." AND player_id=". $this->id);
-
-										if(!$player_item_exist){
-											$player_item			= new PlayerItem();
-											$player_item->item_id	= $rewards->item_id;
-											$player_item->quantity	= $rewards->quantity;
-											$player_item->player_id	= $this->id;
-											$player_item->save();
-										}else{
-											$player_item_exist->quantity += $rewards->quantity;
-											$player_item_exist->save();
-										}
-									}
-									if($rewards->character_theme_id){
-										$reward .= t('treasure.show.theme') ." ". CharacterTheme::find($rewards->character_theme_id)->description()->name ."<br />";
-										//Dá o Tema ao player
-										$reward_theme						= new UserCharacterTheme();
-										$reward_theme->user_id				= $this->user_id;
-										$reward_theme->character_theme_id	= $rewards->character_theme_id;
-										$reward_theme->was_reward			= 1;
-										$reward_theme->save();
-									}
-									if($rewards->character_id){
-										$reward .= t('treasure.show.character') ." ". Character::find($rewards->character_id)->description()->name ."<br />";
-										//Dá o Personagem ao player
-										$reward_character					= new UserCharacter();
-										$reward_character->user_id			= $this->user_id;
-										$reward_character->character_id	= $rewards->character_id;
-										$reward_character->was_reward	= 1;
-										$reward_character->save();
-									}
-									if($rewards->headline_id){
-										$reward .= t('treasure.show.headline') ." ". Headline::find($rewards->headline_id)->description()->name ."<br />";
-										// Dá o titulo ao player
-										$reward_headline				= new UserHeadline();
-										$reward_headline->user_id		= $this->user_id;
-										$reward_headline->headline_id	= $rewards->headline_id;
-										$reward_headline->save();
-									}
-								}
-								// Envia uma mensagem para o jogador avisando do prêmio
-								$pm				= new PrivateMessage();
-								$pm->to_id		= $this->id;
-								$pm->subject	= "Conquista: ". $achievement->description()->name;
-								$pm->content	= "Você completou a conquista: <b>". $achievement->description()->name ."</b> ". $reward;
-								$pm->save();
+							if ($player_equipments[0]['total'] >= $achievement->quantity) {
+								$this->achievement_reward($this, $achievement);
 							}
 						}
 
@@ -4317,733 +540,199 @@ class Player extends Relation {
 				break;
 			case "grimoire":
 				$achievements = Achievement::find("grimoire > 0 AND type='achievement'");
-				foreach($achievements as $achievement){
+				foreach ($achievements as $achievement) {
 					$player_achievement = PlayerAchievement::find_first("achievement_id=".$achievement->id." AND player_id=".$this->id);
-					if(!$player_achievement){
+					if (!$player_achievement) {
 						$player_grimoire = PlayerItem::find_first("player_id=". $this->id." AND item_id=".$achievement->item_id);
-						if($player_grimoire){
-							$new_achievement = new PlayerAchievement();
-							$new_achievement->player_id 	 = $this->id;
-							$new_achievement->achievement_id = $achievement->id;
-							$new_achievement->save();
-							//Recompensa
-							$rewards = $achievement->achievement_rewards($achievement->id);
-							$reward = "";
-							if($rewards){
-								$reward .= "e ganhou as seguintes recompensas: <br /><br/>";
-								if($rewards->exp){
-									$reward .= $rewards->exp ." ". t('ranked.exp') ."<br />";
-									//Exp para o Player
-									$this->earn_exp($rewards->exp);
-								}
-								if($rewards->exp_user){
-									$reward .= $rewards->exp_user ." ". t('ranked.exp_account') ."<br />";
-									//Exp para a conta
-									$user	= User::get_instance();
-									$user->exp($rewards->exp_user);
-								}
-								if($rewards->currency){
-									$reward .= $rewards->currency ." ". t('currencies.' . $this->character()->anime_id) ."<br />";
-									// Dinheiro para o player
-									$this->earn($rewards->currency);
-								}
-								if($rewards->credits){
-									$reward .= $rewards->credits ." ". t('treasure.show.credits') ."<br />";
-									//Crédito para a conta
-									$user	= User::get_instance();
-									$user->earn($rewards->credits);
-								}
-								if($rewards->item_id){
-									$reward .= $rewards->quantity ."x ". Item::find($rewards->item_id)->description()->name ."<br />";
-									//Item para o player
-									$player_item_exist	= PlayerItem::find_first("item_id=".$rewards->item_id." AND player_id=". $this->id);
-
-									if(!$player_item_exist){
-										$player_item			= new PlayerItem();
-										$player_item->item_id	= $rewards->item_id;
-										$player_item->quantity	= $rewards->quantity;
-										$player_item->player_id	= $this->id;
-										$player_item->save();
-									}else{
-										$player_item_exist->quantity += $rewards->quantity;
-										$player_item_exist->save();
-									}
-								}
-								if($rewards->character_theme_id){
-									$reward .= t('treasure.show.theme') ." ". CharacterTheme::find($rewards->character_theme_id)->description()->name ."<br />";
-									//Dá o Tema ao player
-									$reward_theme						= new UserCharacterTheme();
-									$reward_theme->user_id				= $this->user_id;
-									$reward_theme->character_theme_id	= $rewards->character_theme_id;
-									$reward_theme->was_reward			= 1;
-									$reward_theme->save();
-								}
-								if($rewards->character_id){
-									$reward .= t('treasure.show.character') ." ". Character::find($rewards->character_id)->description()->name ."<br />";
-									//Dá o Personagem ao player
-									$reward_character					= new UserCharacter();
-									$reward_character->user_id			= $this->user_id;
-									$reward_character->character_id	= $rewards->character_id;
-									$reward_character->was_reward	= 1;
-									$reward_character->save();
-								}
-								if($rewards->headline_id){
-									$reward .= t('treasure.show.headline') ." ". Headline::find($rewards->headline_id)->description()->name ."<br />";
-									// Dá o titulo ao player
-									$reward_headline				= new UserHeadline();
-									$reward_headline->user_id		= $this->user_id;
-									$reward_headline->headline_id	= $rewards->headline_id;
-									$reward_headline->save();
-								}
-							}
-							// Envia uma mensagem para o jogador avisando do prêmio
-							$pm				= new PrivateMessage();
-							$pm->to_id		= $this->id;
-							$pm->subject	= "Conquista: ". $achievement->description()->name;
-							$pm->content	= "Você completou a conquista: <b>". $achievement->description()->name ."</b> ". $reward;
-							$pm->save();
+						if ($player_grimoire) {
+							$this->achievement_reward($this, $achievement);
 						}
 					}
 				}
 				break;
 			case "time_quests":
 				$achievements = Achievement::find("time_quests > 0 AND type='achievement'");
-				foreach($achievements as $achievement){
+				foreach ($achievements as $achievement) {
 					$player_achievement = PlayerAchievement::find_first("achievement_id=".$achievement->id." AND player_id=".$this->id);
-					if(!$player_achievement){
+					if (!$player_achievement) {
 						$player_quest = PlayerQuestCounter::find_first("player_id=". $this->id);
-						if($player_quest->time_total >= $achievement->quantity){
-							$new_achievement = new PlayerAchievement();
-							$new_achievement->player_id 	 = $this->id;
-							$new_achievement->achievement_id = $achievement->id;
-							$new_achievement->save();
-							//Recompensa
-							$rewards = $achievement->achievement_rewards($achievement->id);
-							$reward = "";
-							if($rewards){
-								$reward .= "e ganhou as seguintes recompensas: <br /><br/>";
-								if($rewards->exp){
-									$reward .= $rewards->exp ." ". t('ranked.exp') ."<br />";
-									//Exp para o Player
-									$this->earn_exp($rewards->exp);
-								}
-								if($rewards->exp_user){
-									$reward .= $rewards->exp_user ." ". t('ranked.exp_account') ."<br />";
-									//Exp para a conta
-									$user	= User::get_instance();
-									$user->exp($rewards->exp_user);
-								}
-								if($rewards->currency){
-									$reward .= $rewards->currency ." ". t('currencies.' . $this->character()->anime_id) ."<br />";
-									// Dinheiro para o player
-									$this->earn($rewards->currency);
-								}
-								if($rewards->credits){
-									$reward .= $rewards->credits ." ". t('treasure.show.credits') ."<br />";
-									//Crédito para a conta
-									$user	= User::get_instance();
-									$user->earn($rewards->credits);
-								}
-								if($rewards->item_id){
-									$reward .= $rewards->quantity ."x ". Item::find($rewards->item_id)->description()->name ."<br />";
-									//Item para o player
-									$player_item_exist	= PlayerItem::find_first("item_id=".$rewards->item_id." AND player_id=". $this->id);
-
-									if(!$player_item_exist){
-										$player_item			= new PlayerItem();
-										$player_item->item_id	= $rewards->item_id;
-										$player_item->quantity	= $rewards->quantity;
-										$player_item->player_id	= $this->id;
-										$player_item->save();
-									}else{
-										$player_item_exist->quantity += $rewards->quantity;
-										$player_item_exist->save();
-									}
-								}
-								if($rewards->character_theme_id){
-									$reward .= t('treasure.show.theme') ." ". CharacterTheme::find($rewards->character_theme_id)->description()->name ."<br />";
-									//Dá o Tema ao player
-									$reward_theme						= new UserCharacterTheme();
-									$reward_theme->user_id				= $this->user_id;
-									$reward_theme->character_theme_id	= $rewards->character_theme_id;
-									$reward_theme->was_reward			= 1;
-									$reward_theme->save();
-								}
-								if($rewards->character_id){
-									$reward .= t('treasure.show.character') ." ". Character::find($rewards->character_id)->description()->name ."<br />";
-									//Dá o Personagem ao player
-									$reward_character					= new UserCharacter();
-									$reward_character->user_id			= $this->user_id;
-									$reward_character->character_id	= $rewards->character_id;
-									$reward_character->was_reward	= 1;
-									$reward_character->save();
-								}
-								if($rewards->headline_id){
-									$reward .= t('treasure.show.headline') ." ". Headline::find($rewards->headline_id)->description()->name ."<br />";
-									// Dá o titulo ao player
-									$reward_headline				= new UserHeadline();
-									$reward_headline->user_id		= $this->user_id;
-									$reward_headline->headline_id	= $rewards->headline_id;
-									$reward_headline->save();
-								}
-							}
-							// Envia uma mensagem para o jogador avisando do prêmio
-							$pm				= new PrivateMessage();
-							$pm->to_id		= $this->id;
-							$pm->subject	= "Conquista: ". $achievement->description()->name;
-							$pm->content	= "Você completou a conquista: <b>". $achievement->description()->name ."</b> ". $reward;
-							$pm->save();
+						if ($player_quest->time_total >= $achievement->quantity) {
+							$this->achievement_reward($this, $achievement);
 						}
 					}
 				}
 				break;
 			case "battle_quests":
 				$achievements = Achievement::find("battle_quests > 0 AND type='achievement'");
-				foreach($achievements as $achievement){
+				foreach ($achievements as $achievement) {
 					$player_achievement = PlayerAchievement::find_first("achievement_id=".$achievement->id." AND player_id=".$this->id);
-					if(!$player_achievement){
+					if (!$player_achievement) {
 						$player_quest = PlayerQuestCounter::find_first("player_id=". $this->id);
-						if($player_quest->combat_total >= $achievement->quantity){
-							$new_achievement = new PlayerAchievement();
-							$new_achievement->player_id 	 = $this->id;
-							$new_achievement->achievement_id = $achievement->id;
-							$new_achievement->save();
-							//Recompensa
-							$rewards = $achievement->achievement_rewards($achievement->id);
-							$reward = "";
-							if($rewards){
-								$reward .= "e ganhou as seguintes recompensas: <br /><br/>";
-								if($rewards->exp){
-									$reward .= $rewards->exp ." ". t('ranked.exp') ."<br />";
-									//Exp para o Player
-									$this->earn_exp($rewards->exp);
-								}
-								if($rewards->exp_user){
-									$reward .= $rewards->exp_user ." ". t('ranked.exp_account') ."<br />";
-									//Exp para a conta
-									$user	= User::get_instance();
-									$user->exp($rewards->exp_user);
-								}
-								if($rewards->currency){
-									$reward .= $rewards->currency ." ". t('currencies.' . $this->character()->anime_id) ."<br />";
-									// Dinheiro para o player
-									$this->earn($rewards->currency);
-								}
-								if($rewards->credits){
-									$reward .= $rewards->credits ." ". t('treasure.show.credits') ."<br />";
-									//Crédito para a conta
-									$user	= User::get_instance();
-									$user->earn($rewards->credits);
-								}
-								if($rewards->item_id){
-									$reward .= $rewards->quantity ."x ". Item::find($rewards->item_id)->description()->name ."<br />";
-									//Item para o player
-									$player_item_exist	= PlayerItem::find_first("item_id=".$rewards->item_id." AND player_id=". $this->id);
-
-									if(!$player_item_exist){
-										$player_item			= new PlayerItem();
-										$player_item->item_id	= $rewards->item_id;
-										$player_item->quantity	= $rewards->quantity;
-										$player_item->player_id	= $this->id;
-										$player_item->save();
-									}else{
-										$player_item_exist->quantity += $rewards->quantity;
-										$player_item_exist->save();
-									}
-								}
-								if($rewards->character_theme_id){
-									$reward .= t('treasure.show.theme') ." ". CharacterTheme::find($rewards->character_theme_id)->description()->name ."<br />";
-									//Dá o Tema ao player
-									$reward_theme						= new UserCharacterTheme();
-									$reward_theme->user_id				= $this->user_id;
-									$reward_theme->character_theme_id	= $rewards->character_theme_id;
-									$reward_theme->was_reward			= 1;
-									$reward_theme->save();
-								}
-								if($rewards->character_id){
-									$reward .= t('treasure.show.character') ." ". Character::find($rewards->character_id)->description()->name ."<br />";
-									//Dá o Personagem ao player
-									$reward_character					= new UserCharacter();
-									$reward_character->user_id			= $this->user_id;
-									$reward_character->character_id	= $rewards->character_id;
-									$reward_character->was_reward	= 1;
-									$reward_character->save();
-								}
-								if($rewards->headline_id){
-									$reward .= t('treasure.show.headline') ." ". Headline::find($rewards->headline_id)->description()->name ."<br />";
-									// Dá o titulo ao player
-									$reward_headline				= new UserHeadline();
-									$reward_headline->user_id		= $this->user_id;
-									$reward_headline->headline_id	= $rewards->headline_id;
-									$reward_headline->save();
-								}
-							}
-							// Envia uma mensagem para o jogador avisando do prêmio
-							$pm				= new PrivateMessage();
-							$pm->to_id		= $this->id;
-							$pm->subject	= "Conquista: ". $achievement->description()->name;
-							$pm->content	= "Você completou a conquista: <b>". $achievement->description()->name ."</b> ". $reward;
-							$pm->save();
+						if ($player_quest->combat_total >= $achievement->quantity) {
+							$this->achievement_reward($this, $achievement);
 						}
 					}
 				}
 				break;
 			case "pvp_quests":
 				$achievements = Achievement::find("pvp_quests > 0 AND type='achievement'");
-				foreach($achievements as $achievement){
+				foreach ($achievements as $achievement) {
 					$player_achievement = PlayerAchievement::find_first("achievement_id=".$achievement->id." AND player_id=".$this->id);
-					if(!$player_achievement){
+					if (!$player_achievement) {
 						$player_quest = PlayerQuestCounter::find_first("player_id=". $this->id);
-						if($player_quest->pvp_total >= $achievement->quantity){
-							$new_achievement = new PlayerAchievement();
-							$new_achievement->player_id 	 = $this->id;
-							$new_achievement->achievement_id = $achievement->id;
-							$new_achievement->save();
-							//Recompensa
-							$rewards = $achievement->achievement_rewards($achievement->id);
-							$reward = "";
-							if($rewards){
-								$reward .= "e ganhou as seguintes recompensas: <br /><br/>";
-								if($rewards->exp){
-									$reward .= $rewards->exp ." ". t('ranked.exp') ."<br />";
-									//Exp para o Player
-									$this->earn_exp($rewards->exp);
-								}
-								if($rewards->exp_user){
-									$reward .= $rewards->exp_user ." ". t('ranked.exp_account') ."<br />";
-									//Exp para a conta
-									$user	= User::get_instance();
-									$user->exp($rewards->exp_user);
-								}
-								if($rewards->currency){
-									$reward .= $rewards->currency ." ". t('currencies.' . $this->character()->anime_id) ."<br />";
-									// Dinheiro para o player
-									$this->earn($rewards->currency);
-								}
-								if($rewards->credits){
-									$reward .= $rewards->credits ." ". t('treasure.show.credits') ."<br />";
-									//Crédito para a conta
-									$user	= User::get_instance();
-									$user->earn($rewards->credits);
-								}
-								if($rewards->item_id){
-									$reward .= $rewards->quantity ."x ". Item::find($rewards->item_id)->description()->name ."<br />";
-									//Item para o player
-									$player_item_exist	= PlayerItem::find_first("item_id=".$rewards->item_id." AND player_id=". $this->id);
-
-									if(!$player_item_exist){
-										$player_item			= new PlayerItem();
-										$player_item->item_id	= $rewards->item_id;
-										$player_item->quantity	= $rewards->quantity;
-										$player_item->player_id	= $this->id;
-										$player_item->save();
-									}else{
-										$player_item_exist->quantity += $rewards->quantity;
-										$player_item_exist->save();
-									}
-								}
-								if($rewards->character_theme_id){
-									$reward .= t('treasure.show.theme') ." ". CharacterTheme::find($rewards->character_theme_id)->description()->name ."<br />";
-									//Dá o Tema ao player
-									$reward_theme						= new UserCharacterTheme();
-									$reward_theme->user_id				= $this->user_id;
-									$reward_theme->character_theme_id	= $rewards->character_theme_id;
-									$reward_theme->was_reward			= 1;
-									$reward_theme->save();
-								}
-								if($rewards->character_id){
-									$reward .= t('treasure.show.character') ." ". Character::find($rewards->character_id)->description()->name ."<br />";
-									//Dá o Personagem ao player
-									$reward_character					= new UserCharacter();
-									$reward_character->user_id			= $this->user_id;
-									$reward_character->character_id	= $rewards->character_id;
-									$reward_character->was_reward	= 1;
-									$reward_character->save();
-								}
-								if($rewards->headline_id){
-									$reward .= t('treasure.show.headline') ." ". Headline::find($rewards->headline_id)->description()->name ."<br />";
-									// Dá o titulo ao player
-									$reward_headline				= new UserHeadline();
-									$reward_headline->user_id		= $this->user_id;
-									$reward_headline->headline_id	= $rewards->headline_id;
-									$reward_headline->save();
-								}
-							}
-							// Envia uma mensagem para o jogador avisando do prêmio
-							$pm				= new PrivateMessage();
-							$pm->to_id		= $this->id;
-							$pm->subject	= "Conquista: ". $achievement->description()->name;
-							$pm->content	= "Você completou a conquista: <b>". $achievement->description()->name ."</b> ". $reward;
-							$pm->save();
+						if ($player_quest->pvp_total >= $achievement->quantity) {
+							$this->achievement_reward($this, $achievement);
 						}
 					}
 				}
 				break;
 			case "daily_quests":
 				$achievements = Achievement::find("daily_quests > 0 AND type='achievement'");
-				foreach($achievements as $achievement){
+				foreach ($achievements as $achievement) {
 					$player_achievement = PlayerAchievement::find_first("achievement_id=".$achievement->id." AND player_id=".$this->id);
-					if(!$player_achievement){
+					if (!$player_achievement) {
 						$player_quest = PlayerQuestCounter::find_first("player_id=". $this->id);
-						if($player_quest->daily_total >= $achievement->quantity){
-							$new_achievement = new PlayerAchievement();
-							$new_achievement->player_id 	 = $this->id;
-							$new_achievement->achievement_id = $achievement->id;
-							$new_achievement->save();
-							//Recompensa
-							$rewards = $achievement->achievement_rewards($achievement->id);
-							$reward = "";
-							if($rewards){
-								$reward .= "e ganhou as seguintes recompensas: <br /><br/>";
-								if($rewards->exp){
-									$reward .= $rewards->exp ." ". t('ranked.exp') ."<br />";
-									//Exp para o Player
-									$this->earn_exp($rewards->exp);
-								}
-								if($rewards->exp_user){
-									$reward .= $rewards->exp_user ." ". t('ranked.exp_account') ."<br />";
-									//Exp para a conta
-									$user	= User::get_instance();
-									$user->exp($rewards->exp_user);
-								}
-								if($rewards->currency){
-									$reward .= $rewards->currency ." ". t('currencies.' . $this->character()->anime_id) ."<br />";
-									// Dinheiro para o player
-									$this->earn($rewards->currency);
-								}
-								if($rewards->credits){
-									$reward .= $rewards->credits ." ". t('treasure.show.credits') ."<br />";
-									//Crédito para a conta
-									$user	= User::get_instance();
-									$user->earn($rewards->credits);
-								}
-								if($rewards->item_id){
-									$reward .= $rewards->quantity ."x ". Item::find($rewards->item_id)->description()->name ."<br />";
-									//Item para o player
-									$player_item_exist	= PlayerItem::find_first("item_id=".$rewards->item_id." AND player_id=". $this->id);
-
-									if(!$player_item_exist){
-										$player_item			= new PlayerItem();
-										$player_item->item_id	= $rewards->item_id;
-										$player_item->quantity	= $rewards->quantity;
-										$player_item->player_id	= $this->id;
-										$player_item->save();
-									}else{
-										$player_item_exist->quantity += $rewards->quantity;
-										$player_item_exist->save();
-									}
-								}
-								if($rewards->character_theme_id){
-									$reward .= t('treasure.show.theme') ." ". CharacterTheme::find($rewards->character_theme_id)->description()->name ."<br />";
-									//Dá o Tema ao player
-									$reward_theme						= new UserCharacterTheme();
-									$reward_theme->user_id				= $this->user_id;
-									$reward_theme->character_theme_id	= $rewards->character_theme_id;
-									$reward_theme->was_reward			= 1;
-									$reward_theme->save();
-								}
-								if($rewards->character_id){
-									$reward .= t('treasure.show.character') ." ". Character::find($rewards->character_id)->description()->name ."<br />";
-									//Dá o Personagem ao player
-									$reward_character					= new UserCharacter();
-									$reward_character->user_id			= $this->user_id;
-									$reward_character->character_id	= $rewards->character_id;
-									$reward_character->was_reward	= 1;
-									$reward_character->save();
-								}
-								if($rewards->headline_id){
-									$reward .= t('treasure.show.headline') ." ". Headline::find($rewards->headline_id)->description()->name ."<br />";
-									// Dá o titulo ao player
-									$reward_headline				= new UserHeadline();
-									$reward_headline->user_id		= $this->user_id;
-									$reward_headline->headline_id	= $rewards->headline_id;
-									$reward_headline->save();
-								}
-							}
-							// Envia uma mensagem para o jogador avisando do prêmio
-							$pm				= new PrivateMessage();
-							$pm->to_id		= $this->id;
-							$pm->subject	= "Conquista: ". $achievement->description()->name;
-							$pm->content	= "Você completou a conquista: <b>". $achievement->description()->name ."</b> ". $reward;
-							$pm->save();
+						if ($player_quest->daily_total >= $achievement->quantity) {
+							$this->achievement_reward($this, $achievement);
 						}
 					}
 				}
 				break;
 			case "account_quests":
 				$achievements = Achievement::find("account_quests > 0 AND type='achievement'");
-				foreach($achievements as $achievement){
+				foreach ($achievements as $achievement) {
 					$player_achievement = PlayerAchievement::find_first("achievement_id=".$achievement->id." AND player_id=".$this->id);
-					if(!$player_achievement){
+					if (!$player_achievement) {
 						$player_quest = UserQuestCounter::find_first("user_id=". $this->user_id);
-						if($player_quest->daily_total >= $achievement->quantity){
-							$new_achievement = new PlayerAchievement();
-							$new_achievement->player_id 	 = $this->id;
-							$new_achievement->achievement_id = $achievement->id;
-							$new_achievement->save();
-							//Recompensa
-							$rewards = $achievement->achievement_rewards($achievement->id);
-							$reward = "";
-							if($rewards){
-								$reward .= "e ganhou as seguintes recompensas: <br /><br/>";
-								if($rewards->exp){
-									$reward .= $rewards->exp ." ". t('ranked.exp') ."<br />";
-									//Exp para o Player
-									$this->earn_exp($rewards->exp);
-								}
-								if($rewards->exp_user){
-									$reward .= $rewards->exp_user ." ". t('ranked.exp_account') ."<br />";
-									//Exp para a conta
-									$user	= User::get_instance();
-									$user->exp($rewards->exp_user);
-								}
-								if($rewards->currency){
-									$reward .= $rewards->currency ." ". t('currencies.' . $this->character()->anime_id) ."<br />";
-									// Dinheiro para o player
-									$this->earn($rewards->currency);
-								}
-								if($rewards->credits){
-									$reward .= $rewards->credits ." ". t('treasure.show.credits') ."<br />";
-									//Crédito para a conta
-									$user	= User::get_instance();
-									$user->earn($rewards->credits);
-								}
-								if($rewards->item_id){
-									$reward .= $rewards->quantity ."x ". Item::find($rewards->item_id)->description()->name ."<br />";
-									//Item para o player
-									$player_item_exist	= PlayerItem::find_first("item_id=".$rewards->item_id." AND player_id=". $this->id);
-
-									if(!$player_item_exist){
-										$player_item			= new PlayerItem();
-										$player_item->item_id	= $rewards->item_id;
-										$player_item->quantity	= $rewards->quantity;
-										$player_item->player_id	= $this->id;
-										$player_item->save();
-									}else{
-										$player_item_exist->quantity += $rewards->quantity;
-										$player_item_exist->save();
-									}
-								}
-								if($rewards->character_theme_id){
-									$reward .= t('treasure.show.theme') ." ". CharacterTheme::find($rewards->character_theme_id)->description()->name ."<br />";
-									//Dá o Tema ao player
-									$reward_theme						= new UserCharacterTheme();
-									$reward_theme->user_id				= $this->user_id;
-									$reward_theme->character_theme_id	= $rewards->character_theme_id;
-									$reward_theme->was_reward			= 1;
-									$reward_theme->save();
-								}
-								if($rewards->character_id){
-									$reward .= t('treasure.show.character') ." ". Character::find($rewards->character_id)->description()->name ."<br />";
-									//Dá o Personagem ao player
-									$reward_character					= new UserCharacter();
-									$reward_character->user_id			= $this->user_id;
-									$reward_character->character_id	= $rewards->character_id;
-									$reward_character->was_reward	= 1;
-									$reward_character->save();
-								}
-								if($rewards->headline_id){
-									$reward .= t('treasure.show.headline') ." ". Headline::find($rewards->headline_id)->description()->name ."<br />";
-									// Dá o titulo ao player
-									$reward_headline				= new UserHeadline();
-									$reward_headline->user_id		= $this->user_id;
-									$reward_headline->headline_id	= $rewards->headline_id;
-									$reward_headline->save();
-								}
-							}
-							// Envia uma mensagem para o jogador avisando do prêmio
-							$pm				= new PrivateMessage();
-							$pm->to_id		= $this->id;
-							$pm->subject	= "Conquista: ". $achievement->description()->name;
-							$pm->content	= "Você completou a conquista: <b>". $achievement->description()->name ."</b> ". $reward;
-							$pm->save();
+						if ($player_quest->daily_total >= $achievement->quantity) {
+							$this->achievement_reward($this, $achievement);
 						}
 					}
 				}
 				break;
 			case "pet_quests":
 				$achievements = Achievement::find("pet_quests > 0 AND type='achievement'");
-				foreach($achievements as $achievement){
+				foreach ($achievements as $achievement) {
 					$player_achievement = PlayerAchievement::find_first("achievement_id=".$achievement->id." AND player_id=".$this->id);
-					if(!$player_achievement){
+					if (!$player_achievement) {
 						$player_quest = PlayerQuestCounter::find_first("player_id=". $this->id);
-						if($player_quest->pet_total >= $achievement->quantity){
-							$new_achievement = new PlayerAchievement();
-							$new_achievement->player_id 	 = $this->id;
-							$new_achievement->achievement_id = $achievement->id;
-							$new_achievement->save();
-							//Recompensa
-							$rewards = $achievement->achievement_rewards($achievement->id);
-							$reward = "";
-							if($rewards){
-								$reward .= "e ganhou as seguintes recompensas: <br /><br/>";
-								if($rewards->exp){
-									$reward .= $rewards->exp ." ". t('ranked.exp') ."<br />";
-									//Exp para o Player
-									$this->earn_exp($rewards->exp);
-								}
-								if($rewards->exp_user){
-									$reward .= $rewards->exp_user ." ". t('ranked.exp_account') ."<br />";
-									//Exp para a conta
-									$user	= User::get_instance();
-									$user->exp($rewards->exp_user);
-								}
-								if($rewards->currency){
-									$reward .= $rewards->currency ." ". t('currencies.' . $this->character()->anime_id) ."<br />";
-									// Dinheiro para o player
-									$this->earn($rewards->currency);
-								}
-								if($rewards->credits){
-									$reward .= $rewards->credits ." ". t('treasure.show.credits') ."<br />";
-									//Crédito para a conta
-									$user	= User::get_instance();
-									$user->earn($rewards->credits);
-								}
-								if($rewards->item_id){
-									$reward .= $rewards->quantity ."x ". Item::find($rewards->item_id)->description()->name ."<br />";
-									//Item para o player
-									$player_item_exist	= PlayerItem::find_first("item_id=".$rewards->item_id." AND player_id=". $this->id);
-
-									if(!$player_item_exist){
-										$player_item			= new PlayerItem();
-										$player_item->item_id	= $rewards->item_id;
-										$player_item->quantity	= $rewards->quantity;
-										$player_item->player_id	= $this->id;
-										$player_item->save();
-									}else{
-										$player_item_exist->quantity += $rewards->quantity;
-										$player_item_exist->save();
-									}
-								}
-								if($rewards->character_theme_id){
-									$reward .= t('treasure.show.theme') ." ". CharacterTheme::find($rewards->character_theme_id)->description()->name ."<br />";
-									//Dá o Tema ao player
-									$reward_theme						= new UserCharacterTheme();
-									$reward_theme->user_id				= $this->user_id;
-									$reward_theme->character_theme_id	= $rewards->character_theme_id;
-									$reward_theme->was_reward			= 1;
-									$reward_theme->save();
-								}
-								if($rewards->character_id){
-									$reward .= t('treasure.show.character') ." ". Character::find($rewards->character_id)->description()->name ."<br />";
-									//Dá o Personagem ao player
-									$reward_character					= new UserCharacter();
-									$reward_character->user_id			= $this->user_id;
-									$reward_character->character_id	= $rewards->character_id;
-									$reward_character->was_reward	= 1;
-									$reward_character->save();
-								}
-								if($rewards->headline_id){
-									$reward .= t('treasure.show.headline') ." ". Headline::find($rewards->headline_id)->description()->name ."<br />";
-									// Dá o titulo ao player
-									$reward_headline				= new UserHeadline();
-									$reward_headline->user_id		= $this->user_id;
-									$reward_headline->headline_id	= $rewards->headline_id;
-									$reward_headline->save();
-								}
-							}
-							// Envia uma mensagem para o jogador avisando do prêmio
-							$pm				= new PrivateMessage();
-							$pm->to_id		= $this->id;
-							$pm->subject	= "Conquista: ". $achievement->description()->name;
-							$pm->content	= "Você completou a conquista: <b>". $achievement->description()->name ."</b> ". $reward;
-							$pm->save();
+						if ($player_quest->pet_total >= $achievement->quantity) {
+							$this->achievement_reward($this, $achievement);
 						}
 					}
 				}
 				break;
 			case "weekly_quests":
 				$achievements = Achievement::find("weekly_quests > 0 AND type='achievement'");
-				foreach($achievements as $achievement){
+				foreach ($achievements as $achievement) {
 					$player_achievement = PlayerAchievement::find_first("achievement_id=".$achievement->id." AND player_id=".$this->id);
-					if(!$player_achievement){
+					if (!$player_achievement) {
 						$organization_quest = OrganizationQuestCounter::find_first("organization_id=". $this->organization_id);
-						if($organization_quest->daily_total >= $achievement->quantity){
-							$new_achievement = new PlayerAchievement();
-							$new_achievement->player_id 	 = $this->id;
-							$new_achievement->achievement_id = $achievement->id;
-							$new_achievement->save();
-							//Recompensa
-							$rewards = $achievement->achievement_rewards($achievement->id);
-							$reward = "";
-							if($rewards){
-								$reward .= "e ganhou as seguintes recompensas: <br /><br/>";
-								if($rewards->exp){
-									$reward .= $rewards->exp ." ". t('ranked.exp') ."<br />";
-									//Exp para o Player
-									$this->earn_exp($rewards->exp);
-								}
-								if($rewards->exp_user){
-									$reward .= $rewards->exp_user ." ". t('ranked.exp_account') ."<br />";
-									//Exp para a conta
-									$user	= User::get_instance();
-									$user->exp($rewards->exp_user);
-								}
-								if($rewards->currency){
-									$reward .= $rewards->currency ." ". t('currencies.' . $this->character()->anime_id) ."<br />";
-									// Dinheiro para o player
-									$this->earn($rewards->currency);
-								}
-								if($rewards->credits){
-									$reward .= $rewards->credits ." ". t('treasure.show.credits') ."<br />";
-									//Crédito para a conta
-									$user	= User::get_instance();
-									$user->earn($rewards->credits);
-								}
-								if($rewards->item_id){
-									$reward .= $rewards->quantity ."x ". Item::find($rewards->item_id)->description()->name ."<br />";
-									//Item para o player
-									$player_item_exist	= PlayerItem::find_first("item_id=".$rewards->item_id." AND player_id=". $this->id);
-
-									if(!$player_item_exist){
-										$player_item			= new PlayerItem();
-										$player_item->item_id	= $rewards->item_id;
-										$player_item->quantity	= $rewards->quantity;
-										$player_item->player_id	= $this->id;
-										$player_item->save();
-									}else{
-										$player_item_exist->quantity += $rewards->quantity;
-										$player_item_exist->save();
-									}
-								}
-								if($rewards->character_theme_id){
-									$reward .= t('treasure.show.theme') ." ". CharacterTheme::find($rewards->character_theme_id)->description()->name ."<br />";
-									//Dá o Tema ao player
-									$reward_theme						= new UserCharacterTheme();
-									$reward_theme->user_id				= $this->user_id;
-									$reward_theme->character_theme_id	= $rewards->character_theme_id;
-									$reward_theme->was_reward			= 1;
-									$reward_theme->save();
-								}
-								if($rewards->character_id){
-									$reward .= t('treasure.show.character') ." ". Character::find($rewards->character_id)->description()->name ."<br />";
-									//Dá o Personagem ao player
-									$reward_character					= new UserCharacter();
-									$reward_character->user_id			= $this->user_id;
-									$reward_character->character_id	= $rewards->character_id;
-									$reward_character->was_reward	= 1;
-									$reward_character->save();
-								}
-								if($rewards->headline_id){
-									$reward .= t('treasure.show.headline') ." ". Headline::find($rewards->headline_id)->description()->name ."<br />";
-									// Dá o titulo ao player
-									$reward_headline				= new UserHeadline();
-									$reward_headline->user_id		= $this->user_id;
-									$reward_headline->headline_id	= $rewards->headline_id;
-									$reward_headline->save();
-								}
-							}
-							// Envia uma mensagem para o jogador avisando do prêmio
-							$pm				= new PrivateMessage();
-							$pm->to_id		= $this->id;
-							$pm->subject	= "Conquista: ". $achievement->description()->name;
-							$pm->content	= "Você completou a conquista: <b>". $achievement->description()->name ."</b> ". $reward;
-							$pm->save();
+						if ($organization_quest->daily_total >= $achievement->quantity) {
+							$this->achievement_reward($this, $achievement);
 						}
 					}
 				}
 				break;
 		}
+	}
+
+	function achievement_reward($player, $achievement) {
+		$new_achievement					= new PlayerAchievement();
+		$new_achievement->player_id			= $player->id;
+		$new_achievement->achievement_id	= $achievement->id;
+		$new_achievement->save();
+
+		$user	= $player->user();
+
+		// Recompensa
+		$rewards	= $achievement->achievement_rewards($achievement->id);
+		$reward		= "";
+		if ($rewards) {
+			$reward .= "e ganhou as seguintes recompensas: <br /><br/>";
+			if ($rewards->exp) {
+				$reward .= $rewards->exp ." ". t('ranked.exp') ."<br />";
+
+				// Exp para o Player
+				$player->earn_exp($rewards->exp);
+			}
+
+			if ($rewards->exp_user) {
+				$reward .= $rewards->exp_user ." ". t('ranked.exp_account') ."<br />";
+
+				// Exp para a conta
+				$user->exp($rewards->exp_user);
+			}
+
+			if ($rewards->currency) {
+				$reward .= $rewards->currency ." ". t('currencies.' . $player->character()->anime_id) ."<br />";
+
+				// Dinheiro para o player
+				$player->earn($rewards->currency);
+			}
+
+			if ($rewards->credits) {
+				$reward .= $rewards->credits ." ". t('treasure.show.credits') ."<br />";
+
+				// Crédito para a conta
+				$user->earn($rewards->credits);
+			}
+
+			if ($rewards->item_id) {
+				$reward .= $rewards->quantity ."x ". Item::find($rewards->item_id)->description()->name ."<br />";
+
+				// Item para o player
+				$player_item_exist	= PlayerItem::find_first("item_id=".$rewards->item_id." AND player_id=". $player->id);
+				if (!$player_item_exist) {
+					$player_item			= new PlayerItem();
+					$player_item->item_id	= $rewards->item_id;
+					$player_item->quantity	= $rewards->quantity;
+					$player_item->player_id	= $player->id;
+					$player_item->save();
+				} else {
+					$player_item_exist->quantity += $rewards->quantity;
+					$player_item_exist->save();
+				}
+			}
+
+			if ($rewards->character_theme_id && !$user->is_theme_bought($rewards->character_id)) {
+				$reward .= t('treasure.show.theme') ." ". CharacterTheme::find($rewards->character_theme_id)->description()->name ."<br />";
+
+				// Dá o Tema ao player
+				$reward_theme						= new UserCharacterTheme();
+				$reward_theme->user_id				= $player->user_id;
+				$reward_theme->character_theme_id	= $rewards->character_theme_id;
+				$reward_theme->was_reward			= 1;
+				$reward_theme->save();
+			}
+
+			if ($rewards->character_id && !$user->is_character_bought($rewards->character_theme_id)) {
+				$reward .= t('treasure.show.character') ." ". Character::find($rewards->character_id)->description()->name ."<br />";
+
+				// Dá o Personagem ao player
+				$reward_character				= new UserCharacter();
+				$reward_character->user_id		= $player->user_id;
+				$reward_character->character_id	= $rewards->character_id;
+				$reward_character->was_reward	= 1;
+				$reward_character->save();
+			}
+			if ($rewards->headline_id && !$user->is_headline_bought($rewards->headline_id)) {
+				$reward .= t('treasure.show.headline') ." ". Headline::find($rewards->headline_id)->description()->name ."<br />";
+
+				// Dá o titulo ao player
+				$reward_headline				= new UserHeadline();
+				$reward_headline->user_id		= $player->user_id;
+				$reward_headline->headline_id	= $rewards->headline_id;
+				$reward_headline->save();
+			}
+		}
+
+		// Envia uma mensagem para o jogador avisando do prêmio
+		$pm				= new PrivateMessage();
+		$pm->to_id		= $player->id;
+		$pm->subject	= "Conquista: ". $achievement->description()->name;
+		$pm->content	= "Você completou a conquista: <b>". $achievement->description()->name ."</b> ". $reward;
+		$pm->save();
 	}
 
 	function at_low_stat() {
@@ -5158,7 +847,7 @@ class Player extends Relation {
 	}
 
 	function is_next_level() {
-		return $this->exp >= $this->level_exp();
+		return $this->exp >= $this->level_exp() && $this->level < MAX_LEVEL_PLAYER;
 	}
 
 	function spend($amount) {
@@ -5172,8 +861,6 @@ class Player extends Relation {
 
 		// Checa o dinheiro do player
 		$this->achievement_check(7);
-		// Checa o dinheiro do player
-		$this->check_objectives(7);
 	}
 
 	function earn_exp($amount) {
@@ -5505,21 +1192,21 @@ class Player extends Relation {
 	}
 	function happiness($item_id){
 		$happiness = PlayerItem::find_first('item_id='.$item_id.' AND player_id='. $this->id);
-		if($happiness){
-			if($happiness->happiness < 19){
+		if ($happiness) {
+			if ($happiness->happiness < 19){
 				return '<img src="'.image_url("icons/happiness_0.png").'" />';
-			}else if($happiness->happiness >= 20 && $happiness->happiness < 39){
+			} elseif ($happiness->happiness >= 20 && $happiness->happiness < 39) {
 				return '<img src="'.image_url("icons/happiness_20.png").'" />';
-			}else if($happiness->happiness >= 40 && $happiness->happiness < 59){
+			} elseif ($happiness->happiness >= 40 && $happiness->happiness < 59) {
 				return '<img src="'.image_url("icons/happiness_40.png").'" />';
-			}else if($happiness->happiness >= 60 && $happiness->happiness < 79){
+			} elseif ($happiness->happiness >= 60 && $happiness->happiness < 79) {
 				return '<img src="'.image_url("icons/happiness_60.png").'"  />';
-			}else if($happiness->happiness >= 80 && $happiness->happiness < 99){
+			} elseif ($happiness->happiness >= 80 && $happiness->happiness < 99) {
 				return '<img src="'.image_url("icons/happiness_80.png").'" />';
-			}else if($happiness->happiness > 99){
+			} elseif ($happiness->happiness > 99) {
 				return '<img src="'.image_url("icons/happiness_100.png").'" />';
 			}
-		}else{
+		} else {
 			return '<img src="'.image_url("icons/happiness_0.png").'"  />';
 		}
 	}
@@ -5760,20 +1447,20 @@ class Player extends Relation {
 	function check_pet_level($pet, $equipped = FALSE) {
 		$petItem = Item::find_first($pet->item_id);
 		if (
-			($petItem->rarity == "common"		&& $pet->exp >= 2500) ||
-			($petItem->rarity == "rare"			&& $pet->exp >= 7500) ||
-			($petItem->rarity == "legendary"	&& $pet->exp >= 20000)
+			($petItem->rarity == "common"		&& $pet->exp >= 5000) ||
+			($petItem->rarity == "rare"			&& $pet->exp >= 15000) ||
+			($petItem->rarity == "legendary"	&& $pet->exp >= 50000)
 		){
 			$expPet		= 0;
 			$expName	= '';
 			if ($petItem->rarity == "common") {
-				$expPet		= $pet->exp - 2500;
+				$expPet		= $pet->exp - 5000;
 				$expName	= "Raro";
 			} else if ($petItem->rarity == "rare") {
-				$expPet		= $pet->exp - 7500;
+				$expPet		= $pet->exp - 15000;
 				$expName	= "Lendário";
 			} else if ($petItem->rarity == "legendary") {
-				$expPet		= $pet->exp - 20000;
+				$expPet		= $pet->exp - 50000;
 				$expName	= "Mega";
 			}
 
@@ -6025,10 +1712,10 @@ class Player extends Relation {
 	}
 
 	function battle_exp($win = false) {
-		if($win) {
-			$exp	= (200 + ($this->level * 5) + $this->level) * 2;
+		if ($win) {
+			$exp	= (200 + ($this->level * 5) + $this->level);
 		} else {
-			$exp	= (150 + ($this->level * 5) + $this->level) * 2;
+			$exp	= (150 + ($this->level * 5) + $this->level);
 		}
 
 		return floor($exp * EXP_RATE);
@@ -6036,9 +1723,9 @@ class Player extends Relation {
 
 	function battle_currency($win = false) {
 		if ($win) {
-			$currency	= (20 + ($this->level * 6) + 1) * 2;
+			$currency	= (20 + ($this->level * 6) + 1);
 		} else {
-			$currency	= (10 + ($this->level * 6) + 1) * 2;
+			$currency	= (10 + ($this->level * 6) + 1);
 		}
 
 		return floor($currency * MONEY_RATE);

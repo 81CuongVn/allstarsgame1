@@ -83,7 +83,8 @@ class BattlePvpsController extends Controller {
 					$user->exp($rewards->exp_user);
 					$content .= highamount($rewards->exp_user) . " " . t('ranked.exp_account')."<br />";
 				}
-				if ($rewards->headline_id) {
+
+				if ($rewards->headline_id && !$user->is_headline_bought($rewards->headline_id)) {
 					$reward_headline				= new UserHeadline();
 					$reward_headline->user_id		= $player->user_id;
 					$reward_headline->headline_id	= $rewards->headline_id;
@@ -91,7 +92,8 @@ class BattlePvpsController extends Controller {
 
 					$content .= t('treasure.show.headline') ." ". Headline::find($rewards->headline_id)->description()->name . "<br />";
 				}
-				if ($rewards->character_id) {
+
+				if ($rewards->character_id && !$user->is_character_bought($rewards->character_id)) {
 					$reward_character				= new UserCharacter();
 					$reward_character->user_id		= $player->user_id;
 					$reward_character->character_id	= $rewards->character_id;
@@ -100,7 +102,8 @@ class BattlePvpsController extends Controller {
 
 					$content .= t('treasure.show.character') ." ". Character::find($rewards->character_id)->description()->name . "<br />";
 				}
-				if ($rewards->character_theme_id) {
+
+				if ($rewards->character_theme_id && !$user->is_theme_bought($rewards->character_theme_id)) {
 					$reward_theme						= new UserCharacterTheme();
 					$reward_theme->user_id				= $player->user_id;
 					$reward_theme->character_theme_id	= $rewards->character_theme_id;
@@ -109,6 +112,7 @@ class BattlePvpsController extends Controller {
 
 					$content .= t('treasure.show.theme') ." ". CharacterTheme::find($rewards->character_theme_id)->description()->name . "<br />";
 				}
+
 				if($rewards->item_id) {
 					$item		= Item::find_first($rewards->item_id);
 					$player->add_consumable($item, $rewards->quantity);

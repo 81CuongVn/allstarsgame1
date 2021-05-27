@@ -631,7 +631,7 @@ class Item extends Relation {
 	function chat_embed() {
 		return '';
 	}
-	static function generate_equipment($player, $rarity_fragment = NULL, $slot = FALSE) {
+	static function generate_equipment($player, $rarity_fragment = null, $slot = false) {
 		$slots	= [
 			'head',
 			'shoulder',
@@ -641,249 +641,116 @@ class Item extends Relation {
 			'leggings'
 		];
 
-		$attributes_by_slot	= [
-			'head'		=> [],
-			'shoulder'	=> [],
-			'chest'		=> [],
-			'neck'		=> [],
-			'hand'		=> [],
-			'leggings'	=> []
-		];
-
-		$ignore_sums	= [ 'cooldown_reduction', 'for_stamina', 'npc_battle_count' ];
 		if (!$slot) {
 			$choosen_slot	= $slots[rand(0, sizeof($slots) - 1)];
 		} else {
 			$choosen_slot	= $slot;
 		}
 
-		$rarity_drop_by_graduation	= [
-			1	=> [
-				'common'	=> 94,
-				'rare'		=> 5,
-				'legendary'	=> 1
-			],
-			2	=> [
-				'common'	=> 79,
-				'rare'		=> 19,
-				'legendary'	=> 2
-			],
-			3	=> [
-				'common'	=> 65,
-				'rare'		=> 30,
-				'legendary'	=> 5
-			],
-			4	=> [
-				'common'	=> 50,
-				'rare'		=> 40,
-				'legendary'	=> 10
-			],
-			5	=> [
-				'common'	=> 35,
-				'rare'		=> 50,
-				'legendary'	=> 15
-			],
-			6	=> [
-				'common'	=> 20,
-				'rare'		=> 60,
-				'legendary'	=> 20
-			]
+		$rarity_drop		= [
+			'common'	=> 40,
+			'rare'		=> 30,
+			'epic'		=> 20,
+			'legendary'	=> 10
 		];
 
 		$bonuses_by_rarity	= [
-			'common'	=> [ 1 ],
-			'rare'		=> [ 2 ],
-			'legendary'	=> [ 3 ]
+			'common'	=> 1,
+			'rare'		=> 2,
+			'epic'		=> 3,
+			'legendary'	=> 4
 		];
 
-		$additional_chance_by_graduation	= [
-			[ 10,	35,	50,	5,	1 ],
-			[ 15,	30,	45,	10,	1 ],
-			[ 20,	25,	40,	15,	1 ],
-			[ 25,	20,	35,	20,	1 ],
-			[ 30,	15,	30,	25,	1 ],
-			[ 35,	10,	25,	30,	1 ]
+		$base	= [
+			'for_atk'		=> [1, 6],
+			'for_def'		=> [1, 6],
+			'for_crit'		=> [1, 6],
+			'for_abs'		=> [1, 6],
+			'for_inc_crit'	=> [1, 7],
+			'for_inc_abs'	=> [1, 7],
+			'for_prec'		=> [1, 6],
+			'for_init'		=> [1, 6]
 		];
 
-		$choosables	= [
-			'cooldown_reduction'		=> 'cooldown_reduction_id',
-			'technique_attack_increase'	=> 'technique_attack_increase_id',
-			'technique_mana_reduction'	=> 'technique_mana_reduction_id',
-			'technique_crit_increase'	=> 'technique_crit_increase_id',
-			'technique_zero_mana'		=> 'technique_zero_mana_id'
-		];
-
-		$bases	= [
-			[
-				[
-					'for_atk'		=> [1, 2, 3, 5],
-					'for_def'		=> [1, 2, 3, 5],
-					'for_crit'		=> [1, 2],
-					'for_abs'		=> [1, 2],
-					'for_inc_crit'	=> [1, 3],
-					'for_inc_abs'	=> [1, 3],
-					'for_prec'		=> [1, 2],
-					'for_init'		=> [1, 2]
-				], [
-					'for_atk'		=> [1, 2, 3, 5],
-					'for_def'		=> [1, 2, 3, 5],
-					'for_crit'		=> [1, 2],
-					'for_abs'		=> [1, 2],
-					'for_inc_crit'	=> [1, 3],
-					'for_inc_abs'	=> [1, 3],
-					'for_prec'		=> [1, 2],
-					'for_init'		=> [1, 2]
-				], [
-					'for_atk'		=> [1, 3, 3, 7],
-					'for_def'		=> [1, 3, 3, 7],
-					'for_crit'		=> [1, 3],
-					'for_abs'		=> [1, 3],
-					'for_inc_crit'	=> [1, 4],
-					'for_inc_abs'	=> [1, 4],
-					'for_prec'		=> [1, 3],
-					'for_init'		=> [1, 3]
-				], [
-					'for_atk'		=> [1, 4, 3, 9],
-					'for_def'		=> [1, 4, 3, 9],
-					'for_crit'		=> [1, 4],
-					'for_abs'		=> [1, 4],
-					'for_inc_crit'	=> [1, 5],
-					'for_inc_abs'	=> [1, 5],
-					'for_prec'		=> [1, 4],
-					'for_init'		=> [1, 4]
-				], [
-					'for_atk'		=> [1, 5, 4, 9],
-					'for_def'		=> [1, 5, 4, 9],
-					'for_crit'		=> [1, 5],
-					'for_abs'		=> [1, 5],
-					'for_inc_crit'	=> [1, 6],
-					'for_inc_abs'	=> [1, 6],
-					'for_prec'		=> [1, 5],
-					'for_init'		=> [1, 5]
-				], [
-					'for_atk'		=> [2, 6, 4, 11],
-					'for_def'		=> [2, 6, 4, 11],
-					'for_crit'		=> [1, 6],
-					'for_abs'		=> [1, 6],
-					'for_inc_crit'	=> [1, 7],
-					'for_inc_abs'	=> [1, 7],
-					'for_prec'		=> [1, 6],
-					'for_init'		=> [1, 6]
-				]
-			]
-		];
-
-		$values					= [];
-		$current_grad			= $player->graduation()->sorting;
-
-		$rarity_base			= $rarity_drop_by_graduation[$current_grad];
 		$rarity_choosen_name	= '';
-		$have_extras			= FALSE;
-
 		if (is_null($rarity_fragment)) {
 			while (true) {
-				// $rarity_choosen_id	= 0;
-
-				foreach ($rarity_base as $rarity => $chance) {
+				foreach ($rarity_drop as $rarity => $chance) {
 					if (rand(1, 100) <= $chance) {
 						$rarity_choosen_name	= $rarity;
 						break 2;
 					}
-
-					// $rarity_choosen_id++;
 				}
 			}
 		} else {
 			switch ($rarity_fragment) {
-				case 0:
-					$rarity_choosen_name	= "common";
-					$rarity_choosen_id		= 0;
-					break;
-				case 1:
-					$rarity_choosen_name	= "rare";
-					$rarity_choosen_id		= 1;
-					break;
-				case 2:
-					$rarity_choosen_name	= "legendary";
-					$rarity_choosen_id		= 2;
-				break;
+				case 0:	$rarity_choosen_name	= "common";		break;
+				case 1:	$rarity_choosen_name	= "rare";		break;
+				case 2:	$rarity_choosen_name	= "epic";		break;
+				case 3:	$rarity_choosen_name	= "legendary";	break;
 			}
 		}
 
-		foreach ($bases as $block => $base) {
-			$attribute_counter	= $bonuses_by_rarity[$rarity_choosen_name][$block];
-			$extras				= $additional_chance_by_graduation[$current_grad - 1];
-			$extra_chance		= $extras[$block];
+		$attribute_counter	= $bonuses_by_rarity[$rarity_choosen_name];
 
-			if (($_SESSION['universal'] || (rand(1, 100) <= 25 && rand(1, 100) <= $extra_chance)) && !$have_extras) {
-				$attribute_counter	+= $extras[4];
-				$have_extras		= TRUE;
-			}
+		// Chance de vir um atributo extra
+		$have_extras	= false;
+		$extra_chance	= 10;
+		if (rand(1, 100) <= $extra_chance && !$have_extras) {
+			$attribute_counter	+= 1;
+			$have_extras		= true;
+		}
 
-			if ($attribute_counter) {
-				while (TRUE) {
-					foreach ($base[$current_grad - 1] as $attribute => $value) {
-						if (in_array($attribute, $attributes_by_slot[$choosen_slot])) {
-							continue;
-						}
+		$values	= [];
+		if ($attribute_counter) {
+			while (true) {
+				foreach ($base as $attribute => $value) {
+					// Já tem o atributo no item
+					if (isset($values[$attribute])) {
+						continue;
+					}
 
-						if (isset($values[$attribute])) {
-							continue;
-						}
+					// Se o equipamento tem ataque, não pode dar defesa e vice-versa
+					if (
+						($attribute == 'for_atk' && isset($values['for_def'])) ||
+						($attribute == 'for_def' && isset($values['for_atk']))
+					) {
+						continue;
+					}
 
-						if (rand(1, 100) > 10) {
-							continue;
-						}
+					// Pra tornar mais divertido
+					if (rand(1, 100) > 10) {
+						continue;
+					}
 
-						if (!in_array($attribute, $ignore_sums)) {
-							// if ($rarity_choosen_id == 2) {
-							// 	$value[0]++;
-							// }
+					// Define a quantidade do atributo sorteado
+					$values[$attribute]	= rand($value[0] * 10, $value[1] * 10) / 10;
 
-							// if ($rarity_choosen_id == 3 || $rarity_choosen_id == 4) {
-							// 	$value[0]	+= 2;
-							// }
-
-							$values[$attribute]	= rand($value[0] * 10, $value[1] * 10) / 10;
-						} else {
-							$values[$attribute]	= rand($value[0] * 10, $value[1] * 10) / 10;
-						}
-						if ($_SESSION['universal']) {
-							$values[$attribute]	= $value[1];
-						}
-
-						if (isset($choosables[$attribute])) {
-							$items_query	= Recordset::query('SELECT id FROM items WHERE item_type_id = 1 AND id NOT IN (112, 113)', TRUE)->result_array();
-							$values[$choosables[$attribute]]	= $items_query[rand(0, sizeof($items_query) - 1)]['id'];
-						}
-
-						$attribute_counter--;
-
-						if (!$attribute_counter) {
-							break 2;
-						}
+					$attribute_counter--;
+					if (!$attribute_counter) {
+						break 2;
 					}
 				}
 			}
 		}
 
-		$player_item			= new PlayerItem();
-		$player_item->player_id	= $player->id;
-		$player_item->item_id	= 114;
-		$player_item->slot_name	= $choosen_slot;
-		$player_item->rarity	= $rarity_choosen_name;
-		$player_item->quantity	= 1;
+		// Adiciona o Item
+		$player_item					= new PlayerItem();
+		$player_item->player_id			= $player->id;
+		$player_item->item_id			= 114;
+		$player_item->slot_name			= $choosen_slot;
+		$player_item->rarity			= $rarity_choosen_name;
+		$player_item->quantity			= 1;
 		$player_item->save();
 
+		// Salva o stats do item
 		$attribute						= new PlayerItemAttribute();
 		$attribute->player_item_id		= $player_item->id;
 		$attribute->graduation_sorting	= $player->graduation()->sorting;
 		$attribute->have_extra			= $have_extras ? 1 : 0;
-
 		foreach ($values as $property => $value) {
 			$attribute->$property	= round($value, 2);
 		}
-
 		$attribute->save();
 
 		return $player_item;
@@ -947,7 +814,7 @@ class Item extends Relation {
 			'set'		=> 5
 		];
 
-		$price		= $rarities[$this->_player_item->rarity] * 50;
+		$price		= $rarities[$this->_player_item->rarity] * 75;
 
 		foreach ($attributes as $attribute => $value) {
 			if (in_array($attribute, ['id', 'player_item_id', 'graduation_sorting', 'have_extra', 'is_new', 'created_at'])) {

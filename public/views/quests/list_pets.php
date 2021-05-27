@@ -9,7 +9,7 @@
 			$attrbiutes	= '';
 			$active		= false;
 
-		
+
 			ob_start();
 		?>
 		<div class="pet-box <?php echo $class ?>" data-item="<?php echo $pet->id ?>" style="height: 280px !important" data-id="<?php echo $pet->id ?>" data-quest_id="<?php echo $quest_id?>" data-counter="<?php echo $counter?>">
@@ -24,7 +24,7 @@
 				</div>
 				<div class="details">
 					<div class="pet-tooltip">
-						<?php 
+						<?php
 							$info_pet = $player->happiness_int($pet->id);
 							if ($info_pet) {
 								$happiness = $info_pet->happiness;
@@ -32,23 +32,23 @@
 							} else {
 								$happiness = 0;
 								$exp_pet  =	0;
-							}	
+							}
 						?>
 						<?php echo $player->happiness($pet->id)?><br />
 						<?php echo $happiness ?> / 100
-						<?php 
+						<?php
 							switch ($pet->rarity) {
 								case "common":
-								 	$exp_total = 2500;
+								 	$exp_total = 5000;
 								 break;
 								 case "rare":
-									 $exp_total = 7500;
+									 $exp_total = 15000;
 								 break;
 								 case "legendary":
-									$exp_total = 20000;
-								 break;	
+									$exp_total = 50000;
+								 break;
 							}
-						?>	
+						?>
 						<?php if ($pet->rarity != "mega") { ?>
 							<div style="margin-top:10px">
 								<?=pet_exp_bar($exp_pet, $exp_total, 150, highamount($exp_pet) . '/' . highamount($exp_total));?>
@@ -61,7 +61,7 @@
 				</div>
 			</div>
 		</div>
-		
+
 		<?php
 			if ($active) {
 				$actives	.= ob_get_clean();
@@ -69,8 +69,8 @@
 				$others		.= ob_get_clean();
 			}
 		?>
-	<?php 
-		endforeach 
+	<?php
+		endforeach
 	?>
 	<?php echo $actives . $others ?>
 	<div class="clearfix"></div><br />

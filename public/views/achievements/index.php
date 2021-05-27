@@ -2,7 +2,7 @@
 	'title' => 'menus.achievement',
 	'place' => 'menus.achievement'
 ]);?>
-<ul class="nav nav-pills" id="time-quests-list-tabs">
+<ul class="nav nav-pills" id="achievements-list-tabs">
 	<?php
 	$first = true;
 	foreach ($categories as $category) {

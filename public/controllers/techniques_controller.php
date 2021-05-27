@@ -7,7 +7,7 @@
 				$player_stats->view_golpes = 1;
 				$player_stats->save();
 			}
-			
+
 			$this->assign('player',				$player);
 			$this->assign('items',				$player->character_theme()->attacks());
 			$this->assign('player_tutorial',	$player->player_tutorial());
@@ -27,7 +27,7 @@
 					$player_item	= PlayerItem::find_first('item_id = ' . $_POST['item_id'] . ' and player_id =  '. $player->id);
 					if (!$player_item) {
 						$errors[]	= t('enchant.errors.semogolpe');
-					} 
+					}
 				} else {
 					$errors[]	= t('enchant.errors.invalid');
 				}
@@ -41,7 +41,7 @@
 						$item_work = Item::find_first("id = " . $player_item_work->item_id . " and item_type_id = 1");
 						if ($item_work) {
 							$player_item_work->working = 0;
-							$player_item_work->save();	
+							$player_item_work->save();
 						}
 					}
 
@@ -108,7 +108,7 @@
 
 			if(isset($_POST['item_id']) && is_numeric($_POST['item_id']) && isset($_POST['counter']) && is_numeric($_POST['counter'])) {
 				$player_item_gem		= PlayerItemGem::find_first("player_id=".$player->id." AND item_id=".$_POST['item_id']);
-				$gem_slot 				= "gem_" . $_POST['counter']; 
+				$gem_slot 				= "gem_" . $_POST['counter'];
 
 				if (!$player_item_gem) {
 					$errors[]	= t('techniques.learn.learned');
@@ -148,7 +148,7 @@
 
 			if (isset($_POST['item']) && is_numeric($_POST['item']) && is_numeric($_POST['slot'])) {
 				$player_item_gem_show		= PlayerItem::find_first("player_id=".$player->id." AND item_id=".$_POST['item']);
-				$gem_slot 					= "gem_".$_POST['slot']; 
+				$gem_slot 					= "gem_".$_POST['slot'];
 
 				if ($player_item_gem_show->quantity < 1) {
 					$errors[]	= t('techniques.learn.learned');
@@ -203,13 +203,13 @@
 
 				//Combinação original do item
 				$combinations_gems	= explode(",", $item_gem->combination);
-					
+
 				switch ($_POST['combination']) {
 					case 1:	$item_id = $item_gem->item_id_1;	break;
 					case 2:	$item_id = $item_gem->item_id_2;	break;
 					case 3:	$item_id = $item_gem->item_id_3;	break;
 				}
-				
+
 				if ($item_id  != $_POST['item_id']) {
 					$errors[]	= t('enchant.errors.stamina_invalida');
 				}
@@ -231,7 +231,7 @@
 						$errors[]	= "A combinação de Gemas é inválida para esse item";
 					}
 				} else {
-					$player_combination_atual = $player_item_gems->gem_1.'-'.$player_item_gems->gem_2.'-'.$player_item_gems->gem_3.'-'.$player_item_gems->gem_4; 
+					$player_combination_atual = $player_item_gems->gem_1.'-'.$player_item_gems->gem_2.'-'.$player_item_gems->gem_3.'-'.$player_item_gems->gem_4;
 					if ($player_item_gems->gem_1 == 0  ||  $player_item_gems->gem_2 == 0  ||  $player_item_gems->gem_3 == 0 ||  $player_item_gems->gem_4 == 0) {
 						$errors[]	= "Você precisa equipar as Gemas para encantar seu golpe.";
 					}
@@ -259,7 +259,7 @@
 				if ($player_item_gem->enchanted = 1 && $player_item_gem->gem_1 = 0) {
 					$player_item_gem->enchanted = 0;
 					$player_item = PlayerItem::find_first("player_id=".$player->id." AND item_id=0");
-					$player_item_gem->save();	
+					$player_item_gem->save();
 				}
 			} else {
 				$this->json->messages	= $errors;
@@ -273,7 +273,7 @@
 
 			if (isset($_POST['create']) && is_numeric($_POST['create'])) {
 				if($player->enchant_points_total < 2000){
-					$errors[]	= t('enchant.frase3');	
+					$errors[]	= t('enchant.frase3');
 				}
 			} else {
 				$errors[]	= t('enchant.errors.stamina_invalida');
@@ -322,16 +322,16 @@
 
 			if (isset($_POST['stamina']) && is_numeric($_POST['stamina']) && $_POST['stamina'] > 0) {
 				if ($player->enchant_points >= 3000 && !$_SESSION['universal']) {
-					$errors[]	= t('enchant.errors.nao_pode_treinar');	
+					$errors[]	= t('enchant.errors.nao_pode_treinar');
 				}
 
 				if ($player->enchant_points_total >= 50000 && !$_SESSION['universal']) {
-					$errors[]	= t('enchant.errors.nao_pode_treinar2');	
+					$errors[]	= t('enchant.errors.nao_pode_treinar2');
 				}
 
 				//$stamina = ( 10 + $player->level ) - $player->less_stamina;
 				if ($player->for_stamina() < $_POST['stamina'] && !$_SESSION['universal']) {
-					$errors[]	= t('enchant.errors.sem_stamina');	
+					$errors[]	= t('enchant.errors.sem_stamina');
 				}
 			} else {
 				$errors[]	= t('enchant.errors.stamina_invalida');
@@ -366,7 +366,7 @@
 		function grimoire() {
 			$player		= Player::get_instance();
 			$anime_id	= $player->character()->anime_id;
-			
+
 			$items		= Recordset::query('
 				SELECT
 					*
@@ -374,7 +374,7 @@
 					item_descriptions a JOIN
 					items b ON b.id=a.item_id
 				WHERE
-					a.anime_id=' . $anime_id . ' AND b.item_type_id = 1 AND b.locked = 1 AND parent_id = 0 AND b.id not in (36,447,1714,1722,1723,1858,2104) AND 
+					a.anime_id=' . $anime_id . ' AND b.item_type_id = 1 AND b.locked = 1 AND parent_id = 0 AND b.id not in (36,447,1714,1722,1723,1858,2104) AND
 					a.language_id=' . $_SESSION['language_id'] . '
 				ORDER BY b.mana_cost ASC
 			', TRUE);
@@ -383,7 +383,7 @@
 				$instance	= Item::find($item['item_id'], array('cache' => true));
 				$instance->set_anime($anime_id);
 				$result[]	= $instance;
-			}	
+			}
 
 			$this->assign('player',				$player);
 			$this->assign('items',				$result);
@@ -397,24 +397,24 @@
 
 			if(isset($_POST['id']) && is_numeric($_POST['id'])) {
 				$item			= Item::find_first($_POST['id']);
-				
+
 
 				if(!$item) {
 					$errors[]				= t('grimoire.errors.invalid');
 				} else {
 					$anime_id		= $player->character()->anime_id;
 					$item->set_anime($anime_id);
-					
+
 					$parent_items			= Item::find("parent_id = ". $item->id ." AND item_type_id = 11");
 					if(!$parent_items){
 						$errors[]			= t('grimoire.errors.invalid');
 					}else{
 						$items_counter  = sizeof($parent_items);
 						$player_item_counter = 0;
-						
+
 						foreach($parent_items as $parent_item){
 							$player_items	= PlayerItem::find("player_id= ".$player->id." AND item_id= ". $parent_item->id);
-							
+
 							if($player_items){
 								$player_item_counter++;
 							}
@@ -425,27 +425,25 @@
 					}
 				}
 			}
-			
+
 			if(!sizeof($errors)) {
 				$this->json->success	= true;
-				
+
 				$player_item_grimoire				= new PlayerItem();
 				$player_item_grimoire->item_id		= $item->id;
 				$player_item_grimoire->player_id	= $player->id;
 				$player_item_grimoire->removed		= 1;
 				$player_item_grimoire->save();
-				
+
 				//Verifica a conquista de grimoire - Conquista
 				$player->achievement_check("grimoire");
-				// Objetivo de Round
-				$player->check_objectives("grimoire");
-				
+
 				$pm	= new PrivateMessage();
 				$pm->to_id		= $player->id;
 				$pm->subject	= "Novo Golpe Liberado";
 				$pm->content 	= "O golpe ". $item->description()->name ." foi liberado";
 				$pm->save();
-				
+
 			} else {
 				$this->json->messages	= $errors;
 			}
@@ -491,29 +489,29 @@
 		function change_ability() {
 			$this->layout	= false;
 			$player			= Player::get_instance();
-			
+
 			if($_POST) {
 				$this->as_json			= true;
 				$this->render			= false;
 				$this->json->success	= false;
 				$errors					= array();
-				
+
 				if(is_numeric($_POST['id']) && is_numeric($_POST['id2'])) {
 					$character_ability_old_id 	= $_POST['id'];
 					$character_ability_new_id 	= $_POST['id2'];
-					
+
 					$character_ability_old 	= CharacterAbility::find_first("id=".$character_ability_old_id);
 					$character_ability_new 	= CharacterAbility::find_first("id=".$character_ability_new_id);
-					
+
 					if(!$character_ability_old) {
 						$errors[]	= t('upgrade.errors.1');
-					} 
+					}
 					if(!$character_ability_new) {
 						$errors[]	= t('upgrade.errors.1');
-					} 
+					}
 					if(!sizeof($errors)) {
 						//Update para marcar a nova habilidade
-						$player_character_ability = PlayerCharacterAbility::find_first("character_ability_id=".$character_ability_old_id." and player_id=".$player->id);						
+						$player_character_ability = PlayerCharacterAbility::find_first("character_ability_id=".$character_ability_old_id." and player_id=".$player->id);
 						$player_character_ability->character_ability_new_id	= $character_ability_new->id;
 						$player_character_ability->item_effect_ids 			= $character_ability_new->item_effect_ids;
 						$player_character_ability->effect_chances			= $character_ability_new->effect_chances;
@@ -521,17 +519,17 @@
 						$player_character_ability->consume_mana 			= $character_ability_new->consume_mana;
 						$player_character_ability->cooldown 				= $character_ability_new->cooldown;
 						$player_character_ability->save();
-						
-						$this->json->success  = true;	
+
+						$this->json->success  = true;
 					} else {
 						$this->json->errors	= $errors;
 					}
 				}
-				
+
 			}else{
 				$player_ability = PlayerCharacterAbility::find_first("character_ability_id=".$_GET['id']." and player_id=".$player->id);
 				$abilities = CharacterAbility::find("item_effect_ids !=370 GROUP BY item_effect_ids");
-				
+
 				$this->assign('player_ability', $player_ability);
 				$this->assign('abilities', $abilities);
 			}
@@ -539,30 +537,30 @@
 		function change_speciality() {
 			$this->layout	= false;
 			$player			= Player::get_instance();
-			
+
 			if($_POST) {
 				$this->as_json			= true;
 				$this->render			= false;
 				$this->json->success	= false;
 				$errors					= array();
-				
+
 				if(is_numeric($_POST['id']) && is_numeric($_POST['id2'])) {
 					$character_speciality_old_id 	= $_POST['id'];
 					$character_speciality_new_id 	= $_POST['id2'];
-					
+
 					$character_speciality_old 	= CharacterSpeciality::find_first("id=".$character_speciality_old_id);
 					$character_speciality_new 	= CharacterSpeciality::find_first("id=".$character_speciality_new_id);
-					
-					
+
+
 					if(!$character_speciality_old) {
 						$errors[]	= t('upgrade.errors.1');
-					} 
+					}
 					if(!$character_speciality_new) {
 						$errors[]	= t('upgrade.errors.1');
-					} 
+					}
 					if(!sizeof($errors)) {
 						//Update para marcar a nova habilidade
-						$player_character_speciality = PlayerCharacterSpeciality::find_first("character_speciality_id=".$character_speciality_old_id." and player_id=".$player->id);						
+						$player_character_speciality = PlayerCharacterSpeciality::find_first("character_speciality_id=".$character_speciality_old_id." and player_id=".$player->id);
 						$player_character_speciality->character_speciality_new_id	= $character_speciality_new->id;
 						$player_character_speciality->item_effect_ids 				= $character_speciality_new->item_effect_ids;
 						$player_character_speciality->effect_chances				= $character_speciality_new->effect_chances;
@@ -570,17 +568,17 @@
 						$player_character_speciality->consume_mana 					= $character_speciality_new->consume_mana;
 						$player_character_speciality->cooldown 						= $character_speciality_new->cooldown;
 						$player_character_speciality->save();
-						
-						$this->json->success  = true;	
+
+						$this->json->success  = true;
 					} else {
 						$this->json->errors	= $errors;
 					}
 				}
-				
+
 			}else{
 				$player_speciality = PlayerCharacterSpeciality::find_first("character_speciality_id=".$_GET['id']." and player_id=".$player->id);
 				$specialities = CharacterSpeciality::find("item_effect_ids !=370 GROUP BY item_effect_ids");
-				
+
 				$this->assign('player_speciality', $player_speciality);
 				$this->assign('specialities', $specialities);
 			}
@@ -588,7 +586,7 @@
 		function abilities_and_specialities() {
 			$player			= Player::get_instance();
 			$player_stats = PlayerStat::find_first("player_id=".$player->id);
-			
+
 			if(!$player_stats->view_habilidades){
 				$player_stats->view_habilidades = 1;
 				$player_stats->save();

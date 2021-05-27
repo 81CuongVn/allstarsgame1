@@ -74,35 +74,29 @@
 					</div>
 					<div class="details">
 						<div class="pet-tooltip">
-							<?php 
+							<?php
 								$exp_pet	= 0;
 								$happiness	= 0;
 								$info_pet	= $player->happiness_int($item->id);
 								if ($info_pet) {
 									$exp_pet	= $info_pet->exp;
 									$happiness	= $info_pet->happiness;
-								}	
+								}
 							?>
 							<?=$player->happiness($item->id);?><br />
 							<?=$happiness;?> / 100
-							<?php 
+							<?php
 								switch ($item->rarity) {
-									case "common":
-										$exp_total = 2500;
-										break;
-									case "rare":
-										$exp_total = 7500;
-										break;
-									case "legendary":
-										$exp_total = 20000;
-										break;
+									case "common":		$exp_total = 5000;	break;
+									case "rare":		$exp_total = 15000;	break;
+									case "legendary":	$exp_total = 50000;	break;
 								}
-							?>	
+							?>
 							<?php if ($item->rarity != "mega") { ?>
 								<div style="margin-top:10px">
 									<?=pet_exp_bar($exp_pet, $exp_total, 150, highamount($exp_pet) . '/' . highamount($exp_total));?>
 								</div>
-							<?php }?>	
+							<?php }?>
 						</div>
 					</div>
 					<div id="pet-container-<?=$item->id;?>" class="technique-container">

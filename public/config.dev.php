@@ -55,7 +55,6 @@ $attrRate			= [
 ];
 
 # Default sessions
-// $_SESSION['language_id']	= 1;
 if (!isset($_SESSION['language_id']))		$_SESSION['language_id']	= 1;
 if (!isset($_SESSION['user_id']))			$_SESSION['user_id']		= NULL;
 if (!isset($_SESSION['player_id']))			$_SESSION['player_id']		= NULL;
@@ -89,6 +88,10 @@ define('PVP_SERVER',			'127.0.0.1');
 define('PVP_PORT',				5672);
 define('PVP_CHANNEL',			'allstars_queue');
 
+# Max level settings
+define('MAX_LEVEL_USER',		50);
+define('MAX_LEVEL_PLAYER',		50);
+
 # Initial settings
 define('INITIAL_MONEY',			500);
 
@@ -98,13 +101,14 @@ define('MAX_EQUIPPED_ATTACKS',	10);
 # Rate settings
 define('EXP_RATE',				1);
 define('MONEY_RATE',			1);
+define('DROP_RATE',				1);
 
 # PvP settings
 define('PVP_TURN_TIME',			90);
 
 # Energy costs
 define('NPC_COST',				2);
-define('PVP_COST',				2);
+define('PVP_COST',				1);
 
 # NPC daily limit
 define('NPC_DAILY_LIMIT',		10);

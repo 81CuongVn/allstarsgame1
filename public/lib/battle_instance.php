@@ -7,7 +7,7 @@
 		private	$enemy_item			= null;
 		public	$first				= 'player';
 		public	$player_was_error 	= false;
-		public	$enemy_was_error 	= false;		
+		public	$enemy_was_error 	= false;
 
 		function set_player(&$player) {
 			$this->player	=& $player;
@@ -69,11 +69,11 @@
 
 			$player_effects		= $this->player->get_parsed_effects();
 			$enemy_effects		= $this->enemy->get_parsed_effects();
-			
+
 			if ($player_effects['turns_attack_to_neutral']) {
 				$this->player_item->force_attack_type(0);
 			}
-			
+
 			if ($player_effects['turns_attack_to_elemental']) {
 				$this->player_item->force_attack_type(1);
 			}
@@ -93,11 +93,11 @@
 			if ($player_effects['turns_attack_to_ranger']) {
 				$this->player_item->force_attack_type(5);
 			}
-			
+
 			if ($enemy_effects['turns_attack_to_neutral']) {
 				$this->enemy_item->force_attack_type(0);
 			}
-			
+
 			if ($enemy_effects['turns_attack_to_elemental']) {
 				$this->enemy_item->force_attack_type(1);
 			}
@@ -157,7 +157,7 @@
 			if (!$player_is_error) {
 				$player_attack	= $this->player->for_atk() + $this->player_item->formula()->damage;
 				$player_defense	= $this->player->for_def() + $this->player_item->formula()->defense;
-			
+
 				// Carrega os valores que serão adicionados pelos equipamentos aos golpes.
 				if ($_SESSION['universal']) {
 					$extras = $this->player->attributes();
@@ -251,7 +251,7 @@
 
 				if ($enemy_stronger) {
 					$incr	= ($enemy_effects['double_strong_effect'] ? 100 : 50) - (has_chance($player_effects['half_weak_damage_chance']) ? 25 : 0);
-					
+
 					if ($this->enemy_item->is_defensive) {
 						if ($enemy_stronger) {
 							$enemy_defense	+= percent($incr, $enemy_defense);
@@ -288,7 +288,7 @@
 					$player_attack	-= percent($this->enemy->for_abs_inc(), $player_attack);
 				}
 			// <--
-			
+
 			if ($this->player_item->is_buff) {
 				$player_attack	= 0;
 			} elseif ($this->enemy_item->is_buff) {
@@ -297,8 +297,8 @@
 
 			$raw_player_attack	= $player_attack;
 			$raw_enemy_attack	= $enemy_attack;
-		
-			
+
+
 			foreach (['bleeding', 'stun', 'slowness', 'confusion'] as $effect) {
 				foreach (['player_attack', 'enemy_attack'] as $target) {
 					$attack		=& $$target;
@@ -306,7 +306,7 @@
 					$item		=& $target == 'player_attack' ? $this->player_item : $this->enemy_item;
 					$e_effects	= $target == 'player_attack' ? $enemy_effects : $player_effects;
 					$p_effects	= $target == 'player_attack' ? $player_effects : $enemy_effects;
-				
+
 					if ($e_effects[$effect] || (isset($e_effects[$effect . '_percent']) && $e_effects[$effect . '_percent'])) {
 						$attack	+= $p_effects['damage_in_' . $effect] + percent($p_effects['damage_in_' . $effect . '_percent'], $raw_attack);
 					}
@@ -332,7 +332,7 @@
 			if ($enemy_effects['slowness'] || $enemy_effects['slowness_percent'] && has_chance($player_effects['damage_increase_in_slowness'])) {
 				$player_attack	+= percent(25, $player_attack);
 			}
-	
+
 			if ($player_effects['slowness'] || $player_effects['slowness_percent'] && has_chance($enemy_effects['damage_increase_in_slowness'])) {
 				$enemy_attack	+= percent(25, $enemy_attack);
 			}
@@ -367,7 +367,7 @@
 			$this->player_was_error = $player_is_error;
 			$this->enemy_was_error = $enemy_is_error;
 
-			for ($i=0; $i <= 1; $i++) { 
+			for ($i=0; $i <= 1; $i++) {
 				$item				= $i == $condition ? $this->player_item : $this->enemy_item;
 				$player				= $i == $condition ? $this->player : $this->enemy;
 				$enemy				= $i == $condition ? $this->enemy : $this->player;
@@ -443,7 +443,7 @@
 						$entry	.= t('battles.error_text') . '&nbsp;';
 					} elseif($is_null) {
 						$entry	.= t('battles.null_text') . '&nbsp;';
-					} elseif($is_dodge) {	
+					} elseif($is_dodge) {
 						$entry	.= t('battles.dodge_text') . '&nbsp;';
 					} else {
 						if(!$item->is_defensive) {
@@ -452,17 +452,17 @@
 							} elseif($damage > 0) {
 								$entry				.= t('battles.damage_text', ['damage' => $damage, 'bleeding_damage' => $bleeding_text]) . '&nbsp;';
 								$enemy->less_life	+= $damage + $bleeding_damage;
-								
+
 								// Recupera vida batendo
 								if($player_effects['steal_health']){
-									$player->less_life -= percent($player_effects['steal_health'],$damage); 
+									$player->less_life -= percent($player_effects['steal_health'],$damage);
 								}
 								// Remove 2 de mana do jogador e adiciona ao npc.
 								if($player_effects['steal_mana']){
 									$player->less_mana		+= $player_effects['steal_mana'];
 									$enemy->less_mana		-= $player_effects['steal_mana'];
 								}
-									
+
 							} elseif($damage < 0) {
 								$entry				.= t('battles.counter_text', ['damage' => abs($damage)]) . '&nbsp;';
 								$player->less_life	+= -$damage;
@@ -479,36 +479,37 @@
 					if(!$is_error && !$is_null) {
 						$is_kill	= $enemy->for_life() <= 0;
 
-						if(is_a($player, 'Player')) {
+						if (is_a($player, 'Player')) {
 							$player_item	= $item->player_item();
 
 							if (is_a($player_item, 'PlayerItem')) {
 								$stats	= $player_item->stats();
 								$stats->uses++;
 
-								if($player->for_mana() <= $player->for_mana(true) / 2) {
+								if ($player->for_mana() <= $player->for_mana(true) / 2) {
 									$stats->use_low_stat++;
 								}
 
-								if($item->is_defensive) {
-									if($damage < 0 && !$counter_damage) {
+								if ($item->is_defensive) {
+									if ($damage < 0 && !$counter_damage) {
 										$stats->full_defenses++;
 									}
 
-									if($counter_damage) {
+									if ($counter_damage) {
 										$stats->def_counter++;
 									}
 
-									if($is_critical) {
+									if ($is_critical) {
 										$stats->def_crit++;
 									}
 								} else {
-									if($is_precision) {
+									if ($is_precision) {
 										$stats->use_with_precision++;
 									}
 
 									if ($is_kill) {
 										$stats->kills++;
+
 										if (is_a($enemy, 'Player')) {
 											if ($player_effects['slowness'] || $player_effects['slowness_percent']){
 												$player_kills = new PlayerKill();
@@ -517,6 +518,7 @@
 												$player_kills->kills_with_slowness++;
 												$player_kills->save();
 											}
+
 											if ($player_effects['confusion'] || $player_effects['confusion_percent']){
 												$player_kills = new PlayerKill();
 												$player_kills->player_id = $player->id;
@@ -524,6 +526,7 @@
 												$player_kills->kills_with_confusion++;
 												$player_kills->save();
 											}
+
 											if ($player_effects['bleeding'] || $player_effects['bleeding']){
 												$player_kills = new PlayerKill();
 												$player_kills->player_id = $player->id;
@@ -531,13 +534,7 @@
 												$player_kills->kills_with_bleeding++;
 												$player_kills->save();
 											}
-											if ($player_effects['slowness'] || $player_effects['slowness_percent']){
-												$player_kills = new PlayerKill();
-												$player_kills->player_id = $player->id;
-												$player_kills->enemy_id  = $enemy->id;
-												$player_kills->kills_with_slowness++;
-												$player_kills->save();
-											}
+
 											if ($player_effects['stun'] || $player_effects['stun']){
 												$player_kills = new PlayerKill();
 												$player_kills->player_id = $player->id;
@@ -545,15 +542,15 @@
 												$player_kills->kills_with_stun++;
 												$player_kills->save();
 											}
-											
-											if($is_stronger) {
+
+											if ($is_stronger) {
 												$player_kills = new PlayerKill();
 												$player_kills->player_id = $player->id;
 												$player_kills->enemy_id  = $enemy->id;
 												$player_kills->kills_with_stronger++;
 												$player_kills->save();
 											}
-											if($is_critical) {
+											if ($is_critical) {
 												$stats->kills_with_crit++;
 												$player_kills = new PlayerKill();
 												$player_kills->player_id = $player->id;
@@ -561,7 +558,7 @@
 												$player_kills->kills_with_crit++;
 												$player_kills->save();
 											}
-											if($is_precision) {
+											if ($is_precision) {
 												$stats->kills_with_precision++;
 												$player_kills = new PlayerKill();
 												$player_kills->player_id = $player->id;
@@ -638,7 +635,7 @@
 
 				$entry	.= partial('shared/battle_item', ['player' => $player, 'item' => $item, 'id' => $tooltip_id]) . '&nbsp;';
 				$log[]	= $entry;
-				
+
 				if(!$i) {
 					$entry	.= "<br /><br />";
 				}

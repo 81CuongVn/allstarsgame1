@@ -284,18 +284,14 @@ class EquipmentsController extends Controller {
 
                     // Adiciona o contador de aprimoramentos
                     $upgrade_counter = PlayerStat::find_first("player_id=".$player->id);
-                    if($method == 1719){
+                    if ($method == 1719) {
                         // $upgrade_counter->sands++;
                         //Verifica a conquista de fragmentos - Conquista
                         $player->achievement_check("sands");
-                        // Objetivo de Round
-                        $player->check_objectives("sands");
-                    }else{
+                    } else {
                         // $upgrade_counter->bloods++;
                         //Verifica a conquista de fragmentos - Conquista
                         $player->achievement_check("bloods");
-                        // Objetivo de Round
-                        $player->check_objectives("bloods");
                     }
                     $upgrade_counter->save();
                     // Adiciona o contador de aprimoramentos
@@ -435,32 +431,24 @@ class EquipmentsController extends Controller {
         if (!sizeof($errors)) {
             $item_446 = PlayerItem::find_first('item_id=446 AND player_id=' . $player->id);
 
-            switch($player_item->rarity){
-                case "common":
-                    $destroy = 10;
-                    break;
-                case "rare":
-                    $destroy = 20;
-                    break;
-                case "legendary":
-                    $destroy = 40;
-                    break;
-
+            switch ($player_item->rarity) {
+                case "common":		$destroy = 20;	break;
+                case "rare":		$destroy = 40;	break;
+                case "epic":		$destroy = 80;	break;
+                case "legendary":	$destroy = 160;	break;
             }
             if($item_446){
                 $item_446->quantity += $destroy;
                 $item_446->save();
             }else{
-                $item_446	= new PlayerItem();
-                $item_446->item_id	= 446;
+                $item_446				= new PlayerItem();
+                $item_446->item_id		= 446;
                 $item_446->player_id	= $player->id;
                 $item_446->quantity 	+= $destroy;
                 $item_446->save();
             }
-            //Verifica a conquista de fragmentos - Conquista
+            // Verifica a conquista de fragmentos - Conquista
             $player->achievement_check("fragments");
-            // Objetivo de Round
-            $player->check_objectives("fragments");
 
             $player_item->attributes()->destroy();
             $player_item->destroy();

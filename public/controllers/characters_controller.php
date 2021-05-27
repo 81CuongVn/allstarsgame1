@@ -299,8 +299,18 @@ class CharactersController extends Controller {
 		$player_stat	= PlayerStat::find_first("player_id=". $player->id);
 
 		if ($_SESSION['universal'] && !($_SESSION['orig_player_id'] && $_SESSION['orig_user_id'] && $_SESSION['orig_ticket_id'])) {
-			for ($i = 1; $i <= 5; $i++) {
-				Item::generate_equipment($player, 2);
+			$slots	= [
+				'head',
+				'shoulder',
+				'chest',
+				'neck',
+				'hand',
+				'leggings'
+			];
+			foreach ($slots as $slot) {
+				for ($i = 1; $i <= 5; $i++) {
+					Item::generate_equipment($player, null, $slot);
+				}
 			}
 
 			// $pages  = Item::find('item_type_id = 11');
@@ -566,8 +576,6 @@ class CharactersController extends Controller {
 
 					// Verifica se o jogador comprou o tema - Conquista
 					$player->achievement_check("character_theme");
-					// Objetivo de Round
-					$player->check_objectives("character_theme");
 				} elseif($_POST['use']) {
 					$image								= $theme->first_image();
 					$player->character_theme_id			= $theme->id;
@@ -686,8 +694,6 @@ class CharactersController extends Controller {
 
 				// Checa a conquista de level do player
 				$player->achievement_check('level_player');
-				// Checa a conquista de level do player
-				$player->check_objectives('level_player');
 			}
 
 			redirect_to('characters#status');
@@ -826,19 +832,15 @@ class CharactersController extends Controller {
 		$player					= Player::get_instance();
 		$errors					= [];
 
-		$items					= [ '0', '1' ];
-		$prices					= [ '100', '100' ];
-		if ($_SESSION['universal']) {
-			$items				= [ '0', '1', '2', '3' ];
-			$prices				= [ '100', '100', '100', '100' ];
-		}
+		$items					= [ '0', '1', '2' ];
+		$prices					= [ '80', '160', '320' ];
 
 		if (!isset($_POST['mode']) || (isset($_POST['mode']) && !is_numeric($_POST['mode']))) {
 			$errors[]	= t('fragments.error1');
 		} elseif (!in_array($_POST['mode'], $items)) {
 			$errors[]	= t('fragments.error1');
 		} else {
-			$item_446 = PlayerItem::find_first("player_id =". $player->id. " AND item_id = 446");
+			$item_446 = PlayerItem::find_first("player_id = {$player->id} AND item_id = 446");
 			if (!$item_446 || $item_446->quantity < $prices[$_POST['mode']]) {
 				$errors[]	= t('fragments.error2');
 			}
@@ -847,98 +849,18 @@ class CharactersController extends Controller {
 				$item_446->quantity -= $prices[$_POST['mode']];
 				$item_446->save();
 
+				Item::generate_equipment($player, $_POST['mode']);
+
 				// Faz a premiação referente ao mode que o jogador escolheu!
 				switch ($_POST['mode']) {
 					case 0:
-						// Equipamento aleatorio
-						Item::generate_equipment($player);
-
-						$message = "Você ganhou um Equipamento Aleatório, visite a página de Equipamentos para mais detalhes!";
-						$message = urlencode($message);
+						$message = urlencode("Você ganhou um Equipamento Comum, visite a página de Equipamentos para mais detalhes!");
 					break;
 					case 1:
-						// Dá um pet random!
-						$npc_pet	= Item::find_first('item_type_id=3 AND is_initial=1', ['reorder' => 'RAND()']);
-						if (!$player->has_item($npc_pet->id)) {
-							$player_pet						= new PlayerItem();
-							$player_pet->item_id			= $npc_pet->id;
-							$player_pet->player_id			= $player->id;
-							$player_pet->save();
-
-							$message = "Você ganhou o Mascote: <b>". $npc_pet->description()->name . '</b>';
-							$message = urlencode($message);
-						} else {
-							$item_446 = PlayerItem::find_first('item_id=446 AND player_id=' . $player->id);
-							if ($item_446) {
-								$item_446->quantity 	+= 25;
-								$item_446->save();
-							} else {
-								$item_446				= new PlayerItem();
-								$item_446->item_id		= 446;
-								$item_446->player_id	= $player->id;
-								$item_446->quantity 	= 25;
-								$item_446->save();
-							}
-
-							$message = "Você já possuia o Mascote sorteado e por isso ganhou <b>25 Fragmentos de Almas</b>.";
-							$message = urlencode($message);
-						}
+						$message = urlencode("Você ganhou um Equipamento Raro, visite a página de Equipamentos para mais detalhes!");
 					break;
 					case 2:
-						// Dá um personagem random!
-						$character	= Character::find_first('active=1 and (credits_lock=1 or currency_lock=1)', ['reorder' => 'RAND()']);
-						if (!$user->is_character_bought($character->id)) {
-							$player_pet					= new UserCharacter();
-							$player_pet->character_id	= $character->id;
-							$player_pet->user_id		= $user->id;
-							$player_pet->save();
-
-							$message = "Você ganhou o Personagem: <b>". $character->description()->name . '</b>';
-							$message = urlencode($message);
-						} else {
-							$item_446 = PlayerItem::find_first('item_id=446 AND player_id=' . $player->id);
-							if ($item_446) {
-								$item_446->quantity		+= 25;
-								$item_446->save();
-							} else {
-								$item_446				= new PlayerItem();
-								$item_446->item_id		= 446;
-								$item_446->player_id	= $player->id;
-								$item_446->quantity 	= 25;
-								$item_446->save();
-							}
-
-							$message = "Você já possuia o Personagem sorteado e por isso ganhou <b>25 Fragmentos de Almas</b>.";
-							$message = urlencode($message);
-						}
-					break;
-					case 3:
-						// Dá um tema random!
-						$theme	= CharacterTheme::find_first('active=1 and is_buyable=1', ['reorder' => 'RAND()']);
-						if (!$user->is_theme_bought($theme->id)) {
-							$player_pet						= new UserCharacterTheme();
-							$player_pet->character_theme_id	= $theme->id;
-							$player_pet->user_id			= $user->id;
-							$player_pet->save();
-
-							$message = "Você ganhou o Tema: <b>". $theme->description()->name . '</b>';
-							$message = urlencode($message);
-						} else {
-							$item_446 = PlayerItem::find_first('item_id=446 AND player_id=' . $player->id);
-							if ($item_446) {
-								$item_446->quantity		+= 25;
-								$item_446->save();
-							} else {
-								$item_446				= new PlayerItem();
-								$item_446->item_id		= 446;
-								$item_446->player_id	= $player->id;
-								$item_446->quantity 	= 25;
-								$item_446->save();
-							}
-
-							$message = "Você já possuia o Tema sorteado e por isso ganhou <b>25 Fragmentos de Almas</b>.";
-							$message = urlencode($message);
-						}
+						$message = urlencode("Você ganhou um Equipamento Lendário, visite a página de Equipamentos para mais detalhes!");
 					break;
 				}
 
@@ -950,8 +872,6 @@ class CharactersController extends Controller {
 
 				// Verifica a conquista de fragmentos - Conquista
 				$player->achievement_check("fragments");
-				// Objetivo de Round
-				$player->check_objectives("fragments");
 
 				// Manda o id do premio para o json
 				$this->json->message	= $message;
@@ -1197,8 +1117,6 @@ class CharactersController extends Controller {
 					if($player){
 						// verifica se desbloqueou novo personagem - conquista
 						$player->achievement_check("character");
-						// Objetivo de Round
-						$player->check_objectives("character");
 					}
 
 				} else {

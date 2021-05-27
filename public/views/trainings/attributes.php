@@ -19,7 +19,7 @@
 		});
 	</script>
 <?php } ?>
-<div id="traning-limit-container">
+<?php /*<div id="traning-limit-container">
 	<?=partial('traning_limit', [
 		'player' => $player
 	]) ?>
@@ -59,5 +59,5 @@
 			</td>
 		</tr>
 	</table>
-</form><br />
+</form><br />*/ ?>
 <div id="training-distribute-container"></div>

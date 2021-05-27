@@ -102,7 +102,7 @@ class Organization extends Relation {
 		}
 
 		$target	= $this->player($target_id);
-		
+
 
 		if ($can_kick && $target) {
 			if ($target->player_id != $this->player_id) {
@@ -127,12 +127,12 @@ class Organization extends Relation {
 		$accepted		= OrganizationAcceptedEvent::find_first($player->organization_accepted_event_id);
 		$active_event	= OrganizationEvent::find_first($accepted->organization_event_id);
 
-		$objects = OrganizationMapObjectSession::find("organization_id={$this->id} AND organization_accepted_event_id={$accepted->id}");
-		$npcs = 0;
-		$bosses = 0;
-		$bypassed_timer = false;
+		$objects		= OrganizationMapObjectSession::find("organization_id = {$this->id} and organization_accepted_event_id = {$accepted->id}");
+		$npcs			= 0;
+		$bosses			= 0;
+		$bypassed_timer	= false;
 
-		foreach($objects as $object) {
+		foreach ($objects as $object) {
 			if ($object->player_id) {
 				$npcs++;
 			} else {
@@ -162,7 +162,8 @@ class Organization extends Relation {
 				$reward = $active_event->reward();
 
 				foreach ($this->players() as $organization_player) {
-					$p = $organization_player->player();
+					$p		= $organization_player->player();
+					$user	= $p->user();
 
 					if ($reward->currency) {
 						$p->earn($reward->currency);
@@ -172,27 +173,28 @@ class Organization extends Relation {
 						$p->earn_exp($reward->exp);
 					}
 
-					if ($reward->vip) {
-						$p->user()->earn($reward->vip);
+					if ($reward->credits) {
+						$user->earn($reward->credits);
 						$p->achievement_check("credits");
-						$p->check_objectives("credits");
 					}
 
 					if ($reward->equipment) {
 						if ($reward->equipment == 1) {
 							$dropped  = Item::generate_equipment($p);
-						} elseif ($reward->equipment==2) {
-							$dropped  = Item::generate_equipment($p,0); 
-						} elseif ($reward->equipment==3) {
-							$dropped  = Item::generate_equipment($p,1); 
-						} elseif ($reward->equipment==4) {
-							$dropped  = Item::generate_equipment($p,2); 
+						} elseif ($reward->equipment == 2) {
+							$dropped  = Item::generate_equipment($p, 0);
+						} elseif ($reward->equipment == 3) {
+							$dropped  = Item::generate_equipment($p, 1);
+						} elseif ($reward->equipment == 4) {
+							$dropped  = Item::generate_equipment($p, 2);
+						} elseif ($reward->equipment == 5) {
+							$dropped  = Item::generate_equipment($p, 3);
 						}
 					}
 
 					if ($reward->item_id && $reward->pets) {
 						$npc_pet = Item::find($reward->item_id);
-						
+
 						$player_pet = new PlayerItem();
 						$player_pet->item_id = $npc_pet->id;
 						$player_pet->player_id = $p->id;
@@ -201,43 +203,43 @@ class Organization extends Relation {
 
 					if ($reward->item_id && !$reward->pets) {
 						$player_item_exist = PlayerItem::find_first("item_id=" . $reward->item_id . " AND player_id=" . $p->id);
-						if(!$player_item_exist){
+						if (!$player_item_exist) {
 							$player_item = new PlayerItem();
 							$player_item->item_id	= $reward->item_id;
 							$player_item->quantity	= $reward->quantity;
 							$player_item->player_id	= $p->id;
 							$player_item->save();
-						}else{
+						} else {
 							$player_item_exist->quantity += $reward->quantity;
 							$player_item_exist->save();
 						}
 					}
 
-					if ($reward->character_id) {
+					if ($reward->character_id && !$user->is_character_bought($reward->character_id)) {
 						$reward_character = new UserCharacter();
-						$reward_character->user_id = $p->user_id;
+						$reward_character->user_id		= $p->user_id;
 						$reward_character->character_id	= $reward->character_id;
 						$reward_character->was_reward	= 1;
 						$reward_character->save();
 					}
 
-					if ($reward->character_theme_id) {
+					if ($reward->character_theme_id && !$user->is_theme_bought($reward->character_theme_id)) {
 						$reward_theme = new UserCharacterTheme();
-						$reward_theme->user_id = $p->user_id;
+						$reward_theme->user_id				= $p->user_id;
 						$reward_theme->character_theme_id	= $reward->character_theme_id;
-						$reward_theme->was_reward = 1;
+						$reward_theme->was_reward			= 1;
 						$reward_theme->save();
 					}
 
-					if ($reward->headline_id) {
+					if ($reward->headline_id && !$user->is_headline_bought($reward->headline_id)) {
 						$reward_headline = new UserHeadline();
-						$reward_headline->user_id = $p->user_id;
-						$reward_headline->headline_id = $reward->headline_id;
+						$reward_headline->user_id		= $p->user_id;
+						$reward_headline->headline_id	= $reward->headline_id;
 						$reward_headline->save();
 					}
 				}
 			}
 		}
-		
+
 	}
 }

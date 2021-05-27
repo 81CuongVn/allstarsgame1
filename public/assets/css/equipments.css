@@ -2,7 +2,7 @@
 	width: 664px;
 	height: 651px;
 	position: relative;
-	margin: 0px auto; 
+	margin: 0px auto;
 }
 
 #position-container .slot {
@@ -182,10 +182,17 @@
 }
 
 #equipment-list .equipment .badge, #position-container .badge {
-	position: absolute;
+	/* position: absolute;
 	margin-top: -48px;
 	margin-left: 14px;
-	background-color: #C72C2C !important
+	background-color: #C72C2C !important; */
+
+    background-color: #D00;
+    border-radius: 2px;
+    padding: 2px 0;
+    position: absolute;
+    margin-left: 38px;
+    margin-top: -7px;
 }
 
 #position-container .badge {
@@ -219,9 +226,9 @@
 
 .equipment-popover-content .graduation {
 	padding-top: 5px;
-	font-style: italic;	
+	font-style: italic;
 	color: #07c72b;
-	
+
 }
 .equipment-popover-content .extra{
 	color: #8d8d8d;

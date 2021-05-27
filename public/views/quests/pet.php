@@ -182,12 +182,12 @@ echo partial('shared/info', [
 									<?php if($image_item){?>
 										<?php if($player_item && $player_item->happiness >= $npc->happiness){?>
 											<span style='text-decoration: line-through;' class='verde'><?php echo $npc->happiness ?></span>
-										<?php }else{?>
+										<?php } else {?>
 											<span class='laranja'><?php echo $npc->happiness ?></span>
-										<?php }?>
-									<?php }else{?>
+										<?php } ?>
+									<?php } else { ?>
 										<?php echo $npc->happiness ?>
-									<?php }?>
+									<?php } ?>
 
 								</li>
 							<?php }?>
