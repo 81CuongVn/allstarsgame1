@@ -1133,7 +1133,7 @@ class Player extends Relation {
 
 	function available_training_points() {
 		$user	=	User::get_instance();
-		$total	=	$this->training_total_to_point() + $user->level;
+		$total	=	$user->level * 2; // + $this->training_total_to_point();
 		$total	-=	$this->training_points_spent;
 
 		return $total;
@@ -1337,9 +1337,9 @@ class Player extends Relation {
 				}
 				$counter++;
 			}
-			//Salva a chance de sucesso na tabela
-			$player_quests_pets->success_percent = round($success);
-			$player_quests_pets->save();
+			// Salva a chance de sucesso na tabela
+				$player_quests_pets->success_percent = round($success);
+				$player_quests_pets->save();
 			//-->
 			return round($success);
 		}else{
@@ -1628,11 +1628,11 @@ class Player extends Relation {
 
 	function get_techniques() {
 		// 1 = Techniques | 7 = Weapons
-		$allow = [1];
-		$items	= Recordset::query('SELECT a.id FROM player_items a JOIN items b ON b.id=a.item_id WHERE a.player_id=' . $this->id . ' AND b.item_type_id IN(' . implode(',', $allow) . ') AND a.removed=0 ORDER BY a.slot_id ASC');
-		$return	= [];
+		$allow	= [1];
+		$items	= Recordset::query('SELECT a.id FROM player_items a JOIN items b ON b.id=a.item_id WHERE a.player_id=' . $this->id . ' AND b.item_type_id IN (' . implode(', ', $allow) . ') AND a.removed=0 ORDER BY a.slot_id ASC');
 
-		foreach($items->result_array() as $item) {
+		$return	= [];
+		foreach ($items->result_array() as $item) {
 			$return[]	= PlayerItem::find($item['id']);
 		}
 
@@ -1643,13 +1643,14 @@ class Player extends Relation {
 	}
 
 	function get_technique($id) {
-		if($id == 1722 || $id == 1723 || $id == 113) {
+		if ($id == 1722 || $id == 1723 || $id == 113) {
 			return new FakePlayerItem($id, $this);
 		}
+
 		$item = Item::find_first($id);
-		if(!$item->parent_id){
+		if (!$item->parent_id) {
 			return PlayerItem::find(Recordset::query('SELECT a.id FROM player_items a JOIN items b ON b.id=a.item_id WHERE a.player_id=' . $this->id . ' AND a.item_id=' . $id)->row()->id);
-		}else{
+		} else {
 			return PlayerItem::find(Recordset::query('SELECT a.id FROM player_items a JOIN items b ON b.id=a.item_id WHERE a.player_id=' . $this->id . ' AND a.parent_id=' . $id)->row()->id);
 		}
 	}
