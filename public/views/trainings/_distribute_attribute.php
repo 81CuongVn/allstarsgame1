@@ -16,8 +16,8 @@
 				<?php else: ?>
 					<?php echo t('attributes.distribute.no_points') ?>
 				<?php endif ?><br /><br />
-				<?php echo exp_bar($current_exp, $point_exp, 455, highamount($current_exp) . ' / ' . highamount($point_exp)) ?><br />
-				<span class="laranja"><?php echo t('attributes.distribute.info') ?></span>
+				<?php /*<?=exp_bar($current_exp, $point_exp, 455, highamount($current_exp) . ' / ' . highamount($point_exp));?><br />
+				<span class="laranja"><?=t('attributes.distribute.info');?></span>*/ ?>
 			</div>
 		</div>
 	</div>
@@ -71,7 +71,7 @@
 						<?php for($i = 1; $i <= $points; $i++): ?>
 							<option value="<?php echo $i ?>"><?php echo $i ?></option>
 						<?php endfor; ?>
-					</select>				
+					</select>
 				<?php else: ?>
 					--
 				<?php endif ?>

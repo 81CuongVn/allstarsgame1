@@ -119,88 +119,88 @@
 				//$npc	= new NpcInstance($player,$challenge->anime_id,[],NULL,NULL,NULL,$id,NULL,NULL);
 
 				$rewards = array (
-								   array(
-									'quantity' 	 => 5,
-									'exp'   	 => $challenge->reward_exp * $challenge_active->quantity,
-									'money' 	 => '',
-									'equipments' => '',
-									'pets'  	 => '',
-									'title'  	 => '',
-									'star'  	 => ''
-								  ),
-								   array(
-									'quantity' 	 => 10,
-									'exp'   	 => $challenge->reward_exp * $challenge_active->quantity,
-									'money' 	 => $challenge->reward_gold * $challenge_active->quantity,
-									'equipments' => '',
-									'pets'  	 => '',
-									'title'  	 => '',
-									'star'  	 => ''
-								  ),
-								  array(
-									'quantity' 	 => 20,
-									'exp'   	 => $challenge->reward_exp * $challenge_active->quantity,
-									'money' 	 => $challenge->reward_gold * $challenge_active->quantity,
-									'equipments' => 'Equipamento Comum',
-									'pets'  	 => '',
-									'title'  	 => '',
-									'star'  	 => ''
-								  ),
-								  array(
-									'quantity' 	 => 25,
-									'exp'   	 => $challenge->reward_exp * $challenge_active->quantity,
-									'money' 	 => $challenge->reward_gold * $challenge_active->quantity,
-									'equipments' => 'Equipamento Raro',
-									'pets'  	 => '',
-									'title'  	 => '',
-									'star'  	 => ''
-								  ),
-								  array(
-									'quantity' 	 => 35,
-									'exp'   	 => $challenge->reward_exp * $challenge_active->quantity,
-									'money' 	 => $challenge->reward_gold * $challenge_active->quantity,
-									'equipments' => 'Equipamento Raro',
-									'pets'  	 => '',
-									'title'  	 => '',
-									'star'  	 => ''
-								  ),
-								  array(
-									'quantity' 	 => 45,
-									'exp'   	 => $challenge->reward_exp * $challenge_active->quantity,
-									'money' 	 => $challenge->reward_gold * $challenge_active->quantity,
-									'equipments' => 'Equipamento Raro',
-									'pets'  	 => Item::find($challenge->reward_pet_1)->description()->name,
-									'title'  	 =>  Headline::find($challenge->reward_title_1)->description()->name,
-									'star'  	 => ''
-								  ),
-								  array(
-									'quantity' 	 => 65,
-									'exp'   	 => $challenge->reward_exp * $challenge_active->quantity,
-									'money' 	 => $challenge->reward_gold * $challenge_active->quantity,
-									'equipments' => 'Equipamento Lendário',
-									'pets'  	 => Item::find($challenge->reward_pet_1)->description()->name,
-									'title'  	 => Headline::find($challenge->reward_title_1)->description()->name,
-									'star'  	 => ''
-								  ),
-								   array(
-									'quantity' 	 => 80,
-									'exp'   	 => $challenge->reward_exp * $challenge_active->quantity,
-									'money' 	 => $challenge->reward_gold * $challenge_active->quantity,
-									'equipments' => 'Equipamento Lendário',
-									'pets'  	 => Item::find($challenge->reward_pet_2)->description()->name,
-									'title'  	 => Headline::find($challenge->reward_title_2)->description()->name,
-									'star'  	 => ''
-								  ),
-								   array(
-									'quantity' 	 => 100,
-									'exp'   	 => $challenge->reward_exp * $challenge_active->quantity,
-									'money' 	 => $challenge->reward_gold * $challenge_active->quantity,
-									'equipments' => 'Equipamento Lendário',
-									'pets'  	 => Item::find($challenge->reward_pet_2)->description()->name,
-									'title'  	 => Headline::find($challenge->reward_title_2)->description()->name,
-									'star'  	 => '3 Estrelas'
-								  )
-						  );
+					array(
+						'quantity' 	 => 5,
+						'exp'   	 => $challenge->reward_exp * $challenge_active->quantity,
+						'money' 	 => '',
+						'equipments' => '',
+						'pets'  	 => '',
+						'title'  	 => '',
+						'star'  	 => ''
+					),
+					array(
+						'quantity' 	 => 10,
+						'exp'   	 => $challenge->reward_exp * $challenge_active->quantity,
+						'money' 	 => $challenge->reward_gold * $challenge_active->quantity,
+						'equipments' => '',
+						'pets'  	 => '',
+						'title'  	 => '',
+						'star'  	 => ''
+					),
+					array(
+						'quantity' 	 => 20,
+						'exp'   	 => $challenge->reward_exp * $challenge_active->quantity,
+						'money' 	 => $challenge->reward_gold * $challenge_active->quantity,
+						'equipments' => 'Equipamento Comum',
+						'pets'  	 => '',
+						'title'  	 => '',
+						'star'  	 => ''
+					),
+					array(
+						'quantity' 	 => 25,
+						'exp'   	 => $challenge->reward_exp * $challenge_active->quantity,
+						'money' 	 => $challenge->reward_gold * $challenge_active->quantity,
+						'equipments' => 'Equipamento Raro',
+						'pets'  	 => '',
+						'title'  	 => '',
+						'star'  	 => ''
+					),
+					array(
+						'quantity' 	 => 35,
+						'exp'   	 => $challenge->reward_exp * $challenge_active->quantity,
+						'money' 	 => $challenge->reward_gold * $challenge_active->quantity,
+						'equipments' => 'Equipamento Raro',
+						'pets'  	 => '',
+						'title'  	 => '',
+						'star'  	 => ''
+					),
+					array(
+						'quantity' 	 => 45,
+						'exp'   	 => $challenge->reward_exp * $challenge_active->quantity,
+						'money' 	 => $challenge->reward_gold * $challenge_active->quantity,
+						'equipments' => 'Equipamento Raro',
+						'pets'  	 => Item::find($challenge->reward_pet_1)->description()->name,
+						'title'  	 =>  Headline::find($challenge->reward_title_1)->description()->name,
+						'star'  	 => ''
+					),
+					array(
+						'quantity' 	 => 65,
+						'exp'   	 => $challenge->reward_exp * $challenge_active->quantity,
+						'money' 	 => $challenge->reward_gold * $challenge_active->quantity,
+						'equipments' => 'Equipamento Épico',
+						'pets'  	 => Item::find($challenge->reward_pet_1)->description()->name,
+						'title'  	 => Headline::find($challenge->reward_title_1)->description()->name,
+						'star'  	 => ''
+					),
+					array(
+						'quantity' 	 => 80,
+						'exp'   	 => $challenge->reward_exp * $challenge_active->quantity,
+						'money' 	 => $challenge->reward_gold * $challenge_active->quantity,
+						'equipments' => 'Equipamento Épico',
+						'pets'  	 => Item::find($challenge->reward_pet_2)->description()->name,
+						'title'  	 => Headline::find($challenge->reward_title_2)->description()->name,
+						'star'  	 => ''
+					),
+					array(
+						'quantity' 	 => 100,
+						'exp'   	 => $challenge->reward_exp * $challenge_active->quantity,
+						'money' 	 => $challenge->reward_gold * $challenge_active->quantity,
+						'equipments' => 'Equipamento Lendário',
+						'pets'  	 => Item::find($challenge->reward_pet_2)->description()->name,
+						'title'  	 => Headline::find($challenge->reward_title_2)->description()->name,
+						'star'  	 => '3 Estrelas'
+					)
+				);
 
 				$challenge->set_player($player);
 
@@ -208,14 +208,14 @@
 					$this->render	= 'show_denied';
 				} else {
 					// Cleanups -->
-					SharedStore::S('last_battle_item_of_' . $player->id, 0);
-					SharedStore::S('last_battle_npc_item_of_' . $player->id, 0);
+						SharedStore::S('last_battle_item_of_' . $player->id, 0);
+						SharedStore::S('last_battle_npc_item_of_' . $player->id, 0);
 
-					$player->clear_ability_lock();
-					$player->clear_speciality_lock();
-					$player->clear_technique_locks();
-					$player->clear_effects();
-					$player->save_npc_challenge($npc);
+						$player->clear_ability_lock();
+						$player->clear_speciality_lock();
+						$player->clear_technique_locks();
+						$player->clear_effects();
+						$player->save_npc_challenge($npc);
 					// <--
 
 					$player->refresh_talents();

@@ -54,7 +54,7 @@ class TrainingsController extends Controller {
 			}
 
 			$player->save();
-			
+
 			$this->json->success			= true;
 			$this->json->exp				= $exp;
 			$this->json->points				= $real_points;
@@ -70,7 +70,7 @@ class TrainingsController extends Controller {
 			$this->json->stamina			= $player->for_stamina();
 			$this->json->max_stamina		= $player->for_stamina(true);
 			$this->json->view				= partial('traning_limit', [
-				'player'		=> $player, 
+				'player'		=> $player,
 				'spent_stamina'	=> $_POST['stamina'],
 				'earn_points'	=> $real_points,
 				'earn_exp'		=> $exp
@@ -104,8 +104,8 @@ class TrainingsController extends Controller {
 			if (!sizeof($errors)) {
 				$player->{$_POST['attribute']}	+= $_POST['quantity'];
 				$player->training_points_spent	+= $_POST['quantity'];
-				$player->save();	
-				
+				$player->save();
+
 			}
 		}
 
@@ -166,8 +166,6 @@ class TrainingsController extends Controller {
 
 		// verifica o level da conta do jogador
 		$player->achievement_check("level_account");
-		// Objetivo de Round
-		$player->check_objectives("level_account");
 	}
 
 	public function techniques() {
@@ -206,7 +204,7 @@ class TrainingsController extends Controller {
 						$errors[]	= t('techniques.training.errors.invalid_technique');
 					} else {
 						if($found->level >= 5) {
-							$errors[]	= t('techniques.training.max_level_reached');								
+							$errors[]	= t('techniques.training.max_level_reached');
 						}
 					}
 				}

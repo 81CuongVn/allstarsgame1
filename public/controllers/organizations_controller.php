@@ -14,7 +14,7 @@ class OrganizationsController extends Controller {
 	function events() {
 		$player	= Player::get_instance();
 		$events	= OrganizationEvent::find("removed=0");
-		
+
 		$this->assign('player', $player);
 		$this->assign('events', $events);
 	}
@@ -53,7 +53,7 @@ class OrganizationsController extends Controller {
 				$player->user()->spend($event->credits);
 			}
 
-			// Salva o Id na Tabela de Organização aceita		
+			// Salva o Id na Tabela de Organização aceita
 			$acccepted_event = new OrganizationAcceptedEvent();
 			$acccepted_event->organization_id = $player->organization_id;
 			$acccepted_event->organization_event_id = $event->id;
@@ -69,7 +69,7 @@ class OrganizationsController extends Controller {
 		$map		= OrganizationMap::find_first($player->position()->organization_map_id);
 
 		$_SESSION['organization_dungeon_key']	= uniqid('', true);
-		
+
 		$this->assign('player', $player);
 		$this->assign('position', $position);
 		$this->assign('map', $map);
@@ -84,7 +84,7 @@ class OrganizationsController extends Controller {
 		$position	= $player->position();
 		$map		= OrganizationMap::find_first($position->organization_map_id);
 		$errors		= [];
-		
+
 		if ($_POST) {
 			if (!isset($_POST['key']) || (isset($_POST['key']) && $_POST['key'] != $_SESSION['organization_dungeon_key'])) {
 				$errors[] = 'Chave de autenticação do mapa é inválida, possivelmente você abriu outra aba >:(';
@@ -207,7 +207,7 @@ class OrganizationsController extends Controller {
 
 			// Recompensa para o caboclo
 			$object_reward  = OrganizationRewardMap::find_first("organization_map_objects_id=". $object->id);
-			
+
 			// Prêmios ( EXP )
 			if ($object_reward->exp) {
 				$player->exp	+= $object_reward->exp;
@@ -226,11 +226,9 @@ class OrganizationsController extends Controller {
 			// Prêmios ( VIPS )
 			if ($object_reward->credits) {
 				$user->earn($object_reward->credits);
-				
+
 				// Verifica os créditos do jogador.
 				$player->achievement_check("credits");
-				// Objetivo de Round
-				$player->check_objectives("credits");
 			}
 
 			// Prêmios ( EQUIPS )
@@ -238,22 +236,24 @@ class OrganizationsController extends Controller {
 				if($object_reward->equipment == 1) {
 					$dropped  = Item::generate_equipment($player);
 				} elseif ($object_reward->equipment == 2) {
-					$dropped  = Item::generate_equipment($player,0); 
+					$dropped  = Item::generate_equipment($player,0);
 				} elseif ($object_reward->equipment == 3) {
-					$dropped  = Item::generate_equipment($player,1); 
+					$dropped  = Item::generate_equipment($player,1);
 				} elseif ($object_reward->equipment == 4) {
-					$dropped  = Item::generate_equipment($player,2); 
+					$dropped  = Item::generate_equipment($player,2);
 				}
 			}
 
 			// Prêmios ( PETS )
 			if ($object_reward->item_id && $object_reward->pets) {
-				$npc_pet = Item::find($object_reward->item_id);
-				
-				$player_pet				= new PlayerItem();
-				$player_pet->item_id	= $npc_pet->id;
-				$player_pet->player_id	= $player->id;
-				$player_pet->save();
+				if (!$player->has_item($object_reward->item_id)) {
+					$npc_pet = Item::find($object_reward->item_id);
+
+					$player_pet				= new PlayerItem();
+					$player_pet->item_id	= $npc_pet->id;
+					$player_pet->player_id	= $player->id;
+					$player_pet->save();
+				}
 			}
 
 			// Prêmios ( ITEMS )
@@ -269,11 +269,11 @@ class OrganizationsController extends Controller {
 					$player_item_exist->quantity += $object_reward->quantity;
 					$player_item_exist->save();
 				}
-				
+
 			}
 
 			// Prêmios ( CHARACTERS )
-			if ($object_reward->character_id) {
+			if ($object_reward->character_id && !$user->is_character_bought($object_reward->character_id)) {
 				$reward_character				= new UserCharacter();
 				$reward_character->user_id		= $player->user_id;
 				$reward_character->character_id	= $object_reward->character_id;
@@ -282,7 +282,7 @@ class OrganizationsController extends Controller {
 			}
 
 			// Prêmios ( THEME )
-			if ($object_reward->character_theme_id) {
+			if ($object_reward->character_theme_id && !$user->is_theme_bought($object_reward->character_theme_id)) {
 				$reward_theme						= new UserCharacterTheme();
 				$reward_theme->user_id				= $player->user_id;
 				$reward_theme->character_theme_id	= $object_reward->character_theme_id;
@@ -291,7 +291,7 @@ class OrganizationsController extends Controller {
 			}
 
 			// Prêmios ( TITULOS )
-			if ($object_reward->headline_id) {
+			if ($object_reward->headline_id && !$user->is_headline_bought($object_reward->headline_id)) {
 				$reward_headline				= new UserHeadline();
 				$reward_headline->user_id		= $player->user_id;
 				$reward_headline->headline_id	= $object_reward->headline_id;
@@ -357,7 +357,7 @@ class OrganizationsController extends Controller {
 				$object->speciality_id,
 				$object->pet_id,
 				false,
-				CharacterTheme::find_first($object->character_theme_id)->character_id, 
+				CharacterTheme::find_first($object->character_theme_id)->character_id,
 				$object->character_theme_id,
 				$object->id
 			);
@@ -623,28 +623,28 @@ class OrganizationsController extends Controller {
 		$this->json->success	= false;
 		$player					= Player::get_instance();
 		$errors					= [];
-		
+
 		$organization_requests = OrganizationRequest::find("organization_id=".$player->organization_id);
-		
+
 		if(!$organization_requests){
 			$errors[]	= t('organizations.remove_error');
 		}
 		if(!$player->organization_id){
 			$errors[]	= t('organizations.remove_error2');
 		}
-		
+
 		if (!sizeof($errors)) {
 			$this->json->success	= true;
-			
+
 			//Deleta os pedidos de amizade
 			foreach($organization_requests as $organization_request){
 				$organization_request->destroy();
 				$organization_request->save();
 			}
-			
+
 		} else {
 			$this->json->messages	= $errors;
-		}	
+		}
 	}
 	function create() {
 		$this->as_json			= true;
@@ -691,7 +691,7 @@ class OrganizationsController extends Controller {
 			} else {
 				$user->spend($this->credits_price);
 			}
-			
+
 			$organization					= new Organization();
 			$organization->player_id		= $player->id;
 			$organization->creation_type	= $method == 1 ? 1 : 2;
@@ -736,13 +736,13 @@ class OrganizationsController extends Controller {
 
 		if (is_numeric($id)) {
 			$organization	= Organization::find($id);
-			
+
 			if($organization->member_count >= $this->max_players){
 				$errors[]	= t('organizations.create.errors.full');
 			}
 			// Não deixa entrar 2 jogadores da mesma conta em uma organização
 			$players_organizations = Player::find("organization_id=". $id ." AND user_id=". $player->user_id);
-			
+
 			if($players_organizations){
 				$errors[]	= t('organizations.create.errors.users');
 			}
@@ -754,7 +754,7 @@ class OrganizationsController extends Controller {
 					$errors[]	= t('organizations.enter.errors.already');
 				}
 			} else {
-				$errors[]	= t('organizations.enter.errors.invalid');					
+				$errors[]	= t('organizations.enter.errors.invalid');
 			}
 		} else {
 			$errors[]	= t('organizations.enter.errors.invalid');
@@ -790,7 +790,7 @@ class OrganizationsController extends Controller {
 		if (isset($_POST['id']) && is_numeric($_POST['id'])) {
 			$accept = $organization->can_accept_player($player->id, $_POST['id']);
 		}
-		
+
 		if (!$is_refuse) {
 			// Não deixa entrar 2 jogadores da mesma conta em uma organização
 			$organization_request		   = OrganizationRequest::find_first($_POST['id']);
@@ -846,7 +846,7 @@ class OrganizationsController extends Controller {
 		$errors					= [];
 
 		$can_kick	= $organization->can_kick_player($organization->player_id, $player->id);
-		
+
 		/*if ($organization->player_id != $player->id) {
 			$errors[]	= t('organizations.errors.not_leader');
 		}*/
@@ -864,7 +864,7 @@ class OrganizationsController extends Controller {
 			$pm->save();
 
 			$organization->player($player->id)->destroy();
-			
+
 			$player->organization_id	= 0;
 			$player->save();
 
@@ -913,28 +913,28 @@ class OrganizationsController extends Controller {
 		$errors					= [];
 
 		if (isset($_POST['id']) && is_numeric($_POST['id'])) {
-			
+
 			$target					= $organization->player($_POST['id']);
 			$target_player			= $target->player();
-			
+
 			if($target_player->battle_pvp_id){
 				$errors[]	= t('organizations.kick_leave.errors.battle');
 			}
-			
+
 			$can_kick	= $organization->can_kick_player($player->id, $_POST['id']);
 
 			if (!$can_kick->allowed) {
 				$errors	= array_merge($errors, $can_kick->messages);
 			}
-			
-			
+
+
 		} else {
 			$errors[]	= t('organizations.kick_leave.errors.invalid');
 		}
 
 		if (!sizeof($errors)) {
 			$this->json->success	= true;
-			
+
 
 			$pm				= new PrivateMessage();
 			$pm->to_id		= $target_player->id;
@@ -987,7 +987,7 @@ class OrganizationsController extends Controller {
 		$player				= Player::get_instance();
 		$total_treasure		= Organization::find_first("id=". $player->organization_id);
 		$can_accept			= $total_treasure->can_accept_player($player->id)->allowed;
-		
+
 		$this->assign('total_treasure',$total_treasure);
 		$this->assign('player',$player);
 		$this->assign('can_accept',$can_accept);
@@ -995,11 +995,11 @@ class OrganizationsController extends Controller {
 			SELECT
 				a.*,
 				COUNT(b.id) AS total
-			
+
 			FROM
 				treasure_rewards a LEFT JOIN player_treasure_logs b ON b.treasure_reward_id=a.id AND b.player_id=' . $player->id . '
-			
-				
+
+
 			GROUP BY a.id
 		'));
 	}
@@ -1010,8 +1010,8 @@ class OrganizationsController extends Controller {
 		$this->as_json			= true;
 		$this->json->success	= false;
 		$errors					= [];
-		
-		
+
+
 		if (!isset($_POST['mode']) || (isset($_POST['mode']) && !is_numeric($_POST['mode']))) {
 			$errors[]	= t('treasure.error1');
 		} else {
@@ -1020,12 +1020,12 @@ class OrganizationsController extends Controller {
 			if($organization->treasure_atual < $treasure->treasure_total){
 				$errors[]	= t('treasure.error2');
 			}
-			
+
 			if(!sizeof($errors)) {
-				
+
 				$organization->treasure_atual -= $treasure->treasure_total;
-				$organization->save(); 
-				
+				$organization->save();
+
 				foreach ($players_orgs as $players_org):
 					$p = Player::find_first("id=". $players_org->id);
 					$user = User::find_first("id=". $players_org->user_id);
@@ -1045,28 +1045,28 @@ class OrganizationsController extends Controller {
 					//Prêmios ( CRÉDITOS )
 					if($treasure->credits) {
 						$user->earn($treasure->credits);
-						
+
 						// Verifica os créditos do jogador.
 						$p->achievement_check("credits");
-						// Objetivo de Round
-						$p->check_objectives("credits");
 					}
 					//Prêmios ( EQUIPS )
 					if ($treasure->equipment) {
-						if($treasure->equipment == 1){
+						if ($treasure->equipment == 1){
 							$dropped  = Item::generate_equipment($p);
-						}elseif($treasure->equipment==2){
-							$dropped  = Item::generate_equipment($p,0); 
-						}elseif($treasure->equipment==3){
-							$dropped  = Item::generate_equipment($p,1); 
-						}elseif($treasure->equipment==4){
-							$dropped  = Item::generate_equipment($p,2); 
+						} elseif ($treasure->equipment == 2) {
+							$dropped  = Item::generate_equipment($p, 0);
+						} elseif ($treasure->equipment == 3) {
+							$dropped  = Item::generate_equipment($p, 1);
+						} elseif ($treasure->equipment == 4) {
+							$dropped  = Item::generate_equipment($p, 2);
+						} elseif ($treasure->equipment == 5) {
+							$dropped  = Item::generate_equipment($p, 3);
 						}
 					}
 					//Prêmios ( PETS )
 					if ($treasure->item_id && $treasure->pets) {
 						$npc_pet = Item::find($treasure->item_id);
-						
+
 						$player_pet				= new PlayerItem();
 						$player_pet->item_id	= $npc_pet->id;
 						$player_pet->player_id	= $p->id;
@@ -1074,9 +1074,9 @@ class OrganizationsController extends Controller {
 					}
 					//Prêmios ( ITEMS )
 					if ($treasure->item_id && !$treasure->pets) {
-						
+
 						$player_item_exist			= PlayerItem::find_first("item_id=".$treasure->item_id." AND player_id=". $p->id);
-						
+
 						if(!$player_item_exist){
 							$player_item			= new PlayerItem();
 							$player_item->item_id	= $treasure->item_id;
@@ -1087,11 +1087,11 @@ class OrganizationsController extends Controller {
 							$player_item_exist->quantity += $treasure->quantity;
 							$player_item_exist->save();
 						}
-	
+
 						/*if ($reward_item_instance->item_type_id == 1) {
 							$player_item->removed	= 1;
 						}*/
-						
+
 					}
 					//Prêmios ( CHARACTERS )
 					if ($treasure->character_id) {
@@ -1116,22 +1116,22 @@ class OrganizationsController extends Controller {
 						$reward_headline->headline_id	= $treasure->headline_id;
 						$reward_headline->save();
 					}
-					
+
 					//Adiciona no Log
 					$log						= new PlayerTreasureLog();
 					$log->player_id				= $p->id;
 					$log->treasure_reward_id	= $treasure->id;
 					$log->organization_id		= $player->organization_id;
 					$log->save();
-					
+
 					//Manda Mensagem para os integrantes
 					$pm				= new PrivateMessage();
 					$pm->from_id	= $organization->player_id;
 					$pm->to_id		= $p->id;
 					$pm->subject	= $treasure->name;
 					$pm->content	= $treasure->name;
-					
-					
+
+
 						if($treasure->enchant_points){
 						$pm->content	= t('treasure.show.desc') ." ". $treasure->quantity ." ". t('treasure.show.enchant');
 						}
@@ -1177,13 +1177,13 @@ class OrganizationsController extends Controller {
 					$p->save();
 					$user->save();
 				endforeach;
-										
+
 				$this->json->success	= true;
 			}else{
 				$this->json->messages	= $errors;
 			}
-			
-			
+
+
 		}
 	}
 	function show($id = null) {
@@ -1191,14 +1191,12 @@ class OrganizationsController extends Controller {
 		if (isset($_POST['popup'])) {
 			$this->layout	= false;
 		}
-	
+
 		$player			= Player::get_instance();
-		
+
 		//Verifica se você tem organização - Conquista
 		$player->achievement_check("organization");
-		// Objetivo de Round
-		$player->check_objectives("organization");
-		
+
 		$errors			= [];
 		$upload_error	= false;
 		$got_upload		= false;
@@ -1227,7 +1225,7 @@ class OrganizationsController extends Controller {
 						"image/png",
 						"image/gif"
 					];
-					
+
 					if(!in_array(image_type_to_mime_type(exif_imagetype($file['tmp_name'])), $mime)) {
 						$upload_error = true;
 					}
@@ -1238,7 +1236,7 @@ class OrganizationsController extends Controller {
 
 					if (!$upload_error) {
 						$sz = getimagesize($file['tmp_name']);
-						
+
 						if($sz['0'] > 663 || $sz['1'] > 166) {
 							$upload_error = true;
 						}
@@ -1291,7 +1289,7 @@ class OrganizationsController extends Controller {
 			$this->assign('can_accept', $can_accept);
 			$this->assign('player', $player);
 			$this->assign('errors', $errors);
-			
+
 		} else {
 			$this->render	= 'show_error';
 		}

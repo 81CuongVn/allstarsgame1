@@ -3,7 +3,7 @@ class User extends Relation {
 	static			$paranoid		= TRUE;
 	static			$password_field	= 'password';
 	private static	$instance		= NULL;
-	
+
 	protected function before_update() {
 		if ($this->is_next_level()) {
 			$this->level	+= 1;
@@ -20,11 +20,10 @@ class User extends Relation {
 
 	function character_theme_image($image_id) {
 		$user_image = UserCharacterThemeImage::find_first("user_id=" . $this->id . " AND character_theme_image_id=" . $image_id);
-		
 		if ($user_image) {
 			return TRUE;
 		} else {
-			return FALSE;	
+			return FALSE;
 		}
 	}
 
@@ -33,7 +32,7 @@ class User extends Relation {
 	}
 
 	function is_next_level() {
-		return $this->exp >= $this->level_exp();
+		return $this->exp >= $this->level_exp() && $this->level < MAX_LEVEL_USER;
 	}
 
 	function players() {

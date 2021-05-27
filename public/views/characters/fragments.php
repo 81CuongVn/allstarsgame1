@@ -17,53 +17,41 @@
 			tour.init(true);
 			tour.start(true);
 		});
-	</script>	
+	</script>
 <?php } ?>
 <?php if (isset($_GET['message']) && $_GET['message']) { ?>
 	<div class="alert alert-success" role="alert">
-		<?php echo urldecode($_GET['message']); ?>
+		<?=urldecode($_GET['message']);?>
 	</div>
 <?php } ?>
 
 <div class="msg-container">
 	<div class="msg_top"></div>
 	 <div class="msg_repete">
-		<div class="msg" style="background:url(<?php echo image_url('msg/fragmentos.png')?>); background-repeat: no-repeat;">
+		<div class="msg" style="background:url(<?=image_url('msg/fragmentos.png');?>); background-repeat: no-repeat;">
 		</div>
 		<div class="msgb" style="position:relative; margin-left: 231px; text-align: left; top: -37px">
-			<b><?php echo t('fragments.title') ?></b>
-			<div class="content"><?php echo t('fragments.descriptions') ?></div>
+			<b><?=t('fragments.title');?></b>
+			<div class="content"><?=t('fragments.descriptions');?></div>
 		</div>
 	</div>
-	<div class="msg_bot"></div>	
+	<div class="msg_bot"></div>
 	<div class="msg_bot2"></div>
 </div><br />
 <?php
 $total = $total ? $total->quantity : 0;
 
-if ($_SESSION['universal']) {
-	$color			= [ 'commom', 'commom', 'commom', 'commom' ];
-	$rarities		= [ '0', '1', '2', '3' ];
-	$prices			= [ '100', '100', '100', '100' ];
-	$names			= [ 'Equipamento Aleatório', 'Mascote Aleatório', 'Personagem Aleatório', 'Tema Aleatório' ];
-	$descriptions	= [
-		'Transforme 100 Fragmentos das Almas em um Equipamento aleatório',
-		'Transforme 100 Fragmentos das Almas em um Mascote aleatório',
-		'Transforme 100 Fragmentos das Almas em um Personagem Aleatório',
-		'Transforme 100 Fragmentos das Almas em um Tema Aleatório'
-	];
-} else {
-	$color			= [ 'commom', 'commom' ];
-	$rarities		= [ '0', '1' ];
-	$prices			= [ '100', '100' ];
-	$names			= [ 'Equipamento Aleatório', 'Mascote Aleatório' ];
-	$descriptions	= [
-		'Transforme 100 Fragmentos das Almas em um Equipamento aleatório',
-		'Transforme 100 Fragmentos das Almas em um Mascote aleatório'
-	];
-}
+$color			= [ 'commom', 'rare', 'epic' ];
+$rarities		= [ '0', '1', '2' ];
+$prices			= [ '80', '160', '320' ];
+$names			= [ 'Equipamento Comum', 'Equipamento Raro', 'Equipamento Épico' ];
+$descriptions	= [
+	'Transforme 40 Fragmentos das Almas em um Equipamento aleatório da raridade Comum',
+	'Transforme 80 Fragmentos das Almas em um Equipamento aleatório da raridade Raro',
+	'Transforme 160 Fragmentos das Almas em um Equipamento aleatório da raridade Épica'
+];
 ?>
-<?php foreach ($rarities as $rarity){ ?>
+<?php foreach ($rarities as $rarity) { ?>
 	<div class="ability-speciality-box" data-id="<?=$rarity;?>" style="width: 236px !important; height: 290px !important">
 		<div class="image">
 			<img src="<?php echo image_url('fragments/' . $rarity . '.png'); ?>" />

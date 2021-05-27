@@ -310,20 +310,17 @@ class VipsController extends Controller {
 				case 1745:
 					$player_organization->name	= $_POST["name_organization"];
 					$player_organization->save();
-
 				break;
 				case 1746:
 					$player->faction_id = $faction->id;
 					$player->save();
-
 				break;
 				case 2112:
 					$item_446 = PlayerItem::find_first("player_id =". $player->id. " AND item_id=446");
-
-					if($item_446){
+					if ($item_446) {
 						$item_446->quantity += 100;
 						$item_446->save();
-					}else{
+					} else {
 						$player_fragment			= new PlayerItem();
 						$player_fragment->item_id	= 446;
 						$player_fragment->player_id	= $player->id;

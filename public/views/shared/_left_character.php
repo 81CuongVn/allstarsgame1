@@ -83,7 +83,7 @@
 				<b class=""><?=$player->faction()->description()->name;?></b>
 			</div>
 		</div>
-		<div class="bg_menu_esquerdo">
+		<?php /*<div class="bg_menu_esquerdo">
 			<div class="menu_esquerdo_divisao">
 				<b class="amarelo">Estrelas</b>
 				<b class=""><?php echo $user->credits ? highamount($user->credits) : "-" ?></b>
@@ -91,12 +91,6 @@
 			<div class="menu_esquerdo_divisao">
 				<b class="amarelo">Pts. Round</b>
 				<b class=""><?php echo $user->round_points ? highamount($user->round_points) : "-" ?></b>
-			</div>
-		</div>
-		<?php /*<div class="bg_menu_esquerdo">
-			<div class="menu_esquerdo_divisao" style="width: 100%">
-				<b class="amarelo">Poder de Batalha</b>
-				<b class=""><?=highamount($player->fight_power());?></b>
 			</div>
 		</div>*/ ?>
 		<div class="bg_menu_esquerdo">
@@ -130,16 +124,20 @@
 			</div>
 		</div>
 		<div class="bg_menu_esquerdo">
-			<div class="menu_esquerdo_divisao">
-				<b class="amarelo">Experiência</b>
+			<div class="menu_esquerdo_divisao" style="width: 80px;">
+				<b class="amarelo">Exp Rate</b>
 				<b class=""><?=EXP_RATE;?>x</b>
 			</div>
-			<div class="menu_esquerdo_divisao">
-				<b class="amarelo"><?=t('currencies.' . $player->character()->anime_id);?></b>
+			<div class="menu_esquerdo_divisao" style="width: 80px;">
+				<b class="amarelo"><?=t('currencies.' . $player->character()->anime_id);?> Rate</b>
 				<b class=""><?=MONEY_RATE;?>x</b>
 			</div>
+			<div class="menu_esquerdo_divisao" style="width: 80px;">
+				<b class="amarelo">Drop Rate</b>
+				<b class=""><?=DROP_RATE;?>x</b>
+			</div>
 		</div>
-		<div class="bg_menu_esquerdo">
+		<?php /*<div class="bg_menu_esquerdo">
 			<?php
 			$timeout	= now() - (15 * 60);
 			$online		= Recordset::query("SELECT `id` FROM `players` WHERE `last_activity` > {$timeout}", FALSE)->num_rows;
@@ -161,7 +159,6 @@
 				<b class=""><?=highamount($battles_pvp);?></b>
 			</div>
 		</div>
-		<?php if (!$_SESSION['universal']) { ?>
 		<div class="bg_menu_esquerdo">
 			<div class="menu_esquerdo_divisao" style="width: 100%">
 				<b class="amarelo">Round 1</b>
@@ -172,8 +169,11 @@
 					?>
 				</b>
 			</div>
+		</div>*/ ?><br />
+		<div align="center">
+			<script id="_wauae2">var _wau = _wau || []; _wau.push(["dynamic", "gq7qmwiq8v", "ae2", "c4302bffffff", "small"]);</script>
+			<script async src="//waust.at/d.js"></script>
 		</div>
-		<?php } ?>
 		<div class="clearfix"></div>
 	</div>
 <?php } else { ?>

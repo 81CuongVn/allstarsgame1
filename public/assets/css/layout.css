@@ -221,6 +221,7 @@ li {
 }
 #background-topo {
 	width: 100%;
+    min-width: 1232px;
 	background-position: top center;
 	background-repeat: no-repeat;
 	margin: auto;
@@ -231,6 +232,7 @@ li {
 }
 #background-topo2 {
 	width: 100%;
+    min-width: 1232px;
 	background-position: top center;
 	background-repeat: no-repeat;
 	margin: auto;
@@ -1938,6 +1940,9 @@ table hr {
 }
 .rare {
 	color: #06F !important;
+}
+.epic {
+	color: #97269f !important;
 }
 .legendary {
 	color: #F60 !important;

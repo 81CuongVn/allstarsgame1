@@ -1,8 +1,7 @@
 <?php echo partial('shared/title', array('title' => 'vips.purchase.title', 'place' => 'vips.purchase.title')) ?>
 <?php
-if (!$is_dbl) {
-	// $timestamp	= strtotime($is_dbl->data_end);
-	$timestamp	= time();
+if ($is_dbl) {
+	$timestamp	= strtotime($is_dbl->data_end);
 	echo partial('shared/info', [
 		'id'		=> 4,
 		'title'		=> 'vips.make_donation.title',
@@ -18,8 +17,8 @@ if (!$is_dbl) {
 		O <?=GAME_NAME;?> é um jogo gratuito e sem fins lucrativos,
 		e por isso a contribuição de seus jogadores é fundamental para que,
 		cada dia mais, o jogo se desenvolva e melhore suas funcionalidades.
-		Qualquer tipo de arrecadação ou doações feitas ao <?=GAME_NAME;?> serão revertidas em manutenção e melhorias ao site,
-		bem como divulgação deste e dos animes. E contribuindo com sua doação ao jogo,
+		Qualquer tipo de arrecadação ou doações feitas serão usadas para a manutenção e melhorias do site,
+		bem como divulgação deste e dos animes. Contribuindo com sua doação ao jogo,
 		além de nos ajudar a cada dia melhorar o <?=GAME_NAME;?>, você jogador, passa a ser um Jogador Estrela, com acesso à vantagens exclusivas.<br /><br />
 
 		O sistema de Estrelas permite usufluir do valor doado de forma inteligente, e o valor doado é convertido para você em estrelas, conforme descrito abaixo:
@@ -30,7 +29,7 @@ if (!$is_dbl) {
 		- Todos os personagens de sua conta podem usufluir das estrelas.<br />
 		- Estar colaborando com a manuntenção e evolução do jogo.<br /><br />
 
-		Com a opção Mercado Pago, você poderá doar com todos os Cartões de Crédito, Transferências Bancárias e Boletos Bancários e PIX.
+		Com a opção Mercado Pago, você poderá doar com todos os Cartões de Crédito, Transferências Bancárias, Boletos Bancários e PIX.
 	</p><br />
 	<p class="verde">
 		Todos as estrelas adquiridas só serão liberados após Confirmação da Doação,
@@ -40,14 +39,13 @@ if (!$is_dbl) {
 </div><br />
 <ul class="nav nav-pills nav-justified" id="methods-details-tabs">
 	<?php $i = 1; foreach($methods as $method => $currency) { ?>
-	<li class="<?php echo $i == 1 ? 'active' : ''; ?>">
-		<a href="#method-<?php echo $method?>-list" role="tab" data-toggle="tab">
-			<img src="<?php echo image_url($method . ".png")?>" width="147"/>
+	<li class="<?=($i == 1 ? 'active' : '');?>">
+		<a href="#method-<?=$method;?>-list" role="tab" data-toggle="tab">
+			<img src="<?=image_url($method . ".png");?>" width="147"/>
 		</a>
 	</li>
 	<?php $i++; } ?>
-</ul>
-<br />
+</ul><br />
 <div class="tab-content">
 	<?php $i = 1; foreach($methods as $method => $currency) { $value = 'price_' . strtolower($currency); ?>
 	<div id="method-<?php echo $method?>-list" class="tab-pane <?php echo $i == 1 ? 'active' : ''; ?>">

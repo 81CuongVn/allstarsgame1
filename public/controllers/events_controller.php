@@ -18,9 +18,9 @@ class EventsController extends Controller {
         if (!$user_stats) {
             $user_stats 		  = new UserStat();
             $user_stats->user_id  = $player->user_id;
-            $user_stats->save(); 
+            $user_stats->save();
         }
-        
+
         $this->assign('user_stats',         $user_stats);
         $this->assign('player',             $player);
         $this->assign('player_fidelity',    $player_fidelity);
@@ -33,117 +33,52 @@ class EventsController extends Controller {
         $player		            = Player::get_instance();
         $user		            = User::get_instance();
         $errors					= [];
-        
+
         if (!isset($_POST['day']) || (isset($_POST['day']) && !is_numeric($_POST['day']))) {
             $errors[]	= t('fidelity.errors.day');
         } else {
             $player_fidelity = PlayerFidelity::find_first("player_id=".$player->id);
-                
-            if ($player_fidelity->day != $_POST['day']){
+            if ($player_fidelity->day != $_POST['day']) {
                 $errors[]	= t('fidelity.errors.day');
             }
-            if ($player_fidelity->reward){
+            if ($player_fidelity->reward) {
                 $errors[]	= t('fidelity.errors.reward');
             }
             if (!sizeof($errors)) {
-                $player_fidelity = PlayerFidelity::find_first("player_id=".$player->id);
-                $player_fidelity->reward = 1;
-                $player_fidelity->reward_at = now(true);
-                $player_fidelity->save();
-            
                 // Premiando os jogadores pelo dia correspondente
                 switch ($player_fidelity->day) {
-                    
-                    // Recompensa em Dinheiro
-                    case 1:
-                        $player->earn(100);
-                        $player->save();
-                    break;	
-                    case 5:
-                        $player->earn(200);
-                        $player->save();
-                    break;	
-                    case 10:
-                        $player->earn(400);
-                        $player->save();
-                    break;	
-                    case 15:
-                        $player->earn(800);
-                        $player->save();
-                    break;	
-                    case 20:
-                        $player->earn(1600);
-                        $player->save();
-                    break;
-                    case 25:
-                        $player->earn(3200);
-                        $player->save();
-                    break;
-                    // Recompensa em Dinheiro
-                    
-                    // Recompensa em Experiencia
-                    case 2:
-                        $player->exp	+= 200;
-                        $player->save();
-                    break;
-                    case 6:
-                        $player->exp	+= 400;
-                        $player->save();
-                    break;
-                    case 11:
-                        $player->exp	+= 800;
-                        $player->save();
-                    break;
-                    case 16:
-                        $player->exp	+= 1600;
-                        $player->save();
-                    break;
-                    case 21:
-                        $player->exp	+= 3200;
-                        $player->save();
-                    break;
-                    case 26:
-                        $player->exp	+= 6400;
-                        $player->save();
-                    break;
-                    // Recompensa em Experiencia
-                    
-                    // Recompensa em Comida
-                    case 3:
-                        $item	= Item::find_first(46);
+					case 1:
+						$player->earn(100);
+						$player->save();
+						break;
+					case 2:
+						$player->exp	+= 200;
+						$player->save();
+						break;
+					case 3:
+						$item	= Item::find_first(50);
                         $player->add_consumable($item, 2);
-                    break;
-                    case 7:
-                        $item	= Item::find_first(48);
-                        $player->add_consumable($item, 2);
-                    break;
-                    case 12:
-                        $item	= Item::find_first(50);
-                        $player->add_consumable($item, 2);
-                    break;
-                    case 17:
-                        $item	= Item::find_first(52);
-                        $player->add_consumable($item, 2);
-                    break;
-                    case 22:
-                        $item	= Item::find_first(54);
-                        $player->add_consumable($item, 2);
-                    break;
-                    case 27:
-                        $item	= Item::find_first(56);
-                        $player->add_consumable($item, 2);
-                    break;
-                    // Recompensa em Comida
-                    
-                    // Recompensa em joia
-                    case 4:
-                    case 13:
-                    case 23:
-                        //Sorteia a joia
-                        $gems = Item::find("item_type_id=15 ORDER BY RAND()");
+						break;
+					case 4:
+						$player_pets = Recordset::query("SELECT * FROM player_items WHERE player_id = {$player->id} AND item_id IN (SELECT id FROM items WHERE item_type_id = 3)");
+						foreach ($player_pets->result_array() as $player_pet){
+							Recordset::update('player_items', [
+								'exp'		=> $player_pet['exp'] + 100
+							], [
+								'player_id'	=> $player_pet['player_id'],
+								'item_id'	=> $player_pet['item_id']
+							]);
+						}
+						break;
+					case 5:
+						$dropped  = Item::generate_equipment($player);
+						break;
+					case 6:
+						// Sorteia a joia
+                        $gems = Item::find("item_type_id = 15 ORDER BY RAND()");
                         foreach ($gems as $gem) {
                             if (rand(1, 100) <= $gem->drop_chance) {
-                                $player_item = PlayerItem::find_first("item_id=".$gem->id." AND player_id=".$player->id);
+                                $player_item = PlayerItem::find_first("item_id = {$gem->id} AND player_id = " . $player->id);
                                 if ($player_item) {
                                     $player_item->quantity += 1;
                                     $player_item->save();
@@ -157,116 +92,23 @@ class EventsController extends Controller {
                                 }
                                 break;
                             }
-                        }				
-                    break;
-
-                    // Recompensa em Mascote
-                    case 8:
-                    case 18:
-                        $pet = Item::find_first('item_type_id=3 AND is_initial=1', ['reorder' => 'RAND()']);
-                        if (!$player->has_item($pet->id)) {
-                            $player_pet				= new PlayerItem();
-                            $player_pet->item_id	= $pet->id;
-                            $player_pet->player_id	= $player->id;
-                            $player_pet->save();
-                            
-                            //Verifica se você tem pets - Conquista
-                            $player->achievement_check("pets");
-                            
-                            // Objetivo de Round
-                            $player->check_objectives("pets");
                         }
-                    break;
-                    // Recompensa em Equipamento
-                    case 9:
-                        $dropped	= Item::generate_equipment($player, 1);
-                    break;
-                    case 29:
-                        $dropped	= Item::generate_equipment($player, 2);
-                    break;
-                    // Recompensa em Equipamento
-                    
-                    // Areia Estelar
-                    case 19:
-                        $item_1719 = PlayerItem::find_first("player_id =". $player->id. " AND item_id=1719");
-                        if($item_1719) {
-                            $player_areia			= $player->get_item(1719);	
-                            $player_areia->quantity += 1;
-                            $player_areia->save();
-                        } else {
-                            $player_areia	= new PlayerItem();						
-                            $player_areia->item_id		= 1719;
-                            $player_areia->player_id	= $player->id;
-                            $player_areia->quantity		= 1;
-                            $player_areia->save();
-                        }
-
-                        //Verifica a conquista de areia - Conquista
-                        $player->achievement_check("sands");
-
-                        // Objetivo de Round
-                        $player->check_objectives("sands");
-                    break;
-                    
-                    // Areia Estelar
-                    // Sangue de Deus
-                    case 24:
-                        $item_1720 = PlayerItem::find_first("player_id =". $player->id. " AND item_id=1720");
-                        if ($item_1720) {
-                            $player_sangue			 = $player->get_item(1720);	
-                            $player_sangue->quantity += 1;
-                            $player_sangue->save();
-                        } else {
-                            $player_sangue	= new PlayerItem();						
-                            $player_sangue->item_id		= 1720;
-                            $player_sangue->player_id	= $player->id;
-                            $player_sangue->quantity	= 1;
-                            $player_sangue->save();
-                        }
-
-                        //Verifica a conquista de areia - Conquista
-                        $player->achievement_check("bloods");
-
-                        // Objetivo de Round
-                        $player->check_objectives("bloods");
-                    break;
-                    
-                    // Sangue de Deus
-                    
-                    // Recompensa Chakra Azul
-                    case 14:
-                        $item_1852 = PlayerItem::find_first("player_id =". $player->id. " AND item_id=1852");
-                            if ($item_1852) {
-                                $player_chakra				= $player->get_item(1852);	
-                                $player_chakra->quantity 	+= 1;
-                                $player_chakra->save();
-                            } else {
-                                $player_chakra				= new PlayerItem();						
-                                $player_chakra->item_id		= 1852;
-                                $player_chakra->player_id	= $player->id;
-                                $player_chakra->quantity 	= 1;
-                                $player_chakra->save();
-                            }
-                        
-                    break;
-                    // Recompensa Chakra Roxo
-                    case 28:
-                        $item_1853 = PlayerItem::find_first("player_id =". $player->id. " AND item_id=1853");
-                            if ($item_1853) {
-                                $player_chakra				= $player->get_item(1853);	
-                                $player_chakra->quantity 	+= 1;
-                                $player_chakra->save();
-                            } else {
-                                $player_chakra				= new PlayerItem();						
-                                $player_chakra->item_id		= 1853;
-                                $player_chakra->player_id	= $player->id;
-                                $player_chakra->quantity 	= 1;
-                                $player_chakra->save();
-                            }
-                        
-                    break;
-                    case 30:
-                        //Verifica se é o prêmio de crédito.
+						break;
+					case 7:
+						$player_item = PlayerItem::find_first("player_id = {$player->id} AND item_id = 446");
+						if ($player_item) {
+							$player_item->quantity += 20;
+							$player_item->save();
+						} else {
+							$player_fragment			= new PlayerItem();
+							$player_fragment->item_id	= 446;
+							$player_fragment->player_id	= $player->id;
+							$player_fragment->quantity 	= 20;
+							$player_fragment->save();
+						}
+						break;
+					case 8:
+						// Verifica se é o prêmio de crédito.
                         $user_stats = UserStat::find_first("user_id=".$user->id);
                         if (!$user_stats) {
                             $user->earn(1);
@@ -276,16 +118,16 @@ class EventsController extends Controller {
                             $user_stats_new 		  = new UserStat();
                             $user_stats_new->credits  = now(true);
                             $user_stats_new->user_id  = $user->id;
-                            $user_stats_new->save(); 
+                            $user_stats_new->save();
                         } else {
-                            if (!$user_stats->credits || strtotime(date('Y-m-d H:i:s')) >= strtotime($user_stats->credits . "+29 days")) {
+                            if (!$user_stats->credits || strtotime(date('Y-m-d H:i:s')) >= strtotime($user_stats->credits . "+7 days")) {
                                 $user->earn(1);
                                 $user->save();
                                 $user_stats->credits = now(true);
                                 $user_stats->save();
                             }
                         }
-                    break;
+						break;
                 }
 
                 // Missões Diarias
@@ -301,11 +143,16 @@ class EventsController extends Controller {
                     }
                 }
 
+				$player_fidelity = PlayerFidelity::find_first("player_id=".$player->id);
+                $player_fidelity->reward	= 1;
+                $player_fidelity->reward_at = now(true);
+                $player_fidelity->save();
+
                 $this->json->success	= true;
             } else {
                 $this->json->messages	= $errors;
             }
-        }	
+        }
     }
     function anime() {
         $player			= Player::get_instance();
@@ -401,8 +248,6 @@ class EventsController extends Controller {
 
                     // Verifica os créditos do jogador.
                     $player->achievement_check("credits");
-                    // Objetivo de Round
-                    $player->check_objectives("credits");
 				}
 
 				// Prêmios ( EXP CONTA )
@@ -434,7 +279,7 @@ class EventsController extends Controller {
                 }
 
 				// Prêmios ( PERSONAGEM )
-                if ($reward->character_id) {
+                if ($reward->character_id && !$user->is_character_bought($reward->character_id)) {
                     $reward_character				= new UserCharacter();
                     $reward_character->user_id		= $player->user_id;
                     $reward_character->character_id	= $reward->character_id;
@@ -446,7 +291,7 @@ class EventsController extends Controller {
                 }
 
 				// Prêmios ( TEMA )
-                if ($reward->character_theme_id) {
+                if ($reward->character_theme_id && !$user->is_theme_bought($reward->character_theme_id)) {
                     $reward_theme						= new UserCharacterTheme();
                     $reward_theme->user_id				= $player->user_id;
                     $reward_theme->character_theme_id	= $reward->character_theme_id;
@@ -458,17 +303,25 @@ class EventsController extends Controller {
                 }
 
 				// Prêmios ( TITULOS )
-                if ($reward->headline_id) {
+                if ($reward->headline_id && !$user->is_headline_bought($reward->headline_id)) {
                     $reward_headline				= new UserHeadline();
                     $reward_headline->user_id		= $player->user_id;
                     $reward_headline->headline_id	= $reward->headline_id;
                     $reward_headline->save();
                 }
+
 				// Prêmios ( ITENS )
 				if ($reward->item_id) {
-                    if ($reward->item_id != "1709") {
+					if ($reward->item_id != 1709) {
                         $item		= Item::find_first($reward->item_id);
-                        $player->add_consumable($item, $reward->quantity);
+						if ($item->item_type_id == 3 && !$player->has_item($item->id)) {
+							$player_pet				= new PlayerItem();
+							$player_pet->item_id	= $item->id;
+							$player_pet->player_id	= $player->id;
+							$player_pet->save();
+						} else {
+                        	$player->add_consumable($item, $reward->quantity);
+						}
                     } else {
                         $user->character_slots++;
                         $user->save();

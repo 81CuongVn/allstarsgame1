@@ -114,11 +114,9 @@ puts "Waiting for players..."
 
 					uuid = SecureRandom.uuid
 
-					@queues[uuid]						= {}
-					@queues[uuid][choosen['id']]		= {accepted: false, canceled: false}
-					@queues[uuid][current_player['id']]	= {accepted: false, canceled: false}
+					@queues[uuid]   = {}
 
-					@players[current_player['id']]['queue_id']	= uuid
+                    @players[current_player['id']]['queue_id']	= uuid
 					@players[choosen['id']]['queue_id']			= uuid
 
 					thread	= Thread.new do
@@ -128,94 +126,25 @@ puts "Waiting for players..."
 						rescue Mysql2::Error => e
 							puts "MySQL Error #{e.errno} - #{e.error}"
 						end
-						
-						timer		= 30
-						timeout		= true
-						accepted	= false
-						time_queue	= Time.now.to_i + timer
 
-						mysql.query "UPDATE `players` SET `pvp_queue_found` = '#{time_queue}' WHERE `id` IN(#{current_player['id']}, #{choosen['id']})"
+                        if current_player['init'] > choosen['init']
+                            who_start = current_player['id']
+                        elsif current_player['init'] < choosen['init']
+                            who_start = choosen['id']
+                        else
+                            who_start = [ choosen['id'], current_player['id']].sample
+                        end
 
-						while timer > 0 do
-							sleep(1)
-							should_break	= false
+                        mysql.query "INSERT INTO `battle_pvps` (`battle_type_id`,`player_id`,`enemy_id`,`current_id`,`player_ip`,`enemy_ip`,`last_atk`) VALUES(#{battle_type},#{current_player['id']},#{choosen['id']},#{who_start},'#{current_player['ip']}','#{choosen['ip']}',NOW())"
 
-							@semaphore.synchronize do
-								if @queues[uuid][choosen['id']][:accepted] && @queues[uuid][current_player['id']][:accepted]
-									if current_player['init'] > choosen['init']
-										who_start = current_player['id']
-									elsif current_player['init'] < choosen['init']
-										who_start = choosen['id']
-									else
-										who_start = [ choosen['id'], current_player['id']].sample
-									end
+                        battle_id   = mysql.last_id
+                        mysql.query	"UPDATE `players` SET `pvp_queue_found` = NULL, `is_pvp_queued` = 0, `battle_pvp_id` = #{battle_id} WHERE `id` IN(#{current_player['id']}, #{choosen['id']})"
+                        mysql.query	"INSERT INTO `player_battle_pvps` (`player_id`,`enemy_id`) VALUES(#{current_player['id']}, #{choosen['id']})"
 
-									mysql.query "INSERT INTO `battle_pvps` (`battle_type_id`,`player_id`,`enemy_id`,`current_id`,`player_ip`,`enemy_ip`,`last_atk`) VALUES(#{battle_type},#{current_player['id']},#{choosen['id']},#{who_start},'#{current_player['ip']}','#{choosen['ip']}',NOW())"
+                        puts "Starting the battle (#{battle_id}): [#{current_player['id']}]#{current_player['name']} x [#{choosen['id']}]#{choosen['name']}"
 
-									battle_id		= mysql.last_id
-									mysql.query	"UPDATE `players` SET `pvp_queue_found` = NULL, `is_pvp_queued` = 0, `battle_pvp_id` = #{battle_id} WHERE `id` IN(#{current_player['id']}, #{choosen['id']})"
-									mysql.query	"INSERT INTO `player_battle_pvps` (`player_id`,`enemy_id`) VALUES(#{current_player['id']}, #{choosen['id']})"
-									
-									accepted		= true
-									should_break	= true
-
-									puts "Starting the battle (#{battle_id}): [#{current_player['id']}]#{current_player['name']} x [#{choosen['id']}]#{choosen['name']}"
-								end
-
-								if @queues[uuid][choosen['id']][:canceled] || @queues[uuid][current_player['id']][:canceled]
-									if (@queues[uuid][choosen['id']][:canceled])
-										@players[current_player['id']]['queue_id']	= nil
-									elsif @queues[uuid][current_player['id']][:canceled]
-										@players[choosen['id']]['queue_id']	= nil
-									end
-
-									timeout			= false
-									should_break	= true
-								end
-							end
-
-							break if should_break
-
-							timer	-= 1
-						end
-
-						unless accepted
-							mysql.query "UPDATE `players` SET `pvp_queue_found` = NULL WHERE `id` IN(#{current_player['id']}, #{choosen['id']})"
-
-							@semaphore.synchronize do
-								@queues[uuid].keys.each do |player_id|
-									if timeout
-										# Was timeout, but if player have choosend to accept, he'll be still queued
-										if @queues[uuid][player_id][:accepted]
-											begin
-												@players[player_id]['queue_id']	= nil
-											rescue
-												puts "Queue key of #{player_id} not found after timeouting a match."
-											end
-										else
-											@players.delete_if{ |k, v| k == player_id }
-
-											puts "Player queue size: " + @players.keys.size.to_s
-
-											mysql.query "UPDATE `players` SET `is_pvp_queued` = 0, `pvp_queue_found` = NULL WHERE `id` = #{player_id}"
-										end
-									else
-										if @queues[uuid][player_id][:accepted]
-											begin
-												@players[player_id]['queue_id']	= nil
-											rescue
-												puts "Queue key of #{player_id} not found after accepting a match."
-											end
-										end
-									end
-								end
-
-								@queues.delete_if { |key, v| key == uuid }
-							end
-						else
-							@queues.delete_if { |k, v| k == uuid }
-							@players.delete_if { |k, p| [current_player['id'], choosen['id']].include?(k) }
-						end
+                        @queues.delete_if { |k, v| k == uuid }
+						@players.delete_if { |k, p| [current_player['id'], choosen['id']].include?(k) }
 
 						mysql.close
 					end
@@ -226,31 +155,13 @@ puts "Waiting for players..."
 
 		when 'exit_queue'
 			begin
-				player	= @players[current_player['id']]
+				player  = @players[current_player['id']]
 
-				if player['queue_id']
-					@queues[player['queue_id']][player['id']][:canceled]	= true
-
-					puts "[#{player['id']}]#{player['name']} refused the battle!"
-				else
-					puts "[#{player['id']}]#{player['name']} left the queue."
-				end
+				puts "[#{player['id']}]#{player['name']} left the queue."
 
 				@players.delete_if{ |k, v| k == player['id'] }
 			rescue
 				puts "Failure on exit"
-			end
-
-		when 'accept_queue'
-			begin
-				player													= @players[current_player['id']]
-				@queues[player['queue_id']][player['id']][:accepted]	= true
-
-				puts "[#{player['id']}]#{player['name']} accepted the battle!"
-			rescue
-				puts "Failure on accept"
-
-				# @mysql.query "UPDATE `players` SET `pvp_queue_found` = NULL WHERE `id` = #{current_player['id']}"
 			end
 	end
 end

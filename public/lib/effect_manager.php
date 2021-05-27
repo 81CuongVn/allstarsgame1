@@ -76,8 +76,8 @@ trait EffectManager {
 			if (
 				$effect->removes_stun || $effect->remove_slowness || $effect ->remove_bleeding || $effect->remove_confusion ||
 				$effect->increase_bleeding_duration || $effect->increase_slowness_duration || $effect->increase_confusion_duration ||
-				$effect->heals_mana || $effect->heals_life) {
-
+				$effect->heals_mana || $effect->heals_life
+			) {
 				if ($fetch_condition($direction, $effect->removes_stun)) {
 					$this->_remove_effects_with(['stun']);
 				}
@@ -122,7 +122,7 @@ trait EffectManager {
 					}
 				}
 
-				// Instant  don't go to the effect array
+				// Instant don't go to the effect array
 				return;
 			}
 
@@ -300,7 +300,7 @@ trait EffectManager {
 			'damage_increase_in_confusion'	=> 0,
 			'damage_increase_in_slowness'	=> 0,
 
-			//Novos efeitos
+			// Novos efeitos
 			'kill_with_one_hit'		=> 0,
 			'cancel_regen_mana'		=> 0,
 			'steal_health' 			=> 0,
@@ -689,24 +689,23 @@ trait EffectManager {
 
 		// Add pets effects
 			$pet	= $this->get_active_pet();
-
 			if ($pet) {
 				$pet_item	= $pet->item();
-
 				foreach ($pet_item->effects() as $key => $effect) {
 					$this->add_fixed_effect($pet_item, 'pet', $effect, 'player');
 					$enemy->add_fixed_effect($pet_item, 'pet', $effect, 'enemy');
 				}
 			}
 		// <--
+
 		// Regra para esconder os talentos na luta
-		if(!$this->battle_npc_id){
-			if($this->no_talent || $enemy->no_talent){
-			//$this->refresh_talents($enemy);
-			}else{
+		if (!$this->battle_npc_id) {
+			if ($this->no_talent || $enemy->no_talent) {
+				// $this->refresh_talents($enemy);
+			} else {
 				$this->refresh_talents($enemy);
 			}
-		}else{
+		} else {
 			$this->refresh_talents($enemy);
 		}
 
@@ -757,7 +756,6 @@ trait EffectManager {
 		}
 
 		foreach (['player', 'enemy'] as $type) {
-			// print_r($effects);
 			if ($effects) {
 				foreach ($effects[$type] as $item_key => $item) {
 					foreach ($item as $effect_key => $effect) {
@@ -813,9 +811,11 @@ trait EffectManager {
 
 	private function _alloc_effects($clear = false) {
 		$memory	= SharedStore::G($this->build_effects_uid(), null);
-
 		if (is_null($memory) || (is_array($memory) && !sizeof($memory)) || $clear) {
-			$memory	= ['player' => [], 'enemy' => []];
+			$memory	= [
+				'player' => [],
+				'enemy' => []
+			];
 			SharedStore::S($this->build_effects_uid(), $memory);
 		}
 	}

@@ -26,7 +26,7 @@
 			<li><?php echo t('treasure.show.desc')?>: <?php echo highamount($treasures->quantity); ?> <?php echo t('treasure.show.enchant')?></li>
 		<?php }?>
 		<?php if($treasures->currency){?>
-			<li><?php echo t('treasure.show.desc')?>: <?php echo highamount($treasures->currency); ?> <?php echo t('currencies.' . $player->character()->anime_id) ?></li> 
+			<li><?php echo t('treasure.show.desc')?>: <?php echo highamount($treasures->currency); ?> <?php echo t('currencies.' . $player->character()->anime_id) ?></li>
 		<?php }?>
 		<?php if($treasures->credits){?>
 			<li><?php echo t('treasure.show.desc')?>: <?php echo highamount($treasures->credits); ?> <?php echo t('treasure.show.credits')?></li>
@@ -43,6 +43,9 @@
 		<?php if($treasures->equipment && $treasures->equipment == 4){?>
 			<li><?php echo t('treasure.show.desc')?>: <?php echo t('treasure.show.equipment4')?></li>
 		<?php }?>
+		<?php if ($treasures->equipment && $treasures->equipment == 5) { ?>
+			<li><?php echo t('treasure.show.desc')?>: <?php echo t('treasure.show.equipment5')?></li>
+		<?php } ?>
 		<?php if($treasures->pets  && $treasures->item_id){?>
 			<li><?php echo t('treasure.show.desc')?>: <?php echo t('treasure.show.pet')?> "<?php echo Item::find($treasures->item_id)->description()->name ?>"</li>
 		<?php }?>
@@ -78,7 +81,7 @@
 				<button type="button" class="treasures_change btn btn-sm btn-primary" data-mode="<?php echo $treasures->id?>"><?php echo t('treasure.show.change') ?></button>
 			<?php }else{ ?>
 				<button type="button" class="btn btn-sm btn-danger btn-disabled" disabled><?php echo t('treasure.show.change') ?></button>
-			<?php } ?>	
+			<?php } ?>
 		</div>
 	</div>
 </div>

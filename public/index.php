@@ -27,7 +27,7 @@ if (isset($_SERVER['REDIRECT_URL']) && $_SERVER['REDIRECT_URL']) {
     $_SERVER['PATH_INFO'] = $_SERVER['REDIRECT_URL'];
 }
 
-define('DB_LOGGING',		        FALSE);
+define('DB_LOGGING',		        TRUE);
 define('BACKTRACE_SELECTS',	        TRUE);
 define('BACKTRACE_UPDATES',	        TRUE);
 define('BACKTRACE_DELETES',	        TRUE);

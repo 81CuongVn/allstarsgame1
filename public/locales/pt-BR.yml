@@ -425,6 +425,8 @@ pt-BR:
         invalid: Título inválido
         not_belongs: Você não possui esse título
   graduations:
+    errors:
+      requirements: Você não cumpre com os requerimentos necessarios!
     index:
       title: Graduações
       graduate: Graduar
@@ -1333,9 +1335,9 @@ pt-BR:
       cooldown_reduction: |
         de redução recarga da técnica #{name}
       technique_attack_increase: |
-       a mais de dano na técnica #{name}
+        a mais de dano na técnica #{name}
       technique_mana_reduction: |
-       a menos de #{mana} na técnica #{name}
+        a menos de #{mana} na técnica #{name}
       technique_crit_increase: |
         de chance de crítico na técnica #{name}
       technique_zero_mana: |
@@ -1918,7 +1920,8 @@ pt-BR:
       equipment1: Um Equipamento Aleatório
       equipment2: Um Equipamento Comum
       equipment3: Um Equipamento Raro
-      equipment4: Um Equipamento Lendário
+      equipment4: Um Equipamento Épico
+      equipment5: Um Equipamento Lendário
       change: Troque agora!
       enchant: Pontos de Encantamento
   history_mode:
@@ -1953,7 +1956,8 @@ pt-BR:
       item: Item
       titulo: Título
       completed: Concluído
-      recompensas: Recompensa(s)
+      recompensas: |
+        Recompensas:
     accept:
       errors:
         pvp_queue: Você não pode batalhar com NPCs enquanto estiver na fila de batalhas PVP
@@ -2232,34 +2236,12 @@ pt-BR:
     days:
       1: 100 de
       2: 200 de Experiência
-      3: x2 Tigela de Arroz
-      4: x1 Joia Aleatória
-      5: 200 de
-      6: 400 de Experiência
-      7: x2 Ramen Comum
-      8: x1 Mascote Aleatório
-      9: x1 Equipamento Raro
-      10: 400 de
-      11: 800 de Experiência
-      12: x2 Takoyaki
-      13: x1 Joia Aleatória
-      14: x1 Gema Rara
-      15: 800 de
-      16: 1.600 de Experiência
-      17: x2 Nigiri
-      18: x1 Mascote Aleatório
-      19: x1 Areia Estelar
-      20: 1.600 de
-      21: 3.200 de Experiência
-      22: x2 Bento
-      23: x1 Joia Aleatória
-      24: x1 Sangue de Deus
-      25: 3.200 de
-      26: 6.400 de Experiência
-      27: x2 Churrasco
-      28: x1 Gema Lendária
-      29: x1 Equipamento Lendário
-      30: 1 Estrela<br />( uma vez por mês )
+      3: x2 Takoyaki
+      4: 100 de Experiência para todos os Mascotes
+      5: x1 Equipamento Aleatório
+      6: x1 Joia Aleatória
+      7: x20 Fragmento de Almas
+      8: 1 Estrela<br />( uma vez por conta )
     buttons:
       available: Coletar
       unavailable: Indisponível
@@ -2271,7 +2253,11 @@ pt-BR:
       day: O dia não corresponde com a data atual!
       reward: Você já ganhou essa recompensa!
     title: Recompensas de Fidelidade
-    description: Ao logar diariamente, você pode coletar recompensas para seu personagem.<br />Você deve entrar no jogo durante <span class="verde">30 dias seguidos</span> para conseguir todas as recompensas e começar de novo.<br /><br /><span class="laranja">Caso você não logue um dos dias, o contador irá retornar para o primeiro dia.</span>
+    description: |
+        Ao logar diariamente, você pode coletar recompensas para seu personagem.<br />
+        Você deve entrar no jogo durante <span class="verde">8 dias seguidos</span> para conseguir todas as recompensas e começar de novo.<br /><br />
+
+        <span class="laranja">Caso você não logue um dos dias, o contador irá retornar para o primeiro dia.</span>
   enchant:
     limite: Esse é o limite de pontos que você pode treinar diariamente.
     custo: Custo para treinar

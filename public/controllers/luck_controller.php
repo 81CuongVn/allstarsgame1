@@ -4,7 +4,7 @@
 
 		private	$daily_currency		= 2000;
 		private	$daily_credits		= 1;
-		
+
 		private	$summon_currency	= 7500;
 		private	$summon_credits		= 4;
 
@@ -39,9 +39,9 @@
 
 				FROM
 					luck_rewards a LEFT JOIN player_luck_logs b ON b.luck_reward_id=a.id AND b.player_id=' . $player->id . '
-				WHERE 
+				WHERE
 					a.type=1
-		
+
 				GROUP BY a.id
 			'));
 		}
@@ -60,9 +60,9 @@
 
 				FROM
 					luck_rewards a LEFT JOIN player_luck_logs b ON b.luck_reward_id=a.id AND b.player_id=' . $player->id . '
-				WHERE 
+				WHERE
 					a.type=2
-		
+
 				GROUP BY a.id
 			'));
 		}
@@ -129,7 +129,7 @@
 					$locked_items = "";
 				}
 
-				$rewards		= LuckReward::find('1=1 AND type=1 '.$locked_items.'' . ($is_weekly ? ' AND weekly=1' : ''), array('reorder' => 'RAND()'));	
+				$rewards		= LuckReward::find('1=1 AND type=1 '.$locked_items.'' . ($is_weekly ? ' AND weekly=1' : ''), array('reorder' => 'RAND()'));
 
 				$log			= new PlayerLuckLog();
 				$choosen_reward	= false;
@@ -146,7 +146,7 @@
 					foreach($rewards as $reward) {
 						if(rand(1, 100) <= $reward->chance) {
 							$choosen_reward	= $reward;
-							
+
 							break 2;
 						}
 					}
@@ -166,12 +166,12 @@
 				$this->json->today		= date('N');
 
 				$message	= '';
-				
+
 				if($choosen_reward->enchant_points){
 					$message	.= highamount($choosen_reward->quantity) . ' ' . t('luck.index.names.8');
 					$player->enchant_points_total += $choosen_reward->quantity;
 				}
-				
+
 				if($choosen_reward->currency) {
 					$message	.= highamount($choosen_reward->currency) . ' ' . t('currencies.' . $player->character()->anime_id);
 
@@ -186,13 +186,11 @@
 				if($choosen_reward->credits) {
 					$message	.= highamount($choosen_reward->credits) . ' ' . t('currencies.credits');
 					$user->earn($choosen_reward->credits);
-					
+
 					// Verifica os créditos do jogador.
 					$player->achievement_check("credits");
-					// Objetivo de Round
-					$player->check_objectives("credits");
 				}
-				
+
 				if($choosen_reward->equipment) {
 					$message	.= highamount($choosen_reward->equipment) . ' ' . t('luck.index.header.equipment');
 					Item::generate_equipment($player);
@@ -235,11 +233,9 @@
 
 				$player->save();
 				$attributes->save();
-				
+
 				// Verifica as conquistas do Sorte - Conquista
 				$player->achievement_check("luck");
-				// Objetivo de Round
-				$player->check_objectives("luck");
 
 				$this->json->message	= t('luck.index.won', array('prize' => $message));
 				$this->json->currency	= $player->currency;
@@ -256,8 +252,8 @@
 			$this->json->success	= false;
 			$errors					= array();
 			$player					= Player::get_instance();
-			$user					= User::get_instance();			
-						
+			$user					= User::get_instance();
+
 			if(isset($_POST['currency']) && is_numeric($_POST['currency'])) {
 				$needed_currency	= $this->summon_currency;
 				$needed_credits		= $this->summon_credits;
@@ -292,7 +288,7 @@
 					break;
 				}
 
-				$rewards		= LuckReward::find('1=1 AND type=2 '. $type . ' ' . $locked_items, array('reorder' => 'RAND()'));	
+				$rewards		= LuckReward::find('1=1 AND type=2 '. $type . ' ' . $locked_items, array('reorder' => 'RAND()'));
 				$log			= new PlayerLuckLog();
 				$choosen_reward	= false;
 
@@ -309,13 +305,13 @@
 						if($_POST['currency'] == 1){
 							if(rand(1, 100) <= $reward->chance) {
 								$choosen_reward	= $reward;
-								
+
 								break 2;
 							}
 						}else{
 							if(rand(1, 100) <= $reward->chance_credits) {
 								$choosen_reward	= $reward;
-								
+
 								break 2;
 							}
 						}
@@ -334,20 +330,18 @@
 				}
 
 				//Prêmios ( CHARACTERS )
-				if ($choosen_reward->character_id) {
+				if ($choosen_reward->character_id && !$user->is_character_bought($choosen_reward->character_id)) {
 					$reward_character				= new UserCharacter();
 					$reward_character->user_id		= $player->user_id;
 					$reward_character->character_id	= $choosen_reward->character_id;
 					$reward_character->was_reward	= 1;
 					$reward_character->save();
-					
+
 					$message	.= Character::find($choosen_reward->character_id)->description()->name;
-					
+
 					// verifica se desbloqueou novo personagem - conquista
 					$player->achievement_check("character");
-					// Objetivo de Round
-					$player->check_objectives("character");
-					
+
 					if($reward->chance==2){
 						global_message('hightlights.circulo', TRUE,[
 							$player->name,
@@ -356,27 +350,25 @@
 					}
 				}
 				//Prêmios ( THEME )
-				if ($choosen_reward->character_theme_id) {
+				if ($choosen_reward->character_theme_id && !$user->is_theme_bought($choosen_reward->character_theme_id)) {
 					$reward_theme						= new UserCharacterTheme();
 					$reward_theme->user_id				= $player->user_id;
 					$reward_theme->character_theme_id	= $choosen_reward->character_theme_id;
 					$reward_theme->was_reward			= 1;
 					$reward_theme->save();
-					
+
 					$message	.= CharacterTheme::find($choosen_reward->character_theme_id)->description()->name;
-					
+
 					// verifica se desbloqueou novo personagem - conquista
 					$player->achievement_check("character_theme");
-					// Objetivo de Round
-					$player->check_objectives("character_theme");
 
 				}
-				
+
 				$log->player_id			= $player->id;
 				$log->luck_reward_id	= $choosen_reward->id;
 				$log->type				= 2;
 				$log->save();
-				
+
 
 				$this->json->message	= t('luck.index.won2', array('prize' => $message));
 				$this->json->currency	= $player->currency;
