@@ -8,15 +8,8 @@ class EquipmentsController extends Controller {
         $this->assign('anime', $anime);
         $this->assign('player', $player);
         $this->assign('player_tutorial', $player->player_tutorial());
-
-        if ($_SESSION['user_id'] == 1) {
-//        	for ($i = 0; $i < 100; ++$i)
-//            	Item::generate_equipment($player, 2);
-			$user = User::get_instance();
-			$user->round_points(1000);
-        }
     }
-    function upgrade_equipment($player, $rarity, $item_id, $slot, $graduation, $method){
+    function upgrade_equipment($player, $rarity, $item_id, $slot, $method){
         // Zera os atributos do seu resumo geral
         $player_attribute		= PlayerAttribute::find_first('player_id='.$player->id);
         $player_item_attribute	= PlayerItemAttribute::find_first('player_item_id='.$item_id);
@@ -45,91 +38,34 @@ class EquipmentsController extends Controller {
         // Zera os atributos do seu resumo geral
 
         $attributes_by_slot	= [
-            'head'		=> ['generic_technique_damage','unique_technique_damage','defense_technique_extra','currency_battle','exp_battle','currency_quest','exp_quest','luck_discount','item_drop_increase'],
-            'shoulder'	=> ['generic_technique_damage','unique_technique_damage','defense_technique_extra','currency_battle','exp_battle','currency_quest','exp_quest','luck_discount','item_drop_increase'],
-            'chest'		=> ['generic_technique_damage','unique_technique_damage','defense_technique_extra','currency_battle','exp_battle','currency_quest','exp_quest','luck_discount','item_drop_increase'],
-            'neck'		=> ['generic_technique_damage','unique_technique_damage','defense_technique_extra','currency_battle','exp_battle','currency_quest','exp_quest','luck_discount','item_drop_increase'],
-            'hand'		=> ['generic_technique_damage','unique_technique_damage','defense_technique_extra','currency_battle','exp_battle','currency_quest','exp_quest','luck_discount','item_drop_increase'],
-            'leggings'	=> ['generic_technique_damage','unique_technique_damage','defense_technique_extra','currency_battle','exp_battle','currency_quest','exp_quest','luck_discount','item_drop_increase']
+            'head'		=> [ 'generic_technique_damage','unique_technique_damage','defense_technique_extra','currency_battle','exp_battle','currency_quest','exp_quest','luck_discount','item_drop_increase' ],
+            'shoulder'	=> [ 'generic_technique_damage','unique_technique_damage','defense_technique_extra','currency_battle','exp_battle','currency_quest','exp_quest','luck_discount','item_drop_increase' ],
+            'chest'		=> [ 'generic_technique_damage','unique_technique_damage','defense_technique_extra','currency_battle','exp_battle','currency_quest','exp_quest','luck_discount','item_drop_increase' ],
+            'neck'		=> [ 'generic_technique_damage','unique_technique_damage','defense_technique_extra','currency_battle','exp_battle','currency_quest','exp_quest','luck_discount','item_drop_increase' ],
+            'hand'		=> [ 'generic_technique_damage','unique_technique_damage','defense_technique_extra','currency_battle','exp_battle','currency_quest','exp_quest','luck_discount','item_drop_increase' ],
+            'leggings'	=> [ 'generic_technique_damage','unique_technique_damage','defense_technique_extra','currency_battle','exp_battle','currency_quest','exp_quest','luck_discount','item_drop_increase' ]
         ];
         $attributes_by_chances	= [
-            '0'		    => ['generic_technique_damage', 80],
-            '1'		    => ['unique_technique_damage',  90],
-            '2'	    	=> ['defense_technique_extra',  70],
-            '3'     	=> ['item_drop_increase',       60],
-            '4'	    	=> ['luck_discount',            40],
-            '5'	    	=> ['exp_battle',               20],
-            '6'	    	=> ['exp_quest',                20],
-            '7'	    	=> ['currency_quest',            1],
-            '8'		    => ['currency_battle',           1]
+            '0'		    => [ 'generic_technique_damage', 80 ],
+            '1'		    => [ 'unique_technique_damage',  90 ],
+            '2'	    	=> [ 'defense_technique_extra',  70 ],
+            '3'     	=> [ 'item_drop_increase',       60 ],
+            '4'	    	=> [ 'luck_discount',            40 ],
+            '5'	    	=> [ 'exp_battle',               20 ],
+            '6'	    	=> [ 'exp_quest',                20 ],
+            '7'	    	=> [ 'currency_quest',            1 ],
+            '8'		    => [ 'currency_battle',           1 ]
         ];
         $bases	= [
-            '1' => [
-                'generic_technique_damage'		=> [1, 3],
-                'unique_technique_damage'		=> [1, 3],
-                'defense_technique_extra'		=> [1, 3],
-                'currency_battle'				=> [1, 5],
-                'exp_battle'					=> [1, 5],
-                'currency_quest'				=> [1, 5],
-                'exp_quest'						=> [1, 5],
-                'luck_discount'					=> [1, 5],
-                'item_drop_increase'			=> [1, 2]
-            ],
-            '2' => [
-                'generic_technique_damage'		=> [1, 3],
-                'unique_technique_damage'		=> [1, 3],
-                'defense_technique_extra'		=> [1, 3],
-                'currency_battle'				=> [1, 5],
-                'exp_battle'					=> [1, 5],
-                'currency_quest'				=> [1, 5],
-                'exp_quest'						=> [1, 5],
-                'luck_discount'					=> [1, 5],
-                'item_drop_increase'			=> [1, 2]
-            ],
-            '3' => [
-                'generic_technique_damage'		=> [1, 3],
-                'unique_technique_damage'		=> [1, 3],
-                'defense_technique_extra'		=> [1, 3],
-                'currency_battle'				=> [1, 5],
-                'exp_battle'					=> [1, 5],
-                'currency_quest'				=> [1, 5],
-                'exp_quest'						=> [1, 5],
-                'luck_discount'					=> [1, 5],
-                'item_drop_increase'			=> [1, 2]
-            ],
-            '4' => [
-                'generic_technique_damage'		=> [1, 3],
-                'unique_technique_damage'		=> [1, 3],
-                'defense_technique_extra'		=> [1, 3],
-                'currency_battle'				=> [1, 5],
-                'exp_battle'					=> [1, 5],
-                'currency_quest'				=> [1, 5],
-                'exp_quest'						=> [1, 5],
-                'luck_discount'					=> [1, 5],
-                'item_drop_increase'			=> [1, 2]
-            ],
-            '5' => [
-                'generic_technique_damage'		=> [1, 3],
-                'unique_technique_damage'		=> [1, 3],
-                'defense_technique_extra'		=> [1, 3],
-                'currency_battle'				=> [1, 5],
-                'exp_battle'					=> [1, 5],
-                'currency_quest'				=> [1, 5],
-                'exp_quest'						=> [1, 5],
-                'luck_discount'					=> [1, 5],
-                'item_drop_increase'			=> [1, 2]
-            ],
-            '6' => [
-                'generic_technique_damage'		=> [1, 3],
-                'unique_technique_damage'		=> [1, 3],
-                'defense_technique_extra'		=> [1, 3],
-                'currency_battle'				=> [1, 5],
-                'exp_battle'					=> [1, 5],
-                'currency_quest'				=> [1, 5],
-                'exp_quest'						=> [1, 5],
-                'luck_discount'					=> [1, 5],
-                'item_drop_increase'			=> [1, 2]
-            ]
+			'generic_technique_damage'		=> [ 1, 3 ],
+			'unique_technique_damage'		=> [ 1, 3 ],
+			'defense_technique_extra'		=> [ 1, 3 ],
+			'currency_battle'				=> [ 1, 5 ],
+			'exp_battle'					=> [ 1, 5 ],
+			'currency_quest'				=> [ 1, 5 ],
+			'exp_quest'						=> [ 1, 5 ],
+			'luck_discount'					=> [ 1, 5 ],
+			'item_drop_increase'			=> [ 1, 2 ]
         ];
 
         $attributes = [];
@@ -138,7 +74,8 @@ class EquipmentsController extends Controller {
             if ($random_number >= $attributes_by_chance[1])
                 array_push($attributes, $attributes_by_chance[0]);
         }
-        // Adiciona os novos valores
+
+		// Adiciona os novos valores
         $player_attribute		= PlayerAttribute::find_first('player_id='.$player->id);
         $player_item_attribute	= PlayerItemAttribute::find_first('player_item_id='.$item_id);
         // Adiciona os novos valores
@@ -149,15 +86,16 @@ class EquipmentsController extends Controller {
             // Correção por causa do array_rand();
             $array_key = $count_keys > 1 ? $array_keys[$i] : $array_keys;
 
-            if ($attributes[$array_key] == "luck_discount")
+            if ($attributes[$array_key] == "luck_discount") {
                 $player_attribute_correct = "sum_bonus_luck_discount";
-            else if ($attributes[$array_key] == "item_drop_increase")
+			} elseif ($attributes[$array_key] == "item_drop_increase") {
                 $player_attribute_correct = "sum_bonus_drop";
-            else
+			} else {
                 $player_attribute_correct = $attributes[$array_key];
+			}
 
             // Gera o numero randomico do update
-            $random_valor = rand($bases[$graduation][$attributes[$array_key]][0], $bases[6][$attributes[$array_key]][1]);
+            $random_valor = rand($bases[$attributes[$array_key]][0], $bases[6][$attributes[$array_key]][1]);
 
             $player_attribute->{$player_attribute_correct}    += $random_valor;
             $player_item_attribute->{$attributes[$array_key]} += $random_valor;
@@ -174,154 +112,152 @@ class EquipmentsController extends Controller {
         $item_1852		= PlayerItem::find_first("player_id =". $player->id. " AND item_id=1852");
         $item_1853		= PlayerItem::find_first("player_id =". $player->id. " AND item_id=1853");
 
-        if($_POST) {
+        if ($_POST) {
             $this->as_json			= true;
             $this->render			= false;
             $this->json->success	= false;
-            $errors					= array();
+            $errors					= [];
 
-            if(is_numeric($_POST['id']) && is_numeric($_POST['method'])) {
+            if (is_numeric($_POST['id']) && is_numeric($_POST['method'])) {
                 $item_id 	= $_POST['id'];
                 $method 	= $_POST['method'];
 
                 $player_item_attribute	= PlayerItemAttribute::find_first('player_item_id='.$item_id);
                 $player_item			= PlayerItem::find_first('id='.$item_id);
 
-                if(!$method) {
+                if (!$method) {
                     $errors[]	= t('upgrade.errors.4');
-                }else{
-                    if($method==1719){
-                        if($item_1719){
-                            if($item_1719->quantity >= 1){
-                                if($item_1719->quantity==1){
+                } else {
+                    if ($method == 1719) {
+                        if ($item_1719) {
+                            if ($item_1719->quantity >= 1) {
+                                if ($item_1719->quantity == 1) {
                                     $item_1719->quantity = 0;
-                                }else{
+                                } else {
                                     $item_1719->quantity--;
                                 }
                                 $item_1719->save();
-                            }else{
+                            } else {
                                 $errors[]	= t('upgrade.errors.2');
                             }
-                        }else{
+                        } else {
                             $errors[]	= t('upgrade.errors.2');
                         }
                     }
-                    if($method==1720){
-                        if($item_1720){
-                            if($item_1720->quantity >= 1){
-                                if($item_1720->quantity==1){
+
+					if ($method == 1720) {
+                        if ($item_1720) {
+                            if ($item_1720->quantity >= 1) {
+                                if ($item_1720->quantity == 1) {
                                     $item_1720->quantity = 0;
-                                }else{
+                                } else {
                                     $item_1720->quantity--;
                                 }
                                 $item_1720->save();
-                            }else{
+                            } else {
                                 $errors[]	= t('upgrade.errors.3');
                             }
-                        }else{
+                        } else {
                             $errors[]	= t('upgrade.errors.3');
                         }
                     }
-                    if($method==1852){
-                        if($item_1852){
-                            if($item_1852->quantity >= 1){
-                                if($item_1852->quantity==1){
+
+					if ($method == 1852) {
+                        if ($item_1852) {
+                            if ($item_1852->quantity >= 1) {
+                                if($item_1852->quantity == 1) {
                                     $item_1852->quantity = 0;
-                                }else{
+                                } else {
                                     $item_1852->quantity--;
                                 }
                                 $item_1852->save();
-                            }else{
+                            } else {
                                 $errors[]	= t('upgrade.errors.3');
                             }
-                        }else{
+                        } else {
                             $errors[]	= t('upgrade.errors.3');
                         }
                     }
-                    if($method==1853){
-                        if($item_1853){
-                            if($item_1853->quantity >= 1){
-                                if($item_1853->quantity==1){
+
+					if ($method == 1853) {
+                        if ($item_1853) {
+                            if ($item_1853->quantity >= 1) {
+                                if ($item_1853->quantity == 1) {
                                     $item_1853->quantity = 0;
-                                }else{
+                                } else {
                                     $item_1853->quantity--;
                                 }
                                 $item_1853->save();
-                            }else{
+                            } else {
                                 $errors[]	= t('upgrade.errors.3');
                             }
-                        }else{
+                        } else {
                             $errors[]	= t('upgrade.errors.3');
                         }
                     }
                 }
-                if(!$player_item_attribute) {
+
+				if (!$player_item_attribute) {
                     $errors[]	= t('upgrade.errors.1');
                 }
 
-                if(!$player_item) {
+                if (!$player_item) {
                     $errors[]	= t('upgrade.errors.1');
                 }
             } else {
                 $errors[]	= t('upgrade.errors.1');
             }
 
-            if(!sizeof($errors)) {
+            if (!sizeof($errors)) {
                 // Só faz para o Sangue e Areia
-                if($method == 1719 || $method == 1720){
-                    switch($player_item->rarity){
-                        case 'common':
-                            $rarity = 0;
-                            break;
-                        case 'rare':
-                            $rarity = 1;
-                            break;
-                        case 'legendary':
-                            $rarity = 2;
-                            break;
-
+                if ($method == 1719 || $method == 1720) {
+                    switch ($player_item->rarity){
+                        case 'common':		$rarity = 0;	break;
+                        case 'rare':		$rarity = 1;	break;
+                        case 'epic':		$rarity = 2;	break;
+                        case 'legendary':	$rarity = 3;	break;
                     }
 
                     // Adiciona o contador de aprimoramentos
                     $upgrade_counter = PlayerStat::find_first("player_id=".$player->id);
                     if ($method == 1719) {
                         // $upgrade_counter->sands++;
-                        //Verifica a conquista de fragmentos - Conquista
+                        // Verifica a conquista de fragmentos - Conquista
                         $player->achievement_check("sands");
                     } else {
                         // $upgrade_counter->bloods++;
-                        //Verifica a conquista de fragmentos - Conquista
+                        // Verifica a conquista de fragmentos - Conquista
                         $player->achievement_check("bloods");
                     }
                     $upgrade_counter->save();
                     // Adiciona o contador de aprimoramentos
 
                     $count = $method == 1719 ? 1 : 2;
-                    $upgrade = $this->upgrade_equipment($player, $rarity, $item_id, $player_item->slot_name, $player_item_attribute->graduation_sorting, $count);
+                    $upgrade = $this->upgrade_equipment($player, $rarity, $item_id, $player_item->slot_name, $count);
                 }
                 // Só faz para o Sangue e Areia
 
-                if($method == 1852 || $method == 1853){
-
-                    //Destroi os equipamentos na Player Item e na Player Item Atributtes
-                    if($method == 1852){
+                if ($method == 1852 || $method == 1853) {
+                    // Destroi os equipamentos na Player Item e na Player Item Atributtes
+                    if ($method == 1852) {
                         $item_slot = $player_item->slot_name;
                         $item_raridade = 1;
                         $player_item->destroy();
                         $player_item->save();
-                    }else{
+                    } else {
                         $item_slot = $player_item->slot_name;
                         $item_raridade = 2;
                         $player_item->destroy();
                         $player_item->save();
                     }
-                    $player_item_attribute->destroy();
+
+					$player_item_attribute->destroy();
                     $player_item_attribute->save();
 
-                    //Gera o novo equipamento
+                    // Gera o novo equipamento
                     Item::generate_equipment($player, $item_raridade, $item_slot);
 
-                    //Faz o equipamento novo vir equipado
+                    // Faz o equipamento novo vir equipado
                     $last_player_item = PlayerItem::find_first("player_id=".$player->id." AND item_id=114 ORDER BY id DESC LIMIT 1");
                     $player->equip_equipment($last_player_item, $item_slot);
 
@@ -330,7 +266,7 @@ class EquipmentsController extends Controller {
             } else {
                 $this->json->errors	= $errors;
             }
-        }else{
+        } else {
             $equipments = PlayerItem::find('player_id=' . $player->id . ' AND item_id=114 AND id='.$_GET['id']);
 
             $this->assign('equipments', $equipments);

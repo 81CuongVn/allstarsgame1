@@ -855,13 +855,13 @@ class CharactersController extends Controller {
 				switch ($_POST['mode']) {
 					case 0:
 						$message = urlencode("Você ganhou um Equipamento Comum, visite a página de Equipamentos para mais detalhes!");
-					break;
+						break;
 					case 1:
 						$message = urlencode("Você ganhou um Equipamento Raro, visite a página de Equipamentos para mais detalhes!");
-					break;
+						break;
 					case 2:
 						$message = urlencode("Você ganhou um Equipamento Lendário, visite a página de Equipamentos para mais detalhes!");
-					break;
+						break;
 				}
 
 				// Adiciona o contador de aprimoramentos

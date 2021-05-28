@@ -46,9 +46,9 @@ $rarities		= [ '0', '1', '2' ];
 $prices			= [ '80', '160', '320' ];
 $names			= [ 'Equipamento Comum', 'Equipamento Raro', 'Equipamento Épico' ];
 $descriptions	= [
-	'Transforme 40 Fragmentos das Almas em um Equipamento aleatório da raridade Comum',
-	'Transforme 80 Fragmentos das Almas em um Equipamento aleatório da raridade Raro',
-	'Transforme 160 Fragmentos das Almas em um Equipamento aleatório da raridade Épica'
+	'Transforme 80 Fragmentos das Almas em um Equipamento aleatório da raridade Comum',
+	'Transforme 160 Fragmentos das Almas em um Equipamento aleatório da raridade Raro',
+	'Transforme 320 Fragmentos das Almas em um Equipamento aleatório da raridade Épica'
 ];
 ?>
 <?php foreach ($rarities as $rarity) { ?>
