@@ -452,9 +452,10 @@ class BattlePvpsController extends Controller {
 		$errors						= [];
 		$player						= Player::get_instance();
 
-		/*if ($player->pvp_queue_found >= now()) {
+		if ($player->pvp_queue_found >= now()) {
 			$errors[]	= t('battles.waiting.errors.pvp_match_found');
-		}*/
+		}
+
 		if (!$player->is_pvp_queued) {
 			$errors[]	= t('battles.waiting.errors.no_pvp_queued');
 		}
