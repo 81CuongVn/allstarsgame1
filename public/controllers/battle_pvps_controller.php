@@ -139,12 +139,12 @@ class BattlePvpsController extends Controller {
 		$player	= Player::get_instance();
 
 		// Cleanups -->
-		SharedStore::S('last_battle_item_of_' . $player->id, 0);
+			SharedStore::S('last_battle_item_of_' . $player->id, 0);
 
-		$player->clear_ability_lock();
-		$player->clear_speciality_lock();
-		$player->clear_technique_locks();
-		$player->clear_effects();
+			$player->clear_ability_lock();
+			$player->clear_speciality_lock();
+			$player->clear_technique_locks();
+			$player->clear_effects();
 		// <--
 
 		$player->refresh_talents();
@@ -397,6 +397,11 @@ class BattlePvpsController extends Controller {
 		if ($player->pvp_queue_found > now()) {
 			$diff = $player->pvp_queue_found - now();
 
+			$_SESSION['pvp_used_buff']			= FALSE;
+			$_SESSION['pvp_used_ability']		= FALSE;
+			$_SESSION['pvp_used_speciality']	= FALSE;
+			$_SESSION['pvp_time_reduced']		= 0;
+
 			$this->json->found		= TRUE;
 			$this->json->seconds	= $diff;
 		} else {
@@ -413,12 +418,12 @@ class BattlePvpsController extends Controller {
 
 		if ($player->pvp_queue_found) {
 			// Cleanups -->
-			SharedStore::S('last_battle_item_of_' . $player->id, 0);
+				SharedStore::S('last_battle_item_of_' . $player->id, 0);
 
-			$player->clear_ability_lock();
-			$player->clear_speciality_lock();
-			$player->clear_technique_locks();
-			$player->clear_effects();
+				$player->clear_ability_lock();
+				$player->clear_speciality_lock();
+				$player->clear_technique_locks();
+				$player->clear_effects();
 			// <--
 
 			$player->refresh_talents();
@@ -536,7 +541,6 @@ class BattlePvpsController extends Controller {
 		$player->apply_battle_effects($enemy);
 		// <--
 
-
 		$this->assign('player_wanted', $player_wanted);
 		$this->assign('enemy_wanted', $enemy_wanted);
 		$this->assign('player', $player);
@@ -631,11 +635,11 @@ class BattlePvpsController extends Controller {
 					}
 
 					// extreme black magic, don't touch -->
-					$player->clear_fixed_effects('fixed');
-					$enemy->clear_fixed_effects('fixed');
+						$player->clear_fixed_effects('fixed');
+						$enemy->clear_fixed_effects('fixed');
 
-					$player->apply_battle_effects($enemy);
-					$enemy->apply_battle_effects($player);
+						$player->apply_battle_effects($enemy);
+						$enemy->apply_battle_effects($player);
 					// <--
 
 					// Clean up ability/speciality lock
