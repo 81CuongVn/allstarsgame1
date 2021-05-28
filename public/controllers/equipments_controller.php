@@ -71,8 +71,14 @@ class EquipmentsController extends Controller {
         $attributes = [];
         foreach ($attributes_by_chances AS $attributes_by_chance) {
             $random_number  = rand(1, 100);
-            if ($random_number >= $attributes_by_chance[1])
+
+			if ($_SESSION['universal']) {
+				$random_number = 100;
+			}
+
+			if ($random_number >= $attributes_by_chance[1]) {
                 array_push($attributes, $attributes_by_chance[0]);
+			}
         }
 
 		// Adiciona os novos valores
@@ -95,7 +101,7 @@ class EquipmentsController extends Controller {
 			}
 
             // Gera o numero randomico do update
-            $random_valor = rand($bases[$attributes[$array_key]][0], $bases[6][$attributes[$array_key]][1]);
+            $random_valor = rand($bases[$attributes[$array_key]][0], $bases[$attributes[$array_key]][1]);
 
             $player_attribute->{$player_attribute_correct}    += $random_valor;
             $player_item_attribute->{$attributes[$array_key]} += $random_valor;

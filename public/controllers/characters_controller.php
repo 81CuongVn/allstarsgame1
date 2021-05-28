@@ -299,7 +299,7 @@ class CharactersController extends Controller {
 		$player_stat	= PlayerStat::find_first("player_id=". $player->id);
 
 		if ($_SESSION['universal'] && !($_SESSION['orig_player_id'] && $_SESSION['orig_user_id'] && $_SESSION['orig_ticket_id'])) {
-			$slots	= [
+			/*$slots	= [
 				'head',
 				'shoulder',
 				'chest',
@@ -311,7 +311,7 @@ class CharactersController extends Controller {
 				for ($i = 1; $i <= 5; $i++) {
 					Item::generate_equipment($player, null, $slot);
 				}
-			}
+			}*/
 
 			// $pages  = Item::find('item_type_id = 11');
 			// foreach ($pages as $page) {
