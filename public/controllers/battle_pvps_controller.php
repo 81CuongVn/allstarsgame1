@@ -428,7 +428,7 @@ class BattlePvpsController extends Controller {
 		$this->as_json	= TRUE;
 		$player			= Player::get_instance();
 
-		if ($player->pvp_queue_found) {
+		if ($player->pvp_queue_found > now()) {
 			// Cleanups -->
 				SharedStore::S('last_battle_item_of_' . $player->id, 0);
 
