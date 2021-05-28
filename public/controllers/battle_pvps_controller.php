@@ -395,12 +395,24 @@ class BattlePvpsController extends Controller {
 		$player			= Player::get_instance();
 
 		if ($player->pvp_queue_found > now()) {
-			$diff = $player->pvp_queue_found - now();
+			// Cleanups -->
+				SharedStore::S('last_battle_item_of_' . $player->id, 0);
+
+				$player->clear_ability_lock();
+				$player->clear_speciality_lock();
+				$player->clear_technique_locks();
+				$player->clear_effects();
+			// <--
+
+			$player->refresh_talents();
 
 			$_SESSION['pvp_used_buff']			= FALSE;
 			$_SESSION['pvp_used_ability']		= FALSE;
 			$_SESSION['pvp_used_speciality']	= FALSE;
 			$_SESSION['pvp_time_reduced']		= 0;
+
+
+			$diff = $player->pvp_queue_found - now();
 
 			$this->json->found		= TRUE;
 			$this->json->seconds	= $diff;
