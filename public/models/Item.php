@@ -662,14 +662,14 @@ class Item extends Relation {
 		];
 
 		$base	= [
-			'for_atk'		=> [1, 6],
-			'for_def'		=> [1, 6],
-			'for_crit'		=> [1, 6],
-			'for_abs'		=> [1, 6],
-			'for_inc_crit'	=> [1, 7],
-			'for_inc_abs'	=> [1, 7],
-			'for_prec'		=> [1, 6],
-			'for_init'		=> [1, 6]
+			'for_atk'		=> [ 1, 6 ],
+			'for_def'		=> [ 1, 6 ],
+			'for_crit'		=> [ 1, 6 ],
+			'for_abs'		=> [ 1, 6 ],
+			'for_inc_crit'	=> [ 1, 7 ],
+			'for_inc_abs'	=> [ 1, 7 ],
+			'for_prec'		=> [ 1, 6 ],
+			'for_init'		=> [ 1, 6 ]
 		];
 
 		$rarity_choosen_name	= '';
@@ -755,6 +755,99 @@ class Item extends Relation {
 
 		return $player_item;
 	}
+	static function upgrade_equipment($player, $item_id, $method) {
+        // Zera os atributos do seu resumo geral
+        $player_attribute		= PlayerAttribute::find_first('player_id=' . $player->id);
+        $player_item_attribute	= PlayerItemAttribute::find_first('player_item_id=' . $item_id);
+
+        $player_attribute->currency_battle 			    	-= $player_item_attribute->currency_battle;
+        $player_attribute->exp_battle 			    		-= $player_item_attribute->exp_battle;
+        $player_attribute->currency_quest 	    			-= $player_item_attribute->currency_quest;
+        $player_attribute->exp_quest 	    				-= $player_item_attribute->exp_quest;
+        $player_attribute->sum_bonus_luck_discount 	    	-= $player_item_attribute->luck_discount;
+        $player_attribute->sum_bonus_drop		    		-= $player_item_attribute->item_drop_increase;
+        $player_attribute->generic_technique_damage		    -= $player_item_attribute->generic_technique_damage;
+        $player_attribute->unique_technique_damage	    	-= $player_item_attribute->unique_technique_damage;
+        $player_attribute->defense_technique_extra  		-= $player_item_attribute->defense_technique_extra;
+        $player_attribute->save();
+
+        $player_item_attribute->currency_battle             = 0;
+        $player_item_attribute->exp_battle                  = 0;
+        $player_item_attribute->currency_quest              = 0;
+        $player_item_attribute->exp_quest                   = 0;
+        $player_item_attribute->luck_discount               = 0;
+        $player_item_attribute->item_drop_increase          = 0;
+        $player_item_attribute->generic_technique_damage    = 0;
+        $player_item_attribute->unique_technique_damage     = 0;
+        $player_item_attribute->defense_technique_extra     = 0;
+        $player_item_attribute->save();
+        // Zera os atributos do seu resumo geral
+
+		$attributes_by_chances	= [
+            '0'		    => [ 'generic_technique_damage', 80 ],
+            '1'		    => [ 'unique_technique_damage',  90 ],
+            '2'	    	=> [ 'defense_technique_extra',  70 ],
+            '3'     	=> [ 'item_drop_increase',       60 ],
+            '4'	    	=> [ 'luck_discount',            40 ],
+            '5'	    	=> [ 'exp_battle',               20 ],
+            '6'	    	=> [ 'exp_quest',                20 ],
+            '7'	    	=> [ 'currency_quest',            1 ],
+            '8'		    => [ 'currency_battle',           1 ]
+        ];
+        $bases	= [
+			'generic_technique_damage'		=> [ 1, 3 ],
+			'unique_technique_damage'		=> [ 1, 3 ],
+			'defense_technique_extra'		=> [ 1, 3 ],
+			'currency_battle'				=> [ 1, 5 ],
+			'exp_battle'					=> [ 1, 5 ],
+			'currency_quest'				=> [ 1, 5 ],
+			'exp_quest'						=> [ 1, 5 ],
+			'luck_discount'					=> [ 1, 5 ],
+			'item_drop_increase'			=> [ 1, 2 ]
+        ];
+
+        $attributes = [];
+        foreach ($attributes_by_chances AS $attributes_by_chance) {
+            $random_number  = rand(1, 100);
+
+			if ($_SESSION['universal']) {
+				$random_number = 100;
+			}
+
+			if ($random_number >= $attributes_by_chance[1]) {
+                array_push($attributes, $attributes_by_chance[0]);
+			}
+        }
+
+		// Adiciona os novos valores
+        $player_attribute		= PlayerAttribute::find_first('player_id='.$player->id);
+        $player_item_attribute	= PlayerItemAttribute::find_first('player_item_id='.$item_id);
+        // Adiciona os novos valores
+
+        $array_keys = array_rand($attributes, $method);
+        $count_keys = !is_array($array_keys) ? 1 : count($array_keys);
+        for ($i = 0; $i < $count_keys; $i++) {
+            // Correção por causa do array_rand();
+            $array_key = $count_keys > 1 ? $array_keys[$i] : $array_keys;
+
+            if ($attributes[$array_key] == "luck_discount") {
+                $player_attribute_correct = "sum_bonus_luck_discount";
+			} elseif ($attributes[$array_key] == "item_drop_increase") {
+                $player_attribute_correct = "sum_bonus_drop";
+			} else {
+                $player_attribute_correct = $attributes[$array_key];
+			}
+
+            // Gera o numero randomico do update
+            $random_valor = rand($bases[$attributes[$array_key]][0], $bases[$attributes[$array_key]][1]);
+
+            $player_attribute->{$player_attribute_correct}    += $random_valor;
+            $player_item_attribute->{$attributes[$array_key]} += $random_valor;
+        }
+        $player_item_attribute->save();
+        $player_attribute->save();
+
+    }
 	function equipment_tooltip() {
 		$attributes			= [];
 		$attribute_object	= $this->_player_item->attributes();

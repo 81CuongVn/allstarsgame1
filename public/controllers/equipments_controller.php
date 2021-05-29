@@ -9,107 +9,6 @@ class EquipmentsController extends Controller {
         $this->assign('player', $player);
         $this->assign('player_tutorial', $player->player_tutorial());
     }
-    function upgrade_equipment($player, $rarity, $item_id, $slot, $method){
-        // Zera os atributos do seu resumo geral
-        $player_attribute		= PlayerAttribute::find_first('player_id='.$player->id);
-        $player_item_attribute	= PlayerItemAttribute::find_first('player_item_id='.$item_id);
-
-        $player_attribute->currency_battle 			    	-= $player_item_attribute->currency_battle;
-        $player_attribute->exp_battle 			    		-= $player_item_attribute->exp_battle;
-        $player_attribute->currency_quest 	    			-= $player_item_attribute->currency_quest;
-        $player_attribute->exp_quest 	    				-= $player_item_attribute->exp_quest;
-        $player_attribute->sum_bonus_luck_discount 	    	-= $player_item_attribute->luck_discount;
-        $player_attribute->sum_bonus_drop		    		-= $player_item_attribute->item_drop_increase;
-        $player_attribute->generic_technique_damage		    -= $player_item_attribute->generic_technique_damage;
-        $player_attribute->unique_technique_damage	    	-= $player_item_attribute->unique_technique_damage;
-        $player_attribute->defense_technique_extra  		-= $player_item_attribute->defense_technique_extra;
-        $player_attribute->save();
-
-        $player_item_attribute->currency_battle             = 0;
-        $player_item_attribute->exp_battle                  = 0;
-        $player_item_attribute->currency_quest              = 0;
-        $player_item_attribute->exp_quest                   = 0;
-        $player_item_attribute->luck_discount               = 0;
-        $player_item_attribute->item_drop_increase          = 0;
-        $player_item_attribute->generic_technique_damage    = 0;
-        $player_item_attribute->unique_technique_damage     = 0;
-        $player_item_attribute->defense_technique_extra     = 0;
-        $player_item_attribute->save();
-        // Zera os atributos do seu resumo geral
-
-        $attributes_by_slot	= [
-            'head'		=> [ 'generic_technique_damage','unique_technique_damage','defense_technique_extra','currency_battle','exp_battle','currency_quest','exp_quest','luck_discount','item_drop_increase' ],
-            'shoulder'	=> [ 'generic_technique_damage','unique_technique_damage','defense_technique_extra','currency_battle','exp_battle','currency_quest','exp_quest','luck_discount','item_drop_increase' ],
-            'chest'		=> [ 'generic_technique_damage','unique_technique_damage','defense_technique_extra','currency_battle','exp_battle','currency_quest','exp_quest','luck_discount','item_drop_increase' ],
-            'neck'		=> [ 'generic_technique_damage','unique_technique_damage','defense_technique_extra','currency_battle','exp_battle','currency_quest','exp_quest','luck_discount','item_drop_increase' ],
-            'hand'		=> [ 'generic_technique_damage','unique_technique_damage','defense_technique_extra','currency_battle','exp_battle','currency_quest','exp_quest','luck_discount','item_drop_increase' ],
-            'leggings'	=> [ 'generic_technique_damage','unique_technique_damage','defense_technique_extra','currency_battle','exp_battle','currency_quest','exp_quest','luck_discount','item_drop_increase' ]
-        ];
-        $attributes_by_chances	= [
-            '0'		    => [ 'generic_technique_damage', 80 ],
-            '1'		    => [ 'unique_technique_damage',  90 ],
-            '2'	    	=> [ 'defense_technique_extra',  70 ],
-            '3'     	=> [ 'item_drop_increase',       60 ],
-            '4'	    	=> [ 'luck_discount',            40 ],
-            '5'	    	=> [ 'exp_battle',               20 ],
-            '6'	    	=> [ 'exp_quest',                20 ],
-            '7'	    	=> [ 'currency_quest',            1 ],
-            '8'		    => [ 'currency_battle',           1 ]
-        ];
-        $bases	= [
-			'generic_technique_damage'		=> [ 1, 3 ],
-			'unique_technique_damage'		=> [ 1, 3 ],
-			'defense_technique_extra'		=> [ 1, 3 ],
-			'currency_battle'				=> [ 1, 5 ],
-			'exp_battle'					=> [ 1, 5 ],
-			'currency_quest'				=> [ 1, 5 ],
-			'exp_quest'						=> [ 1, 5 ],
-			'luck_discount'					=> [ 1, 5 ],
-			'item_drop_increase'			=> [ 1, 2 ]
-        ];
-
-        $attributes = [];
-        foreach ($attributes_by_chances AS $attributes_by_chance) {
-            $random_number  = rand(1, 100);
-
-			if ($_SESSION['universal']) {
-				$random_number = 100;
-			}
-
-			if ($random_number >= $attributes_by_chance[1]) {
-                array_push($attributes, $attributes_by_chance[0]);
-			}
-        }
-
-		// Adiciona os novos valores
-        $player_attribute		= PlayerAttribute::find_first('player_id='.$player->id);
-        $player_item_attribute	= PlayerItemAttribute::find_first('player_item_id='.$item_id);
-        // Adiciona os novos valores
-
-        $array_keys = array_rand($attributes, $method);
-        $count_keys = !is_array($array_keys) ? 1 : count($array_keys);
-        for ($i = 0; $i < $count_keys; $i++) {
-            // Correção por causa do array_rand();
-            $array_key = $count_keys > 1 ? $array_keys[$i] : $array_keys;
-
-            if ($attributes[$array_key] == "luck_discount") {
-                $player_attribute_correct = "sum_bonus_luck_discount";
-			} elseif ($attributes[$array_key] == "item_drop_increase") {
-                $player_attribute_correct = "sum_bonus_drop";
-			} else {
-                $player_attribute_correct = $attributes[$array_key];
-			}
-
-            // Gera o numero randomico do update
-            $random_valor = rand($bases[$attributes[$array_key]][0], $bases[$attributes[$array_key]][1]);
-
-            $player_attribute->{$player_attribute_correct}    += $random_valor;
-            $player_item_attribute->{$attributes[$array_key]} += $random_valor;
-        }
-        $player_item_attribute->save();
-        $player_attribute->save();
-
-    }
     function list_equipments() {
         $this->layout	= false;
         $player			= Player::get_instance();
@@ -239,20 +138,20 @@ class EquipmentsController extends Controller {
                     // Adiciona o contador de aprimoramentos
 
                     $count = $method == 1719 ? 1 : 2;
-                    $upgrade = $this->upgrade_equipment($player, $rarity, $item_id, $player_item->slot_name, $count);
+                    $upgrade = Item::upgrade_equipment($player, $item_id, $count);
                 }
                 // Só faz para o Sangue e Areia
 
                 if ($method == 1852 || $method == 1853) {
                     // Destroi os equipamentos na Player Item e na Player Item Atributtes
                     if ($method == 1852) {
-                        $item_slot = $player_item->slot_name;
-                        $item_raridade = 1;
+                        $item_slot		= $player_item->slot_name;
+                        $item_raridade	= 1;
                         $player_item->destroy();
                         $player_item->save();
                     } else {
-                        $item_slot = $player_item->slot_name;
-                        $item_raridade = 2;
+                        $item_slot		= $player_item->slot_name;
+                        $item_raridade	= 2;
                         $player_item->destroy();
                         $player_item->save();
                     }
