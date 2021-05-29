@@ -1944,35 +1944,35 @@ class Player extends Relation {
 		if ($num_runs) {
 			// ($this->less_life > 0 || $this->less_mana > 0 || $this->less_stamina > 0) &&
 			if (!$this->battle_npc_id && !$this->battle_pvp_id) {
-				// $max_life		= $this->for_life(true);
-				// $max_mana		= $this->for_mana(true);
+				$max_life		= $this->for_life(true);
+				$max_mana		= $this->for_mana(true);
 
-				// $life_heal		= percent(20, $max_life);
-				// $mana_heal		= percent(20, $max_mana);
+				$life_heal		= percent(20, $max_life);
+				$mana_heal		= percent(20, $max_mana);
 				$stamina_heal	= 2 + $effects['bonus_stamina_heal'];
 
-				// if ($this->hospital) {
-				// 	$life_heal	*= 2;
-				// 	$mana_heal	*= 2;
-				// }
+				if ($this->hospital) {
+					$life_heal	*= 2;
+					$mana_heal	*= 2;
+				}
 
-				// $life_heal		+= percent($extras->life_regen, $life_heal);
-				// $mana_heal		+= percent($extras->mana_regen, $mana_heal);
+				$life_heal		+= percent($extras->life_regen, $life_heal);
+				$mana_heal		+= percent($extras->mana_regen, $mana_heal);
 				$stamina_heal	+= percent($extras->stamina_regen, $stamina_heal);
 
 				$current_runs	= 0;
 				while ($current_runs++ < $num_runs) {
-					// if ($this->less_life > 0)		$this->less_life	-= $life_heal;
-					// if ($this->less_mana > 0)		$this->less_mana	-= $mana_heal;
+					if ($this->less_life > 0)		$this->less_life	-= $life_heal;
+					if ($this->less_mana > 0)		$this->less_mana	-= $mana_heal;
 					if ($this->less_stamina > 0)	$this->less_stamina	-= $stamina_heal;
 
-					// if ($this->less_life < 0)		$this->less_life	= 0;
-					// if ($this->less_mana < 0)		$this->less_mana	= 0;
+					if ($this->less_life < 0)		$this->less_life	= 0;
+					if ($this->less_mana < 0)		$this->less_mana	= 0;
 					if ($this->less_stamina < 0)	$this->less_stamina	= 0;
 
-					// if ($this->less_life == 0 && $this->less_mana == 0) {
-					// 	$this->hospital	= 0;
-					// }
+					if ($this->less_life == 0 && $this->less_mana == 0) {
+						$this->hospital	= 0;
+					}
 				}
 
 				$this->last_healed_at	= now(true);
