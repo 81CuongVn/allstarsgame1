@@ -417,7 +417,7 @@ class QuestsController extends Controller {
 			$this->json->messages	= $errors;
 		}
 	}
-	function daily_change(){
+	function daily_change() {
 		$player					= Player::get_instance();
 		$user					= User::get_instance();
 
@@ -433,14 +433,14 @@ class QuestsController extends Controller {
 
 		if (isset($_POST['id']) && is_numeric($_POST['id']) && isset($_POST['quest']) && is_numeric($_POST['quest'])) {
 			$daily				= DailyQuest::find($_POST['quest']);
-
 			if (!$daily) {
 				$errors[]	= t('quests.time.errors.invalid');
 			} else {
 				$player_daily 		= PlayerDailyQuest::find($_POST['id']);
 				$buy_mode_change 	= PlayerChange::find_first("player_id=" . $player->id);
-
-				if ($player_daily->complete == 1) {
+				var_dump($player_daily);
+				exit;
+				if (!isset($player_daily) || $player_daily->complete == 1) {
 					$errors[]	= t('quests.time.errors.invalid');
 				}
 
@@ -494,7 +494,7 @@ class QuestsController extends Controller {
 			}
 
 			// Atualiza o contador de troca das missões diarias
-			if (!$buy_mode_change) {
+			if (!isset($buy_mode_change)) {
 				$buy_mode_change 	= PlayerChange::find_first("player_id=" . $player->id);
 			}
 			$buy_mode_change->daily++;
@@ -513,10 +513,8 @@ class QuestsController extends Controller {
 			]);
 
 			// Adiciona uma nova missão para o player
-			$daily_quests			= Recordset::query('SELECT * FROM daily_quests WHERE of="player" ORDER BY RAND() LIMIT 1')->row_array();
 			$quest	= DailyQuest::find_first("of = 'player'", [
-				'reorder'	=> 'RAND()',
-				'limit'		=> 1
+				'reorder'	=> 'RAND()'
 			]);
 			if ($quest->anime && !$quest->personagem) {
                 $anime = Anime::find_first('active = 1', [
@@ -533,20 +531,14 @@ class QuestsController extends Controller {
                     'limit'		=> 1
                 ]);
             }
-			if ($daily_quests['anime'] && !$daily_quests['personagem']) {
-				$animes					= Recordset::query('SELECT id FROM animes WHERE active = 1 ORDER BY RAND() LIMIT 1')->row_array();
-			} elseif ($daily_quests['anime'] && $daily_quests['personagem']) {
-				$animes					= Recordset::query('SELECT id FROM animes WHERE active = 1 ORDER BY RAND() LIMIT 1')->row_array();
-				$personagens			= Recordset::query('SELECT id FROM characters WHERE active = 1 AND anime_id ='. $animes['id'] .' ORDER BY RAND() LIMIT 1')->row_array();
-			}
 
-			Recordset::insert('player_daily_quests', [
-				'player_id'				=> $player->id,
-				'daily_quest_id'		=> $daily_quests['id'],
-				'type'					=> $daily_quests['type'],
-				'anime_id'				=> ($animes['id']) ? $animes['id'] : 0,
-				'character_id'			=> ($personagens['id']) ? $personagens['id'] : 0
-			]);
+			$insert = new PlayerDailyQuest();
+            $insert->player_id      = $player['id'];
+            $insert->daily_quest_id = $quest->id;
+            $insert->type           = $quest->type;
+            $insert->anime_id       = $anime ? $anime->id : 0;
+            $insert->character_id   = $character ? $character->id : 0;
+            $insert->save();
 		} else {
 			$this->json->messages	= $errors;
 		}
