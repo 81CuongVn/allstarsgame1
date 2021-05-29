@@ -428,8 +428,6 @@ class QuestsController extends Controller {
 		$errors					= [];
 		$buy_change				= 0;
 		$valor_change			= 0;
-		$animes					= 0;
-		$personagens			= 0;
 
 		if (isset($_POST['id']) && is_numeric($_POST['id']) && isset($_POST['quest']) && is_numeric($_POST['quest'])) {
 			$daily				= DailyQuest::find($_POST['quest']);
@@ -438,9 +436,8 @@ class QuestsController extends Controller {
 			} else {
 				$player_daily 		= PlayerDailyQuest::find($_POST['id']);
 				$buy_mode_change 	= PlayerChange::find_first("player_id=" . $player->id);
-				var_dump($player_daily);
-				exit;
-				if (!isset($player_daily) || $player_daily->complete == 1) {
+
+				if (!$player_daily || $player_daily->complete == 1) {
 					$errors[]	= t('quests.time.errors.invalid');
 				}
 
@@ -468,7 +465,7 @@ class QuestsController extends Controller {
 
 						if ($user->credits < $valor_change) {
 							$errors[]	= t("quests.time.errors.not_enough_credits");
-						}else{
+						} else {
 							$buy_change = 2;
 						}
 
@@ -533,11 +530,11 @@ class QuestsController extends Controller {
             }
 
 			$insert = new PlayerDailyQuest();
-            $insert->player_id      = $player['id'];
+            $insert->player_id      = $player->id;
             $insert->daily_quest_id = $quest->id;
             $insert->type           = $quest->type;
-            $insert->anime_id       = $anime ? $anime->id : 0;
-            $insert->character_id   = $character ? $character->id : 0;
+            $insert->anime_id       = isset($anime) ? $anime->id : 0;
+            $insert->character_id   = isset($character) ? $character->id : 0;
             $insert->save();
 		} else {
 			$this->json->messages	= $errors;

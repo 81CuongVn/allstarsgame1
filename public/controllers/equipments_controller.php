@@ -138,7 +138,7 @@ class EquipmentsController extends Controller {
                     // Adiciona o contador de aprimoramentos
 
                     $count = $method == 1719 ? 1 : 2;
-                    $upgrade = Item::upgrade_equipment($player, $rarity, $item_id, $player_item->slot_name, $count);
+                    $upgrade = Item::upgrade_equipment($player, $item_id, $count);
                 }
                 // Só faz para o Sangue e Areia
 

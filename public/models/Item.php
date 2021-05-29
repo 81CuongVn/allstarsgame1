@@ -755,7 +755,7 @@ class Item extends Relation {
 
 		return $player_item;
 	}
-	static function upgrade_equipment($player, $rarity, $item_id, $slot, $method) {
+	static function upgrade_equipment($player, $item_id, $method) {
         // Zera os atributos do seu resumo geral
         $player_attribute		= PlayerAttribute::find_first('player_id=' . $player->id);
         $player_item_attribute	= PlayerItemAttribute::find_first('player_item_id=' . $item_id);
@@ -783,15 +783,7 @@ class Item extends Relation {
         $player_item_attribute->save();
         // Zera os atributos do seu resumo geral
 
-        $attributes_by_slot	= [
-            'head'		=> [ 'generic_technique_damage','unique_technique_damage','defense_technique_extra','currency_battle','exp_battle','currency_quest','exp_quest','luck_discount','item_drop_increase' ],
-            'shoulder'	=> [ 'generic_technique_damage','unique_technique_damage','defense_technique_extra','currency_battle','exp_battle','currency_quest','exp_quest','luck_discount','item_drop_increase' ],
-            'chest'		=> [ 'generic_technique_damage','unique_technique_damage','defense_technique_extra','currency_battle','exp_battle','currency_quest','exp_quest','luck_discount','item_drop_increase' ],
-            'neck'		=> [ 'generic_technique_damage','unique_technique_damage','defense_technique_extra','currency_battle','exp_battle','currency_quest','exp_quest','luck_discount','item_drop_increase' ],
-            'hand'		=> [ 'generic_technique_damage','unique_technique_damage','defense_technique_extra','currency_battle','exp_battle','currency_quest','exp_quest','luck_discount','item_drop_increase' ],
-            'leggings'	=> [ 'generic_technique_damage','unique_technique_damage','defense_technique_extra','currency_battle','exp_battle','currency_quest','exp_quest','luck_discount','item_drop_increase' ]
-        ];
-        $attributes_by_chances	= [
+		$attributes_by_chances	= [
             '0'		    => [ 'generic_technique_damage', 80 ],
             '1'		    => [ 'unique_technique_damage',  90 ],
             '2'	    	=> [ 'defense_technique_extra',  70 ],
