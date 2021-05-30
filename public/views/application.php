@@ -187,7 +187,7 @@ if (preg_match('/read_news/', $action)) {
 											'currency'	=> t('currencies.' . $player->character()->anime_id)
 										]);?>
 									</button>
-								</form>	
+								</form>
 								<form id="vip-form-432" onsubmit="return false">
 									<input type="hidden" name="id" value="432" />
 									<button type="button" class="btn btn-primary btn-sm btn-block buy" data-id="432">
@@ -374,7 +374,11 @@ if (preg_match('/read_news/', $action)) {
 								<div id="menu-fim"></div>
 							</div>
 						</div>
-					<?php } ?>
+					<?php } ?><br />
+					<div style="width: 240px;">
+						<script id="_wauae2">var _wau = _wau || []; _wau.push(["dynamic", "gq7qmwiq8v", "ae2", "c4302bffffff", "small"]);</script>
+						<script async src="//waust.at/d.js"></script>
+					</div>
 				</div>
 			<?php } ?>
 			<div id="direita" class="<?=($player ? 'with-player' : '');?>">
