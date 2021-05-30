@@ -309,7 +309,7 @@ if (preg_match('/read_news/', $action)) {
 	<div id="pagina">
 		<div id="colunas">
 			<?php if (!$player || !$with_battle) { ?>
-				<div id="esquerda" class="<?=(!$player ? 'with-player' : '');?>">
+				<div id="esquerda" class="<?=($player ? 'with-player' : '');?>">
 					<?php if ($player) { ?>
 						<?=partial('shared/left_character', [
 							'user'		=> $user,
