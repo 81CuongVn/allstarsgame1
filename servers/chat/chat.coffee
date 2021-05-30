@@ -74,10 +74,10 @@ diff_in_secs	= (d1, d2) ->
 	days			= 0
 
 	diff	/= sign
-	diff	= (diff-(milliseconds = diff%1000))/1000
-	diff	= (diff-(seconds = diff%60))/60
-	diff	= (diff-(minutes = diff%60))/60
-	days	= (diff-(hours = diff%24))/24
+	diff	= (diff - (milliseconds = diff%1000)) / 1000
+	diff	= (diff - (seconds = diff%60)) / 60
+	diff	= (diff - (minutes = diff%60)) / 60
+	days	= (diff - (hours = diff%24)) / 24
 
 	return seconds
 
