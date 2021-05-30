@@ -315,6 +315,11 @@ function get_chance() {
 }
 
 function array_random_key($arr) {
+	if ($_SESSION['universal']) {
+		echo '<pre>';
+		print_r($arr);
+		echo '</pre>';
+	}
 	$keys	= array_keys($arr);
 
 	return $keys[floor(rand(0, sizeof($keys) - 1))];
