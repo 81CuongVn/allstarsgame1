@@ -453,7 +453,9 @@ trait EffectManager {
 						if ($fetch_condition($type, $effect_data->renew_random_cooldown)) {
 							$locks	= $this->get_technique_locks();
 							if ($_SESSION['universal']) {
+								echo '<pre>';
 								print_r($locks);
+								echo '</pre>';
 							}
 
 							if ($locks) {
