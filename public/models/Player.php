@@ -730,7 +730,7 @@ class Player extends Relation {
 		$pm				= new PrivateMessage();
 		$pm->to_id		= $player->id;
 		$pm->subject	= "Conquista: ". $achievement->description()->name;
-		$pm->content	= '<b>Você completou uma nova conquista!<//b>
+		$pm->content	= '<b>Você completou uma nova conquista!</b>
 
 		<b>Conquista:</b> ' . $achievement->description()->name . '
 		<b>Objetivo:</b> ' . $achievement->description()->description . '
