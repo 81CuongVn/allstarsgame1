@@ -435,11 +435,9 @@ trait EffectManager {
 			foreach ($this->get_effects()[$type] as $item_key => $item) {
 				foreach ($item as $effect) {
 					$effect_data	= ItemEffect::find($effect->id);
-
 					if ($effect_data->effect_direction == 'buff') {
 						if ($fetch_condition($type, $effect_data->heals_life)) {
 							$this->less_life	-= $effect_data->heals_life;
-
 							if ($this->less_life < 0) {
 								$this->less_life	= 0;
 							}
@@ -447,7 +445,6 @@ trait EffectManager {
 
 						if ($fetch_condition($type, $effect_data->heals_mana)) {
 							$this->less_mana	-= $effect_data->heals_mana;
-
 							if ($this->less_mana < 0) {
 								$this->less_mana	= 0;
 							}
@@ -455,12 +452,13 @@ trait EffectManager {
 
 						if ($fetch_condition($type, $effect_data->renew_random_cooldown)) {
 							$locks	= $this->get_technique_locks();
-							$this->remove_technique_lock(array_random_key($locks));
+							if ($locks) {
+								$this->remove_technique_lock(array_random_key($locks));
+							}
 						}
 
 						if ($fetch_condition($type, $effect_data->heals_by_turn)) {
 							$this->less_life	-= $effect_data->heals_by_turn;
-
 							if ($this->less_life < 0) {
 								$this->less_life	= 0;
 							}
@@ -494,7 +492,6 @@ trait EffectManager {
 					} else {
 						if ($fetch_condition($type, $effect_data->heals_life)) {
 							$this->less_life	+= $effect_data->heals_life;
-
 							if ($this->less_life > $this->for_life()) {
 								$this->less_life	= $this->for_life();
 							}
@@ -502,7 +499,6 @@ trait EffectManager {
 
 						if ($fetch_condition($type, $effect_data->heals_mana)) {
 							$this->less_mana	+= $effect_data->heals_mana;
-
 							if ($this->less_mana > $this->for_mana(true)) {
 								$this->less_mana	= $this->for_mana(true);
 							}
@@ -543,7 +539,6 @@ trait EffectManager {
 
 						if ($fetch_condition($type, $effect_data->heals_by_turn)) {
 							$this->less_life	+= abs($effect_data->heals_by_turn);
-
 							if ($this->less_life > $this->for_life(true)) {
 								$this->less_life	= $this->for_life(true);
 							}
@@ -552,7 +547,6 @@ trait EffectManager {
 						if ($fetch_condition($type, $effect_data->mana_half_life)) {
 							if (has_chance($effect_data->mana_half_life) && $this->for_mana() <= $this->for_mana(true) / 2) {
 								$this->less_mana	+= 1;
-
 								if ($this->less_mana > $this->for_mana(true)) {
 									$this->less_mana	= $this->for_mana(true);
 								}
@@ -600,7 +594,6 @@ trait EffectManager {
 				foreach ($this->get_effects()[$type] as $item_key => $item) {
 					foreach ($item as $effect) {
 						$effect_data	= ItemEffect::find($effect->id);
-
 						if (!$fetch_condition($type, $effect_data->$key)) {
 							$new_effects[$type][$item_key][$effect->id]	= $effect;
 						}
