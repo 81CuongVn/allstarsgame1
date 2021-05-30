@@ -76,6 +76,7 @@ class Player extends Relation {
 			$this->exp = 0;
 			$this->save();
 		}
+
 		if (!$this->stats()) {
 			$stats				= new PlayerStat();
 			$stats->player_id	= $this->id;
@@ -107,17 +108,17 @@ class Player extends Relation {
 
 		if ($this->level_screen_seen) {
 			if ($this->is_next_level()) {
-				// while ($this->is_next_level()) {
-					$this->level		+= 1;
+				while ($this->is_next_level()) {
 					$this->exp			-= $this->level_exp();
+					$this->level		+= 1;
 
 					$this->less_mana	= 0;
 					$this->less_life	= 0;
 					$this->less_stamina	= 0;
+				}
 
-					// Checa a conquista de level do player
-					$this->achievement_check('level_player');
-				// }
+				// Checa a conquista de level do player
+				$this->achievement_check('level_player');
 			}
 		}
 	}
@@ -736,7 +737,7 @@ class Player extends Relation {
 		<b>Objetivo:</b> ' . $achievement->description()->description . '
 
 		<b>Recompensas:</b>
-		' . join('<br />', $reward);
+		' . join('<br />— ', $reward);
 		$pm->save();
 	}
 
