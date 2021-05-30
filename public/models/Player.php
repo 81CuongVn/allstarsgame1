@@ -647,39 +647,38 @@ class Player extends Relation {
 
 		// Recompensa
 		$rewards	= $achievement->achievement_rewards($achievement->id);
-		$reward		= "";
+		$reward		= [];
 		if ($rewards) {
-			$reward .= "e ganhou as seguintes recompensas: <br /><br/>";
 			if ($rewards->exp) {
-				$reward .= $rewards->exp ." ". t('ranked.exp') ."<br />";
+				$reward[] = $rewards->exp . " " . t('ranked.exp');
 
 				// Exp para o Player
 				$player->earn_exp($rewards->exp);
 			}
 
 			if ($rewards->exp_user) {
-				$reward .= $rewards->exp_user ." ". t('ranked.exp_account') ."<br />";
+				$reward[] = $rewards->exp_user . " " . t('ranked.exp_account');
 
 				// Exp para a conta
 				$user->exp($rewards->exp_user);
 			}
 
 			if ($rewards->currency) {
-				$reward .= $rewards->currency ." ". t('currencies.' . $player->character()->anime_id) ."<br />";
+				$reward[] = $rewards->currency . " " . t('currencies.' . $player->character()->anime_id);
 
 				// Dinheiro para o player
 				$player->earn($rewards->currency);
 			}
 
 			if ($rewards->credits) {
-				$reward .= $rewards->credits ." ". t('treasure.show.credits') ."<br />";
+				$reward[] = $rewards->credits . " " . t('treasure.show.credits');
 
 				// Crédito para a conta
 				$user->earn($rewards->credits);
 			}
 
 			if ($rewards->item_id) {
-				$reward .= $rewards->quantity ."x ". Item::find($rewards->item_id)->description()->name ."<br />";
+				$reward[] = $rewards->quantity . "x " . Item::find($rewards->item_id)->description()->name;
 
 				// Item para o player
 				$player_item_exist	= PlayerItem::find_first("item_id=".$rewards->item_id." AND player_id=". $player->id);
@@ -696,7 +695,7 @@ class Player extends Relation {
 			}
 
 			if ($rewards->character_theme_id && !$user->is_theme_bought($rewards->character_id)) {
-				$reward .= t('treasure.show.theme') ." ". CharacterTheme::find($rewards->character_theme_id)->description()->name ."<br />";
+				$reward[] = t('treasure.show.theme') . " " . CharacterTheme::find($rewards->character_theme_id)->description()->name;
 
 				// Dá o Tema ao player
 				$reward_theme						= new UserCharacterTheme();
@@ -707,7 +706,7 @@ class Player extends Relation {
 			}
 
 			if ($rewards->character_id && !$user->is_character_bought($rewards->character_theme_id)) {
-				$reward .= t('treasure.show.character') ." ". Character::find($rewards->character_id)->description()->name ."<br />";
+				$reward[] = t('treasure.show.character') . " " . Character::find($rewards->character_id)->description()->name;
 
 				// Dá o Personagem ao player
 				$reward_character				= new UserCharacter();
@@ -717,7 +716,7 @@ class Player extends Relation {
 				$reward_character->save();
 			}
 			if ($rewards->headline_id && !$user->is_headline_bought($rewards->headline_id)) {
-				$reward .= t('treasure.show.headline') ." ". Headline::find($rewards->headline_id)->description()->name ."<br />";
+				$reward[] = t('treasure.show.headline') . " " . Headline::find($rewards->headline_id)->description()->name;
 
 				// Dá o titulo ao player
 				$reward_headline				= new UserHeadline();
@@ -731,7 +730,11 @@ class Player extends Relation {
 		$pm				= new PrivateMessage();
 		$pm->to_id		= $player->id;
 		$pm->subject	= "Conquista: ". $achievement->description()->name;
-		$pm->content	= "Você completou a conquista: <b>". $achievement->description()->name ."</b> ". $reward;
+		$pm->content	= 'Você completou a conquista: <b>' . $achievement->description()->name . '</b><br />
+		<b>Objetivo:</b> ' . $achievement->description()->description . '<br /><br />
+
+		<b>Recompensas:</b><br />
+		' . join('<br />', $reward);
 		$pm->save();
 	}
 
