@@ -681,12 +681,12 @@ class CharactersController extends Controller {
 
 		if ($_POST) {
 			if ($player->is_next_level()) {
-				$player->level				+= 1;
-				$player->exp				-= $player->level_exp();
+				$player->exp			-= $player->level_exp();
+				$player->level			+= 1;
 
-				$player->less_mana			= 0;
-				$player->less_life			= 0;
-				$player->less_stamina		= 0;
+				$player->less_mana		= 0;
+				$player->less_life		= 0;
+				$player->less_stamina	= 0;
 
 				$player->level_screen_seen	= 1;
 
