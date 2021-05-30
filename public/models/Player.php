@@ -737,7 +737,7 @@ class Player extends Relation {
 		<b>Objetivo:</b> ' . $achievement->description()->description . '
 
 		<b>Recompensas:</b>
-		' . join('<br />— ', $reward);
+		' . join('<br />', $reward);
 		$pm->save();
 	}
 
