@@ -649,7 +649,6 @@ class Player extends Relation {
 		$rewards	= $achievement->achievement_rewards($achievement->id);
 		$reward		= [];
 		if ($rewards) {
-			// $reward .= "e ganhou as seguintes recompensas: <br /><br />";
 			if ($rewards->exp) {
 				$reward[] = $rewards->exp . " " . t('ranked.exp');
 
@@ -732,10 +731,10 @@ class Player extends Relation {
 		$pm->to_id		= $player->id;
 		$pm->subject	= "Conquista: ". $achievement->description()->name;
 		$pm->content	= 'Você completou a conquista: <b>' . $achievement->description()->name . '</b><br />
-		- ' . $achievement->description()->description . '<br /><br />
+		<b>Objetivo:</b> ' . $achievement->description()->description . '<br /><br />
 
 		<b>Recompensas:</b><br />
-		' . join('<br />', $reward);;
+		' . join('<br />', $reward);
 		$pm->save();
 	}
 
