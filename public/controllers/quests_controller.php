@@ -1043,7 +1043,7 @@ class QuestsController extends Controller {
 
 		$this->assign('player', $player);
 		$this->assign('effects', $player->get_parsed_effects());
-		$this->assign('graduations', $player->character()->anime()->graduations(' AND sorting!=1'));
+		$this->assign('graduations', $player->character()->anime()->graduations());
 		$this->assign('quests', $player->character()->anime()->pvp_quests());
 		$this->_generate_pvp_quest_list($player);
 		$this->assign('player_tutorial', $player->player_tutorial());
