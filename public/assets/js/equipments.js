@@ -414,7 +414,35 @@
         if (!$(this).hasClass('equipped')) {
             list_equipments(element);
             return;
-        } else
+        } else {
+            buttons.push({
+                label: I18n.t('equipments.show.unequip'),
+                className: 'btn btn-sm btn-danger',
+                callback: function () {
+                    lock_screen(true);
+
+                    $.ajax({
+                        url: make_url('equipments#equip'),
+                        type: 'post',
+                        dataType: 'json',
+                        data: {
+                            slot: element.data('slot'),
+                            equipment: element.data('id')
+                        },
+                        success: function (result) {
+                            if (result.success) {
+                                location.reload();
+                            } else {
+                                lock_screen(false);
+                                format_error(result);
+                            }
+                        }
+                    });
+
+                    return false;
+                }
+            });
+
             buttons.push({
                 label: I18n.t('equipments.show.upgrade'),
                 className: 'btn btn-sm btn-primary',
@@ -423,6 +451,7 @@
                     win.modal('hide');
                 }
             });
+        }
 
         buttons.push({
             label: I18n.t('equipments.show.list'),

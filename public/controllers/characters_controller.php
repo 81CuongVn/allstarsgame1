@@ -576,6 +576,7 @@ class CharactersController extends Controller {
 
 					// Verifica se o jogador comprou o tema - Conquista
 					$player->achievement_check("character_theme");
+					$player->check_objectives("character_theme");
 				} elseif($_POST['use']) {
 					$image								= $theme->first_image();
 					$player->character_theme_id			= $theme->id;
@@ -694,6 +695,7 @@ class CharactersController extends Controller {
 
 				// Checa a conquista de level do player
 				$player->achievement_check('level_player');
+				$player->check_objectives("level_player");
 			}
 
 			redirect_to('characters#status');
@@ -872,6 +874,7 @@ class CharactersController extends Controller {
 
 				// Verifica a conquista de fragmentos - Conquista
 				$player->achievement_check("fragments");
+				$player->check_objectives("fragments");
 
 				// Manda o id do premio para o json
 				$this->json->message	= $message;
@@ -1114,9 +1117,10 @@ class CharactersController extends Controller {
 					$user_character->character_id	= $id;
 					$user_character->save();
 
-					if($player){
+					if ($player) {
 						// verifica se desbloqueou novo personagem - conquista
 						$player->achievement_check("character");
+						$player->check_objectives("character");
 					}
 
 				} else {

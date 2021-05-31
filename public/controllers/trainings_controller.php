@@ -166,6 +166,7 @@ class TrainingsController extends Controller {
 
 		// verifica o level da conta do jogador
 		$player->achievement_check("level_account");
+		$player->check_objectives("level_account");
 	}
 
 	public function techniques() {

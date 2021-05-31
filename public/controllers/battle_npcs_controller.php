@@ -605,10 +605,12 @@ class BattleNpcsController extends Controller
 
 								// Verifica os créditos do jogador.
 								$player->achievement_check("credits");
+								$player->check_objectives("credits");
 							}
 
 							// Verifica a arena do jogador.
 							$player->achievement_check("challenges");
+							$player->check_objectives("challenges");
 						}
 					}
 
@@ -627,6 +629,7 @@ class BattleNpcsController extends Controller
 
 									// Verifica a arena do jogador.
 									$player->achievement_check("challenges");
+									$player->check_objectives("challenges");
 								}
 							} else {
 								if (__check_dead($player)) {
@@ -717,10 +720,12 @@ class BattleNpcsController extends Controller
 
 											// Verifica os créditos do jogador.
 											$player->achievement_check("credits");
+											$player->check_objectives("credits");
 										}
 
 										// Verifica a arena do jogador.
 										$player->achievement_check("challenges");
+										$player->check_objectives("challenges");
 									}
 								}
 							}
@@ -812,10 +817,12 @@ class BattleNpcsController extends Controller
 
 										// Verifica os créditos do jogador.
 										$player->achievement_check("credits");
+										$player->check_objectives("credits");
 									}
 
 									// Verifica a arena do jogador.
 									$player->achievement_check("challenges");
+									$player->check_objectives("challenges");
 								}
 							} else {
 								if (__check_dead($npc)) {
@@ -830,6 +837,7 @@ class BattleNpcsController extends Controller
 
 										// Verifica a arena do jogador.
 										$player->achievement_check("challenges");
+										$player->check_objectives("challenges");
 									}
 								}
 							}

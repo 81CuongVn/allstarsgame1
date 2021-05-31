@@ -664,7 +664,7 @@ pt-BR:
         title: Disitribuição dos atributos treinados
       title: Treinamento de atributos
       info: |
-        A cada que se passa desde o inicio do round, é adicionado um valor de treino para que o jogador melhore seus atributos em batalha,
+        A cada dia que se passa desde o inicio do round, é adicionado um valor de treino para que o jogador melhore seus atributos em batalha,
         esse valor é somado diariamente até final do round.
       info_finished: Treinamento concluído
       will_spend_mana: Você irá gastar
@@ -1280,6 +1280,7 @@ pt-BR:
     show:
       none: Você não possui nenhum equipamento para esse slot
       equip: Equipar
+      unequip: Desequipar
       click_text: Que ação você gostaria de fazer com esse equipamento ?
       upgrade: Aprimorar
       list: Ver Equipamentos

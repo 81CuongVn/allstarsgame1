@@ -116,23 +116,20 @@ class EquipmentsController extends Controller {
             if (!sizeof($errors)) {
                 // Só faz para o Sangue e Areia
                 if ($method == 1719 || $method == 1720) {
-                    switch ($player_item->rarity){
-                        case 'common':		$rarity = 0;	break;
-                        case 'rare':		$rarity = 1;	break;
-                        case 'epic':		$rarity = 2;	break;
-                        case 'legendary':	$rarity = 3;	break;
-                    }
-
                     // Adiciona o contador de aprimoramentos
                     $upgrade_counter = PlayerStat::find_first("player_id=".$player->id);
                     if ($method == 1719) {
-                        // $upgrade_counter->sands++;
-                        // Verifica a conquista de fragmentos - Conquista
+                        $upgrade_counter->sands++;
+
+						// Verifica a conquista de fragmentos - Conquista
                         $player->achievement_check("sands");
-                    } else {
-                        // $upgrade_counter->bloods++;
-                        // Verifica a conquista de fragmentos - Conquista
+						$player->check_objectives("sands");
+                    } elseif ($method == 1720) {
+                        $upgrade_counter->bloods++;
+
+						// Verifica a conquista de fragmentos - Conquista
                         $player->achievement_check("bloods");
+						$player->check_objectives("bloods");
                     }
                     $upgrade_counter->save();
                     // Adiciona o contador de aprimoramentos
@@ -191,7 +188,7 @@ class EquipmentsController extends Controller {
         $is_valid		= false;
 
         foreach ($positions as $position) {
-            if($position->slot_name == $_POST['slot']) {
+            if ($position->slot_name == $_POST['slot']) {
                 $is_valid	= true;
                 break;
             }
@@ -208,7 +205,8 @@ class EquipmentsController extends Controller {
         $this->as_json			= true;
         $this->json->success	= false;
         $this->json->messages	= [];
-        $player					= Player::get_instance();
+
+		$player					= Player::get_instance();
         $anime					= $player->character()->anime();
         $positions				= $anime->equipment_positions();
         $is_valid				= false;
@@ -216,36 +214,39 @@ class EquipmentsController extends Controller {
 
         if (isset($_POST['equipment']) && is_numeric($_POST['equipment'])) {
             foreach ($positions as $position) {
-                if($position->slot_name == $_POST['slot']) {
+                if ($position->slot_name == $_POST['slot']) {
                     $is_valid	= true;
                     break;
                 }
             }
 
             if ($is_valid) {
-                $player_item	= PlayerItem::find_first('id=' . $_POST['equipment'] . ' AND player_id=' . $player->id . ' AND slot_name="' . $_POST['slot'] . '" AND equipped=0');
-
-                if(!$player_item) {
-                    $errors[]	= t('equipments.equip.errors.invalid') . '[1]';
+                $player_item	= PlayerItem::find_first('id=' . $_POST['equipment'] . ' AND player_id=' . $player->id . ' AND slot_name = "' . $_POST['slot'] . '"');
+                if (!$player_item) {
+                    $errors[]	= t('equipments.equip.errors.invalid');
                 } else {
                     $attributes	= $player_item->attributes();
-
                     if ($attributes->graduation_sorting > $player->graduation()->sorting) {
                         $errors[]	= t('equipments.equip.errors.graduation');
                     }
                 }
             } else {
-                $errors[]	= t('equipments.equip.errors.invalid') . '[2]';
+                $errors[]	= t('equipments.equip.errors.invalid');
             }
         } else {
-            $errors[]	= t('equipments.equip.errors.invalid') . '[3]';
+            $errors[]	= t('equipments.equip.errors.invalid');
         }
 
         if (!sizeof($errors)) {
-            $player->equip_equipment($player_item, $_POST['slot']);
+			if (!$player_item->equipped) {
+            	$player->equip_equipment($player_item, $_POST['slot']);
 
-            //Verifica a conquista de fragmentos - Conquista
-            $player->achievement_check("equipment");
+            	// Verifica a conquista de fragmentos - Conquista
+            	$player->achievement_check("equipment");
+				$player->check_objectives("equipment");
+			} else {
+				$player->unequip_equipment($player_item);
+			}
 
             $this->json->success	= true;
         } else {
@@ -290,6 +291,7 @@ class EquipmentsController extends Controller {
             }
             // Verifica a conquista de fragmentos - Conquista
             $player->achievement_check("fragments");
+			$player->check_objectives("fragments");
 
             $player_item->attributes()->destroy();
             $player_item->destroy();
@@ -308,8 +310,7 @@ class EquipmentsController extends Controller {
 
         if (isset($_POST['equipment']) && is_numeric($_POST['equipment'])) {
             $player_item	= PlayerItem::find_first('id=' . $_POST['equipment'] . ' AND player_id=' . $player->id . ' AND equipped=0');
-
-            if(!$player_item) {
+            if (!$player_item) {
                 $errors[]	= t('equipments.equip.errors.invalid') . '[1]';
             }
         } else {

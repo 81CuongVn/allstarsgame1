@@ -17,6 +17,7 @@ class QuestsController extends Controller {
 
 		//Verifica a conquista da missão de combate
 		$player->achievement_check("battle_quests");
+		$player->check_objectives("battle_quests");
 
 		$this->assign('player',			$player);
 		$this->assign('quests',			PlayerCombatQuest::find("finished=0 ORDER BY id ASC"));
@@ -670,6 +671,7 @@ class QuestsController extends Controller {
 
 							//Verifica a conquista de fragmentos - Conquista
 							$player->achievement_check("daily_quests");
+							$player->check_objectives("daily_quests");
 
 							// Level da Conta ( Missão Diaria )
 							$user = User::get_instance();
@@ -724,8 +726,8 @@ class QuestsController extends Controller {
 
 							//Verifica a conquista de fragmentos - Conquista
 							$player->achievement_check("account_quests");
-
-						}else{
+							$player->check_objectives("account_quests");
+						} else {
 							$errors[]	= t('quests.daily.errors.not_ready');
 							$this->json->messages	= $errors;
 						}
@@ -774,8 +776,8 @@ class QuestsController extends Controller {
 
 							//Verifica a conquista de fragmentos - Conquista
 							$player->achievement_check("weekly_quests");
-
-						}else{
+							$player->check_objectives("weekly_quests");
+						} else {
 							$errors[]	= t('quests.daily.errors.not_ready');
 							$this->json->messages	= $errors;
 						}
@@ -847,6 +849,7 @@ class QuestsController extends Controller {
 
 			// Verifica a conquista de fragmentos - Conquista
 			$player->achievement_check("time_quests");
+			$player->check_objectives("time_quests");
 
 			$this->_give_item_reward($player, $player_quest);
 		} else {
@@ -893,6 +896,7 @@ class QuestsController extends Controller {
 
 			// Verifica a conquista de fragmentos - Conquista
 			$player->achievement_check("pet_quests");
+			$player->check_objectives("pet_quests");
 
 			// Removendo os pets do trabalho e adicionando a exp e felicidades deles
 			for ($i = 1; $i <= 3; ++$i) {
@@ -1208,6 +1212,7 @@ class QuestsController extends Controller {
 
 			//Verifica a conquista de fragmentos - Conquista
 			$player->achievement_check("pvp_quests");
+			$player->check_objectives("pvp_quests");
 
 			$this->_give_item_reward($player, $player_quest);
 		} else {
