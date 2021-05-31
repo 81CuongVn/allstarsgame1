@@ -58,6 +58,7 @@ $registration   = openssl_encrypt(json_encode($chat_data), 'AES-256-CBC', $key, 
 		var last_msg		= null;
 		var blocked			= [];
 		var pm_total		= 0;
+		var chat_max_length	= 120;
 
 		function resize_selector() {
 			var	tw	= $('#chat-v2 .selector-trigger').outerWidth() + 15;
@@ -389,11 +390,9 @@ $registration   = openssl_encrypt(json_encode($chat_data), 'AES-256-CBC', $key, 
 				channel			= $(this).data('channel');
 				real_channel	= channel;
 
-                if (channel == 'r10') {
-					$('#chat-v2 #message').attr('maxlength', 500);
-				} else {
-					$('#chat-v2 #message').attr('maxlength', 60);
-				}
+				<?php if (!$_SESSION['universal']) { ?>
+                	$('#chat-v2 #message').attr('maxlength', chat_max_length);
+				<?php } ?>
 
 				$('#chat-v2 .messages .chat-message').hide();
 

@@ -203,7 +203,9 @@
 			<img src="<?php echo image_url('events/gold.png')?>"/>
 			<div id="tooltip-req-gold" class="status-popover-container">
 				<div class="status-popover-content">
-					<?php echo t('event.e11');?>
+					<?php echo t('event.e11', [
+						'currency'	=> t('currencies.' . $player->character()->anime_id)
+					]);?>
 				</div>
 			</div>
 		</div>
