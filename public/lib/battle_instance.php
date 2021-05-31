@@ -329,6 +329,7 @@
 			if ($player_effects['confusion'] || $player_effects['confusion_percent'] && has_chance($enemy_effects['damage_increase_in_confusion'])) {
 				$enemy_attack	+= percent(25, $enemy_attack);
 			}
+
 			if ($enemy_effects['slowness'] || $enemy_effects['slowness_percent'] && has_chance($player_effects['damage_increase_in_slowness'])) {
 				$player_attack	+= percent(25, $player_attack);
 			}
@@ -336,11 +337,13 @@
 			if ($player_effects['slowness'] || $player_effects['slowness_percent'] && has_chance($enemy_effects['damage_increase_in_slowness'])) {
 				$enemy_attack	+= percent(25, $enemy_attack);
 			}
-			if($_SESSION['universal']){
-				//print($player_attack);
+
+			if ($_SESSION['universal']) {
+				// print($player_attack);
 			}
-			$player_damage		= $player_attack - $enemy_defense;
-			$enemy_damage		= $enemy_attack - $player_defense;
+
+			$player_damage		= floor($player_attack - $enemy_defense);
+			$enemy_damage		= floor($enemy_attack - $player_defense);
 
 			$player_init		= 100 - $this->player_item->formula()->attack_speed;
 			$enemy_init			= 100 - $this->enemy_item->formula()->attack_speed;
