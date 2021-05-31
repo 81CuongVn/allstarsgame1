@@ -2165,7 +2165,8 @@ pt-BR:
     e8: Chance de Drop Bônus
     e9: 10% a mais de chance de dropar itens em batalhas!
     e10: PONTUAÇÃO TOTAL DOS ANIMES
-    e11: 1000 de Ouro
+    e11: |
+        1.000 de #{currency}
     e12: 1 Equipamento Comum Aleatório
     e13: 5 Tigela de Arroz
     e14: 1 Mascote Comum Aleatório

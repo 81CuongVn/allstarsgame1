@@ -2,7 +2,7 @@
     <div id="rodape-posicao">
         <div id="facebook">
             <div style="width: 385px; height: 70px;">
-                <!-- <div class="fb-page" data-href="https://www.facebook.com/<?=FB_PAGE_USER;?>" data-tabs="timeline" data-width="385" data-height="70" data-small-header="true" data-adapt-container-width="false" data-hide-cover="true" data-show-facepile="false"></div> -->
+                <div class="fb-page" data-href="https://www.facebook.com/<?=FB_PAGE_USER;?>" data-tabs="timeline" data-width="385" data-height="70" data-small-header="true" data-adapt-container-width="false" data-hide-cover="true" data-show-facepile="false"></div>
             </div>
         </div>
         <div id="texto-rodape">
