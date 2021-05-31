@@ -519,15 +519,15 @@ class BattlePvpsController extends Controller {
 		$word_player	= ($battle->player_id == $player->id ? 'player' : 'enemy') . '_mana';
 
 		// Regra de range para os talentos do AASG!
-		if($player->user()->level < 46 || $enemy->user()->level < 46){
-			if(!$player->no_talent){
-				if($player->user()->level > $enemy->user()->level+10){
+		if ($player->user()->level < 46 || $enemy->user()->level < 46) {
+			if (!$player->no_talent) {
+				if ($player->user()->level > $enemy->user()->level+10) {
 					$player->no_talent = 2;
 					$player->save();
 				}
 			}
-			if(!$enemy->no_talent){
-				if($enemy->user()->level > $player->user()->level+10){
+			if (!$enemy->no_talent) {
+				if ($enemy->user()->level > $player->user()->level+10) {
 					$enemy->no_talent = 2;
 					$enemy->save();
 				}
@@ -541,7 +541,7 @@ class BattlePvpsController extends Controller {
 
 		$stats		= PlayerBattlePvpLog::find_first('player_id=' . $player->id . ' AND enemy_id=' . $enemy->id);
 
-		if(!$stats) {
+		if (!$stats) {
 			$stats				= new PlayerBattlePvpLog();
 			$stats->player_id	= $player->id;
 			$stats->enemy_id	= $enemy->id;
@@ -549,8 +549,8 @@ class BattlePvpsController extends Controller {
 		}
 
 		// magic, don't touch -->
-		$player->clear_fixed_effects('fixed');
-		$player->apply_battle_effects($enemy);
+			$player->clear_fixed_effects('fixed');
+			$player->apply_battle_effects($enemy);
 		// <--
 
 		$this->assign('player_wanted', $player_wanted);
@@ -561,7 +561,7 @@ class BattlePvpsController extends Controller {
 		$this->assign('stats', $stats);
 		$this->assign('techniques', $player->get_techniques());
 		$this->assign('target_url', make_url('battle_pvps'));
-		$this->assign('log', @unserialize($player->battle_pvp()->battle_log));
+		$this->assign('log', $player->battle_pvp()->get_log());
 	}
 
 	function attack($is_copy = null, $is_kill = null) {

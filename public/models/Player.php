@@ -647,6 +647,7 @@ class Player extends Relation {
 		$user	= $player->user();
 
 		// Recompensa
+		$txtReward	= '';
 		$rewards	= $achievement->achievement_rewards($achievement->id);
 		$reward		= [];
 		if ($rewards) {
@@ -725,6 +726,7 @@ class Player extends Relation {
 				$reward_headline->headline_id	= $rewards->headline_id;
 				$reward_headline->save();
 			}
+			$txtReward	= '<br /><b>Recompensas:</b><br />' . join('<br />', $reward);
 		}
 
 		// Envia uma mensagem para o jogador avisando do prêmio
@@ -734,15 +736,12 @@ class Player extends Relation {
 		$pm->content	= '<b>Você completou uma nova conquista!</b>
 
 		<b>Conquista:</b> ' . $achievement->description()->name . '
-		<b>Objetivo:</b> ' . $achievement->description()->description . '
-
-		<b>Recompensas:</b>
-		' . join('<br />', $reward);
+		<b>Objetivo:</b> ' . $achievement->description()->description . $txtReward;
 		$pm->save();
 	}
 
 	function at_low_stat() {
-		if(($this->for_mana() < $this->for_mana(true) / 2) || ($this->for_life() < $this->for_life(true) / 2)) {
+		if (($this->for_mana() < $this->for_mana(true) / 2) || ($this->for_life() < $this->for_life(true) / 2)) {
 			return true;
 		}
 
@@ -750,7 +749,7 @@ class Player extends Relation {
 	}
 
 	function &attributes() {
-		if($this->_attributes) {
+		if ($this->_attributes) {
 			return $this->_attributes;
 		} else {
 			$attributes	= PlayerAttribute::find_first('player_id=' . $this->id);
