@@ -3,9 +3,9 @@ require '_config.php';
 
 Recordset::query('TRUNCATE TABLE `ranking_accounts`;');
 
-$users	= Recordset::query('SELECT `id`,`name`,`level` FROM `users` WHERE `level` > 1 ORDER BY `level` DESC');
+$users	= Recordset::query('SELECT `id`,`name`,`level` FROM `users` WHERE `level` > 1 AND `banned` = 0 ORDER BY `level` DESC');
 foreach ($users->result_array() as $user) {
-    $points     = 0;
+    $points     = ( $user['level'] * 2000 );
     $players	= Recordset::query('
 			SELECT
 				a.id,
@@ -27,24 +27,28 @@ foreach ($users->result_array() as $user) {
 				JOIN graduations d ON d.id=a.graduation_id
 				JOIN player_quest_counters pqc ON pqc.player_id = a.id
 			WHERE
-				a.user_id=' . $user['id']);
+				a.banned = 0 AND a.removed = 0 AND a.user_id = ' . $user['id']);
 
     foreach ($players->result_array() as $player) {
-        $points	+=
-            ( $user['level'] * 2000 ) +
-            ( $player['wins_pvp'] * 50 ) +
-            ( $player['wins_npc'] * 10 ) +
-            ( $player['graduation_level'] * 1000) +
-            ( $player['level'] * 1000 ) +
-            ( $player['time_total'] * 100 ) +
-            ( $player['pvp_total'] * 200 ) +
-            ( $player['daily_total'] * 250 ) +
-            ( $player['combat_total'] * 200 )
-        ;
+		// Calcula os bosses mortos pelo player
+        $boss_score = 0;
+        $challenges = Recordset::query('SELECT quantity FROM player_challenges WHERE player_id = '. $player['id']);
+        foreach ($challenges->result_array() as $challenge) {
+            $boss_score += floor($challenge['quantity'] / 5) * 100;
+        }
 
-
+        $points +=  $player['wins_pvp']         * 50;
+        $points +=  $player['wins_npc']         * 10;
+        $points +=  $player['graduation_level'] * 1000;
+        $points +=  $player['level']            * 1000;
+        $points +=  $player['time_total']       * 100;
+        $points +=  $player['pvp_total']        * 200;
+        $points +=  $player['daily_total']      * 250;
+        $points +=  $player['pet_total']        * 50;
+        $points +=  $player['combat_total']     * 200;
     }
-    Recordset::insert('ranking_accounts', [
+
+	Recordset::insert('ranking_accounts', [
         'user_id'	=> $user['id'],
         'name'		=> $user['name'],
         'level'		=> $user['level'],
