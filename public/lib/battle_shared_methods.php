@@ -389,6 +389,7 @@ trait BattleSharedMethods {
 
 				// Conquista para verificar a quantidade de pet / hapiness
 				$p->achievement_check("pets");
+				$p->check_objectives('pets');
 			}
 
 			$p->battle_npc_id	= 0;
@@ -461,6 +462,7 @@ trait BattleSharedMethods {
 
 						// Verifica a conquista de areia - Conquista
 						$p->achievement_check("sands");
+						$p->check_objectives('sands');
 
 						// Diz que ganhou a Areia
 						$sand_drop  = true;
@@ -489,6 +491,7 @@ trait BattleSharedMethods {
 
 						// Verifica a conquista de areia - Conquista
 						$p->achievement_check("bloods");
+						$p->check_objectives('bloods');
 
 						// Diz que ganhou o Sangue
 						$blood_drop  = true;
@@ -554,6 +557,7 @@ trait BattleSharedMethods {
 
 					// Verifica a conquista de fragmentos - Conquista
 					$p->achievement_check("fragments");
+					$p->check_objectives('fragments');
 
 					// Diz que ganhou o Fragmento
 					$fragment_drop  = true;
@@ -569,6 +573,7 @@ trait BattleSharedMethods {
 
 						// Verifica a conquista de fragmentos - Conquista
 						$p->achievement_check("equipment");
+						$p->check_objectives('equipment');
 
 						// Diz que ganhou a Equip
 						$equip_drop  = true;
@@ -590,6 +595,7 @@ trait BattleSharedMethods {
 
 							// Verifica se você tem pets - Conquista
 							$p->achievement_check("pets");
+							$p->check_objectives('pets');
 
 							// Diz que ganhou o Mascote
 							$pet_drop  = true;
@@ -794,30 +800,24 @@ trait BattleSharedMethods {
 					$currency_extra	+= percent($effects['currency_reward_extra_percent'], $currency) + $effects['currency_reward_extra'];
 
 					// adiciona as novas flags de como o jogador matou os jogadores
-					if ($is_pvp) {
+					if ($is_pvp && (!$_SESSION['pvp_used_buff'] || !$_SESSION['pvp_used_ability'] || !$_SESSION['pvp_used_speciality'])) {
+						$player_kills = new PlayerKill();
+						$player_kills->player_id = $p->id;
+						$player_kills->enemy_id  = $e->id;
+
 						if (!$_SESSION['pvp_used_buff']) {
-							$player_kills = new PlayerKill();
-							$player_kills->player_id = $p->id;
-							$player_kills->enemy_id  = $e->id;
 							$player_kills->kills_wo_buff++;
-							$player_kills->save();
 						}
 
 						if (!$_SESSION['pvp_used_ability']) {
-							$player_kills = new PlayerKill();
-							$player_kills->player_id = $p->id;
-							$player_kills->enemy_id  = $e->id;
 							$player_kills->kills_wo_ability++;
-							$player_kills->save();
 						}
 
 						if(!$_SESSION['pvp_used_speciality']) {
-							$player_kills = new PlayerKill();
-							$player_kills->player_id = $p->id;
-							$player_kills->enemy_id  = $e->id;
 							$player_kills->kills_wo_speciality++;
-							$player_kills->save();
 						}
+
+						$player_kills->save();
 					}
 
 					// Verifica se o jogador matou um alvo dos procurados
@@ -984,6 +984,7 @@ trait BattleSharedMethods {
 
 									// Verifica se você ganhou treasure - Conquista
 									$p->achievement_check("treasure");
+									$p->check_objectives('treasure');
 
 									// Seta como roubado um tesouro
 									$treasure_still = true;
@@ -1040,6 +1041,7 @@ trait BattleSharedMethods {
 
 								// Verifica a conquista de liga pvp
 								$p->achievement_check("battle_league_pvp");
+								$p->check_objectives('battle_league_pvp');
 							}
 
 							$stats->wins++;
@@ -1079,9 +1081,11 @@ trait BattleSharedMethods {
 
 							// Verifica se você tem batalhas - Conquista
 							$p->achievement_check("battle_pvp");
+							$p->check_objectives('battle_pvp');
 
 							// Verifica se você tem batalhas - Conquista
 							$p->achievement_check("wanted");
+							$p->check_objectives('wanted');
 
 						} else {
 							// Premiação do NPC de Mapa
@@ -1103,6 +1107,7 @@ trait BattleSharedMethods {
 
 											// verifica se desbloqueou novo personagem - conquista
 											$p->achievement_check("character");
+											$p->check_objectives('character');
 										}
 
 										// Prêmios ( THEME )
@@ -1231,6 +1236,7 @@ trait BattleSharedMethods {
 
 											// verifica se desbloqueou novo personagem - conquista
 											$p->achievement_check("character");
+											$p->check_objectives('character');
 										}
 
 										if ($npc_subgroup->reward_character_theme_id &&!$user->is_theme_bought($npc_subgroup->reward_character_theme_id)) {
@@ -1242,9 +1248,11 @@ trait BattleSharedMethods {
 
 											// verifica se desbloqueou novo personagem - conquista
 											$p->achievement_check("character_theme");
+											$p->check_objectives('character_theme');
 										}
 										// Verifica se finalizou uma modo historia - Conquista
 										$p->achievement_check("history_mode");
+										$p->check_objectives('history_mode');
 									}
 								}
 							}
@@ -1261,6 +1269,7 @@ trait BattleSharedMethods {
 
 							// Verifica se você tem pets
 							$p->achievement_check("battle_npc");
+							$p->check_objectives('battle_npc');
 						}
 					}
 
@@ -1487,6 +1496,7 @@ trait BattleSharedMethods {
 
 			// Checa o dinheiro do player - Conquista
 			$p->achievement_check("currency");
+			$p->check_objectives('currency');
 
 			$this->json->finished	= $finished_message;
 

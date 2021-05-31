@@ -229,11 +229,12 @@ class OrganizationsController extends Controller {
 
 				// Verifica os créditos do jogador.
 				$player->achievement_check("credits");
+				$player->check_objectives("credits");
 			}
 
 			// Prêmios ( EQUIPS )
 			if ($object_reward->equipment) {
-				if($object_reward->equipment == 1) {
+				if ($object_reward->equipment == 1) {
 					$dropped  = Item::generate_equipment($player);
 				} elseif ($object_reward->equipment == 2) {
 					$dropped  = Item::generate_equipment($player,0);
@@ -1048,6 +1049,7 @@ class OrganizationsController extends Controller {
 
 						// Verifica os créditos do jogador.
 						$p->achievement_check("credits");
+						$p->check_objectives("credits");
 					}
 					//Prêmios ( EQUIPS )
 					if ($treasure->equipment) {
@@ -1196,6 +1198,7 @@ class OrganizationsController extends Controller {
 
 		//Verifica se você tem organização - Conquista
 		$player->achievement_check("organization");
+		$player->check_objectives("organization");
 
 		$errors			= [];
 		$upload_error	= false;

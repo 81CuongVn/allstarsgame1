@@ -15,6 +15,7 @@ class User extends Relation {
 			if ($player) {
 				// verifica o level da conta do jogador
 				$player->achievement_check('level_account');
+				$player->check_objectives('level_account');
 			}
 		}
 	}

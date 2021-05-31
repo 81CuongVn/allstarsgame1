@@ -12,6 +12,7 @@ class BattlePvpsController extends Controller {
 
 		// Verifica se você tem liga completa - Conquista
 		$player->achievement_check("league");
+		$player->check_objectives("league");
 
 		if (!$_POST)	$league				= Ranked::find_first('started = 1 order by league desc');
 		else			$league				= Ranked::find_first($_POST['leagues']);
@@ -78,6 +79,7 @@ class BattlePvpsController extends Controller {
 
 					// Verifica os créditos do jogador.
 					$player->achievement_check("credits");
+					$player->check_objectives("credits");
 				}
 				if ($rewards->exp_user) {
 					$user->exp($rewards->exp_user);

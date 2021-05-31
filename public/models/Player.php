@@ -119,6 +119,7 @@ class Player extends Relation {
 
 				// Checa a conquista de level do player
 				$this->achievement_check('level_player');
+				$this->check_objectives("level_player");
 			}
 		}
 
@@ -749,6 +750,527 @@ class Player extends Relation {
 		$pm->save();
 	}
 
+	function check_objectives($arch_type = NULL) {
+		switch ($arch_type) {
+			case "level_player":
+				$objectives = Achievement::find("level_player > 0 AND type='objectives'");
+				foreach ($objectives as $objective) {
+					$user_objective = UserObjective::find_first("objective_id=".$objective->id." AND user_id=".$this->user_id." AND complete=0");
+					if ($user_objective) {
+						if ($this->level >= $objective->level_player) {
+							$this->objectives_reward($this, $objective, $user_objective);
+						}
+					}
+				}
+				break;
+			case "level_account":
+				$objectives = Achievement::find("level_account > 0 AND type='objectives'");
+				foreach ($objectives as $objective) {
+					$user_objective = UserObjective::find_first("objective_id=".$objective->id." AND user_id=".$this->user_id." AND complete=0");
+					$user = User::find_first("id=" . $this->user_id);
+					if ($user_objective) {
+						if ($user->level >= $objective->level_account) {
+							$this->objectives_reward($this, $objective, $user_objective);
+						}
+					}
+				}
+				break;
+			case "tutorial":
+				$objectives = Achievement::find("tutorial > 0 AND type='objectives'");
+				foreach ($objectives as $objective) {
+					$user_objective = UserObjective::find_first("objective_id=".$objective->id." AND user_id=".$this->user_id." AND complete=0");
+					if ($user_objective) {
+						$player_stat = PlayerStat::find_first("player_id=". $this->id);
+						if ($player_stat->tutorial) {
+							$this->objectives_reward($this, $objective, $user_objective);
+						}
+					}
+				}
+				break;
+			case "map":
+				$objectives = Achievement::find("map > 0 AND type='objectives'");
+				foreach ($objectives as $objective) {
+					$user_objective = UserObjective::find_first("objective_id=".$objective->id." AND user_id=".$this->user_id." AND complete=0");
+					if ($user_objective) {
+						if ($objective->anime_id && $objective->map == 1) {
+							$player_map_anime = PlayerMapLog::find("player_id=". $this->id." AND anime_id=".$objective->anime_id);
+							if (sizeof($player_map_anime) == $objective->quantity) {
+								$this->objectives_reward($this, $objective, $user_objective);
+							}
+						} elseif ($objective->anime_id && $objective->map == 2) {
+							$player_map_anime = Recordset::query("select sum(quantity) as total from player_map_logs WHERE anime_id=".$objective->anime_id." and player_id=".$this->id)->result_array();
+							if ($player_map_anime[0]['total'] >= $objective->quantity) {
+								$this->objectives_reward($this, $objective, $user_objective);
+							}
+						} elseif (!$objective->anime_id && $objective->map == 2) {
+							$player_map_anime = Recordset::query("select sum(quantity) as total from player_map_logs WHERE player_id=".$this->id)->result_array();
+							if ($player_map_anime[0]['total'] >= $objective->quantity) {
+								$this->objectives_reward($this, $objective, $user_objective);
+							}
+						}
+					}
+				}
+				break;
+			case "credits":
+				$objectives = Achievement::find("credits > 0 AND type='objectives'");
+				foreach ($objectives as $objective) {
+					$user_objective = UserObjective::find_first("objective_id=".$objective->id." AND user_id=".$this->user_id." AND complete=0");
+					if ($user_objective) {
+						$user = User::find_first("id=".$this->user_id);
+						if ($user->credits >= $objective->quantity) {
+							$this->objectives_reward($this, $objective, $user_objective);
+						}
+					}
+				}
+				break;
+			case "currency":
+				$objectives = Achievement::find("currency > 0 AND type='objectives'");
+				foreach ($objectives as $objective) {
+					$user_objective = UserObjective::find_first("objective_id=".$objective->id." AND user_id=".$this->user_id." AND complete=0");
+					if ($user_objective) {
+						if ($this->currency >= $objective->quantity) {
+							$this->objectives_reward($this, $objective, $user_objective);
+						}
+					}
+				}
+				break;
+			case "pets":
+				$objectives = Achievement::find("pets > 0 AND type='objectives'");
+				foreach ($objectives as $objective) {
+					$user_objective = UserObjective::find_first("objective_id=".$objective->id." AND user_id=".$this->user_id." AND complete=0");
+					if ($user_objective) {
+						// Só quer saber a quantidade de pets
+						if ($objective->quantity && !$objective->item_id && !$objective->rarity && !$objective->happiness) {
+							if (sizeof($this->your_pets_achievement()) >= $objective->quantity) {
+								$this->objectives_reward($this, $objective, $user_objective);
+							}
+						// Quer saber um pet especifico
+						} elseif ($objective->item_id && !$objective->happiness && !$objective->quantity && !$objective->rarity) {
+							if (sizeof($this->your_pets_achievement(NULL, NULL, $objective->item_id))) {
+								$this->objectives_reward($this, $objective, $user_objective);
+							}
+						// Quer saber a quantidade de pets por raridade
+						} elseif ($objective->quantity && !$objective->item_id && $objective->rarity && !$objective->happiness) {
+							if (sizeof($this->your_pets_achievement($objective->rarity)) >= $objective->quantity) {
+								$this->objectives_reward($this, $objective, $user_objective);
+							}
+						} elseif ($objective->quantity && !$objective->item_id && !$objective->rarity && $objective->happiness) {
+							if (sizeof($this->your_pets_achievement(NULL, $objective->happiness)) >= $objective->quantity) {
+								$this->objectives_reward($this, $objective, $user_objective);
+							}
+						}
+					}
+				}
+				break;
+			case "battle_npc":
+				$objectives = Achievement::find("battle_npc > 0 AND type='objectives'");
+				foreach ($objectives as $objective) {
+					$user_objective = UserObjective::find_first("objective_id=".$objective->id." AND user_id=".$this->user_id." AND complete=0");
+					if ($user_objective) {
+						// Só quer saber a quantidade de npcs
+						if ($objective->battle_npc && !$objective->anime_id && !$objective->character_id) {
+							if ($this->wins_npc >= $objective->quantity) {
+								$this->objectives_reward($this, $objective, $user_objective);
+							}
+						}
+					}
+				}
+				break;
+			case "battle_league_pvp":
+				$objectives = Achievement::find("battle_league_pvp > 0 AND type='objectives'");
+				foreach ($objectives as $objective) {
+					$user_objective = UserObjective::find_first("objective_id=".$objective->id." AND user_id=".$this->user_id." AND complete=0");
+					if ($user_objective) {
+						// Só quer saber a quantidade de vitorias pvp league
+						if ($objective->battle_league_pvp) {
+							$ranked_total	= Recordset::query('select sum(win_total) as vitorias, sum(loss_total) as derrotas, sum(draw_total) as empates from player_rankeds where player_id='.$this->id)->result_array();
+							if ($ranked_total[0]['vitorias'] >= $objective->quantity) {
+								$this->objectives_reward($this, $objective, $user_objective);
+							}
+						}
+					}
+				}
+				break;
+			case "battle_pvp":
+				$objectives = Achievement::find("battle_pvp > 0 AND type='objectives'");
+				foreach ($objectives as $objective) {
+					$can = false;
+					$user_objective = UserObjective::find_first("objective_id=".$objective->id." AND user_id=".$this->user_id." AND complete=0");
+					if ($user_objective) {
+						// Só quer saber a quantidade de pvps
+						if ($objective->battle_pvp && !$objective->anime_id && !$objective->character_id && !$objective->faction_id) {
+							if ($this->wins_pvp >= $objective->quantity) {
+								$can = true;
+							}
+						// Quer saber a quantidade de pvps com determinada facção
+						} elseif ($objective->battle_pvp && !$objective->anime_id && !$objective->character_id && $objective->faction_id) {
+							$user_objective_stats = Recordset::query("select sum(quantity) as total from player_achievement_stats WHERE player_id=".$this->id." AND faction_id=".$objective->faction_id)->result_array();
+							if ($user_objective_stats[0]['total'] >= $objective->quantity) {
+								$can = true;
+							}
+						} elseif ($objective->battle_pvp && $objective->anime_id && !$objective->character_id && !$objective->faction_id) {
+							$user_objective_stats = Recordset::query("select sum(quantity) as total from player_achievement_stats WHERE player_id=".$this->id." AND anime_id=".$objective->anime_id)->result_array();
+							if ($user_objective_stats[0]['total'] >= $objective->quantity) {
+								$can = true;
+							}
+						} elseif ($objective->battle_pvp && !$objective->anime_id && $objective->character_id && !$objective->faction_id) {
+							$user_objective_stats = Recordset::query("select sum(quantity) as total from player_achievement_stats WHERE player_id=".$this->id." AND character_id=".$objective->character_id)->result_array();
+							if ($user_objective_stats[0]['total'] >= $objective->quantity) {
+								$can = true;
+							}
+						}
+						if ($can) {
+							$this->objectives_reward($this, $objective, $user_objective);
+						}
+					}
+				}
+				break;
+			case "history_mode":
+				$objectives = Achievement::find("history_mode > 0 AND type='objectives'");
+				foreach ($objectives as $objective) {
+					$user_objective = UserObjective::find_first("objective_id=".$objective->id." AND user_id=".$this->user_id." AND complete=0");
+					if ($user_objective) {
+						$user_history_mode_subgroup = UserHistoryModeSubgroup::find_first("history_mode_subgroup_id=".$objective->history_mode." AND user_id=".$this->user_id." AND complete=1");
+						if ($user_history_mode_subgroup) {
+							$this->objectives_reward($this, $objective, $user_objective);
+						}
+					}
+				}
+				break;
+			case "league":
+				$objectives = Achievement::find("league > 0 AND type='objectives'");
+				foreach ($objectives as $objective) {
+					$user_objective = UserObjective::find_first("objective_id=".$objective->id." AND user_id=".$this->user_id." AND complete=0");
+					if ($user_objective) {
+						$rank_player = $objective->league == 11 ? 0 : $objective->league;
+						$player_ranked = PlayerRanked::find_first("rank=".$rank_player." AND player_id=".$this->id." AND finished_at is not null ORDER BY league DESC");
+						if ($player_ranked && ($player_ranked->rank == $rank_player)) {
+							$this->objectives_reward($this, $objective, $user_objective);
+						}
+					}
+				}
+				break;
+			case "challenges":
+				$objectives = Achievement::find("challenges > 0 AND type='objectives'");
+				foreach ($objectives as $objective) {
+					$user_objective = UserObjective::find_first("objective_id=".$objective->id." AND user_id=".$this->user_id." AND complete=0");
+					if ($user_objective) {
+						$player_challenge = PlayerChallenge::find_first("challenge_id=".$objective->challenges." AND player_id=".$this->id ." ORDER BY quantity desc");
+						if ($player_challenge) {
+							if ($player_challenge->quantity >= $objective->challenges_floor) {
+								$this->objectives_reward($this, $objective, $user_objective);
+							}
+						}
+					}
+				}
+				break;
+			case "organization":
+				$objectives = Achievement::find("organization > 0 AND type='objectives'");
+				foreach ($objectives as $objective) {
+					$user_objective = UserObjective::find_first("objective_id=".$objective->id." AND user_id=".$this->user_id." AND complete=0");
+					if ($user_objective) {
+						if ($this->organization_id) {
+							$this->objectives_reward($this, $objective, $user_objective);
+						}
+					}
+				}
+				break;
+			case "treasure":
+				$objectives = Achievement::find("treasure > 0 AND type='objectives'");
+				foreach ($objectives as $objective) {
+					$user_objective = UserObjective::find_first("objective_id=".$objective->id." AND user_id=".$this->user_id." AND complete=0");
+					if ($user_objective) {
+						if ($this->treasure_total >= $objective->quantity) {
+							$this->objectives_reward($this, $objective, $user_objective);
+						}
+					}
+				}
+				break;
+			case "friends":
+				$objectives = Achievement::find("friends > 0 AND type='objectives'");
+				foreach ($objectives as $objective) {
+					$user_objective = UserObjective::find_first("objective_id=".$objective->id." AND user_id=".$this->user_id." AND complete=0");
+					if ($user_objective) {
+						if ($objective->friends && !$objective->friends_send_gifts && !$objective->friends_received_gifts) {
+							$player_friends = Recordset::query("select count(id) as total from player_friend_lists WHERE  player_id=".$this->id)->result_array();
+							if ($player_friends[0]['total'] >= $objective->friends) {
+								$this->objectives_reward($this, $objective, $user_objective);
+							}
+						} elseif ($objective->friends && $objective->friends_send_gifts && !$objective->friends_received_gifts) {
+							$player_send_gifts = Recordset::query("select count(id) as total from player_gift_logs WHERE  player_id=".$this->id)->result_array();
+							if ($player_send_gifts[0]['total'] >= $objective->friends_send_gifts) {
+								$this->objectives_reward($this, $objective, $user_objective);
+							}
+						} elseif ($objective->friends && !$objective->friends_send_gifts && $objective->friends_received_gifts) {
+							$player_receveid_gifts = Recordset::query("select count(id) as total from player_gift_logs WHERE  friend_id=".$this->id)->result_array();
+							if ($player_receveid_gifts[0]['total'] >= $objective->friends_received_gifts) {
+								$this->objectives_reward($this, $objective, $user_objective);
+							}
+						}
+					}
+				}
+				break;
+			case "character":
+				$objectives = Achievement::find("achievements.character > 0 AND type='objectives'");
+				foreach ($objectives as $objective) {
+					$user_objective = UserObjective::find_first("objective_id=".$objective->id." AND user_id=".$this->user_id." AND complete=0");
+					if ($user_objective) {
+						$user_character = UserCharacter::find_first("user_id=". $this->user_id." AND character_id=".$objective->character);
+						if ($user_character) {
+							$this->objectives_reward($this, $objective, $user_objective);
+						}
+					}
+				}
+				break;
+			case "character_theme":
+				$objectives = Achievement::find("character_theme > 0 AND type='objectives'");
+				foreach ($objectives as $objective) {
+					$user_objective = UserObjective::find_first("objective_id=".$objective->id." AND user_id=".$this->user_id." AND complete=0");
+					if ($user_objective) {
+						$user_character_theme = UserCharacterTheme::find_first("user_id=". $this->user_id." AND character_theme_id=".$objective->character_theme);
+						if ($user_character_theme) {
+							$this->objectives_reward($this, $objective, $user_objective);
+						}
+					}
+				}
+				break;
+			case "luck":
+				$objectives = Achievement::find("luck > 0 AND type='objectives'");
+				foreach ($objectives as $objective) {
+					$user_objective = UserObjective::find_first("objective_id=".$objective->id." AND user_id=".$this->user_id." AND complete=0");
+					if ($user_objective) {
+						$player_luck_log = PlayerLuckLog::find_first("player_id=". $this->id." AND luck_reward_id=".$objective->luck);
+						if ($player_luck_log) {
+							$this->objectives_reward($this, $objective, $user_objective);
+						}
+					}
+				}
+				break;
+			case "fragments":
+				$objectives = Achievement::find("fragments > 0 AND type='objectives'");
+				foreach ($objectives as $objective) {
+					$user_objective = UserObjective::find_first("objective_id=".$objective->id." AND user_id=".$this->user_id." AND complete=0");
+					if ($user_objective) {
+						$player_fragments = PlayerItem::find_first("player_id=". $this->id." AND item_id=446");
+						if($objective->fragments==1){
+							if($player_fragments->quantity >= $objective->quantity){
+								$this->objectives_reward($this, $objective, $user_objective);
+							}
+						}
+						if ($objective->fragments == 2) {
+							$player_change = PlayerStat::find_first("player_id=".$this->id);
+							if ($player_change->fragments >= $objective->quantity) {
+								$this->objectives_reward($this, $objective, $user_objective);
+							}
+						}
+					}
+				}
+				break;
+			case "wanted":
+				$objectives = Achievement::find("wanted > 0 AND type='objectives'");
+				foreach ($objectives as $objective) {
+					$user_objective = UserObjective::find_first("objective_id=".$objective->id." AND user_id=".$this->user_id." AND complete=0");
+					if ($user_objective) {
+						if ($objective->wanted == 1) {
+							$player_wanted = Recordset::query("select count(id) as total from player_wanteds WHERE enemy_id=".$this->id)->result_array();
+							if ($player_wanted[0]['total'] >= $objective->quantity){
+								$this->objectives_reward($this, $objective, $user_objective);
+							}
+						}
+
+						if ($objective->wanted == 2) {
+							$player_change = PlayerStat::find_first("player_id=".$this->id);
+							if ($this->won_last_battle >= $objective->quantity) {
+								$this->objectives_reward($this, $objective, $user_objective);
+							}
+						}
+					}
+				}
+				break;
+			case "sands":
+				$objectives = Achievement::find("sands > 0 AND type='objectives'");
+				foreach ($objectives as $objective) {
+					$user_objective = UserObjective::find_first("objective_id=".$objective->id." AND user_id=".$this->user_id." AND complete=0");
+					if ($user_objective) {
+						$player_sands = PlayerItem::find_first("player_id=". $this->id." AND item_id=1719");
+						if ($objective->sands == 1) {
+							if ($player_sands->quantity >= $objective->quantity) {
+								$this->objectives_reward($this, $objective, $user_objective);
+							}
+						}
+						if ($objective->sands == 2) {
+							$player_change = PlayerStat::find_first("player_id=".$this->id);
+							if ($player_change->sands >= $objective->quantity) {
+								$this->objectives_reward($this, $objective, $user_objective);
+							}
+						}
+					}
+				}
+				break;
+			case "bloods":
+				$objectives = Achievement::find("bloods > 0 AND type='objectives'");
+				foreach ($objectives as $objective) {
+					$user_objective = UserObjective::find_first("objective_id=".$objective->id." AND user_id=".$this->user_id." AND complete=0");
+					if ($user_objective) {
+						$player_bloods = PlayerItem::find_first("player_id=". $this->id." AND item_id=1720");
+						if ($objective->bloods == 1) {
+							if ($player_bloods->quantity >= $objective->quantity) {
+								$this->objectives_reward($this, $objective, $user_objective);
+							}
+						}
+						if ($objective->bloods == 2) {
+							$player_change = PlayerStat::find_first("player_id=".$this->id);
+							if ($player_change->bloods >= $objective->quantity) {
+								$this->objectives_reward($this, $objective, $user_objective);
+							}
+						}
+					}
+				}
+				break;
+			case "equipment":
+				$objectives = Achievement::find("equipment > 0 AND type='objectives'");
+				foreach ($objectives as $objective) {
+					$user_objective = UserObjective::find_first("objective_id=".$objective->id." AND user_id=".$this->user_id." AND complete=0");
+					if ($user_objective) {
+						if ($objective->equipment == 1 && $objective->rarity) {
+							$player_equipments = Recordset::query("select count(id) as total from player_items WHERE player_id=".$this->id." AND item_id in (select id from items WHERE item_type_id=8) AND rarity='".$objective->rarity."'")->result_array();
+							if ($player_equipments[0]['total'] >= $objective->quantity) {
+								$this->objectives_reward($this, $objective, $user_objective);
+							}
+						} elseif ($objective->equipment == 1 && !$objective->rarity) {
+							$player_equipments = Recordset::query("select count(id) as total from player_items WHERE player_id=".$this->id." AND item_id in (select id from items WHERE item_type_id=8)")->result_array();
+							if ($player_equipments[0]['total'] >= $objective->quantity) {
+								$this->objectives_reward($this, $objective, $user_objective);
+							}
+						} else {
+							$player_equipments = Recordset::query("select count(id) as total from player_items WHERE player_id=".$this->id." AND item_id in (select id from items WHERE item_type_id=8) AND rarity='".$objective->rarity."' AND equipped=1")->result_array();
+							if ($player_equipments[0]['total'] >= $objective->quantity) {
+								$this->objectives_reward($this, $objective, $user_objective);
+							}
+						}
+
+					}
+				}
+				break;
+			case "grimoire":
+				$objectives = Achievement::find("grimoire > 0 AND type='objectives'");
+				foreach ($objectives as $objective) {
+					$user_objective = UserObjective::find_first("objective_id=".$objective->id." AND user_id=".$this->user_id." AND complete=0");
+					if ($user_objective) {
+						$player_grimoire = PlayerItem::find_first("player_id=". $this->id." AND item_id=".$objective->item_id);
+						if ($player_grimoire) {
+							$this->objectives_reward($this, $objective, $user_objective);
+						}
+					}
+				}
+				break;
+			case "time_quests":
+				$objectives = Achievement::find("time_quests > 0 AND type='objectives'");
+				foreach ($objectives as $objective) {
+					$user_objective = UserObjective::find_first("objective_id=".$objective->id." AND user_id=".$this->user_id." AND complete=0");
+					if ($user_objective) {
+						$player_quest = PlayerQuestCounter::find_first("player_id=". $this->id);
+						if ($player_quest->time_total >= $objective->quantity) {
+							$this->objectives_reward($this, $objective, $user_objective);
+						}
+					}
+				}
+				break;
+			case "battle_quests":
+				$objectives = Achievement::find("battle_quests > 0 AND type='objectives'");
+				foreach ($objectives as $objective) {
+					$user_objective = UserObjective::find_first("objective_id=".$objective->id." AND user_id=".$this->user_id." AND complete=0");
+					if ($user_objective) {
+						$player_quest = PlayerQuestCounter::find_first("player_id=". $this->id);
+						if ($player_quest->combat_total >= $objective->quantity) {
+							$this->objectives_reward($this, $objective, $user_objective);
+						}
+					}
+				}
+				break;
+			case "pvp_quests":
+				$objectives = Achievement::find("pvp_quests > 0 AND type='objectives'");
+				foreach ($objectives as $objective) {
+					$user_objective = UserObjective::find_first("objective_id=".$objective->id." AND user_id=".$this->user_id." AND complete=0");
+					if ($user_objective) {
+						$player_quest = PlayerQuestCounter::find_first("player_id=". $this->id);
+						if ($player_quest->pvp_total >= $objective->quantity) {
+							$this->objectives_reward($this, $objective, $user_objective);
+						}
+					}
+				}
+				break;
+			case "daily_quests":
+				$objectives = Achievement::find("daily_quests > 0 AND type='objectives'");
+				foreach ($objectives as $objective) {
+					$user_objective = UserObjective::find_first("objective_id=".$objective->id." AND user_id=".$this->user_id." AND complete=0");
+					if ($user_objective) {
+						$player_quest = PlayerQuestCounter::find_first("player_id=". $this->id);
+						if ($player_quest->daily_total >= $objective->quantity) {
+							$this->objectives_reward($this, $objective, $user_objective);
+						}
+					}
+				}
+				break;
+			case "account_quests":
+				$objectives = Achievement::find("account_quests > 0 AND type='objectives'");
+				foreach ($objectives as $objective) {
+					$user_objective = UserObjective::find_first("objective_id=".$objective->id." AND user_id=".$this->user_id." AND complete=0");
+					if ($user_objective) {
+						$player_quest = UserQuestCounter::find_first("user_id=". $this->user_id);
+						if ($player_quest->daily_total >= $objective->quantity) {
+							$this->objectives_reward($this, $objective, $user_objective);
+						}
+					}
+				}
+				break;
+			case "pet_quests":
+				$objectives = Achievement::find("pet_quests > 0 AND type='objectives'");
+				foreach ($objectives as $objective) {
+					$user_objective = UserObjective::find_first("objective_id=".$objective->id." AND user_id=".$this->user_id." AND complete=0");
+					if ($user_objective) {
+						$player_quest = PlayerQuestCounter::find_first("player_id=". $this->id);
+						if ($player_quest->pet_total >= $objective->quantity) {
+							$this->objectives_reward($this, $objective, $user_objective);
+						}
+					}
+				}
+				break;
+			case "weekly_quests":
+				$objectives = Achievement::find("weekly_quests > 0 AND type='objectives'");
+				foreach ($objectives as $objective) {
+					$user_objective = UserObjective::find_first("objective_id=".$objective->id." AND user_id=".$this->user_id." AND complete=0");
+					if ($user_objective) {
+						$organization_quest = OrganizationQuestCounter::find_first("organization_id=". $this->organization_id);
+						if ($organization_quest->daily_total >= $objective->quantity){
+							$this->objectives_reward($this, $objective, $user_objective);
+						}
+					}
+				}
+				break;
+		}
+	}
+
+	function objectives_reward($player, $objective, $user_objective) {
+		// Atualiza o objetivo da conta
+		$user_objective->complete		= 1;
+		$user_objective->completed_at	= now(true);
+		$user_objective->save();
+
+		// Recompensa
+		$player->user()->round_points(1);
+
+		// Envia uma mensagem para o jogador avisando do prêmio
+		$pm				= new PrivateMessage();
+		$pm->to_id		= $player->id;
+		$pm->subject	= "Objetivo: ". $objective->description()->name;
+		$pm->content	= '<b>Você completou um novo objetivo!</b>
+
+		<b>Objetivo:</b> ' . $objective->description()->name . '
+		<b>Descrição:</b> ' . $objective->description()->description;
+		$pm->save();
+	}
+
 	function at_low_stat() {
 		if (($this->for_mana() < $this->for_mana(true) / 2) || ($this->for_life() < $this->for_life(true) / 2)) {
 			return true;
@@ -874,7 +1396,8 @@ class Player extends Relation {
 		$this->save();
 
 		// Checa o dinheiro do player
-		$this->achievement_check(7);
+		$this->achievement_check("currency");
+		$this->check_objectives("currency");
 	}
 
 	function earn_exp($amount) {
@@ -1049,7 +1572,7 @@ class Player extends Relation {
 	}
 
 	function add_consumable($consumable, $quantity = 1) {
-		if($this->has_consumable($consumable)) {
+		if ($this->has_consumable($consumable)) {
 			$item					= $this->get_item($consumable);
 			$item->quantity			+= $quantity;
 		} else {
@@ -1075,6 +1598,13 @@ class Player extends Relation {
 		// <--
 
 		$player_item->equipped	= 1;
+		$player_item->save();
+
+		$this->_update_sum_attributes();
+	}
+
+	function unequip_equipment($player_item) {
+		$player_item->equipped	= 0;
 		$player_item->save();
 
 		$this->_update_sum_attributes();
@@ -1928,9 +2458,9 @@ class Player extends Relation {
 			$player_stat->tutorial = 1;
 			$player_stat->save();
 
-			//Verifica a conquista de areia - Conquista
+			// Verifica a conquista de areia - Conquista
 			$this->achievement_check("tutorial");
-			//Verifica a conquista de areia - Conquista
+			$this->check_objectives("tutorial");
 
 			return TRUE;
 		} else {

@@ -176,6 +176,7 @@ class Organization extends Relation {
 					if ($reward->credits) {
 						$user->earn($reward->credits);
 						$p->achievement_check("credits");
+						$p->check_objectives("level_account");
 					}
 
 					if ($reward->equipment) {

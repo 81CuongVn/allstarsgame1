@@ -437,6 +437,7 @@
 
 				//Verifica a conquista de grimoire - Conquista
 				$player->achievement_check("grimoire");
+				$player->check_objectives("grimoire");
 
 				$pm	= new PrivateMessage();
 				$pm->to_id		= $player->id;

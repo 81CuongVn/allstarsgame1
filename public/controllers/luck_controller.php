@@ -189,6 +189,7 @@
 
 					// Verifica os créditos do jogador.
 					$player->achievement_check("credits");
+					$player->check_objectives("credits");
 				}
 
 				if($choosen_reward->equipment) {
@@ -236,6 +237,7 @@
 
 				// Verifica as conquistas do Sorte - Conquista
 				$player->achievement_check("luck");
+				$player->check_objectives("luck");
 
 				$this->json->message	= t('luck.index.won', array('prize' => $message));
 				$this->json->currency	= $player->currency;
@@ -341,8 +343,9 @@
 
 					// verifica se desbloqueou novo personagem - conquista
 					$player->achievement_check("character");
+					$player->check_objectives("character");
 
-					if($reward->chance==2){
+					if ($reward->chance == 2) {
 						global_message('hightlights.circulo', TRUE,[
 							$player->name,
 							Character::find($choosen_reward->character_id)->description()->name
@@ -361,7 +364,7 @@
 
 					// verifica se desbloqueou novo personagem - conquista
 					$player->achievement_check("character_theme");
-
+					$player->check_objectives("character_theme");
 				}
 
 				$log->player_id			= $player->id;

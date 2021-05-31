@@ -144,7 +144,7 @@ $daysLeft = ceil((strtotime(ROUND_END) - now()) / 86400);
                 }
                 // Barrinhas de Progresso dos Tesouros
 
-                // Barrinhas de Progresso do Desafio do Ceu
+                // Barrinhas de Progresso do Arena do Ceu
                 if ($objective->achievement()->challenges > 0) {
                     $player_challenge = PlayerChallenge::find_first("challenge_id=".$objective->achievement()->challenges." AND player_id=".$player->id ." ORDER BY quantity desc");
                     if ($player_challenge) {
@@ -157,7 +157,7 @@ $daysLeft = ceil((strtotime(ROUND_END) - now()) / 86400);
                         echo exp_bar(0, $objective->achievement()->challenges_floor, 175, '0/' . $objective->achievement()->challenges_floor);
                     }
                 }
-                // Barrinhas de Progresso do Desafio do Ceu
+                // Barrinhas de Progresso do Arena do Ceu
 
                 // Barrinhas de Progresso dos wanted
                 if ($objective->achievement()->wanted == 1) {
