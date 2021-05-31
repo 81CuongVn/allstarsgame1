@@ -3,31 +3,49 @@ require '_config.php';
 
 Recordset::query('TRUNCATE TABLE `ranking_accounts`;');
 
-$users	= Recordset::query('SELECT `id`,`name`,`level` FROM `users` WHERE `level` > 1 AND `banned` = 0 ORDER BY `level` DESC');
+$users	= Recordset::query('
+	SELECT
+		a.id,
+		a.name,
+		a.level,
+		b.daily_total,
+	FROM
+		users a
+		JOIN user_quest_counters b ON b.user_id = a.id
+	WHERE
+		a.level > 1 AND
+		a.banned = 0
+	ORDER BY
+		a.level DESC');
 foreach ($users->result_array() as $user) {
-    $points     = ( $user['level'] * 2000 );
-    $players	= Recordset::query('
-			SELECT
-				a.id,
-				a.graduation_id,
-				c.anime_id,
-				a.character_theme_id,
-				a.faction_id,
-				a.level,
-				a.wins_pvp,
-				a.wins_npc,
-				d.sorting AS graduation_level,
-				pqc.time_total,
-				pqc.pvp_total,
-				pqc.daily_total,
-				pqc.combat_total
-			FROM
-				players a JOIN character_themes b ON b.id=a.character_theme_id
-				JOIN characters c ON c.id=a.character_id
-				JOIN graduations d ON d.id=a.graduation_id
-				JOIN player_quest_counters pqc ON pqc.player_id = a.id
-			WHERE
-				a.banned = 0 AND a.removed = 0 AND a.user_id = ' . $user['id']);
+    $points     =	$user['level']				* 2000;
+	$points		+=  $user['time_total']			* 100;
+	$points		+=  $user['pvp_total']			* 200;
+	$points		+=  $user['daily_total']		* 250;
+	$points		+=  $user['pet_total']			* 50;
+
+	$players	= Recordset::query('
+		SELECT
+			a.id,
+			a.graduation_id,
+			c.anime_id,
+			a.character_theme_id,
+			a.faction_id,
+			a.level,
+			a.wins_pvp,
+			a.wins_npc,
+			d.sorting AS graduation_level,
+			pqc.time_total,
+			pqc.pvp_total,
+			pqc.daily_total,
+			pqc.combat_total
+		FROM
+			players a JOIN character_themes b ON b.id=a.character_theme_id
+			JOIN characters c ON c.id=a.character_id
+			JOIN graduations d ON d.id=a.graduation_id
+			JOIN player_quest_counters pqc ON pqc.player_id = a.id
+		WHERE
+			a.banned = 0 AND a.removed = 0 AND a.user_id = ' . $user['id']);
 
     foreach ($players->result_array() as $player) {
 		// Calcula os bosses mortos pelo player
