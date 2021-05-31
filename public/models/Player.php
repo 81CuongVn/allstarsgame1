@@ -98,11 +98,11 @@ class Player extends Relation {
 	}
 
 	protected function before_update() {
-		if($this->less_life > $this->for_life(true)) {
+		if ($this->less_life > $this->for_life(true)) {
 			$this->less_life	= $this->for_life(true);
 		}
 
-		if($this->less_mana > $this->for_mana(true)) {
+		if ($this->less_mana > $this->for_mana(true)) {
 			$this->less_mana	= $this->for_mana(true);
 		}
 
@@ -119,6 +119,15 @@ class Player extends Relation {
 
 				// Checa a conquista de level do player
 				$this->achievement_check('level_player');
+			}
+		}
+
+		// Atualiza a graduação do safado
+		$graduation	= Graduation::find_first('sorting = ' . $this->graduation()->sorting + 1);
+		if ($graduation) {
+			extract($graduation->has_requirement($this));
+			if ($has_requirement) {
+				$this->graduation_id = $graduation->id;
 			}
 		}
 	}
@@ -726,7 +735,7 @@ class Player extends Relation {
 				$reward_headline->headline_id	= $rewards->headline_id;
 				$reward_headline->save();
 			}
-			$txtReward	= '<br /><b>Recompensas:</b><br />' . join('<br />', $reward);
+			$txtReward	= '<br /><br /><b>Recompensas:</b><br />' . join('<br />', $reward);
 		}
 
 		// Envia uma mensagem para o jogador avisando do prêmio
