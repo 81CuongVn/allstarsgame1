@@ -8,7 +8,7 @@ $users	= Recordset::query('
 		a.id,
 		a.name,
 		a.level,
-		b.daily_total,
+		b.daily_total
 	FROM
 		users a
 		JOIN user_quest_counters b ON b.user_id = a.id
