@@ -3,7 +3,7 @@ require '_config.php';
 
 Recordset::query('TRUNCATE TABLE ranking_rankeds');
 
-$factions		= Recordset::query('SELECT id FROM factions WHERE active = 1');
+$factions	= Recordset::query('SELECT id FROM factions WHERE active = 1');
 $rankeds	= Recordset::query('SELECT league FROM rankeds WHERE finished = 0');
 foreach ($rankeds->result_array() as $ranked) {
 	foreach ($factions->result_array() as $faction) {
