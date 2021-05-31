@@ -1914,7 +1914,7 @@ class Player extends Relation {
 			&& $player_tutorial->missoes_seguidores && $player_tutorial->battle_npc && $player_tutorial->battle_pvp
 			&& $player_tutorial->fidelity && $player_tutorial->battle_village && $player_tutorial->bijuus
 			&& $player_tutorial->missoes_conta && $player_tutorial->talents
-			&& $player_tutorial->objectives && $player_tutorial->battle_ranked) {
+			/*&& $player_tutorial->objectives*/ && $player_tutorial->battle_ranked) {
 
 			$player_stat = PlayerStat::find_first("player_id=".$this->id);
 			$player_stat->tutorial = 1;
