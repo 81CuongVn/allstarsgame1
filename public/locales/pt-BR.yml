@@ -786,6 +786,14 @@ pt-BR:
     comment: Comentar
     no_comments: Nenhum comentário postado até o momento. Seja o primeiro a comentar!
   battles:
+    links:
+        dungeon: Voltar para Dungeon
+        challenges: Voltar para Arena do Céu
+        maps_preview: Voltar para Exploração
+        history_mode: Voltar para Modo Aventura
+        battle_npcs: Voltar para Batalhas NPC
+        battle_pvps: Voltar para Batalhas PvP
+        characters_status: Status do Personagem
     message: Você está prestes à gastar 1 estrela nessa ação, gostaria de continuar mesmo assim?
     trocar: Trocar oponente por 1 estrela
     ir_fila: Ir para a fila
