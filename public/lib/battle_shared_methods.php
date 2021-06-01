@@ -240,23 +240,26 @@ trait BattleSharedMethods {
 
 			if ($battle->battle_type_id == 7 || $battle->battle_type_id == 8) {
 				$link		= make_url('organizations#dungeon');
-				$link_text	= 'Voltar para Dungeon';
-			} else if ($battle->battle_type_id == 3 && $p->challenge_id) {
+				$link_text	= t('battles.links.dungeon');
+			} elseif ($battle->battle_type_id == 3 && $p->challenge_id) {
 				$link		= make_url('challenges#show/' . $p->challenge_id);
-				$link_text	= 'Voltar para Arena do Céu';
+				$link_text	= t('battles.links.challenges');
 			} elseif ($battle->battle_type_id == 6) {
 				$link		= make_url('maps#preview');
-				$link_text	= 'Voltar para Exploração';
+				$link_text	= t('battles.links.maps_preview');
 			} elseif ($battle->battle_type_id == 9 && isset($_SESSION['history_mode'])) {
 				$link		= make_url('history_mode#show/' . $_SESSION['history_mode']);
-				$link_text	= 'Voltar para Modo Aventura';
+				$link_text	= t('battles.links.history_mode');
 				unset($_SESSION['history_mode']);
 			} elseif ($battle->battle_type_id == 1) {
 				$link		= make_url('battle_npcs');
-				$link_text	= 'Voltar para Batalhas NPC';
+				$link_text	= t('battles.links.battle_npcs');
+			} elseif ($battle->battle_type_id == 2) {
+				$link		= make_url('battle_npcs');
+				$link_text	= t('battles.links.battle_pvp');
 			} else {
 				$link		= make_url('characters#status');
-				$link_text	= 'Status do Personagem';
+				$link_text	= t('battles.links.characters_status');
 			}
 
 			$this->json->redirect	= $link;
