@@ -50,7 +50,7 @@ class NpcInstance {
 
 	function __construct($player, $anime_id_for_generics = null, $theme_ids = [],
 						$specific_ability_id = null, $specific_speciality_id = null, $specific_pet_id = null,
-						$is_challenge = null, $character_id = null,$character_theme_id = null, $organization_map_object_id = null) {
+						$is_challenge = null, $character_id = null, $character_theme_id = null, $organization_map_object_id = null) {
 
 		if ($anime_id_for_generics) {
 			$animes							= Anime::find('id='. $anime_id_for_generics .' AND active=1', ['cache' => true]);
@@ -61,11 +61,9 @@ class NpcInstance {
 
 		if ($character_id) {
 			$characters						= $anime->characters(' AND id='. $character_id);
-
 		} else {
 			$characters						= $anime->characters(' AND active=1');
 		}
-
 		$character							= $characters[rand(0, sizeof($characters) - 1)];
 
 		if ($character_theme_id) {
@@ -108,12 +106,12 @@ class NpcInstance {
 
 		if ($is_challenge) {
 			$challenge  	= PlayerChallenge::find_first('player_id='. $player->id .' AND challenge_id='.$is_challenge." AND complete=0");
-			$total_points 	= $total_points + ($challenge->quantity * 2);
+			$total_points 	= round($total_points + ($challenge->quantity * 1.5));
 			// if ($_SESSION['universal']) {
 				if ($challenge->quantity % 5 == 0) {
 					$total_hp = $challenge->quantity * 10;
 				} else {
-					if ($challenge->quantity > 25 ) {
+					if ($challenge->quantity > 25) {
 						$total_hp = ($challenge->quantity - 25)  * 10;
 					} else {
 						$total_hp = 0;
@@ -124,7 +122,7 @@ class NpcInstance {
 			// }
 			$total_mana		= $challenge->quantity % 5 == 0  ? $challenge->quantity / 5 : 0;
 
-		}else{
+		} else {
 			$total_hp		= 0;
 			$total_mana		= 0;
 		}
