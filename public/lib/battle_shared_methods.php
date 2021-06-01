@@ -241,7 +241,7 @@ trait BattleSharedMethods {
 			if ($battle->battle_type_id == 7 || $battle->battle_type_id == 8) {
 				$link		= make_url('organizations#dungeon');
 				$link_text	= t('battles.links.dungeon');
-			} else if ($battle->battle_type_id == 3 && $p->challenge_id) {
+			} elseif ($battle->battle_type_id == 3 && $p->challenge_id) {
 				$link		= make_url('challenges#show/' . $p->challenge_id);
 				$link_text	= t('battles.links.challenges');
 			} elseif ($battle->battle_type_id == 6) {
