@@ -899,11 +899,11 @@ pt-BR:
       draw_title: Quase lá!
       draw_text: Você e seu oponente estão muito fracos para lutar e a batalha terminou em empate.
       drop_text: |
-       <br />Adicionalmente você conseguiu encontrar o item <span class="global-rarity-#{rarity}">[#{name}]</span>
+       <br />Adicionalmente você conseguiu encontrar o item <span class="global-rarity-#{rarity}">[ #{name} ]</span>
       drop_pet_text: |
-       <br />Adicionalmente você encontrou um novo Mascote <span class="global-rarity-#{rarity}">[#{name}]</span>
+       <br />Adicionalmente você encontrou um novo Mascote <span class="global-rarity-#{rarity}">[ #{name} ]</span>
       drop_grimoire_text: |
-        <br />Adicionalmente você encontrou uma nova Página Perdida <span>[#{name}]</span>
+        <br />Adicionalmente você encontrou uma nova Página Perdida <span>[ #{name} ]</span>
     errors:
       needs_technique_before: O inimigo precisa ter usado um golpe no turno anterior
       no_stamina: Você não tem Stamina para essa ação
@@ -1868,11 +1868,11 @@ pt-BR:
       draw_title: Quase lá!
       draw_text: Você e seu oponente estão muito fracos para lutar e a batalha terminou em empate.
       drop_text: |
-        <br /><br />Adicionalmente você conseguiu encontrar o item <span class="global-rarity-#{rarity}">[#{name}]</span>
+        <br /><br />Adicionalmente você conseguiu encontrar o item <span class="global-rarity-#{rarity}">[ #{name} ]</span>
       drop_pet_text: |
-        <br /><br />Adicionalmente você encontrou um novo Mascote <span class="global-rarity-#{rarity}">[#{name}]</span>
+        <br /><br />Adicionalmente você encontrou um novo Mascote <span class="global-rarity-#{rarity}">[ #{name} ]</span>
       drop_grimoire_text: |
-        <br /><br />Adicionalmente você encontrou uma nova Carta Perdida <span>[#{name}]</span>
+        <br /><br />Adicionalmente você encontrou uma nova Carta Perdida <span>[ #{name} ]</span>
     npc:
       daily_title: Limite diário de NPCs
       daily_text: |
