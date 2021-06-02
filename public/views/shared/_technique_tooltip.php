@@ -25,7 +25,7 @@
 				<?php $heads[]	= ob_get_clean() ?>
 				<?php ob_start() ?>
 					<?php if ($battle_tooltip): ?>
-						<span style="color: <?php echo $formula->color_types->defense ?>"><?php echo $formula->defense + $player->for_def() ?></span>
+						<span style="color: <?php echo $formula->color_types->defense ?>"><?=floor($formula->defense + $player->for_def());?></span>
 					<?php else: ?>
 						<?php echo $formula->defense ?>
 					<?php endif ?>
@@ -36,7 +36,7 @@
 				<?php $heads[]	= ob_get_clean() ?>
 				<?php ob_start() ?>
 					<?php if ($battle_tooltip): ?>
-						<span style="color: <?php echo $formula->color_types->damage ?>"><?php echo $formula->damage + $player->for_atk()?></span>
+						<span style="color: <?php echo $formula->color_types->damage ?>"><?=floor($formula->damage + $player->for_atk());?></span>
 					<?php else: ?>
 						<?php echo $formula->damage ?>
 					<?php endif ?>

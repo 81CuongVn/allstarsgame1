@@ -67,34 +67,34 @@ function generate_menu_data() {
 function is_menu_accessible($menu, $player) {
     $ok	= true;
 
-    if($menu->h_loggedin == 1 && !$_SESSION['loggedin']) $ok	= false;
-    if($menu->h_loggedin == 2 && $_SESSION['loggedin']) $ok		= false;
+    if ($menu->h_loggedin == 1 && !$_SESSION['loggedin'])	$ok	= false;
+    if ($menu->h_loggedin == 2 && $_SESSION['loggedin'])	$ok	= false;
 
-    if($menu->h_player == 1 && !$player) $ok	= false;
-    if($menu->h_player == 2 && $player) $ok	= false;
+    if($menu->h_player == 1 && !$player)	$ok	= false;
+    if($menu->h_player == 2 && $player)		$ok	= false;
 
-    if($menu->h_next_level == 1 && !$player) {
+    if ($menu->h_next_level == 1 && !$player) {
         $ok	= false;
     } else {
-        if($menu->h_next_level == 1) {
-            if(!$player || ($player && !$player->is_next_level())) {
+        if ($menu->h_next_level == 1) {
+            if (!$player || ($player && !$player->is_next_level())) {
                 $ok	= false;
             }
         }
 
-        if($menu->h_next_level == 2) {
-            if($player && $player->is_next_level()) {
+        if ($menu->h_next_level == 2) {
+            if ($player && $player->is_next_level()) {
                 $ok	= false;
             }
         }
     }
 
-    if($menu->h_training_technique == 1) {
-        if(!$player || ($player && !$player->technique_training_id)) {
+    if ($menu->h_training_technique == 1) {
+        if (!$player || ($player && !$player->technique_training_id)) {
             $ok	= false;
         }
-    } elseif($menu->h_training_technique == 2) {
-        if($player && $player->technique_training_id) {
+    } elseif ($menu->h_training_technique == 2) {
+        if ($player && $player->technique_training_id) {
             $ok	= false;
         }
     }
@@ -104,8 +104,8 @@ function is_menu_accessible($menu, $player) {
             if (!$player || ($player && !$player->battle_npc_id)) {
                 $ok	= false;
             }
-        } elseif($menu->h_battle_npc == 2) {
-            if($player && $player->battle_npc_id) {
+        } elseif ($menu->h_battle_npc == 2) {
+            if ($player && $player->battle_npc_id) {
                 $ok	= false;
             }
         }
@@ -116,30 +116,31 @@ function is_menu_accessible($menu, $player) {
             if (!$player || ($player && !$player->battle_pvp_id)) {
                 $ok	= false;
             }
-        } elseif($menu->h_battle_pvp == 2) {
-            if($player && $player->battle_pvp_id) {
+        } elseif ($menu->h_battle_pvp == 2) {
+            if ($player && $player->battle_pvp_id) {
                 $ok	= false;
             }
         }
     }
-    if ($menu->h_battle_room) {
+
+	if ($menu->h_battle_room) {
         if ($menu->h_battle_room == 1) {
             if (!$player || ($player && !$player->battle_room_id)) {
                 $ok	= false;
             }
-        } elseif($menu->h_battle_room == 2) {
-            if($player && $player->battle_room_id) {
+        } elseif ($menu->h_battle_room == 2) {
+            if ($player && $player->battle_room_id) {
                 $ok	= false;
             }
         }
     }
 
     if ($menu->h_hospital) {
-        if($menu->h_hospital == 1) {
-            if(($player && !$player->hospital) || !$player) {
+        if ($menu->h_hospital == 1) {
+            if (($player && !$player->hospital) || !$player) {
                 $ok	= false;
             }
-        } elseif($menu->h_hospital == 2) {
+        } elseif ($menu->h_hospital == 2) {
             if (($player && $player->hospital) || !$player) {
                 $ok	= false;
             }
@@ -147,11 +148,11 @@ function is_menu_accessible($menu, $player) {
     }
 
     if ($menu->h_time_quest) {
-        if($menu->h_time_quest == 1) {
-            if(($player && !$player->time_quest_id) || !$player) {
+        if ($menu->h_time_quest == 1) {
+            if (($player && !$player->time_quest_id) || !$player) {
                 $ok	= false;
             }
-        } elseif($menu->h_time_quest == 2) {
+        } elseif ($menu->h_time_quest == 2) {
             if (($player && $player->time_quest_id) || !$player) {
                 $ok	= false;
             }
@@ -159,32 +160,43 @@ function is_menu_accessible($menu, $player) {
     }
 
     if ($menu->h_pvp_quest) {
-        if($menu->h_pvp_quest == 1) {
-            if(($player && !$player->pvp_quest_id) || !$player) {
+        if ($menu->h_pvp_quest == 1) {
+            if (($player && !$player->pvp_quest_id) || !$player) {
                 $ok	= false;
             }
-        } elseif($menu->h_pvp_quest == 2) {
+        } elseif ($menu->h_pvp_quest == 2) {
             if (($player && $player->pvp_quest_id) || !$player) {
                 $ok	= false;
             }
         }
     }
 
-    if($menu->h_organization == 1) {
-        if(!$player || ($player && !$player->organization_id)) {
+    if ($menu->h_organization == 1) {
+        if (!$player || ($player && !$player->organization_id)) {
             $ok	= false;
         }
-    } elseif($menu->h_organization == 2) {
-        if($player && $player->organization_id) {
+    } elseif ($menu->h_organization == 2) {
+        if ($player && $player->organization_id) {
             $ok	= false;
         }
     }
-    if($menu->h_map == 1) {
-        if(!$player || ($player && !$player->map_id)) {
+
+	if ($menu->h_organization_event == 1) {
+        if (!$player || ($player && !$player->organization_accepted_event_id)) {
             $ok	= false;
         }
-    } elseif($menu->h_map == 2) {
-        if($player && $player->map_id) {
+    } elseif ($menu->h_organization_event == 2) {
+        if ($player && $player->organization_accepted_event_id) {
+            $ok	= false;
+        }
+    }
+
+	if ($menu->h_map == 1) {
+        if (!$player || ($player && !$player->map_id)) {
+            $ok	= false;
+        }
+    } elseif ($menu->h_map == 2) {
+        if ($player && $player->map_id) {
             $ok	= false;
         }
     }

@@ -17,6 +17,7 @@ class QuestsController extends Controller {
 
 		//Verifica a conquista da missão de combate
 		$player->achievement_check("battle_quests");
+		$player->check_objectives("battle_quests");
 
 		$this->assign('player',			$player);
 		$this->assign('quests',			PlayerCombatQuest::find("finished=0 ORDER BY id ASC"));
@@ -417,63 +418,60 @@ class QuestsController extends Controller {
 			$this->json->messages	= $errors;
 		}
 	}
-	function daily_change(){
+	function daily_change() {
 		$player					= Player::get_instance();
 		$user					= User::get_instance();
+
 		$this->as_json			= true;
 		$this->json->success	= false;
 		$this->json->messages	= [];
+
 		$errors					= [];
 		$buy_change				= 0;
 		$valor_change			= 0;
-		$animes					= 0;
-		$personagens			= 0;
 
-		if(isset($_POST['id']) && is_numeric($_POST['id']) && isset($_POST['quest']) && is_numeric($_POST['quest'])) {
+		if (isset($_POST['id']) && is_numeric($_POST['id']) && isset($_POST['quest']) && is_numeric($_POST['quest'])) {
 			$daily				= DailyQuest::find($_POST['quest']);
-
-			if(!$daily) {
+			if (!$daily) {
 				$errors[]	= t('quests.time.errors.invalid');
 			} else {
 				$player_daily 		= PlayerDailyQuest::find($_POST['id']);
 				$buy_mode_change 	= PlayerChange::find_first("player_id=" . $player->id);
 
-				if($player_daily->complete==1){
+				if (!$player_daily || $player_daily->complete == 1) {
 					$errors[]	= t('quests.time.errors.invalid');
 				}
-				if($buy_mode_change){
-					if($buy_mode_change->daily == 0){
-						$buy_change = 0;
-					}elseif($buy_mode_change->daily > 0 && $buy_mode_change->daily < 5){
 
+				if ($buy_mode_change) {
+					if ($buy_mode_change->daily == 0) {
+						$buy_change = 0;
+					} elseif ($buy_mode_change->daily > 0 && $buy_mode_change->daily < 5) {
 						$valor_change = $buy_mode_change->daily * 500;
 
 						if ($player->currency < $valor_change) {
 							$errors[]	= t("quests.time.errors.not_enough_currency");
-						}else{
+						} else {
 							$buy_change = 1;
 						}
-
-					}elseif($buy_mode_change->daily > 4){
-
-						if($buy_mode_change->daily > 4   && $buy_mode_change->daily < 10){
+					} elseif ($buy_mode_change->daily > 4) {
+						if ($buy_mode_change->daily > 4   && $buy_mode_change->daily < 10) {
 							$valor_change = 1;
-						}elseif($buy_mode_change->daily > 9  && $buy_mode_change->daily < 15){
+						} elseif ($buy_mode_change->daily > 9  && $buy_mode_change->daily < 15) {
 							$valor_change = 2;
-						}elseif($buy_mode_change->daily > 14  && $buy_mode_change->daily < 20){
+						} elseif ($buy_mode_change->daily > 14  && $buy_mode_change->daily < 20) {
 							$valor_change = 3;
-						}elseif($buy_mode_change->daily > 20){
+						} elseif ($buy_mode_change->daily > 20) {
 							$valor_change = 5;
 						}
 
 						if ($user->credits < $valor_change) {
 							$errors[]	= t("quests.time.errors.not_enough_credits");
-						}else{
+						} else {
 							$buy_change = 2;
 						}
 
 					}
-				}else{
+				} else {
 					$player_change				 = new PlayerChange();
 					$player_change->player_id 	 = $player->id;
 					$player_change->save();
@@ -483,47 +481,62 @@ class QuestsController extends Controller {
 			$errors[]	= t('quests.time.errors.invalid');
 		}
 
-		if(!sizeof($errors)) {
+		if (!sizeof($errors)) {
 			$this->json->success		= true;
 
 			// Desconta o valor do player
-			if ($buy_change == 1) {
-				$player->spend($valor_change);
-			} elseif($buy_change == 2) {
+			if ($buy_change != 1) {
 				$user->spend($valor_change);
+			} else {
+				$player->spend($valor_change);
 			}
 
 			// Atualiza o contador de troca das missões diarias
-			if(!$buy_mode_change){
+			if (!isset($buy_mode_change)) {
 				$buy_mode_change 	= PlayerChange::find_first("player_id=" . $player->id);
 			}
 			$buy_mode_change->daily++;
 			$buy_mode_change->save();
 
-			//Deleta a missão do player
-			$player_daily_del = Recordset::query("DELETE FROM player_daily_quests WHERE id=". $_POST['id']." AND player_id=".$player->id);
-
-			//Adiciona uma nova missão para o player
-			$daily_quests			= Recordset::query('SELECT * FROM daily_quests WHERE of="player" ORDER BY RAND() LIMIT 1')->row_array();
-
-			if($daily_quests['anime'] && !$daily_quests['personagem']){
-				$animes					= Recordset::query('SELECT id FROM animes WHERE active = 1 ORDER BY RAND() LIMIT 1')->row_array();
-
-			}else if($daily_quests['anime'] && $daily_quests['personagem']){
-
-				$animes					= Recordset::query('SELECT id FROM animes WHERE active = 1 ORDER BY RAND() LIMIT 1')->row_array();
-				$personagens			= Recordset::query('SELECT id FROM characters WHERE active = 1 AND anime_id ='. $animes['id'] .' ORDER BY RAND() LIMIT 1')->row_array();
-
-			}
-
-			Recordset::insert('player_daily_quests', [
-				'player_id'				=> $player->id,
-				'daily_quest_id'		=> $daily_quests['id'],
-				'type'					=> $daily_quests['type'],
-				'anime_id'				=> ($animes['id']) ? $animes['id'] : 0 ,
-				'character_id'			=> ($personagens['id']) ? $personagens['id'] : 0
+			// Deleta a missão do player
+			Recordset::delete('player_daily_quests', [
+				'id'		=> [
+					'escape'	=> true,
+					'value'		=> $_POST['id']
+				],
+				'player_id'	=> [
+					'escape'	=> true,
+					'value'		=> $player->id
+				]
 			]);
 
+			// Adiciona uma nova missão para o player
+			$quest	= DailyQuest::find_first("of = 'player'", [
+				'reorder'	=> 'RAND()'
+			]);
+			if ($quest->anime && !$quest->personagem) {
+                $anime = Anime::find_first('active = 1', [
+                    'reorder'	=> 'RAND()',
+                    'limit'		=> 1
+                ]);
+            } elseif ($quest->anime && $quest->personagem) {
+                $anime      = Anime::find_first('active = 1', [
+                    'reorder'	=> 'RAND()',
+                    'limit'		=> 1
+                ]);
+                $character  = Character::find_first('active = 1 and anime_id = ' . $anime->id, [
+                    'reorder'	=> 'RAND()',
+                    'limit'		=> 1
+                ]);
+            }
+
+			$insert = new PlayerDailyQuest();
+            $insert->player_id      = $player->id;
+            $insert->daily_quest_id = $quest->id;
+            $insert->type           = $quest->type;
+            $insert->anime_id       = isset($anime) ? $anime->id : 0;
+            $insert->character_id   = isset($character) ? $character->id : 0;
+            $insert->save();
 		} else {
 			$this->json->messages	= $errors;
 		}
@@ -658,6 +671,7 @@ class QuestsController extends Controller {
 
 							//Verifica a conquista de fragmentos - Conquista
 							$player->achievement_check("daily_quests");
+							$player->check_objectives("daily_quests");
 
 							// Level da Conta ( Missão Diaria )
 							$user = User::get_instance();
@@ -712,8 +726,8 @@ class QuestsController extends Controller {
 
 							//Verifica a conquista de fragmentos - Conquista
 							$player->achievement_check("account_quests");
-
-						}else{
+							$player->check_objectives("account_quests");
+						} else {
 							$errors[]	= t('quests.daily.errors.not_ready');
 							$this->json->messages	= $errors;
 						}
@@ -762,8 +776,8 @@ class QuestsController extends Controller {
 
 							//Verifica a conquista de fragmentos - Conquista
 							$player->achievement_check("weekly_quests");
-
-						}else{
+							$player->check_objectives("weekly_quests");
+						} else {
 							$errors[]	= t('quests.daily.errors.not_ready');
 							$this->json->messages	= $errors;
 						}
@@ -835,6 +849,7 @@ class QuestsController extends Controller {
 
 			// Verifica a conquista de fragmentos - Conquista
 			$player->achievement_check("time_quests");
+			$player->check_objectives("time_quests");
 
 			$this->_give_item_reward($player, $player_quest);
 		} else {
@@ -881,6 +896,7 @@ class QuestsController extends Controller {
 
 			// Verifica a conquista de fragmentos - Conquista
 			$player->achievement_check("pet_quests");
+			$player->check_objectives("pet_quests");
 
 			// Removendo os pets do trabalho e adicionando a exp e felicidades deles
 			for ($i = 1; $i <= 3; ++$i) {
@@ -1031,7 +1047,7 @@ class QuestsController extends Controller {
 
 		$this->assign('player', $player);
 		$this->assign('effects', $player->get_parsed_effects());
-		$this->assign('graduations', $player->character()->anime()->graduations(' AND sorting!=1'));
+		$this->assign('graduations', $player->character()->anime()->graduations());
 		$this->assign('quests', $player->character()->anime()->pvp_quests());
 		$this->_generate_pvp_quest_list($player);
 		$this->assign('player_tutorial', $player->player_tutorial());
@@ -1196,6 +1212,7 @@ class QuestsController extends Controller {
 
 			//Verifica a conquista de fragmentos - Conquista
 			$player->achievement_check("pvp_quests");
+			$player->check_objectives("pvp_quests");
 
 			$this->_give_item_reward($player, $player_quest);
 		} else {

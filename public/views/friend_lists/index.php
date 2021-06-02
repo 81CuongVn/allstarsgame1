@@ -9,14 +9,14 @@
 <br />
 <?php
 	if($friends){
-		
+
 ?>
     <table width="725" border="0" cellpadding="0" cellspacing="0" id="friend-list-player">
         <?php $counter = 0; ?>
-        <?php foreach($friends as $p): 
+        <?php foreach($friends as $p):
                 $color	= $counter++ % 2 ? '091e30' : '173148';
         ?>
-			<?php 
+			<?php
 				  if(!$p){
 					continue;
 				  }
@@ -34,7 +34,7 @@
                 <td width="200" align="center">
 					<div class="technique-popover" data-source="#gift-container-1-<?php echo $p->id ?>" data-title="<?php echo t('friends.f1');?> <?php echo t('currencies.' . $player->character()->anime_id)?>" data-trigger="click" data-placement="bottom" style="display:inline-block"><img src="<?php echo image_url("icons/currency.png" ) ?>" /></div>
 					<div id="gift-container-1-<?php echo $p->id ?>" class="technique-container">
-						<div align="center" style="margin:10px">
+						<div align="center">
 							<?php echo t('friends.f3');?><br /> <?php echo t('friends.f4');?> <span class="verde">2000 <?php echo t('currencies.' . $player->character()->anime_id)?></span><br /><br />
 							<?php if($user->level > 4){?>
 								<?php if(sizeof($player->limit_by_day($player->id)) < 1){?>
@@ -47,9 +47,9 @@
 							<?php }?>
 						</div>
 					</div>
-					<div class="technique-popover" data-source="#gift-container-2-<?php echo $p->id ?>" data-title="<?php echo t('friends.f22');?>" data-trigger="click" data-placement="bottom" style="display:inline-block"><img src="<?php echo image_url("icons/queue.png" ) ?>" /></div>
+					<div class="technique-popover" data-source="#gift-container-2-<?php echo $p->id ?>" data-title="<?php echo t('friends.f22');?>" data-trigger="click" data-placement="bottom" style="display:inline-block"><img src="<?php echo image_url("icons/queue-on.png" ) ?>" /></div>
 					<div id="gift-container-2-<?php echo $p->id ?>" class="technique-container">
-						<div align="center" style="margin:10px">
+						<div align="center">
 							<?php echo t('friends.f3');?><br /> <?php echo t('friends.f5');?> <span class="verde"><?php echo t('friends.f6');?></span><br /><br />
 							<?php if($user->level > 9){?>
 								<?php if(sizeof($player->limit_by_day($player->id)) < 1){?>
@@ -59,49 +59,49 @@
 								<?php }?>
 							<?php }else{?>
 								<span class="laranja"><?php echo t('friends.f21');?> 9</span>
-							<?php }?>		
+							<?php }?>
 						</div>
 					</div>
 					<div class="technique-popover" data-source="#gift-container-3-<?php echo $p->id ?>" data-title="<?php echo t('friends.f23');?>" data-trigger="click" data-placement="bottom" style="display:inline-block"><img src="<?php echo image_url("icons/vip-on.png" ) ?>" /></div>
 					<div id="gift-container-3-<?php echo $p->id ?>" class="technique-container">
-						<div align="center" style="margin:10px">
+						<div align="center">
 							<?php echo t('friends.f3');?><br /> <?php echo t('friends.f5');?> <span class="verde"><?php echo t('friends.f8');?></span><br /><br />
-							<?php if($user->level > 19){?>	
+							<?php if($user->level > 19){?>
 								<?php if(sizeof($player->limit_by_day($player->id)) < 1){?>
 									<a data-gift="3" data-player="<?php echo $p->id ?>" class="btn btn-sm btn-primary gift"><?php echo t('friends.f10');?></a>
 								<?php }else{?>
 									<a class="btn btn-sm btn-danger"><?php echo t('friends.f26');?></a>
-								<?php }?>	
+								<?php }?>
 							<?php }else{?>
 								<span class="laranja"><?php echo t('friends.f21');?> 19</span>
-							<?php }?>	
+							<?php }?>
 						</div>
-					</div>	
+					</div>
 					<div class="technique-popover" data-source="#gift-container-4-<?php echo $p->id ?>" data-title="<?php echo t('friends.f24');?>" data-trigger="click" data-placement="bottom" style="display:inline-block"><img src="<?php echo image_url("icons/theme.png" ) ?>" /></div>
 					<div id="gift-container-4-<?php echo $p->id ?>" class="technique-container">
-						<div align="center" style="margin:10px">
+						<div align="center">
 							<?php echo t('friends.f3');?><br /> <?php echo t('friends.f5');?> <span class="verde"><?php echo t('friends.f9');?></span><br /><br />
-							<?php if($user->level > 29){?>	
+							<?php if($user->level > 29){?>
 								<?php if(sizeof($player->limit_by_day($player->id)) < 1){?>
 									<a data-gift="4"  data-player="<?php echo $p->id ?>" class="btn btn-sm btn-primary gift"><?php echo t('friends.f10');?></a>
 								<?php }else{?>
 									<a class="btn btn-sm btn-danger"><?php echo t('friends.f26');?></a>
-								<?php }?>	
+								<?php }?>
 							<?php }else{?>
 								<span class="laranja"><?php echo t('friends.f21');?> 29</span>
-							<?php }?>	
+							<?php }?>
 						</div>
 					</div>
 					<div class="technique-popover" data-source="#gift-container-5-<?php echo $p->id ?>" data-title="<?php echo t('friends.f25');?>" data-trigger="click" data-placement="bottom" style="display:inline-block"><img src="<?php echo image_url("icons/pet.png" ) ?>" /></div>
 					<div id="gift-container-5-<?php echo $p->id ?>" class="technique-container">
-						<div align="center" style="margin:10px">
+						<div align="center">
 							<?php echo t('friends.f3');?><br /> <?php echo t('friends.f5');?> <span class="verde"><?php echo t('friends.f12');?></span><br /><br />
 							<?php if($user->level > 39){?>
 								<?php if(sizeof($player->limit_by_day($player->id)) < 1){?>
 									<a data-gift="5" data-player="<?php echo $p->id ?>" class="btn btn-sm btn-primary gift"><?php echo t('friends.f11');?></a>
 								<?php }else{?>
 									<a class="btn btn-sm btn-danger"><?php echo t('friends.f26');?></a>
-								<?php }?>	
+								<?php }?>
 							<?php }else{?>
 								<span class="laranja"><?php echo t('friends.f21');?> 39</span>
 							<?php }?>
@@ -113,13 +113,12 @@
                     <a class="btn btn-sm btn-danger kick" data-id="<?php echo $p->id?>"><?php echo t('friends.f14');?></a>
                 </td>
             </tr>
-            <tr height="4"></tr>
         <?php endforeach ?>
     </table>
-<?php 
+<?php
 	}else{
 ?>
 <div align="center" style="padding-top: 10px"><b class="laranja" style="font-size:14px;"><?php echo t('friends.nothing3', array('link' => make_url('friend_lists#search'))) ?></b></div>
-<?php		
+<?php
 	}
 ?>

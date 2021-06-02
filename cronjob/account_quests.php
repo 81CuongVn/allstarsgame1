@@ -5,7 +5,7 @@ $maxQuests  = 4;
 $users      = User::find('active = 1 and banned = 0');
 foreach ($users as $user) {
 	// Verifica se o jogador tem 4 missões ativas
-    $totalQuests	= sizeof(UserDailyQuest::find('user_id = ' . $user->id));
+    $totalQuests	= sizeof(UserDailyQuest::find('complete = 0 and user_id = ' . $user->id));
     $diff           = $maxQuests - $totalQuests;
     if ($diff > 0) {
         $quests		= DailyQuest::find("of = 'account'", [
@@ -13,7 +13,9 @@ foreach ($users as $user) {
 			'limit'		=> $diff
 		]);
         foreach ($quests as $quest) {
-            if ($quest->anime && !$quest->personagem) {
+			$anime		= false;
+
+			if ($quest->anime && !$quest->personagem) {
                 $anime = Anime::find_first('active = 1', [
                     'reorder'	=> 'RAND()',
                     'limit'		=> 1

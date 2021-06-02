@@ -6,8 +6,17 @@ class User extends Relation {
 
 	protected function before_update() {
 		if ($this->is_next_level()) {
-			$this->level	+= 1;
-			$this->exp		-= $this->level_exp();
+			while ($this->is_next_level()) {
+				$this->exp			-= $this->level_exp();
+				$this->level		+= 1;
+			}
+
+			$player	= Player::get_instance();
+			if ($player) {
+				// verifica o level da conta do jogador
+				$player->achievement_check('level_account');
+				$player->check_objectives('level_account');
+			}
 		}
 	}
 

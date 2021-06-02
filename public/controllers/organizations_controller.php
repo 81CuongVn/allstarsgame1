@@ -70,10 +70,13 @@ class OrganizationsController extends Controller {
 
 		$_SESSION['organization_dungeon_key']	= uniqid('', true);
 
+		// TODO: Fazer uma verificação para ver se existe uma dungeon ativa
+
 		$this->assign('player', $player);
 		$this->assign('position', $position);
 		$this->assign('map', $map);
 	}
+
 	function dungeon_move() {
 		$this->as_json			= true;
 		$this->json->success	= false;
@@ -134,11 +137,11 @@ class OrganizationsController extends Controller {
 						if (OrganizationMapObjectSession::find('player_id=0 AND down=1 AND organization_accepted_event_id=' . $player->organization_accepted_event_id . ' AND organization_id=' . $player->organization_id . ' AND organization_map_object_id=' . $object->id)) {
 							continue;
 						}
-					} elseif($object->kind == 'chest') {
+					} elseif ($object->kind == 'chest') {
 						if (OrganizationMapObjectSession::find('down=1 AND organization_accepted_event_id=' . $player->organization_accepted_event_id . ' AND organization_id=' . $player->organization_id . ' AND organization_map_object_id=' . $object->id)) {
 							continue;
 						}
-					} elseif($object->kind == 'sharedchest') {
+					} elseif ($object->kind == 'sharedchest') {
 						if (OrganizationMapObjectSession::find('player_id=' . $player->id . ' AND down=1 AND organization_accepted_event_id=' . $player->organization_accepted_event_id . ' AND organization_id=' . $player->organization_id . ' AND organization_map_object_id=' . $object->id)) {
 							continue;
 						}
@@ -202,7 +205,7 @@ class OrganizationsController extends Controller {
 			$took->organization_id					= $player->organization_id;
 			$took->organization_map_object_id		= $object->id;
 			$took->organization_accepted_event_id	= $player->organization_accepted_event_id;
-			$took->down = 1;
+			$took->down								= 1;
 			$took->save();
 
 			// Recompensa para o caboclo
@@ -221,6 +224,9 @@ class OrganizationsController extends Controller {
 			// Prêmios ( GOLD )
 			if ($object_reward->currency) {
 				$player->earn($object_reward->currency);
+
+				$player->achievement_check("currency");
+				$player->check_objectives("currency");
 			}
 
 			// Prêmios ( VIPS )
@@ -229,19 +235,25 @@ class OrganizationsController extends Controller {
 
 				// Verifica os créditos do jogador.
 				$player->achievement_check("credits");
+				$player->check_objectives("credits");
 			}
 
 			// Prêmios ( EQUIPS )
 			if ($object_reward->equipment) {
-				if($object_reward->equipment == 1) {
+				if ($object_reward->equipment == 1) {
 					$dropped  = Item::generate_equipment($player);
 				} elseif ($object_reward->equipment == 2) {
-					$dropped  = Item::generate_equipment($player,0);
+					$dropped  = Item::generate_equipment($player, 0);
 				} elseif ($object_reward->equipment == 3) {
-					$dropped  = Item::generate_equipment($player,1);
+					$dropped  = Item::generate_equipment($player, 1);
 				} elseif ($object_reward->equipment == 4) {
-					$dropped  = Item::generate_equipment($player,2);
+					$dropped  = Item::generate_equipment($player, 2);
+				} elseif ($object_reward->equipment == 5) {
+					$dropped  = Item::generate_equipment($player, 3);
 				}
+
+				$player->achievement_check('equipment');
+				$player->check_objectives('equipment');
 			}
 
 			// Prêmios ( PETS )
@@ -253,6 +265,9 @@ class OrganizationsController extends Controller {
 					$player_pet->item_id	= $npc_pet->id;
 					$player_pet->player_id	= $player->id;
 					$player_pet->save();
+
+					$player->achievement_check('pets');
+					$player->check_objectives('pets');
 				}
 			}
 
@@ -279,6 +294,9 @@ class OrganizationsController extends Controller {
 				$reward_character->character_id	= $object_reward->character_id;
 				$reward_character->was_reward	= 1;
 				$reward_character->save();
+
+				$player->achievement_check('character');
+				$player->check_objectives('character');
 			}
 
 			// Prêmios ( THEME )
@@ -288,6 +306,9 @@ class OrganizationsController extends Controller {
 				$reward_theme->character_theme_id	= $object_reward->character_theme_id;
 				$reward_theme->was_reward			= 1;
 				$reward_theme->save();
+
+				$player->achievement_check('character_theme');
+				$player->check_objectives('character_theme');
 			}
 
 			// Prêmios ( TITULOS )
@@ -388,16 +409,16 @@ class OrganizationsController extends Controller {
 				$player->clear_effects();
 			// <--
 
-			$battle->player_id = $player->id;
-			$battle->battle_type_id	= $object->kind == 'npc' ? 7 : 8;
+			$battle->player_id			= $player->id;
+			$battle->battle_type_id		= $object->kind == 'npc' ? 7 : 8;
 			$battle->save();
 
-			$player->battle_npc_id	= $battle->id;
+			$player->battle_npc_id		= $battle->id;
 			$player->save();
 
-			$npc->battle_npc_id	= $battle->id;
-			$npc->organization_map_object_id = $object->id;
-			$npc->name = $object->name;
+			$npc->battle_npc_id					= $battle->id;
+			$npc->organization_map_object_id	= $object->id;
+			$npc->name							= $object->name;
 			$player->save_npc($npc);
 		} else {
 			$this->json->messages = $errors;
@@ -435,7 +456,7 @@ class OrganizationsController extends Controller {
 				$refuses = $redis->lRange("od_refuses_" . $queue_id, 0, -1);
 				$invites = $redis->lRange("od_targets_" . $queue_id, 0, -1);
 
-				foreach ($player->organization()->players() as $organization_player) {
+				foreach ($organization->players() as $organization_player) {
 					if ($organization_player->player_id != $player->id) {
 						$player_list[] = [
 							'id'		=> $organization_player->player_id,
@@ -485,9 +506,9 @@ class OrganizationsController extends Controller {
 		}
 	}
 	function dungeon_accept() {
-		$this->as_json = true;
-		$this->json->success = false;
-		$errors = [];
+		$this->as_json			= true;
+		$this->json->success	= false;
+		$errors					= [];
 
 		if (!isset($_POST['queue_id']) || (isset($_POST['queue_id']) && !$_POST['queue_id'])) {
 			$errors[] = t('organizations.errors.dungeon.invalid_queue');;
@@ -495,7 +516,6 @@ class OrganizationsController extends Controller {
 
 		if (!sizeof($errors)) {
 			$player			= Player::get_instance();
-			$organization	= $player->organization();
 			$queue_id		= $_POST['queue_id'];
 
 			$redis = new Redis();
@@ -510,6 +530,7 @@ class OrganizationsController extends Controller {
 			$event_id	= $redis->get("od_event_"		. $queue_id);
 
 			$accepted	= OrganizationAcceptedEvent::find($event_id);
+			var_dump($accepts);
 			if (sizeof($accepts) == $needed) {
 				foreach ($accepts as $player_id) {
 					$p = Player::find($player_id);
@@ -518,12 +539,12 @@ class OrganizationsController extends Controller {
 
 					$position = $p->position();
 					$position->organization_map_id		= $accepted->event()->initial_map()->id;
-					$position->save();
+					// $position->save();
 				}
-				$redis->lRem("aasg_od_invites", $queue_id, 0);
+				// $redis->lRem("aasg_od_invites", $queue_id, 0);
 
 				$accepted->accepted = 1;
-				$accepted->save();
+				// $accepted->save();
 
 				$this->json->redirect = true;
 			}
@@ -1048,6 +1069,7 @@ class OrganizationsController extends Controller {
 
 						// Verifica os créditos do jogador.
 						$p->achievement_check("credits");
+						$p->check_objectives("credits");
 					}
 					//Prêmios ( EQUIPS )
 					if ($treasure->equipment) {
@@ -1196,6 +1218,7 @@ class OrganizationsController extends Controller {
 
 		//Verifica se você tem organização - Conquista
 		$player->achievement_check("organization");
+		$player->check_objectives("organization");
 
 		$errors			= [];
 		$upload_error	= false;

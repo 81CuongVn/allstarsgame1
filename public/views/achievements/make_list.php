@@ -24,7 +24,7 @@
 </script>
 <?php foreach ($achievements as $achievement):
 	$player_achievement = $achievement->player_achievement($player->id, $achievement->id);
-	$on_off  = $player_achievement ? "on" : "off";  	
+	$on_off  = $player_achievement ? "on" : "off";
 ?>
 	<div class="ability-speciality-box <?=($on_off == "on" ? 'active' : '')?>" style="height: auto;">
 		<div class="image">
@@ -33,7 +33,7 @@
 		<div class="name" style="height:55px !important;">
 			<span class="a-name-on"><?php echo $achievement->description()->name;?></span>
 			<span style="top:5px; position: relative; font-size: 11px">
-				<?php 
+				<?php
 				if ($on_off == "on") {
 					$timestamp = strtotime($player_achievement->created_at);
 					echo '<br />' . date('d/m/Y H:i:s', $timestamp);
@@ -49,12 +49,12 @@
 				<div id="tooltip-req-<?php echo $achievement->id?>" class="status-popover-container">
 					<div class="status-popover-content">
 						<?php echo $achievement->description()->description;?>
-						<?php 
+						<?php
 						if ($on_off != "on") {
 							// Barrinhas de Progresso dos Amigos
 							if ($achievement->friends > 1) {
 								$player_friends = Recordset::query("select count(id) as total from player_friend_lists WHERE  player_id=".$player->id)->result_array();
-								
+
 								if ($player_friends[0]['total'] < $achievement->friends) {
 									echo exp_bar($player_friends[0]['total'], $achievement->friends, 175, $player_friends[0]['total'] . '/' . $achievement->friends);
 								}
@@ -304,25 +304,25 @@
 
 							// Barrinhas de Progresso de Batalha PVP
 							if($achievement->battle_pvp){
-								
+
 								// Só quer saber a quantidade de pvps
 								if ($achievement->battle_pvp && !$achievement->anime_id && !$achievement->character_id && !$achievement->faction_id) {
 									if ($player->wins_pvp < $achievement->quantity) {
 										echo exp_bar($player->wins_pvp, $achievement->quantity, 175, $player->wins_pvp . '/' . $achievement->quantity);
 									}
-								// Quer saber a quantidade de pvps com determinada facção	
+								// Quer saber a quantidade de pvps com determinada facção
 								} elseif ($achievement->battle_pvp && !$achievement->anime_id && !$achievement->character_id && $achievement->faction_id) {
 									$player_achievement_stats = Recordset::query("select sum(quantity) as total from player_achievement_stats WHERE player_id=".$player->id." AND faction_id=".$achievement->faction_id)->result_array();
 									if ($player_achievement_stats[0]['total'] < $achievement->quantity) {
 										echo exp_bar(($player_achievement_stats[0]['total'] ? $player_achievement_stats[0]['total'] : 0), $achievement->quantity, 175, ($player_achievement_stats[0]['total'] ? $player_achievement_stats[0]['total'] : 0) . '/' . $achievement->quantity);
 									}
-								// Quer saber a quantidade de pvps com determinada anime	
+								// Quer saber a quantidade de pvps com determinada anime
 								} elseif ($achievement->battle_pvp && $achievement->anime_id && !$achievement->character_id && !$achievement->faction_id) {
 									$player_achievement_stats = Recordset::query("select sum(quantity) as total from player_achievement_stats WHERE player_id=".$player->id." AND anime_id=".$achievement->anime_id)->result_array();
 									if ($player_achievement_stats[0]['total'] < $achievement->quantity) {
 										echo exp_bar(($player_achievement_stats[0]['total'] ? $player_achievement_stats[0]['total'] : 0), $achievement->quantity, 175, ($player_achievement_stats[0]['total'] ? $player_achievement_stats[0]['total'] : 0) . '/' . $achievement->quantity);
 									}
-								// Quer saber a quantidade de pvps com determinada personagem	
+								// Quer saber a quantidade de pvps com determinada personagem
 								} elseif ($achievement->battle_pvp && !$achievement->anime_id && $achievement->character_id && !$achievement->faction_id) {
 									$player_achievement_stats = Recordset::query("select sum(quantity) as total from player_achievement_stats WHERE player_id=".$player->id." AND character_id=".$achievement->character_id)->result_array();
 									if ($player_achievement_stats[0]['total'] < $achievement->quantity) {
@@ -342,45 +342,45 @@
 				</div>
 				<div id="tooltip-gift-<?php echo $achievement->id?>" class="status-popover-container">
 					<div class="status-popover-content">
-						<?php 
+						<?php
 							$rewards = $achievement->achievement_rewards($achievement->id);
 						?>
 						<?php if($rewards){?>
 							<ul>
 								<?php if($rewards->exp){?>
-									<li><?php echo highamount($rewards->exp); ?> <?php echo t('ranked.exp');?></li><br />
+									<li><?php echo highamount($rewards->exp); ?> <?php echo t('ranked.exp');?></li>
 								<?php }?>
 								<?php if($rewards->exp_user){?>
-									<li><?php echo highamount($rewards->exp_user); ?> <?php echo t('ranked.exp_account');?></li><br />
+									<li><?php echo highamount($rewards->exp_user); ?> <?php echo t('ranked.exp_account');?></li>
 								<?php }?>
 								<?php if($rewards->currency){?>
-									<li><?php echo highamount($rewards->currency); ?> <?php echo t('currencies.' . $player->character()->anime_id) ?></li><br />
-								<?php }?>	
+									<li><?php echo highamount($rewards->currency); ?> <?php echo t('currencies.' . $player->character()->anime_id) ?></li>
+								<?php }?>
 								<?php if($rewards->credits){?>
-									<li><?php echo highamount($rewards->credits); ?> <?php echo t('treasure.show.credits')?></li><br />
-								<?php }?>	
+									<li><?php echo highamount($rewards->credits); ?> <?php echo t('treasure.show.credits')?></li>
+								<?php }?>
 								<?php if($rewards->item_id){?>
-									<li><?php echo highamount($rewards->quantity);?>x "<?php echo Item::find($rewards->item_id)->description()->name ?>"</li><br />
+									<li><?php echo highamount($rewards->quantity);?>x "<?php echo Item::find($rewards->item_id)->description()->name ?>"</li>
 								<?php }?>
 								<?php if($rewards->character_theme_id){?>
-									<li><?php echo t('treasure.show.theme')?> "<?php echo CharacterTheme::find($rewards->character_theme_id)->description()->name ?>"</li><br />
+									<li><?php echo t('treasure.show.theme')?> "<?php echo CharacterTheme::find($rewards->character_theme_id)->description()->name ?>"</li>
 								<?php }?>
 								<?php if($rewards->character_id){?>
-									<li><?php echo t('treasure.show.character')?> "<?php echo Character::find($rewards->character_id)->description()->name ?>"</li><br />
+									<li><?php echo t('treasure.show.character')?> "<?php echo Character::find($rewards->character_id)->description()->name ?>"</li>
 								<?php }?>
 								<?php if($rewards->equipment){?>
-									<li><?php echo t('event.e12');?></li><br />
+									<li><?php echo t('event.e12');?></li>
 								<?php }?>
 								<?php if($rewards->pet){?>
-									<li><?php echo t('event.e14');?></li><br />
+									<li><?php echo t('event.e14');?></li>
 								<?php }?>
 								<?php if($rewards->headline_id){?>
-									<li><?php echo t('treasure.show.headline')?> "<?php echo Headline::find($rewards->headline_id)->description()->name ?>"</li><br />
+									<li><?php echo t('treasure.show.headline')?> "<?php echo Headline::find($rewards->headline_id)->description()->name ?>"</li>
 								<?php }?>
 							</ul>
 						<?php }else{?>
 							<span>Conquista sem premiação</span>
-						<?php }?>			
+						<?php }?>
 					</div>
 				</div>
 			</div>
@@ -399,4 +399,4 @@
 		<div class="button" style="position:relative; top: 15px;">
 		</div>
 	</div>
-<?php endforeach; ?>	
+<?php endforeach; ?>

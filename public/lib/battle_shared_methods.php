@@ -240,20 +240,26 @@ trait BattleSharedMethods {
 
 			if ($battle->battle_type_id == 7 || $battle->battle_type_id == 8) {
 				$link		= make_url('organizations#dungeon');
-				$link_text	= 'Voltar para Dungeon';
-			} else if ($battle->battle_type_id == 3 && $p->challenge_id) {
-				$link = make_url('challenges#show/' . $p->challenge_id);
-				$link_text	= 'Voltar para Arena do Céu';
+				$link_text	= t('battles.links.dungeon');
+			} elseif ($battle->battle_type_id == 3 && $p->challenge_id) {
+				$link		= make_url('challenges#show/' . $p->challenge_id);
+				$link_text	= t('battles.links.challenges');
 			} elseif ($battle->battle_type_id == 6) {
-				$link = make_url('maps#preview');
-				$link_text	= 'Voltar para Exploração';
+				$link		= make_url('maps#preview');
+				$link_text	= t('battles.links.maps_preview');
 			} elseif ($battle->battle_type_id == 9 && isset($_SESSION['history_mode'])) {
-				$link = make_url('history_mode#show/' . $_SESSION['history_mode']);
-				$link_text	= 'Voltar para Modo Aventura';
+				$link		= make_url('history_mode#show/' . $_SESSION['history_mode']);
+				$link_text	= t('battles.links.history_mode');
 				unset($_SESSION['history_mode']);
+			} elseif ($battle->battle_type_id == 1) {
+				$link		= make_url('battle_npcs');
+				$link_text	= t('battles.links.battle_npcs');
+			} elseif ($battle->battle_type_id == 2) {
+				$link		= make_url('battle_npcs');
+				$link_text	= t('battles.links.battle_pvp');
 			} else {
-				$link = make_url('characters#status');
-				$link_text	= 'Status do Personagem';
+				$link		= make_url('characters#status');
+				$link_text	= t('battles.links.characters_status');
 			}
 
 			$this->json->redirect	= $link;
@@ -389,6 +395,7 @@ trait BattleSharedMethods {
 
 				// Conquista para verificar a quantidade de pet / hapiness
 				$p->achievement_check("pets");
+				$p->check_objectives('pets');
 			}
 
 			$p->battle_npc_id	= 0;
@@ -423,76 +430,77 @@ trait BattleSharedMethods {
 				$drop_chance_pet 	 	 = (10	* DROP_RATE) + ($bonus_active ? 10 : 0);	// +10% se o anime do jogador tiver ganhado o último evento de anime
 				$drop_areia 			 = (5	* DROP_RATE);
 				$drop_sangue			 = (1	* DROP_RATE);
-				$drop_event		 		 = (1	* DROP_RATE);
+				$drop_event		 		 = (5	* DROP_RATE);
 			} else {		// Chance de drop para NPC
 				$drop_chance_page		 = (5	* DROP_RATE);
-				$drop_chance_fragment	 = (10	* DROP_RATE);
-				$drop_chance_equipment	 = (7	* DROP_RATE) + ($bonus_active ? 10 : 0);	// +10% se o anime do jogador tiver ganhado o último evento de anime
-				$drop_chance_pet 	 	 = (7	* DROP_RATE) + ($bonus_active ? 10 : 0);	// +10% se o anime do jogador tiver ganhado o último evento de anime
-				$drop_event		 		 = (1	* DROP_RATE);
+				$drop_chance_fragment	 = (7.5	* DROP_RATE);
+				$drop_chance_equipment	 = (5	* DROP_RATE) + ($bonus_active ? 10 : 0);	// +10% se o anime do jogador tiver ganhado o último evento de anime
+				$drop_chance_pet 	 	 = (5	* DROP_RATE) + ($bonus_active ? 10 : 0);	// +10% se o anime do jogador tiver ganhado o último evento de anime
+				$drop_areia 			 = (2.5	* DROP_RATE);
+				$drop_sangue			 = (0.5	* DROP_RATE);
+				$drop_event		 		 = (2.5	* DROP_RATE);
 			}
 
 			// Realiza o sorteio e verificação dos drops
 			if (($battle->won != $p->id && $battle->inactivity == 1) || $battle->battle_type_id == 4) {
 				// Não dropa nada!
 			} else {
-				// Só dropa sangue, areia e doce em PVP
-				if ($is_pvp) {
-					// Drop de Areia Estelar
-					if (has_chance($drop_areia + $extras->sum_bonus_drop)) {
-						$item_1719 = PlayerItem::find_first("player_id =". $p->id. " AND item_id = 1719");
-						if ($item_1719) {
-							$player_areia			= $p->get_item(1719);
-							$player_areia->quantity += 1;
-							$player_areia->save();
-						} else {
-							$player_areia	= new PlayerItem();
-							$player_areia->item_id	= 1719;
-							$player_areia->player_id	= $p->id;
-							$player_areia->quantity = 1;
-							$player_areia->save();
-						}
-						$drop_message	.= t('battles.finished.drop', [
-							'item'	=> $player_areia->item()->description()->name
-						]);
-
-						// Mensagem Global
-						global_message('hightlights.sand', TRUE, [ $p->name ]);
-
-						// Verifica a conquista de areia - Conquista
-						$p->achievement_check("sands");
-
-						// Diz que ganhou a Areia
-						$sand_drop  = true;
+				// Drop de Areia Estelar
+				if (has_chance($drop_areia + $extras->sum_bonus_drop)) {
+					$item_1719 = PlayerItem::find_first("player_id =". $p->id. " AND item_id = 1719");
+					if ($item_1719) {
+						$player_areia			= $p->get_item(1719);
+						$player_areia->quantity += 1;
+						$player_areia->save();
+					} else {
+						$player_areia	= new PlayerItem();
+						$player_areia->item_id	= 1719;
+						$player_areia->player_id	= $p->id;
+						$player_areia->quantity = 1;
+						$player_areia->save();
 					}
+					$drop_message	.= t('battles.finished.drop', [
+						'item'	=> $player_areia->item()->description()->name
+					]);
 
-					// Drop de Sangue de Deus
-					if (has_chance($drop_sangue + $extras->sum_bonus_drop)) {
-						$item_1720 = PlayerItem::find_first("player_id =". $p->id. " AND item_id=1720");
-						if ($item_1720){
-							$player_sangue			= $p->get_item(1720);
-							$player_sangue->quantity += 1;
-							$player_sangue->save();
-						} else {
-							$player_sangue	= new PlayerItem();
-							$player_sangue->item_id	= 1720;
-							$player_sangue->player_id	= $p->id;
-							$player_sangue->quantity = 1;
-							$player_sangue->save();
-						}
-						$drop_message	.= t('battles.finished.drop', [
-							'item'	=> $player_sangue->item()->description()->name
-						]);
+					// Mensagem Global
+					global_message('hightlights.sand', TRUE, [ $p->name ]);
 
-						// Mensagem Global
-						global_message('hightlights.blood', TRUE, [ $p->name ]);
+					// Verifica a conquista de areia - Conquista
+					$p->achievement_check("sands");
+					$p->check_objectives('sands');
 
-						// Verifica a conquista de areia - Conquista
-						$p->achievement_check("bloods");
+					// Diz que ganhou a Areia
+					$sand_drop  = true;
+				}
 
-						// Diz que ganhou o Sangue
-						$blood_drop  = true;
+				// Drop de Sangue de Deus
+				if (has_chance($drop_sangue + $extras->sum_bonus_drop)) {
+					$item_1720 = PlayerItem::find_first("player_id =". $p->id. " AND item_id=1720");
+					if ($item_1720){
+						$player_sangue			= $p->get_item(1720);
+						$player_sangue->quantity += 1;
+						$player_sangue->save();
+					} else {
+						$player_sangue	= new PlayerItem();
+						$player_sangue->item_id	= 1720;
+						$player_sangue->player_id	= $p->id;
+						$player_sangue->quantity = 1;
+						$player_sangue->save();
 					}
+					$drop_message	.= t('battles.finished.drop', [
+						'item'	=> $player_sangue->item()->description()->name
+					]);
+
+					// Mensagem Global
+					global_message('hightlights.blood', TRUE, [ $p->name ]);
+
+					// Verifica a conquista de areia - Conquista
+					$p->achievement_check("bloods");
+					$p->check_objectives('bloods');
+
+					// Diz que ganhou o Sangue
+					$blood_drop  = true;
 				}
 
 				// Drop de Evento
@@ -554,6 +562,7 @@ trait BattleSharedMethods {
 
 					// Verifica a conquista de fragmentos - Conquista
 					$p->achievement_check("fragments");
+					$p->check_objectives('fragments');
 
 					// Diz que ganhou o Fragmento
 					$fragment_drop  = true;
@@ -569,6 +578,7 @@ trait BattleSharedMethods {
 
 						// Verifica a conquista de fragmentos - Conquista
 						$p->achievement_check("equipment");
+						$p->check_objectives('equipment');
 
 						// Diz que ganhou a Equip
 						$equip_drop  = true;
@@ -590,6 +600,7 @@ trait BattleSharedMethods {
 
 							// Verifica se você tem pets - Conquista
 							$p->achievement_check("pets");
+							$p->check_objectives('pets');
 
 							// Diz que ganhou o Mascote
 							$pet_drop  = true;
@@ -794,30 +805,24 @@ trait BattleSharedMethods {
 					$currency_extra	+= percent($effects['currency_reward_extra_percent'], $currency) + $effects['currency_reward_extra'];
 
 					// adiciona as novas flags de como o jogador matou os jogadores
-					if ($is_pvp) {
+					if ($is_pvp && (!$_SESSION['pvp_used_buff'] || !$_SESSION['pvp_used_ability'] || !$_SESSION['pvp_used_speciality'])) {
+						$player_kills = new PlayerKill();
+						$player_kills->player_id = $p->id;
+						$player_kills->enemy_id  = $e->id;
+
 						if (!$_SESSION['pvp_used_buff']) {
-							$player_kills = new PlayerKill();
-							$player_kills->player_id = $p->id;
-							$player_kills->enemy_id  = $e->id;
 							$player_kills->kills_wo_buff++;
-							$player_kills->save();
 						}
 
 						if (!$_SESSION['pvp_used_ability']) {
-							$player_kills = new PlayerKill();
-							$player_kills->player_id = $p->id;
-							$player_kills->enemy_id  = $e->id;
 							$player_kills->kills_wo_ability++;
-							$player_kills->save();
 						}
 
 						if(!$_SESSION['pvp_used_speciality']) {
-							$player_kills = new PlayerKill();
-							$player_kills->player_id = $p->id;
-							$player_kills->enemy_id  = $e->id;
 							$player_kills->kills_wo_speciality++;
-							$player_kills->save();
 						}
+
+						$player_kills->save();
 					}
 
 					// Verifica se o jogador matou um alvo dos procurados
@@ -984,6 +989,7 @@ trait BattleSharedMethods {
 
 									// Verifica se você ganhou treasure - Conquista
 									$p->achievement_check("treasure");
+									$p->check_objectives('treasure');
 
 									// Seta como roubado um tesouro
 									$treasure_still = true;
@@ -1040,6 +1046,7 @@ trait BattleSharedMethods {
 
 								// Verifica a conquista de liga pvp
 								$p->achievement_check("battle_league_pvp");
+								$p->check_objectives('battle_league_pvp');
 							}
 
 							$stats->wins++;
@@ -1079,9 +1086,11 @@ trait BattleSharedMethods {
 
 							// Verifica se você tem batalhas - Conquista
 							$p->achievement_check("battle_pvp");
+							$p->check_objectives('battle_pvp');
 
 							// Verifica se você tem batalhas - Conquista
 							$p->achievement_check("wanted");
+							$p->check_objectives('wanted');
 
 						} else {
 							// Premiação do NPC de Mapa
@@ -1103,6 +1112,7 @@ trait BattleSharedMethods {
 
 											// verifica se desbloqueou novo personagem - conquista
 											$p->achievement_check("character");
+											$p->check_objectives('character');
 										}
 
 										// Prêmios ( THEME )
@@ -1231,6 +1241,7 @@ trait BattleSharedMethods {
 
 											// verifica se desbloqueou novo personagem - conquista
 											$p->achievement_check("character");
+											$p->check_objectives('character');
 										}
 
 										if ($npc_subgroup->reward_character_theme_id &&!$user->is_theme_bought($npc_subgroup->reward_character_theme_id)) {
@@ -1242,9 +1253,11 @@ trait BattleSharedMethods {
 
 											// verifica se desbloqueou novo personagem - conquista
 											$p->achievement_check("character_theme");
+											$p->check_objectives('character_theme');
 										}
 										// Verifica se finalizou uma modo historia - Conquista
 										$p->achievement_check("history_mode");
+										$p->check_objectives('history_mode');
 									}
 								}
 							}
@@ -1261,6 +1274,7 @@ trait BattleSharedMethods {
 
 							// Verifica se você tem pets
 							$p->achievement_check("battle_npc");
+							$p->check_objectives('battle_npc');
 						}
 					}
 
@@ -1487,6 +1501,7 @@ trait BattleSharedMethods {
 
 			// Checa o dinheiro do player - Conquista
 			$p->achievement_check("currency");
+			$p->check_objectives('currency');
 
 			$this->json->finished	= $finished_message;
 

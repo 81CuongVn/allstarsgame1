@@ -351,6 +351,22 @@ class Relation {
 		}
 	}
 
+	function delete() {
+		$class	= get_class($this);
+
+		if (method_exists($this, 'before_delete')) {
+			$this->before_delete();
+		}
+
+		Recordset::delete($class::$_table[$class], [
+			'id'	=> $this->id
+		]);
+
+		if (method_exists($this, 'after_delete')) {
+			$this->after_delete();
+		}
+	}
+
 	function get_fields() {
 		$class	= get_class($this);
 

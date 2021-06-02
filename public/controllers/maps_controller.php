@@ -389,6 +389,7 @@
 
 				// Verifica a conquista do Mapa - Conquista
 				$player->achievement_check("map");
+				$player->check_objectives("map");
 
 			} else {
 				$this->json->messages	= $errors;

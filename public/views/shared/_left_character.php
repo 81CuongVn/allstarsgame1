@@ -136,10 +136,6 @@
 				<b class="amarelo">Drop Rate</b>
 				<b class=""><?=DROP_RATE;?>x</b>
 			</div>
-		</div><br />
-		<div align="center">
-			<script id="_wauae2">var _wau = _wau || []; _wau.push(["dynamic", "gq7qmwiq8v", "ae2", "c4302bffffff", "small"]);</script>
-			<script async src="//waust.at/d.js"></script>
 		</div>
 		<div class="clearfix"></div>
 	</div>

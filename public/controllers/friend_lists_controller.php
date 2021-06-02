@@ -7,6 +7,7 @@ class FriendListsController extends Controller {
 
 		// Verifica se tem direito a conquista de amigo - Conquista
 		$player->achievement_check("friends");
+		$player->check_objectives("friends");
 
 		if ($friends) {
 			foreach ($friends as $friend) {
@@ -69,6 +70,7 @@ class FriendListsController extends Controller {
 
 		// Verifica se tem direito a conquista de amigo - Conquista
 		$player->achievement_check("friends");
+		$player->check_objectives("friends");
 	}
 	function gift(){
 		$player					= Player::get_instance();
@@ -158,6 +160,7 @@ class FriendListsController extends Controller {
 
 					// Verifica os créditos do jogador.
 					$player_gift->achievement_check("credits");
+					$player_gift->check_objectives("credits");
 
 					// Envia uma mensagem para o jogador avisando do prêmio
 					$pm				= new PrivateMessage();

@@ -118,7 +118,7 @@ if (preg_match('/read_news/', $action)) {
 			_graduations			= [];
 
 		<?php
-			$i = 1;
+			/*$i = 1;
 			$animes			= Anime::find("active = 1 and playable=1", ['cache' => true]);
 			$graduations	= Graduation::all();
 			foreach ($animes as $anime) {
@@ -130,8 +130,9 @@ if (preg_match('/read_news/', $action)) {
 					echo "\t\t_graduations[{$anime->id}][{$graduation->sorting}] = '{$graduation->description($anime->id)->name}';\n";
 				}
 				++$i;
-			}
-		} ?>
+			}*/
+		}
+		?>
 
 		var	_check_pvp_queue		= <?=($player && $player->is_pvp_queued ? 'true': 'false');?>;
 		var _highlights_server		= "<?=HIGHLIGHTS_SERVER;?>";
@@ -187,7 +188,7 @@ if (preg_match('/read_news/', $action)) {
 											'currency'	=> t('currencies.' . $player->character()->anime_id)
 										]);?>
 									</button>
-								</form>	
+								</form>
 								<form id="vip-form-432" onsubmit="return false">
 									<input type="hidden" name="id" value="432" />
 									<button type="button" class="btn btn-primary btn-sm btn-block buy" data-id="432">
@@ -309,7 +310,7 @@ if (preg_match('/read_news/', $action)) {
 	<div id="pagina">
 		<div id="colunas">
 			<?php if (!$player || !$with_battle) { ?>
-				<div id="esquerda" class="<?=(!$player ? 'with-player' : '');?>">
+				<div id="esquerda" class="<?=($player ? 'with-player' : '');?>">
 					<?php if ($player) { ?>
 						<?=partial('shared/left_character', [
 							'user'		=> $user,
@@ -374,7 +375,11 @@ if (preg_match('/read_news/', $action)) {
 								<div id="menu-fim"></div>
 							</div>
 						</div>
-					<?php } ?>
+					<?php } ?><br />
+					<div style="width: <?=($_SESSION['player_id'] ? '240px' : '100%')?>;">
+						<script id="_wauae2">var _wau = _wau || []; _wau.push(["dynamic", "gq7qmwiq8v", "ae2", "c4302bffffff", "small"]);</script>
+						<script async src="//waust.at/d.js"></script>
+					</div>
 				</div>
 			<?php } ?>
 			<div id="direita" class="<?=($player ? 'with-player' : '');?>">
@@ -445,34 +450,34 @@ if (preg_match('/read_news/', $action)) {
     nonce="z3ba4zPG">
 </script>
 <?php
-if ($player) {
-	$redis = new Redis();
-	$redis->pconnect(REDIS_SERVER);
-	$redis->auth(REDIS_PASS);
-	$redis->select(0);
+// if ($player) {
+// 	$redis = new Redis();
+// 	$redis->pconnect(REDIS_SERVER);
+// 	$redis->auth(REDIS_PASS);
+// 	$redis->select(0);
 
-	$have_queue	= FALSE;
-	$queues		= $redis->lRange("aasg_od_invites", 0, -1);
-	foreach ($queues as $queue) {
-		$targets = array_unique(
-			array_merge(
-				$redis->lRange("od_targets_" . $queue, 0, -1),
-				$redis->lRange("od_accepts_" . $queue, 0, -1)
-			)
-		);
+// 	$have_queue	= FALSE;
+// 	$queues		= $redis->lRange("aasg_od_invites", 0, -1);
+// 	foreach ($queues as $queue) {
+// 		$targets = array_unique(
+// 			array_merge(
+// 				$redis->lRange("od_targets_" . $queue, 0, -1),
+// 				$redis->lRange("od_accepts_" . $queue, 0, -1)
+// 			)
+// 		);
 
-		if (in_array($player->id, $targets)) {
-			$have_queue				= true;
-			$organization_dungeon	= $redis->get("od_id_" . $queue);
-			break;
-		}
-	}
-	if ($have_queue) {
-		echo '<script type="text/javascript">
-			createInviteModal(' . $organization_dungeon . ');
-		</script>';
-	}
-}
+// 		if (in_array($player->id, $targets)) {
+// 			$have_queue				= true;
+// 			$organization_dungeon	= $redis->get("od_id_" . $queue);
+// 			break;
+// 		}
+// 	}
+// 	if ($have_queue) {
+// 		echo '<script type="text/javascript">
+// 			createInviteModal(' . $organization_dungeon . ');
+// 		</script>';
+// 	}
+// }
 ?>
 <!-- Conteúdo -->
 <script type="text/javascript">

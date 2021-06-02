@@ -250,7 +250,7 @@ socket.on('dungeon-invite', function(dungeon) {
 				inviteModal.modal('hide');
 
 				$.ajax({
-					url: make_url('organizations/dungeon_accept'),
+					url: make_url('organizations#dungeon_accept'),
 					type: 'post',
 					dataType: 'json',
 					data: {
@@ -263,7 +263,7 @@ socket.on('dungeon-invite', function(dungeon) {
 				inviteModal.modal('hide');
 
 				$.ajax({
-					url: make_url('organizations/dungeon_refuse'),
+					url: make_url('organizations#dungeon_refuse'),
 					type: 'post',
 					data: {
 						queue_id: dungeon.queue
@@ -272,6 +272,7 @@ socket.on('dungeon-invite', function(dungeon) {
 			});
 	}
 });
+
 socket.on('dungeon-cancelled', function() {
 	if (!inviteModal) {
 		return;
@@ -284,6 +285,7 @@ socket.on('dungeon-cancelled', function() {
 		})
 		.modal('hide');
 });
+
 socket.on('dungeon-redirect', function(players) {
 	if (players.indexOf(_current_player.toString()) == -1) {
 		return;

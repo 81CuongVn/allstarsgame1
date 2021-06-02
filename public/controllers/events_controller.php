@@ -196,6 +196,67 @@ class EventsController extends Controller {
         $user	= User::get_instance();
         $player	= Player::get_instance();
 
+		// $player->achievement_check('level_player');
+		// $player->check_objectives('level_player');
+		// $player->achievement_check('level_account');
+		// $player->check_objectives('level_account');
+		// $player->achievement_check('tutorial');
+		// $player->check_objectives('tutorial');
+		// $player->achievement_check('map');
+		// $player->check_objectives('map');
+		// $player->achievement_check('credits');
+		// $player->check_objectives('credits');
+		// $player->achievement_check('currency');
+		// $player->check_objectives('currency');
+		// $player->achievement_check('pets');
+		// $player->check_objectives('pets');
+		// $player->achievement_check('battle_npc');
+		// $player->check_objectives('battle_npc');
+		// $player->achievement_check('battle_pvp');
+		// $player->check_objectives('battle_pvp');
+		// $player->achievement_check('history_mode');
+		// $player->check_objectives('history_mode');
+		// $player->achievement_check('challenges');
+		// $player->check_objectives('challenges');
+		// $player->achievement_check('organization');
+		// $player->check_objectives('organization');
+		// $player->achievement_check('treasure');
+		// $player->check_objectives('treasure');
+		// $player->achievement_check('friends');
+		// $player->check_objectives('friends');
+		// $player->achievement_check('character');
+		// $player->check_objectives('character');
+		// $player->achievement_check('character_theme');
+		// $player->check_objectives('character_theme');
+		// $player->achievement_check('luck');
+		// $player->check_objectives('luck');
+		// $player->achievement_check('fragments');
+		// $player->check_objectives('fragments');
+		// $player->achievement_check('wanted');
+		// $player->check_objectives('wanted');
+		// $player->achievement_check('sands');
+		// $player->check_objectives('sands');
+		// $player->achievement_check('bloods');
+		// $player->check_objectives('bloods');
+		// $player->achievement_check('equipment');
+		// $player->check_objectives('equipment');
+		// $player->achievement_check('grimoire');
+		// $player->check_objectives('grimoire');
+		// $player->achievement_check('time_quests');
+		// $player->check_objectives('time_quests');
+		// $player->achievement_check('battle_quests');
+		// $player->check_objectives('battle_quests');
+		// $player->achievement_check('pvp_quests');
+		// $player->check_objectives('pvp_quests');
+		// $player->achievement_check('daily_quests');
+		// $player->check_objectives('daily_quests');
+		// $player->achievement_check('account_quests');
+		// $player->check_objectives('account_quests');
+		// $player->achievement_check('pet_quests');
+		// $player->check_objectives('pet_quests');
+		// $player->achievement_check('weekly_quests');
+		// $player->check_objectives('weekly_quests');
+
         $this->assign('player',				$player);
         $this->assign('user',				$user);
         $this->assign('objectives',			UserObjective::find("user_id=". $user->id));
@@ -248,6 +309,7 @@ class EventsController extends Controller {
 
                     // Verifica os créditos do jogador.
                     $player->achievement_check("credits");
+					$player->check_objectives("credits");
 				}
 
 				// Prêmios ( EXP CONTA )
@@ -288,6 +350,7 @@ class EventsController extends Controller {
 
                     // Objetivo de Round
                     $player->achievement_check("character");
+					$player->check_objectives("character");
                 }
 
 				// Prêmios ( TEMA )
@@ -300,6 +363,7 @@ class EventsController extends Controller {
 
                     // Objetivo de Round
                     $player->achievement_check("character_theme");
+					$player->check_objectives("character_theme");
                 }
 
 				// Prêmios ( TITULOS )

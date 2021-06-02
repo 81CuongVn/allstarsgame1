@@ -124,6 +124,7 @@ class CallbackController extends Controller {
                     if ($paymentData['payment_status'] == 'Completed') {
                         if ($star_purchase->status != 'aprovado') {
                             $user->earn($credits);
+							$user->vip	= 1;
 
                             $star_purchase->status  = 'aprovado';
                         }
@@ -132,7 +133,10 @@ class CallbackController extends Controller {
 
                         $star_purchase->status      = 'estornado';
                     }*/
-                    $star_purchase->transid         = $paymentData['txn_id'];
+
+					$user->save();
+
+					$star_purchase->transid         = $paymentData['txn_id'];
                     $star_purchase->completed_at    = now(TRUE);
                     $star_purchase->save();
                 } else {
@@ -192,6 +196,7 @@ class CallbackController extends Controller {
 				if (in_array($statusCode, ['paid'])) {
 					if ($star_purchase->status != 'aprovado') {
 						$user->earn($credits);
+						$user->vip	= 1;
 
 						$star_purchase->status  = 'aprovado';
 						echo "[{$star_purchase->star_plan_id}] Estrelas creditadas!";
@@ -199,6 +204,7 @@ class CallbackController extends Controller {
 				} elseif (in_array($statusCode, ['reverted'])) {
 					if ($star_purchase->status == 'aprovado') {
 						$user->spend($credits);
+						$user->vip	= 0;
 
 						$star_purchase->status      = 'estornado';
 						echo "[{$star_purchase->star_plan_id}] Estrelas debitadas!";
@@ -208,6 +214,8 @@ class CallbackController extends Controller {
 
 					echo "[{$star_purchase->star_plan_id}] Pagamento cancelado!";
 				}
+
+				$user->save();
 
 				$star_purchase->transid             = $merchant_order->preference_id;
 				$star_purchase->completed_at        = now(TRUE);
@@ -256,6 +264,7 @@ class CallbackController extends Controller {
                     if (in_array($statusCode, [3, 4])) {
                         if ($star_purchase->status != 'aprovado') {
                             $user->earn($credits);
+							$user->vip	= 1;
 
                             $star_purchase->status  = 'aprovado';
                             echo "[{$star_purchase->star_plan_id}] Estrelas creditadas!";
@@ -263,6 +272,7 @@ class CallbackController extends Controller {
                     } elseif (in_array($statusCode, [5, 6, 8, 9])) {
                         if ($star_purchase->status == 'aprovado') {
                             $user->spend($credits);
+							$user->vip	= 0;
 
                             $star_purchase->status      = 'estornado';
                             echo "[{$star_purchase->star_plan_id}] Estrelas debitadas!";
@@ -272,7 +282,6 @@ class CallbackController extends Controller {
                             $star_purchase->status  = 'disputa';
                             $user->banned       = TRUE;
                             $user->session_key  = NULL;
-                            $user->save();
 
                             echo "<br />[{$star_purchase->star_plan_id}] Conta banida!";
                         }
@@ -281,6 +290,8 @@ class CallbackController extends Controller {
 
                         echo "[{$star_purchase->star_plan_id}] Pagamento cancelado!";
                     }
+
+					$user->save();
 
                     $star_purchase->transid             = $transaction->getCode();
                     $star_purchase->completed_at        = now(TRUE);
