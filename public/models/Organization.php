@@ -167,6 +167,9 @@ class Organization extends Relation {
 
 					if ($reward->currency) {
 						$p->earn($reward->currency);
+
+						$p->achievement_check('currency');
+						$p->check_objectives('currency');
 					}
 
 					if ($reward->exp) {
@@ -175,8 +178,9 @@ class Organization extends Relation {
 
 					if ($reward->credits) {
 						$user->earn($reward->credits);
+
 						$p->achievement_check("credits");
-						$p->check_objectives("level_account");
+						$p->check_objectives("credits");
 					}
 
 					if ($reward->equipment) {
@@ -191,6 +195,9 @@ class Organization extends Relation {
 						} elseif ($reward->equipment == 5) {
 							$dropped  = Item::generate_equipment($p, 3);
 						}
+
+						$p->achievement_check('equipment');
+						$p->check_objectives('equipment');
 					}
 
 					if ($reward->item_id && $reward->pets) {
@@ -200,12 +207,15 @@ class Organization extends Relation {
 						$player_pet->item_id = $npc_pet->id;
 						$player_pet->player_id = $p->id;
 						$player_pet->save();
+
+						$p->achievement_check('pets');
+						$p->check_objectives('pets');
 					}
 
 					if ($reward->item_id && !$reward->pets) {
 						$player_item_exist = PlayerItem::find_first("item_id=" . $reward->item_id . " AND player_id=" . $p->id);
 						if (!$player_item_exist) {
-							$player_item = new PlayerItem();
+							$player_item			= new PlayerItem();
 							$player_item->item_id	= $reward->item_id;
 							$player_item->quantity	= $reward->quantity;
 							$player_item->player_id	= $p->id;
@@ -222,6 +232,9 @@ class Organization extends Relation {
 						$reward_character->character_id	= $reward->character_id;
 						$reward_character->was_reward	= 1;
 						$reward_character->save();
+
+						$p->achievement_check('character');
+						$p->check_objectives('character');
 					}
 
 					if ($reward->character_theme_id && !$user->is_theme_bought($reward->character_theme_id)) {
@@ -230,6 +243,9 @@ class Organization extends Relation {
 						$reward_theme->character_theme_id	= $reward->character_theme_id;
 						$reward_theme->was_reward			= 1;
 						$reward_theme->save();
+
+						$p->achievement_check('character_theme');
+						$p->check_objectives('character_theme');
 					}
 
 					if ($reward->headline_id && !$user->is_headline_bought($reward->headline_id)) {
