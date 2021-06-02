@@ -272,6 +272,7 @@ socket.on('dungeon-invite', function(dungeon) {
 			});
 	}
 });
+
 socket.on('dungeon-cancelled', function() {
 	if (!inviteModal) {
 		return;
@@ -284,6 +285,7 @@ socket.on('dungeon-cancelled', function() {
 		})
 		.modal('hide');
 });
+
 socket.on('dungeon-redirect', function(players) {
 	if (players.indexOf(_current_player.toString()) == -1) {
 		return;
