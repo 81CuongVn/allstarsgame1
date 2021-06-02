@@ -140,21 +140,21 @@ class Organization extends Relation {
 			}
 		}
 
-		if (now() > strtotime('YmdHis', $active_event->finishes_at) ) {
+		if (now() > strtotime('YmdHis', $accepted->finishes_at) ) {
 			$bypassed_timer = true;
 		}
 
 		if ($bypassed_timer) {
-			$active_event->finished_at = now(true);
-			$active_event->save();
+			$accepted->finished_at = now(true);
+			$accepted->save();
 
 			$this->organization_accepted_event_id = 0;
 			$this->save();
 		} else {
 			if ($bosses >= $active_event->require_boss && $npcs >= $active_event->require_npc) {
-				$active_event->finished_at = now(true);
-				$active_event->won = 1;
-				$active_event->save();
+				$accepted->finished_at = now(true);
+				$accepted->won = 1;
+				$accepted->save();
 
 				$this->organization_accepted_event_id = 0;
 				$this->save();
