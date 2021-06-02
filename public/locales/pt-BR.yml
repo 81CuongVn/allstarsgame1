@@ -1509,7 +1509,8 @@ pt-BR:
       37: Mana
       38: Fôlego
       39: Adrenalina
-      40: Energia do Coração
+      40: Energia
+      41: Chakra
       999: Mana
     for_life: Vida
     for_stamina: Stamina
@@ -1736,6 +1737,7 @@ pt-BR:
     38: Euro
     39: Ienes
     40: Ienes
+    41: Ryos
     999: Moedas
     credits: Estrelas
   daynames:
@@ -1777,6 +1779,7 @@ pt-BR:
     38: Carta
     39: Equipamento
     40: Livros Mamodos
+    41: Pergaminho
     999: Estrela
   item_types:
     1:

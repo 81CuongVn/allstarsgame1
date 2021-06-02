@@ -31,9 +31,9 @@
 			<td	align="center" valign="top">
 				<b style="font-size:16px">Status</b><br />
 				<select name="status" class="form-control input-sm" style="width: auto">
-					<option value=""><?php echo t('global.all') ?></option>
+					<option value="" selected><?php echo t('global.all') ?></option>
 					<?php foreach ($statuses as $status): ?>
-						<option value="<?php echo $status->id ?>" <?php echo $status->id == 1 ? 'selected="selected"' : '' ?>><?php echo $status->name ?></option>
+						<option value="<?php echo $status->id ?>"><?php echo $status->name ?></option>
 					<?php endforeach ?>
 				</select>
 			</td>

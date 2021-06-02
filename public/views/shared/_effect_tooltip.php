@@ -10,7 +10,7 @@
 		if (!isset($fixed_effect)) {
 			$fixed_effect	= false;
 		}
-		
+
 		if ($fixed_effect) {
 			$effect_base		= 'fixed_effects';
 		}
@@ -23,7 +23,8 @@
 		}
 
 		if ($effect->duration <= 1) {
-			$turn_type	= '';//t($effect_base . '.instant');
+			// $turn_type	= t($effect_base . '.instant');
+			$turn_type	= '';
 		} else {
 			$turn_type	= t($effect_base . '.turns', ['turns' => $effect->duration]);
 		}
@@ -213,7 +214,7 @@
 						$copied_id	= SharedStore::G('last_battle_npc_item_of_' . $player->id);
 					}
 
-					if ($copied_id) {						
+					if ($copied_id) {
 						$copied	= $enemy->get_technique($copied_id);
 
 						if ($player->battle_pvp_id) {
@@ -936,7 +937,7 @@
 				<?php if (!$fixed_effect): ?>
 					<?php echo t($effect_base . '.chance', ['value' => $effect->chance]) ?>
 				<?php endif ?>
-				<?php echo t($effect_base . '.steal_health.' . $effect->effect_direction . ($effect->steal_health > 0 ? $direction_player : $direction_enemy), ['value' => $effect->steal_health . $word]) ?>
+				<?php echo t($effect_base . '.steal_health.' . $effect->effect_direction . ($effect->steal_health > 0 ? $direction_player : $direction_enemy), ['turns' => 1, 'value' => $effect->steal_health . $word]) ?>
 				<?php echo $turn_type ?>
 			</li>
 		<?php endif ?>

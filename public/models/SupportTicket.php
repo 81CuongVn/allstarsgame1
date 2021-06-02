@@ -23,12 +23,18 @@
 		static function filter($where, $page, $limit) {
 			$result	= [];
 
-			if(!$where) {
+			if (!$where) {
 				$result['pages']	= ceil(Recordset::query('SELECT MAX(id) AS _max FROM support_tickets')->row()->_max / $limit);
-				$result['tickets']	= SupportTicket::all(['limit' => ($page * $limit) . ', ' . $limit, 'reorder' => 'id DESC']);
+				$result['tickets']	= SupportTicket::all([
+					'limit'		=> ($page * $limit) . ', ' . $limit,
+					'reorder'	=> 'id DESC'
+				]);
 			} else {
 				$result['pages']	= ceil(Recordset::query('SELECT COUNT(id) AS _max FROM (SELECT id FROM support_tickets WHERE 1=1 ' . $where . ') _w')->row()->_max / $limit);
-				$result['tickets']	= SupportTicket::find('1=1 ' . $where, ['limit' => ($page * $limit) . ', ' . $limit, 'reorder' => 'id DESC']);
+				$result['tickets']	= SupportTicket::find('1=1 ' . $where, [
+					'limit'		=> ($page * $limit) . ', ' . $limit,
+					'reorder'	=> 'id DESC'
+				]);
 			}
 
 			return $result;

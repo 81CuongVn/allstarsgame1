@@ -61,7 +61,7 @@ class Lang {
 					$is_cached	= FALSE;
 				}
 
-				// $is_cached	= FALSE;
+				$is_cached	= FALSE;
 				if (!$is_cached) {
 					$data	= spyc_load_file($file);
 					if ($data === FALSE) {
@@ -74,7 +74,7 @@ class Lang {
 					$lid	= Language::find_first('header="' . $header . '"', [
 					    'cache' => TRUE
                     ])->id;
-					
+
 					if (!isset(Lang::$strings[$lid])) {
 						Lang::$strings[$lid]	= [];
 					}
@@ -145,5 +145,5 @@ function t($path, $assigns = [], $lid = NULL) {
 }
 function tb($path, $assigns = [], $lid = NULL) {
 	$translation	= Lang::translate($path, $assigns, $lid);
-	return $translation === false ? false : $translation;		
+	return $translation === false ? false : $translation;
 }

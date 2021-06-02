@@ -348,34 +348,34 @@
 						<?php if($rewards){?>
 							<ul>
 								<?php if($rewards->exp){?>
-									<li><?php echo highamount($rewards->exp); ?> <?php echo t('ranked.exp');?></li><br />
+									<li><?php echo highamount($rewards->exp); ?> <?php echo t('ranked.exp');?></li>
 								<?php }?>
 								<?php if($rewards->exp_user){?>
-									<li><?php echo highamount($rewards->exp_user); ?> <?php echo t('ranked.exp_account');?></li><br />
+									<li><?php echo highamount($rewards->exp_user); ?> <?php echo t('ranked.exp_account');?></li>
 								<?php }?>
 								<?php if($rewards->currency){?>
-									<li><?php echo highamount($rewards->currency); ?> <?php echo t('currencies.' . $player->character()->anime_id) ?></li><br />
+									<li><?php echo highamount($rewards->currency); ?> <?php echo t('currencies.' . $player->character()->anime_id) ?></li>
 								<?php }?>
 								<?php if($rewards->credits){?>
-									<li><?php echo highamount($rewards->credits); ?> <?php echo t('treasure.show.credits')?></li><br />
+									<li><?php echo highamount($rewards->credits); ?> <?php echo t('treasure.show.credits')?></li>
 								<?php }?>
 								<?php if($rewards->item_id){?>
-									<li><?php echo highamount($rewards->quantity);?>x "<?php echo Item::find($rewards->item_id)->description()->name ?>"</li><br />
+									<li><?php echo highamount($rewards->quantity);?>x "<?php echo Item::find($rewards->item_id)->description()->name ?>"</li>
 								<?php }?>
 								<?php if($rewards->character_theme_id){?>
-									<li><?php echo t('treasure.show.theme')?> "<?php echo CharacterTheme::find($rewards->character_theme_id)->description()->name ?>"</li><br />
+									<li><?php echo t('treasure.show.theme')?> "<?php echo CharacterTheme::find($rewards->character_theme_id)->description()->name ?>"</li>
 								<?php }?>
 								<?php if($rewards->character_id){?>
-									<li><?php echo t('treasure.show.character')?> "<?php echo Character::find($rewards->character_id)->description()->name ?>"</li><br />
+									<li><?php echo t('treasure.show.character')?> "<?php echo Character::find($rewards->character_id)->description()->name ?>"</li>
 								<?php }?>
 								<?php if($rewards->equipment){?>
-									<li><?php echo t('event.e12');?></li><br />
+									<li><?php echo t('event.e12');?></li>
 								<?php }?>
 								<?php if($rewards->pet){?>
-									<li><?php echo t('event.e14');?></li><br />
+									<li><?php echo t('event.e14');?></li>
 								<?php }?>
 								<?php if($rewards->headline_id){?>
-									<li><?php echo t('treasure.show.headline')?> "<?php echo Headline::find($rewards->headline_id)->description()->name ?>"</li><br />
+									<li><?php echo t('treasure.show.headline')?> "<?php echo Headline::find($rewards->headline_id)->description()->name ?>"</li>
 								<?php }?>
 							</ul>
 						<?php }else{?>

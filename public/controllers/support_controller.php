@@ -18,22 +18,22 @@
 			$limit			= 20;
 			$page			= isset($_POST['page']) && is_numeric($_POST['page']) ? $_POST['page'] : 0;
 
-			if($_SESSION['universal']) {
-				if(isset($_POST['id']) && is_numeric($_POST['id'])) {
+			if ($_SESSION['universal']) {
+				if (isset($_POST['id']) && is_numeric($_POST['id'])) {
 					$where	.= ' AND id=' . $_POST['id'];
 				}
 
-				if(isset($_POST['category']) && is_numeric($_POST['category'])) {
+				if (isset($_POST['category']) && is_numeric($_POST['category'])) {
 					$where	.= ' AND support_ticket_category_id=' . $_POST['category'];
 				}
 
-				if(isset($_POST['status']) && is_numeric($_POST['status'])) {
+				if (isset($_POST['status']) && is_numeric($_POST['status'])) {
 					$where	.= ' AND support_ticket_status_id=' . $_POST['status'];
 				}
 
-				if(isset($_POST['title']) && $_POST['title']) {
+				if (isset($_POST['title']) && $_POST['title']) {
 					$where	.= ' AND title LIKE "%' . $_POST['title'] . '%"';
-				}				
+				}
 			} else {
 				$where	.= ' AND user_id=' . $_SESSION['user_id'];
 			}
@@ -67,7 +67,7 @@
 						if(!$_FILES['attachments']['error'][$f] && $_FILES['attachments']['name'][$f]) {
 							$ext	= substr($_FILES['attachments']['name'][$f], -3, 3);
 							$type	= $_FILES['attachments']['type'][$f];
-							
+
 							if(!in_array($ext, $this->allowed_exts)) {
 								$errors[]	= t('support.open.errors.invalid_extension');
 							}
@@ -185,7 +185,7 @@
 				$ticket->last_replied_at	= now(true);
 
 				if($_SESSION['player_id']) {
-					$reply->player_id	= $_SESSION['player_id'];					
+					$reply->player_id	= $_SESSION['player_id'];
 				}
 
 				$ticket->save();
@@ -198,7 +198,7 @@
 							$type		= $_FILES['attachments']['type'][$f];
 							$error		= false;
 							$upload_id	= uniqid('', true);
-							
+
 							if(!in_array($ext, $this->allowed_exts)) {
 								$error	= true;
 							}
@@ -274,7 +274,7 @@
 			if(!$_SESSION['universal']) {
 				$this->denied	= true;
 				return;
-			}			
+			}
 
 			$_SESSION['player_id']		= $_SESSION['orig_player_id'];
 			$_SESSION['user_id']		= $_SESSION['orig_user_id'];
