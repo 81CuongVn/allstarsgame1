@@ -140,7 +140,7 @@ class Organization extends Relation {
 			}
 		}
 
-		if (now() > strtotime('YmdHis', $accepted->finishes_at) ) {
+		if (now() > strtotime($accepted->finishes_at) ) {
 			$bypassed_timer = true;
 		}
 
