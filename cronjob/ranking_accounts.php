@@ -41,6 +41,7 @@ foreach ($users->result_array() as $user) {
 			pqc.time_total,
 			pqc.pvp_total,
 			pqc.daily_total,
+			pqc.pet_total,
 			pqc.combat_total
 		FROM
 			players a JOIN character_themes b ON b.id=a.character_theme_id
