@@ -118,7 +118,7 @@ if (preg_match('/read_news/', $action)) {
 			_graduations			= [];
 
 		<?php
-			$i = 1;
+			/*$i = 1;
 			$animes			= Anime::find("active = 1 and playable=1", ['cache' => true]);
 			$graduations	= Graduation::all();
 			foreach ($animes as $anime) {
@@ -130,8 +130,9 @@ if (preg_match('/read_news/', $action)) {
 					echo "\t\t_graduations[{$anime->id}][{$graduation->sorting}] = '{$graduation->description($anime->id)->name}';\n";
 				}
 				++$i;
-			}
-		} ?>
+			}*/
+		}
+		?>
 
 		var	_check_pvp_queue		= <?=($player && $player->is_pvp_queued ? 'true': 'false');?>;
 		var _highlights_server		= "<?=HIGHLIGHTS_SERVER;?>";
@@ -449,34 +450,34 @@ if (preg_match('/read_news/', $action)) {
     nonce="z3ba4zPG">
 </script>
 <?php
-if ($player) {
-	$redis = new Redis();
-	$redis->pconnect(REDIS_SERVER);
-	$redis->auth(REDIS_PASS);
-	$redis->select(0);
+// if ($player) {
+// 	$redis = new Redis();
+// 	$redis->pconnect(REDIS_SERVER);
+// 	$redis->auth(REDIS_PASS);
+// 	$redis->select(0);
 
-	$have_queue	= FALSE;
-	$queues		= $redis->lRange("aasg_od_invites", 0, -1);
-	foreach ($queues as $queue) {
-		$targets = array_unique(
-			array_merge(
-				$redis->lRange("od_targets_" . $queue, 0, -1),
-				$redis->lRange("od_accepts_" . $queue, 0, -1)
-			)
-		);
+// 	$have_queue	= FALSE;
+// 	$queues		= $redis->lRange("aasg_od_invites", 0, -1);
+// 	foreach ($queues as $queue) {
+// 		$targets = array_unique(
+// 			array_merge(
+// 				$redis->lRange("od_targets_" . $queue, 0, -1),
+// 				$redis->lRange("od_accepts_" . $queue, 0, -1)
+// 			)
+// 		);
 
-		if (in_array($player->id, $targets)) {
-			$have_queue				= true;
-			$organization_dungeon	= $redis->get("od_id_" . $queue);
-			break;
-		}
-	}
-	if ($have_queue) {
-		echo '<script type="text/javascript">
-			createInviteModal(' . $organization_dungeon . ');
-		</script>';
-	}
-}
+// 		if (in_array($player->id, $targets)) {
+// 			$have_queue				= true;
+// 			$organization_dungeon	= $redis->get("od_id_" . $queue);
+// 			break;
+// 		}
+// 	}
+// 	if ($have_queue) {
+// 		echo '<script type="text/javascript">
+// 			createInviteModal(' . $organization_dungeon . ');
+// 		</script>';
+// 	}
+// }
 ?>
 <!-- Conteúdo -->
 <script type="text/javascript">

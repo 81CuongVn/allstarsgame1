@@ -6,7 +6,7 @@ pt-BR:
           se matar ao usar essa habilidade. <span class="vermelho">( Falhando fará um golpe poderoso )</span>
         enemy: |
           se matar ao usar essa habilidade. <span class="vermelho">( Falhando fará um golpe poderoso )</span>
-      debuff: 
+      debuff:
         self: |
           matar o inimigo ao usar essa habilidade. <span class="vermelho">( Falhando fará um golpe poderoso )</span>
         enemy: |
@@ -17,7 +17,7 @@ pt-BR:
           cancelar a sua regeneração de mana
         enemy: |
           cancelar a sua regeneração de mana
-      debuff: 
+      debuff:
         self: |
           cancelar a regeneração de mana do inimigo
         enemy: |
@@ -28,7 +28,7 @@ pt-BR:
           remover #{value} de mana do seu personagem
         enemy: |
           remover #{value} de mana do seu personagem
-      debuff: 
+      debuff:
         self: |
           remover #{value} de mana do inimigo
         enemy: |
@@ -39,7 +39,7 @@ pt-BR:
           remover #{value} de mana de você e passar para o inimigo
         enemy: |
           remover #{value} de mana de você e passar para o inimigo
-      debuff: 
+      debuff:
         self: |
           remover #{value} de mana do inimigo e passar para você.
         enemy: |
@@ -50,7 +50,7 @@ pt-BR:
           recuperar #{value} de vida do dano causado
         enemy: |
           recuperar #{value} de vida do dano causado
-      debuff: 
+      debuff:
         self: |
           perder #{value} de vida do dano causado
         enemy: |
@@ -111,7 +111,7 @@ pt-BR:
           aumentar em #{value} o dano Elemental
         enemy: |
           aumentar em #{value} o dano Elemental do inimigo
-      debuff: 
+      debuff:
         self: |
           aumentar em #{value} o dano Elemental
         enemy: |
@@ -122,7 +122,7 @@ pt-BR:
           aumentar em #{value} o dano Corpo-a-Corpo
         enemy: |
           aumentar em #{value} o dano Corpo-a-Corpo do inimigo
-      debuff: 
+      debuff:
         self: |
           aumentar em #{value} o dano Corpo-a-Corpo
         enemy: |
@@ -133,7 +133,7 @@ pt-BR:
           aumentar em #{value} o dano Mágico
         enemy: |
           aumentar em #{value} o dano Mágico do inimigo
-      debuff: 
+      debuff:
         self: |
           aumentar em #{value} o dano Mágico
         enemy: |
@@ -144,7 +144,7 @@ pt-BR:
           aumentar em #{value} o dano Guerreiro
         enemy: |
           aumentar em #{value} o dano Guerreiro do inimigo
-      debuff: 
+      debuff:
         self: |
           aumentar em #{value} o dano Guerreiro
         enemy: |
@@ -155,7 +155,7 @@ pt-BR:
           aumentar em #{value} o dano Atirador
         enemy: |
           aumentar em #{value} o dano Atirador do inimigo
-      debuff: 
+      debuff:
         self: |
           aumentar em #{value} o dano Atirador
         enemy: |
@@ -166,7 +166,7 @@ pt-BR:
           diminuir pela metade o seu dano Crítico
         enemy: |
           diminuir pela metade o dano Crítico do inimigo
-      debuff: 
+      debuff:
         self: |
           diminuir pela metade o seu dano Crítico
         enemy: |
@@ -177,7 +177,7 @@ pt-BR:
           diminuir pela metade o seu dano Absorvido
         enemy: |
           diminuir pela metade o dano Absorvido do inimigo
-      debuff: 
+      debuff:
         self: |
           diminuir pela metade o seu dano Absorvido
         enemy: |
@@ -188,7 +188,7 @@ pt-BR:
           aumentar em #{value} o dano causado quando seu oponente estiver com sangramento
         enemy: |
           aumentar em #{value} o dano causado quando seu oponente estiver com sangramento
-      debuff: 
+      debuff:
         self: |
           diminuir em #{value} o dano causado quando seu oponente estiver com sangramento
         enemy: |
@@ -199,7 +199,7 @@ pt-BR:
           aumentar em #{value} o dano causado quando seu oponente estiver com lentidão
         enemy: |
           aumentar em #{value} o dano causado quando seu oponente estiver com lentidão
-      debuff: 
+      debuff:
         self: |
           diminuir em #{value} o dano causado quando seu oponente estiver com lentidão
         enemy: |
@@ -210,7 +210,7 @@ pt-BR:
           aumentar em #{value} o dano causado quando seu oponente estiver com confusão
         enemy: |
           aumentar em #{value} o dano causado quando seu oponente estiver com confusão
-      debuff: 
+      debuff:
         self: |
           diminuir em #{value} o dano causado quando seu oponente estiver com confusão
         enemy: |
@@ -221,7 +221,7 @@ pt-BR:
           Aumenta em #{value} o seu dano causado em inimigos Atordoados
         enemy: |
           Aumenta em #{value} o dano do inimigo causado enquanto você estiver Atordoado
-      debuff: 
+      debuff:
         self: |
           Diminui em #{value} o seu dano causado em inimigos Atordoados
         enemy: |
@@ -229,7 +229,7 @@ pt-BR:
     increase_bleeding_damage:
       buff:
         self: |
-          aumentar em #{value} o dano de seu sangramento 
+          aumentar em #{value} o dano de seu sangramento
         enemy: |
           aumentar em #{value} o dano do sangramento no inimigo
       debuff:
@@ -284,7 +284,7 @@ pt-BR:
     for_atk:
       buff:
         self: |
-          aumentar em #{value} o seu ataque 
+          aumentar em #{value} o seu ataque
         enemy: |
           aumentar em #{value} o ataque do inimigo
       debuff:
@@ -314,7 +314,7 @@ pt-BR:
           diminuir o seu crítico em #{value}%
         enemy: |
           diminuir #{value}% do crítico do inimigo
-    for_crit_inc:  
+    for_crit_inc:
       buff:
         self: |
           aumentar em #{value}% o seu dano crítico
@@ -622,7 +622,7 @@ pt-BR:
         self: |
           aumentar em #{value} turno(s) efeitos de Sangramento em seu personagem
         enemy: |
-          aumentar em #{value} turno(s) efeitos de Sangramento no inimigo	
+          aumentar em #{value} turno(s) efeitos de Sangramento no inimigo
     increase_slowness_duration:
       buff:
         self: |
@@ -633,7 +633,7 @@ pt-BR:
         self: |
           aumentar em #{value} turno(s) efeitos de Lentidão em seu personagem
         enemy: |
-          aumentar em #{value} turno(s) efeitos de Lentidão no inimigo	
+          aumentar em #{value} turno(s) efeitos de Lentidão no inimigo
     increase_confusion_duration:
       buff:
         self: |
@@ -644,7 +644,7 @@ pt-BR:
         self: |
           aumentar em #{value} turno(s) efeitos de Confusão em seu personagem
         enemy: |
-          aumentar em #{value} turno(s) efeitos de Confusão no inimigo	
+          aumentar em #{value} turno(s) efeitos de Confusão no inimigo
     remove_attack_weakness:
       buff:
         self: |
@@ -655,7 +655,7 @@ pt-BR:
         self: |
           remover a fraqueza do tipo do seu próximo golpe
         enemy: |
-          remover a fraqueza do tipo do próximo golpe inimigo	
+          remover a fraqueza do tipo do próximo golpe inimigo
     double_strong_effect:
       buff:
         self: |
@@ -677,7 +677,7 @@ pt-BR:
         self: |
           recuperar #{value} da sua vida
         enemy: |
-          recuperar #{value} da vida do inimigo      
+          recuperar #{value} da vida do inimigo
     heals_mana:
       buff:
         self: |
@@ -688,7 +688,7 @@ pt-BR:
         self: |
           gastar #{value} da sua mana
         enemy: |
-          gastar #{value} da mana do inimigo 
+          gastar #{value} da mana do inimigo
     renew_random_cooldown:
       buff:
         self: |
@@ -830,7 +830,7 @@ pt-BR:
     cancel_regen_mana: |
       Você não irá recuperar mana por #{turns} turno(s)
     steal_health: |
-      Você recuperará 10% do seu dano em vida por #{turns} turno(s)
+      Você recuperará #{value} do seu dano em vida por #{turns} turno(s)
     last_hit_dont_die: |
       Não morre no próximo golpe
     next_is_absorb: |
@@ -870,9 +870,9 @@ pt-BR:
     bleeding_chance_percent: |
       #{value}% de Chance de Sangramento
     slowness_chance: |
-      #{value}% de Chance de Lentidão
+      #{value}% de chance de causar lentidão
     slowness_chance_percent: |
-      #{value}% de Chance de Lentidão
+      #{value}% de chance de causar lentidão
     confusion_chance: |
       #{value}% de Chance de Confusão
     confusion_chance_percent: |
@@ -958,7 +958,7 @@ pt-BR:
     increase_bleeding_damage_percent: |
       #{value}% de Dano Extra em Sangramento
     increase_slowness_damage: |
-      #{value} de Tempo de Execução durante a Lentidão 
+      #{value} de Tempo de Execução durante a Lentidão
     increase_slowness_damage_percent: |
       #{value}% de Tempo de Execução durante a Lentidão
     increase_confusion_damage: |
@@ -1061,7 +1061,7 @@ pt-BR:
 
         enemy: |
           Aumenta em #{value} o Ataque do inimigo
-      debuff: 
+      debuff:
         self: |
           Diminui em #{value} o seu Ataque
         enemy: |
@@ -1072,7 +1072,7 @@ pt-BR:
           Aumenta em #{value} a sua Defesa
         enemy: |
           Aumenta em #{value} a Defesa do inimigo
-      debuff: 
+      debuff:
         self: |
           Diminui em #{value} a sua Defesa
         enemy: |
@@ -1083,7 +1083,7 @@ pt-BR:
           Aumenta em #{value} a sua Chance de Crítico
         enemy: |
           Aumenta em #{value} a Chance de Crítico do inimigo
-      debuff: 
+      debuff:
         self: |
           Diminui em #{value} a sua Chance de Crítico
         enemy: |
@@ -1094,7 +1094,7 @@ pt-BR:
           Aumenta em #{value}% o seu Incremento de Crítico
         enemy: |
           Aumenta em #{value}% o Incremento de Crítico do inimigo
-      debuff: 
+      debuff:
         self: |
           Diminui em #{value}% o seu Incremento de Crítico
         enemy: |
@@ -1105,7 +1105,7 @@ pt-BR:
           Aumenta em #{value} a sua Chance de Absorção
         enemy: |
           Aumenta em #{value} a Chance de Absorção do inimigo
-      debuff: 
+      debuff:
         self: |
           Diminui em #{value} a sua Chance de Absorção
         enemy: |
@@ -1116,7 +1116,7 @@ pt-BR:
           Aumenta em #{value}% o seu Incremento de Absorção
         enemy: |
           Aumenta em #{value}% o Incremento de Absorção do inimigo
-      debuff: 
+      debuff:
         self: |
           Diminui em #{value}% o seu Incremento de Absorção
         enemy: |
@@ -1127,7 +1127,7 @@ pt-BR:
           Aumenta em #{value} a sua Chance de Precisão
         enemy: |
           Aumenta em #{value} a Chance de Precisão do inimigo
-      debuff: 
+      debuff:
         self: |
           Diminui em #{value} a sua Chance de Precisão
         enemy: |
@@ -1138,7 +1138,7 @@ pt-BR:
           Aumenta em #{value} a sua Iniciativa
         enemy: |
           Aumenta em #{value} a Iniciativa do inimigo
-      debuff: 
+      debuff:
         self: |
           Diminui em #{value} a sua Iniciativa
         enemy: |
@@ -1149,7 +1149,7 @@ pt-BR:
           Aumenta em #{value} a sua Chance de Acerto
         enemy: |
           Aumenta em #{value} a Chance de Acerto do inimigo
-      debuff: 
+      debuff:
         self: |
           Diminui em #{value} a sua Chance de Acerto
         enemy: |
@@ -1160,7 +1160,7 @@ pt-BR:
           Diminui em #{value} o seu Tempo de Execução
         enemy: |
           Diminui em #{value} o Tempo de Execução do inimigo
-      debuff: 
+      debuff:
         self: |
           Aumenta em #{value} o seu Tempo de Execução
         enemy: |
@@ -1171,7 +1171,7 @@ pt-BR:
           Aumenta em #{value} o dano Elemental de seus golpes
         enemy: |
           Aumenta em #{value} o dano Elemental dos golpes inimigos
-      debuff: 
+      debuff:
         self: |
           Diminui em #{value} o dano Elemental de seus golpes
         enemy: |
@@ -1182,7 +1182,7 @@ pt-BR:
           Aumenta em #{value} o dano Corpo-a-corpo de seus golpes
         enemy: |
           Aumenta em #{value} o dano Corpo-a-corpo dos golpes inimigos
-      debuff: 
+      debuff:
         self: |
           Diminui em #{value} o dano Corpo-a-corpo de seus golpes
         enemy: |
@@ -1193,7 +1193,7 @@ pt-BR:
           Aumenta em #{value} o dano Mágico de seus golpes
         enemy: |
           Aumenta em #{value} o dano Mágico dos golpes inimigos
-      debuff: 
+      debuff:
         self: |
           Diminui em #{value} o dano Mágico de seus golpes
         enemy: |
@@ -1204,7 +1204,7 @@ pt-BR:
           Aumenta em #{value} o dano Guerreiro de seus golpes
         enemy: |
           Aumenta em #{value} o dano Guerreiro dos golpes inimigos
-      debuff: 
+      debuff:
         self: |
           Diminui em #{value} o dano Guerreiro de seus golpes
         enemy: |
@@ -1215,7 +1215,7 @@ pt-BR:
           Aumenta em #{value} o dano Atirador de seus golpes
         enemy: |
           Aumenta em #{value} o dano Atirador dos golpes inimigos
-      debuff: 
+      debuff:
         self: |
           Diminui em #{value} o dano Atirador de seus golpes
         enemy: |
@@ -1226,7 +1226,7 @@ pt-BR:
           Aumenta em #{value} a sua Chance de Sangramento
         enemy: |
           Aumenta em #{value} a Chance de Sangramento do inimigo
-      debuff: 
+      debuff:
         self: |
           Diminui em #{value} a sua Chance de Sangramento
         enemy: |
@@ -1237,7 +1237,7 @@ pt-BR:
           Aumenta em #{value} a sua Chance de Lentidão
         enemy: |
           Aumenta em #{value} a Chance de Lentidão do inimigo
-      debuff: 
+      debuff:
         self: |
           Diminui em #{value} a sua Chance de Lentidão
         enemy: |
@@ -1248,7 +1248,7 @@ pt-BR:
           Aumenta em #{value} a sua Chance de Confusão
         enemy: |
           Aumenta em #{value} a Chance de Confusão do inimigo
-      debuff: 
+      debuff:
         self: |
           Diminui em #{value} a sua Chance de Confusão
         enemy: |
@@ -1259,7 +1259,7 @@ pt-BR:
           Aumenta em #{value} a sua Chance de Atordoamento
         enemy: |
           Aumenta em #{value} a Chance de Atordoamento do inimigo
-      debuff: 
+      debuff:
         self: |
           Diminui em #{value} a sua Chance de Atordoamento
         enemy: |
@@ -1270,7 +1270,7 @@ pt-BR:
           Aumenta em #{value} a vantagem do tipo do seu golpe
         enemy: |
           Aumenta em #{value} a vantagem do tipo do golpe inimigo
-      debuff: 
+      debuff:
         self: |
           Diminui em #{value} a vantagem do tipo do seu golpe
         enemy: |
@@ -1281,7 +1281,7 @@ pt-BR:
           Diminui em #{value} a desvantagem do tipo do seu golpe
         enemy: |
           Diminui em #{value} a desvantagem do tipo do golpe inimigo
-      debuff: 
+      debuff:
         self: |
           Aumenta em #{value} a desvantagem do tipo do seu golpe
         enemy: |
@@ -1292,7 +1292,7 @@ pt-BR:
           Cura #{value} da sua vida por turno
         enemy: |
           Causa #{value} da vida do inimigo por turno
-      debuff: 
+      debuff:
         self: |
           Causa #{value} de dano em você por turno
         enemy: |
@@ -1303,7 +1303,7 @@ pt-BR:
           Recupera 1 da sua mana a cada #{value} turnos
         enemy: |
           Recupera 1 da mana do inimigo a cada #{value} turnos
-      debuff: 
+      debuff:
         self: |
           Gasta 1 da sua mana a cada #{value} turnos
         enemy: |
@@ -1314,7 +1314,7 @@ pt-BR:
           Aumenta em #{value} a sua recompensa de experiência no final da batalha
         enemy: |
           Aumenta em #{value} a recompensa de experiência do inimigo no final da batalha
-      debuff: 
+      debuff:
         self: |
           Diminui em #{value} a sua recompensa de experiência no final da batalha
         enemy: |
@@ -1325,7 +1325,7 @@ pt-BR:
           Aumenta em #{value} a sua recompensa de dinheiro no final da batalha
         enemy: |
           Aumenta em #{value} a recompensa de dinheiro do inimigo no final da batalha
-      debuff: 
+      debuff:
         self: |
           Diminui em #{value} a sua recompensa de dinheiro no final da batalha
         enemy: |
@@ -1336,7 +1336,7 @@ pt-BR:
           Aumenta em #{value}% a sua chance de achar itens no final da batalha
         enemy: |
           Aumenta em #{value}% a chance de achar itens do inimigo no final da batalha
-      debuff: 
+      debuff:
         self: |
           Diminui em #{value}% a sua chance de achar itens no final da batalha
         enemy: |
@@ -1348,7 +1348,7 @@ pt-BR:
           Aumenta em #{value}% a sua chance de achar fragmentos das almas no final da batalha
         enemy: |
           Aumenta em #{value}% a chance de achar fragmentos das almas do inimigo no final da batalha
-      debuff: 
+      debuff:
         self: |
           Diminui em #{value}% a sua chance de achar fragmentos das almas no final da batalha
         enemy: |
@@ -1359,7 +1359,7 @@ pt-BR:
           Aumenta em #{value}% a sua chance de achar Páginas Perdidas no final da batalha
         enemy: |
           Aumenta em #{value}% a chance de achar Páginas Perdidas do inimigo no final da batalha
-      debuff: 
+      debuff:
         self: |
           Diminui em #{value}% a sua chance de achar Páginas Perdidas no final da batalha
         enemy: |
@@ -1370,7 +1370,7 @@ pt-BR:
           Aumenta em #{value} o seu dano causado em inimigos Sangrando
         enemy: |
           Aumenta em #{value} o dano do inimigo causado enquanto você estiver Sangrando
-      debuff: 
+      debuff:
         self: |
           Diminui em #{value} o seu dano causado em inimigos Sangrando
         enemy: |
@@ -1381,7 +1381,7 @@ pt-BR:
           Aumenta em #{value} o seu dano causado em inimigos Lentos
         enemy: |
           Aumenta em #{value} o dano do inimigo causado enquanto você estiver Lento
-      debuff: 
+      debuff:
         self: |
           Diminui em #{value} o seu dano causado em inimigos Lentos
         enemy: |
@@ -1392,7 +1392,7 @@ pt-BR:
           Aumenta em #{value} o seu dano causado em inimigos Confusos
         enemy: |
           Aumenta em #{value} o dano do inimigo causado enquanto você estiver Confuso
-      debuff: 
+      debuff:
         self: |
           Diminui em #{value} o seu dano causado em inimigos Confusos
         enemy: |
@@ -1403,7 +1403,7 @@ pt-BR:
           Aumenta em #{value} o seu dano causado em inimigos Atordoados
         enemy: |
           Aumenta em #{value} o dano do inimigo causado enquanto você estiver Atordoado
-      debuff: 
+      debuff:
         self: |
 
           Diminui em #{value} o seu dano causado em inimigos Atordoados
@@ -1415,7 +1415,7 @@ pt-BR:
           Aumenta em #{value} o dano de seus Golpes Genéricos
         enemy: |
           Aumenta em #{value} o dano dos Golpes Genéricos do inimigo
-      debuff: 
+      debuff:
         self: |
           Diminui em #{value} o dano de seus Golpes Genéricos
         enemy: |
@@ -1426,7 +1426,7 @@ pt-BR:
           Aumenta em #{value} o dano de seus Golpes Únicos
         enemy: |
           Aumenta em #{value} o dano dos Golpes Únicos do inimigo
-      debuff: 
+      debuff:
         self: |
           Diminui em #{value} o dano de seus Golpes Únicos
         enemy: |
@@ -1437,7 +1437,7 @@ pt-BR:
           Aumenta em #{value} o seu Ataque enquanto você estiver com menos de 50% de vida
         enemy: |
           Aumenta em #{value} o Ataque do inimigo enquanto ele estiver com menos de 50% de vida
-      debuff: 
+      debuff:
         self: |
           Diminui em #{value} o seu Ataque enquanto você estiver com menos de 50% de vida
         enemy: |
@@ -1448,7 +1448,7 @@ pt-BR:
           Aumenta em #{value} a sua Defesa enquanto você estiver com menos de 50% de vida
         enemy: |
           Aumenta em #{value} a Defesa do inimigo enquanto ele estiver com menos de 50% de vida
-      debuff: 
+      debuff:
         self: |
           Diminui em #{value} a sua Defesa enquanto você estiver com menos de 50% de vida
         enemy: |
@@ -1459,7 +1459,7 @@ pt-BR:
           Aumenta em #{value} o valor de sua Stamina
         enemy: |
           Aumenta em #{value} o valor da Stamina do seu Inimigo
-      debuff: 
+      debuff:
         self: |
           Diminui em #{value} o valor de sua Stamina
         enemy: |
@@ -1470,7 +1470,7 @@ pt-BR:
           Ao pular o turno #{value} de chance de recuperar 1 de Mana
         enemy: |
           Ao pular o turno #{value} de chance de recuperar 1 de Mana do seu inimigo
-      debuff: 
+      debuff:
         self: |
           Ao pular o turno #{value} de chance de gastar 1 de Mana
         enemy: |
@@ -1481,7 +1481,7 @@ pt-BR:
           Quando sua mana estiver abaixo da metade você tem #{value} de recuperar 1 de mana
         enemy: |
           Quando a mana do inimigo estiver abaixo da metade ele tem #{value} de recuperar 1 de mana
-      debuff: 
+      debuff:
         self: |
           Quando sua mana estiver abaixo da metade você tem #{value} de gastar 1 de mana
         enemy: |
@@ -1492,7 +1492,7 @@ pt-BR:
           Chance de #{value}% de cortar pela metade o seu dano critico
         enemy: |
           Chance de #{value}% de cortar pela metade o dano critico do seu oponente
-      debuff: 
+      debuff:
         self: |
           Chance de #{value}% de cortar pela metade o seu dano critico
         enemy: |
@@ -1503,7 +1503,7 @@ pt-BR:
           Chance de #{value}% de cortar pela metade o Dano Absorvido
         enemy: |
           Chance de #{value}% de cortar pela metade o Dano Absorvido do seu oponente
-      debuff: 
+      debuff:
         self: |
           Chance de #{value}% de cortar pela metade o Dano Absorvido
         enemy: |
@@ -1514,7 +1514,7 @@ pt-BR:
           Chance de #{value}% de golpes de até 3 de mana não consumirem mana
         enemy: |
           Chance de #{value}% dos golpes do oponente de até 3 de mana não consumirem mana
-      debuff: 
+      debuff:
         self: |
           Chance de #{value}% de golpes de até 3 de mana não consumirem mana
         enemy: |
@@ -1525,7 +1525,7 @@ pt-BR:
           Chance de #{value}% de golpes com 4 a 7 não entrarem em Recarga
         enemy: |
           Chance de #{value}% dos golpes do oponente com 4 a 7 não entrarem em Recarga
-      debuff: 
+      debuff:
         self: |
           Chance de #{value}% de golpes com 4 a 7 não entrarem em Recarga
         enemy: |
@@ -1536,7 +1536,7 @@ pt-BR:
           Chance de #{value}% de golpes com 8 ou mais de mana gastarem apenas 50% da mana
         enemy: |
           Chance de #{value}% dos golpes do oponente com 8 ou mais de mana gastarem apenas 50% da mana
-      debuff: 
+      debuff:
         self: |
           Chance de #{value}% de golpes com 8 ou mais de mana gastarem apenas 50% da mana
         enemy: |
@@ -1547,7 +1547,7 @@ pt-BR:
           Ao pular o turno #{value}% de chance de recuperar 50 de Vida
         enemy: |
           Ao pular o turno #{value}% de chance de recuperar 50 de Vida do seu oponente
-      debuff: 
+      debuff:
         self: |
           Ao pular o turno #{value}% de chance de recuperar 50 de Vida
         enemy: |
@@ -1558,7 +1558,7 @@ pt-BR:
           Chance de #{value}% de aumentar o dano em 25% quando o oponente estiver Confuso
         enemy: |
           Chance de #{value}% de aumentar o dano em 25% quando o oponente estiver Confuso
-      debuff: 
+      debuff:
         self: |
           Chance de #{value}% de aumentar o dano em 25% quando o oponente estiver Confuso
         enemy: |
@@ -1569,7 +1569,7 @@ pt-BR:
           Chance de #{value}% de aumentar o dano em 25% quando o oponente estiver Lento
         enemy: |
           Chance de #{value}% de aumentar o dano em 25% quando o oponente estiver Lento
-      debuff: 
+      debuff:
         self: |
           Chance de #{value}% de aumentar o dano em 25% quando o oponente estiver Lento
         enemy: |
@@ -1580,7 +1580,7 @@ pt-BR:
           Chance de #{value}% de se matar com esse golpe
         enemy: |
           Chance de #{value}% de se matar com esse golpe
-      debuff: 
+      debuff:
         self: |
           Chance de #{value}% de matar o inimigo com esse golpe
         enemy: |
@@ -1591,7 +1591,7 @@ pt-BR:
           Chance de #{value}% de diminuir pela metade o dano de golpes com fraqueza
         enemy: |
           Chance de #{value}% de diminuir pela metade o dano de golpes com fraqueza
-      debuff: 
+      debuff:
         self: |
           Chance de #{value}% de diminuir pela metade o dano de golpes com fraqueza
         enemy: |
@@ -1602,7 +1602,7 @@ pt-BR:
           Aumenta em  #{value} o total de sua Stamina
         enemy: |
           Aumenta em  #{value} o total de sua Stamina
-      debuff: 
+      debuff:
         self: |
           Aumenta em  #{value} o total de sua Stamina
         enemy: |
@@ -1614,7 +1614,7 @@ pt-BR:
           Aumenta em  #{value} a recuperação de sua Stamina
         enemy: |
           Aumenta em  #{value} a recuperação de sua Stamina
-      debuff: 
+      debuff:
         self: |
           Aumenta em  #{value} a recuperação de sua Stamina
         enemy: |
@@ -1625,7 +1625,7 @@ pt-BR:
           Chance de #{value} de batalhas npcs não consumirem sua Stamina
         enemy: |
           Chance de #{value} de batalhas npcs não consumirem sua Stamina
-      debuff: 
+      debuff:
         self: |
           Chance de #{value} de batalhas npcs não consumirem sua Stamina
         enemy: |
@@ -1636,7 +1636,7 @@ pt-BR:
           Aumenta em #{value} o Ouro das recompensas das missões
         enemy: |
           Aumenta em #{value} o Ouro das recompensas das missões
-      debuff: 
+      debuff:
         self: |
           Aumenta em #{value} o Ouro das recompensas das missões
         enemy: |
@@ -1647,7 +1647,7 @@ pt-BR:
           Aumenta em #{value} a Experiência das recompensas das missões
         enemy: |
           Aumenta em #{value} a Experiência das recompensas das missões
-      debuff: 
+      debuff:
         self: |
           Aumenta em #{value} a Experiência das recompensas das missões
         enemy: |
@@ -1658,7 +1658,7 @@ pt-BR:
           Aumenta as Técnicas Defensivas em #{value}
         enemy: |
           Aumenta as Técnicas Defensivas em #{value} do oponente
-      debuff: 
+      debuff:
         self: |
           Diminui as Técnicas Defensivas em #{value}
         enemy: |
@@ -1669,7 +1669,7 @@ pt-BR:
           Aumenta o efeito de Sangramento do seu personagem em #{value}
         enemy: |
           Aumenta o efeito de Sangramento do oponente em #{value}
-      debuff: 
+      debuff:
         self: |
           Diminui o efeito de Sangramento do seu personagem em #{value}
         enemy: |
@@ -1680,7 +1680,7 @@ pt-BR:
           Aumenta o efeito de Lentidão do seu personagem em #{value}
         enemy: |
           Aumenta o efeito de Lentidão do oponente em #{value}
-      debuff: 
+      debuff:
         self: |
           Diminui o efeito de Lentidão do seu personagem em #{value}
         enemy: |
@@ -1691,7 +1691,7 @@ pt-BR:
           Aumenta o efeito de Confusão do seu personagem em #{value}
         enemy: |
           Aumenta o efeito de Confusão do oponente em #{value}
-      debuff: 
+      debuff:
         self: |
           Diminui o efeito de Confusão do seu personagem em #{value}
         enemy: |
@@ -1702,7 +1702,7 @@ pt-BR:
           Aumenta a chance em  #{value}% de encontrar mascotes
         enemy: |
           Aumenta a chance em  #{value}% de encontrar mascotes
-      debuff: 
+      debuff:
         self: |
           Diminui a chance em  #{value}% de encontrar mascotes
         enemy: |
@@ -1713,7 +1713,7 @@ pt-BR:
           Recupera #{value}% de vida do dano causado
         enemy: |
           Recupera #{value}% de vida do dano causado
-      debuff: 
+      debuff:
         self: |
           Gasta #{value}% de vida do dano causado
         enemy: |

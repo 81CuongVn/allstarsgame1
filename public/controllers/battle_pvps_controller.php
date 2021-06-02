@@ -691,7 +691,7 @@ class BattlePvpsController extends Controller {
 					$battle->{$word_enemy . '_should_refresh'}	= 1;
 					// <--
 
-					if($battle->should_process) {
+					if ($battle->should_process) {
 						$is_enemy_copy	= false;
 						$is_enemy_kill	= false;
 
@@ -712,7 +712,7 @@ class BattlePvpsController extends Controller {
 								} else {
 									$enemy_item->set_character_theme($player->character_theme());
 								}
-							}elseif($battle->{$field_kill_enemy}){
+							} elseif ($battle->{$field_kill_enemy}) {
 								$is_enemy_kill		= true;
 
 								$enemy_player_item	= new FakePlayerItem($battle->{$field_kill_enemy}, $enemy);
