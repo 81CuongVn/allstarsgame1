@@ -430,78 +430,77 @@ trait BattleSharedMethods {
 				$drop_chance_pet 	 	 = (10	* DROP_RATE) + ($bonus_active ? 10 : 0);	// +10% se o anime do jogador tiver ganhado o último evento de anime
 				$drop_areia 			 = (5	* DROP_RATE);
 				$drop_sangue			 = (1	* DROP_RATE);
-				$drop_event		 		 = (1	* DROP_RATE);
+				$drop_event		 		 = (5	* DROP_RATE);
 			} else {		// Chance de drop para NPC
 				$drop_chance_page		 = (5	* DROP_RATE);
-				$drop_chance_fragment	 = (10	* DROP_RATE);
-				$drop_chance_equipment	 = (7	* DROP_RATE) + ($bonus_active ? 10 : 0);	// +10% se o anime do jogador tiver ganhado o último evento de anime
-				$drop_chance_pet 	 	 = (7	* DROP_RATE) + ($bonus_active ? 10 : 0);	// +10% se o anime do jogador tiver ganhado o último evento de anime
-				$drop_event		 		 = (1	* DROP_RATE);
+				$drop_chance_fragment	 = (7.5	* DROP_RATE);
+				$drop_chance_equipment	 = (5	* DROP_RATE) + ($bonus_active ? 10 : 0);	// +10% se o anime do jogador tiver ganhado o último evento de anime
+				$drop_chance_pet 	 	 = (5	* DROP_RATE) + ($bonus_active ? 10 : 0);	// +10% se o anime do jogador tiver ganhado o último evento de anime
+				$drop_areia 			 = (2.5	* DROP_RATE);
+				$drop_sangue			 = (0.5	* DROP_RATE);
+				$drop_event		 		 = (2.5	* DROP_RATE);
 			}
 
 			// Realiza o sorteio e verificação dos drops
 			if (($battle->won != $p->id && $battle->inactivity == 1) || $battle->battle_type_id == 4) {
 				// Não dropa nada!
 			} else {
-				// Só dropa sangue, areia e doce em PVP
-				if ($is_pvp) {
-					// Drop de Areia Estelar
-					if (has_chance($drop_areia + $extras->sum_bonus_drop)) {
-						$item_1719 = PlayerItem::find_first("player_id =". $p->id. " AND item_id = 1719");
-						if ($item_1719) {
-							$player_areia			= $p->get_item(1719);
-							$player_areia->quantity += 1;
-							$player_areia->save();
-						} else {
-							$player_areia	= new PlayerItem();
-							$player_areia->item_id	= 1719;
-							$player_areia->player_id	= $p->id;
-							$player_areia->quantity = 1;
-							$player_areia->save();
-						}
-						$drop_message	.= t('battles.finished.drop', [
-							'item'	=> $player_areia->item()->description()->name
-						]);
-
-						// Mensagem Global
-						global_message('hightlights.sand', TRUE, [ $p->name ]);
-
-						// Verifica a conquista de areia - Conquista
-						$p->achievement_check("sands");
-						$p->check_objectives('sands');
-
-						// Diz que ganhou a Areia
-						$sand_drop  = true;
+				// Drop de Areia Estelar
+				if (has_chance($drop_areia + $extras->sum_bonus_drop)) {
+					$item_1719 = PlayerItem::find_first("player_id =". $p->id. " AND item_id = 1719");
+					if ($item_1719) {
+						$player_areia			= $p->get_item(1719);
+						$player_areia->quantity += 1;
+						$player_areia->save();
+					} else {
+						$player_areia	= new PlayerItem();
+						$player_areia->item_id	= 1719;
+						$player_areia->player_id	= $p->id;
+						$player_areia->quantity = 1;
+						$player_areia->save();
 					}
+					$drop_message	.= t('battles.finished.drop', [
+						'item'	=> $player_areia->item()->description()->name
+					]);
 
-					// Drop de Sangue de Deus
-					if (has_chance($drop_sangue + $extras->sum_bonus_drop)) {
-						$item_1720 = PlayerItem::find_first("player_id =". $p->id. " AND item_id=1720");
-						if ($item_1720){
-							$player_sangue			= $p->get_item(1720);
-							$player_sangue->quantity += 1;
-							$player_sangue->save();
-						} else {
-							$player_sangue	= new PlayerItem();
-							$player_sangue->item_id	= 1720;
-							$player_sangue->player_id	= $p->id;
-							$player_sangue->quantity = 1;
-							$player_sangue->save();
-						}
-						$drop_message	.= t('battles.finished.drop', [
-							'item'	=> $player_sangue->item()->description()->name
-						]);
+					// Mensagem Global
+					global_message('hightlights.sand', TRUE, [ $p->name ]);
 
-						// Mensagem Global
-						global_message('hightlights.blood', TRUE, [ $p->name ]);
+					// Verifica a conquista de areia - Conquista
+					$p->achievement_check("sands");
+					$p->check_objectives('sands');
 
-						// Verifica a conquista de areia - Conquista
-						$p->achievement_check("bloods");
-						$p->check_objectives('bloods');
+					// Diz que ganhou a Areia
+					$sand_drop  = true;
+				}
 
-						// Diz que ganhou o Sangue
-						$blood_drop  = true;
+				// Drop de Sangue de Deus
+				if (has_chance($drop_sangue + $extras->sum_bonus_drop)) {
+					$item_1720 = PlayerItem::find_first("player_id =". $p->id. " AND item_id=1720");
+					if ($item_1720){
+						$player_sangue			= $p->get_item(1720);
+						$player_sangue->quantity += 1;
+						$player_sangue->save();
+					} else {
+						$player_sangue	= new PlayerItem();
+						$player_sangue->item_id	= 1720;
+						$player_sangue->player_id	= $p->id;
+						$player_sangue->quantity = 1;
+						$player_sangue->save();
 					}
+					$drop_message	.= t('battles.finished.drop', [
+						'item'	=> $player_sangue->item()->description()->name
+					]);
+
+					// Mensagem Global
+					global_message('hightlights.blood', TRUE, [ $p->name ]);
+
+					// Verifica a conquista de areia - Conquista
+					$p->achievement_check("bloods");
+					$p->check_objectives('bloods');
+
+					// Diz que ganhou o Sangue
+					$blood_drop  = true;
 				}
 
 				// Drop de Evento
