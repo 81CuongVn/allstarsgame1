@@ -144,9 +144,9 @@ class QuestsController extends Controller {
 			$this->assign('player', $player);
 		}
 	}
-	function organization_daily(){
+	function guild_daily(){
 		$player				= Player::get_instance();
-		$total_treasure		= Organization::find_first("id=". $player->organization_id);
+		$total_treasure		= Guild::find_first("id=". $player->guild_id);
 		$can_accept			= $total_treasure->can_accept_player($player->id)->allowed;
 		$buy_mode_change 	= PlayerChange::find_first("player_id=" . $player->id);
 
@@ -154,8 +154,8 @@ class QuestsController extends Controller {
 		$this->assign('can_accept',$can_accept);
 		$this->assign('player', $player);
 		$this->assign('total_treasure', $total_treasure);
-		$this->assign('quests', $player->organization_daily_quests());
-		$this->_generate_organization_daily_quest_list($player);
+		$this->assign('quests', $player->guild_daily_quests());
+		$this->_generate_guild_daily_quest_list($player);
 
 
 	}
@@ -306,7 +306,7 @@ class QuestsController extends Controller {
 
 		$player_quest->destroy();
 	}
-	function organization_daily_change(){
+	function guild_daily_change(){
 		$player					= Player::get_instance();
 		$user					= User::get_instance();
 		$this->as_json			= true;
@@ -315,7 +315,7 @@ class QuestsController extends Controller {
 		$errors					= [];
 		$buy_change				= 0;
 		$valor_change			= 0;
-		$organizations			= 0;
+		$guilds			= 0;
 		$personagens			= 0;
 
 		if(isset($_POST['id']) && is_numeric($_POST['id']) && isset($_POST['quest']) && is_numeric($_POST['quest'])) {
@@ -324,7 +324,7 @@ class QuestsController extends Controller {
 			if(!$daily) {
 				$errors[]	= t('quests.time.errors.invalid');
 			} else {
-				$player_daily 		= OrganizationDailyQuest::find($_POST['id']);
+				$player_daily 		= GuildDailyQuest::find($_POST['id']);
 				$buy_mode_change 	= PlayerChange::find_first("player_id=" . $player->id);
 
 				if($player_daily->complete==1){
@@ -390,27 +390,27 @@ class QuestsController extends Controller {
 			$buy_mode_change->save();
 
 			//Deleta a missão do player
-			$player_daily_del = Recordset::query("DELETE FROM organization_daily_quests WHERE id=". $_POST['id']." AND organization_id=".$player->organization_id);
+			$player_daily_del = Recordset::query("DELETE FROM guild_daily_quests WHERE id=". $_POST['id']." AND guild_id=".$player->guild_id);
 
 			//Adiciona uma nova missão para o player
-			$daily_quests			= Recordset::query('SELECT * FROM daily_quests WHERE of="organization" ORDER BY RAND() LIMIT 1')->row_array();
+			$daily_quests			= Recordset::query('SELECT * FROM daily_quests WHERE of="guild" ORDER BY RAND() LIMIT 1')->row_array();
 
 			if($daily_quests['anime'] && !$daily_quests['personagem']){
-				$organizations			= Recordset::query('SELECT id FROM organizations WHERE removed = 0 AND id not in ('.$player->organization_id.') ORDER BY RAND() LIMIT 1')->row_array();
+				$guilds			= Recordset::query('SELECT id FROM guilds WHERE removed = 0 AND id not in ('.$player->guild_id.') ORDER BY RAND() LIMIT 1')->row_array();
 
 			}else if($daily_quests['anime'] && $daily_quests['personagem']){
 
-				$organizations			= Recordset::query('SELECT id FROM organizations WHERE removed = 0 AND id not in ('.$player->organization_id.') ORDER BY RAND() LIMIT 1')->row_array();
-				$organizations['id'] = $organizations['id'] ? $organizations['id'] : 0;
-				$personagens			= Recordset::query('SELECT id FROM players WHERE removed = 0 AND organization_id ='. $organizations['id'] .' ORDER BY RAND() LIMIT 1')->row_array();
+				$guilds			= Recordset::query('SELECT id FROM guilds WHERE removed = 0 AND id not in ('.$player->guild_id.') ORDER BY RAND() LIMIT 1')->row_array();
+				$guilds['id'] = $guilds['id'] ? $guilds['id'] : 0;
+				$personagens			= Recordset::query('SELECT id FROM players WHERE removed = 0 AND guild_id ='. $guilds['id'] .' ORDER BY RAND() LIMIT 1')->row_array();
 
 			}
 
-			Recordset::insert('organization_daily_quests', [
-				'organization_id'		=> $player->organization_id,
+			Recordset::insert('guild_daily_quests', [
+				'guild_id'		=> $player->guild_id,
 				'daily_quest_id'		=> $daily_quests['id'],
 				'type'					=> $daily_quests['type'],
-				'guild_enemy_id'		=> ($organizations['id']) ? $organizations['id'] : 0 ,
+				'guild_enemy_id'		=> ($guilds['id']) ? $guilds['id'] : 0 ,
 				'enemy_id'				=> ($personagens['id']) ? $personagens['id'] : 0
 			]);
 
@@ -741,28 +741,28 @@ class QuestsController extends Controller {
 			$this->json->messages	= $errors;
 		}
 	}
-	function organization_daily_finish(){
+	function guild_daily_finish(){
 		$player							= Player::get_instance();
-		$players_orgs					= Player::find("organization_id=". $player->organization_id);
+		$players_orgs					= Player::find("guild_id=". $player->guild_id);
 		$player_quests		  			= DailyQuest::all(['cache' => true]);
-		$organization_quests_daily   	= $player->organization_daily_quests();
+		$guild_quests_daily   	= $player->guild_daily_quests();
 		$this->as_json					= true;
 		$this->json->success			= false;
 		$this->json->messages			= [];
 		$errors							= [];
 
-		if($organization_quests_daily){
+		if($guild_quests_daily){
 			foreach($player_quests as $player_quest){
-				foreach($organization_quests_daily as $organization_quest_daily){
-					if($organization_quest_daily->daily_quest_id == $player_quest->id){
+				foreach($guild_quests_daily as $guild_quest_daily){
+					if($guild_quest_daily->daily_quest_id == $player_quest->id){
 
-						if($organization_quest_daily->total >= $player_quest->total && !$organization_quest_daily->complete){
+						if($guild_quest_daily->total >= $player_quest->total && !$guild_quest_daily->complete){
 
 							// Recompensas e Atualizações de contadores
 							$this->json->success					= true;
-							$organization_quest_daily->completed_at	= now(true);
-							$organization_quest_daily->complete		= 1;
-							$organization_quest_daily->save();
+							$guild_quest_daily->completed_at	= now(true);
+							$guild_quest_daily->complete		= 1;
+							$guild_quest_daily->save();
 
 							foreach($players_orgs as $players_org){
 								$p = Player::find_first("id=". $players_org->id);
@@ -770,7 +770,7 @@ class QuestsController extends Controller {
 								$p->save();
 							}
 
-							$counters	= $player->organization_quest_counters();
+							$counters	= $player->guild_quest_counters();
 							$counters->daily_total++;
 							$counters->save();
 
@@ -1035,8 +1035,8 @@ class QuestsController extends Controller {
 		}
 		$this->assign('user_quests', $this->quests);
 	}
-	function _generate_organization_daily_quest_list($player) {
-		foreach ($player->organization_daily_quests() as $quest) {
+	function _generate_guild_daily_quest_list($player) {
+		foreach ($player->guild_daily_quests() as $quest) {
 			$this->quests[]	= $quest->daily_quest_id;
 		}
 		$this->assign('player_quests', $this->quests);

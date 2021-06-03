@@ -361,12 +361,12 @@ class Player extends Relation {
 					}
 				}
 				break;
-			case "organization":
-				$achievements = Achievement::find("organization > 0 AND type='achievement'");
+			case "guild":
+				$achievements = Achievement::find("guild > 0 AND type='achievement'");
 				foreach ($achievements as $achievement) {
 					$player_achievement = PlayerAchievement::find_first("achievement_id=".$achievement->id." AND player_id=".$this->id);
 					if (!$player_achievement) {
-						if ($this->organization_id) {
+						if ($this->guild_id) {
 							$this->achievement_reward($this, $achievement);
 						}
 					}
@@ -638,8 +638,8 @@ class Player extends Relation {
 				foreach ($achievements as $achievement) {
 					$player_achievement = PlayerAchievement::find_first("achievement_id=".$achievement->id." AND player_id=".$this->id);
 					if (!$player_achievement) {
-						$organization_quest = OrganizationQuestCounter::find_first("organization_id=". $this->organization_id);
-						if ($organization_quest->daily_total >= $achievement->quantity) {
+						$guild_quest = GuildQuestCounter::find_first("guild_id=". $this->guild_id);
+						if ($guild_quest->daily_total >= $achievement->quantity) {
 							$this->achievement_reward($this, $achievement);
 						}
 					}
@@ -964,12 +964,12 @@ class Player extends Relation {
 					}
 				}
 				break;
-			case "organization":
-				$objectives = Achievement::find("organization > 0 AND type='objectives'");
+			case "guild":
+				$objectives = Achievement::find("guild > 0 AND type='objectives'");
 				foreach ($objectives as $objective) {
 					$user_objective = UserObjective::find_first("objective_id=".$objective->id." AND user_id=".$this->user_id." AND complete=0");
 					if ($user_objective) {
-						if ($this->organization_id) {
+						if ($this->guild_id) {
 							$this->objectives_reward($this, $objective, $user_objective);
 						}
 					}
@@ -1241,8 +1241,8 @@ class Player extends Relation {
 				foreach ($objectives as $objective) {
 					$user_objective = UserObjective::find_first("objective_id=".$objective->id." AND user_id=".$this->user_id." AND complete=0");
 					if ($user_objective) {
-						$organization_quest = OrganizationQuestCounter::find_first("organization_id=". $this->organization_id);
-						if ($organization_quest->daily_total >= $objective->quantity){
+						$guild_quest = GuildQuestCounter::find_first("guild_id=". $this->guild_id);
+						if ($guild_quest->daily_total >= $objective->quantity){
 							$this->objectives_reward($this, $objective, $user_objective);
 						}
 					}
@@ -1335,8 +1335,8 @@ class Player extends Relation {
 		$position = PlayerPosition::find_first('player_id=' . $this->id);
 		if (!$position) {
 			$position = new PlayerPosition();
-			$position->player_id = $this->id;
-			$position->organization_id = $this->organization_id;
+			$position->player_id	= $this->id;
+			$position->guild_id		= $this->guild_id;
 			$position->save();
 		}
 
@@ -1361,8 +1361,8 @@ class Player extends Relation {
 	function quest_counters() {
 		return PlayerQuestCounter::find_first('player_id=' . $this->id);
 	}
-	function organization_quest_counters() {
-		return OrganizationQuestCounter::find_first('organization_id=' . $this->organization_id);
+	function guild_quest_counters() {
+		return GuildQuestCounter::find_first('guild_id=' . $this->guild_id);
 	}
 
 	function battle_counters() {
@@ -2205,14 +2205,13 @@ class Player extends Relation {
 	}
 
 	function save_npc($npc) {
-		if (isset($npc->organization_map_object_id) && $npc->organization_map_object_id) {
-			$session = OrganizationMapObjectSession::find_first('player_id=0 AND organization_accepted_event_id=' . $this->organization_accepted_event_id . ' AND organization_id=' . $this->organization_id . ' AND organization_map_object_id=' . $npc->organization_map_object_id);
-
+		if (isset($npc->guild_map_object_id) && $npc->guild_map_object_id) {
+			$session = GuildMapObjectSession::find_first('player_id=0 AND guild_accepted_event_id=' . $this->guild_accepted_event_id . ' AND guild_id=' . $this->guild_id . ' AND guild_map_object_id=' . $npc->guild_map_object_id);
 			if ($session) {
-				Recordset::query('UPDATE organization_map_object_sessions SET less_life=less_life + ' . $npc->shared_less_life . ' WHERE id=' . $session->id);
+				Recordset::query('UPDATE guild_map_object_sessions SET less_life = less_life + ' . $npc->shared_less_life . ' WHERE id=' . $session->id);
 
-				$npc->less_life = Recordset::query('SELECT less_life FROM organization_map_object_sessions WHERE id=' . $session->id)->row()->less_life;
-				$npc->shared_less_life = 0;
+				$npc->less_life			= Recordset::query('SELECT less_life FROM guild_map_object_sessions WHERE id = ' . $session->id)->row()->less_life;
+				$npc->shared_less_life	= 0;
 			}
 		}
 
@@ -2275,8 +2274,8 @@ class Player extends Relation {
 	function ranking_achievement() {
 		return RankingAchievement::find_first('player_id=' . $this->id);
 	}
-	function ranking_organization() {
-		return RankingOrganization::find_first('organization_id=' . $this->organization_id);
+	function ranking_guild() {
+		return RankingGuild::find_first('guild_id=' . $this->guild_id);
 	}
 	function ranking_account() {
 		return RankingAccount::find_first('user_id=' . $this->user_id);
@@ -2295,8 +2294,8 @@ class Player extends Relation {
 	function account_quests() {
 		return UserDailyQuest::find('user_id=' . $this->user_id.' AND complete = 0');
 	}
-	function organization_daily_quests() {
-		return OrganizationDailyQuest::find('organization_id=' . $this->organization_id);
+	function guild_daily_quests() {
+		return GuildDailyQuest::find('guild_id=' . $this->guild_id);
 	}
 	function time_quests() {
 		return PlayerTimeQuest::find('player_id=' . $this->id);
@@ -2307,18 +2306,18 @@ class Player extends Relation {
 	function pvp_quests() {
 		return PlayerPvpQuest::find('player_id=' . $this->id);
 	}
-	function ranked($league_id = FALSE) {
-		if ($league_id) {
-			return PlayerRanked::find_last("player_id={$this->id} and league = {$league_id}");
+	function ranked($ranked_id = FALSE) {
+		if ($ranked_id) {
+			return PlayerRanked::find_last("player_id = {$this->id} and ranked_id = {$ranked_id}");
 		} else {
-			$league		= Ranked::find_first('started = 1 and finished = 0 order by league desc');
-			if ($league) {
-				$player_ranked	= PlayerRanked::find_last("player_id={$this->id} and league = {$league->league}");
+			$ranked		= Ranked::find_first('started = 1 and finished = 0', ['reorder' => 'id desc']);
+			if ($ranked) {
+				$player_ranked	= PlayerRanked::find_last("player_id = {$this->id} and ranked_id = {$ranked->league}");
 				if (!$player_ranked) {
-					$player_ranked				= new PlayerRanked();
-					$player_ranked->player_id 	= $this->id;
-					$player_ranked->rank		= 10;
-					$player_ranked->league		= $league->league;
+					$player_ranked					= new PlayerRanked();
+					$player_ranked->player_id 		= $this->id;
+					$player_ranked->ranked_tier_id	= RankedTier::find_first('sort = 1')->id;
+					$player_ranked->ranked_id		= $ranked->id;
 					$player_ranked->save();
 				}
 
@@ -2330,8 +2329,8 @@ class Player extends Relation {
 	function player_daily_quest() {
 		return PlayerDailyQuest::find_first('player_id=' . $this->id . ' AND daily_quest_id=' . $this->daily_quest_id);
 	}
-	function organization_daily_quest() {
-		return OrganizationDailyQuest::find_first('organization_id=' . $this->organization_id . ' AND daily_quest_id=' . $this->daily_quest_id);
+	function guild_daily_quest() {
+		return GuildDailyQuest::find_first('guild_id=' . $this->guild_id . ' AND daily_quest_id=' . $this->daily_quest_id);
 	}
 	function player_time_quest() {
 		return PlayerTimeQuest::find_first('player_id=' . $this->id . ' AND time_quest_id=' . $this->time_quest_id);
@@ -2434,8 +2433,8 @@ class Player extends Relation {
 	function has_unlocked_item($id) {
 		return PlayerItem::find_first('player_id=' . $this->id . ' AND item_id=' . $id);
 	}
-	function organization() {
-		return Organization::find($this->organization_id);
+	function guild() {
+		return Guild::find($this->guild_id);
 	}
 	function player_tutorial(){
 		return PlayerTutorial::find_first("player_id=".$this->id);

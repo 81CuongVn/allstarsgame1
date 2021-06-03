@@ -1,5 +1,5 @@
 <?php echo partial('shared/title', array('title' => 'abilities.index.title', 'place' => 'abilities.index.title')) ?>
-<?php foreach($specialities as $speciality){?>
+<?php foreach ($specialities as $speciality) { ?>
 <div class="ability-speciality-box upgrade" data-id="<?php echo $player_speciality->character_speciality_id?>" data-id2="<?php echo $speciality->id?>">
 	<div class="content">
 		<div class="image">

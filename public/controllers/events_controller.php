@@ -218,8 +218,8 @@ class EventsController extends Controller {
 		// $player->check_objectives('history_mode');
 		// $player->achievement_check('challenges');
 		// $player->check_objectives('challenges');
-		// $player->achievement_check('organization');
-		// $player->check_objectives('organization');
+		// $player->achievement_check('guild');
+		// $player->check_objectives('guild');
 		// $player->achievement_check('treasure');
 		// $player->check_objectives('treasure');
 		// $player->achievement_check('friends');

@@ -2,7 +2,7 @@
 	<?php
 		$ranking 				= $player->ranking();
 		$ranking_achievement 	= $player->ranking_achievement();
-		$ranking_organization 	= $player->ranking_organization();
+		$ranking_guild 			= $player->ranking_guild();
 		$ranking_account 		= $player->ranking_account();
 		$tutorial				= $player->tutorial();
 	?>
@@ -79,7 +79,7 @@
 				<b class=""><?=$player->character()->anime()->description()->name;?></b>
 			</div>
 			<div class="menu_esquerdo_divisao">
-				<b class="amarelo"><?php echo t('organizations.faction') ?></b>
+				<b class="amarelo"><?php echo t('guilds.faction') ?></b>
 				<b class=""><?=$player->faction()->description()->name;?></b>
 			</div>
 		</div>
@@ -116,7 +116,7 @@
 		<div class="bg_menu_esquerdo">
 			<div class="menu_esquerdo_divisao">
 				<b class="amarelo">Rank Org.</b>
-				<b class=""><?php echo $ranking_organization ? highamount($ranking_organization->position_general) . "&ordm;" : "-" ?></b>
+				<b class=""><?php echo $ranking_guild ? highamount($ranking_guild->position_general) . "&ordm;" : "-" ?></b>
 			</div>
 			<div class="menu_esquerdo_divisao">
 				<b class="amarelo">Rank Conquista</b>

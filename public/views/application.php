@@ -111,28 +111,12 @@ if (preg_match('/read_news/', $action)) {
 
 		var _current_anime			= <?=$player->character()->anime_id;?>,
 			_current_graduation		= <?=$player->graduation()->sorting;?>,
-			_current_organization	= <?=$player->organization_id;?>,
+			_current_guild	= <?=$player->guild_id;?>,
 			_current_player			= <?=$player->id;?>,
-			_is_organization_leader = <?=(($player->organization_id && $player->organization_id == $player->organization()->player_id) ? 'true' : 'false');?>,
+			_is_guild_leader = <?=(($player->guild_id && $player->guild_id == $player->guild()->player_id) ? 'true' : 'false');?>,
 			_equipments_names		= <?=json_encode($equipments);?>,
 			_graduations			= [];
-
-		<?php
-			/*$i = 1;
-			$animes			= Anime::find("active = 1 and playable=1", ['cache' => true]);
-			$graduations	= Graduation::all();
-			foreach ($animes as $anime) {
-				if ($i != 1) echo "\n\t\t";
-
-				echo "_graduations[{$anime->id}] = []\n";
-
-				foreach ($graduations as $graduation) {
-					echo "\t\t_graduations[{$anime->id}][{$graduation->sorting}] = '{$graduation->description($anime->id)->name}';\n";
-				}
-				++$i;
-			}*/
-		}
-		?>
+		<?php } ?>
 
 		var	_check_pvp_queue		= <?=($player && $player->is_pvp_queued ? 'true': 'false');?>;
 		var _highlights_server		= "<?=HIGHLIGHTS_SERVER;?>";
@@ -439,7 +423,7 @@ if (preg_match('/read_news/', $action)) {
 <script type="text/javascript" src="<?=asset_url('js/history_mode.js');?>"></script>
 <script type="text/javascript" src="<?=asset_url('js/challenge.js');?>"></script>
 <script type="text/javascript" src="<?=asset_url('js/maps.js');?>"></script>
-<script type="text/javascript" src="<?=asset_url('js/organizations.js');?>"></script>
+<script type="text/javascript" src="<?=asset_url('js/guilds.js');?>"></script>
 <script type="text/javascript" src="<?=asset_url('js/vips.js');?>"></script>
 <script type="text/javascript" src="<?=asset_url('js/png_animator.js');?>"></script>
 <script type="text/javascript" src="<?=asset_url('js/tournaments.js');?>"></script>
@@ -468,13 +452,13 @@ if (preg_match('/read_news/', $action)) {
 
 // 		if (in_array($player->id, $targets)) {
 // 			$have_queue				= true;
-// 			$organization_dungeon	= $redis->get("od_id_" . $queue);
+// 			$guild_dungeon	= $redis->get("od_id_" . $queue);
 // 			break;
 // 		}
 // 	}
 // 	if ($have_queue) {
 // 		echo '<script type="text/javascript">
-// 			createInviteModal(' . $organization_dungeon . ');
+// 			createInviteModal(' . $guild_dungeon . ');
 // 		</script>';
 // 	}
 // }

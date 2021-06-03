@@ -141,42 +141,44 @@
     </div>
 </div>
 <?php if ($best_rank) { ?>
-<div class="break"></div>
-<div id="tutorial_ranked">
-    <?php
-        echo partial('shared/info', array(
-            'id'		=> 1,
-            'title'		=> 'battles.ranked.title',
-            'message'	=> t('battles.ranked.description')
-        ));
-    ?>
-</div>
-<div class="h-missoes">
-    <div style="width: 341px; text-align: center; padding-top: 12px">
-        <b class="amarelo" style="font-size:13px">
-            <?php if ($player_ranked) { ?>
-                Rank <?php echo ($player_ranked->rank == 0 ? 'All-Star' : $player_ranked->rank)?>
-            <?php } else { ?>
-                -
-            <?php } ?>
-        </b>
-    </div>
-    <div style="width: 341px; text-align: center; padding-top: 22px; font-size: 12px !important; line-height: 15px;">
-        <span class="verde"><?php echo t('ranked.total_pontos');?>: </span><?php echo ($player_ranked ? highamount($player_ranked->points()) : '-'); ?><br />
-        <span class="verde"><?php echo t('ranked.total_batalhas');?>: </span><?php echo ($player_ranked ? highamount($player_ranked->wins + $player_ranked->losses + $player_ranked->draws) : '-'); ?><br /><br />
-        <span class="verde"><?php echo t('ranked.vitorias');?>: </span><?php echo ($player_ranked ? highamount($player_ranked->wins) : '-'); ?> <br />
-        <span class="vermelho"><?php echo t('ranked.derrotas');?>: </span><?php echo ($player_ranked ? highamount($player_ranked->losses) : '-'); ?> <br />
-        <span><?php echo t('ranked.empates');?>: </span><?php echo ($player_ranked ? highamount($player_ranked->draws) : '-'); ?> <br />
-    </div>
-</div>
-<div class="h-missoes tutorial_ranking" style="left: 31px">
-    <div style="width: 341px; text-align: center; padding-top: 12px"><b class="amarelo" style="font-size:13px"><?php echo t('ranked.resumo');?></b></div>
-    <div style="width: 341px; text-align: center; padding-top: 22px; font-size: 12px !important; line-height: 15px;">
-        <span class="verde"><?php echo t('ranked.melhor_rank');?>: </span> <?php echo ($best_rank ? ($best_rank->rank == 0 ? "Rank All-Star" : "Rank ". $best_rank->rank) : '-'); ?><br />
-        <span class="verde"><?php echo t('ranked.total_batalhas');?>: </span><?php echo ($best_rank ? highamount($ranked_total['total_wins'] + $ranked_total['total_losses'] + $ranked_total['total_draws']) : '-'); ?><br /><br />
-        <span class="verde"><?php echo t('ranked.total_de');?> <?php echo t('ranked.vitorias');?>: </span><?php echo ($best_rank ? highamount($ranked_total['total_wins']) : '-'); ?> <br />
-        <span class="vermelho"><?php echo t('ranked.total_de');?> <?php echo t('ranked.derrotas');?>: </span><?php echo ($best_rank ? highamount($ranked_total['total_losses']) : '-'); ?><br />
-        <span><?php echo t('ranked.total_de');?> <?php echo t('ranked.empates');?>: </span><?php echo ($best_rank ? highamount($ranked_total['total_draws']) : '-'); ?><br />
-    </div>
-</div>
+	<div class="break"></div><br />
+	<div id="tutorial_ranked">
+		<?php
+			echo partial('shared/info', array(
+				'id'		=> 1,
+				'title'		=> 'battles.ranked.title',
+				'message'	=> t('battles.ranked.description')
+			));
+		?>
+	</div>
+	<div style="width: 730px; height: 185px; position: relative; left: 24px">
+		<div class="h-missoes">
+			<div style="width: 341px; text-align: center; padding-top: 12px">
+				<b class="amarelo" style="font-size:13px">
+					<?php if ($player_ranked) { ?>
+						<?=$player_ranked->tier()->description()->name;?>
+					<?php } else { ?>
+						-
+					<?php } ?>
+				</b>
+			</div>
+			<div style="width: 341px; text-align: center; padding-top: 22px; font-size: 12px !important; line-height: 15px;">
+				<span class="verde"><?=t('ranked.total_pontos');?>:</span> <?=($player_ranked ? highamount($player_ranked->points) : '-');?><br />
+				<span class="verde"><?=t('ranked.total_batalhas');?>:</span> <?=($player_ranked ? highamount($player_ranked->wins + $player_ranked->losses + $player_ranked->draws) : '-');?><br /><br />
+				<span class="verde"><?=t('ranked.vitorias');?>:</span> <?=($player_ranked ? highamount($player_ranked->wins) : '-');?> <br />
+				<span class="vermelho"><?=t('ranked.derrotas');?>:</span> <?=($player_ranked ? highamount($player_ranked->losses) : '-');?> <br />
+				<span><?=t('ranked.empates');?>:</span> <?=($player_ranked ? highamount($player_ranked->draws) : '-');?> <br />
+			</div>
+		</div>
+		<div class="h-missoes">
+			<div style="width: 341px; text-align: center; padding-top: 12px"><b class="amarelo" style="font-size:13px"><?=t('ranked.resumo');?></b></div>
+			<div style="width: 341px; text-align: center; padding-top: 22px; font-size: 12px !important; line-height: 15px;">
+				<span class="verde"><?=t('ranked.melhor_rank');?>:</span> <?=($best_rank ? $best_rank->tier()->description()->name : '-'); ?><br />
+				<span class="verde"><?=t('ranked.total_batalhas');?>:</span> <?=($best_rank ? highamount($ranked_total->total_wins + $ranked_total->total_losses + $ranked_total->total_draws) : '-');?><br /><br />
+				<span class="verde"><?=t('ranked.total_de');?> <?=t('ranked.vitorias');?>:</span> <?=($best_rank ? highamount($ranked_total->total_wins) : '-');?><br />
+				<span class="vermelho"><?=t('ranked.total_de');?> <?=t('ranked.derrotas');?>:</span> <?=($best_rank ? highamount($ranked_total->total_losses) : '-');?><br />
+				<span><?=t('ranked.total_de');?> <?=t('ranked.empates');?>:</span> <?=($best_rank ? highamount($ranked_total->total_draws) : '-');?><br />
+			</div>
+		</div>
+	</div>
 <?php } ?>

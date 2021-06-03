@@ -198,8 +198,8 @@ class CharactersController extends Controller {
 				if ($player->id == $_SESSION['player_id']) {
 					$errors[]	= t('characters.remove.same_player');
 				}
-				if ($player->organization_id) {
-					$errors[]	= t('characters.remove.organization');
+				if ($player->guild_id) {
+					$errors[]	= t('characters.remove.guild');
 				}
 			}
 
@@ -271,8 +271,8 @@ class CharactersController extends Controller {
 					if($player->id == $_SESSION['player_id']) {
 						$errors[]	= t('characters.remove.same_player');
 					}
-					if($player->organization_id) {
-					$errors[]	= t('characters.remove.organization');
+					if($player->guild_id) {
+					$errors[]	= t('characters.remove.guild');
 					}
 				}
 			} else {
@@ -295,7 +295,6 @@ class CharactersController extends Controller {
 		$player			= Player::get_instance();
 		$user			= User::get_instance();
 		$player_ranked	= $player->ranked();
-		$best_rank		= PlayerRanked::find_first("player_id={$player->id} order by rank asc limit 1");
 		$player_stat	= PlayerStat::find_first("player_id=". $player->id);
 
 		if ($_SESSION['universal'] && !($_SESSION['orig_player_id'] && $_SESSION['orig_user_id'] && $_SESSION['orig_ticket_id'])) {
@@ -382,9 +381,14 @@ class CharactersController extends Controller {
 			$player_fidelity->save();
 		}
 
+		$best_rank	= PlayerRanked::find_first('player_id = ' . $player->id, [
+			'reorder'	=> 'points desc',
+			'limit'		=> 1
+		]);
+
+		$ranked_total	= false;
 		if ($best_rank) {
-			$ranked_total					= Recordset::query("SELECT SUM(wins) AS total_wins, SUM(losses) AS total_losses, SUM(draws) AS total_draws FROM player_rankeds WHERE player_id = {$player->id}");
-			$this->assign('ranked_total',	$ranked_total->result_array()[0]);
+			$ranked_total	= Recordset::query("SELECT SUM(wins) AS total_wins, SUM(losses) AS total_losses, SUM(draws) AS total_draws FROM player_rankeds WHERE player_id = {$player->id}")->row();
 		}
 
 		$formulas	= [
@@ -417,6 +421,7 @@ class CharactersController extends Controller {
 		$this->assign('player_tutorial',		$player->player_tutorial());
 		$this->assign('max',					$max);
 		$this->assign('player',					$player);
+		$this->assign('ranked_total',			$ranked_total);
 	}
 	function list_images_only() {
 		$this->layout	= false;

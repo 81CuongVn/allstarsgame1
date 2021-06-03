@@ -235,11 +235,17 @@ trait BattleSharedMethods {
 		if ($battle->finished_at) {
 			$player_battle_stats	= PlayerBattleStat::find_first("player_id=".$p->id);
 			if ($battle->battle_type_id == 5) {
-				$player_ranked		= $p->ranked();
+				$player_ranked	= $p->ranked();
+				$tier			= $player_ranked->tier();
 			}
 
+			// Verifica a conquista de liga pvp
+			$p->achievement_check("battle_league_pvp");
+			// Objetivo de Round
+			$p->check_objectives("battle_league_pvp");
+
 			if ($battle->battle_type_id == 7 || $battle->battle_type_id == 8) {
-				$link		= make_url('organizations#dungeon');
+				$link		= make_url('guilds#dungeon');
 				$link_text	= t('battles.links.dungeon');
 			} elseif ($battle->battle_type_id == 3 && $p->challenge_id) {
 				$link		= make_url('challenges#show/' . $p->challenge_id);
@@ -739,6 +745,7 @@ trait BattleSharedMethods {
 					if ($is_pvp) {
 						if ($battle->battle_type_id == 5) {
 							if ($player_ranked) {
+								$player_ranked->points	+= $tier->points_draws;
 								$player_ranked->draws++;
 								$player_ranked->save();
 							}
@@ -919,65 +926,65 @@ trait BattleSharedMethods {
 					// Não faz quando for batalha de treino.
 					if ($battle->battle_type_id != 4) {
 						// Missões Organização Semanais
-						$organization_quests_daily   = $p->organization_daily_quests();
-						if ($organization_quests_daily && $is_pvp) {
-							foreach ($organization_quests_daily as $organization_quest_daily) {
-								switch ($organization_quest_daily->type) {
+						$guild_quests_daily   = $p->guild_daily_quests();
+						if ($guild_quests_daily && $is_pvp) {
+							foreach ($guild_quests_daily as $guild_quest_daily) {
+								switch ($guild_quest_daily->type) {
 									case "kill_g":
 										// Derrotar jogadores de uma determinada Organização
-										if ($organization_quest_daily->guild_enemy_id && !$organization_quest_daily->enemy_id) {
-											if ($organization_quest_daily->guild_enemy_id == $e->organization_id) {
-												$organization_quest_daily->total++;
+										if ($guild_quest_daily->guild_enemy_id && !$guild_quest_daily->enemy_id) {
+											if ($guild_quest_daily->guild_enemy_id == $e->guild_id) {
+												$guild_quest_daily->total++;
 											}
 										}
 										break;
 									case "kill_j_g":
 										// Derrotar um jogador especifico de uma determinada Organização
-										if ($organization_quest_daily->guild_enemy_id && $organization_quest_daily->enemy_id) {
-											if ($organization_quest_daily->enemy_id == $e->id && $organization_quest_daily->guild_enemy_id == $e->organization_id) {
-												$organization_quest_daily->total++;
+										if ($guild_quest_daily->guild_enemy_id && $guild_quest_daily->enemy_id) {
+											if ($guild_quest_daily->enemy_id == $e->id && $guild_quest_daily->guild_enemy_id == $e->guild_id) {
+												$guild_quest_daily->total++;
 											}
 										}
 										break;
 									case "still_g":
 										// Roubar um tesouro de uma determinada Organização
-										if ($organization_quest_daily->guild_enemy_id && !$organization_quest_daily->enemy_id) {
-											if ($e->treasure_atual > 0 && $organization_quest_daily->guild_enemy_id == $e->organization_id) {
-												$organization_quest_daily->total++;
+										if ($guild_quest_daily->guild_enemy_id && !$guild_quest_daily->enemy_id) {
+											if ($e->treasure_atual > 0 && $guild_quest_daily->guild_enemy_id == $e->guild_id) {
+												$guild_quest_daily->total++;
 											}
 										}
 										break;
 									case "still_j_g":
 										// Roubar um tesouro de um Jogado Especifico em uma determinada Organização
-										if ($organization_quest_daily->guild_enemy_id && $organization_quest_daily->enemy_id) {
-											if ($e->treasure_atual > 0 && $organization_quest_daily->enemy_id == $e->id && $organization_quest_daily->guild_enemy_id == $e->organization_id) {
-												$organization_quest_daily->total++;
+										if ($guild_quest_daily->guild_enemy_id && $guild_quest_daily->enemy_id) {
+											if ($e->treasure_atual > 0 && $guild_quest_daily->enemy_id == $e->id && $guild_quest_daily->guild_enemy_id == $e->guild_id) {
+												$guild_quest_daily->total++;
 											}
 										}
 										break;
 									case "kill_a_g":
 										// Derrotar jogadores de qualquer organização
-										if (!$organization_quest_daily->guild_enemy_id && !$organization_quest_daily->enemy_id) {
-											if ($e->organization_id && $p->organization_id != $e->organization_id) {
-												$organization_quest_daily->total++;
+										if (!$guild_quest_daily->guild_enemy_id && !$guild_quest_daily->enemy_id) {
+											if ($e->guild_id && $p->guild_id != $e->guild_id) {
+												$guild_quest_daily->total++;
 											}
 										}
 										break;
 									case "still_a_g":
 										// Roubar jogadores de qualquer organização
-										if (!$organization_quest_daily->guild_enemy_id && !$organization_quest_daily->enemy_id) {
-											if ($e->organization_id && $e->treasure_atual > 0 && $p->organization_id != $e->organization_id) {
-												$organization_quest_daily->total++;
+										if (!$guild_quest_daily->guild_enemy_id && !$guild_quest_daily->enemy_id) {
+											if ($e->guild_id && $e->treasure_atual > 0 && $p->guild_id != $e->guild_id) {
+												$guild_quest_daily->total++;
 											}
 										}
 										break;
 								}
-								$organization_quest_daily->save();
+								$guild_quest_daily->save();
 							}
 						}
 
 						if ($is_pvp) {
-							if ($p->organization_id != $e->organization_id && $p->organization_id && $e->organization_id) {
+							if ($p->guild_id != $e->guild_id && $p->guild_id && $e->guild_id) {
 								if ($e->treasure_atual > 0) {
 									$p->treasure_atual++;
 									$p->save();
@@ -1040,6 +1047,7 @@ trait BattleSharedMethods {
 						if ($is_pvp) {
 							if ($battle->battle_type_id == 5) {
 								if ($player_ranked) {
+									$player_ranked->points	+= $tier->points_win;
 									$player_ranked->wins++;
 									$player_ranked->save();
 								}
@@ -1280,19 +1288,19 @@ trait BattleSharedMethods {
 
 					if (!$is_pvp && ($battle->battle_type_id == 7 || $battle->battle_type_id == 8)) {
 						if ($battle->battle_type_id == 7) {
-							$session = new OrganizationMapObjectSession();
+							$session = new GuildMapObjectSession();
 							$session->down								= 1;
-							$session->organization_id					= $p->organization_id;
-							$session->organization_map_object_id		= $e->organization_map_object_id;
-							$session->organization_accepted_event_id	= $p->organization_accepted_event_id;
+							$session->guild_id					= $p->guild_id;
+							$session->guild_map_object_id		= $e->guild_map_object_id;
+							$session->guild_accepted_event_id	= $p->guild_accepted_event_id;
 							$session->player_id							= $p->id;
 						} else {
-							$session		= OrganizationMapObjectSession::find_first('player_id=0 AND organization_accepted_event_id=' . $p->organization_accepted_event_id . ' AND organization_id=' . $p->organization_id . ' AND organization_map_object_id=' . $e->organization_map_object_id);
+							$session		= GuildMapObjectSession::find_first('player_id=0 AND guild_accepted_event_id=' . $p->guild_accepted_event_id . ' AND guild_id=' . $p->guild_id . ' AND guild_map_object_id=' . $e->guild_map_object_id);
 							$session->down	= 1;
 						}
 						$session->save();
 
-						$p->organization()->check_event_finished($p);
+						$p->guild()->check_event_finished($p);
 					}
 
 					// Não faz quando for batalha de treino.
@@ -1363,7 +1371,7 @@ trait BattleSharedMethods {
 					// Não faz quando for batalha de treino.
 					if ($battle->battle_type_id != 4){
 						if ($is_pvp) {
-							if ($p->organization_id != $e->organization_id && $p->organization_id && $e->organization_id){
+							if ($p->guild_id != $e->guild_id && $p->guild_id && $e->guild_id){
 								if ($p->treasure_atual > 0) {
 									$drop_message_e	.= t('battles.finished.treasure2');
 								}
@@ -1373,6 +1381,7 @@ trait BattleSharedMethods {
 						if ($is_pvp) {
 							if ($battle->battle_type_id == 5) {
 								if ($player_ranked) {
+									$player_ranked->points	-= $tier->points_loose;
 									$player_ranked->losses++;
 									$player_ranked->save();
 								}

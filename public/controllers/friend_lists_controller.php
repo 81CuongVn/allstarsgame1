@@ -338,7 +338,7 @@ class FriendListsController extends Controller {
 		$player_friend_requests = PlayerFriendRequest::find("friend_id=".$player->id);
 
 		if(!$player_friend_requests){
-			$errors[]	= t('organizations.remove_error');
+			$errors[]	= t('guilds.remove_error');
 		}
 
 		if (!sizeof($errors)) {

@@ -40,7 +40,7 @@ pt-BR:
     grimoire: Grimório Proibido
     challenges: Arena do Céu
     fragments: Fragmentos das Almas
-    organizations: Organização
+    guilds: Organização
     home: Home
     pets: Mascotes
     join: Crie sua conta
@@ -67,7 +67,7 @@ pt-BR:
     equipments: Equipamentos
     history_mode: Modo Aventura
     quests_daily: Missões Diárias
-    organization_quests_daily: Missões Semanais
+    guild_quests_daily: Missões Semanais
     battles_ranked: Liga All-Stars
     battles:
       npc: Batalha NPC
@@ -80,7 +80,7 @@ pt-BR:
       achievement: Conquistas
       account: Contas
       players: Personagens
-      organizations: Organizações
+      guilds: Organizações
       challenges: Arenas
       rankeds: Liga All-Stars
       battles: Combates
@@ -94,10 +94,10 @@ pt-BR:
     quests_pvp: Missões PVP
     quests_pvp_status: Status da Missão PVP
     private_messages: Mensageiro
-    organization_details: Detalhes da Organização
-    organization_dungeon: Dungeon
-    organization_events: Sala de Eventos
-    organization_treasure: Troca de Tesouros
+    guild_details: Detalhes da Organização
+    guild_dungeon: Dungeon
+    guild_events: Sala de Eventos
+    guild_treasure: Troca de Tesouros
   users:
     login:
       errors:
@@ -336,7 +336,7 @@ pt-BR:
       success_msg: O link de confirmação foi validado e seu personagem foi removido com sucesso
     remove:
       not_found: O jogador especificado não foi encontrado ou já está removido.
-      organization: Você não pode excluir esse personagem enquanto ele fizer parte de uma Organização
+      guild: Você não pode excluir esse personagem enquanto ele fizer parte de uma Organização
       invalid: O jogador especificado é inválido
       same_user: O jogador especificado não pertence a sua conta
       same_player: Você não pode remover o personagem na qual está jogando no momento. Troque de personagem e tente novamente.
@@ -980,12 +980,12 @@ pt-BR:
     errors:
       currency: |
         Você não tem #{currency} suficiente
-  organization:
+  guild:
     errors:
       cant_kick_leader: Você não pode expulsar o líder
       already_in_other: Esse jogador encontra-se em outra organização
       max_players: A sua organização alcançou o número limite de membros
-  organizations:
+  guilds:
     events:
       title: O que são os eventos?
       description: Aqui é onde você e sua organização vai poder caçar npcs e tesouros junto ao seu time.
@@ -1674,7 +1674,7 @@ pt-BR:
         score: Pontos
         personagem: Personagem
         members: Membros
-    organizations:
+    guilds:
       title: Ranking de Organizações
     rankeds:
       title: Ranking da Liga All-Stars
@@ -2305,11 +2305,11 @@ pt-BR:
     wanteds: |
       O jogador <span>%s</span> matou o alvo Procurado: <span>%s</span>!
     blood: |
-      O jogador <span>%s</span> dropou 1x Sangue de Deus em Batalha PVP!
+      O jogador <span>%s</span> dropou 1x Sangue de Deus!
     sand: |
-      O jogador <span>%s</span> dropou 1x Areia Estelar em Batalha PVP!
+      O jogador <span>%s</span> dropou 1x Areia Estelar!
     circulo: |
-      O jogador <span>%s</span> acaba de ganhar no Círculo de Invocação e ganhou: <span>%s</span>!
+      O jogador <span>%s</span> tentou a sorte no Círculo de Invocação e ganhou: <span>%s</span>!
   objectives:
     title: Objetivos de Round
     mensagens:

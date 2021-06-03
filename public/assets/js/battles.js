@@ -92,9 +92,9 @@
         var item_id = 'i-' + (Math.random() * 65535) + '.' + (Math.random() * 65535);
         var popover = $(document.createElement('DIV')).attr('id', item_id).css({ display: 'none' });
         var faction = parseInt($('#battle-container #' + target).data('faction'));
-        var organization = $('#battle-container #' + target).data('organization');
+        var guild = $('#battle-container #' + target).data('guild');
         var html = I18n.t('characters.select.labels.faction') + ': ' + I18n.t('factions.' + faction);
-        html = html + ' <br /> ' + I18n.t('global.guild') + ': ' + organization;
+        html = html + ' <br /> ' + I18n.t('global.guild') + ': ' + guild;
 
         item.append('<img src="' + image_url('factions/icons/small/' + faction + '.png') + '" class="technique-popover" data-placement="' + container.data('placement') + '" data-source="' + item_id + '" data-trigger="hover" data-placement="bottom"  />')
         item.append(popover);

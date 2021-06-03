@@ -54,8 +54,8 @@ class HomeController extends Controller {
 				'limit'		=> ($items_per_page * ($page - 1)) . ', ' . $items_per_page,
 				'reorder'	=> 'position_general asc'
 			]);
-		} elseif ($type == "organizations") {
-			$list	= RankingOrganization::all([
+		} elseif ($type == "guilds") {
+			$list	= RankingGuild::all([
 				'limit'		=> ($items_per_page * ($page - 1)) . ', ' . $items_per_page,
 				'reorder'	=> 'position_general asc'
 			]);

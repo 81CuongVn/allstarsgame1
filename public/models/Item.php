@@ -208,6 +208,16 @@ class Item extends Relation {
 	}
 
 	function effects() {
+		// if ($this->item_type_id == 3) {
+		// 	$player_item	= $this->player_item();
+
+		// 	$chances	= explode(',', $player_item->effect_chances);
+		// 	$effects	= ItemEffect::find('id IN (' . $player_item->item_effect_ids . ')');
+		// } else {
+		// 	$chances	= explode(',', $this->effect_chances);
+		// 	$effects	= ItemEffect::find('id IN (' . $this->item_effect_ids . ')', ['cache' => true]);
+		// }
+
 		$chances	= explode(',', $this->effect_chances);
 		$effects	= ItemEffect::find('id IN (' . $this->item_effect_ids . ')', ['cache' => true]);
 

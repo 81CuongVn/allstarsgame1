@@ -9,7 +9,7 @@
         <ul>
             <li data-channel="world" data-cmd="w">Mundo</li>
             <li data-channel="faction" data-cmd="f"><?=$player->faction()->description()->name;?></li>
-            <?php if ($player->organization_id): ?>
+            <?php if ($player->guild_id): ?>
                 <li data-channel="guild" data-cmd="g">Organização</li>
             <?php endif; ?>
             <?php if ($player->battle_pvp_id): ?>
@@ -27,12 +27,12 @@
 <?php
 $color          = '';
 $icon           = '';
-$guild          = $player->organization();
+$guild          = $player->guild();
 $chat_data	    = [
     'uid'           => $player->id,
 	'user_id'       => $player->user_id,
 	'faction'       => $player->faction_id,
-	'guild'         => $player->organization_id,
+	'guild'         => $player->guild_id,
 	'guild_owner'   => $guild ? $player->id == $guild->leader()->id : FALSE,
 	'battle'        => $player->battle_pvp_id,
 	'gm'            => $_SESSION['universal'],

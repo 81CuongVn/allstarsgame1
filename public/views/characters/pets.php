@@ -62,7 +62,10 @@
     </div>
     <div id="pet-list">
         <?php foreach ($pets as $pet) { ?>
-            <?php $item = Item::find_first('id = ' . $pet['item_id']); ?>
+            <?php
+			$item = Item::find_first('id = ' . $pet['item_id']);
+			// $item->set_player($player);
+			?>
             <div class="pet-box <?=($pet['equipped'] ? 'active' : '');?>" data-item="<?=$item->id;?>" style="height: 200px !important; cursor: pointer;" data-message="<?=t('quests.pets.message');?>">
 				<div class="content technique-popover" data-source="#pet-container-<?=$item->id;?>" data-title="<?=$item->description()->name;?>" data-trigger="click" data-placement="bottom">
 					<div class="image">

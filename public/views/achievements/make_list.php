@@ -283,10 +283,10 @@
 
 							// Barrinhas de Progresso da Missão de Organização
 							if ($achievement->weekly_quests) {
-								$organization_quest = OrganizationQuestCounter::find_first("organization_id=". $player->organization_id);
-								if ($organization_quest) {
-									if ($organization_quest->daily_total < $achievement->quantity) {
-										echo exp_bar($organization_quest->daily_total, $achievement->quantity, 175, $organization_quest->daily_total . '/' . $achievement->quantity);
+								$guild_quest = GuildQuestCounter::find_first("guild_id=". $player->guild_id);
+								if ($guild_quest) {
+									if ($guild_quest->daily_total < $achievement->quantity) {
+										echo exp_bar($guild_quest->daily_total, $achievement->quantity, 175, $guild_quest->daily_total . '/' . $achievement->quantity);
 									}
 								} else {
 									echo exp_bar(0, $achievement->quantity, 175, '0/' . $achievement->quantity);
