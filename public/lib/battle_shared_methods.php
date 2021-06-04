@@ -805,20 +805,23 @@ trait BattleSharedMethods {
 					$currency_extra	+= percent($effects['currency_reward_extra_percent'], $currency) + $effects['currency_reward_extra'];
 
 					// adiciona as novas flags de como o jogador matou os jogadores
-					if ($is_pvp && (!$_SESSION['pvp_used_buff'] || !$_SESSION['pvp_used_ability'] || !$_SESSION['pvp_used_speciality'])) {
+					if (
+						$is_pvp &&
+						isset($_SESSION['pvp_used_buff'], $_SESSION['pvp_used_ability'], $_SESSION['pvp_used_speciality'])
+					) {
 						$player_kills = new PlayerKill();
 						$player_kills->player_id = $p->id;
 						$player_kills->enemy_id  = $e->id;
 
-						if (!$_SESSION['pvp_used_buff']) {
+						if (isset($_SESSION['pvp_used_buff']) && !$_SESSION['pvp_used_buff']) {
 							$player_kills->kills_wo_buff++;
 						}
 
-						if (!$_SESSION['pvp_used_ability']) {
+						if (isset($_SESSION['pvp_used_ability']) && !$_SESSION['pvp_used_ability']) {
 							$player_kills->kills_wo_ability++;
 						}
 
-						if(!$_SESSION['pvp_used_speciality']) {
+						if(isset($_SESSION['pvp_used_speciality']) && !$_SESSION['pvp_used_speciality']) {
 							$player_kills->kills_wo_speciality++;
 						}
 
