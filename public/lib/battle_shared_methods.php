@@ -260,9 +260,9 @@ trait BattleSharedMethods {
 			} elseif ($battle->battle_type_id == 1) {
 				$link		= make_url('battle_npcs');
 				$link_text	= t('battles.links.battle_npcs');
-			} elseif ($battle->battle_type_id == 2) {
-				$link		= make_url('battle_npcs');
-				$link_text	= t('battles.links.battle_pvp');
+			} elseif ($battle->battle_type_id == 2 && 1 != 1) {
+				$link		= make_url('battle_pvps');
+				$link_text	= t('battles.links.battle_pvps');
 			} else {
 				$link		= make_url('characters#status');
 				$link_text	= t('battles.links.characters_status');
