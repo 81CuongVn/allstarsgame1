@@ -1485,17 +1485,17 @@ trait BattleSharedMethods {
 			/* / Sistema de liga */
 
 			// Não faz quando for batalha de treino ou perder por inatividade.
-			if (($battle->won != $p->id && $battle->inactivity == 1) || $battle->battle_type_id == 4){
+			if (($battle->won != $p->id && $battle->inactivity == 1) || $battle->battle_type_id == 4) {
 			} else {
-				//Level da Conta ( Batalha NPC e PVP )
+				// Level da Conta ( Batalha NPC e PVP )
 				$user = $p->user();
-
-				if ($is_pvp) {
-					$user->exp	+= percent(20, $exp + $exp_extra);
-				} else {
-					$user->exp	+= percent(10, $exp + $exp_extra);
-				}
+				$user->exp	+= percent(($is_pvp ? 2000 : 10), $exp + $exp_extra);
 				$user->save();
+
+				// Level da Organização ( Batalha NPC e PVP )
+				$guild = $p->guild();
+				$guild->exp	+= percent(($is_pvp ? 10 : 5), $exp + $exp_extra);
+				$guild->save();
 			}
 
 			# Corrigi o no_talent
