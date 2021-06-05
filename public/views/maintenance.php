@@ -60,7 +60,7 @@
 		<h1>Em Manutenção</h1>
 		<h2 style="line-height:18px">
 			Está é uma breve pausa para uma manutenção que esta sendo realizada neste exato momento no jogo.<br />
-			Está manutenção irá sanar alguns pequenos bugs que ocorrem durante a fila de PvP e missões de mascote.
+			Não se preocupe, voltamos logo! Aproveite e entre no nosso grupo do <a href="https://chat.whatsapp.com/LFT74CxmNJz3nVmTQGQi98" target="_blank">WhatsApp</a> e <a href="https://discord.gg/ME8ugpZwSw" target="_blank">Discord</a>.
 		</h2>
 	<?php endif ?>
 	<?php if (IS_BETA): ?>

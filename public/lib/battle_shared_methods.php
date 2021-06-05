@@ -831,7 +831,7 @@ trait BattleSharedMethods {
 
 						if (isset($_SESSION['pvp_used_speciality']) && !$_SESSION['pvp_used_speciality']) {
 							$addPlayerKill	= true;
-							$player_kills->kills_wo_speciality++;
+							$player_kills->kills_wo_ability++;
 						}
 
 						if ($addPlayerKill) {
