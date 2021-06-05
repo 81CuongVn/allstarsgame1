@@ -1,14 +1,14 @@
 <?php echo partial('shared/title', array('title' => 'guilds.show.title', 'place' => 'guilds.show.title')) ?>
 <div style="height: 255px">
 	<div>
-		<div style="position: relative; width: 684px; height:188px;  left: 25px; background-image:url(<?php echo image_url('bg-org.jpg') ?>)">
+		<div style="position: relative; width: 684px; height:188px;  left: 25px; background-image:url(<?=image_url('bg-org.jpg');?>)">
 			<?php if ($guild->cover_file): ?>
-				<div style="position:absolute; top: 10px; left: 10px;"><img src="<?php echo resource_url('uploads/guilds/' . $guild->cover_file) ?>" /></div>
+				<div style="position:absolute; top: 10px; left: 10px;"><img src="<?=resource_url('uploads/guilds/' . $guild->cover_file);?>" /></div>
 			<?php endif ?>
 		</div>
-		<?php /*<div><?php echo $guild->name ?></div>
-		<div><?php echo nl2br($guild->description) ?></div>*/?>
-	</div>
+		<!-- <div><?=$guild->name;?></div>
+		<div><?=nl2br($guild->description);?></div> -->
+	</div><br />
 	<?php if ($is_leader): ?>
 		<form class="form form-horizontal" method="post" enctype="multipart/form-data">
 			<?php if ($errors): ?>
@@ -21,14 +21,16 @@
 				</div>
 			<?php endif ?>
 
-			<input type="hidden" name="name" value="<?php echo $guild->name ?>" />
+			<input type="hidden" name="name" value="<?=$guild->name;?>" />
+			<input type="hidden" name="description" value="<?=$guild->description;?>" />
 			<div style="float: left; width:200px; text-align: center"><label><?php echo t('guilds.show.choose_image') ?></label></div>
 			<div style="float: left; width:300px;"><input type="file" name="cover" /><?php echo t('guilds.show.image_note') ?></div>
 			<div style="float: left; width:130px;"><input type="submit" class="btn btn-sm btn-primary" value="<?php echo t('guilds.show.upload_data') ?>" /></div>
 		</form>
 	<?php endif ?>
 </div>
-<div style="width: 730px; height: 185px; position: relative; left: 24px">
+
+<div style="width: 730px; height: 165px; position: relative; left: 24px">
 	<div class="h-missoes">
 		<div style="width: 341px; text-align: center; padding-top: 12px"><b class="amarelo" style="font-size:13px"><?php echo $guild->name?></b></div>
 		<div style="width: 341px; text-align: center; padding-top: 22px; font-size: 12px !important; line-height: 15px;">
@@ -49,6 +51,129 @@
 		</div>
 	</div>
 </div>
+
+<div style="width: 680px; height: 185px; position: relative; left: 24px">
+	<div class="h-missoes" style="width: 680px; background-image: url(<?=image_url('bg_guild_level.png')?>);">
+		<div style="width: 680px; text-align: center; padding-top: 12px">
+			<b class="amarelo" style="font-size:13px">Progresso da Organização</b>
+		</div>
+		<div style="width: 680px; text-align: center; padding-top: 31px; font-size: 12px !important; line-height: 15px;">
+			<table width="100%">
+				<tr>
+					<td rowspan="2" width="95" style="padding-top: 5px; text-transform: uppercase;">
+						<p>Nível</p>
+						<div class="amarelo" style="opacity: 0.75; font-size: 50px; line-height: 50px;"><?=$guild->level;?></div>
+					</td>
+					<td align="center">
+						<?php for ($level = 1; $level <= MAX_LEVEL_GUILD; ++$level) {?>
+							<div style="display: inline-block; padding-left: 4px;" class="technique-popover" data-source="#guild-level-container-<?=$level;?>" data-title="Nível <?=$level;?>" data-trigger="click" data-placement="top">
+								<img src="<?=image_url('icons/star-' . ($guild->level >= $level ? 'on' : 'off') . '.png')?>" style="cursor: pointer;" />
+							</div>
+							<div id="guild-level-container-<?=$level;?>" class="technique-container">
+							<div style="min-width: 230px;">
+								<?php if ($rewards = $guild->level_rewards($level)) { ?>
+									<span class="amarelo" style="font-size:14px">Os membros recebem:</span><br /><br />
+									<?php if ($rewards->exp) { ?>
+										<li><?=highamount($rewards->exp);?> <?=t('ranked.exp');?></li>
+									<?php } ?>
+									<?php if ($rewards->exp_account) { ?>
+										<li><?=highamount($rewards->exp_account);?> <?=t('ranked.exp_account');?></li>
+									<?php } ?>
+									<?php if ($rewards->currency) { ?>
+										<li><?=highamount($rewards->currency);?> <?=t('currencies.' . $player->character()->anime_id);?></li>
+									<?php } ?>
+									<?php if ($rewards->credits) { ?>
+										<li><?=highamount($rewards->credits);?> <?=t('treasure.show.credits');?></li>
+									<?php } ?>
+									<?php if ($rewards->item_id) { ?>
+										<li><?=highamount($rewards->quantity);?>x "<?=Item::find($rewards->item_id)->description()->name;?>"</li>
+									<?php } ?>
+									<?php if ($rewards->character_theme_id) { ?>
+										<li><?=t('treasure.show.theme');?> "<?=CharacterTheme::find($rewards->character_theme_id)->description()->name;?>"</li>
+									<?php } ?>
+									<?php if ($rewards->character_id) { ?>
+										<li><?=t('treasure.show.character');?> "<?=Character::find($rewards->character_id)->description()->name;?>"</li>
+									<?php } ?>
+									<?php if ($rewards->headline_id) { ?>
+										<li><?=t('treasure.show.headline');?> "<?=Headline::find($rewards->headline_id)->description()->name;?>"</li>
+									<?php } ?>
+									<?php if ($rewards->pets && $rewards->pets == 1) { ?>
+										<li>1x Mascote Comum</li>
+									<?php } ?>
+									<?php if ($rewards->pets && $rewards->pets == 2) { ?>
+										<li>1x Mascote Raro</li>
+									<?php } ?>
+									<?php if ($rewards->pets && $rewards->pets == 3) { ?>
+										<li>1x Mascote Lendário</li>
+									<?php } ?>
+									<?php if ($rewards->pets && $rewards->pets == 4) { ?>
+										<li>1x Mascote Mega</li>
+									<?php } ?>
+									<?php if ($rewards->equipment && $rewards->equipment == 1) { ?>
+										<li>1x Equipamento Comum</li>
+									<?php } ?>
+									<?php if ($rewards->equipment && $rewards->equipment == 2) { ?>
+										<li>1x Equipamento Raro</li>
+									<?php } ?>
+									<?php if ($rewards->equipment && $rewards->equipment == 3) { ?>
+										<li>1x Equipamento Épico</li>
+									<?php } ?>
+									<?php if ($rewards->equipment && $rewards->equipment == 4) { ?>
+										<li>1x Equipamento Lendário</li>
+									<?php } ?>
+									<?php if ($rewards->enchant_points) { ?>
+										<li><?=highamount($rewards->enchant_points);?> pontos de encantamento</li>
+									<?php } ?>
+									<?php if ($rewards->pets == 99 && $rewards->item_id) { ?>
+										<li><?=t('treasure.show.pet');?> "<?=Item::find($rewards->item_id)->description()->name;?>"</li>
+									<?php } ?>
+									<?php
+									$ats	= [
+										'for_atk'		=> t('formula.for_atk'),
+										'for_def'		=> t('formula.for_def'),
+										'for_crit'		=> t('formula.for_crit'),
+										'for_abs'		=> t('formula.for_abs'),
+										'for_prec'		=> t('formula.for_prec'),
+										'for_init'		=> t('formula.for_init'),
+										'for_inc_crit'	=> t('formula.for_inc_crit'),
+										'for_inc_abs'	=> t('formula.for_inc_abs')
+									];
+									foreach ($ats as $key => $value) {
+										if ($rewards->$key) {
+									?>
+										<li><?=t('luck.index.messages.point', [
+											'count'		=> highamount($rewards->$key),
+											'attribute'	=> $value
+										]);?></li>
+									<?php
+										}
+									}
+									?>
+								<?php } else { ?>
+									<div style="text-align: center;">Sem bonificação.</div>
+								<?php } ?>
+							</div>
+						</div>
+						<?php } ?>
+					</td>
+					<td rowspan="2" width="95" style="padding-top: 5px; text-transform: uppercase;">
+						Nível máx.<br />
+						<span class="amarelo" style="font-size: 50px; line-height: 50px;"><?=MAX_LEVEL_GUILD;?></span>
+					</td>
+				</tr>
+				<tr>
+					<td align="center">
+						<?=exp_bar($guild->exp, $guild->level_exp(), 455, highamount($guild->exp) . ' / ' . highamount($guild->level_exp()));?>
+						<div class="laranja" style="margin-top: 2px;">
+							Complete a barra de experiencia para evoluir a organização e receber bonificações.
+						</div>
+					</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+</div>
+
 <div style="clear: left; float: left;"></div>
 <ul class="nav nav-pills" id="guild-details-tabs">
 	<li class="active"><a href="#guild-player-list" role="tab" data-toggle="tab"><?php echo t('guilds.show.members') ?></a></li>

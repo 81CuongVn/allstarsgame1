@@ -398,8 +398,9 @@ class EventsController extends Controller {
 				];
 
                 foreach ($atts as $attribute) {
-                    if ($reward->{$attribute})
-                        $attributes->{$attribute}	+= $reward->{$attribute};
+                    if ($reward->{$attribute}) {
+                        $attributes->$attribute	+= $reward->$attribute;
+					}
                 }
 
                 // Adiciona o Log

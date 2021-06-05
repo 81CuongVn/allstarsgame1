@@ -1408,7 +1408,8 @@ class Player extends Relation {
 	function has_technique($technique) {
 		return PlayerItem::find('removed=0 AND player_id=' . $this->id . ' AND item_id=' . $technique->id) ? true : false;
 	}
-	function pages($item_id){
+
+	function pages($item_id) {
 		$result		= array();
 		$items		= Item::find("item_type_id = 11 AND parent_id = ". $item_id, array('cache' => true));
 		$anime_id	= $this->character()->anime_id;
@@ -1422,6 +1423,7 @@ class Player extends Relation {
 		return $result;
 
 	}
+
 	function player_pages($item_id){
 		$player_items	= PlayerItem::find("player_id= ".$this->id." AND item_id= ". $item_id);
 		if(sizeof($player_items)){

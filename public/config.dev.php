@@ -91,6 +91,7 @@ define('PVP_CHANNEL',			'allstars_queue');
 # Max level settings
 define('MAX_LEVEL_USER',		50);
 define('MAX_LEVEL_PLAYER',		50);
+define('MAX_LEVEL_GUILD',		15);
 
 # Initial settings
 define('INITIAL_MONEY',			500);

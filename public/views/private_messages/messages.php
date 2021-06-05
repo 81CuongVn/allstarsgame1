@@ -33,5 +33,5 @@
 	</table>
 	<?php if(sizeof($messages2) > 10):?>
 		<?php echo partial('shared/paginator', ['pages' => $pages, 'current' => $page + 1]) ?>
-	<?php endif ?>	
+	<?php endif ?>
 <?php endif ?>

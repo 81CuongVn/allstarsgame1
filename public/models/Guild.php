@@ -25,6 +25,33 @@ class Guild extends Relation {
 		$leader->save();
 	}
 
+	protected function after_assign() {
+		if ($this->is_next_level()) {
+			while ($this->is_next_level()) {
+				$this->exp			-= $this->level_exp();
+				$this->level		+= 1;
+			}
+		}
+	}
+
+	function level_rewards($level) {
+		return GuildLevelReward::find_first('id = ' . $level);
+	}
+
+	function level_exp() {
+		// return (1500 + $this->level * 1500) * $this->level / 2;
+
+		$exp = ((1000 / 5) * 8);
+		if ($this->level) {
+			$exp *= $this->level + 1;
+		}
+		return $exp;
+	}
+
+	function is_next_level() {
+		return $this->exp >= $this->level_exp() && $this->level < MAX_LEVEL_GUILD;
+	}
+
 	function faction() {
 		return $this->leader()->faction();
 	}

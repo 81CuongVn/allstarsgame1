@@ -1301,7 +1301,7 @@ class GuildsController extends Controller {
 				}
 
 				if (!sizeof($errors)) {
-					$guild->name			= htmlspecialchars($_POST['name']);
+					$guild->name		= htmlspecialchars($_POST['name']);
 					$guild->description	= htmlspecialchars($_POST['description']);
 
 					if ($got_upload) {

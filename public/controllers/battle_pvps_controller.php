@@ -180,14 +180,17 @@ class BattlePvpsController extends Controller {
 		$this->assign('player', $player);
 		$this->assign('player_tutorial', $player->player_tutorial());
 	}
+
 	function training() {
 
 	}
+
 	function waiting() {
 		$player			= Player::get_instance();
 		$this->assign('player', $player);
 	}
-	function room_create(){
+
+	function room_create() {
 		$this->as_json			= true;
 		$this->json->success	= false;
 		$player					= Player::get_instance();
@@ -238,7 +241,8 @@ class BattlePvpsController extends Controller {
 		$this->assign('player', $player);
 		$this->assign('rooms', BattleRoom::all());
 	}
-	function decline(){
+
+	function decline() {
 		$this->as_json			= true;
 		$this->json->success	= false;
 
@@ -267,11 +271,12 @@ class BattlePvpsController extends Controller {
 			$this->json->messages	= $errors;
 		}
 	}
+
 	function waiting_queue() {
 		$this->as_json	= true;
 		$player			= Player::get_instance();
 
-		$battle = BattlePvp::find_first("enemy_id=".$player->id." AND battle_type_id=4 AND finished_at is null");
+		$battle = BattlePvp::find_first("enemy_id = ".$player->id." AND battle_type_id = 4 AND finished_at is null");
 		if ($battle) {
 			// Destroi a sala do jogador
 			$battle_room = BattleRoom::find_first("id=".$player->battle_room_id);
@@ -287,20 +292,22 @@ class BattlePvpsController extends Controller {
 
 			$this->json->redirect	= make_url('battle_pvps#fight');
 		} else {
-			// // Destroi a sala do jogador
+			// Destroi a sala do jogador
 			// $battle_room = BattleRoom::find_first("id=".$player->battle_room_id);
 			// $battle_room->destroy();
 
-			// // Apaga o número da sala da player
+			// Apaga o número da sala da player
 			// $player->battle_room_id = 0;
 			// $player->save();
 
 			// $this->json->redirect	= make_url('characters#status');
 		}
 	}
+
 	function accept() {
 		$this->as_json			= true;
 		$this->json->success	= false;
+
 		$player					= Player::get_instance();
 		$errors					= [];
 
@@ -358,6 +365,7 @@ class BattlePvpsController extends Controller {
 			$this->json->messages	= $errors;
 		}
 	}
+
 	function enter_queue() {
 		$this->as_json			= TRUE;
 		$this->json->success	= FALSE;
@@ -397,17 +405,15 @@ class BattlePvpsController extends Controller {
 			$message	= new AMQPMessage(json_encode([
 				'method'			=> 'enter_queue',
 				'queue_id'			=> null,
-				'id'				=> $player->id,
+				'id'				=> (int)$player->id,
 				'name'				=> $player->name,
 				'level'				=> (int)$player->level,
 				'init'				=> (int)$player->for_init(),
-				'graduation'		=> $player->graduation()->sorting,
-				'won'				=> $player->won_last_battle,
-				'battle_type_id'	=> $battle_type_id,
+				'graduation'		=> (int)$player->graduation()->sorting,
+				'won'				=> (int)$player->won_last_battle,
+				'battle_type_id'	=> (int)$battle_type_id,
 				'ip'				=> $player->last_ip
-			]), [
-				'delivery_mode'	=> 2 # persistent mode
-			]);
+			]), [ 'delivery_mode' => 2 ]);
 
 			$player->less_stamina	+= PVP_COST;
 			$player->is_pvp_queued	= TRUE;
@@ -421,6 +427,7 @@ class BattlePvpsController extends Controller {
 			$this->json->messages	= $errors;
 		}
 	}
+
 	function check_queue() {
 		$this->as_json	= TRUE;
 		$player			= Player::get_instance();
@@ -442,7 +449,6 @@ class BattlePvpsController extends Controller {
 			$_SESSION['pvp_used_speciality']	= FALSE;
 			$_SESSION['pvp_time_reduced']		= 0;
 
-
 			$diff = $player->pvp_queue_found - now();
 
 			$this->json->found		= TRUE;
@@ -455,6 +461,7 @@ class BattlePvpsController extends Controller {
 			}
 		}
 	}
+
 	function accept_queue() {
 		$this->as_json	= TRUE;
 		$player			= Player::get_instance();
@@ -481,11 +488,9 @@ class BattlePvpsController extends Controller {
 			$channel->queue_declare(PVP_CHANNEL, FALSE, FALSE, FALSE, FALSE);
 
 			$message	= new AMQPMessage(json_encode([
-				'method'		=> 'accept_queue',
-				'id'			=> $player->id
-			]), [
-				'delivery_mode'	=> 2 # persistent mode
-			]);
+				'method'	=> 'accept_queue',
+				'id'		=> $player->id
+			]), [ 'delivery_mode' => 2 ]);
 
 			$channel->basic_publish($message, '', PVP_CHANNEL);
 
@@ -493,6 +498,7 @@ class BattlePvpsController extends Controller {
 			$connection->close();
 		}
 	}
+
 	function exit_queue() {
 		$this->as_json				= TRUE;
 		$this->json->success		= FALSE;
@@ -516,11 +522,9 @@ class BattlePvpsController extends Controller {
 			$channel->queue_declare(PVP_CHANNEL, FALSE, FALSE, FALSE, FALSE);
 
 			$message	= new AMQPMessage(json_encode([
-				'method'		=> 'exit_queue',
-				'id'			=> $player->id
-			]), [
-				'delivery_mode'	=> 2 # persistent mode
-			]);
+				'method'	=> 'exit_queue',
+				'id'		=> $player->id
+			]), [ 'delivery_mode' => 2 ]);
 
 			$player->less_stamina	-= PVP_COST;
 			if ($player->less_stamina < 0) {
@@ -565,13 +569,12 @@ class BattlePvpsController extends Controller {
 			}
 		}
 
-		if (!$battle->{$word_player}) {
-			$battle->{$word_player} = $player->for_mana();
+		if (!$battle->$word_player) {
+			$battle->$word_player = $player->for_mana();
 			$battle->save();
 		}
 
 		$stats		= PlayerBattlePvpLog::find_first('player_id=' . $player->id . ' AND enemy_id=' . $enemy->id);
-
 		if (!$stats) {
 			$stats				= new PlayerBattlePvpLog();
 			$stats->player_id	= $player->id;
@@ -584,15 +587,28 @@ class BattlePvpsController extends Controller {
 			$player->apply_battle_effects($enemy);
 		// <--
 
-		$this->assign('player_wanted', $player_wanted);
-		$this->assign('enemy_wanted', $enemy_wanted);
-		$this->assign('player', $player);
-		$this->assign('battle', $battle);
-		$this->assign('enemy', $enemy);
-		$this->assign('stats', $stats);
-		$this->assign('techniques', $player->get_techniques());
-		$this->assign('target_url', make_url('battle_pvps'));
-		$this->assign('log', $player->battle_pvp()->get_log());
+		if (!isset($_SESSION['pvp_used_buff'])) {
+			$_SESSION['pvp_used_buff']			= FALSE;
+		}
+		if (!isset($_SESSION['pvp_used_ability'])) {
+			$_SESSION['pvp_used_ability']			= FALSE;
+		}
+		if (!isset($_SESSION['pvp_used_speciality'])) {
+			$_SESSION['pvp_used_speciality']			= FALSE;
+		}
+		if (!isset($_SESSION['pvp_time_reduced'])) {
+			$_SESSION['pvp_time_reduced']			= FALSE;
+		}
+
+		$this->assign('player_wanted',	$player_wanted);
+		$this->assign('enemy_wanted',	$enemy_wanted);
+		$this->assign('player',			$player);
+		$this->assign('battle',			$battle);
+		$this->assign('enemy',			$enemy);
+		$this->assign('stats',			$stats);
+		$this->assign('techniques',		$player->get_techniques());
+		$this->assign('target_url',		make_url('battle_pvps'));
+		$this->assign('log',			$player->battle_pvp()->get_log());
 	}
 
 	function attack($is_copy = null, $is_kill = null) {
@@ -602,16 +618,13 @@ class BattlePvpsController extends Controller {
 		$battle						= $player->battle_pvp();
 		$enemy						= $battle->enemy();
 		$log						= $battle->get_log();
+		$log						= is_array($log) ? $log : [];
 		$errors						= [];
 		$is_skip					= isset($_POST['item']) && $_POST['item'] == 'skip';
 		$is_copy					= $is_copy == 'copy';
 		$is_kill					= $is_kill == 'kill';
 		$can_run_action				= true;
 		$should_update_mana			= false;
-
-		if(!is_array($log)) {
-			$log	= [];
-		}
 
 		if ($is_skip) {
 			$_POST['item']	= 0;

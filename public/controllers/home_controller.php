@@ -27,7 +27,7 @@ class HomeController extends Controller {
 	function league_list($league) {
 		$this->layout	= false;
 		if (is_numeric($league) && $league > 0) {
-			$ranked_rankings = RankingRanked::find("league_id={$league} order by position_general asc limit 3");
+			$ranked_rankings = RankingRanked::find("ranked_id = {$league} order by position_general asc limit 3");
 		} else {
 			$ranked_rankings = [];
 		}

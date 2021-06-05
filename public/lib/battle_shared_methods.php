@@ -812,24 +812,33 @@ trait BattleSharedMethods {
 					$currency_extra	+= percent($effects['currency_reward_extra_percent'], $currency) + $effects['currency_reward_extra'];
 
 					// adiciona as novas flags de como o jogador matou os jogadores
-					if ($is_pvp && (!$_SESSION['pvp_used_buff'] || !$_SESSION['pvp_used_ability'] || !$_SESSION['pvp_used_speciality'])) {
-						$player_kills = new PlayerKill();
-						$player_kills->player_id = $p->id;
-						$player_kills->enemy_id  = $e->id;
-
-						if (!$_SESSION['pvp_used_buff']) {
+					if ($is_pvp && (
+						isset($_SESSION['pvp_used_buff']) ||
+						isset($_SESSION['pvp_used_ability']) ||
+						isset($_SESSION['pvp_used_speciality'])
+					)) {
+						$addPlayerKill	= false;
+						$player_kills	= new PlayerKill();
+						if (isset($_SESSION['pvp_used_buff']) && !$_SESSION['pvp_used_buff']) {
+							$addPlayerKill	= true;
 							$player_kills->kills_wo_buff++;
 						}
 
-						if (!$_SESSION['pvp_used_ability']) {
+						if (isset($_SESSION['pvp_used_ability']) && !$_SESSION['pvp_used_ability']) {
+							$addPlayerKill	= true;
 							$player_kills->kills_wo_ability++;
 						}
 
-						if(!$_SESSION['pvp_used_speciality']) {
+						if (isset($_SESSION['pvp_used_speciality']) && !$_SESSION['pvp_used_speciality']) {
+							$addPlayerKill	= true;
 							$player_kills->kills_wo_speciality++;
 						}
 
-						$player_kills->save();
+						if ($addPlayerKill) {
+							$player_kills->player_id = $p->id;
+							$player_kills->enemy_id  = $e->id;
+							$player_kills->save();
+						}
 					}
 
 					// Verifica se o jogador matou um alvo dos procurados
@@ -1481,10 +1490,11 @@ trait BattleSharedMethods {
 				//Level da Conta ( Batalha NPC e PVP )
 				$user = $p->user();
 
-				if ($is_pvp)
-					$user->exp	+= percent(20, ($exp) + $exp_extra);
-				else
-					$user->exp	+= percent(10, ($exp) + $exp_extra);
+				if ($is_pvp) {
+					$user->exp	+= percent(20, $exp + $exp_extra);
+				} else {
+					$user->exp	+= percent(10, $exp + $exp_extra);
+				}
 				$user->save();
 			}
 
