@@ -1494,8 +1494,10 @@ trait BattleSharedMethods {
 
 				// Level da Organização ( Batalha NPC e PVP )
 				$guild = $p->guild();
-				$guild->exp	+= percent(($is_pvp ? 10 : 5), $exp + $exp_extra);
-				$guild->save();
+				if ($guild) {
+					$guild->exp	+= percent(($is_pvp ? 10 : 5), $exp + $exp_extra);
+					$guild->save();
+				}
 			}
 
 			# Corrigi o no_talent
