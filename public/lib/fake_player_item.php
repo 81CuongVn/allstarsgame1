@@ -11,11 +11,12 @@
 			$this->id		= $id;
 			$this->player	= $player;
 			$this->item_id	= $id;
+
 			$item			= Item::find($id);
 			$item->set_player($this->player);
 			$item->set_player_item($this);
 
-			if($item->is_generic || in_array($item->item_type_id, [5, 7])) {
+			if ($item->is_generic || in_array($item->item_type_id, [5, 7])) {
 				$item->set_anime($player->character()->anime_id);
 			} else {
 				$item->set_character_theme($player->character_theme());
@@ -31,7 +32,7 @@
 		}
 
 		function set_player($player) {
-			
+
 		}
 
 		function player() {

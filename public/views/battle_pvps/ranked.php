@@ -26,17 +26,17 @@
 		'message'	=> t('battles.ranked.description')
 	));
 ?>
-<?php if ($league) { ?>
+<?php if ($ranked) { ?>
 	<div class="msg-container-off2">
 		<div class="msgb-h2" style="position: relative; margin-left: 24px; text-align: left; top: 36px">
 			<div style="padding-left: 10px; float: left;">
 				<b>
 				<?php
-				if (!$league->finished) {
-					$daysLeft = ceil((strtotime($league->finish_date) - now()) / 86400);
-					echo "Progressão da Liga {$league->league} - Restam {$daysLeft} dia(s)";
+				if (!$ranked->finished) {
+					$daysLeft = ceil((strtotime($ranked->finish_date) - now()) / 86400);
+					echo "Progressão da Liga {$ranked->id} - Restam {$daysLeft} dia(s)";
 				} else {
-					echo "Liga {$league->league} Concluída em " . date('d/m/Y H:i:s', strtotime($league->finish_date));
+					echo "Liga {$ranked->id} Concluída em " . date('d/m/Y H:i:s', strtotime($ranked->finish_date));
 				}
 				?>
 				</b>
@@ -45,37 +45,67 @@
 				<form id="league-filter-form" method="post">
 					<select class="form-control input-sm" name="leagues" id="leagues" style="height: 23px; line-height: 23px; padding: 3px; margin-bottom: -7px;">
 						<?php
-						foreach ($leagues as $row) {
-							echo "<option value=\"{$row->league}\" " . ($row->league == $league->league ? "selected=\"selected\"" : "") . ">Liga {$row->league}</option>";
+						foreach ($rankeds as $row) {
+							echo "<option value=\"{$row->id}\" " . ($row->id == $ranked->id ? "selected=\"selected\"" : "") . ">Liga {$row->id}</option>";
 						}
 						?>
 					</select>
-				</form>	
+				</form>
 			</div>
 			<div class="content">
+				<style type="text/css">
+					.tier {
+						width: 57px;
+						height: 156px;
+						background-image: url('<?=image_url('ranked/bg_off.jpg');?>');
+					}
+					.tier.on {
+						background-image: url('<?=image_url('ranked/bg_on.jpg');?>');
+					}
+					.tier .name {
+						color: hsl(208deg 56% 46%);
+						width: 57px;
+						height: 156px;
+						writing-mode: vertical-rl;
+						transform: rotateX(180deg) scaleX(-1) scale(1.6, 1);
+						font-size: 22px;
+						text-transform: uppercase;
+						padding: 5px 22px 5px 20px;
+						text-align: center;
+						font-weight: bold;
+					}
+					.tier.on .name {
+						color: hsl(0deg 0% 100% / 85%);
+					}
+				</style>
 				<div>
-					<?php for ($rank = 10; $rank >= 0; --$rank) { ?>
-						<div style="float: left; padding-left: 5px" class="technique-popover" data-source="#liga-container-<?php echo $rank; ?>" data-title="Rank <?php echo ($rank == 0 ? 'All-Star' : $rank); ?>" data-trigger="click" data-placement="bottom">
-							<?php if ($rank == 0) { ?>
+					<?php foreach ($tiers as $tier) { ?>
+						<div style="float: left; padding-left: 5px" class="technique-popover" data-source="#liga-container-<?=$tier->sort;?>" data-title="<?=$tier->description()->name;?>" data-trigger="click" data-placement="bottom">
+							<?php if ($tier->sort == 0) { ?>
 								<div style="position: absolute; top: 57px; right: 11px;">
-									<img src="<?php echo image_url($player_ranked && $player_ranked->rank <= $rank ? 'ranked/star_on.png' : 'ranked/star_off.png')?>" />
+									<img src="<?=image_url($player_ranked && $player_ranked->tier()->sort <= $tier->sort ? 'ranked/star_on.png' : 'ranked/star_off.png');?>" />
 								</div>
-								<img src="<?php echo image_url($player_ranked && $player_ranked->rank <= $rank ? 'ranked/bg_on.jpg' : 'ranked/bg_off.jpg')?>" />
-							<?php } else { ?>
-								<img src="<?php echo image_url($player_ranked && $player_ranked->rank <= $rank ? 'ranked/' . $rank . '_on.jpg' : 'ranked/' . $rank . '_off.jpg')?>" />
 							<?php } ?>
-						</div>
-						<div id="liga-container-<?php echo $rank; ?>" class="technique-container">
-							<div style="min-width: 220px;">
-								<span class="amarelo" style="font-size:14px"><?php echo t('ranked.promotion');?></span><br /><br />
-								<?php if ($rank != 10) { ?>
-									<span class="vermelho"><?php echo t('ranked.down');?>:</span> <?php echo highamount($league->down_points($rank)); ?> <?php echo t('ranked.points2');?><br />
+							<!-- <div style="position: absolute; top: 57px; margin-left: -11px;">
+								<img src="<?=image_url('ranked/tiers/' . ($tier->sort != 0 ? $tier->id : $tier->id . '-off') . '.png');?>" width="80" height="76" />
+							</div> -->
+							<div class="tier <?=($player_ranked && $player_ranked->tier()->sort <= $tier->sort ? 'on' : 'off')?>">
+								<?php if ($tier->sort != 0) { ?>
+									<div class="name"><?=$tier->description()->name;?></div>
 								<?php } ?>
-								<?php if ($rank != 0) { ?>
-									<span class="verde"><?php echo t('ranked.up');?>:</span> <?php echo highamount($league->up_points($rank)); ?> <?php echo t('ranked.points');?><br /><br />
-								<?php } else { echo '<br />'; } ?>
-								<?php if ($rewards = $league->reward($rank)) { ?>
-									<span class="amarelo" style="font-size:14px"><?php echo t('ranked.reward');?></span><br /><br />
+							</div>
+						</div>
+						<div id="liga-container-<?=$tier->sort;?>" class="technique-container">
+							<div style="min-width: 220px;">
+								<span class="amarelo" style="font-size:14px"><?=t('ranked.promotion');?></span><br /><br />
+								<?php if ($tier->min_points) { ?>
+									<span class="vermelho"><?=t('ranked.down');?>:</span> <?=highamount($tier->min_points);?> <?=t('ranked.points2');?><br />
+								<?php } ?>
+								<?php if ($tier->max_points) { ?>
+									<span class="verde"><?=t('ranked.up');?>:</span> <?=highamount($tier->max_points);?> <?=t('ranked.points');?><br />
+								<?php } ?>
+								<?php if ($rewards = $ranked->reward($tier->id)) { ?>
+									<br /><span class="amarelo" style="font-size:14px"><?php echo t('ranked.reward');?></span><br /><br />
 									<?php if ($rewards->exp) { ?>
 										<li><?php echo highamount($rewards->exp); ?> <?php echo t('ranked.exp');?></li><br />
 									<?php } ?>
@@ -108,42 +138,41 @@
 			</div>
 		</div>
 	</div>
-	<?php if ($best_rank) { ?>
 	<div style="width: 730px; height: 185px; position: relative; left: 24px">
 		<div class="h-missoes">
 			<div style="width: 341px; text-align: center; padding-top: 12px">
 				<b class="amarelo" style="font-size:13px">
-					<?php if ($player_ranked) { $player_ranked->update(); ?>
-						Rank <?php echo ($player_ranked->rank == 0 ? 'All-Star' : $player_ranked->rank)?>
+					<?php if ($player_ranked) { ?>
+						<?=$player_ranked->tier()->description()->name;?>
 					<?php } else { ?>
 						-
 					<?php } ?>
 				</b>
 			</div>
 			<div style="width: 341px; text-align: center; padding-top: 22px; font-size: 12px !important; line-height: 15px;">
-				<span class="verde"><?php echo t('ranked.total_pontos');?>: </span><?php echo ($player_ranked ? highamount($player_ranked->points()) : '-'); ?><br />
-				<span class="verde"><?php echo t('ranked.total_batalhas');?>: </span><?php echo ($player_ranked ? highamount($player_ranked->wins + $player_ranked->losses + $player_ranked->draws) : '-'); ?><br /><br />
-				<span class="verde"><?php echo t('ranked.vitorias');?>: </span><?php echo ($player_ranked ? highamount($player_ranked->wins) : '-'); ?> <br />
-				<span class="vermelho"><?php echo t('ranked.derrotas');?>: </span><?php echo ($player_ranked ? highamount($player_ranked->losses) : '-'); ?> <br />
-				<span><?php echo t('ranked.empates');?>: </span><?php echo ($player_ranked ? highamount($player_ranked->draws) : '-'); ?> <br />
+				<span class="verde"><?=t('ranked.total_pontos');?>: </span><?=($player_ranked ? highamount($player_ranked->points) : '-');?><br />
+				<span class="verde"><?=t('ranked.total_batalhas');?>: </span><?=($player_ranked ? highamount($player_ranked->wins + $player_ranked->losses + $player_ranked->draws) : '-');?><br /><br />
+				<span class="verde"><?=t('ranked.vitorias');?>: </span><?=($player_ranked ? highamount($player_ranked->wins) : '-');?> <br />
+				<span class="vermelho"><?=t('ranked.derrotas');?>: </span><?=($player_ranked ? highamount($player_ranked->losses) : '-');?> <br />
+				<span><?=t('ranked.empates');?>: </span><?=($player_ranked ? highamount($player_ranked->draws) : '-');?> <br />
 			</div>
 		</div>
 		<div class="h-missoes">
-			<div style="width: 341px; text-align: center; padding-top: 12px"><b class="amarelo" style="font-size:13px"><?php echo t('ranked.resumo');?></b></div>
+			<div style="width: 341px; text-align: center; padding-top: 12px"><b class="amarelo" style="font-size:13px"><?=t('ranked.resumo');?></b></div>
 			<div style="width: 341px; text-align: center; padding-top: 22px; font-size: 12px !important; line-height: 15px;">
-				<span class="verde"><?php echo t('ranked.melhor_rank');?>: </span> <?php echo ($best_rank ? ($best_rank->rank == 0 ? "Rank All-Star" : "Rank ". $best_rank->rank) : '-'); ?><br />
-				<span class="verde"><?php echo t('ranked.total_batalhas');?>: </span><?php echo ($best_rank ? highamount($ranked_total['total_wins'] + $ranked_total['total_losses'] + $ranked_total['total_draws']) : '-'); ?><br /><br />
-				<span class="verde"><?php echo t('ranked.total_de');?> <?php echo t('ranked.vitorias');?>: </span><?php echo ($best_rank ? highamount($ranked_total['total_wins']) : '-'); ?> <br />
-				<span class="vermelho"><?php echo t('ranked.total_de');?> <?php echo t('ranked.derrotas');?>: </span><?php echo ($best_rank ? highamount($ranked_total['total_losses']) : '-'); ?><br />
-				<span><?php echo t('ranked.total_de');?> <?php echo t('ranked.empates');?>: </span><?php echo ($best_rank ? highamount($ranked_total['total_draws']) : '-'); ?><br />
+				<span class="verde"><?=t('ranked.melhor_rank');?>:</span> <?=($best_rank ? $best_rank->tier()->description()->name : '-'); ?><br />
+				<span class="verde"><?=t('ranked.total_batalhas');?>:</span> <?=($best_rank ? highamount($ranked_total->total_wins + $ranked_total->total_losses + $ranked_total->total_draws) : '-');?><br /><br />
+				<span class="verde"><?=t('ranked.total_de');?> <?=t('ranked.vitorias');?>:</span> <?=($best_rank ? highamount($ranked_total->total_wins) : '-');?><br />
+				<span class="vermelho"><?=t('ranked.total_de');?> <?=t('ranked.derrotas');?>:</span> <?=($best_rank ? highamount($ranked_total->total_losses) : '-');?><br />
+				<span><?=t('ranked.total_de');?> <?=t('ranked.empates');?>:</span> <?=($best_rank ? highamount($ranked_total->total_draws) : '-');?><br />
 			</div>
 		</div>
 	</div>
-	<?php } ?>
-	<?php if ($player_ranked && !$player_ranked->reward && $league->finished) { ?>
+
+	<?php if ($player_ranked && !$player_ranked->reward && $ranked->finished) { ?>
 		<div align="center" id="reward-league">
-			<a class="btn btn-sm btn-primary reward" data-league="<?php echo $league->league; ?>">
-				<?php echo t('ranked.recompesa_do')?> Rank <?php echo ($player_ranked->rank == 0 ? 'All-Star' : $player_ranked->rank)?>
+			<a class="btn btn-sm btn-primary reward" data-league="<?=$ranked->id;?>">
+				<?=t('ranked.recompesa_do')?> <?=$player_ranked->tier()->description()->name;?>
 			</a>
 		</div>
 	<?php } ?>

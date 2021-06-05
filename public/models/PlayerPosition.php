@@ -1,6 +1,6 @@
 <?php
 class PlayerPosition extends Relation {
-    static function from_organization_with_map($organization_id, $organization_map_id, $accepted_event) {
+    static function from_guild_with_map($guild_id, $guild_map_id, $accepted_event) {
 		return Recordset::query("
 			SELECT
 				a.*,
@@ -9,9 +9,9 @@ class PlayerPosition extends Relation {
 				b.character_theme_id
 			FROM
 				player_positions a
-				JOIN players b ON b.id = a.player_id AND a.organization_id = {$organization_id}
+				JOIN players b ON b.id = a.player_id AND a.guild_id = {$guild_id}
 			WHERE
-				a.organization_map_id = {$organization_map_id} AND
-				b.organization_accepted_event_id = {$accepted_event}")->result();
+				a.guild_map_id = {$guild_map_id} AND
+				b.guild_accepted_event_id = {$accepted_event}")->result();
 	}
 }

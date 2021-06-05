@@ -17,7 +17,7 @@ class NpcInstance {
 	public	$battle_npc_id				= 0;
 	public	$battle_pvp_id				= 0;
 	public	$faction_id					= 0;
-	public	$organization_id			= 0;
+	public	$guild_id			= 0;
 	public	$character_id				= 0;
 
 	public	$name						= '';
@@ -45,53 +45,53 @@ class NpcInstance {
 	private $_pet_id					= null;
 
 	# map npcs
-	public $organization_map_object_id	= null;
+	public $guild_map_object_id	= null;
 	public $shared_less_life			= 0;
 
 	function __construct($player, $anime_id_for_generics = null, $theme_ids = [],
 						$specific_ability_id = null, $specific_speciality_id = null, $specific_pet_id = null,
-						$is_challenge = null, $character_id = null, $character_theme_id = null, $organization_map_object_id = null) {
+						$is_challenge = null, $character_id = null, $character_theme_id = null, $guild_map_object_id = null) {
 
 		if ($anime_id_for_generics) {
-			$animes							= Anime::find('id='. $anime_id_for_generics .' AND active=1', ['cache' => true]);
+			$animes					= Anime::find('id='. $anime_id_for_generics .' AND active=1', ['cache' => true]);
 		} else {
-			$animes							= Anime::find('active=1', ['cache' => true]);
+			$animes					= Anime::find('active=1', ['cache' => true]);
 		}
-		$anime								= $animes[rand(0, sizeof($animes) - 1)];
+		$anime						= $animes[rand(0, sizeof($animes) - 1)];
 
 		if ($character_id) {
-			$characters						= $anime->characters(' AND id='. $character_id);
+			$characters				= $anime->characters(' AND id='. $character_id);
 		} else {
-			$characters						= $anime->characters(' AND active=1');
+			$characters				= $anime->characters(' AND active=1');
 		}
-		$character							= $characters[rand(0, sizeof($characters) - 1)];
+		$character					= $characters[rand(0, sizeof($characters) - 1)];
 
 		if ($character_theme_id) {
-			$themes							= $character->themes(" AND id=".$character_theme_id);
+			$themes					= $character->themes(" AND id=".$character_theme_id);
 		} else {
-			$themes							= $character->themes(' AND active=1');
+			$themes					= $character->themes(' AND active=1');
 		}
-		$theme								= $themes[rand(0, sizeof($themes) - 1)];
+		$theme						= $themes[rand(0, sizeof($themes) - 1)];
 
-		$images								=  CharacterThemeImage::find('active = 1 and character_theme_id = ' . $theme->id, ['cache' => true]);
-		$image								= $images[rand(0, sizeof($images) - 1)];
+		$images						=  CharacterThemeImage::find('active = 1 and character_theme_id = ' . $theme->id, ['cache' => true]);
+		$image						= $images[rand(0, sizeof($images) - 1)];
 
-		$this->anime						= $anime;
-		$this->character					= $character;
-		$this->character_theme				= $theme;
-		$this->theme_image					= $image;
+		$this->anime				= $anime;
+		$this->character			= $character;
+		$this->character_theme		= $theme;
+		$this->theme_image			= $image;
 
-		$this->name							= $this->character->description()->name;
-		$this->level						= $player->level;
-		$this->uid							= uniqid(uniqid('', true), true);
-		$this->id							= str_replace('.', '-', $this->uid);
-		$this->faction_id					= Faction::find_first('1=1', ['reorder' => 'RAND()'])->id;
-		$this->character_id					= $this->character->id;
-		$this->organization_map_object_id	= $organization_map_object_id;
+		$this->name					= $this->character->description()->name;
+		$this->level				= $player->level;
+		$this->uid					= uniqid(uniqid('', true), true);
+		$this->id					= str_replace('.', '-', $this->uid);
+		$this->faction_id			= Faction::find_first('1=1', ['reorder' => 'RAND()'])->id;
+		$this->character_id			= $this->character->id;
+		$this->guild_map_object_id	= $guild_map_object_id;
 
-		if ($this->organization_map_object_id) {
-			$map_object = $this->organization_map_object_id;
-			$map_object_session = OrganizationMapObjectSession::find_first('player_id=0 AND organization_accepted_event_id=' . $player->organization_accepted_event_id . ' AND organization_id=' . $player->organization_id . ' AND organization_map_object_id=' . $this->organization_map_object_id);
+		if ($this->guild_map_object_id) {
+			$map_object = $this->guild_map_object_id;
+			$map_object_session = GuildMapObjectSession::find_first('player_id=0 AND guild_accepted_event_id=' . $player->guild_accepted_event_id . ' AND guild_id=' . $player->guild_id . ' AND guild_map_object_id=' . $this->guild_map_object_id);
 			if ($map_object_session) {
 				$this->less_life = $map_object_session->less_life;
 			} else {
@@ -107,7 +107,7 @@ class NpcInstance {
 		if ($is_challenge) {
 			$challenge  	= PlayerChallenge::find_first('player_id='. $player->id .' AND challenge_id='.$is_challenge." AND complete=0");
 			$total_points 	= round($total_points + ($challenge->quantity * 1.5));
-			// if ($_SESSION['universal']) {
+			if (!$_SESSION['universal']) {
 				if ($challenge->quantity % 5 == 0) {
 					$total_hp = $challenge->quantity * 10;
 				} else {
@@ -117,9 +117,9 @@ class NpcInstance {
 						$total_hp = 0;
 					}
 				}
-			// } else {
-				// $total_hp 		= $challenge->quantity % 5 == 0  ? $challenge->quantity * 10 : 0;
-			// }
+			} else {
+				$total_hp 		= $challenge->quantity % 5 == 0  ? $challenge->quantity * 10 : 0;
+			}
 			$total_mana		= $challenge->quantity % 5 == 0  ? $challenge->quantity / 5 : 0;
 
 		} else {

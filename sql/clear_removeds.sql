@@ -13,7 +13,7 @@ DELETE FROM user_player_items WHERE user_id NOT IN (SELECT id FROM users);
 DELETE FROM user_quest_counters WHERE user_id NOT IN (SELECT id FROM users);
 DELETE FROM user_stats WHERE user_id NOT IN (SELECT id FROM users);
 
-DELETE FROM players WHERE user_id NOT IN (SELECT id FROM users) OR removed = 1; 
+DELETE FROM players WHERE user_id NOT IN (SELECT id FROM users) OR removed = 1;
 DELETE FROM player_achievements WHERE player_id NOT IN (SELECT id FROM players);
 DELETE FROM player_achievement_stats WHERE player_id NOT IN (SELECT id FROM players);
 DELETE FROM player_attributes WHERE player_id NOT IN (SELECT id FROM players);
@@ -55,10 +55,10 @@ DELETE FROM player_wanteds WHERE player_id NOT IN (SELECT id FROM players);
 
 DELETE FROM private_messages WHERE from_id NOT IN (SELECT id FROM players) OR to_id NOT IN (SELECT id FROM players);
 
-DELETE FROM organizations WHERE player_id NOT IN (SELECT id FROM users) OR removed = 1;
-DELETE FROM organization_daily_quests WHERE organization_id NOT IN (SELECT id FROM organizations);
-DELETE FROM organization_players WHERE organization_id NOT IN (SELECT id FROM organizations);
-DELETE FROM organization_quest_counters WHERE organization_id NOT IN (SELECT id FROM organizations);
-DELETE FROM organization_requests WHERE organization_id NOT IN (SELECT id FROM organizations);
+DELETE FROM guilds WHERE player_id NOT IN (SELECT id FROM users) OR removed = 1;
+DELETE FROM guild_daily_quests WHERE guild_id NOT IN (SELECT id FROM guilds);
+DELETE FROM guild_players WHERE guild_id NOT IN (SELECT id FROM guilds);
+DELETE FROM guild_quest_counters WHERE guild_id NOT IN (SELECT id FROM guilds);
+DELETE FROM guild_requests WHERE guild_id NOT IN (SELECT id FROM guilds);
 
-update players set organization_id = 0 WHERE organization_id NOT IN (SELECT id FROM organizations);
+update players set guild_id = 0 WHERE guild_id NOT IN (SELECT id FROM guilds);

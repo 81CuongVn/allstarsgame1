@@ -51,7 +51,7 @@ setInterval(function() {
         multi.lrange("od_refuses_"      + queue_id, 0, -1);
 
         multi.get("od_needed_"          + queue_id);
-        multi.get("od_organization_"    + queue_id);
+        multi.get("od_guild_"    + queue_id);
 
         multi.exec(function(err, replies) {
             console.log('Need: ' + parseInt(replies[5]) + " | Accepteds: " + replies[3].length);
@@ -59,7 +59,7 @@ setInterval(function() {
             if (parseInt(replies[5]) == replies[3].length) {
                 console.log("Broadcast redirect");
 
-                io.sockets.in("organization_"   + replies[6]).emit('dungeon-redirect', replies[3])
+                io.sockets.in("guild_"   + replies[6]).emit('dungeon-redirect', replies[3])
 
                 multi.lrem('aasg_od_invites', queue_id, 0);
 
@@ -69,14 +69,14 @@ setInterval(function() {
                 multi.del("od_accepts_"         + queue_id);
                 multi.del("od_refuses_"         + queue_id);
                 multi.del("od_needed_"          + queue_id);
-                multi.del("od_organization_"    + queue_id);
+                multi.del("od_guild_"    + queue_id);
                 multi.del("od_event_"           + queue_id);
 
                 multi.exec()
             } else {
                 console.log("- Broadcast dungeon invite to " + replies[6] + " / " + queue_id);
 
-                io.sockets.in("organization_" + replies[6]).emit('dungeon-invite', {
+                io.sockets.in("guild_" + replies[6]).emit('dungeon-invite', {
                     event:      replies[0],
                     name:       replies[1],
                     targets:    replies[2],
@@ -169,8 +169,8 @@ io.sockets.on('connection', function(socket) {
     });
 
     socket.on('enter-orgnaization', function(data) {
-        if (data.organization) {
-            return socket.join('organization_' + data.organization);
+        if (data.guild) {
+            return socket.join('guild_' + data.guild);
         }
     });
 });

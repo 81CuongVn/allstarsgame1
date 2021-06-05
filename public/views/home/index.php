@@ -1,8 +1,8 @@
-<script type="text/javascript">       
+<script type="text/javascript">
 	$(document).ready(function(){
 		$('#my-slide').DrSlider(); //Yes! that's it!
 	});
-</script> 
+</script>
 <div id="descricao-topo">
 	<p><?php echo t('global.descricao', ['game' => GAME_NAME])?></p>
 </div>
@@ -45,13 +45,13 @@
 			<?php endif; ?>
 		</div>
 		<div class="leagues-list" style="height:135px">
-		
+
 		</div>
 	</div>
 	<div class="noticias-3">
 		<div class="tops-list" style="height:170px">
 			<?php echo t('global.wait')?>
-		</div>			
+		</div>
 		<div class="noticias-buttons">
 			<div class="prev"></div>
 			<div class="next"></div>
@@ -62,13 +62,13 @@
 			<select name="sl-ranks" id="sl-ranks" class="form-control input-sm" style="line-height: 19px;height: 19px;padding: 2px 5px;">
 				<option value="players">Personagem</option>
 				<option value="achievements">Conquista</option>
-				<option value="organizations">Organização</option>
+				<option value="guilds">Organização</option>
 				<option value="accounts">Conta</option>
 			</select>
 		</div>
 		<div class="ranks-list" style="height:170px">
 			<?php echo t('global.wait')?>
-		</div>	
+		</div>
 		<div class="noticias-buttons">
 			<div class="prev"></div>
 			<div class="next"></div>

@@ -132,55 +132,55 @@ class Character extends Relation {
 	public static function filter($where, $mine_pets, $player, $active, $page, $limit) {
 		$mine_pets2	= $mine_pets;
 		$mine_pets	= implode(",", array_keys($mine_pets));
-		
+
 		if (!$active) {
-			$where2 = "";	
-			$where3 = "";	
+			$where2 = "";
+			$where3 = "";
 		} elseif ($active == 1) {
 			if (!$mine_pets) {
-				$mine_pets = 0;	
+				$mine_pets = 0;
 			}
-			
+
 			$where2 = " AND c.player_id = ". $player ." AND c.item_id in (". $mine_pets .")";
 			$where3 = " JOIN player_items c ON c.item_id = b.id";
 		} elseif ($active == 2) {
 			if (!$mine_pets) {
-				$mine_pets = 0;	
+				$mine_pets = 0;
 			}
 			$where2 = " AND b.parent_id = 0 AND a.item_id not in (". $mine_pets . ")";
 			$where3 = "";
 		}
 		$result		= [];
-		
+
 		$result['pages']  = ceil(Recordset::query('
 			SELECT
-				COUNT(b.id) AS _max    
+				COUNT(b.id) AS _max
 
 			FROM
 				item_descriptions a JOIN
-				items b ON b.id = a.item_id 
+				items b ON b.id = a.item_id
 				' . $where3 . '
 
 			WHERE
 				1 = 1 AND b.parent_id = 0 AND b.item_type_id = 3 ' . $where . $where2, TRUE)->row()->_max / $limit);
-														
+
 		$result['pets']	= Recordset::query('
 			SELECT
 				a.item_id,
 				a.name,
 				a.description,
 				b.rarity,
-				b.parent_id       
-			
+				b.parent_id
+
 			FROM
 				item_descriptions a JOIN
-				items b ON b.id = a.item_id 
+				items b ON b.id = a.item_id
 				' . $where3 . '
 
 			WHERE
 				1 = 1 AND b.item_type_id = 3 ' . $where . $where2 . " LIMIT " . $page * $limit . "," . $limit);
-				
-							
+
+
 		foreach ($result['pets']->result_array() as $item) {
 			if (array_key_exists($item['item_id'], $mine_pets2)) {
 				$result[] = Item::find($item['item_id']);

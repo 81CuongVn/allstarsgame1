@@ -20,17 +20,17 @@
 							switch ($item->get_buy_mode_for($player->id)) {
 								case 0:
 									echo "<span class='verde'>". t("vips.buy_modes.free"). "</span>";
-			
+
 									break;
-								
+
 								case 1:
 									echo "<span class='laranja'>". t("vips.buy_modes.currency", ["price" => highamount($item->price_currency), "currency" => t('currencies.' . $player->character()->anime_id)]) . "</span>";
-									
+
 									break;
-			
+
 								default:
 									echo "<span class='laranja'>". t("vips.buy_modes.vip", ["price" => highamount($item->price_credits)]) . "</span>";
-									
+
 									break;
 							}
 						}else{
@@ -63,12 +63,12 @@
 						<?php echo t("vips.no_memory") ?>
 					<?php endif ?>
 				<?php endif ?>
-	
+
 				<?php if ($item->id == 430): ?>
 					<input type="text" name="name" class="form-control input-sm" style="width:170px" />
 				<?php endif ?>
 				<?php if ($item->id == 1745): ?>
-					<input type="text" name="name_organization" class="form-control input-sm" style="width:170px" />
+					<input type="text" name="name_guild" class="form-control input-sm" style="width:170px" />
 				<?php endif ?>
 				<?php if ($item->id == 1746): ?>
 					<select name="faction" class="form-control input-sm" style="width:170px">
@@ -79,18 +79,18 @@
 						} ?>
 					</select>
 				<?php endif ?>
-				<?php 
+				<?php
 					if ($player->has_item(1715) && $item->id == 1715) {
-				?>		
+				?>
 					<a class="btn btn-sm btn-<?php echo $player->no_talent ? "danger":"success"?> no-talent" data-id="<?php echo $item->id ?>"><?php echo $player->no_talent ? "Desativar":"Ativar"?> ( <?php echo $item1715->quantity?> Restantes )</a>
 				<?php
-					}		
-				?>			
+					}
+				?>
 			</td>
 			<td width="140" class="text-center">
 				<a class="btn btn-sm btn-primary buy" data-id="<?php echo $item->id ?>"><?php echo t("vips.buy_now") ?></a>
 			</td>
 		</tr>
-		<tr height="4"></tr>	
+		<tr height="4"></tr>
 	</table>
 </form>

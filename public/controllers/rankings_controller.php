@@ -599,7 +599,7 @@ class RankingsController extends Controller {
 		$this->assign('leagues',		$leagues);
 		$this->assign('graduations',	$graduations);
 	}
-	function organizations() {
+	function guilds() {
 		$player		= Player::get_instance();
 		$page		= isset($_POST['page']) && is_numeric($_POST['page']) ? $_POST['page'] : 0;
 		$limit		= 32;
@@ -626,7 +626,7 @@ class RankingsController extends Controller {
 			}
 		}
 
-    	$result	= RankingOrganization::filter($filter, $page, $limit);
+    	$result	= RankingGuild::filter($filter, $page, $limit);
     	$factions	= Faction::find('active=1', ['cache' => true]);
 
 		$this->assign('player',		$player);

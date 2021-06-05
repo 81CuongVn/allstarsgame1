@@ -4,12 +4,12 @@ TRUNCATE TABLE `battle_pvps`;
 TRUNCATE TABLE `battle_rooms`;
 
 /* ORGANIZAÇÔES */
-UPDATE `organizations` SET
+UPDATE `guilds` SET
 	`level`								= 1,
 	`treasure_atual`					= 0,
 	`treasure_total`					= 0;
-TRUNCATE TABLE `organization_daily_quests`;
-UPDATE `organization_quest_counters` SET
+TRUNCATE TABLE `guild_daily_quests`;
+UPDATE `guild_quest_counters` SET
 	`time_total`						= 0,
 	`pvp_total`							= 0,
 	`daily_total`						= 0;
@@ -212,7 +212,7 @@ TRUNCATE TABLE `player_wanteds`;
 TRUNCATE TABLE `private_messages`;
 
 TRUNCATE TABLE `ranking_challenges`;
-TRUNCATE TABLE `ranking_organizations`;
+TRUNCATE TABLE `ranking_guilds`;
 TRUNCATE TABLE `ranking_players`;
 
 /* CONTAS */

@@ -39,7 +39,7 @@ function createInviteModal(eventId) {
 			self.html('Aguarde...');
 
 			$.ajax({
-				url: make_url('organizations/dungeon_invite'),
+				url: make_url('guilds/dungeon_invite'),
 				type: 'post',
 				data: {
 					list: 1,
@@ -102,7 +102,7 @@ function createInviteModal(eventId) {
 				.addClass('loading disabled');
 
 			$.ajax({
-				url: make_url('organizations/dungeon_invite'),
+				url: make_url('guilds/dungeon_invite'),
 				data: listModal.find('form').serialize(),
 				type: 'post',
 				dataType: 'json',
@@ -130,7 +130,7 @@ function createInviteModal(eventId) {
 		.html('Cancelar')
 		.on('click', function() {
 			$.ajax({
-				url: make_url('organizations/dungeon_cancel'),
+				url: make_url('guilds/dungeon_cancel'),
 				type: 'post',
 				data: {
 					dungeon_id: eventId
@@ -139,7 +139,7 @@ function createInviteModal(eventId) {
 
 			listModal.modal('hide');
 			socket.emit('cancel-dungeon', {
-				organization: _current_organization
+				guild: _current_guild
 			});
 		})
 		.end()
@@ -167,9 +167,9 @@ socket.on('connect', function () {
 		lang: _language
 	});
 
-	if (_current_organization) {
+	if (_current_guild) {
 		socket.emit('enter-orgnaization', {
-			organization: _current_organization
+			guild: _current_guild
 		})
 	};
 });
@@ -250,7 +250,7 @@ socket.on('dungeon-invite', function(dungeon) {
 				inviteModal.modal('hide');
 
 				$.ajax({
-					url: make_url('organizations#dungeon_accept'),
+					url: make_url('guilds#dungeon_accept'),
 					type: 'post',
 					dataType: 'json',
 					data: {
@@ -263,7 +263,7 @@ socket.on('dungeon-invite', function(dungeon) {
 				inviteModal.modal('hide');
 
 				$.ajax({
-					url: make_url('organizations#dungeon_refuse'),
+					url: make_url('guilds#dungeon_refuse'),
 					type: 'post',
 					data: {
 						queue_id: dungeon.queue
@@ -291,11 +291,11 @@ socket.on('dungeon-redirect', function(players) {
 		return;
 	}
 
-	location.href = make_url('organizations/dungeon');
+	location.href = make_url('guilds/dungeon');
 });
 
 $(document).on('ready', function() {
-	$('#organization-event-list').on('click', '.invite', function() {
+	$('#guild-event-list').on('click', '.invite', function() {
 		var trigger = $(this);
 
 		createInviteModal(trigger.data('event'));

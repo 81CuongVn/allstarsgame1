@@ -130,15 +130,15 @@ class VipsController extends Controller {
 						}
 					}
 				}
-				if (isset($_POST["name_organization"])) {
-					if($player->organization_id){
-						$player_organization = Organization::find_first('id='.$player->organization_id);
+				if (isset($_POST["name_guild"])) {
+					if($player->guild_id){
+						$player_guild = Guild::find_first('id='.$player->guild_id);
 
-						if($player_organization->player_id != $player->id){
-							$errors[]	= t('organizations.errors.not_leader');
+						if($player_guild->player_id != $player->id){
+							$errors[]	= t('guilds.errors.not_leader');
 						}
-						if (!between(strlen($_POST['name_organization']), 6, 20) || !preg_match(REGEX_GUILD, $_POST['name_organization'])) {
-							$errors[]	= t('organizations.create.errors.invalid_name');
+						if (!between(strlen($_POST['name_guild']), 6, 20) || !preg_match(REGEX_GUILD, $_POST['name_guild'])) {
+							$errors[]	= t('guilds.create.errors.invalid_name');
 						}
 					}
 				}
@@ -147,8 +147,8 @@ class VipsController extends Controller {
 					if (!$faction || !$faction->active) {
 						$errors[]	= t("vips.errors.invalid_faction");
 					}
-					if ($player->organization_id) {
-						$errors[]	= t('organizations.create.errors.change');
+					if ($player->guild_id) {
+						$errors[]	= t('guilds.create.errors.change');
 					}
 				}
 				if (isset($_POST["name"])) {
@@ -308,8 +308,8 @@ class VipsController extends Controller {
 					$player->save();
 				break;
 				case 1745:
-					$player_organization->name	= $_POST["name_organization"];
-					$player_organization->save();
+					$player_guild->name	= $_POST["name_guild"];
+					$player_guild->save();
 				break;
 				case 1746:
 					$player->faction_id = $faction->id;

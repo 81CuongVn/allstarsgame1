@@ -171,22 +171,22 @@ function is_menu_accessible($menu, $player) {
         }
     }
 
-    if ($menu->h_organization == 1) {
-        if (!$player || ($player && !$player->organization_id)) {
+    if ($menu->h_guild == 1) {
+        if (!$player || ($player && !$player->guild_id)) {
             $ok	= false;
         }
-    } elseif ($menu->h_organization == 2) {
-        if ($player && $player->organization_id) {
+    } elseif ($menu->h_guild == 2) {
+        if ($player && $player->guild_id) {
             $ok	= false;
         }
     }
 
-	if ($menu->h_organization_event == 1) {
-        if (!$player || ($player && !$player->organization_accepted_event_id)) {
+	if ($menu->h_guild_event == 1) {
+        if (!$player || ($player && !$player->guild_accepted_event_id)) {
             $ok	= false;
         }
-    } elseif ($menu->h_organization_event == 2) {
-        if ($player && $player->organization_accepted_event_id) {
+    } elseif ($menu->h_guild_event == 2) {
+        if ($player && $player->guild_accepted_event_id) {
             $ok	= false;
         }
     }

@@ -5,7 +5,7 @@
 		</li>
 		<li>
 			<a href="#friend-accept-list" role="tab" data-toggle="tab">
-				<?=t('organizations.show.accepts');?>
+				<?=t('guilds.show.accepts');?>
 				<?php if (sizeof($requests)): ?>
 					<b>( <?php echo sizeof($requests) ?> )</b>
 				<?php endif ?>
@@ -16,7 +16,7 @@
 		<?php if ($players): ?>
 			<?php $counter = 0; ?>
 			<table width="725" border="0" cellpadding="0" cellspacing="0">
-				<?php foreach ($players as $p): 
+				<?php foreach ($players as $p):
 					$color	= $counter++ % 2 ? '091e30' : '173148';
 				?>
 				<tr id="player-search-item-<?php echo $p->id ?>"  bgcolor="<?php echo $color ?>">
@@ -39,7 +39,7 @@
 						<?php }else{?>
 							<a class="btn btn-sm btn-primary disabled">Solicitação enviada</a>
 						<?php }?>
-							
+
 					</td>
 				</tr>
 				<tr height="4"></tr>
@@ -53,7 +53,7 @@
 	<?php if ($requests): ?>
 		<?php $counter = 0; ?>
 		<table width="725" border="0" cellpadding="0" cellspacing="0">
-		<?php foreach ($requests as $p): 
+		<?php foreach ($requests as $p):
 			$color					= $counter++ % 2 ? '091e30' : '173148';
 			$instance				= $p->player($p->player_id);
 			if ($instance) {
@@ -70,16 +70,16 @@
 				</td>
 				<td width="200" align="center">
 				<td width="200" align="center">
-					<a class="btn btn-sm btn-success accept" data-id="<?php echo $instance->id ?>"><?php echo t('organizations.show.accept') ?></a>
-					<a class="btn btn-sm btn-danger refuse" data-id="<?php echo $instance->id ?>"><?php echo t('organizations.show.refuse') ?></a>
+					<a class="btn btn-sm btn-success accept" data-id="<?php echo $instance->id ?>"><?php echo t('guilds.show.accept') ?></a>
+					<a class="btn btn-sm btn-danger refuse" data-id="<?php echo $instance->id ?>"><?php echo t('guilds.show.refuse') ?></a>
 				</td>
 			</tr>
 			<tr height="4"></tr>
 		<?php } endforeach ?>
 		</table>
-		<div align="center" style="padding-top: 10px"><a class="btn btn-sm btn-danger remove_all" data-message="<?php echo t('organizations.remove_all')?>"><?php echo t('buttons.remover_all')?></a></div>
+		<div align="center" style="padding-top: 10px"><a class="btn btn-sm btn-danger remove_all" data-message="<?php echo t('guilds.remove_all')?>"><?php echo t('buttons.remover_all')?></a></div>
 	<?php else: ?>
 		<div align="center" style="padding-top: 10px"><b class="laranja" style="font-size:14px;"><?php echo t('friends.nothing2') ?></b></div>
-	<?php endif ?>    
+	<?php endif ?>
 	</div>
 </div>
