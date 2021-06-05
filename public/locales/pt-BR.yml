@@ -804,8 +804,8 @@ pt-BR:
         Este é um dos módulos competitivos do jogo,
         onde você pode lutar para conseguir ótimas recompensas e titúlos únicos!
         Além de ser eternizado na página inicial do jogo.<br /><br />
-        Cada <span class="verde">vitória te dá 6 pontos</span>, <span class="verde">empate te dá 3 pontos</span> e <span class="vermelho">derrota você perde 1 ponto</span>.<br />
-        Cuidado, caso você zere seus pontos e continue perdendo, ficará com pontuação negativa!<br /><br />
+        Cada <span class="verde">vitória te dá 20 pontos</span> e <span class="vermelho">derrota você perde 5 pontos</span>.<br />
+        Não se preocupe caso esta perdendo muito, pois você nunca ficará com seus Pontos de Liga negativos!<br /><br />
 
         <span class="laranja">A fila irá funcionar juntamenta com a fila PvP todo: <u>Domingo, terça-feira e quinta-feira</u>.</span>
     waiting:
