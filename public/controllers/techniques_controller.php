@@ -590,15 +590,16 @@ class TechniquesController extends Controller {
 		$player			= Player::get_instance();
 		$player_stats = PlayerStat::find_first("player_id=".$player->id);
 
-		if(!$player_stats->view_habilidades){
+		if (!$player_stats->view_habilidades) {
 			$player_stats->view_habilidades = 1;
 			$player_stats->save();
 		}
-		$this->assign('abilities', $player->character()->abilities($player->id));
-		$this->assign('specialities', $player->character()->specialities($player->id));
-		$this->assign('player', $player);
-		$this->assign('counter', 0);
-		$this->assign('player_tutorial', $player->player_tutorial());
+
+		$this->assign('abilities',			$player->character()->abilities($player->id));
+		$this->assign('specialities',		$player->character()->specialities($player->id));
+		$this->assign('player',				$player);
+		$this->assign('counter',			0);
+		$this->assign('player_tutorial',	$player->player_tutorial());
 	}
 
 	function learn_ability() {
