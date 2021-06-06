@@ -75,8 +75,8 @@ trait EffectManager {
 
 			if (
 				$effect->removes_stun || $effect->remove_slowness || $effect ->remove_bleeding || $effect->remove_confusion ||
-				$effect->increase_bleeding_duration || $effect->increase_slowness_duration || $effect->increase_confusion_duration ||
-				$effect->heals_mana || $effect->heals_life
+				$effect->increase_bleeding_duration || $effect->increase_slowness_duration || $effect->increase_confusion_duration/* ||
+				$effect->heals_mana || $effect->heals_life*/
 			) {
 				if ($fetch_condition($direction, $effect->removes_stun)) {
 					$this->_remove_effects_with(['stun']);
@@ -106,6 +106,25 @@ trait EffectManager {
 					$this->increase_effects_with(['confusion' => abs($effect->increase_confusion_duration)]);
 				}
 
+				// if ($fetch_condition($direction, $effect->heals_life)) {
+				// 	$this->less_life	-= $effect->heals_life;
+				// 	if ($this->less_life < 0) {
+				// 		$this->less_life	= 0;
+				// 	}
+				// }
+
+				// if ($fetch_condition($direction, $effect->heals_mana)) {
+				// 	$this->less_mana	-= $effect->heals_mana;
+				// 	if ($this->less_mana < 0) {
+				// 		$this->less_mana	= 0;
+				// 	}
+				// }
+
+				// Instant don't go to the effect array
+				return;
+			}
+
+			if ($effect->heals_mana || $effect->heals_life) {
 				if ($fetch_condition($direction, $effect->heals_life)) {
 					$this->less_life	-= $effect->heals_life;
 					if ($this->less_life < 0) {
@@ -120,27 +139,12 @@ trait EffectManager {
 					}
 				}
 
-				// Instant don't go to the effect array
-				return;
+				--$duration;
+
+				if ($duration <= 0) {
+					return;
+				}
 			}
-
-			// if ($effect->heals_mana || $effect->heals_life) {
-			// 	if ($fetch_condition($direction, $effect->heals_life)) {
-			// 		$this->less_life	-= $effect->heals_life;
-			// 		if ($this->less_life < 0) {
-			// 			$this->less_life	= 0;
-			// 		}
-			// 	}
-
-			// 	if ($fetch_condition($direction, $effect->heals_mana)) {
-			// 		$this->less_mana	-= $effect->heals_mana;
-			// 		if ($this->less_mana < 0) {
-			// 			$this->less_mana	= 0;
-			// 		}
-			// 	}
-
-			// 	--$duration;
-			// }
 
 			if (!isset($effects[$direction][$type])) {
 				$effects[$direction][$type]	= [];
