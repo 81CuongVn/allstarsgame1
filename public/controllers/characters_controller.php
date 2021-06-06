@@ -93,10 +93,10 @@ class CharactersController extends Controller {
 					$player_character_speciality->cooldown = $character_speciality->cooldown;
 					$player_character_speciality->is_initial = $character_speciality->is_initial;
 					$player_character_speciality->save();
-
 				}
-			} else
+			} else {
 				$this->json->errors	= $errors;
+			}
 		} else {
 			$animes		= Anime::find($_SESSION['universal'] ? '1=1 AND playable=1' : 'active=1 AND playable=1', ['cache' => true, 'reorder' => 'id ASC']);
 			$factions	= Faction::find($_SESSION['universal'] ? '1=1' : 'active=1', ['cache' => true, 'reorder' => 'id ASC']);
