@@ -15,6 +15,7 @@
 		}
 	}
 ?>
+<!-- <?=($class2 . ' - ' . $target->id);?> -->
 <div oncontextmenu="return false;" style="cursor:pointer" class="ability-speciality-box <?php echo $class ?> ability-speciality-box2" data-id="<?php echo $class2 == "ability" ? $target->character_ability_id : $target->character_speciality_id ?>" data-url="<?php echo make_url('techniques#change_'.$class2) ?>" data-url2="<?php echo 'techniques#change_'.$class2 ?>">
 	<div class="content">
 		<div class="image">
