@@ -39,9 +39,10 @@ foreach ($players->result_array() as $player) {
 		$player_speciality->save();
 	}
 
+	echo "Character ID: {$player['character_id']}\n";
 	Recordset::update('players', [
-		'character_ability_id'		=> CharacterAbility::find_first('character_id=' . $player['character_id'] . ' AND is_initial = 1', ['cache' => true])->id,
-		'character_speciality_id'	=>CharacterSpeciality::find_first('character_id=' . $player['character_id'] . ' AND is_initial = 1', ['cache' => true])->id
+		'character_ability_id'		=> CharacterAbility::find_first('character_id = ' . $player['character_id'] . ' AND is_initial = 1')->id,
+		'character_speciality_id'	=> CharacterSpeciality::find_first('character_id = ' . $player['character_id'] . ' AND is_initial = 1')->id
 	], [
 		'id'	=> $player['id']
 	]);
