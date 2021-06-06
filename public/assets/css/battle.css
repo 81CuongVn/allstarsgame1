@@ -150,7 +150,8 @@
 	margin: 0 auto;
 	width: 230px;
 	height: 110px;
-	overflow: overlay;
+	overflow: auto;
+    overflow-x: hidden;
 }
 
 #battle-container .player-box {
@@ -239,7 +240,7 @@
 }
 
 #battle-container .log{
-	color: #426785;	
+	color: #426785;
 }
 
 #battle-container .log .p {
@@ -255,7 +256,7 @@
 
 #battle-container .log .d {
 	color: #d32f34;
-	
+
 }
 
 #battle-container .filter-container {
@@ -423,7 +424,7 @@
 .bg-attributes {
 	width:  303px;
 	height: 157px;
-	background-image:url(../images/battle/bg.png);		
+	background-image:url(../images/battle/bg.png);
 	position: relative;
 }
 
