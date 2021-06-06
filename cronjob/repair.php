@@ -24,7 +24,7 @@ foreach ($players->result_array() as $player) {
 	}
 
 	// Adiciona as Especialidades do jogador
-	$specialities = CharacterSpeciality::find("character_id = " . $player->character_id);
+	$specialities = CharacterSpeciality::find("character_id = " . $player['character_id']);
 	foreach ($specialities as $speciality) {
 		$player_speciality							= new PlayerCharacterSpeciality();
 		$player_speciality->player_id				= $player['id'];
