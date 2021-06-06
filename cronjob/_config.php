@@ -41,7 +41,7 @@ if (is_dir(ROOT . '/public/lib')) {
     }
 }
 
-require_once ROOT . '/public/includes/lang.php';
+// require_once ROOT . '/public/includes/lang.php';
 
 require_once ROOT . '/public/helpers/global_helpers.php';
 require_once ROOT . '/public/helpers/url_helper.php';

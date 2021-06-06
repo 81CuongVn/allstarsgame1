@@ -4,17 +4,15 @@ require '_config.php';
 PlayerCharacterAbility::truncate();
 PlayerCharacterSpeciality::truncate();
 
-$players	= Player::all([
-	'skip_after_assign'	=> true
-]);
-foreach ($players as $player) {
+$players	= Recordset::query("SELECT id, character_id FROM players ORDER BY id ASC");
+foreach ($players->result_array() as $player) {
 	// Adiciona as Habilidades do jogador
-	$abilities = CharacterAbility::find("character_id = " . $player->character_id);
+	$abilities = CharacterAbility::find("character_id = " . $player['character_id']);
 	foreach ($abilities as $abilitiy) {
 		$player_ability = new PlayerCharacterAbility();
-		$player_ability->player_id				= $player->id;
+		$player_ability->player_id				= $player['id'];
 		$player_ability->character_ability_id	= $abilitiy->id;
-		$player_ability->character_id			= $player->character_id;
+		$player_ability->character_id			= $player['character_id'];
 		$player_ability->item_effect_ids		= $abilitiy->item_effect_ids;
 		$player_ability->effect_chances			= $abilitiy->effect_chances;
 		$player_ability->effect_duration		= $abilitiy->effect_duration;
@@ -29,9 +27,9 @@ foreach ($players as $player) {
 	$specialities = CharacterSpeciality::find("character_id = " . $player->character_id);
 	foreach ($specialities as $speciality) {
 		$player_speciality							= new PlayerCharacterSpeciality();
-		$player_speciality->player_id				= $player->id;
+		$player_speciality->player_id				= $player['id'];
 		$player_speciality->character_speciality_id	= $speciality->id;
-		$player_speciality->character_id			= $player->character_id;
+		$player_speciality->character_id			= $player['character_id'];
 		$player_speciality->item_effect_ids			= $speciality->item_effect_ids;
 		$player_speciality->effect_chances			= $speciality->effect_chances;
 		$player_speciality->effect_duration			= $speciality->effect_duration;
@@ -41,9 +39,12 @@ foreach ($players as $player) {
 		$player_speciality->save();
 	}
 
-	$player->character_ability_id		= CharacterAbility::find_first('character_id=' . $player->character_id . ' AND is_initial = 1', ['cache' => true])->id;
-	$player->character_speciality_id	= CharacterSpeciality::find_first('character_id=' . $player->character_id . ' AND is_initial = 1', ['cache' => true])->id;
-	$player->save();
+	Recordset::update('players', [
+		'character_ability_id'		=> CharacterAbility::find_first('character_id=' . $player['character_id'] . ' AND is_initial = 1', ['cache' => true])->id,
+		'character_speciality_id'	=>CharacterSpeciality::find_first('character_id=' . $player['character_id'] . ' AND is_initial = 1', ['cache' => true])->id
+	], [
+		'id'	=> $player['id']
+	]);
 }
 
 // $users = User::find('1 = 1');
