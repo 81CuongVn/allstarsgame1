@@ -18,26 +18,30 @@ if (in_array($_SERVER['HTTP_HOST'], ['allstarsgame.com.br'])) {
 }
 
 define('FW_ENV',                    $env);
-require ROOT . '/public/config.' . $env . '.php';
+require_once ROOT . '/public/config.' . $env . '.php';
 
 date_default_timezone_set(DEFAULT_TIMEZONE);
 
-require ROOT . '/public/vendor/autoload.php';
-require ROOT . '/public/helpers/global_helpers.php';
-require ROOT . '/public/helpers/url_helper.php';
+# composer modules
+require_once ROOT . '/public/vendor/autoload.php';
 
 # base framework files
-require ROOT . '/public/includes/autoloader.php';
-require ROOT . '/public/includes/inflector.php';
-require ROOT . '/public/includes/shared_store.php';
-require ROOT . '/public/includes/relation.php';
-require ROOT . '/public/includes/recordset.php';
+require_once ROOT . '/public/includes/autoloader.php';
+require_once ROOT . '/public/includes/inflector.php';
+require_once ROOT . '/public/includes/shared_store.php';
+require_once ROOT . '/public/includes/relation.php';
+require_once ROOT . '/public/includes/recordset.php';
 
 # database
-require ROOT . '/public/includes/db.php';
+require_once ROOT . '/public/includes/db.php';
 
 if (is_dir(ROOT . '/public/lib')) {
     foreach(glob(ROOT . '/public/lib/*.php') as $libFile) {
-        require $libFile;
+        require_once $libFile;
     }
 }
+
+require_once ROOT . '/includes/lang.php';
+
+require_once ROOT . '/public/helpers/global_helpers.php';
+require_once ROOT . '/public/helpers/url_helper.php';
