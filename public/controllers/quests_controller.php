@@ -195,7 +195,6 @@ class QuestsController extends Controller {
 
 		if (isset($_POST['quest']) && is_numeric($_POST['quest']) && isset($_POST['duration']) && is_numeric($_POST['duration']) && $_POST['duration'] > 0) {
 			$quest	= TimeQuest::find($_POST['quest']);
-
 			if (!$quest || ($quest->anime_id && $quest->anime_id != $player->character()->anime_id)) {
 				$errors[]	= t('quests.time.errors.invalid');
 			} else {

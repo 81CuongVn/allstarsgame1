@@ -381,6 +381,10 @@ class BattlePvpsController extends Controller {
 			$errors[]	= t('battles.waiting.errors.is_pvp_queued');
 		}
 
+		if ($player->time_quest_id) {
+			$errors[]	= t('battles.waiting.errors.time_quest');
+		}
+
 		if ($player->for_stamina() < PVP_COST) {
 			$errors[]	= t('battles.errors.no_stamina');
 		}
@@ -392,7 +396,7 @@ class BattlePvpsController extends Controller {
 			$channel->queue_declare(PVP_CHANNEL, FALSE, FALSE, FALSE, FALSE);
 
 			if (date('w') == 0 || date('w') == 2 || date('w') == 4) {
-				$has_league		= Ranked::find_first('started = 1 and finished = 0 order by league desc');
+				$has_league		= Ranked::find_first('started = 1 and finished = 0 order by ranked_id desc');
 				if ($has_league) {
 					$battle_type_id	= 5;
 				} else {
@@ -416,7 +420,7 @@ class BattlePvpsController extends Controller {
 			]), [ 'delivery_mode' => 2 ]);
 
 			$player->less_stamina	+= PVP_COST;
-			$player->is_pvp_queued	= TRUE;
+			$player->is_pvp_queued	= true;
 			$player->save();
 
 			$channel->basic_publish($message, '', PVP_CHANNEL);
