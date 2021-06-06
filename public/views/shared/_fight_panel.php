@@ -137,15 +137,15 @@
 			<div id="technique-container">
 				<div class="technique-list-box">
 					<?php foreach ($techniques as $technique): ?>
-					<?php $item	= $technique->item() ?>
 						<?php
-							if($item->is_defensive){
-								$class = "defense";
-							}else if(!$item->is_defensive && $item->is_generic){
-								$class = "attack";
-							}else{
-								$class = "unique";
-							}
+						$item	= $technique->item();
+						if ($item->is_defensive) {
+							$class = "defense";
+						} elseif (!$item->is_defensive && $item->is_generic) {
+							$class = "attack";
+						} else {
+							$class = "unique";
+						}
 						?>
 						<div class="item item-type-<?php echo $item->item_type_id ?> <?php echo $class ?> <?php echo $item->is_buff ? 'buff' : 'normal' ?>" id="item-container-<?php echo $item->id ?>" data-item="<?php echo $item->id ?>">
 							<img src="<?php echo image_url($item->image(true)) ?>" class="technique-popover" data-source="#technique-content-<?php echo $item->id ?>" data-title="<?php echo $item->description()->name ?>" data-trigger="hover" data-placement="bottom" />
@@ -163,15 +163,19 @@
 
 	</div>
 	<div id="divider"></div>
+</div><br />
+<div align="center">
+	<script id="_wauae2">var _wau = _wau || []; _wau.push(["dynamic", "gq7qmwiq8v", "ae2", "c4302bffffff", "small"]);</script>
+	<script async src="//waust.at/d.js"></script>
 </div>
 <?php if ($player->battle_npc_id) { ?>
 	<script type="text/javascript">
 		$(document).ready(function () {
-			draw_battle_hb(<?php echo $enemy->for_life() ?>, <?php echo $enemy->for_life(true) ?>);
-			draw_battle_hb(<?php echo $player->for_life() ?>, <?php echo $player->for_life(true) ?>, 'l');
+			draw_battle_hb(<?=$enemy->for_life();?>, <?=$enemy->for_life(true);?>);
+			draw_battle_hb(<?=$player->for_life();?>, <?=$player->for_life(true);?>, 'l');
 
-			draw_battle_mb(<?php echo $enemy->for_mana() ?>, <?php echo $enemy->for_mana(true) ?>);
-			draw_battle_mb(<?php echo $player->for_mana() ?>, <?php echo $player->for_mana(true) ?>, 'l');
+			draw_battle_mb(<?=$enemy->for_mana();?>, <?=$enemy->for_mana(true);?>);
+			draw_battle_mb(<?=$player->for_mana();?>, <?=$player->for_mana(true);?>, 'l');
 		});
 </script>
 <?php } ?>

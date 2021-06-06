@@ -667,6 +667,7 @@ li {
 	background-image: url('../images/bg-rodape.jpg');
 	float: left;
 	clear: both;
+    bottom: -16px;
 }
 #rodape-posicao {
 	position: relative;
