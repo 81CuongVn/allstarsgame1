@@ -2,7 +2,7 @@
 class QuestsController extends Controller {
 	private	$quests	= [];
 
-	function daily(){
+	function daily() {
 		$player	= Player::get_instance();
 		$buy_mode_change 	= PlayerChange::find_first("player_id=" . $player->id);
 
@@ -12,10 +12,11 @@ class QuestsController extends Controller {
 		$this->_generate_daily_quest_list($player);
 		$this->assign('player_tutorial', $player->player_tutorial());
 	}
-	function battle(){
+
+	function battle() {
 		$player	= Player::get_instance();
 
-		//Verifica a conquista da missão de combate
+		// Verifica a conquista da missão de combate
 		$player->achievement_check("battle_quests");
 		$player->check_objectives("battle_quests");
 
@@ -23,7 +24,8 @@ class QuestsController extends Controller {
 		$this->assign('quests',			PlayerCombatQuest::find("finished=0 ORDER BY id ASC"));
 		$this->assign('finish_quests',	PlayerCombatQuest::find("finished=1 GROUP BY period"));
 	}
-	function account(){
+
+	function account() {
 		$user				= User::get_instance();
 		$player				= Player::get_instance();
 		$buy_mode_change 	= UserChange::find_first("user_id=" . $user->id);
@@ -35,7 +37,8 @@ class QuestsController extends Controller {
 		$this->_generate_account_quest_list($user);
 		$this->assign('player_tutorial', $player->player_tutorial());
 	}
-	function pet_remove(){
+
+	function pet_remove() {
 		$player			= Player::get_instance();
 
 		$this->as_json			= true;
@@ -43,22 +46,22 @@ class QuestsController extends Controller {
 		$this->json->success	= false;
 		$errors					= array();
 
-		if(is_numeric($_POST['quest_id']) && is_numeric($_POST['counter'])) {
+		if (is_numeric($_POST['quest_id']) && is_numeric($_POST['counter'])) {
 			$pet_id 		= 'pet_id_'.$_POST['counter'];
 
 			$pet_quest		= PlayerPetQuest::find_first('completed = 0 AND pet_quest_id='.$_POST['quest_id'].' AND player_id= '. $player->id);
 			$player_item	= PlayerItem::find_first('item_id='.$pet_quest->{$pet_id}.' AND player_id= '. $player->id);
-
-			if(!$player_item) {
+			if (!$player_item) {
 				$errors[]	= t('character.status.change_image.errors.invalid');
 			}
 		} else {
 			$errors[]	= t('character.status.change_image.errors.invalid');
 		}
-		if(!sizeof($errors)) {
+
+		if (!sizeof($errors)) {
 			$this->json->success  = true;
 
-			//Retira o PET do trabalho na player item
+			// Retira o PET do trabalho na player item
 			$player_item->working = 0;
 			$player_item->save();
 
@@ -69,48 +72,50 @@ class QuestsController extends Controller {
 			//Recalcula o percentual da missão
 			$player->quest_pet_calc_success($_POST['quest_id']);
 
-		}else{
+		} else {
 			$this->json->errors	= $errors;
 		}
-
 	}
+
 	function list_pets() {
 		$this->layout	= false;
 		$player			= Player::get_instance();
 
-		if($_POST) {
+		if ($_POST) {
 			$this->as_json			= true;
 			$this->render			= false;
 			$this->json->success	= false;
 			$errors					= array();
 
-			if(is_numeric($_POST['id']) && is_numeric($_POST['quest_id']) && is_numeric($_POST['counter'])) {
+			if (is_numeric($_POST['id']) && is_numeric($_POST['quest_id']) && is_numeric($_POST['counter'])) {
 				$player_item		= PlayerItem::find_first('item_id='.$_POST['id'].' AND player_id= '. $player->id);
 				$pet_quest			= PlayerPetQuest::find_first('completed = 0 AND pet_quest_id='.$_POST['quest_id'].' AND player_id= '. $player->id);
 				$player_pet_quest	= PlayerPetQuest::find("(pet_id_1=".$_POST['id']." || pet_id_2=".$_POST['id']." || pet_id_3=".$_POST['id'].") and player_id=".$player->id." AND completed=0");
 
-				if($player_pet_quest){
+				if ($player_pet_quest) {
 					$errors[]	= "Esse Mascote já esta em outra missão!";
 				}
-				if($pet_quest->finish_at){
+
+				if ($pet_quest->finish_at) {
 					$errors[]	= "Você não pode trocar o mascote dessa missão!";
 				}
-				if(!$player_item) {
+
+				if (!$player_item) {
 					$errors[]	= t('character.status.change_image.errors.invalid');
 				}
 			} else {
 				$errors[]	= t('character.status.change_image.errors.invalid');
 			}
 
-			if(!sizeof($errors)) {
+			if (!sizeof($errors)) {
 				$this->json->success  = true;
 
 				// Adiciona o Pet no Trabalho
-				if($_POST['counter']==1){
+				if ($_POST['counter'] == 1) {
 					$pet_quest->pet_id_1 = $_POST['id'];
-				}else if($_POST['counter']==2){
+				} elseif ($_POST['counter'] == 2) {
 					$pet_quest->pet_id_2 = $_POST['id'];
-				}else if($_POST['counter']==3){
+				} elseif ($_POST['counter'] == 3) {
 					$pet_quest->pet_id_3 = $_POST['id'];
 				}
 				$pet_quest->save();
@@ -119,7 +124,7 @@ class QuestsController extends Controller {
 				$pets_working = Recordset::query('select GROUP_CONCAT(pet_id_1,",",pet_id_2,",",pet_id_3) as ids from player_pet_quests WHERE  player_id='. $player->id.' AND completed=0')->result_array();
 				$pets_items_no_working = PlayerItem::find('item_id not in ('.$pets_working[0]['ids'].') AND working = 1 AND player_id='. $player->id);
 
-				foreach($pets_items_no_working as $pet_item_no_working){
+				foreach ($pets_items_no_working as $pet_item_no_working) {
 					$pet_item_no_working->working = 0;
 					$pet_item_no_working->save();
 				}
@@ -127,24 +132,22 @@ class QuestsController extends Controller {
 				// Adiciona o Pet para Trabalhar
 				$player_item->working = 1;
 				$player_item->save();
-
-
-
 			} else {
 				$this->json->errors	= $errors;
 			}
 		} else {
-			if(is_numeric($_GET['quest_id'])) {
+			if (is_numeric($_GET['quest_id'])) {
 				$this->assign('quest_id', $_GET['quest_id']);
 				$this->assign('counter', $_GET['counter']);
-			}else{
+			} else {
 				$errors[]	= t('character.status.change_image.errors.invalid');
 			}
 			$this->assign('pets', $player->your_pets());
 			$this->assign('player', $player);
 		}
 	}
-	function guild_daily(){
+
+	function guild_daily() {
 		$player				= Player::get_instance();
 		$total_treasure		= Guild::find_first("id=". $player->guild_id);
 		$can_accept			= $total_treasure->can_accept_player($player->id)->allowed;
@@ -156,9 +159,8 @@ class QuestsController extends Controller {
 		$this->assign('total_treasure', $total_treasure);
 		$this->assign('quests', $player->guild_daily_quests());
 		$this->_generate_guild_daily_quest_list($player);
-
-
 	}
+
 	function time() {
 		$player	= Player::get_instance();
 
@@ -171,6 +173,7 @@ class QuestsController extends Controller {
 
 		$this->_generate_time_quest_list($player);
 	}
+
 	function pet() {
 		$player	= Player::get_instance();
 
@@ -193,19 +196,26 @@ class QuestsController extends Controller {
 		if (isset($_POST['quest']) && is_numeric($_POST['quest']) && isset($_POST['duration']) && is_numeric($_POST['duration']) && $_POST['duration'] > 0) {
 			$quest	= TimeQuest::find($_POST['quest']);
 
-			if (!$quest || ($quest->anime_id && $quest->anime_id != $player->character()->anime_id))
+			if (!$quest || ($quest->anime_id && $quest->anime_id != $player->character()->anime_id)) {
 				$errors[]	= t('quests.time.errors.invalid');
-			else {
+			} else {
 				$duration	= $quest->duration($_POST['duration']);
 
-				if ($_POST['duration'] > $quest->durations)
+				if ($_POST['duration'] > $quest->durations) {
 					$errors[]	= t('quests.time.errors.durations');
-				if (in_array($quest->id, $this->quests))
+				}
+
+				if (in_array($quest->id, $this->quests)) {
 					$errors[]	= t('quests.time.errors.finished');
-				if ($quest->req_level > $player->level)
+				}
+
+				if ($quest->req_level > $player->level) {
 					$errors[]	= t('quests.time.errors.level');
-				// if ($quest->req_graduation_sorting > $player->graduation()->sorting)
+				}
+
+				// if ($quest->req_graduation_sorting > $player->graduation()->sorting) {
 				// 	$errors[]	= t('quests.time.errors.graduation');
+				// }
 			}
 		} else {
 			$errors[]	= t('quests.time.errors.invalid');
@@ -229,9 +239,11 @@ class QuestsController extends Controller {
 			$this->_add_reward($quest, $player, $player_quest);
 
 			$player_quest->save();
-		} else
+		} else {
 			$this->json->messages	= $errors;
+		}
 	}
+
 	function pet_accept() {
 		$this->as_json			= TRUE;
 		$this->json->success	= FALSE;
@@ -242,15 +254,14 @@ class QuestsController extends Controller {
 
 		$this->_generate_pet_quest_list($player);
 
-		if(isset($_POST['quest']) && is_numeric($_POST['quest'])) {
+		if (isset($_POST['quest']) && is_numeric($_POST['quest'])) {
 			$quest	= PetQuest::find($_POST['quest']);
-
-			if(!$quest) {
+			if (!$quest) {
 				$errors[]	= t('quests.time.errors.invalid');
 			} else {
 				$duration	= $quest->duration($quest->durations);
 
-				if(!in_array($quest->id, $this->quests)) {
+				if (!in_array($quest->id, $this->quests)) {
 					$errors[]	= t('quests.time.errors.finished');
 				}
 			}
@@ -266,9 +277,11 @@ class QuestsController extends Controller {
 			$player_pet_quest->finish_at		= date('Y-m-d H:i:s', now() + $duration->total_time);
 			$player_pet_quest->save();
 
-		} else
+		} else {
 			$this->json->messages	= $errors;
+		}
 	}
+
 	function time_wait() {
 		$player			= Player::get_instance();
 		$quest			= $player->character()->anime()->time_quest($player->time_quest_id);
@@ -293,6 +306,7 @@ class QuestsController extends Controller {
 		$this->assign('extras',			$player->attributes());
 		$this->assign('effects',		$player->get_parsed_effects());
 	}
+
 	function time_cancel() {
 		$this->layout   = FALSE;
 		$this->render   = FALSE;
@@ -306,63 +320,62 @@ class QuestsController extends Controller {
 
 		$player_quest->destroy();
 	}
-	function guild_daily_change(){
-		$player					= Player::get_instance();
-		$user					= User::get_instance();
+
+	function guild_daily_change() {
 		$this->as_json			= true;
 		$this->json->success	= false;
 		$this->json->messages	= [];
+
+		$player					= Player::get_instance();
+		$user					= User::get_instance();
+
 		$errors					= [];
 		$buy_change				= 0;
 		$valor_change			= 0;
-		$guilds			= 0;
-		$personagens			= 0;
 
-		if(isset($_POST['id']) && is_numeric($_POST['id']) && isset($_POST['quest']) && is_numeric($_POST['quest'])) {
+		$guild_target			= false;
+		$player_target			= false;
+
+		if (isset($_POST['id']) && is_numeric($_POST['id']) && isset($_POST['quest']) && is_numeric($_POST['quest'])) {
 			$daily				= DailyQuest::find($_POST['quest']);
-
-			if(!$daily) {
+			if (!$daily) {
 				$errors[]	= t('quests.time.errors.invalid');
 			} else {
 				$player_daily 		= GuildDailyQuest::find($_POST['id']);
 				$buy_mode_change 	= PlayerChange::find_first("player_id=" . $player->id);
 
-				if($player_daily->complete==1){
+				if ($player_daily->complete == 1) {
 					$errors[]	= t('quests.time.errors.invalid');
 				}
-				if($buy_mode_change){
-					if($buy_mode_change->weekly == 0){
+
+				if ($buy_mode_change) {
+					if ($buy_mode_change->weekly == 0) {
 						$buy_change = 0;
-					}elseif($buy_mode_change->weekly > 0 && $buy_mode_change->weekly < 5){
-
+					} elseif ($buy_mode_change->weekly > 0 && $buy_mode_change->weekly < 5) {
 						$valor_change = $buy_mode_change->weekly * 500;
-
 						if ($player->currency < $valor_change) {
 							$errors[]	= t("quests.time.errors.not_enough_currency");
-						}else{
+						} else {
 							$buy_change = 1;
 						}
-
-					}elseif($buy_mode_change->weekly > 4){
-
-						if($buy_mode_change->weekly > 4   && $buy_mode_change->weekly < 10){
+					} elseif ($buy_mode_change->weekly > 4) {
+						if ($buy_mode_change->weekly > 4   && $buy_mode_change->weekly < 10) {
 							$valor_change = 1;
-						}elseif($buy_mode_change->weekly > 9  && $buy_mode_change->weekly < 15){
+						} elseif ($buy_mode_change->weekly > 9  && $buy_mode_change->weekly < 15) {
 							$valor_change = 2;
-						}elseif($buy_mode_change->weekly > 14  && $buy_mode_change->weekly < 20){
+						} elseif ($buy_mode_change->weekly > 14  && $buy_mode_change->weekly < 20) {
 							$valor_change = 3;
-						}elseif($buy_mode_change->weekly > 20){
+						} elseif ($buy_mode_change->weekly > 20) {
 							$valor_change = 5;
 						}
 
 						if ($user->credits < $valor_change) {
 							$errors[]	= t("quests.time.errors.not_enough_credits");
-						}else{
+						} else {
 							$buy_change = 2;
 						}
-
 					}
-				}else{
+				} else {
 					$player_change				 = new PlayerChange();
 					$player_change->player_id 	 = $player->id;
 					$player_change->save();
@@ -372,7 +385,7 @@ class QuestsController extends Controller {
 			$errors[]	= t('quests.time.errors.invalid');
 		}
 
-		if(!sizeof($errors)) {
+		if (!sizeof($errors)) {
 			$this->json->success		= true;
 
 			// Desconta o valor do player
@@ -383,41 +396,47 @@ class QuestsController extends Controller {
 			}
 
 			// Atualiza o contador de troca das missões diarias
-			if(!$buy_mode_change){
-				$buy_mode_change 	= PlayerChange::find_first("player_id=" . $player->id);
+			if (!$buy_mode_change) {
+				$buy_mode_change 	= PlayerChange::find_first("player_id = " . $player->id);
 			}
 			$buy_mode_change->weekly++;
 			$buy_mode_change->save();
 
-			//Deleta a missão do player
-			$player_daily_del = Recordset::query("DELETE FROM guild_daily_quests WHERE id=". $_POST['id']." AND guild_id=".$player->guild_id);
+			// Deleta a missão do player
+			Recordset::query("DELETE FROM guild_daily_quests WHERE id = {$_POST['id']} AND guild_id = " . $player->guild_id);
 
-			//Adiciona uma nova missão para o player
-			$daily_quests			= Recordset::query('SELECT * FROM daily_quests WHERE of="guild" ORDER BY RAND() LIMIT 1')->row_array();
-
-			if($daily_quests['anime'] && !$daily_quests['personagem']){
-				$guilds			= Recordset::query('SELECT id FROM guilds WHERE removed = 0 AND id not in ('.$player->guild_id.') ORDER BY RAND() LIMIT 1')->row_array();
-
-			}else if($daily_quests['anime'] && $daily_quests['personagem']){
-
-				$guilds			= Recordset::query('SELECT id FROM guilds WHERE removed = 0 AND id not in ('.$player->guild_id.') ORDER BY RAND() LIMIT 1')->row_array();
-				$guilds['id'] = $guilds['id'] ? $guilds['id'] : 0;
-				$personagens			= Recordset::query('SELECT id FROM players WHERE removed = 0 AND guild_id ='. $guilds['id'] .' ORDER BY RAND() LIMIT 1')->row_array();
-
+			// Adiciona uma nova missão para o player
+			$quest		= DailyQuest::find_first("of = 'guild'", [
+				'reorder'	=> 'RAND()'
+			]);
+			if ($quest->anime && !$quest->personagem) {
+				$guild_target	= Guild::find_first('id != ' . $player->guild_id, [
+                    'reorder'	=> 'RAND()',
+                    'limit'		=> 1
+                ]);
+			} elseif ($quest->anime && $quest->personagem) {
+				$guild_target	= Guild::find_first('id != ' . $player->guild_id, [
+                    'reorder'	=> 'RAND()',
+                    'limit'		=> 1
+                ]);
+				$player_target  = Player::find_first('guild_id = ' . $guild_target->id, [
+                    'reorder'	=> 'RAND()',
+                    'limit'		=> 1
+                ]);
 			}
 
-			Recordset::insert('guild_daily_quests', [
-				'guild_id'		=> $player->guild_id,
-				'daily_quest_id'		=> $daily_quests['id'],
-				'type'					=> $daily_quests['type'],
-				'guild_enemy_id'		=> ($guilds['id']) ? $guilds['id'] : 0 ,
-				'enemy_id'				=> ($personagens['id']) ? $personagens['id'] : 0
-			]);
-
+			$insert = new GuildDailyQuest();
+            $insert->guild_id		= $player->guild_id;
+            $insert->daily_quest_id	= $quest->id;
+            $insert->type			= $quest->type;
+            $insert->guild_enemy_id	= $guild_target ? $guild_target->id : 0;
+            $insert->enemy_id		= $player_target ? $player_target->id : 0;
+            $insert->save();
 		} else {
 			$this->json->messages	= $errors;
 		}
 	}
+
 	function daily_change() {
 		$player					= Player::get_instance();
 		$user					= User::get_instance();
@@ -541,12 +560,15 @@ class QuestsController extends Controller {
 			$this->json->messages	= $errors;
 		}
 	}
+
 	function account_change() {
 		$player					= Player::get_instance();
 		$user					= User::get_instance();
+
 		$this->as_json			= true;
 		$this->json->success	= false;
 		$this->json->messages	= [];
+
 		$errors					= [];
 		$buy_change				= 0;
 		$valor_change			= 0;
