@@ -1,4 +1,4 @@
 <?php
-	class StarDouble extends Relation {
-	
-	}
+class StarDouble extends Relation {
+
+}

@@ -1,4 +1,4 @@
 <?php
-	class SupportTicketCategory extends Relation {
-		static	$always_cached	= true;
-	}
+class SupportTicketCategory extends Relation {
+	static	$always_cached	= true;
+}

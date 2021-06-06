@@ -1,6 +1,4 @@
 <?php
-	class Map extends Relation {
-		static	$always_cached	= true;
-		
-		
-	}
+class Map extends Relation {
+	static	$always_cached	= true;
+}

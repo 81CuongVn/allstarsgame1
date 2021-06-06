@@ -1,4 +1,4 @@
 <?php
-	class TimeQuestDescription extends Relation {
-		static $always_cached	= true;
-	}
+class TimeQuestDescription extends Relation {
+	static $always_cached	= true;
+}

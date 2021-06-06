@@ -1,4 +1,4 @@
 <?php
-	class UserCharacterThemeImage extends Relation {
+class UserCharacterThemeImage extends Relation {
 
-	}
+}

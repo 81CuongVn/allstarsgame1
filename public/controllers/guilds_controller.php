@@ -18,6 +18,7 @@ class GuildsController extends Controller {
 		$this->assign('player', $player);
 		$this->assign('events', $events);
 	}
+
 	function unlock() {
 		$this->as_json			= true;
 		$this->json->success	= false;
@@ -55,14 +56,15 @@ class GuildsController extends Controller {
 
 			// Salva o Id na Tabela de Organização aceita
 			$acccepted_event = new GuildAcceptedEvent();
-			$acccepted_event->guild_id = $player->guild_id;
-			$acccepted_event->guild_event_id = $event->id;
-			$acccepted_event->player_id = $player->id;
+			$acccepted_event->guild_id			= $player->guild_id;
+			$acccepted_event->guild_event_id	= $event->id;
+			$acccepted_event->player_id			= $player->id;
 			$acccepted_event->save();
 		} else {
 			$this->json->messages	= $errors;
 		}
 	}
+
 	function dungeon() {
 		$player		= Player::get_instance();
 		$position	= $player->position();
@@ -102,9 +104,9 @@ class GuildsController extends Controller {
 
 					if ($something) {
 						if ($something->kind == 'door') {
-							$position->xpos = $something->target_xpos;
-							$position->ypos = $something->target_ypos;
-							$position->guild_map_id = $something->target_guild_map_id;
+							$position->xpos			= $something->target_xpos;
+							$position->ypos			= $something->target_ypos;
+							$position->guild_map_id	= $something->target_guild_map_id;
 
 							$this->json->reload = true;
 						} elseif ($something->kind == 'shareditem') {
@@ -153,7 +155,7 @@ class GuildsController extends Controller {
 
 					$objekt = [
 						'id'	=> $object->id,
-						'name'	=> $object->name,
+						'name'	=> $object->description()->name,
 						'kind'	=> $object->kind,
 						'x'		=> $object->xpos,
 						'y'		=> $object->ypos
@@ -416,9 +418,9 @@ class GuildsController extends Controller {
 			$player->battle_npc_id		= $battle->id;
 			$player->save();
 
-			$npc->battle_npc_id					= $battle->id;
+			$npc->battle_npc_id			= $battle->id;
 			$npc->guild_map_object_id	= $object->id;
-			$npc->name							= $object->name;
+			$npc->name					= $object->description()->name;
 			$player->save_npc($npc);
 		} else {
 			$this->json->messages = $errors;
@@ -486,10 +488,10 @@ class GuildsController extends Controller {
 
 				$redis->rPush("aasg_od_invites", $queue_id);
 
-				$redis->set("od_name_"			. $queue_id, $event->name);
+				$redis->set("od_name_"			. $queue_id, $event->description()->name);
 				$redis->set("od_id_"			. $queue_id, $event->id);
 				$redis->set("od_event_"			. $queue_id, $unlocked->id);
-				$redis->set("od_guild_"	. $queue_id, $player->guild_id);
+				$redis->set("od_guild_"			. $queue_id, $player->guild_id);
 				$redis->set("od_needed_"		. $queue_id, $event->players_required);
 
 				// put myself on the accept list
@@ -721,7 +723,7 @@ class GuildsController extends Controller {
 			$guild					= new Guild();
 			$guild->player_id		= $player->id;
 			$guild->creation_type	= $method == 1 ? 1 : 2;
-			$guild->name				= htmlspecialchars($name);
+			$guild->name			= htmlspecialchars($name);
 			$guild->faction_id		= $player->faction_id;
 			$guild->save();
 

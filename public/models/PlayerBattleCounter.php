@@ -1,4 +1,4 @@
 <?php
-	class PlayerBattleCounter extends Relation {
-		
-	}
+class PlayerBattleCounter extends Relation {
+
+}

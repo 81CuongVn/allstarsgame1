@@ -1,4 +1,4 @@
 <?php
-	class ItemType extends Relation {
-		static	$always_cached	= true;
-	}
+class ItemType extends Relation {
+	static	$always_cached	= true;
+}

@@ -24,8 +24,7 @@ class PrivateMessage extends Relation {
 
 	function filter($where, $page, $limit) {
 		$result	= [];
-
-		if(!$where) {
+		if (!$where) {
 			$result['pages']	= floor(Recordset::query('SELECT MAX(id) AS _max FROM private_messages')->row()->_max / $limit);
 			$result['messages']	= PrivateMessage::find(['limit' => ($page * $limit) . ', ' . $limit, 'reorder' => 'created_at DESC']);
 		} else {

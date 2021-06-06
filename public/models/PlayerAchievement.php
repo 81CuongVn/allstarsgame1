@@ -1,4 +1,4 @@
 <?php
-	class PlayerAchievement extends Relation {
-		
-	}
+class PlayerAchievement extends Relation {
+
+}

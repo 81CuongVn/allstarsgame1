@@ -1,4 +1,4 @@
 <?php
-	class PlayerMapAnime extends Relation {
-	
-	}
+class PlayerMapAnime extends Relation {
+
+}

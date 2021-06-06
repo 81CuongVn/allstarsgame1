@@ -1,4 +1,4 @@
 <?php
-	class PlayerFidelity extends Relation {
-		
-	}
+class PlayerFidelity extends Relation {
+
+}

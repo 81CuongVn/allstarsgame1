@@ -1,4 +1,4 @@
 <?php
-	class ItemGem extends Relation {
-		
-	}
+class ItemGem extends Relation {
+
+}

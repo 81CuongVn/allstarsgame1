@@ -1,5 +1,16 @@
 pt-BR:
   effects:
+    heals_by_turn:
+      buff:
+        self: |
+          Cura #{value} da sua vida
+        enemy: |
+          Causa #{value} da vida do inimigo
+      debuff:
+        self: |
+          Causa #{value} de dano em você
+        enemy: |
+          Causa #{value} de dano no inimigo
     kill_with_one_hit:
       buff:
         self: |
@@ -818,9 +829,9 @@ pt-BR:
     dodge_technique: |
       Esquiva o golpe do inimigo
     heals_mana: |
-      Recupera #{value} de mana instantaneamente
+      Recupera #{value} de mana por #{turns} turno(s)
     heals_life: |
-      Cura #{value} de vida instantaneamente
+      Cura #{value} de vida por #{turns} turno(s)
     remove_attack_weakness: |
       Remove a fraqueza do seu próximo golpe
     double_strong_effect: |
@@ -890,7 +901,7 @@ pt-BR:
     weak_effect_percent: |
       #{value}% de dano na desvantagem do tipo do seu golpe
     heals_by_turn: |
-      #{value} de vida por turno
+      #{value} de vida por #{turns} turno(s)
     heals_by_turn_percent: |
       #{value}% de vida por turno
     mana_through_turns: |

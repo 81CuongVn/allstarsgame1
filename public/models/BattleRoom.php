@@ -1,4 +1,4 @@
 <?php
-	class BattleRoom extends Relation {
+class BattleRoom extends Relation {
 
-	}
+}

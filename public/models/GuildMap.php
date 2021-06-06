@@ -1,5 +1,9 @@
 <?php
 class GuildMap extends Relation {
+	function description() {
+		return GuildMapDescription::find_first('guild_map_id=' . $this->id . ' AND language_id=' . $_SESSION['language_id'], array('cache' => true));
+	}
+
 	function objects() {
 		return GuildMapObject::find('guild_map_id = ' . $this->id);
 	}

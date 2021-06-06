@@ -3,15 +3,18 @@
 		margin-bottom: 0;
 	}
 </style>
-<?php echo partial('shared/title', array('title' => 'rankings.rankeds.title', 'place' => 'rankings.rankeds.title')) ?>
-<div class="barra-secao barra-secao-<?php echo $player->character()->anime_id ?>">
+<?=partial('shared/title', [
+	'title'	=> 'rankings.rankeds.title',
+	'place'	=> 'rankings.rankeds.title'
+]);?>
+<div class="barra-secao barra-secao-<?=$player->character()->anime_id;?>">
 	<p>Filtro do Ranking</p>
 </div>
 <form id="ranking-players-filter-form" method="post">
 	<table width="725" border="0" cellpadding="0" cellspacing="0" class="filtros">
 		<tr>
 			<td align="center">
-				<b><?php echo t('characters.create.labels.anime') ?></b><br />
+				<b><?=t('characters.create.labels.anime');?></b><br />
 				<select name="anime_id" id="anime_id" class="form-control input-sm select2" style="width:130px">
 					<option value="0"><?=t('global.all');?></option>
 					<?php foreach ($animes as $anime): ?>
@@ -22,16 +25,16 @@
             <td align="center">
 				<b>Liga</b><br />
 				<select name="league_id" class="form-control input-sm" style="width: 80px;">
-					<option value="0"><?php echo t('global.all') ?></option>
-					<?php foreach ($leagues as $league): ?>
-						<option value="<?php echo $league->league ?>" <?php if ($league->league == $league_id): ?>selected="selected"<?php endif ?>><?php echo $league->league ?></option>
+					<option value="0"><?=t('global.all');?></option>
+					<?php foreach ($rankeds as $ranked): ?>
+						<option value="<?=$ranked->id;?>" <?php if ($ranked->id == $ranked_id): ?>selected="selected"<?php endif ?>><?=$ranked->id;?></option>
 					<?php endforeach ?>
 				</select>
 			</td>
 			<td align="center">
-				<b><?php echo t('characters.select.labels.faction') ?></b><br />
+				<b><?=t('characters.select.labels.faction');?></b><br />
 				<select name="faction_id" class="form-control input-sm" style="width: 85px;">
-					<option value="0"><?php echo t('global.all') ?></option>
+					<option value="0"><?=t('global.all');?></option>
 					<?php foreach ($factions as $faction): ?>
 						<option value="<?=$faction->id;?>"<?php if ($faction->id == $faction_id): ?>selected="selected"<?php endif ?>><?=$faction->description()->name;?></option>
           			<?php endforeach ?>
@@ -51,7 +54,7 @@
 				</select>
 			</td>
 			<td align="center">
-				<b><?php echo t('rankings.players.header.nome') ?></b><br />
+				<b><?=t('rankings.players.header.nome');?></b><br />
 				<input type="text" name="name" class="form-control input-sm" value="<?=$name;?>" style="width:120px"/>
 			</td>
 			<td align="center">
@@ -60,7 +63,7 @@
 		</tr>
 	</table>
 	<br /><br />
-	<input type="hidden" name="page" value="<?php echo $page ?>" />
+	<input type="hidden" name="page" value="<?=$page;?>" />
 	<?php
 	foreach ($players as $p) {
 		if ($faction_id) {
@@ -122,11 +125,7 @@
 			</div>
 			<div class="name" style="height: 45px !important;">
 				<div class="amarelo" style="margin-bottom: 6px;">
-					<?php if (is_player_online($p->player_id)): ?>
-						<img src="<?php echo image_url("on.png" ) ?>"/>
-					<?php else: ?>
-						<img src="<?php echo image_url("off.png" ) ?>"/>
-					<?php endif ?>
+					<img src="<?=image_url((is_player_online($p->player_id) ? 'on' : 'off') . ".png");?>" />
 					<b><?=$p->name;?></b>
 				</div>
 				<img src="<?=image_url('factions/icons/big/' . $p->faction_id . ".png");?>" width="25" />
@@ -139,12 +138,25 @@
 				Nível <?=highamount($p->level);?>
 			</div>
 			<div class="details">
-				<b class="verde" style="font-size: 14px">Liga <?php echo $p->league_id ?></b><br />
-				<b class="laranja" style="font-size: 14px">Rank <?php echo $p->rank == 0 ? "All-Star" : $p->rank?></b>
+				<div class="technique-popover buff" data-source="#ranking-container-<?=$p->id;?>" data-title="Resumo na Liga" data-trigger="click" data-placement="bottom">
+					<b class="verde" style="font-size: 14px">Liga <?=$p->ranked_id;?></b><br />
+					<b class="laranja" style="font-size: 14px"><?=$p->ranked_tier()->description()->name;?></b>
+					<div id="ranking-container-<?=$p->id;?>" class="technique-container">
+						<div class="status-popover-content" style="min-width: 150px;">
+							Vitórias: <span class="verde" style="float: right;"><?=highamount($p->wins);?></span><br />
+							Empates: <span class="cinza" style="float: right;"><?=highamount($p->draws);?></span><br />
+							Derrotas: <span class="vermelho" style="float: right;"><?=highamount($p->losses);?></span><br />
+							Pontos de Liga: <span class="laranja" style="float: right;"><?=highamount($p->score);?></span>
+						</div>
+					</div>
+				</div>
 			</div>
 			<div class="button" style="position:relative; top: 15px;"></div>
 		</div>
 	<?php } ?>
 	<div class="break"></div>
-	<?php echo partial('shared/paginator', ['pages' => $pages, 'current' => $page + 1]) ?>
+	<?=partial('shared/paginator', [
+		'pages'		=> $pages,
+		'current'	=> $page + 1
+	]);?>
 </form>

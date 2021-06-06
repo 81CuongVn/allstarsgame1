@@ -1,4 +1,4 @@
 <?php
-	class StarPlan extends Relation {
-		
-	}
+class StarPlan extends Relation {
+
+}

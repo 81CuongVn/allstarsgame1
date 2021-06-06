@@ -3,8 +3,8 @@ class AchievementsController extends Controller
 {
 	public function index()
 	{
-		$categories = AchievementCategory::find("language_id = " . $_SESSION['language_id'], [
-			'reorder'	=> 'ordem asc'
+		$categories = AchievementCategory::find("1=1", [
+			'reorder'	=> 'sort asc'
 		]);
 
 		$this->assign('categories',	$categories);
@@ -15,12 +15,10 @@ class AchievementsController extends Controller
 		$this->json->success	= true;
 
 		$achievement_id	= isset($_POST['achievement_id']) ? $_POST['achievement_id'] : 1;
-		$achievement	= AchievementCategory::find_first($achievement_id);
-		$achievement_id	= AchievementCategory::find_first('ordem = ' . $achievement->ordem)->id;
 		$player			= Player::get_instance();
 		$user			= User::get_instance();
 		$achievements	= Achievement::find("type = 'achievement' and achievement_category_id = " . $achievement_id, [
-			'reorder'	=> 'ordem asc'
+			'reorder'	=> 'sort asc'
 		]);
 
 		$this->assign('player',			$player);

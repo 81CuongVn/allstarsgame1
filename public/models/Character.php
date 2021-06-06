@@ -5,15 +5,19 @@ class Character extends Relation {
 	public function description() {
 		return CharacterDescription::find_first('character_id=' . $this->id . ' AND language_id=' . $_SESSION['language_id'], array('cache' => true));
 	}
+
 	public function anime() {
 		return Anime::find($this->anime_id, array('cache' => true));
 	}
+
 	public function themes($extra = NULL) {
 		return CharacterTheme::find('character_id=' . $this->id . $extra, array('cache' => true));
 	}
+
 	public function themes_default($id) {
 		return CharacterTheme::find('character_id=' . $id.' AND is_default=1', array('cache' => true));
 	}
+
 	public function profile_image($path_only = FALSE) {
 		$theme	= $this->default_theme();
 		$path	= 'profile/' . $this->id . '/' . ($theme ? $theme->theme_code : 'X') . '/1.jpg';
@@ -24,6 +28,7 @@ class Character extends Relation {
 			return '<img src="' . image_url($path) . '" alt="' . $this->description()->name . '" />';
 		}
 	}
+
 	public function small_image($path_only = false) {
 		$theme	= $this->default_theme();
 		$path	= 'criacao/' . $this->id . '/' . ($theme ? $theme->theme_code : 'X') . '/1.jpg';
@@ -34,6 +39,7 @@ class Character extends Relation {
 			return '<img src="' . image_url($path) . '" alt="' . $this->description()->name . '" />';
 		}
 	}
+
 	public function small_image2($path_only = false) {
 		$theme	= $this->default_theme();
 		$path	= 'criacao/' . $this->id . '/' . ($theme ? $theme->theme_code : 'X') . '/1.jpg';
@@ -44,9 +50,11 @@ class Character extends Relation {
 			return '<img src="' . image_url($path) . '" alt="' . $this->description()->name . '"  width="75"/>';
 		}
 	}
+
 	public function default_theme() {
 		return CharacterTheme::find_first('is_default=1 AND character_id=' . $this->id, array('cache' => true));
 	}
+
 	public function tree() {
 		$result	= [];
 		$items	= Recordset::query("
@@ -65,6 +73,7 @@ class Character extends Relation {
 
 		return $result;
 	}
+
 	public function consumables($shop = FALSE) {
 		$addSql = '';
 		if ($shop) {
@@ -81,18 +90,23 @@ class Character extends Relation {
 
 		return $result;
 	}
+
 	public function specialities($id) {
 		return PlayerCharacterSpeciality::find('character_id=' . $this->id.' and player_id='.$id.' ORDER BY id');
 	}
+
 	public function specialities2() {
 		return CharacterSpeciality::find('character_id=' . $this->id, ['cache' => true]);
 	}
+
 	public function abilities($id) {
 		return PlayerCharacterAbility::find('character_id=' . $this->id.' and player_id='.$id.' ORDER BY id');
 	}
+
 	public function abilities2() {
 		return CharacterAbility::find('character_id=' . $this->id, ['cache' => true]);
 	}
+
 	public function unlocked($user) {
 		if ($this->reward_lock || $this->credits_lock || $this->currency_lock) {
 			return UserCharacter::find('user_id=' . $user->id . ' AND character_id=' . $this->id);
@@ -100,6 +114,7 @@ class Character extends Relation {
 			return true;
 		}
 	}
+
 	public static function pets($player, $filter = '', $page = 0, $limit = FALSE) {
 		$result				= [];
 		$result['pages']	= ceil(Recordset::query("
@@ -129,6 +144,7 @@ class Character extends Relation {
 		")->result_array();
 		return $result;
 	}
+
 	public static function filter($where, $mine_pets, $player, $active, $page, $limit) {
 		$mine_pets2	= $mine_pets;
 		$mine_pets	= implode(",", array_keys($mine_pets));

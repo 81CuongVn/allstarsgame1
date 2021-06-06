@@ -1,4 +1,4 @@
 <?php
-	class Menu extends Relation {
-		static	$always_cached	= true;
-	}
+class Menu extends Relation {
+	static	$always_cached	= true;
+}

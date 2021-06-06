@@ -1,4 +1,4 @@
 <?php
-	class ChallengeDescription extends Relation {
-		static	$always_cached	= true;
-	}
+class ChallengeDescription extends Relation {
+	static	$always_cached	= true;
+}

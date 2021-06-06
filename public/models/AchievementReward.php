@@ -1,3 +1,4 @@
 <?php
-	class AchievementReward extends Relation {
-	}
+class AchievementReward extends Relation {
+
+}

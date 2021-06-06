@@ -1,4 +1,4 @@
 <?php
-	class UserHistoryModeNpc extends Relation {
-	
-	}
+class UserHistoryModeNpc extends Relation {
+
+}
