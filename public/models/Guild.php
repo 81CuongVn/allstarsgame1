@@ -25,7 +25,7 @@ class Guild extends Relation {
 		$leader->save();
 	}
 
-	protected function after_assign() {
+	protected function before_update() {
 		if ($this->is_next_level()) {
 			while ($this->is_next_level()) {
 				$this->exp			-= $this->level_exp();
@@ -39,8 +39,6 @@ class Guild extends Relation {
 	}
 
 	function level_exp() {
-		// return (1500 + $this->level * 1500) * $this->level / 2;
-
 		$exp = ((1000 / 5) * 8);
 		if ($this->level) {
 			$exp *= $this->level + 1;

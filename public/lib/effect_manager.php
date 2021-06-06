@@ -106,25 +106,41 @@ trait EffectManager {
 					$this->increase_effects_with(['confusion' => abs($effect->increase_confusion_duration)]);
 				}
 
-				if ($fetch_condition($direction, $effect->heals_mana)) {
-					$this->less_mana	-= $effect->heals_mana;
-
-					if ($this->less_mana < 0) {
-						$this->less_mana	= 0;
+				if ($fetch_condition($direction, $effect->heals_life)) {
+					$this->less_life	-= $effect->heals_life;
+					if ($this->less_life < 0) {
+						$this->less_life	= 0;
 					}
 				}
 
-				if ($fetch_condition($direction, $effect->heals_life)) {
-					$this->less_life	-= $effect->heals_life;
-
-					if ($this->less_life < 0) {
-						$this->less_life	= 0;
+				if ($fetch_condition($direction, $effect->heals_mana)) {
+					$this->less_mana	-= $effect->heals_mana;
+					if ($this->less_mana < 0) {
+						$this->less_mana	= 0;
 					}
 				}
 
 				// Instant don't go to the effect array
 				return;
 			}
+
+			// if ($effect->heals_mana || $effect->heals_life) {
+			// 	if ($fetch_condition($direction, $effect->heals_life)) {
+			// 		$this->less_life	-= $effect->heals_life;
+			// 		if ($this->less_life < 0) {
+			// 			$this->less_life	= 0;
+			// 		}
+			// 	}
+
+			// 	if ($fetch_condition($direction, $effect->heals_mana)) {
+			// 		$this->less_mana	-= $effect->heals_mana;
+			// 		if ($this->less_mana < 0) {
+			// 			$this->less_mana	= 0;
+			// 		}
+			// 	}
+
+			// 	--$duration;
+			// }
 
 			if (!isset($effects[$direction][$type])) {
 				$effects[$direction][$type]	= [];
@@ -496,6 +512,7 @@ trait EffectManager {
 							}
 						}
 					} else {
+
 						if ($fetch_condition($type, $effect_data->heals_life)) {
 							$this->less_life	+= $effect_data->heals_life;
 							if ($this->less_life > $this->for_life()) {

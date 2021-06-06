@@ -507,7 +507,7 @@ class RankingsController extends Controller {
 			$filter2		.= '';
 			$anime_id		= 0;
 			$faction_id		= 0;
-			$league_id		= 0;
+			$ranked_id		= 0;
 			$graduation_id	= 0;
 			$name			= '';
 		} else {
@@ -531,12 +531,12 @@ class RankingsController extends Controller {
 				$faction_id	= $player->faction_id;
 			}
 
-			if (isset($_POST['league_id']) && is_numeric($_POST['league_id'])) {
-				if ($_POST['league_id'] != 0) {
-					$filter	.= ' AND league_id=' . $_POST['league_id'];
+			if (isset($_POST['ranked_id']) && is_numeric($_POST['ranked_id'])) {
+				if ($_POST['ranked_id'] != 0) {
+					$filter	.= ' AND ranked_id=' . $_POST['ranked_id'];
 				}
 
-				$league_id	= $_POST['league_id'];
+				$ranked_id	= $_POST['ranked_id'];
 			}
 
 			if (isset($_POST['graduation_id']) && is_numeric($_POST['graduation_id'])) {
@@ -564,7 +564,7 @@ class RankingsController extends Controller {
 		$result		= RankingRanked::filter($filter,$filter2, $page, $limit);
 		$animes		= Anime::find('active=1', ['cache' => true]);
 		$factions	= Faction::find('active=1', ['cache' => true]);
-		$leagues	= Ranked::find('started = 1 order by league desc');
+		$rankeds	= Ranked::find('started = 1 order by id desc');
 
 		if ($anime_id) {
 			$graduations	= Graduation::all();
@@ -591,12 +591,12 @@ class RankingsController extends Controller {
 		$this->assign('page',			$page);
 		$this->assign('anime_id',		$anime_id);
 		$this->assign('faction_id',		$faction_id);
-		$this->assign('league_id',		$league_id);
+		$this->assign('ranked_id',		$ranked_id);
 		$this->assign('graduation_id',	$graduation_id);
 		$this->assign('name',			$name);
 		$this->assign('animes',			$animes);
 		$this->assign('factions',		$factions);
-		$this->assign('leagues',		$leagues);
+		$this->assign('rankeds',		$rankeds);
 		$this->assign('graduations',	$graduations);
 	}
 	function guilds() {

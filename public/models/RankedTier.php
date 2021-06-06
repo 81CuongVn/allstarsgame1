@@ -1,6 +1,6 @@
 <?php
 class RankedTier extends Relation {
 	function description() {
-		return RankedTierDescription::find_first('ranked_tier_id = ' . $this->id);
+		return RankedTierDescription::find_first('language_id = ' . $_SESSION['language_id'] . ' and ranked_tier_id = ' . $this->id);
 	}
 }

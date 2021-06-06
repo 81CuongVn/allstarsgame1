@@ -1489,7 +1489,7 @@ trait BattleSharedMethods {
 			} else {
 				// Level da Conta ( Batalha NPC e PVP )
 				$user = $p->user();
-				$user->exp	+= percent(($is_pvp ? 2000 : 10), $exp + $exp_extra);
+				$user->exp	+= percent(($is_pvp ? 20 : 10), $exp + $exp_extra);
 				$user->save();
 
 				// Level da Organização ( Batalha NPC e PVP )

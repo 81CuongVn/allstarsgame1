@@ -1,4 +1,4 @@
 <?php
-	class PlayerMapLog extends Relation {
-	
-	}
+class PlayerMapLog extends Relation {
+
+}

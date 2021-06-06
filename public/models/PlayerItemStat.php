@@ -1,3 +1,4 @@
 <?php
-	class PlayerItemStat extends Relation {
-	}
+class PlayerItemStat extends Relation {
+
+}

@@ -10,12 +10,12 @@
 	<?php foreach ($events as $event): ?>
 		<?php $unlocked = $event->unlocked($player->guild_id, $event->id, $player->id) ?>
 		<div class="group">
-			<div class="technique-popover buff" data-source="#challenges-container-<?php echo $event->id ?>" data-title="<?php echo $event->name ?>" data-trigger="click" data-placement="bottom">
+			<div class="technique-popover buff" data-source="#challenges-container-<?php echo $event->id ?>" data-title="<?php echo $event->description()->name ?>" data-trigger="click" data-placement="bottom">
 			<div class="<?php echo $unlocked ? '' : 'efeito'?>">
 				<?php echo $event->image() ?>
 			</div>
 			<div class="clearfix"></div>
-			<div class="name-anime"><?php echo $event->name ?></div>
+			<div class="name-anime"><?php echo $event->description()->name ?></div>
 			<div class="clearfix"></div>
             <div class="buttons">
 				<?php if ($unlocked): ?>

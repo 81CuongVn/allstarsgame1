@@ -47,7 +47,7 @@ class Graduation extends Relation {
 			$total_league_win	= 0;
 			$player_rankeds		= PlayerRanked::find("player_id=".$player->id);
 			foreach ($player_rankeds as $player_ranked) {
-				$total_league_win += $player_ranked->win_total;
+				$total_league_win += $player_ranked->wins;
 			}
 
 			$ok		= $this->req_league_wins > $total_league_win ? false : $ok;

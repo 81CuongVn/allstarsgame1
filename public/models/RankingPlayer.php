@@ -23,7 +23,7 @@ class RankingPlayer extends Relation {
 	static function filter($where, $page, $limit) {
 		$result	= [];
 
-		if(!$where) {
+		if (!$where) {
 			$result['pages']	= ceil(Recordset::query('SELECT COUNT(id) AS _max FROM ranking_players')->row()->_max / $limit);
 			$result['players']	= RankingPlayer::all(['limit' => ($page * $limit) . ', ' . $limit, 'reorder' => 'position_general ASC']);
 		} else {

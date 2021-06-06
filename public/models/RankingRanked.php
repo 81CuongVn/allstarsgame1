@@ -4,6 +4,10 @@ class RankingRanked extends Relation {
 		return Graduation::find($this->graduation_id);
 	}
 
+	function ranked_tier() {
+		return RankedTier::find($this->ranked_tier_id);
+	}
+
 	function headline() {
 		return Headline::find($this->headline_id);
 	}
@@ -29,7 +33,7 @@ class RankingRanked extends Relation {
 		$where3 = $where2;
 		$where2 = $where2 ? "position_faction" : "position_general";
 
-		if(!$where && !$where3) {
+		if (!$where && !$where3) {
 			$result['pages']	= ceil(Recordset::query('SELECT COUNT(id) AS _max FROM ranking_rankeds')->row()->_max / $limit);
 			$result['players']	= RankingRanked::all(['limit' => ($page * $limit) . ', ' . $limit, 'reorder' => ''.$where2.' ASC']);
 		} else {

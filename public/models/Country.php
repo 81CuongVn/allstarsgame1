@@ -1,4 +1,4 @@
 <?php
-	class Country extends Relation {
-		static	$always_cached	= true;
-	}
+class Country extends Relation {
+	static	$always_cached	= true;
+}

@@ -883,7 +883,7 @@ class Player extends Relation {
 					if ($user_objective) {
 						// Só quer saber a quantidade de vitorias pvp league
 						if ($objective->battle_league_pvp) {
-							$ranked_total	= Recordset::query('select sum(win_total) as vitorias, sum(loss_total) as derrotas, sum(draw_total) as empates from player_rankeds where player_id='.$this->id)->result_array();
+							$ranked_total	= Recordset::query('select sum(wins) as vitorias, sum(losses) as derrotas, sum(draws) as empates from player_rankeds where player_id='.$this->id)->result_array();
 							if ($ranked_total[0]['vitorias'] >= $objective->quantity) {
 								$this->objectives_reward($this, $objective, $user_objective);
 							}

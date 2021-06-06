@@ -1,4 +1,4 @@
 <?php
-	class PlayerChallenge extends Relation {
-	
-	}
+class PlayerChallenge extends Relation {
+
+}

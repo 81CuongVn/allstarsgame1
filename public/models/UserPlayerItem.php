@@ -1,4 +1,4 @@
 <?php
-	class UserPlayerItem extends Relation {
-		
-	}
+class UserPlayerItem extends Relation {
+
+}

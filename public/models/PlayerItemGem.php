@@ -1,4 +1,4 @@
 <?php
-	class PlayerItemGem extends Relation {
+class PlayerItemGem extends Relation {
 
-	}
+}

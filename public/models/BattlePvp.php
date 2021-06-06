@@ -9,11 +9,11 @@ class BattlePvp extends Relation {
 	}
 
 	function enemy() {
-		if(!$this->_player) {
+		if (!$this->_player) {
 			return false;
 		}
 
-		if($this->_player == $this->player_id) {
+		if ($this->_player == $this->player_id) {
 			$id	= $this->enemy_id;
 		} else {
 			$id	= $this->player_id;

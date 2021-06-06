@@ -1,4 +1,4 @@
 <?php
-	class UserChange extends Relation {
-	
-	}
+class UserChange extends Relation {
+
+}

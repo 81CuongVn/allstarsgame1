@@ -1,4 +1,4 @@
 <?php
-	class PlayerKill extends Relation {
+class PlayerKill extends Relation {
 
-	}
+}

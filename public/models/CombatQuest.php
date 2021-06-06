@@ -1,4 +1,4 @@
 <?php
-	class CombatQuest extends Relation {
-	
-	}
+class CombatQuest extends Relation {
+
+}

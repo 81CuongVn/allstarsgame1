@@ -29,7 +29,7 @@ class RankingChallenge extends Relation {
 		$where3 = $where2;
 		$where2 = $where2 ? "position_faction" : "position_general";
 
-		if(!$where && !$where3) {
+		if (!$where && !$where3) {
 			$result['pages']	= ceil(Recordset::query('SELECT COUNT(id) AS _max FROM ranking_challenges')->row()->_max / $limit);
 			$result['players']	= RankingChallenge::all(['limit' => ($page * $limit) . ', ' . $limit, 'reorder' => ''.$where2.' ASC']);
 		} else {

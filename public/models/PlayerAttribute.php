@@ -1,4 +1,4 @@
 <?php
-	class PlayerAttribute extends Relation {
-		
-	}
+class PlayerAttribute extends Relation {
+
+}

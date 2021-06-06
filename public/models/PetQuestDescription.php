@@ -1,4 +1,4 @@
 <?php
-	class PetQuestDescription extends Relation {
-		static $always_cached	= true;
-	}
+class PetQuestDescription extends Relation {
+	static $always_cached	= true;
+}

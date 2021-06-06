@@ -1,4 +1,4 @@
 <?php
-	class UserHistoryModeGroup extends Relation {
-	
-	}
+class UserHistoryModeGroup extends Relation {
+
+}

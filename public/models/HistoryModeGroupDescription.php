@@ -1,4 +1,4 @@
 <?php
-	class HistoryModeGroupDescription extends Relation {
-		static	$always_cached	= true;
-	}
+class HistoryModeGroupDescription extends Relation {
+	static	$always_cached	= true;
+}
