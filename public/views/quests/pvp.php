@@ -6,7 +6,7 @@
 				backdrop: true,
 				page: 13,
 				steps: [{
-					element: "#time-quests-list-tabs",
+					element: "#pvp-quests-list-content",
 					title: "Testando suas Capacidades",
 					content: "Aceite essas Missões e vença batalhas contra outros jogadores com determinadas condições, como sem usar Modificadores, Habilidades e Especialidades! Essas Missões resetam todo dia 1 e 15, então faça o quanto antes!",
 					placement: "top"
