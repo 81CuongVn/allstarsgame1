@@ -1,31 +1,31 @@
 <ul>
 <?php foreach ($effects as $effect): ?>
 	<?php
-		$direction_player	= '.self';
-		$direction_enemy	= '.enemy';
-		$effect_base		= 'effects';
-		$current_extra		= 0;
-		$is_percent			= false;
+	$direction_player	= '.self';
+	$direction_enemy	= '.enemy';
+	$effect_base		= 'effects';
+	$current_extra		= 0;
+	$is_percent			= false;
 
-		if (!isset($fixed_effect)) {
-			$fixed_effect	= false;
-		}
+	if (!isset($fixed_effect)) {
+		$fixed_effect	= false;
+	}
 
-		if ($fixed_effect) {
-			$effect_base		= 'fixed_effects';
-		}
+	if ($fixed_effect) {
+		$effect_base		= 'fixed_effects';
+	}
 
-		$word	= '';
+	$word	= '';
 
-		if ($effect->effect_type == 'percent') {
-			$word		= '%';
-			$is_percent	= true;
-		}
+	if ($effect->effect_type == 'percent') {
+		$word		= '%';
+		$is_percent	= true;
+	}
 
-		$turn_type	= '';
-		if ($effect->duration > 1) {
-			$turn_type	= t($effect_base . '.turns', ['turns' => $effect->duration]);
-		}
+	$turn_type	= '';
+	if ($effect->duration > 1) {
+		$turn_type	= t($effect_base . '.turns', ['turns' => $effect->duration]);
+	}
 	?>
 	<ul>
 		<?php if ($effect->bleeding): ?>

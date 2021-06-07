@@ -1,6 +1,6 @@
 <?php
 class Controller {
-	private $assigns	= array();
+	private $assigns	= [];
 	public	$as_json	= false;
 	public	$json		= null;
 	public	$view		= null;
