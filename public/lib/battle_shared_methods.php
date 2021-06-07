@@ -1298,11 +1298,11 @@ trait BattleSharedMethods {
 					if (!$is_pvp && ($battle->battle_type_id == 7 || $battle->battle_type_id == 8)) {
 						if ($battle->battle_type_id == 7) {
 							$session = new GuildMapObjectSession();
-							$session->down								= 1;
+							$session->down						= 1;
 							$session->guild_id					= $p->guild_id;
 							$session->guild_map_object_id		= $e->guild_map_object_id;
 							$session->guild_accepted_event_id	= $p->guild_accepted_event_id;
-							$session->player_id							= $p->id;
+							$session->player_id					= $p->id;
 						} else {
 							$session		= GuildMapObjectSession::find_first('player_id=0 AND guild_accepted_event_id=' . $p->guild_accepted_event_id . ' AND guild_id=' . $p->guild_id . ' AND guild_map_object_id=' . $e->guild_map_object_id);
 							$session->down	= 1;

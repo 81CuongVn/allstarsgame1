@@ -15,6 +15,8 @@ pt-BR:
     friend: Amigos
     event: Eventos
   menus:
+    discord: Servidor no Discord
+    whatsapp: Grupo no WhatsApp
     tournaments: Torneio All-Star
     tutorial: Tutorial
     objectives: Objetivos de Round
@@ -1126,10 +1128,12 @@ pt-BR:
         Somente será aceitos upload de imagens GIF, JPG, PNG e BMP. Outros formatos de arquivos serão ignorados.
       info_box:
         title: |
-          Precisa de ajuda ?
+          Precisa de ajuda?
         text: |
           O sistema de suporte foi criado para caso você tenha algum problema no jogo ou queira sugerir alguma idéia para nós.
-          Abaixo estão os tickets que você abriu anteriorment.<br /><br />
+          Abaixo estão os tickets que você abriu anteriormente.<br /><br />
+          Caso queira um atendimento mais ápido, sugerimos que utilize nosso <strong class="laranja">DISCORD</strong>!<br /><br />
+          <a href="https://discord.gg/k7DDZKUvy8" class="btn btn-sm btn-success" style="text-transform: uppercase;" target="_blank">Ir para o Discord</a>
           <a href="#{url}" class="btn btn-sm btn-primary">Abrir um novo ticket</a>
     category: Categoria
     title: Título
@@ -1140,6 +1144,7 @@ pt-BR:
         #
       title: Título
       category: Categoria
+      player: Jogador
       status: Status
       open_date: Data de abertura
     ticket:
