@@ -1,13 +1,12 @@
 <?php
-function make_url($to = '', $params = array(), $ignore_path = false) {
+function make_url($to = '', $params = [], $ignore_path = false) {
 	global $rewrite_enabled, $site_url;
 
-	$to				= explode('#', $to);
+	$to	= explode('#', $to);
 
-	if(sizeof($params)) {
-		$final_params	= array();
-
-		foreach($params as $_ => $value) {
+	if (sizeof($params)) {
+		$final_params	= [];
+		foreach ($params as $_ => $value) {
 			$final_params[]	= urlencode($_) . '=' . urlencode($value);
 		}
 
@@ -16,7 +15,7 @@ function make_url($to = '', $params = array(), $ignore_path = false) {
 		$final_params	= '';
 	}
 
-	if(!$to[0] && !$rewrite_enabled) {
+	if (!$to[0] && !$rewrite_enabled) {
 		return ($ignore_path ? '' : $site_url . ($rewrite_enabled ? '/' : '/index.php'));
 	} else {
 		return ($ignore_path ? '' : $site_url . ($rewrite_enabled ? '/' : '/index.php/')) . $to[0] . (isset($to[1]) ? '/' . $to[1] : '') . $final_params;
@@ -38,10 +37,9 @@ function image_url($path) {
 	return $site_url . '/assets/images/' . $path  . '?v=' . GAME_VERSION;
 }
 
-function redirect_to($to = '', $params = array()) {
+function redirect_to($to = '', $params = []) {
 	$url	= make_url($to, $params);
-
-	if(!headers_sent()) {
+	if (!headers_sent()) {
 		header('Location: ' . $url);
 		die();
 	}

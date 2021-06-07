@@ -9,43 +9,44 @@ function generate_menu_data() {
 
     $categories	= MenuCategory::all(['cache' => true]);
 
-    if($_SESSION['player_id']) {
+    if ($_SESSION['player_id']) {
         $instance	= Player::find($_SESSION['player_id']);
     } else {
         $instance	= false;
     }
 
-    foreach($categories as $category) {
-        $item	= array(
+    foreach ($categories as $category) {
+        $item	= [
             'id'	=> $category->id,
             'name'	=> $category->name,
-            'menus'	=> array()
-        );
+            'menus'	=> []
+		];
 
         $raw_menu_data[$category->id]	= $item;
 
-        if(!is_menu_accessible($category, $instance)) {
+        if (!is_menu_accessible($category, $instance)) {
             continue;
         }
 
         $menus						= $category->menus();
         $menu_data[$category->id]	= $item;
 
-        foreach($menus as $menu) {
-            $sub_item	= array(
+        foreach ($menus as $menu) {
+            $sub_item	= [
                 'id'		=> $menu->id,
                 'name'		=> $menu->name,
-                'href'		=> $menu->href,
-                'hidden'	=> $menu->hidden
-            );
+                'href'		=> !$menu->external ? make_url($menu->href) : $menu->href,
+                'hidden'	=> $menu->hidden,
+				'external'	=> $menu->external
+			];
 
-            if(!is_menu_accessible($menu, $instance)) {
+            if (!is_menu_accessible($menu, $instance)) {
                 continue;
             }
 
-            $menu_actions[]	= make_url($menu->href, array(), true);
+            $menu_actions[]	= make_url($menu->href, [], true);
 
-            if($menu->hidden) {
+            if ($menu->hidden) {
                 continue;
             }
 
@@ -54,9 +55,9 @@ function generate_menu_data() {
         }
     }
 
-    $actions	= Menu::find('menu_category_id=0', ['cache' => true]);
+    $actions	= Menu::find('menu_category_id = 0', [ 'cache' => true ]);
     foreach ($actions as $action) {
-        if(!is_menu_accessible($action, $instance)) {
+        if (!is_menu_accessible($action, $instance)) {
             continue;
         }
 

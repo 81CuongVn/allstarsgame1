@@ -641,6 +641,35 @@ class Item extends Relation {
 	function chat_embed() {
 		return '';
 	}
+
+	static function add_random_pet($player, $rarity = null) {
+		$counter	= 0;
+		do {
+			$chosen_pet	= Item::find_first('item_type_id = 3 and is_initial = 1' . ($rarity ? " and rarity = '{$rarity}'" : ''), [
+				'reorder' => 'RAND()'
+			]);
+
+			if ($counter > 10) {
+				$chosen_pet = false;
+
+				break;
+			}
+
+			++$counter;
+		} while (!$chosen_pet || $player->has_item($chosen_pet->id));
+
+		if ($chosen_pet) {
+			$pet			= new PlayerItem();
+			$pet->item_id	= $chosen_pet->id;
+			$pet->player_id	= $player->id;
+			$pet->save();
+
+			return $pet;
+		}
+
+		return false;
+	}
+
 	static function generate_equipment($player, $rarity_fragment = null, $slot = false) {
 		$slots	= [
 			'head',

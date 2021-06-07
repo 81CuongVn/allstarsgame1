@@ -661,22 +661,23 @@ class QuestsController extends Controller {
 			$this->json->messages	= $errors;
 		}
 	}
-	function daily_finish(){
+
+	function daily_finish() {
 		$player					= Player::get_instance();
 		$player_quests		  	= DailyQuest::all(['cache' => true]);
 		$player_quests_daily   	= $player->daily_quests();
+
 		$this->as_json			= true;
 		$this->json->success	= false;
 		$this->json->messages	= [];
+
 		$errors					= [];
 
-		if($player_quests_daily){
-			foreach($player_quests as $player_quest){
-				foreach($player_quests_daily as $player_quest_daily){
-					if($player_quest_daily->daily_quest_id == $player_quest->id){
-
-						if($player_quest_daily->total >= $player_quest->total && !$player_quest_daily->complete){
-
+		if ($player_quests_daily) {
+			foreach ($player_quests as $player_quest) {
+				foreach ($player_quests_daily as $player_quest_daily) {
+					if ($player_quest_daily->daily_quest_id == $player_quest->id) {
+						if($player_quest_daily->total >= $player_quest->total && !$player_quest_daily->complete) {
 							// Recompensas e Atualizações de contadores
 							$this->json->success				= true;
 							$player_quest_daily->completed_at	= now(true);
@@ -690,7 +691,7 @@ class QuestsController extends Controller {
 							$counters->daily_total++;
 							$counters->save();
 
-							//Verifica a conquista de fragmentos - Conquista
+							// Verifica a conquista e objetuivo
 							$player->achievement_check("daily_quests");
 							$player->check_objectives("daily_quests");
 
@@ -698,22 +699,20 @@ class QuestsController extends Controller {
 							$user = User::get_instance();
 							$user->exp	+= percent(1, $player_quest->currency);
 							$user->save();
-
-						}else{
+						} else {
 							$errors[]	= t('quests.daily.errors.not_ready');
 							$this->json->messages	= $errors;
 						}
-
 					}
 				}
 			}
-
-		}else{
+		} else {
 			$errors[]	= t('quests.daily.errors.not_mission');
 			$this->json->messages	= $errors;
 		}
 	}
-	function account_finish(){
+
+	function account_finish() {
 		$player					= Player::get_instance();
 		$user					= User::get_instance();
 		$player_quests		  	= DailyQuest::find("of='account'", ['cache' => true]);
@@ -723,15 +722,14 @@ class QuestsController extends Controller {
 		$this->json->messages	= [];
 		$errors					= [];
 
-		if($user_quests_daily){
-			foreach($player_quests as $player_quest){
-				foreach($user_quests_daily as $user_quest_daily){
-					if($user_quest_daily->daily_quest_id == $player_quest->id){
-
-						if($user_quest_daily->total >= $player_quest->total && !$user_quest_daily->complete){
-
+		if ($user_quests_daily) {
+			foreach ($player_quests as $player_quest) {
+				foreach ($user_quests_daily as $user_quest_daily) {
+					if ($user_quest_daily->daily_quest_id == $player_quest->id) {
+						if ($user_quest_daily->total >= $player_quest->total && !$user_quest_daily->complete) {
 							// Recompensas e Atualizações de contadores
 							$this->json->success				= true;
+
 							$user_quest_daily->completed_at	= now(true);
 							$user_quest_daily->complete		= 1;
 							$user_quest_daily->save();
@@ -739,53 +737,52 @@ class QuestsController extends Controller {
 							// Adiciona o EXP da conta
 							$user->exp($player_quest->currency);
 
-
-							//Adiciona o contador de missões da conta
+							// Adiciona o contador de missões da conta
 							$counters	= $user->quest_counters();
 							$counters->daily_total++;
 							$counters->save();
 
-							//Verifica a conquista de fragmentos - Conquista
+							// Verifica a conquista e objetivo
 							$player->achievement_check("account_quests");
 							$player->check_objectives("account_quests");
 						} else {
 							$errors[]	= t('quests.daily.errors.not_ready');
 							$this->json->messages	= $errors;
 						}
-
 					}
 				}
 			}
-
-		}else{
+		} else {
 			$errors[]	= t('quests.daily.errors.not_mission');
 			$this->json->messages	= $errors;
 		}
 	}
-	function guild_daily_finish(){
+
+	function guild_daily_finish() {
 		$player							= Player::get_instance();
 		$players_orgs					= Player::find("guild_id=". $player->guild_id);
 		$player_quests		  			= DailyQuest::all(['cache' => true]);
-		$guild_quests_daily   	= $player->guild_daily_quests();
+		$guild_quests_daily				= $player->guild_daily_quests();
+
 		$this->as_json					= true;
 		$this->json->success			= false;
 		$this->json->messages			= [];
+
 		$errors							= [];
 
-		if($guild_quests_daily){
-			foreach($player_quests as $player_quest){
-				foreach($guild_quests_daily as $guild_quest_daily){
-					if($guild_quest_daily->daily_quest_id == $player_quest->id){
-
-						if($guild_quest_daily->total >= $player_quest->total && !$guild_quest_daily->complete){
-
+		if ($guild_quests_daily) {
+			foreach ($player_quests as $player_quest) {
+				foreach ($guild_quests_daily as $guild_quest_daily) {
+					if ($guild_quest_daily->daily_quest_id == $player_quest->id) {
+						if ($guild_quest_daily->total >= $player_quest->total && !$guild_quest_daily->complete) {
 							// Recompensas e Atualizações de contadores
 							$this->json->success					= true;
+
 							$guild_quest_daily->completed_at	= now(true);
 							$guild_quest_daily->complete		= 1;
 							$guild_quest_daily->save();
 
-							foreach($players_orgs as $players_org){
+							foreach ($players_orgs as $players_org) {
 								$p = Player::find_first("id=". $players_org->id);
 								$p->currency	+= $player_quest->currency;
 								$p->save();
@@ -795,19 +792,17 @@ class QuestsController extends Controller {
 							$counters->daily_total++;
 							$counters->save();
 
-							//Verifica a conquista de fragmentos - Conquista
+							// Verifica a conquista e objetivo
 							$player->achievement_check("weekly_quests");
 							$player->check_objectives("weekly_quests");
 						} else {
 							$errors[]	= t('quests.daily.errors.not_ready');
 							$this->json->messages	= $errors;
 						}
-
 					}
 				}
 			}
-
-		}else{
+		} else {
 			$errors[]	= t('quests.daily.errors.not_mission');
 			$this->json->messages	= $errors;
 		}
@@ -868,7 +863,7 @@ class QuestsController extends Controller {
 			$counters->time_total++;
 			$counters->save();
 
-			// Verifica a conquista de fragmentos - Conquista
+			// Verifica a conquista e objetivo
 			$player->achievement_check("time_quests");
 			$player->check_objectives("time_quests");
 
@@ -884,6 +879,7 @@ class QuestsController extends Controller {
 		$this->as_json			= true;
 		$this->json->success	= false;
 		$this->json->messages	= [];
+
 		$errors					= [];
 
 		if (isset($_POST['id']) && is_numeric($_POST['id'])) {

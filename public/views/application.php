@@ -270,7 +270,7 @@ if (preg_match('/read_news/', $action)) {
 							<?php if (sizeof($menu_category['menus'])) { ?>
 								<ul>
 									<?php foreach ($menu_category['menus'] as $menu) { ?>
-										<li><a href="<?=make_url($menu['href']);?>"><?=t($menu['name']);?></a></li>
+										<li><a href="<?=$menu['href'];?>"<?=($menu['external'] ? ' target="_blank"' : '');?>><?=t($menu['name']);?></a></li>
 									<?php } ?>
 								</ul>
 							<?php } ?>
@@ -348,7 +348,7 @@ if (preg_match('/read_news/', $action)) {
 											foreach ($menu_category['menus'] as $menu) {
 												if ($menu['hidden']) continue;
 									?>
-									<li><a href="<?=make_url($menu['href']);?>"><?=t($menu['name']);?></a></li>
+									<li><a href="<?=$menu['href'];?>"<?=($menu['external'] ? ' target="_blank"' : '');?>><?=t($menu['name']);?></a></li>
 									<?php
 											}
 										}
