@@ -900,8 +900,8 @@ class CharactersController extends Controller {
 		$rarity		= 'all';
 		$status		= 'all';
 
-		$pet = Item::add_random_pet($player, 'mega');
-		var_dump($pet);
+		// $pet = Item::add_random_pet($player, 'mega');
+		// var_dump($pet);
 
 		if ($_POST) {
 			if (isset($_POST['name']) && strlen(trim($_POST['name']))) {
