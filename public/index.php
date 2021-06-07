@@ -290,7 +290,11 @@ if ($layout) {
     if ($instance->as_json) {
         header('Content-Type: application/json');
 
-        echo json_encode($instance->json, JSON_PRETTY_PRINT);
+		if ($_SESSION['universal']) {
+        	echo json_encode($instance->json, JSON_PRETTY_PRINT);
+		} else {
+			echo json_encode($instance->json);
+		}
     } else {
         echo $view;
     }
