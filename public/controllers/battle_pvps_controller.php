@@ -489,7 +489,7 @@ class BattlePvpsController extends Controller {
 
 			$message	= new AMQPMessage(json_encode([
 				'method'	=> 'accept_queue',
-				'id'		=> $player->id
+				'id'		=> (int)$player->id
 			]), [ 'delivery_mode' => 2 ]);
 
 			$channel->basic_publish($message, '', PVP_CHANNEL);
@@ -523,7 +523,7 @@ class BattlePvpsController extends Controller {
 
 			$message	= new AMQPMessage(json_encode([
 				'method'	=> 'exit_queue',
-				'id'		=> $player->id
+				'id'		=> (int)$player->id
 			]), [ 'delivery_mode' => 2 ]);
 
 			$player->less_stamina	-= PVP_COST;
