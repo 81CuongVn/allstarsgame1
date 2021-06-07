@@ -22,20 +22,18 @@
 			$is_percent	= true;
 		}
 
-		if ($effect->duration <= 1) {
-			// $turn_type	= t($effect_base . '.instant');
-			$turn_type	= '';
-		} else {
+		$turn_type	= '';
+		if ($effect->duration > 1) {
 			$turn_type	= t($effect_base . '.turns', ['turns' => $effect->duration]);
 		}
 	?>
 	<ul>
-		<?php if($effect->bleeding): ?>
+		<?php if ($effect->bleeding): ?>
 			<li>
 				<?php
-					if ($player) {
-						$current_extra	= $is_percent ? $player->get_sum_effect('increase_bleeding_damage_percent') : $player->get_sum_effect('increase_bleeding_damage');
-					}
+				if ($player) {
+					$current_extra	= $is_percent ? $player->get_sum_effect('increase_bleeding_damage_percent') : $player->get_sum_effect('increase_bleeding_damage');
+				}
 				?>
 				<?php if (!$fixed_effect): ?>
 					<?php echo t($effect_base . '.chance', ['value' => $effect->chance]) ?>
@@ -44,7 +42,7 @@
 				<?php echo $turn_type ?>
 			</li>
 		<?php endif ?>
-		<?php if($effect->stun): ?>
+		<?php if ($effect->stun): ?>
 			<li>
 				<?php if (!$fixed_effect): ?>
 					<?php echo t($effect_base . '.chance', ['value' => $effect->chance]) ?>
@@ -53,12 +51,12 @@
 				<?php echo $turn_type ?>
 			</li>
 		<?php endif ?>
-		<?php if($effect->slowness): ?>
+		<?php if ($effect->slowness): ?>
 			<li>
 				<?php
-					if ($player) {
-						$current_extra	= $is_percent ? $player->get_sum_effect('increase_slowness_damage_percent') : $player->get_sum_effect('increase_slowness_damage');
-					}
+				if ($player) {
+					$current_extra	= $is_percent ? $player->get_sum_effect('increase_slowness_damage_percent') : $player->get_sum_effect('increase_slowness_damage');
+				}
 				?>
 				<?php if (!$fixed_effect): ?>
 					<?php echo t($effect_base . '.chance', ['value' => $effect->chance]) ?>
