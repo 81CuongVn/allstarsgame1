@@ -719,7 +719,7 @@ trait EffectManager {
 		// <--
 
 		// Regra para esconder os talentos na luta
-		if (!$this->battle_npc_id) {
+		if ($this->battle_pvp_id) {
 			if ($this->no_talent || $enemy->no_talent) {
 				// $this->refresh_talents($enemy);
 			} else {
