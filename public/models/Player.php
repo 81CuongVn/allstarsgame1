@@ -689,6 +689,26 @@ class Player extends Relation {
 				$user->earn($rewards->credits);
 			}
 
+			if ($rewards->equipment) {
+				$reward[] = "1x Equipamento Comum Aleatório";
+
+				Item::generate_equipment($this, 0);
+			}
+
+			if ($rewards->pet) {
+				$reward[] = "1x Mascote Comum Aleatório";
+
+				// Dá um pet random!
+				$npc_pet	= Item::find_first('item_type_id = 3 and is_initial = 1 and rarity = "common"', [
+					'reorder' => 'RAND()'
+				]);
+
+				$player_pet				= new PlayerItem();
+				$player_pet->item_id	= $npc_pet->id;
+				$player_pet->player_id	= $this->id;
+				$player_pet->save();
+			}
+
 			if ($rewards->item_id) {
 				$reward[] = $rewards->quantity . "x " . Item::find($rewards->item_id)->description()->name;
 
