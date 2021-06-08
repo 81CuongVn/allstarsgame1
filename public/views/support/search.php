@@ -1,4 +1,4 @@
-<div class="barra-secao barra-secao-<?=$player->character()->anime_id;?>">
+<div class="barra-secao barra-secao-<?=($player ? $player->character()->anime_id : rand(1, 40));?>">
 	<table width="725">
 		<tr>
 			<td width="305" class="text-center"><?=t('support.header.title');?></td>

@@ -270,7 +270,7 @@ io.sockets.on 'connection', (socket) ->
 		channel_id		= 0 unless channel_id
 		broadcast		= from: player.name, message: data.message, channel: data.channel, channel_id: channel_id, id: player.uid, user_id: player.user_id, gm: player.gm, when: new Date()
 
-		if data.channel == 'faction'
+		if data.channel != 'faction'
 			broadcast.color	= player.color
 			broadcast.icon	= player.icon
 
@@ -359,14 +359,14 @@ setInterval -> # Channel GC timer
 		proc(key, channel) if channel.last < past
 , 5000
 
-setInterval -> # Played time
-	proc	= (user) ->
-		process.nextTick ->
-			db.query 'UPDATE `played_time` SET `minutes` = `minutes` + 1 WHERE `player_id` = ' + user
+# setInterval -> # Played time
+# 	proc	= (user) ->
+# 		process.nextTick ->
+# 			db.query 'UPDATE `played_time` SET `minutes` = `minutes` + 1 WHERE `player_id` = ' + user
 
-	for user, state of counters
-		proc user if state
-, 60000
+# 	for user, state of counters
+# 		proc user if state
+# , 60000
 
 # Startup =)
 bootstrap()
