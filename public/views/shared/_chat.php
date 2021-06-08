@@ -25,8 +25,25 @@
     </div>
 </div>
 <?php
-$color          = '';
-$icon           = '';
+$color	= '';
+switch ($player->faction_id) {
+	case 1:		$color	= '#2c8ee5';	break;
+	case 2:		$color	= '#f1270f';	break;
+	case 3:		$color	= '#f4ffff';	break;
+}
+
+$icon_img	= image_url('factions/icons/small/' . $player->faction_id . '.png');
+$icon_name	= $player->faction()->description()->name;
+$icon		= '<img style="width: 16px; vertical-align: -5px;" src="' . $icon_img . '" title="' . $icon_name . '" /> ';
+
+if ($_SESSION['universal']) {			// Admin
+	$color	= '#ffb34f';
+	$icon	= '<span class="fa fa-star fa-fw" style="vertical-align: -1px;"></span> ';
+} elseif (in_array($player->id, [])) {	// Mod
+	$color	= '#1abc9c';
+	$icon	= '<span class="fa fa-star fa-fw" style="vertical-align: -1px;"></span> ';
+}
+
 $guild          = $player->guild();
 $chat_data	    = [
     'uid'           => $player->id,
@@ -49,8 +66,8 @@ $registration   = openssl_encrypt(json_encode($chat_data), 'AES-256-CBC', $key, 
 	(function () {
 		var __chat_socket	= io.connect('<?=CHAT_SERVER;?>');
 		var has_type		= false;
-		var	channel			= 'faction';
-		var	real_channel	= 'faction';
+		var	channel			= 'world';
+		var	real_channel	= 'world';
 		var	pvt_dest		= 0;
 		var	last_pvt_index	= 0;
 		var	trigger_pvt		= false;
@@ -216,7 +233,12 @@ $registration   = openssl_encrypt(json_encode($chat_data), 'AES-256-CBC', $key, 
 				$('.chat-pvt').css({bottom: 340});
 			}
 		});
+
 		__chat_socket.on('broadcast', function (data) {
+			if (typeof data.channel === 'undefined') {
+				return;
+			}
+
 			if (data.channel == 'system' || data.channel == 'warn') {
 				$('#chat-v2 .messages').append('<div class="chat-message chat-' + data.channel + '"><div>Aviso de sistema</div><div>' + data.message + '</div></div>')
 
@@ -237,8 +259,8 @@ $registration   = openssl_encrypt(json_encode($chat_data), 'AES-256-CBC', $key, 
 				}
 			// <--
 
-            if (data.gm) {
-                data.icon = '<span class="fa fa-star fa-fw"></span>';
+            if (data.gm && data.channel != 'world') {
+                data.icon = '<span class="fa fa-star fa-fw"></span> ';
             }
 
             $('#chat-v2 .messages').append(
@@ -400,6 +422,7 @@ $registration   = openssl_encrypt(json_encode($chat_data), 'AES-256-CBC', $key, 
 
 				$('#chat-v2 .messages .chat-' + channel).show();
 				$('#chat-v2 .messages .chat-warn').show();
+				$('#chat-v2 .messages .chat-system').show();
 
 				$('#chat-v2 input[name=message]').focus();
 				resize_selector();
@@ -435,7 +458,7 @@ $registration   = openssl_encrypt(json_encode($chat_data), 'AES-256-CBC', $key, 
 					$('#chat-v2 .selector ul li').each(function () {
 						var _		= $(this);
 
-						if (_.data('channel') == 'faction') {
+						if (_.data('channel') == 'world') {
 							_.trigger('click');
 						}
 					});
@@ -444,7 +467,7 @@ $registration   = openssl_encrypt(json_encode($chat_data), 'AES-256-CBC', $key, 
 				$('#chat-v2 .selector ul li').each(function () {
 					var _		= $(this);
 
-					if (_.data('channel') == 'faction') {
+					if (_.data('channel') == 'world') {
 						_.trigger('click');
 					}
 				});
