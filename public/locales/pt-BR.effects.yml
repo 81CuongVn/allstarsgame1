@@ -1,16 +1,5 @@
 pt-BR:
   effects:
-    heals_by_turn:
-      buff:
-        self: |
-          Cura #{value} da sua vida
-        enemy: |
-          Causa #{value} da vida do inimigo
-      debuff:
-        self: |
-          Causa #{value} de dano em você
-        enemy: |
-          Causa #{value} de dano no inimigo
     kill_with_one_hit:
       buff:
         self: |
@@ -71,7 +60,7 @@ pt-BR:
     instant: |
       no turno atual
     chance: |
-      <span class="effect_gray">#{value}% de chance de</span>
+        <span class="effect_gray">#{value}% de chance de</span>
     bleeding:
       buff:
         self: |
@@ -251,14 +240,14 @@ pt-BR:
     generic_attack_damage:
       buff:
         self: |
-          aumentar em #{value} o dano do seu próximo golpe genérico
+          aumentar em #{value}% o dano do seu próximo golpe genérico
         enemy: |
-          aumentar em #{value} o dano do próximo golpe genérico do inimigo
+          aumentar em #{value}% o dano do próximo golpe genérico do inimigo
       debuff:
         self: |
-          diminuir em #{value} o dano do seu próximo golpe genérico
+          diminuir em #{value}% o dano do seu próximo golpe genérico
         enemy: |
-          diminuir em #{value} o dano do próximo golpe genérico do inimigo
+          diminuir em #{value}% o dano do próximo golpe genérico do inimigo
     attack_half_life:
       buff:
         self: |
@@ -284,14 +273,14 @@ pt-BR:
     unique_attack_damage:
       buff:
         self: |
-          aumentar em #{value} o dano do seu próximo golpe único
+          aumentar em #{value}% o dano do seu próximo golpe único
         enemy: |
-          umentar em #{value} o dano do próximo golpe único do inimigo
+          umentar em #{value}% o dano do próximo golpe único do inimigo
       debuff:
         self: |
-          diminuir em #{value} o dano do seu próximo golpe único
+          diminuir em #{value}% o dano do seu próximo golpe único
         enemy: |
-          diminuir em #{value} o dano do próximo golpe único do inimigo
+          diminuir em #{value}% o dano do próximo golpe único do inimigo
     for_atk:
       buff:
         self: |
@@ -317,20 +306,20 @@ pt-BR:
     for_crit:
       buff:
         self: |
-          aumentar em #{value} o seu crítico
+          aumentar em #{value}% o seu crítico
         enemy: |
-          aumentar em #{value} o crítico do inimigo
+          aumentar em #{value}% o crítico do inimigo
       debuff:
         self: |
-          diminuir o seu crítico em #{value}
+          diminuir o seu crítico em #{value}%
         enemy: |
-          diminuir #{value} do crítico do inimigo
+          diminuir #{value}% do crítico do inimigo
     for_crit_inc:
       buff:
         self: |
-          aumentar em #{value} o seu dano crítico
+          aumentar em #{value}% o seu dano crítico
         enemy: |
-          aumentar em #{value} o dano crítico do inimigo
+          aumentar em #{value}% o dano crítico do inimigo
       debuff:
         self: |
           diminuir o seu dano critico em #{value}
@@ -339,25 +328,25 @@ pt-BR:
     for_abs:
       buff:
          self: |
-           aumentar em #{value} a sua absorção
+           aumentar em #{value}% a sua absorção
          enemy: |
-           aumentar em #{value} a absorção do inimigo
+           aumentar em #{value}% a absorção do inimigo
       debuff:
         self: |
-          diminuir a sua absorção em #{value}
+          diminuir a sua absorção em #{value}%
         enemy: |
-          diminuir #{value} da absorção do inimigo
+          diminuir #{value}% da absorção do inimigo
     for_abs_inc:
       buff:
         self: |
-           aumentar em #{value} o seu dano absorvido
+           aumentar em #{value}% o seu dano absorvido
         enemy: |
-          aumentar em #{value} o dano absorvido do inimigo
+          aumentar em #{value}% o dano absorvido do inimigo
       debuff:
         self: |
-          diminuir em #{value} o seu dano absorvido
+          diminuir em #{value}% o seu dano absorvido
         enemy: |
-          diminuir em #{value} o dano absorvido do inimigo
+          diminuir em #{value}% o dano absorvido do inimigo
     for_prec:
       buff:
         self: |
@@ -771,55 +760,55 @@ pt-BR:
     bleeding: |
       <span style="color:#fb102b; font-size: 15px">Sangramento</span><br/>Recebendo #{value} de dano por #{turns} turno(s)
     bleeding_percent: |
-      <span style="color:#fb102b; font-size: 15px">Sangramento</span><br/>Recebendo #{value} de dano por #{turns} turno(s)
+      <span style="color:#fb102b; font-size: 15px">Sangramento</span><br/>Recebendo #{value}% de dano por #{turns} turno(s)
     slowness: |
       <span style="color:#107efb; font-size: 15px">Lentidão</span><br/>Seus Golpes estão #{value} mais lentos e o tempo de recarga aumentado em 1 por #{turns} turno(s)
     slowness_percent: |
-      <span style="color:#107efb; font-size: 15px">Lentidão</span><br/>Seus Golpes estão #{value} mais lentos e o tempo de recarga aumentado em 1 por #{turns} turno(s)
+      <span style="color:#107efb; font-size: 15px">Lentidão</span><br/>Seus Golpes estão #{value}% mais lentos e o tempo de recarga aumentado em 1 por #{turns} turno(s)
     confusion: |
-      <span style="color:#fb8410; font-size: 15px">Confusão</span><br/>Seus golpes estão com  #{value} de Chance de Acerto por #{turns} turno(s)
+      <span style="color:#fb8410; font-size: 15px">Confusão</span><br/>Seus golpes estão com  #{value}% de Chance de Acerto por #{turns} turno(s)
     confusion_percent: |
-      <span style="color:#fb8410; font-size: 15px">Confusão</span><br/>Seus golpes estão com  #{value} de Chance de Acerto por #{turns} turno(s)
+      <span style="color:#fb8410; font-size: 15px">Confusão</span><br/>Seus golpes estão com  #{value}% de Chance de Acerto por #{turns} turno(s)
     for_atk: |
       #{value} de Ataque por #{turns} turno(s)
     for_atk_percent: |
-      #{value} de Ataque por #{turns} turno(s)
+      #{value}% de Ataque por #{turns} turno(s)
     for_def: |
       #{value} de Defesa por #{turns} turno(s)
     for_def_percent: |
-      #{value} de Defesa por #{turns} turno(s)
+      #{value}% de Defesa por #{turns} turno(s)
     for_crit: |
-      #{value} de Chance de Crítico por #{turns} turno(s)
+      #{value}% de Chance de Crítico por #{turns} turno(s)
     for_crit_percent: |
-      #{value} de Chance de Crítico por #{turns} turno(s)
+      #{value}% de Chance de Crítico por #{turns} turno(s)
     for_crit_inc: |
-      #{value} de Dano Crítico por #{turns} turno(s)
+      #{value}% de Dano Crítico por #{turns} turno(s)
     for_crit_inc_percent: |
-      #{value} de Dano Crítico por #{turns} turno(s)
+      #{value}% de Dano Crítico por #{turns} turno(s)
     for_abs: |
-      #{value} de Chance de Absorção por #{turns} turno(s)
+      #{value}% de Chance de Absorção por #{turns} turno(s)
     for_abs_percent: |
-      #{value} de Chance de Absorção por #{turns} turno(s)
+      #{value}% de Chance de Absorção por #{turns} turno(s)
     for_abs_inc: |
-      #{value} de Dano Absorvido por #{turns} turno(s)
+      #{value}% de Dano Absorvido por #{turns} turno(s)
     for_abs_inc_percent: |
-      #{value} de Dano Absorvido por #{turns} turno(s)
+      #{value}% de Dano Absorvido por #{turns} turno(s)
     for_prec: |
-      #{value} de Chance de Precisão por #{turns} turno(s)
+      #{value}% de Chance de Precisão por #{turns} turno(s)
     for_prec_percent: |
-      #{value} de Chance de Precisão por #{turns} turno(s)
+      #{value}% de Chance de Precisão por #{turns} turno(s)
     for_init: |
       #{value} de Iniciativa por #{turns} turno(s)
     for_init_percent: |
-      #{value} de Iniciativa por #{turns} turno(s)
+      #{value}% de Iniciativa por #{turns} turno(s)
     for_hit: |
-      #{value} de Chance de Acerto por #{turns} turno(s)
+      #{value}% de Chance de Acerto por #{turns} turno(s)
     for_hit_percent: |
-      #{value} de Chance de Acerto por #{turns} turno(s)
+      #{value}% de Chance de Acerto por #{turns} turno(s)
     attack_speed: |
       #{value} de Tempo de Execução por #{turns} turno(s)
     attack_speed_percent: |
-      #{value} de Tempo de Execução por #{turns} turno(s)
+      #{value}% de Tempo de Execução por #{turns} turno(s)
     null_next_attack: |
       Anula o golpe do inimigo
     steal_mana: |
@@ -829,9 +818,9 @@ pt-BR:
     dodge_technique: |
       Esquiva o golpe do inimigo
     heals_mana: |
-      Recupera #{value} de mana por #{turns} turno(s)
+      Recupera #{value} de mana instantaneamente
     heals_life: |
-      Cura #{value} de vida por #{turns} turno(s)
+      Cura #{value} de vida instantaneamente
     remove_attack_weakness: |
       Remove a fraqueza do seu próximo golpe
     double_strong_effect: |
@@ -859,191 +848,191 @@ pt-BR:
     elemental_damage: |
       #{value} de Dano Elemental
     elemental_damage_percent: |
-      #{value} de Dano Elemental
+      #{value}% de Dano Elemental
     fighter_damage: |
       #{value} de Dano Corpo-a-corpo
     fighter_damage_percent: |
-      #{value} de Dano Corpo-a-corpo
+      #{value}% de Dano Corpo-a-corpo
     magic_damage: |
       #{value} de Dano Mágico
     magic_damage_percent: |
-      #{value} de Dano Mágico
+      #{value}% de Dano Mágico
     warrior_damage: |
       #{value} de Dano Guerreiro
     warrior_damage_percent: |
-      #{value} de Dano Guerreiro
+      #{value}% de Dano Guerreiro
     ranger_damage: |
       #{value} de Dano Atirador
     ranger_damage_percent: |
-      #{value} de Dano Atirador
+      #{value}% de Dano Atirador
     bleeding_chance: |
-      #{value} de Chance de Sangramento
+      #{value}% de Chance de Sangramento
     bleeding_chance_percent: |
-      #{value} de Chance de Sangramento
+      #{value}% de Chance de Sangramento
     slowness_chance: |
-      #{value} de chance de causar lentidão
+      #{value}% de chance de causar lentidão
     slowness_chance_percent: |
-      #{value} de chance de causar lentidão
+      #{value}% de chance de causar lentidão
     confusion_chance: |
-      #{value} de Chance de Confusão
+      #{value}% de Chance de Confusão
     confusion_chance_percent: |
-      #{value} de Chance de Confusão
+      #{value}% de Chance de Confusão
     stun_chance: |
-      #{value} de Chance de Atordoamento
+      #{value}% de Chance de Atordoamento
     stun_chance_percent: |
-      #{value} de Chance de Atordoamento
+      #{value}% de Chance de Atordoamento
     strong_effect: |
       #{value} de dano na Vantagem do tipo do seu golpe
     strong_effect_percent: |
-      #{value} de dano na Vantagem do tipo do seu golpe
+      #{value}% de dano na Vantagem do tipo do seu golpe
     weak_effect: |
       #{value} de dano na desvantagem do tipo do seu golpe
     weak_effect_percent: |
-      #{value} de dano na desvantagem do tipo do seu golpe
+      #{value}% de dano na desvantagem do tipo do seu golpe
     heals_by_turn: |
-      #{value} de vida por #{turns} turno(s)
+      #{value} de vida por turno
     heals_by_turn_percent: |
-      #{value} de vida por #{turns} turno(s)
+      #{value}% de vida por turno
     mana_through_turns: |
       Recupera 1 de mana a cada #{value} turnos
     mana_through_turns_percent: |
-      Recupera 1 de mana a cada #{value} turnos
+      Recupera 1 de mana a cada #{value}% turnos
     exp_reward_extra: |
       #{value} de experiência extra no final da batalha
     exp_reward_extra_percent: |
-      #{value} de experiência extra no final da batalha
+      #{value}% de experiência extra no final da batalha
     currency_reward_extra: |
       #{value} de dinheiro extra no final da batalha
     currency_reward_extra_percent: |
-      #{value} de dinheiro extra no final da batalha
+      #{value}% de dinheiro extra no final da batalha
     item_find: |
-      #{value} de chance de achar itens no final da batalha
+      #{value}% de chance de achar itens no final da batalha
     item_find_percent: |
-      #{value} de chance de achar itens no final da batalha
+      #{value}% de chance de achar itens no final da batalha
     fragment_find: |
-      #{value} de chance de achar fragmentos das almas no final da batalha
+      #{value}% de chance de achar fragmentos das almas no final da batalha
     fragment_find_percent: |
-      #{value} de chance de achar fragmentos das almas no final da batalha
+      #{value}% de chance de achar fragmentos das almas no final da batalha
     grimoire_find: |
-      #{value} de chance de achar páginas perdidas no final da batalha
+      #{value}% de chance de achar páginas perdidas no final da batalha
     grimoire_find_percent: |
-      #{value} de chance de achar páginas no final da batalha
+      #{value}% de chance de achar páginas no final da batalha
     damage_in_bleeding: |
       #{value} de dano extra em inimigo com Sangramento
     damage_in_bleeding_percent: |
-      #{value} de dano extra em inimigo com Sangramento
+      #{value}% de dano extra em inimigo com Sangramento
     damage_in_slowness: |
       #{value} de dano extra em inimigo com Lentidão
     damage_in_slowness_percent: |
-      #{value} de dano extra em inimigo com Lentidão
+      #{value}% de dano extra em inimigo com Lentidão
     damage_in_confusion: |
       #{value} de dano extra em inimigo com Confusão
     damage_in_confusion_percent: |
-      #{value} de dano extra em inimigo com Confusão
+      #{value}% de dano extra em inimigo com Confusão
     damage_in_stun: |
       #{value} de dano extra em inimigo Atordoados
     damage_in_stun_percent: |
-      #{value} de dano extra em inimigo Atordoados
+      #{value}% de dano extra em inimigo Atordoados
     generic_attack_damage: |
       #{value} de dano nos golpes genéricos
     generic_attack_damage_percent: |
-      #{value} de dano nos golpes genéricos
+      #{value}% de dano nos golpes genéricos
     generic_defense: |
       #{value} de defesa nos golpes defensivos
     generic_defense_percent: |
-      #{value} de defesa nos golpes defensivos
+      #{value}% de defesa nos golpes defensivos
     unique_attack_damage: |
       #{value} de dano nos golpes únicos
     unique_attack_damage_percent: |
-      #{value} de dano nos golpes únicos
+      #{value}% de dano nos golpes únicos
     attack_half_life: |
       #{value} de Ataque com menos de 50% da vida
     attack_half_life_percent: |
-      #{value} de Ataque com menos de 50% da vida
+      #{value}% de Ataque com menos de 50% da vida
     defense_half_life: |
       #{value} de Defesa com menos de 50% da vida
     defense_half_life_percent: |
-      #{value} de Defesa com menos de 50% da vida
+      #{value}% de Defesa com menos de 50% da vida
     increase_bleeding_damage: |
       #{value} de Dano Extra em Sangramento
     increase_bleeding_damage_percent: |
-      #{value} de Dano Extra em Sangramento
+      #{value}% de Dano Extra em Sangramento
     increase_slowness_damage: |
       #{value} de Tempo de Execução durante a Lentidão
     increase_slowness_damage_percent: |
-      #{value} de Tempo de Execução durante a Lentidão
+      #{value}% de Tempo de Execução durante a Lentidão
     increase_confusion_damage: |
       #{value} de Chance de Acerto durante a Confusão
     increase_confusion_damage_percent: |
-      #{value} de Chance de Acerto durante a Confusão
+      #{value}% de Chance de Acerto durante a Confusão
     next_turn_mana: |
-      #{value} de Chance de recuperar 1 de Mana ao Pular o Turno
+      #{value}% de Chance de recuperar 1 de Mana ao Pular o Turno
     next_turn_mana_percent: |
-      #{value} de Chance de recuperar 1 de Mana ao Pular o Turno
+      #{value}% de Chance de recuperar 1 de Mana ao Pular o Turno
     next_turn_life: |
-      #{value} de Chance de recuperar 50 de Vida ao Pular o Turno
+      #{value}% de Chance de recuperar 50 de Vida ao Pular o Turno
     next_turn_life_percent: |
-      #{value} de Chance de recuperar 50 de Vida ao Pular o Turno
+      #{value}% de Chance de recuperar 50 de Vida ao Pular o Turno
     mana_half_life: |
-      #{value} de Chance de recuperar 1 de mana quando sua mana estiver abaixo da metade
+      #{value}% de Chance de recuperar 1 de mana quando sua mana estiver abaixo da metade
     mana_half_life_percent: |
-      #{value} de Chance de recuperar 1 de mana quando sua mana estiver abaixo da metade
+      #{value}% de Chance de recuperar 1 de mana quando sua mana estiver abaixo da metade
     reduce_critical_damage: |
-      #{value} de Chance de reduzir pela metade seu Dano Crítico
+      #{value}% de Chance de reduzir pela metade seu Dano Crítico
     reduce_critical_damage_percent: |
-     #{value} de Chance de reduzir pela metade seu Dano Crítico
+     #{value}% de Chance de reduzir pela metade seu Dano Crítico
     enemy_absorb_reduction: |
-      #{value} de Chance de reduzir pela metade o seu Dano Absorvido
+      #{value}% de Chance de reduzir pela metade o seu Dano Absorvido
     enemy_absorb_reduction_percent: |
-     #{value} de Chance de reduzir pela metade o seu Dano Absorvido
+     #{value}% de Chance de reduzir pela metade o seu Dano Absorvido
     low_technique_no_cost: |
-      #{value} de Chance dos golpes de até 3 de Mana não consumirem Mana
+      #{value}% de Chance dos golpes de até 3 de Mana não consumirem Mana
     low_technique_no_cost_percent: |
-      #{value} de Chance dos golpes de até 3 de Mana não consumirem Mana
+      #{value}% de Chance dos golpes de até 3 de Mana não consumirem Mana
     mid_technique_no_cooldown: |
-      #{value} de Chance dos golpes com 4 a 7 não terem Recarga
+      #{value}% de Chance dos golpes com 4 a 7 não terem Recarga
     mid_technique_no_cooldown_percent: |
-      #{value} de Chance dos golpes com 4 a 7 não terem Recarga
+      #{value}% de Chance dos golpes com 4 a 7 não terem Recarga
     high_technique_half_cost: |
-      #{value} de Chance dos golpes com 8 ou mais de Mana gastarem apenas 50% de Mana
+      #{value}% de Chance dos golpes com 8 ou mais de Mana gastarem apenas 50% de Mana
     high_technique_half_cost_percent: |
-      #{value} de Chance dos golpes com 8 ou mais de Mana gastarem apenas 50% de Mana
+      #{value}% de Chance dos golpes com 8 ou mais de Mana gastarem apenas 50% de Mana
     damage_increase_in_confusion: |
-      #{value} de Chance de aumentar o dano em 25% quando o oponente estiver Confuso
+      #{value}% de Chance de aumentar o dano em 25% quando o oponente estiver Confuso
     damage_increase_in_confusion_percent: |
-      #{value} de Chance de aumentar o dano em 25% quando o oponente estiver Confuso
+      #{value}% de Chance de aumentar o dano em 25% quando o oponente estiver Confuso
     damage_increase_in_slowness: |
-      #{value} de Chance de aumentar o dano em 25% quando o oponente estiver Lento
+      #{value}% de Chance de aumentar o dano em 25% quando o oponente estiver Lento
     damage_increase_in_slowness_percent: |
-      #{value} de Chance de aumentar o dano em 25% quando o oponente estiver Lento
+      #{value}% de Chance de aumentar o dano em 25% quando o oponente estiver Lento
     half_weak_damage_chance: |
-      #{value} de Chance de diminuir pela metade o dano de fraqueza de golpe
+      #{value}% de Chance de diminuir pela metade o dano de fraqueza de golpe
     half_weak_damage_chance_percent: |
-      #{value} de Chance de diminuir pela metade o dano de fraqueza de golpe
+      #{value}% de Chance de diminuir pela metade o dano de fraqueza de golpe
     bonus_stamina_max: |
       #{value} de Stamina Extra
     bonus_stamina_max_percent: |
-      #{value} de Stamina Extra
+      #{value}% de Stamina Extra
     bonus_stamina_heal: |
       #{value} de recuperação extra de Stamina
     bonus_stamina_heal_percent: |
-      #{value} de recuperação extra de Stamina
+      #{value}% de recuperação extra de Stamina
     no_consume_stamina: |
-      #{value} de chance de batalha npc não consumir sua Stamina
+      #{value}% de chance de batalha npc não consumir sua Stamina
     no_consume_stamina_percent: |
-      #{value} de chance de batalha npc não consumir sua Stamina
+      #{value}% de chance de batalha npc não consumir sua Stamina
     bonus_gold_mission: |
-      #{value} a mais de Ouro em missões
+      #{value}% a mais de Ouro em missões
     bonus_gold_mission_percent: |
-      #{value} a mais de Ouro em missões
+      #{value}% a mais de Ouro em missões
     bonus_exp_mission: |
-      #{value} a mais de Experiência em missões
+      #{value}% a mais de Experiência em missões
     bonus_exp_mission_percent: |
-      #{value} a mais de Experiência em missões
+      #{value}% a mais de Experiência em missões
     pets_find: |
-      #{value} a mais de chance para encontrar Mascotes
+      #{value}% a mais de chance para encontrar Mascotes
     pets_find_percent: |
-      #{value} a mais de chance para encontrar Mascotes
+      #{value}% a mais de chance para encontrar Mascotes
     double_bleeding_chance: |
       Seu próximo golpe terá a chance de sangramento dobrada
     double_bleeding_chance_percent: |
@@ -1102,14 +1091,14 @@ pt-BR:
     for_crit_inc:
       buff:
         self: |
-          Aumenta em #{value} o seu Incremento de Crítico
+          Aumenta em #{value}% o seu Incremento de Crítico
         enemy: |
-          Aumenta em #{value} o Incremento de Crítico do inimigo
+          Aumenta em #{value}% o Incremento de Crítico do inimigo
       debuff:
         self: |
-          Diminui em #{value} o seu Incremento de Crítico
+          Diminui em #{value}% o seu Incremento de Crítico
         enemy: |
-          Diminui em #{value} o Incremento de Crítico do inimigo
+          Diminui em #{value}% o Incremento de Crítico do inimigo
     for_abs:
       buff:
         self: |
@@ -1124,14 +1113,14 @@ pt-BR:
     for_abs_inc:
       buff:
         self: |
-          Aumenta em #{value} o seu Incremento de Absorção
+          Aumenta em #{value}% o seu Incremento de Absorção
         enemy: |
-          Aumenta em #{value} o Incremento de Absorção do inimigo
+          Aumenta em #{value}% o Incremento de Absorção do inimigo
       debuff:
         self: |
-          Diminui em #{value} o seu Incremento de Absorção
+          Diminui em #{value}% o seu Incremento de Absorção
         enemy: |
-          Diminui em #{value} o Incremento de Absorção do inimigo
+          Diminui em #{value}% o Incremento de Absorção do inimigo
     for_prec:
       buff:
         self: |
@@ -1344,37 +1333,37 @@ pt-BR:
     item_find:
       buff:
         self: |
-          Aumenta em #{value} a sua chance de achar itens no final da batalha
+          Aumenta em #{value}% a sua chance de achar itens no final da batalha
         enemy: |
-          Aumenta em #{value} a chance de achar itens do inimigo no final da batalha
+          Aumenta em #{value}% a chance de achar itens do inimigo no final da batalha
       debuff:
         self: |
-          Diminui em #{value} a sua chance de achar itens no final da batalha
+          Diminui em #{value}% a sua chance de achar itens no final da batalha
         enemy: |
-          Diminui em #{value} a chance de achar itens do inimigo no final da batalha
+          Diminui em #{value}% a chance de achar itens do inimigo no final da batalha
     fragment_find:
       buff:
 
         self: |
-          Aumenta em #{value} a sua chance de achar fragmentos das almas no final da batalha
+          Aumenta em #{value}% a sua chance de achar fragmentos das almas no final da batalha
         enemy: |
-          Aumenta em #{value} a chance de achar fragmentos das almas do inimigo no final da batalha
+          Aumenta em #{value}% a chance de achar fragmentos das almas do inimigo no final da batalha
       debuff:
         self: |
-          Diminui em #{value} a sua chance de achar fragmentos das almas no final da batalha
+          Diminui em #{value}% a sua chance de achar fragmentos das almas no final da batalha
         enemy: |
-          Diminui em #{value} a chance de achar fragmentos das almas do inimigo no final da batalha
+          Diminui em #{value}% a chance de achar fragmentos das almas do inimigo no final da batalha
     grimoire_find:
       buff:
         self: |
-          Aumenta em #{value} a sua chance de achar Páginas Perdidas no final da batalha
+          Aumenta em #{value}% a sua chance de achar Páginas Perdidas no final da batalha
         enemy: |
-          Aumenta em #{value} a chance de achar Páginas Perdidas do inimigo no final da batalha
+          Aumenta em #{value}% a chance de achar Páginas Perdidas do inimigo no final da batalha
       debuff:
         self: |
-          Diminui em #{value} a sua chance de achar Páginas Perdidas no final da batalha
+          Diminui em #{value}% a sua chance de achar Páginas Perdidas no final da batalha
         enemy: |
-          Diminui em #{value} a chance de achar Páginas Perdidas do inimigo no final da batalha
+          Diminui em #{value}% a chance de achar Páginas Perdidas do inimigo no final da batalha
     damage_in_bleeding:
       buff:
         self: |
@@ -1500,113 +1489,113 @@ pt-BR:
     reduce_critical_damage:
       buff:
         self: |
-          Chance de #{value} de cortar pela metade o seu dano critico
+          Chance de #{value}% de cortar pela metade o seu dano critico
         enemy: |
-          Chance de #{value} de cortar pela metade o dano critico do seu oponente
+          Chance de #{value}% de cortar pela metade o dano critico do seu oponente
       debuff:
         self: |
-          Chance de #{value} de cortar pela metade o seu dano critico
+          Chance de #{value}% de cortar pela metade o seu dano critico
         enemy: |
-          Chance de #{value} de cortar pela metade o dano critico do seu oponente
+          Chance de #{value}% de cortar pela metade o dano critico do seu oponente
     enemy_absorb_reduction:
       buff:
         self: |
-          Chance de #{value} de cortar pela metade o Dano Absorvido
+          Chance de #{value}% de cortar pela metade o Dano Absorvido
         enemy: |
-          Chance de #{value} de cortar pela metade o Dano Absorvido do seu oponente
+          Chance de #{value}% de cortar pela metade o Dano Absorvido do seu oponente
       debuff:
         self: |
-          Chance de #{value} de cortar pela metade o Dano Absorvido
+          Chance de #{value}% de cortar pela metade o Dano Absorvido
         enemy: |
-          Chance de #{value} de cortar pela metade o Dano Absorvido do seu oponente
+          Chance de #{value}% de cortar pela metade o Dano Absorvido do seu oponente
     low_technique_no_cost:
       buff:
         self: |
-          Chance de #{value} de golpes de até 3 de mana não consumirem mana
+          Chance de #{value}% de golpes de até 3 de mana não consumirem mana
         enemy: |
-          Chance de #{value} dos golpes do oponente de até 3 de mana não consumirem mana
+          Chance de #{value}% dos golpes do oponente de até 3 de mana não consumirem mana
       debuff:
         self: |
-          Chance de #{value} de golpes de até 3 de mana não consumirem mana
+          Chance de #{value}% de golpes de até 3 de mana não consumirem mana
         enemy: |
-          Chance de #{value} dos golpes do oponente de até 3 de mana não consumirem mana
+          Chance de #{value}% dos golpes do oponente de até 3 de mana não consumirem mana
     mid_technique_no_cooldown:
       buff:
         self: |
-          Chance de #{value} de golpes com 4 a 7 não entrarem em Recarga
+          Chance de #{value}% de golpes com 4 a 7 não entrarem em Recarga
         enemy: |
-          Chance de #{value} dos golpes do oponente com 4 a 7 não entrarem em Recarga
+          Chance de #{value}% dos golpes do oponente com 4 a 7 não entrarem em Recarga
       debuff:
         self: |
-          Chance de #{value} de golpes com 4 a 7 não entrarem em Recarga
+          Chance de #{value}% de golpes com 4 a 7 não entrarem em Recarga
         enemy: |
-          Chance de #{value} dos golpes do oponente com 4 a 7 não entrarem em Recarga
+          Chance de #{value}% dos golpes do oponente com 4 a 7 não entrarem em Recarga
     high_technique_half_cost:
       buff:
         self: |
-          Chance de #{value} de golpes com 8 ou mais de mana gastarem apenas 50% da mana
+          Chance de #{value}% de golpes com 8 ou mais de mana gastarem apenas 50% da mana
         enemy: |
-          Chance de #{value} dos golpes do oponente com 8 ou mais de mana gastarem apenas 50% da mana
+          Chance de #{value}% dos golpes do oponente com 8 ou mais de mana gastarem apenas 50% da mana
       debuff:
         self: |
-          Chance de #{value} de golpes com 8 ou mais de mana gastarem apenas 50% da mana
+          Chance de #{value}% de golpes com 8 ou mais de mana gastarem apenas 50% da mana
         enemy: |
-          Chance de #{value} dos golpes do oponente com 8 ou mais de mana gastarem apenas 50% da mana
+          Chance de #{value}% dos golpes do oponente com 8 ou mais de mana gastarem apenas 50% da mana
     next_turn_life:
       buff:
         self: |
-          Ao pular o turno #{value} de chance de recuperar 50 de Vida
+          Ao pular o turno #{value}% de chance de recuperar 50 de Vida
         enemy: |
-          Ao pular o turno #{value} de chance de recuperar 50 de Vida do seu oponente
+          Ao pular o turno #{value}% de chance de recuperar 50 de Vida do seu oponente
       debuff:
         self: |
-          Ao pular o turno #{value} de chance de recuperar 50 de Vida
+          Ao pular o turno #{value}% de chance de recuperar 50 de Vida
         enemy: |
-          Ao pular o turno #{value} de chance de recuperar 50 de Vida do seu oponente
+          Ao pular o turno #{value}% de chance de recuperar 50 de Vida do seu oponente
     damage_increase_in_confusion:
       buff:
         self: |
-          Chance de #{value} de aumentar o dano em 25% quando o oponente estiver Confuso
+          Chance de #{value}% de aumentar o dano em 25% quando o oponente estiver Confuso
         enemy: |
-          Chance de #{value} de aumentar o dano em 25% quando o oponente estiver Confuso
+          Chance de #{value}% de aumentar o dano em 25% quando o oponente estiver Confuso
       debuff:
         self: |
-          Chance de #{value} de aumentar o dano em 25% quando o oponente estiver Confuso
+          Chance de #{value}% de aumentar o dano em 25% quando o oponente estiver Confuso
         enemy: |
-          Chance de #{value} de aumentar o dano em 25% quando o oponente estiver Confuso
+          Chance de #{value}% de aumentar o dano em 25% quando o oponente estiver Confuso
     damage_increase_in_slowness:
       buff:
         self: |
-          Chance de #{value} de aumentar o dano em 25% quando o oponente estiver Lento
+          Chance de #{value}% de aumentar o dano em 25% quando o oponente estiver Lento
         enemy: |
-          Chance de #{value} de aumentar o dano em 25% quando o oponente estiver Lento
+          Chance de #{value}% de aumentar o dano em 25% quando o oponente estiver Lento
       debuff:
         self: |
-          Chance de #{value} de aumentar o dano em 25% quando o oponente estiver Lento
+          Chance de #{value}% de aumentar o dano em 25% quando o oponente estiver Lento
         enemy: |
-          Chance de #{value} de aumentar o dano em 25% quando o oponente estiver Lento
+          Chance de #{value}% de aumentar o dano em 25% quando o oponente estiver Lento
     kill_with_one_hit:
       buff:
         self: |
-          Chance de #{value} de se matar com esse golpe
+          Chance de #{value}% de se matar com esse golpe
         enemy: |
-          Chance de #{value} de se matar com esse golpe
+          Chance de #{value}% de se matar com esse golpe
       debuff:
         self: |
-          Chance de #{value} de matar o inimigo com esse golpe
+          Chance de #{value}% de matar o inimigo com esse golpe
         enemy: |
-          Chance de #{value} de matar o inimigo com esse golpe
+          Chance de #{value}% de matar o inimigo com esse golpe
     half_weak_damage_chance:
       buff:
         self: |
-          Chance de #{value} de diminuir pela metade o dano de golpes com fraqueza
+          Chance de #{value}% de diminuir pela metade o dano de golpes com fraqueza
         enemy: |
-          Chance de #{value} de diminuir pela metade o dano de golpes com fraqueza
+          Chance de #{value}% de diminuir pela metade o dano de golpes com fraqueza
       debuff:
         self: |
-          Chance de #{value} de diminuir pela metade o dano de golpes com fraqueza
+          Chance de #{value}% de diminuir pela metade o dano de golpes com fraqueza
         enemy: |
-          Chance de #{value} de diminuir pela metade o dano de golpes com fraqueza
+          Chance de #{value}% de diminuir pela metade o dano de golpes com fraqueza
     bonus_stamina_max:
       buff:
         self: |
@@ -1710,14 +1699,14 @@ pt-BR:
     pets_find:
       buff:
         self: |
-          Aumenta a chance em  #{value} de encontrar mascotes
+          Aumenta a chance em #{value}% de encontrar mascotes
         enemy: |
-          Aumenta a chance em  #{value} de encontrar mascotes
+          Aumenta a chance em #{value}% de encontrar mascotes
       debuff:
         self: |
-          Diminui a chance em  #{value} de encontrar mascotes
+          Diminui a chance em #{value}% de encontrar mascotes
         enemy: |
-          Diminui a chance em  #{value} de encontrar mascotes
+          Diminui a chance em #{value}% de encontrar mascotes
     steal_health:
       buff:
         self: |
