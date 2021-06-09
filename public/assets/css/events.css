@@ -46,20 +46,20 @@
 	float: left;
 	width:360px
 }
-.ev-last-anime{
+.ev-last-anime {
 	height: 160px;
 	text-align:center
 }
-.ev-reward{
+.ev-reward {
 	float: left;
 	width:360px;
 	position:relative;
 	left:5px;
 }
-.ev-padding{
+.ev-padding {
 	padding-top: 32px;
 }
-.ev-reward-float{
+.ev-reward-float {
 	width:120px;
 	float: left
 }
@@ -77,7 +77,7 @@
 .ev-req img {
     width: 100%;
 }
-.bg-wanteds{
+.bg-wanteds {
 	width: 170px;
 	height: 250px;
 	position: relative;
@@ -85,19 +85,21 @@
 	float: left;
 	margin: 10px 0 0 10px;
 }
-.wanteds-info{
+.wanteds-info {
 	position: relative;
  	top: 74px;
 	color: #523625;
 	text-align: center;
 }
-.wanteds-foto{
+
+.wanteds-foto {
 	position: relative;
 	top: 52px;
 	text-align: center;
     left: 0px;
 }
-.ev-req2{
+
+.ev-req2 {
 	position: relative;
 	display: inline-block;
 	padding: 10px;
