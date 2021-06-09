@@ -506,24 +506,29 @@ class CharactersController extends Controller {
 				if(!$theme) {
 					$errors[]	= t('characters.themes.errors.invalid');
 				} else {
-					if($_POST['type']){
+					if ($_POST['type']) {
 						if($theme->character()->id != $player->character()->id) {
 							$errors[]	= t('characters.themes.errors.character');
 						}
 					}
-					if(isset($_POST['buy']) && isset($_POST['mode'])) {
+
+					if (isset($_POST['buy']) && isset($_POST['mode'])) {
 						if (!$theme->is_buyable) {
 							$errors[]	= t('characters.themes.errors.invalid');
 						}
+
 						if (!in_array($_POST['mode'], [1, 2])) {
 							$errors[]	= t('characters.themes.errors.invalid');
 						}
+
 						if ($_POST['mode'] == 2 && !$theme->price_currency) {
 							$errors[]	= t('characters.themes.errors.invalid');
 						}
+
 						if ($_POST['mode'] == 1 && !$theme->price_credits) {
 							$errors[]	= t('characters.themes.errors.invalid');
 						}
+
 						if ($theme->price_credits || $theme->price_currency) {
 							if ($theme->price_credits && $theme->price_credits > $user->credits && $_POST['mode'] == 1) {
 								$errors[]	= t('characters.themes.errors.enough_credits');
@@ -534,7 +539,7 @@ class CharactersController extends Controller {
 								]);
 							}
 						}
-					} elseif ($_POST['use']) {
+					} elseif (isset($_POST['use'])) {
 						if (!$theme->is_default && !$user->is_theme_bought($_POST['theme'])) {
 							$errors[]	= t('characters.themes.errors.not_bought');
 						}
@@ -557,7 +562,7 @@ class CharactersController extends Controller {
 					$user_theme->price_currency		= $theme->price_currency;
 					$user_theme->save();
 
-					if ($_POST['type']){
+					if ($_POST['type']) {
 						$image								= $theme->first_image();
 						$player->character_theme_id			= $theme->id;
 						$player->character_theme_image_id	= $image->id;
@@ -582,7 +587,7 @@ class CharactersController extends Controller {
 					// Verifica se o jogador comprou o tema - Conquista
 					$player->achievement_check("character_theme");
 					$player->check_objectives("character_theme");
-				} elseif($_POST['use']) {
+				} elseif (isset($_POST['use'])) {
 					$image								= $theme->first_image();
 					$player->character_theme_id			= $theme->id;
 					$player->character_theme_image_id	= $image->id;
@@ -593,23 +598,23 @@ class CharactersController extends Controller {
 			}
 		} else {
 			$filter = "";
-			if(!$_SESSION['universal']){
+			if (!$_SESSION['universal']) {
 				$filter = " AND active=1";
 			}
 			$this->assign('user', $user);
 
-			if(isset($_GET['show_only'])) {
-				if(isset($_GET['character']) && is_numeric($_GET['character'])) {
-					$this->assign('player', false);
-					$this->assign('themes', CharacterTheme::find('character_id=' . $_GET['character'] . $filter));
-					$this->assign('character', Character::find($_GET['character']));
+			if (isset($_GET['show_only'])) {
+				if (isset($_GET['character']) && is_numeric($_GET['character'])) {
+					$this->assign('player',		false);
+					$this->assign('themes',		CharacterTheme::find('character_id=' . $_GET['character'] . $filter));
+					$this->assign('character',	Character::find($_GET['character']));
 				} else {
 					$this->denied	= true;
 				}
 			} else {
-				$this->assign('player', $player);
-				$this->assign('character', $player->character());
-				$this->assign('themes', CharacterTheme::find('character_id=' . $player->character_id . $filter));
+				$this->assign('player',		$player);
+				$this->assign('character',	$player->character());
+				$this->assign('themes',		CharacterTheme::find('character_id=' . $player->character_id . $filter));
 			}
 		}
 	}
