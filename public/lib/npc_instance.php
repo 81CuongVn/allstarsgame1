@@ -73,19 +73,20 @@ class NpcInstance {
 		}
 		$theme						= $themes[rand(0, sizeof($themes) - 1)];
 
-		$images						=  CharacterThemeImage::find('active = 1 and character_theme_id = ' . $theme->id, ['cache' => true]);
+		$images						= CharacterThemeImage::find('active = 1 and character_theme_id = ' . $theme->id, ['cache' => true]);
 		$image						= $images[rand(0, sizeof($images) - 1)];
 
 		$this->anime				= $anime;
 		$this->character			= $character;
 		$this->character_theme		= $theme;
 		$this->theme_image			= $image;
+		$this->faction				= Faction::find_first('active=1', ['reorder' => 'RAND()']);
 
 		$this->name					= $this->character->description()->name;
 		$this->level				= $player->level;
 		$this->uid					= uniqid(uniqid('', true), true);
 		$this->id					= str_replace('.', '-', $this->uid);
-		$this->faction_id			= Faction::find_first('1=1', ['reorder' => 'RAND()'])->id;
+		$this->faction_id			= $this->faction->id;
 		$this->character_id			= $this->character->id;
 		$this->guild_map_object_id	= $guild_map_object_id;
 
@@ -251,6 +252,15 @@ class NpcInstance {
 
 	function character() {
 		return $this->character;
+	}
+
+	function anime() {
+		return $this->anime;
+	}
+
+	function faction() {
+		// return Faction::find_first('id = ' . $this->faction_id);
+		return $this->faction;
 	}
 
 	function character_theme() {

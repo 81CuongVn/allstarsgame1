@@ -46,7 +46,7 @@
             I18n.t('battles.status_tooltip.prec', { image: image_url('icons/for_prec.png'), value: status.prec }) + "<br />" +
             I18n.t('battles.status_tooltip.init', { image: image_url('icons/for_inti.png'), value: (status.init).toFixed(2), init: status.init.toFixed(2) }) + "<br />";
 
-        item.append('<img src="' + image_url('battle/details.png') + '" class="technique-popover" data-placement="' + container.data('placement') + '" data-source="' + item_id + '" data-trigger="hover" data-placement="bottom"  />')
+        item.append('<img src="' + image_url('battle/details.png') + '" class="technique-popover" data-placement="' + container.data('placement') + '" data-source="' + item_id + '" data-trigger="hover" data-placement="bottom"	/>')
         item.append(popover);
         popover.append(html);
         container.append(item);
@@ -61,7 +61,7 @@
                     var popover = $(document.createElement('DIV')).attr('id', item_id).css({ display: 'none' });
                     var html = '<div class="modifier-tooltip">' + mod.tooltip + '</div>';
 
-                    item.append('<img src="' + image_url(mod.image) + '" width="24" height="24" class="technique-popover" data-placement="' + container.data('placement') + '" data-source="' + item_id + '" data-title="' + mod.name + '" data-trigger="click" data-placement="bottom"  />')
+                    item.append('<img src="' + image_url(mod.image) + '" width="24" height="24" class="technique-popover" data-placement="' + container.data('placement') + '" data-source="' + item_id + '" data-title="' + mod.name + '" data-trigger="click" data-placement="bottom"	/>')
                     item.append(popover);
                     popover.append(html);
                     container.append(item);
@@ -91,12 +91,17 @@
         var item = $(document.createElement('DIV')).addClass('faction status').css('margin-bottom', '5px');
         var item_id = 'i-' + (Math.random() * 65535) + '.' + (Math.random() * 65535);
         var popover = $(document.createElement('DIV')).attr('id', item_id).css({ display: 'none' });
-        var faction = parseInt($('#battle-container #' + target).data('faction'));
+        var anime = $('#battle-container #' + target).data('anime');
+        var character = $('#battle-container #' + target).data('character');
+        var faction = $('#battle-container #' + target).data('faction');
+        var faction_id = parseInt($('#battle-container #' + target).data('faction-id'));
         var guild = $('#battle-container #' + target).data('guild');
-        var html = I18n.t('characters.select.labels.faction') + ': ' + I18n.t('factions.' + faction);
-        html = html + ' <br /> ' + I18n.t('global.guild') + ': ' + guild;
+        var html = '<b class="verde">' + I18n.t('characters.select.labels.anime') + ':</b> ' + anime + ' <br /> ' +
+            '<b class="verde">' + I18n.t('global.character') + ':</b> ' + character + ' <br /> ' +
+            '<b class="verde">' + I18n.t('characters.select.labels.faction') + ':</b> ' + faction + ' <br /> ' +
+            '<b class="verde">' + I18n.t('global.guild') + ':</b> ' + guild;
 
-        item.append('<img src="' + image_url('factions/icons/small/' + faction + '.png') + '" class="technique-popover" data-placement="' + container.data('placement') + '" data-source="' + item_id + '" data-trigger="hover" data-placement="bottom"  />')
+        item.append('<img src="' + image_url('factions/icons/small/' + faction_id + '.png') + '" class="technique-popover" data-placement="' + container.data('placement') + '" data-source="' + item_id + '" data-trigger="hover" data-placement="bottom"	/>')
         item.append(popover);
         popover.append('<div class="modifier-tooltip">' + html + '</div>');
         container.append(item);
@@ -131,7 +136,7 @@
         html = html + wanted_type;
 
         if (wanted) {
-            item.append('<img src="' + image_url('icons/wanted.png') + '"  class="technique-popover" data-placement="' + container.data('placement') + '" data-source="' + item_id + '" data-trigger="hover" data-placement="bottom"  />')
+            item.append('<img src="' + image_url('icons/wanted.png') + '"	class="technique-popover" data-placement="' + container.data('placement') + '" data-source="' + item_id + '" data-trigger="hover" data-placement="bottom"	/>')
             item.append(popover);
             popover.append('<div class="modifier-tooltip">' + html + '</div>');
             container.append(item);
@@ -398,7 +403,7 @@
                 if (result.effects_roundup) {
                     ['p', 'e'].forEach(function (word) {
                         /*if (word == 'e' && !result.enemy.update_existent_locks) {
-                            return;
+                                return;
                         }*/
 
                         var fixed_values_positive = '';
@@ -475,7 +480,7 @@
                             var item_id = 'i-' + (Math.random() * 65535) + '.' + (Math.random() * 65535);
                             var popover = $(document.createElement('DIV')).attr('id', item_id).css({ display: 'none' });
 
-                            item.append('<img src="' + image_url('battle/arrows.png') + '"  class="technique-popover" data-placement="' + container.data('placement') + '" data-source="' + item_id + '" data-trigger="hover" data-placement="bottom"  />')
+                            item.append('<img src="' + image_url('battle/arrows.png') + '"	class="technique-popover" data-placement="' + container.data('placement') + '" data-source="' + item_id + '" data-trigger="hover" data-placement="bottom"	/>')
                             item.append(popover);
                             popover.append('<div class="modifier-tooltip">' + normal_html + '</div>');
                             container.append(item);
@@ -501,7 +506,7 @@
 
                             fixed_values_positive = fixed_values_positive.replace(/por NaN turno\(s\)/img, '');
 
-                            item.append('<img src="' + image_url('battle/talents_p.png') + '"  class="technique-popover" data-placement="' + container.data('placement') + '" data-source="' + item_id + '" data-trigger="hover" data-placement="bottom"  />')
+                            item.append('<img src="' + image_url('battle/talents_p.png') + '"	class="technique-popover" data-placement="' + container.data('placement') + '" data-source="' + item_id + '" data-trigger="hover" data-placement="bottom"	/>')
                             item.append(popover);
                             popover.append('<div class="modifier-tooltip"><b style="font-size:14px; color:#ff871c; padding-bottom:5px">' + I18n.t('item_types.6') + '</b><br />' + fixed_values_positive + '</div>');
                             container.append(item);
@@ -527,7 +532,7 @@
 
                             fixed_values_negative = fixed_values_negative.replace(/por NaN turno\(s\)/img, '');
 
-                            item.append('<img src="' + image_url('battle/talents_n.png') + '"  class="technique-popover" data-placement="' + container.data('placement') + '" data-source="' + item_id + '" data-trigger="hover" data-placement="bottom"  />')
+                            item.append('<img src="' + image_url('battle/talents_n.png') + '"	class="technique-popover" data-placement="' + container.data('placement') + '" data-source="' + item_id + '" data-trigger="hover" data-placement="bottom"	/>')
                             item.append(popover);
                             popover.append('<div class="modifier-tooltip"><b style="font-size:14px; color:#ff871c; padding-bottom:5px">' + I18n.t('item_types.6') + '</b><br />' + fixed_values_negative + '</div>');
                             container.append(item);
@@ -554,7 +559,7 @@
 
                             infinity_values = infinity_values.replace(/por NaN turno\(s\)/img, '');
 
-                            item.append('<img src="' + image_url('battle/pet.png') + '"  class="technique-popover" data-placement="' + container.data('placement') + '" data-source="' + item_id + '" data-trigger="hover" data-placement="bottom"  />')
+                            item.append('<img src="' + image_url('battle/pet.png') + '"	class="technique-popover" data-placement="' + container.data('placement') + '" data-source="' + item_id + '" data-trigger="hover" data-placement="bottom"	/>')
                             item.append(popover);
                             popover.append('<div class="modifier-tooltip"><b style="font-size:14px; color:#ff871c; padding-bottom:5px">' + I18n.t('item_types.3') + '</b><br />' + infinity_values + '</div>');
                             container.append(item);
@@ -596,7 +601,7 @@
                                 }
                             });
 
-                            item.append('<img src="' + icon.icon + '"  class="technique-popover" data-placement="' + container.data('placement') + '" data-source="' + item_id + '" data-trigger="hover" data-placement="bottom"  />')
+                            item.append('<img src="' + icon.icon + '"	class="technique-popover" data-placement="' + container.data('placement') + '" data-source="' + item_id + '" data-trigger="hover" data-placement="bottom"	/>')
                             item.append(popover);
                             popover.append(html + '</div></div>');
                             container.append(item);

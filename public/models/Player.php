@@ -2367,7 +2367,7 @@ class Player extends Relation {
 		return PlayerPvpQuest::find_first('player_id=' . $this->id . ' AND pvp_quest_id=' . $this->pvp_quest_id);
 	}
 	function anime() {
-		return Anime::find($this->anime_id);
+		return Anime::find($this->character()->anime_id);
 	}
 	function check_learned_techniques() {
 		foreach ($this->learned_techniques() as $technique) {
