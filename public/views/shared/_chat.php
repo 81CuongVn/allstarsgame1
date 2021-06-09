@@ -32,7 +32,7 @@ switch ($player->faction_id) {
 	case 3:		$color	= '#f4ffff';	break;
 }
 
-$icon_img	= image_url('factions/icons/small/' . $player->faction_id . '.png');
+$icon_img	= image_url('factions/icons/big/' . $player->faction_id . '.png');
 $icon_name	= $player->faction()->description()->name;
 $icon		= '<img style="width: 16px; vertical-align: -5px;" src="' . $icon_img . '" title="' . $icon_name . '" /> ';
 
