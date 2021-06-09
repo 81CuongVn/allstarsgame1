@@ -72,7 +72,7 @@
 				<div id="attack-text"></div>
 			</div>
 			<!-- <div class="bijuu_player" style="background: url(<?=image_url('bijuus/battle/3109.png')?>);"></div> -->
-			<div id="player" class="player-box" data-faction="<?=$player->faction_id;?>" data-guild="<?=($player->guild_id ? $player->guild()->name : '-');?>" <?=(!$player->battle_npc_id ? ($player_wanted ? 'data-wanted="1" data-wanted-reward="' . ($player->won_last_battle > 100 ? highamount(100 * 250) : highamount($player->won_last_battle * 250)) . ' ' . t('currencies.' . $player->character()->anime_id) . '" data-wanted-type="' . t('wanted.' . $player_wanted->type_death) . '"' : '') : '');?>>
+			<div id="player" class="player-box" data-anime="<?=$player->anime()->description()->name;?>" data-character="<?=$player->character()->description()->name;?>" data-faction-id="<?=$player->faction_id;?>" data-faction="<?=$player->faction()->description()->name;?>" data-guild="<?=($player->guild_id ? $player->guild()->name : '--');?>" <?=(!$player->battle_npc_id ? ($player_wanted ? 'data-wanted="1" data-wanted-reward="' . ($player->won_last_battle > 100 ? highamount(100 * 250) : highamount($player->won_last_battle * 250)) . ' ' . t('currencies.' . $player->character()->anime_id) . '" data-wanted-type="' . t('wanted.' . $player_wanted->type_death) . '"' : '') : '');?>>
 				<div class="modifiers" data-placement="right"></div>
 				<div class="image">
 					<?=$player->profile_image();?>
@@ -103,7 +103,7 @@
 				</div>
 			</div>
 			<!-- <div class="bijuu_enemy" style="background: url(<?=image_url('bijuus/battle/3109-2.png')?>);"></div> -->
-			<div id="enemy" class="player-box" data-faction="<?=$enemy->faction_id;?>" data-guild="<?=($enemy->guild_id ? $enemy->guild()->name : '-');?>" <?=(!$player->battle_npc_id ? ($enemy_wanted ? 'data-wanted="1" data-wanted-reward="' . ($enemy->won_last_battle > 100 ? highamount(100 * 250) : highamount($enemy->won_last_battle * 250)) . ' ' . t('currencies.' . $player->character()->anime_id) . '" data-wanted-type="' . t('wanted.' . $enemy_wanted->type_death) . '"' : '') : '');?>>
+			<div id="enemy" class="player-box"  data-anime="<?=$enemy->anime()->description()->name;?>" data-character="<?=$enemy->character()->description()->name;?>" data-faction-id="<?=$enemy->faction_id;?>" data-faction="<?=$enemy->faction()->description()->name;?>" data-guild="<?=($enemy->guild_id ? $enemy->guild()->name : '--');?>" <?=(!$player->battle_npc_id ? ($enemy_wanted ? 'data-wanted="1" data-wanted-reward="' . ($enemy->won_last_battle > 100 ? highamount(100 * 250) : highamount($enemy->won_last_battle * 250)) . ' ' . t('currencies.' . $player->character()->anime_id) . '" data-wanted-type="' . t('wanted.' . $enemy_wanted->type_death) . '"' : '') : '');?>>
 				<div class="modifiers" data-placement="left"></div>
 				<div class="image">
 					<?=$enemy->profile_image();?>
