@@ -2338,7 +2338,7 @@ class Player extends Relation {
 				if (!$player_ranked) {
 					$player_ranked					= new PlayerRanked();
 					$player_ranked->player_id 		= $this->id;
-					$player_ranked->ranked_tier_id	= RankedTier::find_first('sort = 1')->id;
+					$player_ranked->ranked_tier_id	= RankedTier::find_first('sort = 10')->id;
 					$player_ranked->ranked_id		= $ranked->id;
 					$player_ranked->save();
 				}
