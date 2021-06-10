@@ -15,5 +15,15 @@ indent_style = tab
 end_of_line = lf
 insert_final_newline = true
 
-[*..md]
+[*.js]
+indent_style = tab
+end_of_line = lf
+insert_final_newline = true
+
+[*.css]
+indent_style = tab
+end_of_line = lf
+insert_final_newline = true
+
+[*.md]
 trim_trailing_whitespace = false

@@ -1,11 +1,11 @@
-/*@media only screen 
-and (min-device-width : 320px) 
+/*@media only screen
+and (min-device-width : 320px)
 and (max-device-width : 568px) {
-	#chat-v2 {
+	#chat {
 		display: none
-	}	
+	}
 }*/
-#chat-v2 {
+#chat {
     position: fixed;
 	bottom: 0px;
 	/* height: 35px; */
@@ -14,7 +14,7 @@ and (max-device-width : 568px) {
 	z-index: 11;
 }
 
-#chat-v2 .title {
+#chat .title {
     height: 35px;
 	width: 250px;
 	background-image: url(../images/chat/top.png);
@@ -27,7 +27,7 @@ and (max-device-width : 568px) {
 	text-align: center;
 }
 
-#chat-v2 .messages {
+#chat .messages {
     height: 280px;
 	width: 240px;
 	margin: 0px auto;
@@ -39,11 +39,16 @@ and (max-device-width : 568px) {
 	overflow: auto;
 	word-break: break-word;
 }
-#chat-v2 .messages .wait {
+
+#chat .messages .embed {
+	cursor: pointer;
+}
+
+#chat .messages .wait {
     text-align: center;
 }
 
-#chat-v2 .selector {
+#chat .selector {
     position: relative;
 	background-color: #051626;
 	width: 240px;
@@ -51,7 +56,7 @@ and (max-device-width : 568px) {
 	height: 35px;
 }
 
-#chat-v2 .selector ul {
+#chat .selector ul {
     display: none;
     position: absolute;
     bottom: 0px;
@@ -64,14 +69,14 @@ and (max-device-width : 568px) {
     padding: 0px 10px 5px 11px;
 }
 
-#chat-v2 .selector ul li {
+#chat .selector ul li {
     height: 20px;
     padding-top: 8px;
     margin-bottom: 2px;
     cursor: pointer
 }
 
-#chat-v2 .selector #message {
+#chat .selector #message {
     margin-top: 5px;
 	margin-left: 10px;
 	width: 220px;
@@ -85,13 +90,13 @@ and (max-device-width : 568px) {
 	outline: none !important
 }
 
-#chat-v2 .selector #as {
+#chat .selector #as {
     position: absolute;
 	right: 17px;
 	top: 7px;
 }
 
-#chat-v2 .selector-trigger {
+#chat .selector-trigger {
     position: absolute;
     left: 20px;
     top: 10px;
@@ -103,35 +108,35 @@ textarea:focus, input:focus{
     outline: none;
 }
 
-#chat-v2 .chat-world {
+#chat .chat-world {
     color: #B2B2B2;
 }
 
-#chat-v2 .chat-anime {
+#chat .chat-anime {
     color: #B2B2B2;
 }
 
-#chat-v2 .chat-message .chat-user {
+#chat .chat-message .chat-user {
     color: #ffe9a5;
     margin-right: 5px;
 }
 
-#chat-v2 .chat-gm .chat-user {
+#chat .chat-gm .chat-user {
     color: #FFB34F !important;
 }
 
-#chat-v2 .chat-guild .chat-user {
+#chat .chat-guild .chat-user {
     color: #4F72C4
 }
 
-#chat-v2 .chat-message {
+#chat .chat-message {
     padding-left: 8px;
     padding-right: 8px;
     line-height: 16px;
     margin-bottom: 3px
 }
 
-#chat-v2 .chat-system {
+#chat .chat-system {
     display: block;
     text-align: center;
     background-color: #FFCC99;
@@ -140,10 +145,10 @@ textarea:focus, input:focus{
     padding: 4px;
     font-weight: bold;
     border: solid 1px #C24F15;
-    color: #C24F15;		
+    color: #C24F15;
 }
 
-#chat-v2 .chat-warn {
+#chat .chat-warn {
     display: block;
     text-align: center;
     background-color: #f95353;
@@ -152,7 +157,7 @@ textarea:focus, input:focus{
     padding: 4px;
     font-weight: bold;
     border: solid 1px #790505;
-    color: #FFF;		
+    color: #FFF;
 }
 
 .chat-pvt {
@@ -164,12 +169,12 @@ textarea:focus, input:focus{
 }
 
 .chat-pvt .l {
-    background-image: url(../images/chat/notification_l.png);	
+    background-image: url(../images/chat/notification_l.png);
     width: 22px;
 }
 
 .chat-pvt .r {
-    background-image: url(../images/chat/notification_r.png);	
+    background-image: url(../images/chat/notification_r.png);
     background-position: top right;
     margin-left: -10px;
     padding-right: 12px;
@@ -183,7 +188,7 @@ textarea:focus, input:focus{
     float: left
 }
 
-#chat-v2 .chat-user {
+#chat .chat-user {
     font-weight: bold;
     cursor: pointer
 }
@@ -206,7 +211,7 @@ textarea:focus, input:focus{
     background-image: url(../images/chat/next.png);
     background-position: right bottom;
     padding-right: 14px;
-    cursor: pointer;		
+    cursor: pointer;
 }
 
 .reply-box .reply {
@@ -216,8 +221,8 @@ textarea:focus, input:focus{
     background-position: left center;
     background-repeat: no-repeat;
     background-image: url(../images/chat/reply.png);
-    padding-left: 14px;		
-    cursor: pointer;		
+    padding-left: 14px;
+    cursor: pointer;
 }
 
 .reply-box .close-pv {
@@ -228,7 +233,7 @@ textarea:focus, input:focus{
     position: absolute;
     left: 23px;
     top: 8px;
-    font-weight: bold;		
+    font-weight: bold;
 }
 
 .reply-box .wait {
@@ -237,7 +242,7 @@ textarea:focus, input:focus{
     margin-left: 23px;
     width: 216px;
     text-align: center;
-    font-weight: bold;		
+    font-weight: bold;
 }
 
 .reply-box .text {
@@ -245,5 +250,5 @@ textarea:focus, input:focus{
     left: 23px;
     top: 30px;
     width: 216px;
-    display: block;		
+    display: block;
 }

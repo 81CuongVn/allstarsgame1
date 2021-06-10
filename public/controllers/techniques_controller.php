@@ -321,16 +321,15 @@ class TechniquesController extends Controller {
 		$errors					= [];
 
 		if (isset($_POST['stamina']) && is_numeric($_POST['stamina']) && $_POST['stamina'] > 0) {
-			if ($player->enchant_points >= 3000 && !$_SESSION['universal']) {
+			if ($player->enchant_points >= 3000) {
 				$errors[]	= t('enchant.errors.nao_pode_treinar');
 			}
 
-			if ($player->enchant_points_total >= 50000 && !$_SESSION['universal']) {
+			if ($player->enchant_points_total >= 50000) {
 				$errors[]	= t('enchant.errors.nao_pode_treinar2');
 			}
 
-			//$stamina = ( 10 + $player->level ) - $player->less_stamina;
-			if ($player->for_stamina() < $_POST['stamina'] && !$_SESSION['universal']) {
+			if ($player->for_stamina() < $_POST['stamina']) {
 				$errors[]	= t('enchant.errors.sem_stamina');
 			}
 		} else {
@@ -338,31 +337,39 @@ class TechniquesController extends Controller {
 		}
 
 		if (!sizeof($errors)) {
+			$points		= $_POST['stamina'] * (15 * 60 / $player->level);
+			$points		+= percent($player->attributes()->sum_bonus_training_earn, $points);
+			$points		= floor($points);
+
+			$multiplier	= floor(30 - ($player->level / 10));
+			$exp		= $multiplier > 0 ? $multiplier * $_POST['stamina'] : 0;
+			$exp		-= percent($player->attributes()->sum_bonus_training_exp, $points);
+			$exp		= floor($exp);
+
 			$this->json->success	= true;
-			$pontos_ganhos = $_POST['stamina'] * (15 * 60 / $player->level);
 
 			// Adiciona na player os pontos e remove a stamina
-			if ($pontos_ganhos + $player->enchant_points > 3000) {
-				$pontos_ganhos = 3000 - $player->enchant_points;
+			if ($points + $player->enchant_points > 3000) {
+				$points = 3000 - $player->enchant_points;
 				$player->enchant_points = 3000;
 			} else {
-				$player->enchant_points += $pontos_ganhos;
+				$player->enchant_points += $points;
 			}
 
-			if ($pontos_ganhos + $player->enchant_points_total > 50000) {
+			if ($points + $player->enchant_points_total > 50000) {
 				$player->enchant_points_total += 50000 - $player->enchant_points_total;
 			} else {
-				$player->enchant_points_total += $pontos_ganhos;
+				$player->enchant_points_total += $points;
 			}
 
-			if (!$_SESSION['universal']) {
-				$player->less_stamina += $_POST['stamina'];
-			}
+			$player->exp			+= $exp;
+			$player->less_stamina	+= $_POST['stamina'];
 			$player->save();
 		} else {
 			$this->json->messages	= $errors;
 		}
 	}
+
 	function grimoire() {
 		$player		= Player::get_instance();
 		$anime_id	= $player->character()->anime_id;
@@ -389,16 +396,15 @@ class TechniquesController extends Controller {
 		$this->assign('items',				$result);
 		$this->assign('player_tutorial',	$player->player_tutorial());
 	}
-	function learn_grimoire(){
+
+	function learn_grimoire() {
 		$player					= Player::get_instance();
 		$this->as_json			= true;
 		$this->json->success	= false;
 		$errors					= [];
 
-		if(isset($_POST['id']) && is_numeric($_POST['id'])) {
+		if (isset($_POST['id']) && is_numeric($_POST['id'])) {
 			$item			= Item::find_first($_POST['id']);
-
-
 			if(!$item) {
 				$errors[]				= t('grimoire.errors.invalid');
 			} else {
@@ -406,7 +412,7 @@ class TechniquesController extends Controller {
 				$item->set_anime($anime_id);
 
 				$parent_items			= Item::find("parent_id = ". $item->id ." AND item_type_id = 11");
-				if(!$parent_items){
+				if (!$parent_items) {
 					$errors[]			= t('grimoire.errors.invalid');
 				}else{
 					$items_counter  = sizeof($parent_items);

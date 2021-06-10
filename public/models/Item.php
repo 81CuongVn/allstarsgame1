@@ -922,17 +922,16 @@ class Item extends Relation {
 	}
 
 	function embed() {
-		// $attributes	= $this->_player_item->attributes();
-		// $embed		= [
-		// 	'attributes'	=> $attributes->as_array(),
-		// 	'name'			=> $attributes->name(),
-		// 	'rarity'		=> $this->_player_item->rarity,
-		// 	'id'			=> $this->_player_item->id
-		// ];
+		$attributes	= $this->_player_item->attributes();
+		$embed		= [
+			'attributes'	=> $attributes->as_array(),
+			'name'			=> $attributes->name(),
+			'rarity'		=> $this->_player_item->rarity,
+			'id'			=> $this->_player_item->id
+		];
 
-		// $iv = substr(CHAT_KEY, 0, 16);
-		// return openssl_encrypt(json_encode($embed), 'AES-256-CBC', CHAT_KEY,0, $iv);
-		return ;
+		$iv = substr(CHAT_KEY, 0, 16);
+		return openssl_encrypt(json_encode($embed), 'AES-256-CBC', CHAT_KEY, 0, $iv);
 	}
 
 	function equipment_sell_price() {
