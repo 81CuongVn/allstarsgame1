@@ -38,7 +38,7 @@
 				_distribute_points({
 					attribute:	_.data('attribute'),
 					quantity:	qty
-				});				
+				});
 			}
 		});
 

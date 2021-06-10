@@ -1,0 +1,49 @@
+extends layout
+block body
+	h2= game ? 'Edit game' : 'New game'
+
+	form.form-horizontal#game-form(data-id="#{game ? game.id : ''}")
+		.form-group
+			label.control-label.col-sm-2 Name
+			.col-sm-10
+				input.form-control(type="text" name="name" value="#{game ? game.name : ''}")
+		.form-group
+			label.control-label.col-sm-2 Game Key
+			.col-sm-10
+				input.form-control(type="text" name="game_key" value="#{game ? game.game_key : ''}")
+		.form-group
+			label.control-label.col-sm-2 Game Crypto
+			.col-sm-10
+				input.form-control(type="text" name="game_crypto" value="#{game ? game.game_crypto : ''}")
+		h3 Channels
+		table.table#channel-list
+			thead
+				th #
+				th Channel
+				th Key
+				th Color
+				th Subchannel
+				th
+			each channel in channels
+				tr
+					td
+						input(type="hidden" name="channel_id[]" value="#{channel.id}")
+						input(type="hidden" name="channel_allow_subchannel[]" value="#{channel.allow_subchannel}")
+						= channel.id
+					td
+						input(type="text" class="form-control" name="channel[]" value="#{channel.name}")
+					td
+						input(type="text" class="form-control" name="channel_key[]" value="#{channel.channel_key}")
+					td
+						input(type="text" class="form-control" name="channel_color[]" value="#{channel.color}" maxlength="6")
+					td
+						input(type="checkbox" value="1" class="subchannel" checked=channel.allow_subchannel ? true : false)
+						| Allow sub-channel
+					td
+						a.btn.btn-danger.remove-channel Remove
+		hr
+		a.btn.btn-primary.add-channel Add channel
+		hr
+		a.btn.btn-default(href="/games") Back
+		| 
+		a.btn.btn-primary.save-game Save game

@@ -1,16 +1,16 @@
-(function() {
+(function () {
 	var treino_stamina = $('#treino-stamina-filter-form');
 	var is_learning = false;
 	var source_types = null;
 	var source_drop = null;
 
 	// Remove um pet de uma missão com o botão direito
-	$('.remove-gem').bind('click', function() {
+	$('.remove-gem').bind('click', function () {
 
 		var item_id = $(this).data('item');
 		var counter = $(this).data('counter');
 
-		bootbox.confirm($(this).data('message'), function(result) {
+		bootbox.confirm($(this).data('message'), function (result) {
 			if (result) {
 				lock_screen(true);
 
@@ -22,7 +22,7 @@
 					},
 					type: 'post',
 					dataType: 'json',
-					success: function(result) {
+					success: function (result) {
 						if (result.success) {
 							location.href = make_url('techniques#enchant');
 						} else {
@@ -38,26 +38,26 @@
 	// Adiciona o Golpe para ser Encantado na página
 	$('.enchant-box').on('click', '.change_golpe_enchant_new', function () {
 		lock_screen(true);
-	
+
 		$.ajax({
-			url:		make_url('techniques#list_golpes'),
-			type:		'post',
-			data:		{item_id: $(this).data('item')},
-			dataType:	'json',
-			success:	function (result) {
-				if(result.success) {
-					location.href	= make_url('techniques#enchant');
+			url: make_url('techniques#list_golpes'),
+			type: 'post',
+			data: { item_id: $(this).data('item') },
+			dataType: 'json',
+			success: function (result) {
+				if (result.success) {
+					location.href = make_url('techniques#enchant');
 				} else {
 					lock_screen(false);
 					format_error(result);
 				}
 			}
 		});
-	
+
 	});
 
 	// Adiciona o Golpe para ser Encantado na página
-	$('.change_golpe_enchant').on('click', function() {
+	$('.change_golpe_enchant').on('click', function () {
 		var _ = $(this);
 		var win = bootbox.dialog({
 			message: '...',
@@ -74,11 +74,11 @@
 			url: _.data('url'),
 			type: 'get',
 
-			success: function(result) {
+			success: function (result) {
 				$('.bootbox-body', win).html(result);
 
 				// This one is for the images
-				$('.modal-content', win).on('click', '.enchant-box', function() {
+				$('.modal-content', win).on('click', '.enchant-box', function () {
 					win.modal('hide');
 					lock_screen(true);
 
@@ -89,7 +89,7 @@
 							item_id: $(this).data('item')
 						},
 						dataType: 'json',
-						success: function(result) {
+						success: function (result) {
 							if (result.success) {
 								location.href = make_url('techniques#enchant');
 							} else {
@@ -106,7 +106,7 @@
 	});
 
 	// Cria uma joia
-	$('.msg-container .create_gem').on('click', function() {
+	$('.msg-container .create_gem').on('click', function () {
 		lock_screen(true);
 
 		$.ajax({
@@ -116,7 +116,7 @@
 				create: 1
 			},
 			dataType: 'json',
-			success: function(result) {
+			success: function (result) {
 				if (result.success) {
 					location.href = make_url('techniques#enchant?joia=' + result.premio);
 				} else {
@@ -128,7 +128,7 @@
 	});
 
 	// Encanta finalmente o golpe
-	$('.enchant .enchant_item_gem').on('click', function() {
+	$('.enchant .enchant_item_gem').on('click', function () {
 		lock_screen(true);
 		var _ = $(this);
 
@@ -141,7 +141,7 @@
 				combination: _.data('counter')
 			},
 			dataType: 'json',
-			success: function(result) {
+			success: function (result) {
 				if (result.success) {
 					location.href = make_url('techniques#enchant');
 				} else {
@@ -152,8 +152,8 @@
 		});
 	});
 
-	// Faz o treino diario dos encantamentos	
-	treino_stamina.on('click', '.filter', function() {
+	// Faz o treino diario dos encantamentos
+	treino_stamina.on('click', '.filter', function () {
 		lock_screen(true);
 		var _ = $(this);
 
@@ -164,7 +164,7 @@
 			},
 			dataType: 'json',
 			type: 'post',
-			success: function(result) {
+			success: function (result) {
 				if (result.success) {
 					location.href = make_url('techniques#enchant');
 				} else {
@@ -176,7 +176,7 @@
 	});
 
 	$('#eqquiped-technique-list .item').droppable({
-		drop: function(e, ui) {
+		drop: function (e, ui) {
 			// alert('Dropo merda');
 			// return ;
 			var old_item = $('.item-content', this);
@@ -186,7 +186,7 @@
 			if (old_item) {
 				$('#technique-dropsource-' + old_item.data('item'))
 					.append(old_item).
-				attr('class', _.attr('class').replace('dropzone', ''));
+					attr('class', _.attr('class').replace('dropzone', ''));
 
 				apply_drag_cb();
 			}
@@ -204,7 +204,7 @@
 				},
 				type: 'post',
 				dataType: 'json',
-				success: function(result) {
+				success: function (result) {
 					if (!result.success) {
 						format_error(result);
 					} else
@@ -214,12 +214,12 @@
 		}
 	})
 
-	$('#technique-list .item-content').on('click', function() {
+	$('#technique-list .item-content').on('click', function () {
 		// alert($(this).data('item'));
 	});
 
 	function apply_drag_cb() {
-		$('#technique-list .item-content').each(function() {
+		$('#technique-list .item-content').each(function () {
 			var _ = $(this);
 
 			if (this._with_drag || _.hasClass('locked')) {
@@ -231,14 +231,14 @@
 			$(this).draggable({
 				accept: '.dropzone',
 				revert: true,
-				start: function() {
+				start: function () {
 					var parent = $(this).parent();
 					source_drop = parent;
 					source_types = parent.attr('class');
 
 					parent.addClass('dropping');
 				},
-				stop: function() {
+				stop: function () {
 					$(this).parent().removeClass('dropping');
 				}
 			});
@@ -248,7 +248,7 @@
 	apply_drag_cb();
 	// Adiciona elas realmente no slot
 	$('.enchant .enchant-item').droppable({
-		drop: function(e, ui) {
+		drop: function (e, ui) {
 			var old_item = $('.item-content-gem', this);
 			var _ = $(this);
 			$(this).append(ui.draggable[0].outerHTML);
@@ -256,7 +256,7 @@
 			if (old_item) {
 				$('#technique-dropsource-' + old_item.data('item'))
 					.append(old_item).
-				attr('class', _.attr('class').replace('dropzone', ''));
+					attr('class', _.attr('class').replace('dropzone', ''));
 
 				apply_drag_cb_gem();
 			}
@@ -274,7 +274,7 @@
 				},
 				type: 'post',
 				dataType: 'json',
-				success: function(result) {
+				success: function (result) {
 					if (!result.success) {
 						format_error(result);
 					} else {
@@ -287,7 +287,7 @@
 
 	// Aplica as joias nos slots
 	function apply_drag_cb_gem() {
-		$('#technique-list .item-content-gem').each(function() {
+		$('#technique-list .item-content-gem').each(function () {
 			var _ = $(this);
 
 			if (this._with_drag || _.hasClass('locked')) {
@@ -299,14 +299,14 @@
 			$(this).draggable({
 				accept: '.dropzone',
 				revert: true,
-				start: function() {
+				start: function () {
 					var parent = $(this).parent();
 					source_drop = parent;
 					source_types = parent.attr('class');
 
 					parent.addClass('dropping');
 				},
-				stop: function() {
+				stop: function () {
 					$(this).parent().removeClass('dropping');
 				}
 			});
@@ -323,7 +323,7 @@
 			technique_wait_timer.data('minutes'),
 			technique_wait_timer.data('seconds'),
 			'technique-wait-timer',
-			function() {
+			function () {
 				location.reload()
 			},
 			null,
@@ -331,8 +331,8 @@
 		);
 	}
 
-	$('#technique-training-status-container .cancel').on('click', function() {
-		jconfirm($(this).data('confirmation'), function() {
+	$('#technique-training-status-container .cancel').on('click', function () {
+		jconfirm($(this).data('confirmation'), function () {
 			lock_screen(true);
 
 			$.ajax({
@@ -342,7 +342,7 @@
 					cancel: 1
 				},
 				dataType: 'json',
-				success: function(result) {
+				success: function (result) {
 					if (result.success) {
 						location.href = make_url('trainings#techniques');
 					} else {
@@ -354,7 +354,7 @@
 		});
 	});
 
-	$('#technique-training-status-container .finish').on('click', function() {
+	$('#technique-training-status-container .finish').on('click', function () {
 		lock_screen(true);
 
 		$.ajax({
@@ -364,7 +364,7 @@
 				finish: 1
 			},
 			dataType: 'json',
-			success: function(result) {
+			success: function (result) {
 				if (result.success) {
 					location.href = make_url('trainings#techniques');
 				} else {
@@ -375,7 +375,7 @@
 		});
 	});
 	// Desbloqueia um golpe do grimorio
-	$('.player-item-finish').on('click', function() {
+	$('.player-item-finish').on('click', function () {
 		var id = $(this).data('id');
 		lock_screen(true);
 
@@ -385,7 +385,7 @@
 			data: {
 				id: id
 			},
-			success: function(result) {
+			success: function (result) {
 				if (result.success) {
 					location.href = make_url('techniques#grimoire');
 				} else {
@@ -412,7 +412,7 @@
 			data: {
 				id: element.data('id')
 			},
-			success: function(response) {
+			success: function (response) {
 				if (response.success)
 					location.href = make_url('techniques#abilities_and_specialities');
 				else {
@@ -441,11 +441,11 @@
 				id: element.data('id')
 			},
 
-			success: function(result) {
+			success: function (result) {
 				$('.bootbox-body', win).html(result);
 
 				// This one is for the images
-				$('.modal-content', win).on('click', '.upgrade', function() {
+				$('.modal-content', win).on('click', '.upgrade', function () {
 					win.modal('hide');
 					lock_screen(true);
 
@@ -457,7 +457,7 @@
 							id2: $(this).data('id2')
 						},
 						dataType: 'json',
-						success: function(result) {
+						success: function (result) {
 							if (result.success)
 								location.href = make_url('techniques/abilities_and_specialities');
 							else {
@@ -472,15 +472,15 @@
 		});
 	};
 
-	$('#ability-speciality-list').on('click', '.ability-speciality-box', function() {
-		var element	= $(this),
-			buttons	= [];
+	$('#ability-speciality-list').on('click', '.ability-speciality-box', function () {
+		var element = $(this),
+			buttons = [];
 
 		if (!element.hasClass('disabled') && !element.hasClass('active'))
 			buttons.push({
 				label: I18n.t('abilities.show.learn'),
 				className: ' btn-sm btn-primary',
-				callback: function() {
+				callback: function () {
 					equip_ability_speciality(element);
 					return false;
 				}
@@ -489,7 +489,7 @@
 		buttons.push({
 			label: I18n.t('abilities.show.modify'),
 			className: 'btn btn-sm btn-danger',
-			callback: function() {
+			callback: function () {
 				modify_ability_speciality(element);
 				return false;
 			}
@@ -497,7 +497,7 @@
 			label: I18n.t('global.close'),
 			className: 'btn btn-sm'
 		});
-		
+
 		bootbox.dialog({
 			message: I18n.t('abilities.show.click_text_' + (element.hasClass('ability') ? 'ability' : 'speciality')),
 			buttons: buttons

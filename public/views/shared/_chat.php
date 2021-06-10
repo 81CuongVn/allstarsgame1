@@ -1,4 +1,4 @@
-<div id="chat-v2">
+<div id="chat">
 	<div class="title">
         Chat All-Stars
 	</div>
@@ -46,12 +46,12 @@ if ($_SESSION['universal']) {			// Admin
 
 $guild          = $player->guild();
 $chat_data	    = [
-    'uid'           => $player->id,
-	'user_id'       => $player->user_id,
-	'faction'       => $player->faction_id,
-	'guild'         => $player->guild_id,
+    'uid'           => (int)$player->id,
+	'user_id'       => (int)$player->user_id,
+	'faction'       => (int)$player->faction_id,
+	'guild'         => (int)$player->guild_id,
 	'guild_owner'   => $guild ? $player->id == $guild->leader()->id : FALSE,
-	'battle'        => $player->battle_pvp_id,
+	'battle'        => (int)$player->battle_pvp_id,
 	'gm'            => $_SESSION['universal'],
 	'color'         => $color,
 	'icon'          => $icon,
@@ -77,9 +77,12 @@ $registration   = openssl_encrypt(json_encode($chat_data), 'AES-256-CBC', $key, 
 		var pm_total		= 0;
 		var chat_max_length	= 120;
 
+		window.chat_embeds	= [];
+		window.chat_decoded	= [];
+
 		function resize_selector() {
-			var	tw	= $('#chat-v2 .selector-trigger').outerWidth() + 15;
-			$('#chat-v2 input[name=message]').css({
+			var	tw	= $('#chat .selector-trigger').outerWidth() + 15;
+			$('#chat input[name=message]').css({
 				paddingLeft: tw
 			});
 		}
@@ -103,7 +106,7 @@ $registration   = openssl_encrypt(json_encode($chat_data), 'AES-256-CBC', $key, 
 		}
 
 		__chat_socket.on('error', function () {
-			$('#chat-v2 .messages').html(
+			$('#chat .messages').html(
 				'<div style="padding: 10px">Ocorreu um problema ao conectar ao chat.<br /><br />Você pode ter algum firewall(isso inclui programas anti-hack de jogos on-line)' +
 				' ou anti-vírus bloqueando o chat.<br /><br />Se sua rede está conectada através de um proxy, o proxy pode estar bloqueando as conexões ou não suporta conexões via websocket</div>'
 			);
@@ -114,7 +117,7 @@ $registration   = openssl_encrypt(json_encode($chat_data), 'AES-256-CBC', $key, 
                 data: '<?=$registration;?>'
 			});
 
-			$('#chat-v2 .messages .wait').remove();
+			$('#chat .messages .wait').remove();
 		});
 
 		__chat_socket.on('blocked-broadcast', function (data) {
@@ -161,13 +164,13 @@ $registration   = openssl_encrypt(json_encode($chat_data), 'AES-256-CBC', $key, 
 					var	msg_text		= $(document.createElement('SPAN')).html(pvt_data[0].message).addClass('text');
 
 					msg_reply.on('click', function () {
-						$('#chat-v2 .selector-trigger')
+						$('#chat .selector-trigger')
 							.html(pvt_data[0].from)[0].shown = false;
 
 						channel		= 'private';
 						pvt_dest	= pvt_data[0].id;
 
-						$('#chat-v2 input[name=message]').focus();
+						$('#chat input[name=message]').focus();
 						resize_selector();
 					});
 
@@ -235,12 +238,14 @@ $registration   = openssl_encrypt(json_encode($chat_data), 'AES-256-CBC', $key, 
 		});
 
 		__chat_socket.on('broadcast', function (data) {
-			if (typeof data.channel === 'undefined') {
-				return;
+			if (data.decodes) {
+				data.decodes.forEach(function (decoded) {
+					chat_decoded[decoded[0]]	= decoded[1];
+				});
 			}
 
 			if (data.channel == 'system' || data.channel == 'warn') {
-				$('#chat-v2 .messages').append('<div class="chat-message chat-' + data.channel + '"><div>Aviso de sistema</div><div>' + data.message + '</div></div>')
+				$('#chat .messages').append('<div class="chat-message chat-' + data.channel + '"><div>Aviso de sistema</div><div>' + data.message + '</div></div>')
 
 				return;
 			}
@@ -263,7 +268,7 @@ $registration   = openssl_encrypt(json_encode($chat_data), 'AES-256-CBC', $key, 
                 data.icon = '<span class="fa fa-star fa-fw"></span> ';
             }
 
-            $('#chat-v2 .messages').append(
+            $('#chat .messages').append(
 				'<div class="chat-message chat-' + data.channel + '' + (data.gm ? ' chat-gm' : '') + '" ' + (!(data.channel == real_channel) ? 'style="display: none;"' : '') + '>' +
                     '<span ' + (data.color ? 'style="color: ' + data.color + '!important"' : '') + ' class="chat-user" data-id="' + data.id + '" data-from="' + data.from + '">' +
                         (data.icon || '') + data.from +
@@ -271,7 +276,7 @@ $registration   = openssl_encrypt(json_encode($chat_data), 'AES-256-CBC', $key, 
                     '<span>' + data.message + '</span>' +
                 '</div>');
 
-			$('#chat-v2 .messages .chat-user').each(function() {
+			$('#chat .messages .chat-user').each(function() {
 				if (this.with_callback) {
 					return;
 				}
@@ -281,60 +286,63 @@ $registration   = openssl_encrypt(json_encode($chat_data), 'AES-256-CBC', $key, 
 
 				_.on('click', function() {
 					if (channel == 'block') {
-						$('#chat-v2 input[name=message]').val($(this).data('from')).focus();
+						$('#chat input[name=message]').val($(this).data('from')).focus();
 
 						return;
 					}
 
-					$('#chat-v2 .selector-trigger')
+					$('#chat .selector-trigger')
 						.html(this.innerHTML)[0].shown = false;
 
-					$('#chat-v2 .selector ul').animate({opacity: 0}, function () {
+					$('#chat .selector ul').animate({opacity: 0}, function () {
 						$(this).hide()
 					});
 
 					channel		= 'private';
 					pvt_dest	= _.data('id');
 
-					$('#chat-v2 input[name=message]').focus();
+					$('#chat input[name=message]').focus();
 					resize_selector();
 				});
 			});
 
 			if (has_type) {
-				$('#chat-v2 .messages').scrollTop(1000000);
+				$('#chat .messages').scrollTop(1000000);
+
 				has_type	= false;
 			}
-			if ($('#chat-v2 .auto-scroll:checked').length) {
-				$('#chat-v2 .messages').scrollTop(1000000);
+			if ($('#chat .auto-scroll:checked').length) {
+				$('#chat .messages').scrollTop(1000000);
 			}
 		});
 
         $(document).ready(function(e) {
-			$('#chat-v2 input[name=message]').on('keyup', function(e) {
+			$('#chat input[name=message]').on('keyup', function(e) {
 				var	message	= $(this);
 
 				if (e.keyCode == 13 && this.value) {
-					<?php if (!$_SESSION['universal']): ?>
+					<?php if (!$_SESSION['universal']) { ?>
 						var now	= new Date();
 						if (last_msg && diff_in_secs(last_msg, now) < 10) {
 							return;
 						}
-					<?php endif; ?>
+					<?php } ?>
 
 					var broadcast_data	= {
 						message:	this.value,
 						channel:	channel,
-						dest:		pvt_dest
+						dest:		pvt_dest,
+						embeds: 	chat_embeds
 					};
 
 					__chat_socket.emit('message', broadcast_data);
 
 					this.value	= '';
+					chat_embeds	= [];
 					has_type	= true;
 
 					if (channel == 'private') {
-						$('#chat-v2 .selector ul li').each(function () {
+						$('#chat .selector ul li').each(function () {
 							if ($(this).data('channel') == real_channel) {
 								$(this).trigger('click');
 							}
@@ -358,7 +366,7 @@ $registration   = openssl_encrypt(json_encode($chat_data), 'AES-256-CBC', $key, 
 				}
 
 				if (e.keyCode == 32) {
-					$('#chat-v2 .selector ul li').each(function () {
+					$('#chat .selector ul li').each(function () {
 						var _	= $(this);
 
 						if (message.val().match(new RegExp('\^/' + _.data('cmd')))) {
@@ -371,7 +379,7 @@ $registration   = openssl_encrypt(json_encode($chat_data), 'AES-256-CBC', $key, 
 					if (message.val().match(/^@[^\s]+/)) {
 						var	dest	= message.val().replace(/[@<>]/img, '');
 
-						$('#chat-v2 .selector-trigger').html(dest)[0].shown = false;
+						$('#chat .selector-trigger').html(dest)[0].shown = false;
 
 						message.val('');
 
@@ -382,7 +390,7 @@ $registration   = openssl_encrypt(json_encode($chat_data), 'AES-256-CBC', $key, 
 					}
 
 					if (message.val().match('^/block')) {
-						$('#chat-v2 .selector-trigger').html('Bloquear')[0].shown = false;
+						$('#chat .selector-trigger').html('Bloquear')[0].shown = false;
 
 						channel	= 'block';
 
@@ -391,11 +399,11 @@ $registration   = openssl_encrypt(json_encode($chat_data), 'AES-256-CBC', $key, 
 					}
 				}
 			}).on('focus', function () {
-				$('#chat-v2 #as').stop().animate({opacity: 0});
+				$('#chat #as').stop().animate({opacity: 0});
 			}).on('blur', function () {
-				$('#chat-v2 #as').stop().animate({opacity: 1});
+				$('#chat #as').stop().animate({opacity: 1});
 			}).on('pvt-switch', function (e, dest) {
-				$('#chat-v2 .selector-trigger').html(dest)[0].shown = false;
+				$('#chat .selector-trigger').html(dest)[0].shown = false;
 
 				channel		= 'private';
 				pvt_dest	= dest;
@@ -403,9 +411,9 @@ $registration   = openssl_encrypt(json_encode($chat_data), 'AES-256-CBC', $key, 
 				resize_selector();
 			});
 
-			$('#chat-v2 .selector ul li').on('click', function () {
-				$('#chat-v2 .selector-trigger').html(this.innerHTML)[0].shown = false;
-				$('#chat-v2 .selector ul').animate({opacity: 0}, function () {
+			$('#chat .selector ul li').on('click', function () {
+				$('#chat .selector-trigger').html(this.innerHTML)[0].shown = false;
+				$('#chat .selector ul').animate({opacity: 0}, function () {
 					$(this).hide()
 				});
 
@@ -413,28 +421,28 @@ $registration   = openssl_encrypt(json_encode($chat_data), 'AES-256-CBC', $key, 
 				real_channel	= channel;
 
 				<?php if (!$_SESSION['universal']) { ?>
-                	$('#chat-v2 #message').attr('maxlength', chat_max_length);
+                	$('#chat #message').attr('maxlength', chat_max_length);
 				<?php } ?>
 
-				$('#chat-v2 .messages .chat-message').hide();
+				$('#chat .messages .chat-message').hide();
 
 				$.cookie('chat_channel', channel);
 
-				$('#chat-v2 .messages .chat-' + channel).show();
-				$('#chat-v2 .messages .chat-warn').show();
-				$('#chat-v2 .messages .chat-system').show();
+				$('#chat .messages .chat-' + channel).show();
+				$('#chat .messages .chat-warn').show();
+				$('#chat .messages .chat-system').show();
 
-				$('#chat-v2 input[name=message]').focus();
+				$('#chat input[name=message]').focus();
 				resize_selector();
 			});
 
-			$('#chat-v2 .selector-trigger').on('click', function () {
+			$('#chat .selector-trigger').on('click', function () {
 				if (!this.shown) {
-					$('#chat-v2 .selector ul').show().animate({opacity: 1});
+					$('#chat .selector ul').show().animate({opacity: 1});
 
 					this.shown	= true;
 				} else {
-					$('#chat-v2 .selector ul').animate({opacity: 0}, function () { $(this).hide() });
+					$('#chat .selector ul').animate({opacity: 0}, function () { $(this).hide() });
 
 					this.shown	= false;
 				}
@@ -444,7 +452,7 @@ $registration   = openssl_encrypt(json_encode($chat_data), 'AES-256-CBC', $key, 
 				var	current		= $.cookie('chat_channel');
 				var was_found	= false;
 
-				$('#chat-v2 .selector ul li').each(function () {
+				$('#chat .selector ul li').each(function () {
 					var _		= $(this);
 
 					if (_.data('channel') == current) {
@@ -455,7 +463,7 @@ $registration   = openssl_encrypt(json_encode($chat_data), 'AES-256-CBC', $key, 
 				});
 
 				if (!was_found) {
-					$('#chat-v2 .selector ul li').each(function () {
+					$('#chat .selector ul li').each(function () {
 						var _		= $(this);
 
 						if (_.data('channel') == 'world') {
@@ -464,7 +472,7 @@ $registration   = openssl_encrypt(json_encode($chat_data), 'AES-256-CBC', $key, 
 					});
 				}
 			} else {
-				$('#chat-v2 .selector ul li').each(function () {
+				$('#chat .selector ul li').each(function () {
 					var _		= $(this);
 
 					if (_.data('channel') == 'world') {
@@ -482,14 +490,14 @@ $registration   = openssl_encrypt(json_encode($chat_data), 'AES-256-CBC', $key, 
 			__chat_socket.emit('blocked-query');
 		}, 2000)
 
-		$('#chat-v2 .title').on('click', function () {
+		$('#chat .title').on('click', function () {
 			if (parseInt($.cookie('chat_show'))) {
-				$('#chat-v2').animate({height: 35});
+				$('#chat').animate({height: 35});
 				$('.chat-pvt').animate({bottom: 30});
 
 				$.cookie('chat_show', 0);
 			} else {
-				$('#chat-v2').animate({height: 350});
+				$('#chat').animate({height: 350});
 				$('.chat-pvt').animate({bottom: 340});
 
 				$.cookie('chat_show', 1);
@@ -498,7 +506,7 @@ $registration   = openssl_encrypt(json_encode($chat_data), 'AES-256-CBC', $key, 
 			resize_selector();
 		});
 
-		$('#chat-v2 .auto-scroll').on('click', function () {
+		$('#chat .auto-scroll').on('click', function () {
 			if (this.checked) {
 				$.cookie('chat_as', 1);
 			} else {
@@ -507,11 +515,11 @@ $registration   = openssl_encrypt(json_encode($chat_data), 'AES-256-CBC', $key, 
 		});
 
 		if (!parseInt($.cookie('chat_show'))) {
-			$('#chat-v2').css('height', 35);
+			$('#chat').css('height', 35);
 		}
 
 		if (parseInt($.cookie('chat_as'))) {
-			$('#chat-v2 .auto-scroll')[0].checked = true;
+			$('#chat .auto-scroll')[0].checked = true;
 		}
 	})();
 </script>

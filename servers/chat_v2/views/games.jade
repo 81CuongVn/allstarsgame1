@@ -1,0 +1,23 @@
+extends layout
+block body
+	h2 Games
+	a(class="btn btn-primary" href="/game/") New Game
+	hr
+	table.table.table-stripped
+		unless games.length
+			tr
+				td No games
+		else
+			thead
+				th #
+				th Game
+				th Key
+				th Crypto
+		each game in games
+			tr
+				td= game.id
+				td
+					a(href="game/#{game.id}")= game.name
+				td= game.game_key
+				td= game.game_crypto
+

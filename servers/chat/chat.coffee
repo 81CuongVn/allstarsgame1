@@ -8,7 +8,6 @@ fs					= require 'fs'
 crypto				= require 'crypto'
 sio					= require 'socket.io'
 emoticons			= require './emoticons'
-mysql				= require 'mysql'
 config				= require './config'
 db					= require './db'
 
