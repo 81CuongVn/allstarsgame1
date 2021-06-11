@@ -1,11 +1,5 @@
 <?php
 class Ranked extends Relation {
-	public	$ranked_schedules	= [
-		[ '10', '12' ],		// 10h at 12h
-		[ '16', '18' ],		// 16h at 18h
-		[ '22', '00' ]		// 22h at 00h
-	];
-
 	static function isOpen() {
 		global $ranked_schedules;
 
@@ -21,8 +15,8 @@ class Ranked extends Relation {
 			$schedules		= $ranked_schedules;
 			foreach ($schedules as $schedule) {
 				$start	= $schedule[0];
-				$end	= $schedule[1];
-				if (between(date('H'), $start, ($end - 1))) {
+				$end	= $schedule[1] - 1;
+				if (between(date('H'), $start, $end)) {
 					$ranked_time	= true;
 
 					break;
