@@ -279,8 +279,6 @@
 		});
 	};
 	var list_equipments = function (element) {
-		$('.badge', this).remove();
-
 		var win = bootbox.dialog({
 			message: '...',
 			buttons: [{
@@ -315,11 +313,6 @@
 					}
 
 					_.on('click', function (e) {
-						if (e.shiftKey) {
-							$('#chat .selector input[name=message]').val('[equip:' + $(this).data('id') + ']').focus();
-							return;
-						}
-
 						var win2 = bootbox.dialog({
 							message: I18n.t('equipments.show.click_text'),
 							buttons: [{
@@ -418,6 +411,8 @@
 
 		var buttons = [];
 		if (!$(this).hasClass('equipped')) {
+			$('.badge', element).remove();
+
 			list_equipments(element);
 			return;
 		} else {
