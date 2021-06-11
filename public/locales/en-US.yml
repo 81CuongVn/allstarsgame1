@@ -809,7 +809,22 @@ en-US:
         Cada <span class="verde">vitória te dá 20 pontos</span> e <span class="vermelho">derrota você perde 5 pontos</span>.<br />
         Não se preocupe caso esta perdendo muito, pois você nunca ficará com seus Pontos de Liga negativos!<br /><br />
 
-        <span class="laranja">A fila irá funcionar juntamenta com a fila PvP todo: <u>Domingo, terça-feira e quinta-feira</u>.</span>
+        <!-- <span class="laranja">A fila irá funcionar juntamenta com a fila PvP todo: <u>Domingo, terça-feira e quinta-feira</u>.</span> -->
+        <span class="laranja">A fila irá funcionar juntamenta com a fila PvP nos seguintes horários:</span><br /><br />
+        <div class="row" style="width: 350px;">
+          <div class="col-sm-4" align="center">
+            <strong class="verde">Manhã</strong><br />
+            10h às 12h
+          </div>
+          <div class="col-sm-4" align="center">
+            <strong class="verde">Tarde</strong><br />
+            16h às 18h
+          </div>
+          <div class="col-sm-4" align="center">
+            <strong class="verde">Noite</strong><br />
+            20h às 00h
+          </div>
+        </div>
     waiting:
       title: Aguardando oponente
       description: Você está aguardando oponente e isso pode levar alguns minutos e aconselhamos você ficar nessa página, pois, achando oponente você será redirecionado automaticamente para o combate.<br/><br/> Você também pode fechar sua sala quando quiser.<br /><br /><a class="btn btn-danger decline">Fechar Sala</a>
