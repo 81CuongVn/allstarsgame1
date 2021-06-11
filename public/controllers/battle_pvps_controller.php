@@ -177,8 +177,27 @@ class BattlePvpsController extends Controller {
 		$_SESSION['pvp_used_speciality']	= FALSE;
 		$_SESSION['pvp_time_reduced']		= 0;
 
-		$this->assign('player', $player);
-		$this->assign('player_tutorial', $player->player_tutorial());
+
+		// Log de batalhas
+		$page			= isset($_POST['page']) ? $_POST['page'] : 0;
+		$items_per_page	= 10;
+		$total_pages	= BattlePvp::find("battle_type_id in (2, 5) and finished_at is not null");
+		$total_pages	= ceil(sizeof($total_pages) / $items_per_page) - 1;
+		$page			= (!is_numeric($page) || $page < 0) ? 0 : $page;
+		$page			= ($page > $total_pages) ? $total_pages : $page;
+		$start			= ceil((($page + 1) * $items_per_page) - $items_per_page);
+		$start			= $start < 0 ? 0 : $start;
+		$battles		= BattlePvp::find("battle_type_id in (2, 5) and finished_at is not null", [
+			'limit'		=> $start . ', ' . $items_per_page,
+			'reorder'	=> 'finished_at desc'
+		]);
+
+		$this->assign('page',				$page);
+		$this->assign('pages',				$total_pages);
+		$this->assign('battles',			$battles);
+
+		$this->assign('player',				$player);
+		$this->assign('player_tutorial',	$player->player_tutorial());
 	}
 
 	function training() {
