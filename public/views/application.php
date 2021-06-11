@@ -190,7 +190,7 @@ if (preg_match('/read_news/', $action)) {
 				</div>
 				<div class="currency absolute"><?=highamount($player->currency);?></div>
 				<div class="relogio absolute">
-					<a href="javascript:void(0)" class="requirement-popover" data-source="#tooltip-relogio" data-title="<?=t('popovers.titles.rotinas');?>" data-trigger="hover" data-placement="bottom">
+					<a href="javascript:void(0)" class="requirement-popover" data-source="#tooltip-relogio" data-title="<?=t('popovers.titles.routines');?>" data-trigger="hover" data-placement="bottom">
 						<img src="<?=image_url('icons/relogio.png');?>" />
 					</a>
 					<div id="tooltip-relogio" class="status-popover-container">
@@ -214,7 +214,7 @@ if (preg_match('/read_news/', $action)) {
 					</div>
 				</div>
 				<div class="queue absolute">
-					<a href="<?=make_url('battle_pvps')?>" class="requirement-popover" data-source="#tooltip-queue" data-title="<?=t('popovers.titles.queue');?>" data-trigger="hover" data-placement="bottom">
+					<a href="<?=make_url('battle_pvps')?>" class="requirement-popover" data-source="#tooltip-queue" data-title="<?=t('popovers.titles.queue' . (Ranked::isOpen() ? '_ranked' : ''));?>" data-trigger="hover" data-placement="bottom">
 						<img src="<?=image_url('icons/queue-' . ($player->is_pvp_queued ? 'on' : 'off') . '.png');?>" />
 					</a>
 					<div id="tooltip-queue" class="status-popover-container">
@@ -372,7 +372,7 @@ if (preg_match('/read_news/', $action)) {
 			</div>
 			<div class="clearfix"></div>
 		</div>
-		<?php if (!$with_battle) { ?>
+		<?php if (!$with_battle && $player) { ?>
 			<div class="esquerda-gradient" ></div>
 		<?php } ?>
 		<div class="clearfix"></div>
