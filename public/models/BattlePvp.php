@@ -8,6 +8,20 @@ class BattlePvp extends Relation {
 		$this->_player	= $id;
 	}
 
+	function player() {
+		if (!$this->_player) {
+			return false;
+		}
+
+		if ($this->_player != $this->player_id) {
+			$id	= $this->enemy_id;
+		} else {
+			$id	= $this->player_id;
+		}
+
+		return Player::find($id);
+	}
+
 	function enemy() {
 		if (!$this->_player) {
 			return false;
@@ -20,6 +34,18 @@ class BattlePvp extends Relation {
 		}
 
 		return Player::find($id);
+	}
+
+	function winner() {
+		if ($this->draw) {
+			return false;
+		}
+
+		return Player::find($this->won);
+	}
+
+	function type() {
+		return BattleType::find_first($this->battle_type_id);
 	}
 
 	function get_log() {
