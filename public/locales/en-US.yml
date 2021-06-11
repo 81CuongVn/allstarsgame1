@@ -800,29 +800,28 @@ en-US:
     trocar: Trocar oponente por 1 estrela
     ir_fila: Ir para a fila
     sair_fila: Sair da fila
-    ranked:
+   ranked:
       title: Liga All-Stars
       description: |
         Este é um dos módulos competitivos do jogo,
         onde você pode lutar para conseguir ótimas recompensas e titúlos únicos!
         Além de ser eternizado na página inicial do jogo.<br /><br />
-        Cada <span class="verde">vitória te dá 20 pontos</span> e <span class="vermelho">derrota você perde 5 pontos</span>.<br />
-        Não se preocupe caso esta perdendo muito, pois você nunca ficará com seus Pontos de Liga negativos!<br /><br />
+        A cada <span class="verde">vitória, você recebe 20 pontos</span> e a cada <span class="vermelho">derrota, você perde 5 pontos</span>.<br /><br />
 
         <!-- <span class="laranja">A fila irá funcionar juntamenta com a fila PvP todo: <u>Domingo, terça-feira e quinta-feira</u>.</span> -->
         <span class="laranja">A fila irá funcionar juntamenta com a fila PvP nos seguintes horários:</span><br /><br />
-        <div class="row" style="width: 350px;">
-          <div class="col-sm-4" align="center">
-            <strong class="verde">Manhã</strong><br />
-            10h às 12h
+        <div class="row branco" style="width: 365px;">
+          <div class="col-sm-4" align="center" style="">
+            <strong class="verde" style="font-size: 12px; text-transform: uppercase;">Manhã</strong><br />
+            10:00 -> 12:00
           </div>
-          <div class="col-sm-4" align="center">
-            <strong class="verde">Tarde</strong><br />
-            16h às 18h
+          <div class="col-sm-4" align="center" style="">
+            <strong class="verde" style="font-size: 12px; text-transform: uppercase;">Tarde</strong><br />
+            16:00 -> 18:00
           </div>
-          <div class="col-sm-4" align="center">
-            <strong class="verde">Noite</strong><br />
-            20h às 00h
+          <div class="col-sm-4" align="center" style="">
+            <strong class="verde" style="font-size: 12px; text-transform: uppercase;">Noite</strong><br />
+            20:00 -> 00:00
           </div>
         </div>
     waiting:
