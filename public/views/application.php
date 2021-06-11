@@ -202,6 +202,11 @@ if (preg_match('/read_news/', $action)) {
 					</div>
 				</div>
 				<div class="gift absolute">
+					<?php if (!$player_fidelity_topo->reward) { ?>
+						<span class="badge <?=(!$player_fidelity_topo->reward ? 'pulsate_icons' : '');?>">
+							<i class="fa fa-exclamation fa-fw"></i>
+						</span>
+					<?php } ?>
 					<a href="<?=make_url('events#fidelity')?>" class="requirement-popover" data-source="#tooltip-gift" data-title="<?=t('fidelity.topo_title');?>" data-trigger="hover" data-placement="bottom">
 						<img src="<?=image_url('icons/' . ($player_fidelity_topo->reward ? 'gift-off.png' : 'gift-on.png'));?>" />
 					</a>
@@ -214,7 +219,13 @@ if (preg_match('/read_news/', $action)) {
 					</div>
 				</div>
 				<div class="queue absolute">
-					<a href="<?=make_url('battle_pvps')?>" class="requirement-popover" data-source="#tooltip-queue" data-title="<?=t('popovers.titles.queue' . (Ranked::isOpen() ? '_ranked' : ''));?>" data-trigger="hover" data-placement="bottom">
+					<?php $rankedOpen = Ranked::isOpen(); ?>
+					<?php if (!$rankedOpen) { ?>
+						<span class="badge <?=(!$rankedOpen ? 'pulsate_icons' : '');?>">
+							<i class="fa fa-exclamation fa-fw"></i>
+						</span>
+					<?php } ?>
+					<a href="<?=make_url('battle_pvps')?>" class="requirement-popover" data-source="#tooltip-queue" data-title="<?=t('popovers.titles.queue' . ($rankedOpen ? '_ranked' : ''));?>" data-trigger="hover" data-placement="bottom">
 						<img src="<?=image_url('icons/queue-' . ($player->is_pvp_queued ? 'on' : 'off') . '.png');?>" />
 					</a>
 					<div id="tooltip-queue" class="status-popover-container">
@@ -235,10 +246,10 @@ if (preg_match('/read_news/', $action)) {
 				</div>
 				<div class="mensagem absolute">
 					<?php
-					$newMessages	= PrivateMessage::find('removed=0 AND to_id=' . $player->id . ' AND read_at IS NULL');
-					if (sizeof($newMessages)) {
+					$newMessages	= sizeof(PrivateMessage::find('removed=0 AND to_id=' . $player->id . ' AND read_at IS NULL'));
+					if ($newMessages) {
 					?>
-						<a href="<?=make_url('private_messages');?>" class="badge">
+						<a href="<?=make_url('private_messages');?>" class="badge <?=($newMessages ? 'pulsate_icons' : '');?>">
 							<i class="fa fa-exclamation fa-fw"></i>
 						</a>
 					<?php } ?>
@@ -246,7 +257,7 @@ if (preg_match('/read_news/', $action)) {
 				</div>
 				<div class="vip absolute">
 					<a href="<?=make_url('vips');?>">
-						<img src="<?=image_url('icons/vip-on.png');?>" class="requirement-popover" data-source="#tooltip-vip" data-title="<?php echo t('popovers.titles.credits') ?>" data-trigger="hover" data-placement="bottom" />
+						<img src="<?=image_url('icons/vip-on.png');?>" class="requirement-popover" data-source="#tooltip-vip" data-title="<?=t('popovers.titles.credits');?>" data-trigger="hover" data-placement="bottom" />
 					</a>
 					<div id="tooltip-vip" class="status-popover-container">
 						<div class="status-popover-content">

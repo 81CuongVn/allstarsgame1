@@ -42,7 +42,9 @@ function top_exp_bar($player, $user) {
     if ($check_talents || $check_points) {
         $alerts = '
 			<div style="position: absolute; right: 10px; z-index: 10000; top: 12px;" class="technique-popover" data-source="#alert-user-container-'.$player->id .'" data-title="'.t('alerts.title').'" data-trigger="click" data-placement="bottom">
-                <a href="javascript:void(0);" class="badge"><i class="fa fa-exclamation fa-fw"></i></a>
+                <a href="javascript:void(0);" class="badge pulsate_icons">
+					<i class="fa fa-exclamation fa-fw"></i>
+				</a>
             </div>
 			<div id="alert-user-container-'. $player->id .'" class="technique-container">
                 <div class="status-popover-content" style="width: 170px;">

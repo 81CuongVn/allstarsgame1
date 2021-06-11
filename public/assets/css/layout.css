@@ -1,3 +1,4 @@
+@import 'animate.css';
 @import 'anivers.css';
 @import 'inventory.css';
 @import 'battle.css';
@@ -2325,3 +2326,5 @@ ul.requirement-list li:last-child {
 .opacity {
 	opacity: 0.1;
 }
+
+.pulsate_icons { animation: heartBeat 1.3s infinite; }
