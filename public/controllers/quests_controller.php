@@ -328,7 +328,9 @@ class QuestsController extends Controller {
 		$player->save();
 
 		$player_quest	= $player->player_time_quest($player->time_quest_id);
-		$player_quest->destroy();
+		if ($player_quest) {
+			$player_quest->destroy();
+		}
 	}
 
 	function guild_daily_change() {

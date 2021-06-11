@@ -36,7 +36,7 @@ en-US:
     battles_waiting:  Battle Waiting
     battles_training: Training
     character_guide: Character Guide
-    game_guide: Guia do Jogo
+    game_guide: Game Guide
     friend_search: Find Friends
     friend_list: Friend's list
     grimoire: Forbidden Grimoire
@@ -117,13 +117,15 @@ en-US:
       messages:
         m1_title: Principal information
         m1_message: |
-          Fill in the fields below and register for the closed beta. Remembering that after the beta, the account will become official, there is no need to create a new one.
-          <br /><br />
+          Fill in the fields below and register for the closed beta. Remembering that after the beta,
+          the account will become official, there is no need to create a new one. <br /><br />
+
           Also remember to use a valid TRUE email address, as you will not be able to use your account without the code that will be sent to your email.
         m2_title: Congratulations!
         m2_message: |
           Your application for the beta has been successfully registered, within moments you will receive an email with instructions to activate your account,
           after activating your account you will be participating for the selection of the beta.<br /><br />
+
           If you can't click on the link in the email, paste the code you received below and click "proceed".
         m3_title: All right!
         m3_message: Account confirmed. Keep an eye out for news on our facebook page to learn more about the game and more details about the beta
@@ -143,7 +145,7 @@ en-US:
         neighborhood: Neighborhood
         state: State
         zip: Zip
-        email: "EMail:"
+        email: "Email:"
         name: "Name:"
         email_confirmation: "Confirm email:"
         password: "Password:"
