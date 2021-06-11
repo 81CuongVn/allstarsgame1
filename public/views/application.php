@@ -220,8 +220,8 @@ if (preg_match('/read_news/', $action)) {
 				</div>
 				<div class="queue absolute">
 					<?php $rankedOpen = Ranked::isOpen(); ?>
-					<?php if (!$rankedOpen) { ?>
-						<span class="badge <?=(!$rankedOpen ? 'pulsate_icons' : '');?>">
+					<?php if ($rankedOpen) { ?>
+						<span class="badge <?=($rankedOpen ? 'pulsate_icons' : '');?>">
 							<i class="fa fa-exclamation fa-fw"></i>
 						</span>
 					<?php } ?>
