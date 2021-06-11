@@ -1587,22 +1587,24 @@ en-US:
     titles:
       requirements: Requerimentos
       enhancer: Aprimoramentos
-      rotinas: Rotinas do Jogo
+      routines: Rotinas do Jogo
       queue: Fila de Batalha PvP
+      queue_ranked: Fila da Liga All-Stars
       credits: Estrelas
     description:
       routines: |
-        <b class="amarelo">Healing do Jogo</b><br />
-        A cada 5 minutos recupera 2 pontos de sua Stamina<br /><br />
+        <b class="amarelo">Recuperaação de Stamina</b><br />
+        A cada 5 minutos, você recupera 2 pontos de Stamina.<br /><br />
 
-        <b class="amarelo">Batalha PvP ( Normal )</b><br />
-        Sempre nos dias ( Segunda, Quarta, Sexta e Sábado )<br /><br />
+        <b class="amarelo">Programação Liga All-Stars</b><br />
+        A fila da Liga All-Stars funciona nos sequintes hoários:<br />
+        <b class="verde">Manhã:</b> 10h às 12h<br />
+        <b class="verde">Tarde:</b> &nbsp;&nbsp;16h às 18h<br />
+        <b class="verde">Noite:</b> &nbsp;&nbsp;22h às 00h<br /><br />
+        <!-- Sempre nos dias ( Domingo, Terça e Quinta ) -->
 
-        <b class="amarelo">Batalha PvP ( Liga All-Stars )</b><br />
-        Sempre nos dias ( Domingo, Terça e Quinta )<br /><br />
-
-        <b class="amarelo">Ranking</b><br />
-        Atualização a cada 1 hora
+        <b class="amarelo">Atualização de Rankings</b><br />
+        O ranking é atualizado a cada 1 hora, fique ligado!
       queue:
         queued: Você está na fila de espera. Você pode continuar navegando normalmente, quando uma batalha for encontrada, você será avisado.
         normal: Para entrar na fila de batalha, vá até a página de batalhas PvP ou clique no botão abaixo.
