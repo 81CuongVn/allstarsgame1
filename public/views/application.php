@@ -79,6 +79,12 @@ if (preg_match('/read_news/', $action)) {
 	<meta property="og:locale" content="<?=str_replace('-', '_', $language->header);?>" />
 	<meta property="fb:app_id" content="<?=FB_APP_ID;?>" />
 
+	<!-- PWA -->
+	<meta name="theme-color" content="#06101a" />
+	<link rel="manifest" href="/manifest.json" />
+	<link ref="apple-touch-icon" href="/icon-192x192.png" />
+	<link ref="canonical" href="<?=$site_url;?>/" />
+
 	<!-- CSS -->
 	<link rel="stylesheet" type="text/css" href="<?=asset_url('css/bootstrap.min.css');?>" />
 	<link rel="stylesheet" type="text/css" href="<?=asset_url('css/bootstrap-theme.css');?>" />
@@ -128,6 +134,17 @@ if (preg_match('/read_news/', $action)) {
     </script>
 </head>
 <body>
+<script type="text/javascript">
+	if ('serviceWorker' in navigator) {
+		navigator.serviceWorker.register('/sw.js')
+			.then(function(registration) {
+				console.log('Registration successful, scope is:', registration.scope);
+			})
+			.catch(function(error) {
+				console.log('Service worker registration failed, error:', error);
+			});
+	}
+</script>
 <div id="fb-root"></div>
 <!-- Topo -->
 <?php if (!$_SESSION['player_id']) { ?>
