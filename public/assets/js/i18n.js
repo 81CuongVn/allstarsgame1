@@ -12,7 +12,7 @@ var	I18n	= {
             for(var i in assigns) {
                 search	= '#{' + i + '}';
 
-                while(s.indexOf(search) != -1) {
+                while (s.indexOf(search) != -1) {
                     s	= s.replace(search, assigns[i]);
                 }
             }
