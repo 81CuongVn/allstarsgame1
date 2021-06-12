@@ -37,10 +37,10 @@ class QuestsController extends Controller {
 		$player				= Player::get_instance();
 
 		// Contador de trocas
-		$buy_mode_change	= PlayerChange::find_first("player_id=" . $player->id);
+		$buy_mode_change	= UserChange::find_first("user_id=" . $user->id);
 		if (!$buy_mode_change) {
-			$buy_mode_change			= new PlayerChange();
-			$buy_mode_change->player_id	= $player->id;
+			$buy_mode_change			= new UserChange();
+			$buy_mode_change->user_id	= $user->id;
 			$buy_mode_change->save();
 		}
 
@@ -569,7 +569,7 @@ class QuestsController extends Controller {
 		$change_price			= 0;
 
 		// Contador de trocas
-		$buy_mode_change		= PlayerChange::find_first("player_id=" . $player->id);
+		$buy_mode_change		= UserChange::find_first("user_id=" . $user->id);
 
 		if (isset($_POST['id']) && is_numeric($_POST['id']) && isset($_POST['quest']) && is_numeric($_POST['quest'])) {
 			$daily				= DailyQuest::find($_POST['quest']);

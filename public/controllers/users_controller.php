@@ -446,7 +446,8 @@ class UsersController extends Controller {
 		if ($player) {
 			// Trava para inibir o mal uso no modo historia
 			$battle_npc = BattleNpc::find_first("`player_id` = {$player->id} AND `battle_type_id` = 1 AND finished_at IS NULL ORDER BY `id` DESC");
-			if (!(!$battle_npc) && $player->get_npc()->specific_id) {
+			$get_npc	= $player->get_npc();
+			if ($battle_npc && isset($get_npc)) {
 				$player->battle_npc_id = 0;
 				$player->save();
 				$battle_npc->destroy();
