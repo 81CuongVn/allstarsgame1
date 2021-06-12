@@ -22,7 +22,9 @@ class BattlePvpsController extends Controller {
 
 		if ($ranked) {
 			$player_ranked	= $player->ranked($ranked->id);
-			$player_ranked->update();
+			if ($player_ranked)  {
+				$player_ranked->update();
+			}
 		} else {
 			$player_ranked	= FALSE;
 		}

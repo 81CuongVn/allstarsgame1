@@ -3,16 +3,28 @@ TRUNCATE TABLE `battle_npcs`;
 TRUNCATE TABLE `battle_pvps`;
 TRUNCATE TABLE `battle_rooms`;
 
-/* ORGANIZAÇÔES */
+/* BATALHA DE ANIMES */
+TRUNCATE TABLE `event_animes`;
+
+/* GULDS */
 UPDATE `guilds` SET
 	`level`								= 1,
+	`exp`								= 0,
 	`treasure_atual`					= 0,
-	`treasure_total`					= 0;
+	`treasure_total`					= 0,
+	`guild_accepted_event_id`			= 0;
+TRUNCATE TABLE `guild_accepted_events`;
 TRUNCATE TABLE `guild_daily_quests`;
+TRUNCATE TABLE `guild_map_object_sessions`;
+TRUNCATE TABLE `guild_requests`;
 UPDATE `guild_quest_counters` SET
 	`time_total`						= 0,
 	`pvp_total`							= 0,
 	`daily_total`						= 0;
+
+/* TEMPO DE JOGO */
+UPDATE `played_time` SET
+	`minutes`							= 0;
 
 /* PERSONAGENS */
 UPDATE `players` SET

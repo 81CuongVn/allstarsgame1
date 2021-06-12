@@ -16,21 +16,16 @@
 			<td width="215" align="center">
 				<span style="margin: 2px 0; display: block;">
 					<?php
-						if($item->id != 1709 && $item->id != 1715 && $item->id != 1718 && $item->id != 1746 && $item->id != 2112){
+						if($item->id != 1709 && $item->id != 1715 && $item->id != 1718 && $item->id != 2112){
 							switch ($item->get_buy_mode_for($player->id)) {
 								case 0:
 									echo "<span class='verde'>". t("vips.buy_modes.free"). "</span>";
-
 									break;
-
 								case 1:
 									echo "<span class='laranja'>". t("vips.buy_modes.currency", ["price" => highamount($item->price_currency), "currency" => t('currencies.' . $player->character()->anime_id)]) . "</span>";
-
 									break;
-
 								default:
 									echo "<span class='laranja'>". t("vips.buy_modes.vip", ["price" => highamount($item->price_credits)]) . "</span>";
-
 									break;
 							}
 						}else{

@@ -101,7 +101,7 @@ define('MAX_LEVEL_PLAYER',		50);
 define('MAX_LEVEL_GUILD',		15);
 
 // Initial settings
-define('INITIAL_MONEY',			500);
+define('INITIAL_MONEY',			0);
 
 // Techniques limit
 define('MAX_EQUIPPED_ATTACKS',	10);
