@@ -79,7 +79,7 @@ class VipsController extends Controller {
 						]);
 					}
 
-				} else if($item->id == 432 || $item->id == 1709 || $item->id == 1715 || $item->id == 1718 || $item->id == 1746  || $item->id == 2112){
+				} else if($item->id == 432 || $item->id == 1709 || $item->id == 1715 || $item->id == 1718  || $item->id == 2112){
 					$buy_mode = 2;
 					$bought_free = false;
 					$bought_currency = true;

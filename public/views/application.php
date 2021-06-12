@@ -178,7 +178,7 @@ if (preg_match('/read_news/', $action)) {
 									<button type="button" class="btn btn-primary btn-sm btn-block buy" data-id="432">
 										<?=t('vips.restore_energy', [
 											'amount'	=> 100,
-											'price'		=> highamount(1),
+											'price'		=> highamount(4),
 											'currency'	=> t('currencies.credits')
 										]);?>
 									</button>

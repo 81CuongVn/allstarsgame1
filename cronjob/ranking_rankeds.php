@@ -1,11 +1,16 @@
 <?php
 require '_config.php';
 
-Recordset::query('TRUNCATE TABLE ranking_rankeds');
+// Recordset::query('TRUNCATE TABLE ranking_rankeds');
 
 $factions	= Recordset::query('SELECT id FROM factions WHERE active = 1');
-$rankeds	= Recordset::query('SELECT * FROM rankeds WHERE finished = 0');
+$rankeds	= Recordset::query('SELECT * FROM rankeds');
 foreach ($rankeds->result_array() as $ranked) {
+	Recordset::delete('ranking_rankeds', [
+		'ranked_id'	=> $ranked['id']
+	]);
+	Recordset::query("ALTER TABLE ranking_rankeds AUTO_INCREMENT = 1");
+
 	foreach ($factions->result_array() as $faction) {
 		$players	= Recordset::query('
 			SELECT
@@ -76,4 +81,4 @@ foreach ($rankeds->result_array() as $ranked) {
 	}
 }
 
-echo "[Ranking Ranked] Cron executada com sucesso!\n";
+echo "[Ranking Ranked] Cron executada com sucessoa!\n";

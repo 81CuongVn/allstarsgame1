@@ -244,7 +244,7 @@
             url: make_url('quests#time_finish'),
             success: function (result) {
                 if (result.success) {
-                    location.href = make_url('characters#status');
+                    location.href = make_url('quests#time');
                 } else {
                     lock_screen(false);
                     format_error(result);
