@@ -878,7 +878,7 @@ class Item extends Relation {
 			}
 
             // Gera o numero randomico do update
-            $random_valor = rand($bases[$attributes[$array_key]][0], $bases[$attributes[$array_key]][1]);
+            $random_valor = rand($bases[$attributes[$array_key]][0] * 10, $bases[$attributes[$array_key]][1] * 10) / 10;
 
             $player_attribute->{$player_attribute_correct}    += $random_valor;
             $player_item_attribute->{$attributes[$array_key]} += $random_valor;
@@ -887,10 +887,10 @@ class Item extends Relation {
         $player_attribute->save();
 
     }
+
 	function equipment_tooltip() {
 		$attributes			= [];
 		$attribute_object	= $this->_player_item->attributes();
-
 		foreach ($attribute_object->get_fields() as $key) {
 			$attributes[$key]	= $attribute_object->$key;
 		}

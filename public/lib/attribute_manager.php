@@ -1,15 +1,8 @@
 <?php
 trait AttributeManager {
 	public	$enemy_intimidation	= 0;
-	private	$attrRate			= [];
 
-	public function __construct() {
-		global $attrRate;
-
-		$this->attrRate = $attrRate;
-	}
-
-    function ability() {
+	function ability() {
         if (!$this->character_ability_id) {
             return false;
         }
@@ -120,7 +113,7 @@ trait AttributeManager {
     function for_def($raw = false) {
 		global $attrRate;
 
-        if ($raw) {
+		if ($raw) {
             return $this->character()->for_def;
 		}
 

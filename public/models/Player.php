@@ -9,7 +9,7 @@ class Player extends Relation {
 	private static	$has_item_cache				= [];
 	private			$_attributes				= null;
 	private			$training_base				= 300;
-	private			$training_day_multipliers	= array(
+	private			$training_day_multipliers	= [
 		1	=> 6,
 		2	=> 0,
 		3	=> 1,
@@ -17,7 +17,7 @@ class Player extends Relation {
 		5	=> 3,
 		6	=> 4,
 		7	=> 5
-	);
+	];
 
 	protected function before_create() {
 		$this->last_healed_at	= date('Y-m-d H:i:s');
@@ -122,6 +122,7 @@ class Player extends Relation {
 				$this->check_objectives("level_player");
 			}
 		}
+		// $this->_update_sum_attributes();
 
 		// Atualiza a graduação do safado
 		$graduation	= Graduation::find_first('sorting = ' . $this->graduation()->sorting + 1);
@@ -1381,6 +1382,7 @@ class Player extends Relation {
 	function quest_counters() {
 		return PlayerQuestCounter::find_first('player_id=' . $this->id);
 	}
+
 	function guild_quest_counters() {
 		return GuildQuestCounter::find_first('guild_id=' . $this->guild_id);
 	}
@@ -1390,12 +1392,19 @@ class Player extends Relation {
 	}
 
 	function for_atk_trained() { return $this->for_atk; }
+
 	function for_def_trained() { return $this->for_def; }
+
 	function for_crit_trained() { return $this->for_crit; }
+
 	function for_abs_trained() { return $this->for_abs; }
+
 	function for_prec_trained() { return $this->for_prec; }
+
 	function for_init_trained() { return $this->for_init; }
+
 	function for_inc_crit_trained() { return $this->for_inc_crit; }
+
 	function for_inc_abs_trained() { return $this->for_inc_abs; }
 
 	function level_exp() {
@@ -1430,7 +1439,7 @@ class Player extends Relation {
 	}
 
 	function pages($item_id) {
-		$result		= array();
+		$result		= [];
 		$items		= Item::find("item_type_id = 11 AND parent_id = ". $item_id, array('cache' => true));
 		$anime_id	= $this->character()->anime_id;
 
@@ -1444,15 +1453,16 @@ class Player extends Relation {
 
 	}
 
-	function player_pages($item_id){
+	function player_pages($item_id) {
 		$player_items	= PlayerItem::find("player_id= ".$this->id." AND item_id= ". $item_id);
-		if(sizeof($player_items)){
+		if (sizeof($player_items)) {
 			return true;
-		}else{
+		} else {
 			return false;
 		}
 	}
-	function player_pages_ok($item_id){
+
+	function player_pages_ok($item_id) {
 		$items			= Item::find("parent_id = ". $item_id." AND item_type_id=11", array('cache' => true));
 
 		$items_counter  = sizeof($items);
@@ -1472,19 +1482,19 @@ class Player extends Relation {
 			return false;
 		}
 	}
+
 	function has_technique_at($slot) {
 		$item	= Recordset::query('
-				SELECT
-					a.id,
-					a.parent_id
-
-				FROM
-					player_items a JOIN items b ON b.id=a.item_id AND b.item_type_id IN(1)
-
-				WHERE
-					a.player_id=' . $this->id . ' AND
-					a.slot_id=' . $slot . ' AND
-					a.removed=0'
+			SELECT
+				a.id,
+				a.parent_id
+			FROM
+				player_items a
+				JOIN items b ON b.id=a.item_id AND b.item_type_id IN(1)
+			WHERE
+				a.player_id = ' . $this->id . ' AND
+				a.slot_id = ' . $slot . ' AND
+				a.removed = 0'
 		);
 
 		if (!$item->num_rows) {
@@ -1507,7 +1517,7 @@ class Player extends Relation {
 	}
 
 	function has_item($item) {
-		if(is_numeric($item)) {
+		if (is_numeric($item)) {
 			$id	= $item;
 		} else {
 			if(is_a($item, 'Item')) {
@@ -1519,11 +1529,11 @@ class Player extends Relation {
 			}
 		}
 
-		if(!isset(Player::$has_item_cache[$this->id])) {
+		if (!isset(Player::$has_item_cache[$this->id])) {
 			Player::$has_item_cache[$this->id]	= [];
 		}
 
-		if(!isset(Player::$has_item_cache[$this->id][$id])) {
+		if (!isset(Player::$has_item_cache[$this->id][$id])) {
 			$result	= $this->get_item($id) ? true : false;
 			Player::$has_item_cache[$this->id][$id]	= $result;
 		} else {
@@ -1536,14 +1546,15 @@ class Player extends Relation {
 	function add_technique($technique, $slot) {
 		$disabled	= PlayerItem::find_first('removed=1 AND player_id=' . $this->id . ' AND item_id=' . $technique->id);
 		$disables	= Recordset::query('
-				SELECT
-					a.id
+			SELECT
+				a.id
 
-				FROM
-					player_items a JOIN items b ON a.item_id=b.id AND b.item_type_id=1
+			FROM
+				player_items a
+				JOIN items b ON a.item_id=b.id AND b.item_type_id=1
 
-				WHERE
-					a.player_id=' . $this->id . ' AND a.slot_id=' . $slot
+			WHERE
+				a.player_id=' . $this->id . ' AND a.slot_id=' . $slot
 		);
 
 		foreach ($disables->result_array() as $player_item) {
@@ -1575,39 +1586,39 @@ class Player extends Relation {
 	}
 
 	// TODO: Remover depois -->
-	function add_ability($ability) {
-		$item					= new PlayerItem();
-		$item->player_id		= $this->id;
-		$item->item_id			= $ability->id;
-		$item->variant_type_id	= $this->ability_variant_type_id;
-
-		$item->save();
-	}
-
-	function add_speciality($speciality) {
-		$item					= new PlayerItem();
-		$item->player_id		= $this->id;
-		$item->item_id			= $speciality->id;
-		$item->variant_type_id	= $this->speciality_variant_type_id;
-
-		$item->save();
-	}
-
-	function add_consumable($consumable, $quantity = 1) {
-		if ($this->has_consumable($consumable)) {
-			$item					= $this->get_item($consumable);
-			$item->quantity			+= $quantity;
-		} else {
+		function add_ability($ability) {
 			$item					= new PlayerItem();
 			$item->player_id		= $this->id;
-			$item->item_id			= $consumable->id;
-			$item->quantity			= $quantity;
+			$item->item_id			= $ability->id;
+			$item->variant_type_id	= $this->ability_variant_type_id;
+
+			$item->save();
 		}
 
-		$item->save();
+		function add_speciality($speciality) {
+			$item					= new PlayerItem();
+			$item->player_id		= $this->id;
+			$item->item_id			= $speciality->id;
+			$item->variant_type_id	= $this->speciality_variant_type_id;
 
-		return $item;
-	}
+			$item->save();
+		}
+
+		function add_consumable($consumable, $quantity = 1) {
+			if ($this->has_consumable($consumable)) {
+				$item					= $this->get_item($consumable);
+				$item->quantity			+= $quantity;
+			} else {
+				$item					= new PlayerItem();
+				$item->player_id		= $this->id;
+				$item->item_id			= $consumable->id;
+				$item->quantity			= $quantity;
+			}
+
+			$item->save();
+
+			return $item;
+		}
 	// <--
 
 	function equip_equipment($player_item, $slot) {
@@ -1638,7 +1649,7 @@ class Player extends Relation {
 			$item->quantity	-= 1;
 			$item->save();
 
-			if($item->for_file) {
+			if ($item->for_file) {
 				$this->less_life	-= $item->for_file;
 				if ($this->less_life < 0) {
 					$this->less_life	= 0;
@@ -1693,8 +1704,6 @@ class Player extends Relation {
 		$total	+=	$this->training_total_to_point();
 		$total	-=	$this->training_points_spent;
 
-		// $total	= (($user->level * 2) + floor($this->level / 5) + $this->training_total_to_point())  - $this->training_points_spent;
-
 		return $total;
 	}
 
@@ -1735,12 +1744,12 @@ class Player extends Relation {
 	}
 
 	function get_item($item) {
-		if(is_numeric($item)) {
+		if (is_numeric($item)) {
 			$id	= $item;
 		} else {
-			if(is_a($item, 'Item')) {
+			if (is_a($item, 'Item')) {
 				$id	= $item->id;
-			} elseif(is_a($item, 'PlayerItem')) {
+			} elseif (is_a($item, 'PlayerItem')) {
 				$id	= $item->item_id;
 			} else {
 				throw new Exception("Invalid argument", 1);
@@ -1749,10 +1758,11 @@ class Player extends Relation {
 
 		return PlayerItem::find_first('player_id=' . $this->id . ' AND item_id=' . $id);
 	}
-	function happiness($item_id){
+
+	function happiness($item_id) {
 		$happiness = PlayerItem::find_first('item_id='.$item_id.' AND player_id='. $this->id);
 		if ($happiness) {
-			if ($happiness->happiness < 19){
+			if ($happiness->happiness < 19) {
 				return '<img src="'.image_url("icons/happiness_0.png").'" />';
 			} elseif ($happiness->happiness >= 20 && $happiness->happiness < 39) {
 				return '<img src="'.image_url("icons/happiness_20.png").'" />';
@@ -1769,6 +1779,7 @@ class Player extends Relation {
 			return '<img src="'.image_url("icons/happiness_0.png").'"  />';
 		}
 	}
+
 	function has_talents() {
 		$items			= Item::find_all_by_item_type_id(6);
 		$has_talents 	= 0;
@@ -1780,6 +1791,7 @@ class Player extends Relation {
 		}
 		return $has_talents;
 	}
+
 	function happiness_int($item_id) {
 		$happiness	= PlayerItem::find_first('item_id=' . $item_id . ' AND player_id=' . $this->id);
 		if ($happiness) {
@@ -1788,105 +1800,103 @@ class Player extends Relation {
 			return 0;
 		}
 	}
-	function quest_pet_calc_success($pet_quest_id){
+
+	function quest_pet_calc_success($pet_quest_id) {
 		$player	= Player::get_instance();
 		$quest_pets_npcs = PetQuestNpc::find('pet_quest_id='.$pet_quest_id);
 		$player_quests_pets = PlayerPetQuest::find_first('completed = 0 AND pet_quest_id='.$pet_quest_id.' AND player_id='.$player->id);
 
 
-		if($player_quests_pets->pet_id_1 || $player_quests_pets->pet_id_2 || $player_quests_pets->pet_id_3){
+		if ($player_quests_pets->pet_id_1 || $player_quests_pets->pet_id_2 || $player_quests_pets->pet_id_3) {
 
 			$counter = 1;
 			$success = 0;
 
 			$total_npc = sizeof($quest_pets_npcs);
-			$total_npc = 100/$total_npc;
+			$total_npc = 100 / $total_npc;
 
 			foreach($quest_pets_npcs as $quest_pet_npc){
-
 				$total_factor = 0;
-
-				if($quest_pet_npc->rarity){
-					$total_factor++;
-				}
-				if($quest_pet_npc->effect_ids){
-					$total_factor++;
-				}
-				if($quest_pet_npc->anime_id){
-					$total_factor++;
-				}
-				if($quest_pet_npc->happiness){
+				if ($quest_pet_npc->rarity) {
 					$total_factor++;
 				}
 
-				switch($counter){
-					case 1:
-						$campo = "pet_id_1";
-						break;
-					case 2:
-						$campo = "pet_id_2";
-						break;
-					case 3:
-						$campo = "pet_id_3";
-						break;
+				if ($quest_pet_npc->effect_ids) {
+					$total_factor++;
+				}
+
+				if ($quest_pet_npc->anime_id) {
+					$total_factor++;
+				}
+
+				if ($quest_pet_npc->happiness) {
+					$total_factor++;
+				}
+
+				switch ($counter) {
+					case 1:	$campo = "pet_id_1";	break;
+					case 2:	$campo = "pet_id_2";	break;
+					case 3:	$campo = "pet_id_3";	break;
 				}
 
 				$item = Item::find_first($player_quests_pets->{$campo});
 				$player_item = PlayerItem::find_first('item_id = '.$player_quests_pets->{$campo}.' AND player_id='.$player->id);
-				if($item){
-					//Verificando se tem raridade do pet
-					if($quest_pet_npc->rarity){
-						switch($quest_pet_npc->rarity){
+				if ($item) {
+					// Verificando se tem raridade do pet
+					if ($quest_pet_npc->rarity) {
+						switch ($quest_pet_npc->rarity) {
 							case "common":
-								$success += $total_npc/$total_factor;
+								$success += $total_npc / $total_factor;
 								break;
 							case "rare":
-								if($item->rarity == "common"){
-									$success += ($total_npc/$total_factor)/2;
-								}else{
-									$success += $total_npc/$total_factor;
+								if ($item->rarity == "common") {
+									$success += ($total_npc / $total_factor) / 2;
+								} else {
+									$success += $total_npc / $total_factor;
 								}
 								break;
 							case "legendary":
-								if($item->rarity == "common"){
-									$success += ($total_npc/$total_factor)/3;
-								}elseif($item->rarity == "rare"){
-									$success += ($total_npc/$total_factor)/2;
-								}else{
-									$success += $total_npc/$total_factor;
+								if ($item->rarity == "common") {
+									$success += ($total_npc / $total_factor) / 3;
+								} elseif ($item->rarity == "rare") {
+									$success += ($total_npc / $total_factor) / 2;
+								} else {
+									$success += $total_npc / $total_factor;
 								}
 								break;
 							case "mega":
-								if($item->rarity == "common"){
-									$success += ($total_npc/$total_factor)/4;
-								}elseif($item->rarity == "rare"){
-									$success += ($total_npc/$total_factor)/3;
-								}elseif($item->rarity == "legendary"){
-									$success += ($total_npc/$total_factor)/2;
-								}else{
+								if ($item->rarity == "common") {
+									$success += ($total_npc/$total_factor) / 4;
+								} elseif ($item->rarity == "rare") {
+									$success += ($total_npc/$total_factor) / 3;
+								} elseif ($item->rarity == "legendary") {
+									$success += ($total_npc/$total_factor) / 2;
+								} else {
 									$success += $total_npc/$total_factor;
 								}
 								break;
 
 						}
 
-						if($quest_pet_npc->anime_id){
-							if($item->description()->anime_id == $quest_pet_npc->anime_id){
+						if ($quest_pet_npc->anime_id) {
+							if ($item->description()->anime_id == $quest_pet_npc->anime_id) {
 								$success += $total_npc/$total_factor;
 							}
 						}
-						if($quest_pet_npc->happiness){
-							if($player_item->happiness >= $quest_pet_npc->happiness){
+
+						if ($quest_pet_npc->happiness) {
+							if ($player_item->happiness >= $quest_pet_npc->happiness) {
 								$success += $total_npc/$total_factor;
-							}elseif($player_item->happiness < $quest_pet_npc->happiness){
+							} elseif ($player_item->happiness < $quest_pet_npc->happiness) {
 								$percentual_hapiness  = $player_item->happiness  / $quest_pet_npc->happiness;
 								$success += ($total_npc/$total_factor) * $percentual_hapiness;
 							}
 						}
-						if($quest_pet_npc->effect_ids){
-							if($item){
+
+						if ($quest_pet_npc->effect_ids) {
+							if ($item) {
 								$effect_ids  = explode(',', $quest_pet_npc->effect_ids);
-								if(in_array($item->item_effect_ids,$effect_ids)){
+								if (in_array($item->item_effect_ids,$effect_ids)) {
 									$success += $total_npc/$total_factor;
 								}
 							}
@@ -1901,10 +1911,11 @@ class Player extends Relation {
 				$player_quests_pets->save();
 			//-->
 			return round($success);
-		}else{
+		} else {
 			return 0;
 		}
 	}
+
 	function pets() {
 		$result	= [];
 		$items	= Recordset::query('
@@ -1922,20 +1933,21 @@ class Player extends Relation {
 
 		return $result;
 	}
+
 	function your_pets() {
 		$result	= [];
 		$items	= Recordset::query('
-				SELECT
-					a.id,
-					a.happiness,
-					a.item_id
+			SELECT
+				a.id,
+				a.happiness,
+				a.item_id
 
-				FROM
-					player_items a JOIN items b ON b.id=a.item_id AND b.item_type_id=3
+			FROM
+				player_items a JOIN items b ON b.id=a.item_id AND b.item_type_id=3
 
-				WHERE
-					a.removed=0 AND a.equipped=0 AND a.working=0 AND
-					a.player_id=' . $this->id
+			WHERE
+				a.removed=0 AND a.equipped=0 AND a.working=0 AND
+				a.player_id=' . $this->id
 		);
 
 		foreach($items->result_array() as $item) {
@@ -1944,45 +1956,49 @@ class Player extends Relation {
 
 		return $result;
 	}
+
 	function your_pets_achievement($rarity = NULL, $happiness = NULL, $pet_id = NULL) {
 		$result	= [];
 
 		$where = "";
 
-		if($pet_id){
+		if ($pet_id) {
 			$where = "AND a.item_id = ".$pet_id;
 		}
-		if($rarity){
+
+		if ($rarity) {
 			$where = "AND b.rarity = '".$rarity."'";
 		}
-		if($happiness){
+
+		if ($happiness) {
 			$where = "AND a.happiness >= ".$happiness;
 		}
 
 		$items	= Recordset::query('
-				SELECT
-					a.id,
-					a.happiness,
-					a.item_id,
-					a.rarity
+			SELECT
+				a.id,
+				a.happiness,
+				a.item_id,
+				a.rarity
 
-				FROM
-					player_items a JOIN items b ON b.id=a.item_id AND b.item_type_id=3
+			FROM
+				player_items a JOIN items b ON b.id=a.item_id AND b.item_type_id=3
 
-				WHERE
-					a.removed=0 '.$where.'
-					AND a.player_id=' . $this->id
+			WHERE
+				a.removed=0 '.$where.'
+				AND a.player_id=' . $this->id
 		);
-
 		foreach($items->result_array() as $item) {
 			$result[]	= Item::find_first($item['item_id']);
 		}
 
 		return $result;
 	}
+
 	function get_active_pet($player = FALSE) {
-		if (!$player)
+		if (!$player) {
 			$player = $this;
+		}
 
 		$pet	= FALSE;
 		$items	= Recordset::query("
@@ -1995,7 +2011,6 @@ class Player extends Relation {
 					a.equipped = 1 AND
 					a.player_id = {$player->id}"
 		);
-
 		if ($items->num_rows) {
 			$pet	= PlayerItem::find_first($items->row()->id);
 			$pet->set_player($player);
@@ -2003,6 +2018,7 @@ class Player extends Relation {
 
 		return $pet;
 	}
+
 	function check_pet_level($pet, $equipped = FALSE) {
 		$petItem = Item::find_first($pet->item_id);
 		if (
@@ -2015,10 +2031,10 @@ class Player extends Relation {
 			if ($petItem->rarity == "common") {
 				$expPet		= $pet->exp - 5000;
 				$expName	= "Raro";
-			} else if ($petItem->rarity == "rare") {
+			} elseif ($petItem->rarity == "rare") {
 				$expPet		= $pet->exp - 15000;
 				$expName	= "Lendário";
-			} else if ($petItem->rarity == "legendary") {
+			} elseif ($petItem->rarity == "legendary") {
 				$expPet		= $pet->exp - 50000;
 				$expName	= "Mega";
 			}
@@ -2046,23 +2062,24 @@ class Player extends Relation {
 			}
 
 		}
+
 		return $pet->save();
 	}
 
 	function learned_techniques() {
 		$result	= array();
 		$items	= Recordset::query('
-				SELECT
-					a.id
+			SELECT
+				a.id
 
-				FROM
-					player_items a JOIN items b ON b.id=a.item_id AND b.item_type_id=1
+			FROM
+				player_items a
+				JOIN items b ON b.id=a.item_id AND b.item_type_id=1
 
-				WHERE
-					a.removed=0 AND
-					a.player_id=' . $this->id
+			WHERE
+				a.removed=0 AND
+				a.player_id=' . $this->id
 		);
-
 		foreach($items->result_array() as $item) {
 			$result[]	= PlayerItem::find($item['id']);
 		}
@@ -2073,83 +2090,110 @@ class Player extends Relation {
 	function learned_talents() {
 		$result	= array();
 		$items	= Recordset::query('
-				SELECT
-					a.id
+			SELECT
+				a.id
 
-				FROM
-					player_items a JOIN items b ON b.id=a.item_id AND b.item_type_id=6
+			FROM
+				player_items a
+				JOIN items b ON b.id=a.item_id AND b.item_type_id=6
 
-				WHERE
-					a.player_id=' . $this->id
+			WHERE
+				a.player_id=' . $this->id
 		);
 
-		foreach($items->result_array() as $item) {
+		foreach ($items->result_array() as $item) {
 			$result[]	= PlayerItem::find($item['id']);
 		}
 
 		return $result;
 	}
 
-	private function _update_sum_attributes() {
-		$at		=& $this->attributes();
-		$for_atk			= 0;
-		$for_def			= 0;
-		$for_init			= 0;
-		$for_crit			= 0;
-		$for_inc_crit		= 0;
-		$for_abs			= 0;
-		$for_inc_abs		= 0;
-		$for_prec			= 0;
+	public function _update_sum_attributes() {
+		$at							=& $this->attributes();
 
-		$exp_battle				= 0;
-		$currency_battle 		= 0;
-		$currency_quest			= 0;
-		$exp_quest				= 0;
-		$luck_discount			= 0;
-		$item_drop_increase		= 0;
+		$for_atk					= 0;
+		$for_def					= 0;
+		$for_init					= 0;
+		$for_crit					= 0;
+		$for_inc_crit				= 0;
+		$for_abs					= 0;
+		$for_inc_abs				= 0;
+		$for_prec					= 0;
+
+		$exp_battle					= 0;
+		$currency_battle 			= 0;
+		$currency_quest				= 0;
+		$exp_quest					= 0;
+		$luck_discount				= 0;
+		$npc_battle_count			= 0;
+		$item_drop_increase			= 0;
 
 		$generic_technique_damage	= 0;
 		$unique_technique_damage	= 0;
 		$defense_technique_extra	= 0;
 
-
-
 		$items	= Recordset::query('
-				SELECT
-					a.id
-
-				FROM
-					player_items a JOIN items b ON b.id=a.item_id
-
-				WHERE
-					a.player_id=' . $this->id . ' AND
-					b.item_type_id IN(8) AND
-					a.equipped=1');
-
+			SELECT
+				a.id
+			FROM
+				player_items a
+				JOIN items b ON b.id = a.item_id
+			WHERE
+				a.player_id = ' . $this->id . ' AND
+				b.item_type_id IN(8) AND
+				a.equipped = 1');
 		foreach ($items->result_array() as $item) {
-			$attributes	= PlayerItem::find($item['id'])->attributes();
+			$attributes						= PlayerItem::find($item['id'])->attributes();
 
-			$for_atk				+= $attributes->for_atk;
-			$for_def				+= $attributes->for_def;
-			$for_init				+= $attributes->for_init;
-			$for_crit				+= $attributes->for_crit;
-			$for_inc_crit			+= $attributes->for_inc_crit;
-			$for_abs				+= $attributes->for_abs;
-			$for_inc_abs			+= $attributes->for_inc_abs;
-			$for_prec				+= $attributes->for_prec;
+			$for_atk						+= $attributes->for_atk;
+			$for_def						+= $attributes->for_def;
+			$for_init						+= $attributes->for_init;
+			$for_crit						+= $attributes->for_crit;
+			$for_inc_crit					+= $attributes->for_inc_crit;
+			$for_abs						+= $attributes->for_abs;
+			$for_inc_abs					+= $attributes->for_inc_abs;
+			$for_prec						+= $attributes->for_prec;
 
-			$exp_battle				+= $attributes->exp_battle;
-			$currency_battle		+= $attributes->currency_battle;
-			$exp_quest				+= $attributes->exp_quest;
-			$currency_quest			+= $attributes->currency_quest;
-			$luck_discount			+= $attributes->luck_discount;
-			$item_drop_increase		+= $attributes->item_drop_increase;
+			$exp_battle						+= $attributes->exp_battle;
+			$currency_battle				+= $attributes->currency_battle;
+			$exp_quest						+= $attributes->exp_quest;
+			$currency_quest					+= $attributes->currency_quest;
+			$luck_discount					+= $attributes->luck_discount;
+			$npc_battle_count				+= $attributes->npc_battle_count;
+			$item_drop_increase				+= $attributes->item_drop_increase;
 
 			$generic_technique_damage		+= $attributes->generic_technique_damage;
 			$unique_technique_damage		+= $attributes->unique_technique_damage;
 			$defense_technique_extra		+= $attributes->defense_technique_extra;
-
 		}
+
+		$guild	= $this->guild();
+		if ($guild) {
+			$bonuses	= GuildLevelReward::find('id <= ' . $guild->level);
+			foreach ($bonuses as $bonus) {
+				$for_atk						+= $bonus->for_atk;
+				$for_def						+= $bonus->for_def;
+				$for_init						+= $bonus->for_init;
+				$for_crit						+= $bonus->for_crit;
+				$for_inc_crit					+= $bonus->for_inc_crit;
+				$for_abs						+= $bonus->for_abs;
+				$for_inc_abs					+= $bonus->for_inc_abs;
+				$for_prec						+= $bonus->for_prec;
+
+				$exp_battle						+= $bonus->exp_battle;
+				$currency_battle				+= $bonus->currency_battle;
+				$exp_quest						+= $bonus->exp_quest;
+				$currency_quest					+= $bonus->currency_quest;
+				$luck_discount					+= $bonus->luck_discount;
+				$npc_battle_count				+= $bonus->npc_battle_count;
+				$item_drop_increase				+= $bonus->item_drop_increase;
+
+				$generic_technique_damage		+= $bonus->generic_technique_damage;
+				$unique_technique_damage		+= $bonus->unique_technique_damage;
+				$defense_technique_extra		+= $bonus->defense_technique_extra;
+			}
+		}
+
 
 		$at->sum_for_atk						= $for_atk;
 		$at->sum_for_def						= $for_def;
@@ -2165,12 +2209,12 @@ class Player extends Relation {
 		$at->exp_quest							= $exp_quest;
 		$at->currency_quest						= $currency_quest;
 		$at->sum_bonus_luck_discount			= $luck_discount;
+		$at->sum_bonus_daily_npc				= $npc_battle_count;
 		$at->sum_bonus_drop						= $item_drop_increase;
 
 		$at->generic_technique_damage			= $generic_technique_damage;
 		$at->unique_technique_damage			= $unique_technique_damage;
 		$at->defense_technique_extra			= $defense_technique_extra;
-
 
 		$at->save();
 
@@ -2178,25 +2222,35 @@ class Player extends Relation {
 	}
 
 	function get_gauge() {
-
+		return SharedStore::G('GAUGE_' . $this->id);
 	}
 
 	function set_gauge($value) {
+		$gauge = $this->get_gauge();
 
+		SharedStore::S('GAUGE_' . $this->id, ($gauge - $value));
 	}
 
 	function get_techniques() {
 		// 1 = Techniques | 7 = Weapons
 		$allow	= [1];
-		$items	= Recordset::query('SELECT a.id FROM player_items a JOIN items b ON b.id=a.item_id WHERE a.player_id=' . $this->id . ' AND b.item_type_id IN (' . implode(', ', $allow) . ') AND a.removed=0 ORDER BY a.slot_id ASC');
+		$items	= Recordset::query('
+			SELECT
+				a.id
+			FROM
+				player_items a
+				JOIN items b ON b.id = a.item_id
+			WHERE
+				a.player_id = ' . $this->id . ' AND
+				b.item_type_id IN (' . implode(', ', $allow) . ') AND
+				a.removed = 0
+			ORDER BY
+				a.slot_id ASC');
 
 		$return	= [];
 		foreach ($items->result_array() as $item) {
 			$return[]	= PlayerItem::find($item['id']);
 		}
-
-//        $return[]	= new FakePlayerItem(112, $this);
-//        $return[]	= new FakePlayerItem(113, $this);
 
 		return $return;
 	}
@@ -2208,18 +2262,36 @@ class Player extends Relation {
 
 		$item = Item::find_first($id);
 		if (!$item->parent_id) {
-			return PlayerItem::find(Recordset::query('SELECT a.id FROM player_items a JOIN items b ON b.id=a.item_id WHERE a.player_id=' . $this->id . ' AND a.item_id=' . $id)->row()->id);
+			return PlayerItem::find(Recordset::query('
+				SELECT
+					a.id
+				FROM
+					player_items a
+					JOIN items b ON b.id = a.item_id
+				WHERE
+					a.player_id = ' . $this->id . ' AND
+					a.item_id = ' . $id
+			)->row()->id);
 		} else {
-			return PlayerItem::find(Recordset::query('SELECT a.id FROM player_items a JOIN items b ON b.id=a.item_id WHERE a.player_id=' . $this->id . ' AND a.parent_id=' . $id)->row()->id);
+			return PlayerItem::find(Recordset::query('
+				SELECT
+					a.id
+				FROM
+					player_items a
+					JOIN items b ON b.id = a.item_id
+				WHERE
+					a.player_id = ' . $this->id . ' AND
+					a.parent_id = ' . $id
+			)->row()->id);
 		}
 	}
 
 	function get_equipments($slot = null, $unequipped = false) {
-		return PlayerItem::find('player_id=' . $this->id . ' AND item_id=114' . ($slot ? ' AND slot_name="' . $slot . '"' : '') . ($unequipped ? ' AND equipped=0' : ''));
+		return PlayerItem::find('player_id=' . $this->id . ' AND item_id = 114' . ($slot ? ' AND slot_name="' . $slot . '"' : '') . ($unequipped ? ' AND equipped=0' : ''));
 	}
 
 	function get_equipment_at_slot($slot) {
-		return PlayerItem::find_first('player_id=' . $this->id . ' AND item_id=114  AND slot_name="' . $slot . '" AND equipped=1');
+		return PlayerItem::find_first('player_id=' . $this->id . ' AND item_id = 114  AND slot_name = "' . $slot . '" AND equipped=1');
 	}
 
 	function get_npc() {
@@ -2230,9 +2302,18 @@ class Player extends Relation {
 		if (isset($npc->guild_map_object_id) && $npc->guild_map_object_id) {
 			$session = GuildMapObjectSession::find_first('player_id=0 AND guild_accepted_event_id=' . $this->guild_accepted_event_id . ' AND guild_id=' . $this->guild_id . ' AND guild_map_object_id=' . $npc->guild_map_object_id);
 			if ($session) {
-				Recordset::query('UPDATE guild_map_object_sessions SET less_life = less_life + ' . $npc->shared_less_life . ' WHERE id=' . $session->id);
+				Recordset::update('guild_map_object_sessions', [
+					'less_life'	=> [
+						'escape'	=> false,
+						'value'		=> 'less_life + ' . $npc->shared_less_life
+					]
+				], [
+					'id'	=> $session->id
+				]);
 
-				$npc->less_life			= Recordset::query('SELECT less_life FROM guild_map_object_sessions WHERE id = ' . $session->id)->row()->less_life;
+				$object_session			= GuildMapObjectSession::find($session->id);
+
+				$npc->less_life			= isset($object_session) ? $object_session->less_life : 0;
 				$npc->shared_less_life	= 0;
 			}
 		}
@@ -2243,9 +2324,11 @@ class Player extends Relation {
 	function get_npc_dungeon() {
 		return SharedStore::G('NPC_DUNGEON_' . $this->id);
 	}
+
 	function save_npc_dungeon($npc) {
 		SharedStore::S('NPC_DUNGEON_' . $this->id, $npc);
 	}
+
 	function get_npc_challenge() {
 		return SharedStore::G('NPC_CHALLENGE_' . $this->id);
 	}
@@ -2293,15 +2376,19 @@ class Player extends Relation {
 	function ranking() {
 		return RankingPlayer::find_first('player_id=' . $this->id);
 	}
+
 	function ranking_achievement() {
 		return RankingAchievement::find_first('player_id=' . $this->id);
 	}
+
 	function ranking_guild() {
 		return RankingGuild::find_first('guild_id=' . $this->guild_id);
 	}
+
 	function ranking_account() {
 		return RankingAccount::find_first('user_id=' . $this->user_id);
 	}
+
 	function fight_power() {
 		$fight_power = 0;
 		$fight_power += ($this->for_init()) * 300;
@@ -2310,24 +2397,31 @@ class Player extends Relation {
 
 		return round($fight_power);
 	}
+
 	function daily_quests() {
 		return PlayerDailyQuest::find('player_id=' . $this->id);
 	}
+
 	function account_quests() {
 		return UserDailyQuest::find('user_id=' . $this->user_id.' AND complete = 0');
 	}
+
 	function guild_daily_quests() {
 		return GuildDailyQuest::find('guild_id=' . $this->guild_id);
 	}
+
 	function time_quests() {
 		return PlayerTimeQuest::find('player_id=' . $this->id);
 	}
+
 	function pet_quests() {
 		return PlayerPetQuest::find('player_id=' . $this->id.' AND completed=0');
 	}
+
 	function pvp_quests() {
 		return PlayerPvpQuest::find('player_id=' . $this->id);
 	}
+
 	function ranked($ranked_id = FALSE) {
 		if ($ranked_id) {
 			return PlayerRanked::find_last("player_id = {$this->id} and ranked_id = {$ranked_id}");
@@ -2346,39 +2440,49 @@ class Player extends Relation {
 				return $player_ranked;
 			}
 		}
+
 		return FALSE;
 	}
+
 	function player_daily_quest() {
 		return PlayerDailyQuest::find_first('player_id=' . $this->id . ' AND daily_quest_id=' . $this->daily_quest_id);
 	}
+
 	function guild_daily_quest() {
 		return GuildDailyQuest::find_first('guild_id=' . $this->guild_id . ' AND daily_quest_id=' . $this->daily_quest_id);
 	}
+
 	function player_time_quest() {
 		return PlayerTimeQuest::find_first('player_id=' . $this->id . ' AND time_quest_id=' . $this->time_quest_id);
 	}
+
 	function player_pet_quest() {
 		return PlayerPetQuest::find_first('player_id=' . $this->id . ' AND pet_quest_id=' . $this->pet_quest_id);
 	}
+
 	function player_pet_quest_wait($pet_quest_id) {
 		return PlayerPetQuest::find('player_id=' . $this->id . ' AND finish_at is not null AND completed = 0 AND pet_quest_id ='.$pet_quest_id);
 	}
+
 	function player_pvp_quest() {
 		return PlayerPvpQuest::find_first('player_id=' . $this->id . ' AND pvp_quest_id=' . $this->pvp_quest_id);
 	}
+
 	function anime() {
 		return Anime::find($this->character()->anime_id);
 	}
+
 	function check_learned_techniques() {
 		foreach ($this->learned_techniques() as $technique) {
 			extract($technique->item()->has_requirement($this, ['req_for_mana' => 1]));
 
-			if(!$has_requirement) {
+			if (!$has_requirement) {
 				$technique->removed	= true;
 				$technique->save();
 			}
 		}
 	}
+
 	function refresh_talents($enemy = null) {
 		$talents	= Recordset::query('SELECT a.item_id FROM player_items a JOIN items b ON b.id=a.item_id AND b.item_type_id=6 WHERE player_id=' . $this->id);
 		foreach ($talents->result() as $talent) {
@@ -2393,6 +2497,7 @@ class Player extends Relation {
 			}
 		}
 	}
+
 	function has_gems($item_id, $counter) {
 		$item_combinations = ItemGem::find_first("parent_id = " . $item_id);
 		$item_combinations = explode(",", $item_combinations->combination);
@@ -2418,6 +2523,7 @@ class Player extends Relation {
 
 		return $has_gems;
 	}
+
 	function valid_gem_combination($item_id, $combination, $ordem){
 		$player_item_gem 		= PlayerItemGem::find_first("item_id=".$item_id." AND player_id=".$this->id);
 		if ($player_item_gem) {
@@ -2446,24 +2552,31 @@ class Player extends Relation {
 		}
 
 	}
+
 	function headline() {
 		return Headline::find($this->headline_id);
 	}
+
 	function limit_by_day($id) {
 		return PlayerGiftLog::find('player_id=' . $id . ' AND DATE(created_at) = DATE(NOW())');
 	}
+
 	function has_unlocked_item($id) {
 		return PlayerItem::find_first('player_id=' . $this->id . ' AND item_id=' . $id);
 	}
+
 	function guild() {
 		return Guild::find($this->guild_id);
 	}
-	function player_tutorial(){
+
+	function player_tutorial() {
 		return PlayerTutorial::find_first("player_id=".$this->id);
 	}
+
 	function faction() {
 		return Faction::find_first($this->faction_id);
 	}
+
 	function tutorial() {
 		$player_tutorial = PlayerTutorial::find_first("player_id=".$this->id);
 		if ($player_tutorial->status && $player_tutorial->equips && $player_tutorial->pets
@@ -2511,6 +2624,7 @@ class Player extends Relation {
 			if (!$this->battle_npc_id && !$this->battle_pvp_id) {
 				$max_life		= $this->for_life(true);
 				$max_mana		= $this->for_mana(true);
+				$max_stamina	= $this->for_stamina(true);
 
 				$life_heal		= percent(20, $max_life);
 				$mana_heal		= percent(20, $max_mana);
@@ -2523,7 +2637,8 @@ class Player extends Relation {
 
 				$life_heal		+= percent($extras->life_regen, $life_heal);
 				$mana_heal		+= percent($extras->mana_regen, $mana_heal);
-				$stamina_heal	+= percent($extras->stamina_regen, $stamina_heal);
+				$stamina_heal	+= percent($extras->stamina_regen, $max_stamina);
+				// $stamina_heal	+= percent($extras->stamina_regen, $stamina_heal);
 
 				$current_runs	= 0;
 				while ($current_runs++ < $num_runs) {

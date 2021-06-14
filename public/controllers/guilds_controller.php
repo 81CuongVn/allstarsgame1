@@ -3,6 +3,7 @@ class GuildsController extends Controller {
 	public	$credits_price	= 3;
 	public	$currency_price	= 5000;
 	public	$min_level		= 5;
+
 	public	$max_players	= 8;
 
 	function __construct() {
@@ -730,6 +731,7 @@ class GuildsController extends Controller {
 			// Adiciona o player na organização
 			$player->guild_id		= $guild->id;
 			$player->save();
+			$player->_update_sum_attributes();
 
 			// Atualiza a tabela position do player
 			$position = $player->position();
@@ -794,11 +796,11 @@ class GuildsController extends Controller {
 		}
 
 		if (!sizeof($errors)) {
-			$this->json->success		= true;
+			$this->json->success	= true;
 
-			$request					= new GuildRequest();
-			$request->guild_id	= $id;
-			$request->player_id			= $player->id;
+			$request				= new GuildRequest();
+			$request->guild_id		= $id;
+			$request->player_id		= $player->id;
 			$request->save();
 		} else {
 			$this->json->messages	= $errors;
@@ -854,18 +856,19 @@ class GuildsController extends Controller {
 			} else {
 				$pm->content	= t('guilds.show.accept_message', ['name' => $guild->name]);
 
-				$guild_player					= new GuildPlayer();
-				$guild_player->guild_id	= $guild->id;
-				$guild_player->player_id			= $target->id;
+				$guild_player				= new GuildPlayer();
+				$guild_player->guild_id		= $guild->id;
+				$guild_player->player_id	= $target->id;
 				$guild_player->save();
 
 				// Adiciona o player na organização
-				$target->guild_id				= $guild->id;
+				$target->guild_id			= $guild->id;
 				$target->save();
+				$target->_update_sum_attributes();
 
 				// Atualiza a position do player
 				$position = $target->position();
-				$position->guild_id				= $guild->id;
+				$position->guild_id			= $guild->id;
 				$position->save();
 			}
 
@@ -906,6 +909,7 @@ class GuildsController extends Controller {
 
 			$player->guild_id	= 0;
 			$player->save();
+			$player->_update_sum_attributes();
 
 			// Atualiza a position do player
 			$position = $player->position();
@@ -920,7 +924,7 @@ class GuildsController extends Controller {
 
 	function destroy() {
 		$player					= Player::get_instance();
-		$guild			= $player->guild();
+		$guild					= $player->guild();
 		$this->as_json			= true;
 		$this->json->success	= false;
 		$errors					= [];
@@ -944,6 +948,7 @@ class GuildsController extends Controller {
 
 			$player->guild_id	= 0;
 			$player->save();
+			$player->_update_sum_attributes();
 
 			// Atualiza a position do player
 			$position = $player->position();
@@ -995,6 +1000,7 @@ class GuildsController extends Controller {
 
 			$target_player->guild_id	= 0;
 			$target_player->save();
+			$target_player->_update_sum_attributes();
 
 			// Atualiza a position do player
 			$position = $target_player->position();

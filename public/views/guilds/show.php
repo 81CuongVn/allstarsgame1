@@ -70,85 +70,46 @@
 								<img src="<?=image_url('icons/star-' . ($guild->level >= $level ? 'on' : 'off') . '.png')?>" style="cursor: pointer;" />
 							</div>
 							<div id="guild-level-container-<?=$level;?>" class="technique-container">
-							<div style="min-width: 230px;">
+							<div style="width: 190px;">
 								<?php if ($rewards = $guild->level_rewards($level)) { ?>
-									<span class="amarelo" style="font-size:14px">Os membros recebem:</span><br /><br />
-									<?php if ($rewards->exp) { ?>
-										<li><?=highamount($rewards->exp);?> <?=t('ranked.exp');?></li>
-									<?php } ?>
-									<?php if ($rewards->exp_account) { ?>
-										<li><?=highamount($rewards->exp_account);?> <?=t('ranked.exp_account');?></li>
-									<?php } ?>
-									<?php if ($rewards->currency) { ?>
-										<li><?=highamount($rewards->currency);?> <?=t('currencies.' . $player->character()->anime_id);?></li>
-									<?php } ?>
-									<?php if ($rewards->credits) { ?>
-										<li><?=highamount($rewards->credits);?> <?=t('treasure.show.credits');?></li>
-									<?php } ?>
-									<?php if ($rewards->item_id) { ?>
-										<li><?=highamount($rewards->quantity);?>x "<?=Item::find($rewards->item_id)->description()->name;?>"</li>
-									<?php } ?>
-									<?php if ($rewards->character_theme_id) { ?>
-										<li><?=t('treasure.show.theme');?> "<?=CharacterTheme::find($rewards->character_theme_id)->description()->name;?>"</li>
-									<?php } ?>
-									<?php if ($rewards->character_id) { ?>
-										<li><?=t('treasure.show.character');?> "<?=Character::find($rewards->character_id)->description()->name;?>"</li>
-									<?php } ?>
-									<?php if ($rewards->headline_id) { ?>
-										<li><?=t('treasure.show.headline');?> "<?=Headline::find($rewards->headline_id)->description()->name;?>"</li>
-									<?php } ?>
-									<?php if ($rewards->pets && $rewards->pets == 1) { ?>
-										<li>1x Mascote Comum</li>
-									<?php } ?>
-									<?php if ($rewards->pets && $rewards->pets == 2) { ?>
-										<li>1x Mascote Raro</li>
-									<?php } ?>
-									<?php if ($rewards->pets && $rewards->pets == 3) { ?>
-										<li>1x Mascote Lendário</li>
-									<?php } ?>
-									<?php if ($rewards->pets && $rewards->pets == 4) { ?>
-										<li>1x Mascote Mega</li>
-									<?php } ?>
-									<?php if ($rewards->equipment && $rewards->equipment == 1) { ?>
-										<li>1x Equipamento Comum</li>
-									<?php } ?>
-									<?php if ($rewards->equipment && $rewards->equipment == 2) { ?>
-										<li>1x Equipamento Raro</li>
-									<?php } ?>
-									<?php if ($rewards->equipment && $rewards->equipment == 3) { ?>
-										<li>1x Equipamento Épico</li>
-									<?php } ?>
-									<?php if ($rewards->equipment && $rewards->equipment == 4) { ?>
-										<li>1x Equipamento Lendário</li>
-									<?php } ?>
-									<?php if ($rewards->enchant_points) { ?>
-										<li><?=highamount($rewards->enchant_points);?> pontos de encantamento</li>
-									<?php } ?>
-									<?php if ($rewards->pets == 99 && $rewards->item_id) { ?>
-										<li><?=t('treasure.show.pet');?> "<?=Item::find($rewards->item_id)->description()->name;?>"</li>
-									<?php } ?>
 									<?php
-									$ats	= [
-										'for_atk'		=> t('formula.for_atk'),
-										'for_def'		=> t('formula.for_def'),
-										'for_crit'		=> t('formula.for_crit'),
-										'for_abs'		=> t('formula.for_abs'),
-										'for_prec'		=> t('formula.for_prec'),
-										'for_init'		=> t('formula.for_init'),
-										'for_inc_crit'	=> t('formula.for_inc_crit'),
-										'for_inc_abs'	=> t('formula.for_inc_abs')
+									$bonuses	= [
+										'for_atk', 'for_def', 'for_crit', 'for_inc_crit', 'for_abs', 'for_inc_abs', 'for_prec', 'for_init',
+										'currency_battle', 'exp_battle', 'currency_quest', 'exp_quest', 'npc_battle_count', 'item_drop_increase',
+										'luck_discount', 'generic_technique_damage', 'unique_technique_damage', 'defense_technique_extra',
+										'life_regen', 'mana_regen', 'stamina_regen'
 									];
-									foreach ($ats as $key => $value) {
-										if ($rewards->$key) {
-									?>
-										<li><?=t('luck.index.messages.point', [
-											'count'		=> highamount($rewards->$key),
-											'attribute'	=> $value
-										]);?></li>
-									<?php
+									$formules	= [
+										'for_atk', 'for_def', 'for_crit', 'for_abs', 'for_prec', 'for_init', 'for_inc_crit', 'for_inc_abs',
+									];
+									$percents	= [
+										'currency_battle', 'exp_battle', 'currency_quest', 'exp_quest', 'luck_discount', 'item_drop_increase',
+										'defense_technique_extra', 'generic_technique_damage', 'unique_technique_damage',
+										'for_crit', 'for_abs', 'for_prec', 'for_inc_crit', 'for_inc_abs',
+										'life_regen', 'mana_regen', 'stamina_regen'
+									];
+									$colors		= [
+										'currency_battle', 'exp_battle', 'currency_quest', 'exp_quest', 'item_drop_increase',
+										'luck_discount', 'generic_technique_damage', 'unique_technique_damage', 'defense_technique_extra',
+										'life_regen', 'mana_regen', 'stamina_regen'
+									];
+									foreach ($bonuses as $bonus) {
+										if ($rewards->$bonus > 0) {
+											if (in_array($bonus, $formules)) {
+												$translation	= t('global.em') . ' ' . t('formula.' . $bonus);
+											} else {
+												$translation	= t('equipments.attributes.' . $bonus);
+											}
+
+											echo '<li>';
+												echo '<span class="' . (in_array($bonus, $colors) ? 'laranja' : 'plus') . '">';
+													echo '+' . round($rewards->$bonus, 2) . (in_array($bonus, $percents) ? '%' : '');
+												echo '</span>';
+												echo  ' ' . $translation;
+											echo '</li>';
 										}
 									}
-									?>
+								?>
 								<?php } else { ?>
 									<div style="text-align: center;">Sem bonificação.</div>
 								<?php } ?>
@@ -164,8 +125,9 @@
 				<tr>
 					<td align="center">
 						<?=exp_bar($guild->exp, $guild->level_exp(), 455, highamount($guild->exp) . ' / ' . highamount($guild->level_exp()));?>
-						<div class="laranja" style="margin-top: 2px;">
-							Complete a barra de experiencia para evoluir a organização e receber bonificações.
+						<div style="margin-top: 2px;">
+							<span class="laranja">Complete a barra de experiencia para evoluir a organização e receber bonificações.</span><br >
+							<span style="text-transform: uppercase;"><b class="cinza">Atenção:</b> Os bônus são acumulativos!</span>
 						</div>
 					</td>
 				</tr>

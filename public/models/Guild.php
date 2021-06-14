@@ -31,6 +31,13 @@ class Guild extends Relation {
 				$this->exp			-= $this->level_exp();
 				$this->level		+= 1;
 			}
+
+			// Guild upou, atualiza os bonus nos membros
+			$members	= $this->players();
+			foreach ($members as $member) {
+				$player	= Player::find($member->player_id);
+				$player->_update_sum_attributes();
+			}
 		}
 	}
 
@@ -43,7 +50,7 @@ class Guild extends Relation {
 		if ($this->level) {
 			$exp *= $this->level + 1;
 		}
-		return $exp;
+		return $exp * 1.5;
 	}
 
 	function is_next_level() {
