@@ -122,7 +122,7 @@ class Player extends Relation {
 				$this->check_objectives("level_player");
 			}
 		}
-		$this->_update_sum_attributes();
+		// $this->_update_sum_attributes();
 
 		// Atualiza a graduação do safado
 		$graduation	= Graduation::find_first('sorting = ' . $this->graduation()->sorting + 1);
@@ -2108,7 +2108,7 @@ class Player extends Relation {
 		return $result;
 	}
 
-	protected function _update_sum_attributes() {
+	public function _update_sum_attributes() {
 		$at							=& $this->attributes();
 
 		$for_atk					= 0;
