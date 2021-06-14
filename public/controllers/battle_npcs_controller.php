@@ -5,6 +5,8 @@ class BattleNpcsController extends Controller {
 	public $npc_limit	= NPC_DAILY_LIMIT;
 
 	public function __construct() {
+		parent::__construct();
+
 		$player		= Player::get_instance();
 
 		$this->npc_limit += $player->attributes()->sum_bonus_daily_npc;

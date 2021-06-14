@@ -35,7 +35,8 @@ class Guild extends Relation {
 			// Guild upou, atualiza os bonus nos membros
 			$members	= $this->players();
 			foreach ($members as $member) {
-				$member->_update_sum_attributes();
+				$player	= Player::find($member->player_id);
+				$player->_update_sum_attributes();
 			}
 		}
 	}

@@ -2169,28 +2169,28 @@ class Player extends Relation {
 
 		$guild	= $this->guild();
 		if ($guild) {
-			$rewards						= $guild->level_rewards($guild->level);
-			if ($rewards) {
-				$for_atk						+= $rewards->for_atk;
-				$for_def						+= $rewards->for_def;
-				$for_init						+= $rewards->for_init;
-				$for_crit						+= $rewards->for_crit;
-				$for_inc_crit					+= $rewards->for_inc_crit;
-				$for_abs						+= $rewards->for_abs;
-				$for_inc_abs					+= $rewards->for_inc_abs;
-				$for_prec						+= $rewards->for_prec;
+			$bonuses	= GuildLevelReward::find('id <= ' . $guild->level);
+			foreach ($bonuses as $bonus) {
+				$for_atk						+= $bonus->for_atk;
+				$for_def						+= $bonus->for_def;
+				$for_init						+= $bonus->for_init;
+				$for_crit						+= $bonus->for_crit;
+				$for_inc_crit					+= $bonus->for_inc_crit;
+				$for_abs						+= $bonus->for_abs;
+				$for_inc_abs					+= $bonus->for_inc_abs;
+				$for_prec						+= $bonus->for_prec;
 
-				$exp_battle						+= $rewards->exp_battle;
-				$currency_battle				+= $rewards->currency_battle;
-				$exp_quest						+= $rewards->exp_quest;
-				$currency_quest					+= $rewards->currency_quest;
-				$luck_discount					+= $rewards->luck_discount;
-				$npc_battle_count				+= $rewards->npc_battle_count;
-				$item_drop_increase				+= $rewards->item_drop_increase;
+				$exp_battle						+= $bonus->exp_battle;
+				$currency_battle				+= $bonus->currency_battle;
+				$exp_quest						+= $bonus->exp_quest;
+				$currency_quest					+= $bonus->currency_quest;
+				$luck_discount					+= $bonus->luck_discount;
+				$npc_battle_count				+= $bonus->npc_battle_count;
+				$item_drop_increase				+= $bonus->item_drop_increase;
 
-				$generic_technique_damage		+= $rewards->generic_technique_damage;
-				$unique_technique_damage		+= $rewards->unique_technique_damage;
-				$defense_technique_extra		+= $rewards->defense_technique_extra;
+				$generic_technique_damage		+= $bonus->generic_technique_damage;
+				$unique_technique_damage		+= $bonus->unique_technique_damage;
+				$defense_technique_extra		+= $bonus->defense_technique_extra;
 			}
 		}
 
@@ -2624,6 +2624,7 @@ class Player extends Relation {
 			if (!$this->battle_npc_id && !$this->battle_pvp_id) {
 				$max_life		= $this->for_life(true);
 				$max_mana		= $this->for_mana(true);
+				$max_stamina	= $this->for_stamina(true);
 
 				$life_heal		= percent(20, $max_life);
 				$mana_heal		= percent(20, $max_mana);
@@ -2636,7 +2637,8 @@ class Player extends Relation {
 
 				$life_heal		+= percent($extras->life_regen, $life_heal);
 				$mana_heal		+= percent($extras->mana_regen, $mana_heal);
-				$stamina_heal	+= percent($extras->stamina_regen, $stamina_heal);
+				$stamina_heal	+= percent($extras->stamina_regen, $max_stamina);
+				// $stamina_heal	+= percent($extras->stamina_regen, $stamina_heal);
 
 				$current_runs	= 0;
 				while ($current_runs++ < $num_runs) {

@@ -70,7 +70,7 @@
 								<img src="<?=image_url('icons/star-' . ($guild->level >= $level ? 'on' : 'off') . '.png')?>" style="cursor: pointer;" />
 							</div>
 							<div id="guild-level-container-<?=$level;?>" class="technique-container">
-							<div style="min-width: 230px;">
+							<div style="width: 190px;">
 								<?php if ($rewards = $guild->level_rewards($level)) { ?>
 									<?php
 									$bonuses	= [
@@ -125,8 +125,9 @@
 				<tr>
 					<td align="center">
 						<?=exp_bar($guild->exp, $guild->level_exp(), 455, highamount($guild->exp) . ' / ' . highamount($guild->level_exp()));?>
-						<div class="laranja" style="margin-top: 2px;">
-							Complete a barra de experiencia para evoluir a organização e receber bonificações.
+						<div style="margin-top: 2px;">
+							<span class="laranja">Complete a barra de experiencia para evoluir a organização e receber bonificações.</span><br >
+							<span style="text-transform: uppercase;"><b class="cinza">Atenção:</b> Os bônus são acumulativos!</span>
 						</div>
 					</td>
 				</tr>
