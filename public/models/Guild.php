@@ -31,6 +31,11 @@ class Guild extends Relation {
 				$this->exp			-= $this->level_exp();
 				$this->level		+= 1;
 			}
+
+			$members	= $this->players();
+			foreach ($members as $member) {
+				$member->_update_sum_attributes();
+			}
 		}
 	}
 

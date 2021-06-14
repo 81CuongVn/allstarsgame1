@@ -2,14 +2,11 @@
 	'title' => 'battles.npc.title',
 	'place' => 'battles.npc.title'
 ]);?>
-<?php
-$limit_npc = $player->battle_counters();
-echo partial('shared/info', [
+<?=partial('shared/info', [
 	'id'		=> 1,
 	'title'		=> 'battles.npcs.title',
-	'message'	=> t('battles.npcs.description') . '<br /><br />' . exp_bar($limit_npc->current_npc_made, NPC_DAILY_LIMIT, 175, ($limit_npc->current_npc_made . '/' . NPC_DAILY_LIMIT))
-]);
-?><br />
+	'message'	=> t('battles.npcs.description') . '<br /><br />' . exp_bar($current_npc_count, $max_npc_count, 175, ($current_npc_count . '/' . $max_npc_count))
+]);?><br />
 <div>
 	<div class="pull-left">
 		<?=$player->profile_image();?>
@@ -46,9 +43,9 @@ echo partial('shared/info', [
 	<div class="clearfix"></div>
 </div>
 <div align="center">
-	<?php if ($limit_npc->current_npc_made >= NPC_DAILY_LIMIT): ?>
+	<?php if ($current_npc_count >= $max_npc_count): ?>
 		<button type="button" class="btn btn-lg btn-warning btn-disabled" disabled><?=t('battles.npc.accept');?></button>
-	<?php else: ?>	
+	<?php else: ?>
 		<a href="javascript:void(0);" id="btn-enter-npc-battle" data-type="1" class="btn btn-lg btn-primary"><?=t('battles.npc.accept');?></a>
-	<?php endif; ?>	
+	<?php endif; ?>
 </div>

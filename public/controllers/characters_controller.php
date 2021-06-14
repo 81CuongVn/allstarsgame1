@@ -399,7 +399,7 @@ class CharactersController extends Controller {
 			'for_abs'		=> t('formula.for_abs'),
 			'for_abs_inc'	=> t('formula.for_inc_abs'),
 			'for_prec'		=> t('formula.for_prec'),
-			'for_init'		=> t('formula.for_init'),
+			'for_init'		=> t('formula.for_init')
 		];
 
 		$max	= 0;

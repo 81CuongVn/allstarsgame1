@@ -1,10 +1,16 @@
 <?php
-class BattleNpcsController extends Controller
-{
+class BattleNpcsController extends Controller {
 	use BattleSharedMethods;
 
-	public function index()
-	{
+	public $npc_limit	= NPC_DAILY_LIMIT;
+
+	public function __construct() {
+		$player		= Player::get_instance();
+
+		$this->npc_limit += $player->attributes()->sum_bonus_daily_npc;
+	}
+
+	public function index() {
 		$player		= Player::get_instance();
 		$animes		= Anime::find($_SESSION['universal'] ? '1 = 1' : 'active = 1', [
 			'cache'		=> true,
@@ -43,8 +49,8 @@ class BattleNpcsController extends Controller
 		$this->assign("animes",					$animes);
 		$this->assign("player_battle_stats",	PlayerBattleStat::find_first("player_id=".$player->id));
 
-		// $this->assign('max_npc_count',		$this->npc_limit + $player->attributes()->sum_bonus_daily_npc);
-		// $this->assign('current_npc_count',	$player->battle_counters()->current_npc_made);
+		$this->assign('max_npc_count',			$this->npc_limit);
+		$this->assign('current_npc_count',		$player->battle_counters()->current_npc_made);
 	}
 	function change_oponent() {
 		$this->as_json			= true;
@@ -98,7 +104,7 @@ class BattleNpcsController extends Controller
 			$errors[]	= t('battles.npc.errors.pvp_queue');
 		}
 
-		if ($limit_npc >= NPC_DAILY_LIMIT && $_POST['type'] != 6) {
+		if ($limit_npc >= $this->npc_limit && $_POST['type'] != 6) {
 			$errors[]	= t('battles.npc.errors.limit');
 		}
 
