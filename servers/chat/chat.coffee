@@ -264,8 +264,8 @@ io.sockets.on 'connection', (socket) ->
 			# Character limtit for non-gm users
 			data.message	= data.message.substr(0, user_message_size)
 
-        data.message	= bbcodes.parse(data.message, player.gm)
-        data.message	= emoticons.parse(data.message, player.gm)
+		data.message	= bbcodes.parse(data.message, player.gm)
+		data.message	= emoticons.parse(data.message, player.gm)
 
 		channel_id		= 0 unless channel_id
 		broadcast		= from: player.name, message: data.message, channel: data.channel, channel_id: channel_id, id: player.uid, user_id: player.user_id, gm: player.gm, when: new Date()
