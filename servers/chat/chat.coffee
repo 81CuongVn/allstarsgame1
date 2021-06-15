@@ -8,6 +8,7 @@ fs					= require 'fs'
 crypto				= require 'crypto'
 sio					= require 'socket.io'
 emoticons			= require './emoticons'
+bbcodes	    		= require './bbcodes'
 config				= require './config'
 db					= require './db'
 
@@ -247,9 +248,7 @@ io.sockets.on 'connection', (socket) ->
 
 			return
 
-		if player.gm
-			data.message	= emoticons.parse(data.message, player.gm)
-		else
+		if !player.gm
 			now	= new Date()
 
 			if (last_messages[player.user_id] && diff_in_secs(last_messages[player.user_id], now) < 10)
@@ -264,7 +263,9 @@ io.sockets.on 'connection', (socket) ->
 
 			# Character limtit for non-gm users
 			data.message	= data.message.substr(0, user_message_size)
-			data.message	= emoticons.parse(data.message, player.gm)
+
+        data.message	= bbcodes.parse(data.message, player.gm)
+        data.message	= emoticons.parse(data.message, player.gm)
 
 		channel_id		= 0 unless channel_id
 		broadcast		= from: player.name, message: data.message, channel: data.channel, channel_id: channel_id, id: player.uid, user_id: player.user_id, gm: player.gm, when: new Date()
