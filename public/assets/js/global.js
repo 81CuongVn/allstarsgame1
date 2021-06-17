@@ -348,7 +348,7 @@
 		}
 		return s.join(dec);
 	}
-    
+
     if (!localStorage.alertCookies) {
         $(".box-cookies").removeClass('hide');
     }
@@ -363,4 +363,4 @@
 
     var btnCookies = $(".btn-cookies");
     btnCookies.on('click', acceptCookies);
-  })();
+})();

@@ -14,6 +14,25 @@ pt-BR:
     ranking: Ranking
     friend: Amigos
     event: Eventos
+    users: Usuários
+    players: Personagens
+    support: Suporte
+    animes: Animes
+    reports: Relatórios
+    news: Noticias
+  menus_admin:
+    home: Dashboard
+    animes: Lista de Animes
+    create_anime: Adicionar Anime
+    articles: Lista de Noticias
+    create_article: Adicioar Noticia
+    users: Lista de Contas
+    players: lista de Personagens
+    tickets: Lista de Tickets
+    create_ticket: Abrir Ticket
+    report_stars: Relatório de Estrelas
+    report_users: Relatório de Usuários
+    report_players: Relatório de Personagens
   menus:
     discord: Servidor no Discord
     whatsapp: Grupo no WhatsApp

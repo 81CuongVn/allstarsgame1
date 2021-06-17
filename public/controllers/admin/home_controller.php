@@ -1,0 +1,76 @@
+<?php
+class HomeController extends Controller {
+	function index() {
+
+		$couuntUsers	= [
+			'active'	=> Recordset::query("SELECT COUNT(id) AS total FROM users WHERE active = 1 AND banned = 0 AND removed = 0")->row()->total,
+			'inactive'	=> Recordset::query("SELECT COUNT(id) AS total FROM users WHERE active = 0 AND banned = 0 AND removed = 0")->row()->total,
+			'banned'	=> Recordset::query("SELECT COUNT(id) AS total FROM users WHERE banned = 1 AND removed = 0")->row()->total,
+			'total'		=> Recordset::query("SELECT COUNT(id) AS total FROM users WHERE removed = 0")->row()->total
+		];
+
+		$countPlayers	= [
+			'active'	=> Recordset::query("SELECT COUNT(id) AS total FROM players WHERE banned = 0 AND removed = 0")->row()->total,
+			'banned'	=> Recordset::query("SELECT COUNT(id) AS total FROM players WHERE banned = 1 AND removed = 0")->row()->total,
+			'total'		=> Recordset::query("SELECT COUNT(id) AS total FROM players")->row()->total
+		];
+
+		$lastUsers		= User::all([
+			'reorder'	=> 'created_at desc',
+			'limit'		=> '6'
+		]);
+
+		$lastPlayers	= Player::all([
+			'reorder'	=> 'created_at desc',
+			'limit'		=> '5'
+		]);
+
+		$months = [ date('Y-m') ];
+		for ($i = 1; $i <= 5; ++$i) {
+			$month		= date('Y-m', strtotime('-' . $i . ' months'));
+			$months[]	= $month;
+		}
+		$months = array_reverse($months);
+
+		$graphData	= [];
+		foreach ($months as $month) {
+			$start_date	= $month . '-01';
+			$end_date	= lastDayOfMonth($start_date);
+
+			$users		= Recordset::query("SELECT COUNT(id) AS total FROM users WHERE created_at BETWEEN '{$start_date}' AND '{$end_date}'")->row()->total;
+			$players	= Recordset::query("SELECT COUNT(id) AS total FROM players WHERE created_at BETWEEN '{$start_date}' AND '{$end_date}'")->row()->total;
+			$guilds		= Recordset::query("SELECT COUNT(id) AS total FROM guilds WHERE created_at BETWEEN '{$start_date}' AND '{$end_date}'")->row()->total;
+			$pvps		= Recordset::query("SELECT COUNT(id) AS total FROM battle_pvps WHERE created_at BETWEEN '{$start_date}' AND '{$end_date}'")->row()->total;
+			$npcs		= Recordset::query("SELECT COUNT(id) AS total FROM battle_npcs WHERE created_at BETWEEN '{$start_date}' AND '{$end_date}'")->row()->total;
+
+			$graphData[] = [
+				'date'		=> $month,
+				'users'		=> $users,
+				'players'	=> $players,
+				'guilds'	=> $guilds,
+				'pvps'		=> $pvps,
+				'npcs'		=> $npcs
+			];
+		}
+
+		$sales	= [];
+		$plans	= StarPlan::all();
+		foreach ($plans as $plan) {
+			$buys	= Recordset::query("SELECT COUNT(id) AS total FROM star_purchases WHERE status = 'aprovado' AND star_plan_id = {$plan->id}")->row()->total;
+			if ($buys > 0) {
+				$sales[$plan->id]	= [
+					'name'	=> $plan->name,
+					'sales'	=> $buys
+				];
+			}
+		}
+		// print_r($sales);
+
+		$this->assign('couuntUsers',	$couuntUsers);
+		$this->assign('countPlayers',	$countPlayers);
+		$this->assign('lastUsers',		$lastUsers);
+		$this->assign('lastPlayers',	$lastPlayers);
+		$this->assign('graphData',		$graphData);
+		$this->assign('sales',			$sales);
+	}
+}

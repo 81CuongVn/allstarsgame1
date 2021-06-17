@@ -1,6 +1,6 @@
 <?php
 function make_url($to = '', $params = [], $ignore_path = false) {
-	global $rewrite_enabled, $site_url;
+	global $rewrite_enabled, $site_url, $is_admin;
 
 	$to	= explode('#', $to);
 

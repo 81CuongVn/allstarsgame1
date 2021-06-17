@@ -3,6 +3,9 @@ class MenuCategory extends Relation {
 	static	$always_cached	= true;
 
 	function menus() {
-		return Menu::find('active=1 AND menu_category_id=' . $this->id.' ORDER BY ordem ASC', array('cache' => true));
+		return Menu::find('active = 1 and menu_category_id = ' . $this->id, [
+			'reorder'	=> 'ordem asc',
+			'cache'		=> true
+		]);
 	}
 }
