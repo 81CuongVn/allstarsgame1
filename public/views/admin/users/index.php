@@ -41,9 +41,9 @@
 
 					<div class="mb-3">
 						<?php if ($u->fb_id) { ?>
-							<span class="badge badge-success text-uppercase">Facebook</span>
+							<span class="badge badge-blue text-uppercase">Facebook</span>
 						<?php } else { ?>
-							<span class="badge badge-info text-uppercase">Normal</span>
+							<span class="badge badge-secondary text-uppercase">Normal</span>
 						<?php } ?>
 
 						<?php if ($u->banned) { ?>
