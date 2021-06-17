@@ -88,6 +88,7 @@ if (!isset($_SERVER['PATH_INFO'])) {
 
 $params		= [];
 
+$is_admin = false;
 if (!$_SERVER['PATH_INFO']) {
     $home	= explode('#', $home);
 
@@ -97,12 +98,24 @@ if (!$_SERVER['PATH_INFO']) {
     $parts		= explode('/' , $_SERVER['PATH_INFO']);
     $parts		= array_splice($parts, 1);
 
-    $controller	= $parts[0];
-    $action		= sizeof($parts) > 1 ? $parts[1] : NULL;
+	if ($parts[0] != 'admin') {
+	    $controller	= $parts[0];
+    	$action		= sizeof($parts) > 1 ? $parts[1] : NULL;
 
-    if (sizeof($parts) > 2) {
-        $params		= array_splice($parts, 2);
-    }
+    	if (sizeof($parts) > 2) {
+        	$params		= array_splice($parts, 2);
+    	}
+	} else {
+		$is_admin	= true;
+		if (sizeof($parts) > 1) {
+			$controller	= $parts[1];
+			$action		= sizeof($parts) > 2 ? $parts[2] : NULL;
+			$params		= array_splice($parts, 3);
+		} else {
+			$controller	= $home[0];
+    		$action		= $home[1];
+		}
+	}
 
     if (!$action) {
         $action	= 'index';
@@ -112,7 +125,8 @@ if (!$_SERVER['PATH_INFO']) {
 if (IS_MAINTENANCE) {
     define('MAINTENANCE_CONTROLLER',	'internal');
     define('MAINTENANCE_ACTION',		'maintenance');
-    if (isset($_GET['is_admin'])) {
+
+	if (isset($_GET['is_admin'])) {
         $_SESSION['skip_maintenance']	= TRUE;
     }
 
@@ -164,7 +178,7 @@ if (is_dir(ROOT . '/mailers')) {
 
 $___memory['after_mailers']     = memory_get_usage();
 
-$controller_file	= 'controllers/' . $controller . '_controller.php';
+$controller_file	= 'controllers/' . ($is_admin ? 'admin' : 'game') . '/' . $controller . '_controller.php';
 $controller_class	= '';
 $_ignore			= FALSE;
 
@@ -241,26 +255,26 @@ if ($_SESSION['loggedin'] && !$_SESSION['universal']) {
 
 if (isset($instance->render)) {
     if (is_a($instance, 'InternalController')) {
-        $view_file	= 'views/' . $instance->render . '.php';
+        $view_file	= 'views/' . ($is_admin ? 'admin' : 'game') . '/' . $instance->render . '.php';
     } else {
         if ($instance->render !== FALSE) {
-            $view_file	= 'views/' . $controller . '/' . $instance->render . '.php';
+            $view_file	= 'views/' . ($is_admin ? 'admin' : 'game') . '/' . $controller . '/' . $instance->render . '.php';
         } else {
             $view_file	= FALSE;
         }
     }
 } else {
-    $view_file	= 'views/' . $controller . '/' . $action . '.php';
+    $view_file	= 'views/' . ($is_admin ? 'admin' : 'game') . '/' . $controller . '/' . $action . '.php';
 }
 
 $can_render_layout	= TRUE;
-$layout_file		= 'views/application.php';
+$layout_file		= 'views/' . ($is_admin ? 'admin' : 'game') . '/application.php';
 
 if (isset($instance->layout)) {
     if ($instance->layout === FALSE) {
         $can_render_layout	= FALSE;
     } else {
-        $layout_file	= 'views/' . $instance->layout . '.php';
+        $layout_file	= 'views/' . ($is_admin ? 'admin' : 'game') . '/' . $instance->layout . '.php';
     }
 }
 
@@ -281,7 +295,7 @@ if ($view_file && !$instance->as_json) {
 }
 
 if ($layout) {
-    if ($_SESSION['universal']) {
+    if ($_SESSION['universal'] && !$is_admin) {
 		$view	.= render_file('views/debug.php', []);
 	}
 

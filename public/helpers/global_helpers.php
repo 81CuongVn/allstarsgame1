@@ -473,3 +473,6 @@ function isProxy($ip) {
 
 	return $isProxy;
 }
+function lastDayOfMonth($date) {
+	return date("Y-m-t", strtotime($date));
+}
