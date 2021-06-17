@@ -67,11 +67,11 @@ if ($_SESSION['user_id']) {
 </head>
 <body class="boxed-layout center-menu">
 <!-- Pre-loader -->
-<!-- <div id="preloader">
+<div id="preloader">
 	<div id="status">
 		<div class="spinner">Aguarde...</div>
 	</div>
-</div> -->
+</div>
 <!-- End Preloader-->
 <!-- Navigation Bar-->
 <header id="topnav">

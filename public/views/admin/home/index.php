@@ -130,7 +130,7 @@
 			<div class="col-md-6">
 				<div class="card-box" dir="ltr">
 					<h4 class="header-title">Gráfico de Crescimento</h4>
-					<p class="sub-header">Últimos 6 meses</p>
+					<p class="sub-header">Últimos 7 dias</p>
 					<div class="text-center">
 						<p class="text-muted font-15 font-family-secondary mb-0">
 							<span class="mx-2"><i class="mdi mdi-checkbox-blank-circle text-blue"></i> Contas</span>
@@ -144,7 +144,7 @@
 			<div class="col-md-6">
 				<div class="card-box" dir="ltr">
 					<h4 class="header-title">Gráfico de Batalhas</h4>
-					<p class="sub-header">Últimos 6 meses</p>
+					<p class="sub-header">Últimos 7 dias</p>
 					<div class="text-center">
 						<p class="text-muted font-15 font-family-secondary mb-0">
 							<span class="mx-2"><i class="mdi mdi-checkbox-blank-circle text-danger"></i> Batalhas PvP</span>
@@ -221,6 +221,10 @@
 <script type="text/javascript">
 	(() => {
 		// create line chart
+		var $weekdays = [
+			"DOMINGO", "SEGUNDA", "TERÇA",
+			"QUARTA", "QUINTA", "SEXTA", "SÁBADO"
+		];
 		var $months	= [
 			"Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
 			"Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembbro"
@@ -252,13 +256,16 @@
 			preUnits: '',
 			resize: true, // defaulted to true
 			lineColors: [ '#4a81d4', '#f672a7', '#1abc9c' ],
+			xLabels: 'day',
 			xLabelFormat: function(x) { // <--- x.getMonth() returns valid index
-				var month = $months[x.getMonth()];
-				return month.substring(0, 3) + '\n' + x.getFullYear();
+				// var month = $months[x.getMonth()];
+				// return month.substring(0, 3) + '\n' + x.getFullYear();
+				return $weekdays[x.getDay()].substring(0, 3);
 			},
 			dateFormat: function(x) {
-				var month = $months[new Date(x).getMonth()] + '<br />' + new Date(x).getFullYear();
-				return month;
+				return $weekdays[new Date(x).getDay()];
+				// var month = $months[new Date(x).getMonth()] + '<br />' + new Date(x).getFullYear();
+				// return month;
 			},
         });
 
@@ -287,13 +294,16 @@
 			preUnits: '',
 			resize: true, // defaulted to true
 			lineColors: [ '#4a81d4', '#f672a7' ],
+			xLabels: 'day',
 			xLabelFormat: function(x) { // <--- x.getMonth() returns valid index
-				var month = $months[x.getMonth()];
-				return month.substring(0, 3) + '\n' + x.getFullYear();
+				// var month = $months[x.getMonth()];
+				// return month.substring(0, 3) + '\n' + x.getFullYear();
+				return $weekdays[x.getDay()].substring(0, 3);
 			},
 			dateFormat: function(x) {
-				var month = $months[new Date(x).getMonth()] + '<br />' + new Date(x).getFullYear();
-				return month;
+				return $weekdays[new Date(x).getDay()];
+				// var month = $months[new Date(x).getMonth()] + '<br />' + new Date(x).getFullYear();
+				// return month;
 			},
         });
 

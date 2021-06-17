@@ -15,10 +15,10 @@
             </li>
 
             <li class="d-none d-sm-block">
-                <form class="app-search">
+                <form action="<?=make_url('admin/search');?>" class="app-search">
                     <div class="app-search-box">
                         <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Buscar...">
+                            <input type="text" name="query" class="form-control" placeholder="Buscar..." />
                             <div class="input-group-append">
                                 <button class="btn" type="submit">
                                     <i class="fe-search"></i>
