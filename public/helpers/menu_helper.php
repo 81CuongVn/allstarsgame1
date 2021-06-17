@@ -70,8 +70,8 @@ function is_menu_accessible($menu, $player) {
     $ok		= true;
 	$user	= false;
 
-	if ($player) {
-		$user	= $player->user();
+	if ($_SESSION['loggedin']) {
+		$user	= User::find_first('id = ' . $_SESSION['user_id']);
 	}
 
     if ($menu->h_loggedin == 1 && !$_SESSION['loggedin']) {
@@ -91,6 +91,10 @@ function is_menu_accessible($menu, $player) {
 			}
 		}
 	} else {
+		if ($user && $user->admin < $menu->h_admin) {
+			$ok	= false;
+		}
+
 		if ($menu->h_player == 1 && !$player) {
 			$ok	= false;
 		}

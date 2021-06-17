@@ -34,6 +34,7 @@ pt-BR:
     report_users: Relatório de Usuários
     report_players: Relatório de Personagens
   menus:
+    admin: Administração
     discord: Servidor no Discord
     whatsapp: Grupo no WhatsApp
     tournaments: Torneio All-Star

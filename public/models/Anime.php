@@ -10,6 +10,29 @@ class Anime extends Relation {
 		return Character::find('anime_id=' . $this->id . $extra, array('reorder' => 'ordem ASC'));
 	}
 
+	public function total_pets() {
+		return Recordset::query("
+			SELECT
+				COUNT(a.id) AS total
+			FROM
+				items a
+				JOIN item_descriptions b ON a.id = b.item_id
+			WHERE
+				a.item_type_id = 3 AND
+				b.anime_id = " . $this->id
+		)->row()->total;
+	}
+
+	public function total_players() {
+		$players	= 0;
+		$characters	= $this->characters();
+		foreach ($characters as $character) {
+			$players	+= Recordset::query("SELECT COUNT(id) AS total FROM players WHERE character_id = " . $character->id)->row()->total;
+		}
+
+		return $players;
+	}
+
 	public function time_quest($quest) {
 		$quest	= TimeQuest::find($quest);
 		return $quest;
