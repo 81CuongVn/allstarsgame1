@@ -48,6 +48,10 @@ class User extends Relation {
 		return Player::find('user_id=' . $this->id);
 	}
 
+	function total_players() {
+		return Recordset::query("SELECT COUNT(id) AS total FROM players WHERE user_id=" . $this->id)->row()->total;
+	}
+
 	function spend($amount) {
 		$this->credits	-= $amount;
 		$this->save();

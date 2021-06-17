@@ -473,6 +473,22 @@ function isProxy($ip) {
 
 	return $isProxy;
 }
+
 function lastDayOfMonth($date) {
 	return date("Y-m-t", strtotime($date));
+}
+
+function getGravatar($email, $s = 80, $d = 'mp', $r = 'g', $img = false, $atts = []) {
+    $url = 'https://www.gravatar.com/avatar/';
+    $url .= md5(strtolower(trim($email)));
+    $url .= "?s={$s}&d={$d}&r={$r}";
+    if ( $img ) {
+        $url = '<img src="' . $url . '"';
+        foreach ($atts as $key => $val) {
+            $url .= ' ' . $key . '="' . $val . '"';
+		}
+        $url .= ' />';
+    }
+
+	return $url;
 }
