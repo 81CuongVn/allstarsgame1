@@ -10,6 +10,10 @@ class Character extends Relation {
 		return Anime::find($this->anime_id, array('cache' => true));
 	}
 
+	public function players() {
+		return Player::find('character_id = ' . $this->id);
+	}
+
 	public function themes($extra = NULL) {
 		return CharacterTheme::find('character_id=' . $this->id . $extra, array('cache' => true));
 	}

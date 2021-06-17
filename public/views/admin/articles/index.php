@@ -63,10 +63,13 @@
 		</table>
 	</div>
 </div>
+<?=partial('shared/paginator', [
+	'addClass'	=> 'justify-content-end',
+	'current'	=> $page,
+	'pages'		=> $pages
+]);?>
 <script type="text/javascript">
 	(() => {
-		"use strict";
-
 		const deleteArticle	= $('.delete-article');
 		deleteArticle.on('click', function (e) {
 			e.preventDefault();
