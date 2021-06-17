@@ -1,7 +1,7 @@
 <?php
 class HomeController extends Controller {
 	function index() {
-
+		// Contagem de contas
 		$couuntUsers	= [
 			'active'	=> Recordset::query("SELECT COUNT(id) AS total FROM users WHERE active = 1 AND banned = 0 AND removed = 0")->row()->total,
 			'inactive'	=> Recordset::query("SELECT COUNT(id) AS total FROM users WHERE active = 0 AND banned = 0 AND removed = 0")->row()->total,
@@ -9,20 +9,17 @@ class HomeController extends Controller {
 			'total'		=> Recordset::query("SELECT COUNT(id) AS total FROM users WHERE removed = 0")->row()->total
 		];
 
+		// Contagem de personagens
 		$countPlayers	= [
 			'active'	=> Recordset::query("SELECT COUNT(id) AS total FROM players WHERE banned = 0 AND removed = 0")->row()->total,
 			'banned'	=> Recordset::query("SELECT COUNT(id) AS total FROM players WHERE banned = 1 AND removed = 0")->row()->total,
 			'total'		=> Recordset::query("SELECT COUNT(id) AS total FROM players")->row()->total
 		];
 
+		// Últimas contas criadas
 		$lastUsers		= User::all([
 			'reorder'	=> 'created_at desc',
 			'limit'		=> '4'
-		]);
-
-		$lastPlayers	= Player::all([
-			'reorder'	=> 'created_at desc',
-			'limit'		=> '5'
 		]);
 
 		// Últiimos 6 meses
@@ -91,7 +88,6 @@ class HomeController extends Controller {
 		$this->assign('couuntUsers',	$couuntUsers);
 		$this->assign('countPlayers',	$countPlayers);
 		$this->assign('lastUsers',		$lastUsers);
-		$this->assign('lastPlayers',	$lastPlayers);
 		$this->assign('graphUPG',		$graphUPG);
 		$this->assign('graphBattles',	$graphBattles);
 		$this->assign('sales',			$sales);

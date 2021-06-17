@@ -17,20 +17,20 @@ if ($pages > 1) {
 
 	for ($i = 1; $i <= $pages; $i++){
 		if ((2 >= $i) && ($current == $i)) {
-			echo '<li class="page-item active"><span class="page-link">' . $i . '</span></li>';
+			echo '<li class="page-item active"><span class="page-link">' . highamount($i) . '</span></li>';
 		} elseif ((2 >= $i) && ($current != $i)) {
-			echo '<li class="page-item"><a href="?page=' . $i . '" class="page-link">' . $i . '</a></li>';
+			echo '<li class="page-item"><a href="?page=' . $i . '" class="page-link">' . highamount($i) . '</a></li>';
 		} elseif (($pages-2 < $i) && ($current == $i)) {
-			echo '<li class="page-item active"><span class="page-link">' . $i . '</span></li>';
+			echo '<li class="page-item active"><span class="page-link">' . highamount($i) . '</span></li>';
 		} elseif (($pages-2 < $i) && ($current != $i)) {
-			echo '<li class="page-item"><a href="?page=' . $i . '" class="page-link">' . $i . '</a></li>';
+			echo '<li class="page-item"><a href="?page=' . $i . '" class="page-link">' . highamount($i) . '</a></li>';
 		} else {
 			$max = $current + 3;
 			$min = $current - 3;
 			if ($current == $i) {
-				echo '<li class="page-item active"><span class="page-link">' . $i . '</span></li>';
+				echo '<li class="page-item active"><span class="page-link">' . highamount($i) . '</span></li>';
 			} elseif (($min < $i) && ($max > $i)) {
-				echo '<li class="page-item"><a href="?page=' . $i . '" class="page-link">' . $i . '</a></li>';
+				echo '<li class="page-item"><a href="?page=' . $i . '" class="page-link">' . highamount($i) . '</a></li>';
 			} else {
 				if ($i < $current) {
 					if (!$links) {

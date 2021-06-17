@@ -159,13 +159,14 @@
 	<div class="col-md-7">
 		<div class="card-box">
 			<h4 class="header-title">Últimos Cadastros</h4>
-			<p class="sub-header">Últimas 5 contas criadas</p>
+			<p class="sub-header">Últimas 4 contas criadas</p>
 			<div class="table-responsive">
 				<table class="table table-borderless table-hover table-centered m-0">
 					<thead class="thead-light">
 					<tr>
 						<th class="text-center" style="width: 70px;">Data</th>
 						<th>Nome</th>
+						<th class="text-center" style="width: 50px;">Personagens</th>
 						<th class="text-center" style="width: 70px;">Facebook</th>
 						<th class="text-center" style="width: 70px;">Status</th>
 					</tr>
@@ -187,6 +188,11 @@
 									<p class="mb-0 text-muted">
 										<small><?=$u->email?></small>
 									</p>
+								</td>
+								<td class="text-center">
+									<span class="badge badge-primary">
+										<?=$u->total_players();?>
+									</span>
 								</td>
 								<td class="text-center">
 									<?php if ($u->fb_id) { ?>
