@@ -32,10 +32,19 @@ class HomeController extends Controller {
 		}
 		$months = array_reverse($months);
 
+		$days = [ date('Y-m-d') ];
+		for ($i = 1; $i <= 6; ++$i) {
+			$day		= date('Y-m-d', strtotime('-' . $i . ' days'));
+			$days[]	= $day;
+		}
+		$days = array_reverse($days);
+
 		$graphData	= [];
-		foreach ($months as $month) {
-			$start_date	= $month . '-01';
-			$end_date	= lastDayOfMonth($start_date);
+		foreach ($days as $day) {
+			// $start_date	= $month . '-01';
+			// $end_date	= lastDayOfMonth($start_date);
+			$start_date	= $day . ' 00:00:00';
+			$end_date	= $day . ' 23:59:59';
 
 			$users		= Recordset::query("SELECT COUNT(id) AS total FROM users WHERE created_at BETWEEN '{$start_date}' AND '{$end_date}'")->row()->total;
 			$players	= Recordset::query("SELECT COUNT(id) AS total FROM players WHERE created_at BETWEEN '{$start_date}' AND '{$end_date}'")->row()->total;
@@ -44,7 +53,7 @@ class HomeController extends Controller {
 			$npcs		= Recordset::query("SELECT COUNT(id) AS total FROM battle_npcs WHERE created_at BETWEEN '{$start_date}' AND '{$end_date}'")->row()->total;
 
 			$graphData[] = [
-				'date'		=> $month,
+				'date'		=> $day,
 				'users'		=> $users,
 				'players'	=> $players,
 				'guilds'	=> $guilds,

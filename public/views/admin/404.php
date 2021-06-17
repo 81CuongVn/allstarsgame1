@@ -15,12 +15,12 @@
 			</svg>
 		</div>
 		<div class="text-center">
-			<h3 class="mt-0 mb-2">Whoops! Page not found </h3>
-			<p class="text-muted mb-3">It's looking like you may have taken a wrong turn. Don't worry...
-				it happens to the best of us. You might want to check your internet connection.
-				Here's a little tip that might help you get back on track.</p>
-
-			<a href="index.html" class="btn btn-success waves-effect waves-light">Back to Dashboard</a>
+			<h3 class="mt-0 mb-2">Não Encontrada!</h3>
+			<p class="text-muted mb-3">
+				Parece que vocês etá tentando acessar uma página da qual não existe!
+				Caso acredite que isto seja um erro, entre em contato com a <b>administração</b>.
+			</p>
+			<a href="<?=make_url('admin/home');?>" class="btn btn-success waves-effect waves-light">Voltar</a>
 		</div>
 		<!-- end row -->
 
