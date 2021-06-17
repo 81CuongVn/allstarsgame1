@@ -3,7 +3,7 @@ class ArticlesController extends Controller {
 	public function index() {
 		$page			= !isset($_GET['page']) || !is_numeric($_GET['page']) ? 1 : $_GET['page'];
 		$items_per_page	= 6;
-		$all_articles	= SiteNew::all();
+		$all_articles	= Recordset::query("SELECT COUNT(id) AS total FROM site_news")->row()->total;
 		$pages			= ceil(sizeof($all_articles) / $items_per_page);
 		$page			= (!is_numeric($page) || $page <= 0) ? 1 : $page;
 		$page			= ($page > $pages) ? $pages : $page;
