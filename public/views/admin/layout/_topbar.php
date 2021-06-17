@@ -51,7 +51,7 @@
                     <span class="logo-lg-text-dark">Painel Administrativo</span>
                 </span>
                 <span class="logo-sm">
-                    <span class="logo-sm-text-dark">Admin</span>
+                    <b class="logo-sm-text-dark text-uppercase">Administração</b>
                 </span>
             </a>
         </div>

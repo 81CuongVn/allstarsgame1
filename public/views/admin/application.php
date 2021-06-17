@@ -66,6 +66,13 @@ if ($_SESSION['user_id']) {
 	</script>
 </head>
 <body class="boxed-layout center-menu">
+<!-- Pre-loader -->
+<div id="preloader">
+	<div id="status">
+		<div class="spinner">Aguarde...</div>
+	</div>
+</div>
+<!-- End Preloader-->
 <!-- Navigation Bar-->
 <header id="topnav">
 	<?=partial('layout/topbar', [ 'user' => $user ]);?>
@@ -81,8 +88,6 @@ if ($_SESSION['user_id']) {
 </div><!-- end wrapper -->
 
 <?=partial('layout/footer');?>
-
-<?=partial('layout/right-sidebar');?>
 
 <!-- App js -->
 <script src="<?=asset_url('admin/js/app.min.js');?>"></script>
