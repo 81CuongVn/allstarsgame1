@@ -6,7 +6,7 @@
 			<ul class="navigation-menu">
 				<?php foreach ($raw_menu_data as $menu_category) { ?>
 					<li class="has-submenu">
-						<a href="javascript:void(0);">
+						<a href="#">
 							<i class="<?=$menu_category['icon'];?>"></i>
 							<?=t($menu_category['name']);?>
 							<?php if (sizeof($menu_category['menus'])) { ?>
