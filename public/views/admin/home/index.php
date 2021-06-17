@@ -130,7 +130,7 @@
 			<div class="col-md-6">
 				<div class="card-box" dir="ltr">
 					<h4 class="header-title">Gráfico de Crescimento</h4>
-					<p class="sub-header">Últimos 7 dias</p>
+					<p class="sub-header">Últimos 6 meses</p>
 					<div class="text-center">
 						<p class="text-muted font-15 font-family-secondary mb-0">
 							<span class="mx-2"><i class="mdi mdi-checkbox-blank-circle text-blue"></i> Contas</span>
@@ -156,18 +156,18 @@
 			</div>
 		</div>
 	</div>
-	<div class="col-md-8">
+	<div class="col-md-7">
 		<div class="card-box">
-			<h4 class="header-title mb-3">Últimos Cadastros</h4>
+			<h4 class="header-title">Últimos Cadastros</h4>
+			<p class="sub-header">Últimas 5 contas criadas</p>
 			<div class="table-responsive">
 				<table class="table table-borderless table-hover table-centered m-0">
 					<thead class="thead-light">
 					<tr>
-						<th class="text-center">Data</th>
+						<th class="text-center" style="width: 70px;">Data</th>
 						<th>Nome</th>
-						<th class="text-center">Email</th>
-						<th class="text-center">Facebook</th>
-						<th class="text-center">Status</th>
+						<th class="text-center" style="width: 70px;">Facebook</th>
+						<th class="text-center" style="width: 70px;">Status</th>
 					</tr>
 					</thead>
 					<tbody>
@@ -179,12 +179,14 @@
 									</span>
 								</td>
 								<td>
-									<a href="<?=make_url('admin/users/view/' . $u->id);?>">
-										<?=$u->name;?>
-									</a>
-								</td>
-								<td class="text-center">
-									<?=$u->email?>
+									<h5 class="m-0 font-weight-normal">
+										<a href="<?=make_url('admin/users/view/' . $u->id);?>">
+											<?=$u->name;?>
+										</a>
+									</h5>
+									<p class="mb-0 text-muted">
+										<small><?=$u->email?></small>
+									</p>
 								</td>
 								<td class="text-center">
 									<?php if ($u->fb_id) { ?>
@@ -211,10 +213,10 @@
 			</div>
 		</div>
 	</div>
-	<div class="col-md-4">
+	<div class="col-md-5">
 		<div class="card-box" dir="ltr">
 			<h4 class="header-title mb-3">Venda de Estrelas</h4>
-			<div id="graphic-sales" style="height: 343px;" class="morris-chart"></div>
+			<div id="graphic-sales" style="height: 333px;" class="morris-chart"></div>
 		</div> <!-- end card-box-->
 	</div>
 </div>
@@ -233,7 +235,7 @@
 		Morris.Line({
 			element: 'graphic-upg',
 			data: [
-				<?php foreach ($graphData as $data) { ?>
+				<?php foreach ($graphUPG as $data) { ?>
 					{
 						date:		'<?=$data['date'];?>',
 						users:		<?=$data['users'];?>,
@@ -256,23 +258,20 @@
 			preUnits: '',
 			resize: true, // defaulted to true
 			lineColors: [ '#4a81d4', '#f672a7', '#1abc9c' ],
-			xLabels: 'day',
 			xLabelFormat: function(x) { // <--- x.getMonth() returns valid index
-				// var month = $months[x.getMonth()];
-				// return month.substring(0, 3) + '\n' + x.getFullYear();
-				return $weekdays[x.getDay()].substring(0, 3);
+				var month = $months[x.getMonth()];
+				return month.substring(0, 3) + '\n' + x.getFullYear();
 			},
 			dateFormat: function(x) {
-				return $weekdays[new Date(x).getDay()];
-				// var month = $months[new Date(x).getMonth()] + '<br />' + new Date(x).getFullYear();
-				// return month;
+				var month = $months[new Date(x).getMonth()] + '<br />' + new Date(x).getFullYear();
+				return month;
 			},
         });
 
 		Morris.Line({
 			element: 'graphic-battles',
 			data: [
-				<?php foreach ($graphData as $data) { ?>
+				<?php foreach ($graphBattles as $data) { ?>
 					{
 						date:		'<?=$data['date'];?>',
 						pvps:		<?=$data['pvps'];?>,
@@ -296,14 +295,10 @@
 			lineColors: [ '#4a81d4', '#f672a7' ],
 			xLabels: 'day',
 			xLabelFormat: function(x) { // <--- x.getMonth() returns valid index
-				// var month = $months[x.getMonth()];
-				// return month.substring(0, 3) + '\n' + x.getFullYear();
 				return $weekdays[x.getDay()].substring(0, 3);
 			},
 			dateFormat: function(x) {
 				return $weekdays[new Date(x).getDay()];
-				// var month = $months[new Date(x).getMonth()] + '<br />' + new Date(x).getFullYear();
-				// return month;
 			},
         });
 
