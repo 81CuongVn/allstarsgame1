@@ -147,8 +147,8 @@
 					<p class="sub-header">Últimos 7 dias</p>
 					<div class="text-center">
 						<p class="text-muted font-15 font-family-secondary mb-0">
-							<span class="mx-2"><i class="mdi mdi-checkbox-blank-circle text-danger"></i> Batalhas PvP</span>
-							<span class="mx-2"><i class="mdi mdi-checkbox-blank-circle text-primary"></i> Batalhas NPC</span>
+							<span class="mx-2"><i class="mdi mdi-checkbox-blank-circle text-primary"></i> Batalhas PvP</span>
+							<span class="mx-2"><i class="mdi mdi-checkbox-blank-circle text-danger"></i> Batalhas NPC</span>
 						</p>
 					</div>
 					<div id="graphic-battles" style="height: 350px;" class="morris-chart"></div>

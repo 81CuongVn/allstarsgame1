@@ -57,9 +57,9 @@
 						<?php } ?>
 					</div>
 
-					<button type="button" class="btn btn-primary btn-sm waves-effect waves-light">
+					<a href="<?=make_url('admin/users/view/' . $u->id);?>" class="btn btn-primary btn-sm waves-effect waves-light">
 						Detalhes
-					</button>
+					</a>
 
 					<div class="row mt-2">
 						<div class="col-6">
