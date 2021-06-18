@@ -137,6 +137,11 @@
 					</a>
 				</li>
 				<li class="nav-item">
+					<a href="#logins" data-toggle="tab" class="nav-link">
+						Acessos
+					</a>
+				</li>
+				<li class="nav-item">
 					<a href="#settings" data-toggle="tab" class="nav-link">
 						Gerenciar
 					</a>
@@ -201,6 +206,13 @@
 					'current'	=> $page,
 					'pages'		=> $pages
 				]);?>
+			</div>
+			<div class="tab-pane" id="logins">
+				<div class="card-box">
+					<pre>
+						<?=print_r(getBrowser());?>
+					</pre>
+				</div>
 			</div>
 			<div class="tab-pane" id="donates">
 				<div class="card-box">
