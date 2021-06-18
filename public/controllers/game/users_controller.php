@@ -217,7 +217,7 @@ class UsersController extends Controller {
 					}
 				}
 
-				if(!sizeof($errors)) {
+				if (!sizeof($errors)) {
 					$this->json->success		= true;
 
 					$user->reset_password_key	= null;

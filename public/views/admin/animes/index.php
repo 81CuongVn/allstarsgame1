@@ -8,7 +8,7 @@
 </div><br />
 <div class="row">
 	<?php foreach ($animes as $anime) { ?>
-		<div class="col-lg-4">
+		<div class="col-md-6 col-lg-4 col-xl-3">
 			<div class="text-center card-box">
 				<div class="pt-2 pb-2">
 					<img src="<?=image_url('anime/' . $anime->id . '.jpg');?>" class="rounded-circle img-thumbnail avatar-xl" />

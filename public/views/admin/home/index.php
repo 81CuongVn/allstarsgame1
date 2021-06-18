@@ -2,7 +2,7 @@
 	'title'	=> 'Dashboard'
 ]);?>
 <div class="row">
-	<div class="col-md-3 col-sm-12">
+	<div class="col-md-6 col-xl-3">
 		<div class="widget-rounded-circle card-box">
 			<div class="row">
 				<div class="col-4">
@@ -19,7 +19,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="col-md-3 col-sm-12">
+	<div class="col-md-6 col-xl-3">
 		<div class="widget-rounded-circle card-box">
 			<div class="row">
 				<div class="col-4">
@@ -36,7 +36,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="col-md-3 col-sm-12">
+	<div class="col-md-6 col-xl-3">
 		<div class="widget-rounded-circle card-box">
 			<div class="row">
 				<div class="col-4">
@@ -53,7 +53,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="col-md-3 col-sm-12">
+	<div class="col-md-6 col-xl-3">
 		<div class="widget-rounded-circle card-box">
 			<div class="row">
 				<div class="col-4">
@@ -127,7 +127,7 @@
 <div class="row">
 	<div class="col-12">
 		<div class="row">
-			<div class="col-md-6">
+			<div class="col-xl-6">
 				<div class="card-box" dir="ltr">
 					<h4 class="header-title">Gráfico de Crescimento</h4>
 					<p class="sub-header">Últimos 6 meses</p>
@@ -141,7 +141,7 @@
 					<div id="graphic-upg" style="height: 350px;" class="morris-chart"></div>
 				</div>
 			</div>
-			<div class="col-md-6">
+			<div class="col-xl-6">
 				<div class="card-box" dir="ltr">
 					<h4 class="header-title">Gráfico de Batalhas</h4>
 					<p class="sub-header">Últimos 7 dias</p>
@@ -156,7 +156,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="col-md-7">
+	<div class="col-xl-7">
 		<div class="card-box">
 			<h4 class="header-title">Últimos Cadastros</h4>
 			<p class="sub-header">Últimas 4 contas criadas</p>
@@ -219,7 +219,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="col-md-5">
+	<div class="col-xl-5">
 		<div class="card-box" dir="ltr">
 			<h4 class="header-title mb-3">Venda de Estrelas</h4>
 			<div id="graphic-sales" style="height: 333px;" class="morris-chart"></div>

@@ -2467,3 +2467,10 @@ pt-BR:
   watch:
     battle:
       title: Assistindo Batalha PvP
+  donate:
+    method:
+      pagseguro: PagSeguro
+      mercaddopago: Mercado Pago
+      paypal_brl: Paypal BRL
+      paypal_usd: Paypal USD
+      paypal_eur: Paypal EUR

@@ -17,7 +17,7 @@
 					<?=$u->email;?>
 				</p>
 
-				<div class="mb-3">
+				<div class="mb-2">
 					<?php if ($u->fb_id) { ?>
 						<span class="badge badge-blue text-uppercase">Facebook</span>
 					<?php } else { ?>
@@ -35,15 +35,23 @@
 					<?php } ?>
 				</div>
 
-				<a href="<?=make_url('admin/users/view/' . $u->id);?>" class="btn btn-primary btn-sm waves-effect waves-light">
+				<button type="button" data-id="<?=$u->id?>" class="login-user btn btn-primary btn-sm waves-effect waves-light mt-1">
 					Acessar
-				</a>
-				<a href="<?=make_url('admin/users/view/' . $u->id);?>" class="btn btn-success btn-sm waves-effect waves-light">
-					Ativar
-				</a>
-				<a href="<?=make_url('admin/users/view/' . $u->id);?>" class="btn btn-danger btn-sm waves-effect waves-light">
-					Banir
-				</a>
+				</button>
+				<?php if ($u->banned) { ?>
+					<button type="button" data-id="<?=$u->id?>" class="toggle-ban btn btn-secondary btn-sm waves-effect waves-light mt-1">
+						Desbanir
+					</button>
+				<?php } else { ?>
+					<button type="button" data-id="<?=$u->id?>" class="toggle-ban btn btn-danger btn-sm waves-effect waves-light mt-1">
+						Banir
+					</button>
+				<?php } ?>
+				<?php if (!$u->active) { ?>
+					<button type="button" data-id="<?=$u->id?>" class="active-user btn btn-success btn-sm waves-effect waves-light mt-1">
+						Ativar
+					</button>
+				<?php } ?>
 
 				<div class="row mt-2">
 					<div class="col-6">
@@ -64,12 +72,12 @@
 		</div><!-- end card-box-->
 		<div class="widget-rounded-circle card-box">
 			<div class="row">
-				<div class="col-6">
+				<div class="col-4">
 					<div class="avatar-lg rounded bg-soft-primary">
 						<i class="fe-calendar font-24 avatar-title text-primary"></i>
 					</div>
 				</div>
-				<div class="col-6">
+				<div class="col-8">
 					<div class="text-right">
 						<h3 class="text-dark mt-1">
 							<?=date('d/m/Y', strtotime($u->created_at));?>
@@ -81,12 +89,12 @@
 		</div>
 		<div class="widget-rounded-circle card-box">
 			<div class="row">
-				<div class="col-6">
+				<div class="col-4">
 					<div class="avatar-lg rounded bg-soft-info">
 						<i class="fe-calendar font-24 avatar-title text-info"></i>
 					</div>
 				</div>
-				<div class="col-6">
+				<div class="col-8">
 					<div class="text-right">
 						<h3 class="text-dark mt-1">
 							<?=date('d/m/Y', strtotime($u->last_login_at));?>
@@ -98,15 +106,15 @@
 		</div>
 		<div class="widget-rounded-circle card-box">
 			<div class="row">
-				<div class="col-6">
+				<div class="col-4">
 					<div class="avatar-lg rounded bg-soft-secondary">
 						<i class="icon-display font-24 avatar-title text-secondary"></i>
 					</div>
 				</div>
-				<div class="col-6">
+				<div class="col-8">
 					<div class="text-right">
 						<h3 class="text-dark mt-1">
-							<?=($u->last_login_ip);?>
+							<?=long2ip($u->last_login_ip);?>
 						</h3>
 						<p class="text-muted mb-1 text-truncate text-uppercase">Último IP</p>
 					</div>
@@ -130,7 +138,7 @@
 				</li>
 				<li class="nav-item">
 					<a href="#settings" data-toggle="tab" class="nav-link">
-						Informações
+						Gerenciar
 					</a>
 				</li>
 			</ul>
@@ -157,7 +165,7 @@
 							}
 						}
 						?>
-						<div class="col-lg-4">
+						<div class="col-md-6 col-lg-4 col-xl-3">
 							<div class="text-center card-box">
 								<div class="pt-2 pb-2">
 									<img data-toggle="tooltip" title="<?=$label;?>" src="<?=image_url($p->small_image(true));?>" class="rounded-circle img-thumbnail avatar-xl" style="<?=$is_online;?>" />
@@ -196,203 +204,163 @@
 			</div>
 			<div class="tab-pane" id="donates">
 				<div class="card-box">
-					<div class="table-responsive">
-						<table class="table table-borderless mb-0">
+					<!-- <div class="table-responsive"> -->
+						<table class="table data table-borderless table-hover dt-responsive nowrap mb-0" style="width: 100%;">
 							<thead class="thead-light">
 								<tr>
-									<th>Data</th>
+									<th class="text-center">Data</th>
 									<th>Pacote</th>
-									<th>Metódo</th>
-									<th>Status</th>
-									<th>Ação</th>
+									<th class="text-center">Double</th>
+									<th class="text-center">Estrelas</th>
+									<th class="text-center">Valor</th>
+									<th class="text-center">Metódo</th>
+									<th class="text-center">Status</th>
+									<th class="text-center">Ação</th>
 								</tr>
 							</thead>
 							<tbody>
-								<tr>
-									<td>1</td>
-									<td>App design and development</td>
-									<td>01/01/2015</td>
-									<td>10/15/2018</td>
-									<td><span class="badge badge-info">Work in Progress</span></td>
-									<td>Halette Boivin</td>
-								</tr>
-								<tr>
-									<td>2</td>
-									<td>Coffee detail page - Main Page</td>
-									<td>21/07/2016</td>
-									<td>12/05/2018</td>
-									<td><span class="badge badge-success">Pending</span></td>
-									<td>Durandana Jolicoeur</td>
-								</tr>
-								<tr>
-									<td>3</td>
-									<td>Poster illustation design</td>
-									<td>18/03/2018</td>
-									<td>28/09/2018</td>
-									<td><span class="badge badge-pink">Done</span></td>
-									<td>Lucas Sabourin</td>
-								</tr>
-								<tr>
-									<td>4</td>
-									<td>Drinking bottle graphics</td>
-									<td>02/10/2017</td>
-									<td>07/05/2018</td>
-									<td><span class="badge badge-blue">Work in Progress</span></td>
-									<td>Donatien Brunelle</td>
-								</tr>
-								<tr>
-									<td>5</td>
-									<td>Landing page design - Home</td>
-									<td>17/01/2017</td>
-									<td>25/05/2021</td>
-									<td><span class="badge badge-warning">Coming soon</span></td>
-									<td>Karel Auberjo</td>
-								</tr>
-
+								<?php foreach ($donates as $donate) { ?>
+									<?php $is_dbl = StarDouble::find_first("'{$donate->created_at}' BETWEEN data_init AND data_end"); ?>
+									<tr>
+										<td class="text-center">
+											<span style="display: none;"><?=strtotime($donate->created_at);?></span>
+											<span data-toggle="tooltip" title="<?=date('H:i:s', strtotime($donate->created_at));?>">
+												<?=date('d/m/Y', strtotime($donate->created_at));?>
+											</span>
+										</td>
+										<td><?=$donate->plan()->name;?></td>
+										<td class="text-center">
+											<?php if ($is_dbl) { ?>
+												<span style="display: none;">1</span>
+												<span class="badge badge-success">
+													<i class="mdi mdi-check"></i>
+												</span>
+											<?php } else { ?>
+												<span style="display: none;">0</span>
+												<span class="badge badge-danger">
+													<i class="mdi mdi-close"></i>
+												</span>
+											<?php } ?>
+										</td>
+										<td class="text-center">
+											<?php if ($is_dbl) { ?>
+												<span class="text-success"><?=($donate->plan()->credits * 2);?></span>
+											<?php } else { ?>
+												<?=$donate->plan()->credits;?>
+											<?php } ?>
+										</td>
+										<td class="text-center">
+											<?php if (in_array($donate->star_method, [ 'mercadopago', 'pagseguro', 'paypal_brl' ])) { ?>
+												R$ <?=number_format($donate->plan()->price_brl, 2, ',', '.');?>
+											<?php } elseif ($donate->star_method == 'paypal_eur') { ?>
+												€ <?=number_format($donate->plan()->price_eur, 2, '.', ',');?>
+											<?php } elseif ($donate->star_method == 'paypal_usd') { ?>
+												U$ <?=number_format($donate->plan()->price_usd, 2, '.', ',');?>
+											<?php } ?>
+										</td>
+										<td class="text-center"><?=t('donate.method.' . $donate->star_method);?></td>
+										<td class="text-center">
+											<?php if ($donate->status == 'aprovado') { ?>
+												<span class="badge badge-success text-uppercase">Aprovado</span>
+											<?php } else {?>
+												<?php if ($donate->status == 'aguardando') { ?>
+													<span class="badge badge-info text-uppercase">Aguardando</span>
+												<?php } elseif ($donate->status == 'cancelado') { ?>
+													<span class="badge badge-danger text-uppercase">Cancelado</span>
+												<?php } ?>
+											<?php } ?>
+										</td>
+										<td class="text-center">
+											<?php if ($donate->status == 'aprovado') { ?>
+												<button type="button" data-toggle="tooltip" title="Cancelar" data-id="<?=$donate->id;?>" class="btn delete-article btn-xs btn-danger waves-effect waves-light">
+													<i class="mdi mdi-close"></i>
+												</button>
+											<?php } else {?>
+												<?php if ($donate->status == 'aguardando') { ?>
+													<button type="button" data-toggle="tooltip" title="Aprovar" data-id="<?=$donate->id;?>" class="btn delete-article btn-xs btn-success waves-effect waves-light">
+														<i class="mdi mdi-check"></i>
+													</button>
+													<button type="button" data-toggle="tooltip" title="Cancelar" data-id="<?=$donate->id;?>" class="btn delete-article btn-xs btn-danger waves-effect waves-light">
+														<i class="mdi mdi-close"></i>
+													</button>
+												<?php } else { ?>
+													-
+												<?php } ?>
+											<?php } ?>
+										</td>
+									</tr>
+								<?php } ?>
 							</tbody>
 						</table>
-					</div>
+					<!-- </div> -->
 				</div>
 			</div>
 			<div class="tab-pane" id="settings">
 				<div class="card-box">
-				<form>
-						<h5 class="mb-4 text-uppercase"><i class="mdi mdi-account-circle mr-1"></i> Personal Info</h5>
+					<form>
+						<h5 class="mb-3 text-uppercase bg-light p-2">
+							<i class="mdi mdi-account-circle mr-1"></i>
+							Alterar Informações Pessoais
+						</h5>
 						<div class="row">
 							<div class="col-md-6">
 								<div class="form-group">
-									<label for="firstname">First Name</label>
-									<input type="text" class="form-control" id="firstname" placeholder="Enter first name">
+									<label for="name">Nome</label>
+									<input id="name" type="text" value="<?=$u->name?>" name="name" class="form-control" require />
 								</div>
 							</div>
 							<div class="col-md-6">
 								<div class="form-group">
-									<label for="lastname">Last Name</label>
-									<input type="text" class="form-control" id="lastname" placeholder="Enter last name">
+									<label for="email">E-mail</label>
+									<input id="email" type="email" value="<?=$u->email?>" name="email" class="form-control" require />
 								</div>
-							</div> <!-- end col -->
-						</div> <!-- end row -->
-
-						<div class="row">
-							<div class="col-12">
-								<div class="form-group">
-									<label for="userbio">Bio</label>
-									<textarea class="form-control" id="userbio" rows="4" placeholder="Write something..."></textarea>
-								</div>
-							</div> <!-- end col -->
-						</div> <!-- end row -->
+							</div><!-- end col -->
+						</div><!-- end row -->
 
 						<div class="row">
 							<div class="col-md-6">
 								<div class="form-group">
-									<label for="useremail">Email Address</label>
-									<input type="email" class="form-control" id="useremail" placeholder="Enter email">
-									<span class="form-text text-muted"><small>If you want to change email please <a href="javascript: void(0);">click</a> here.</small></span>
+									<label for="country">País</label>
+									<select id="country" name="country" class="form-control" require>
+										<?php foreach ($countries as $country) { ?>
+											<option value="<?=$country->id;?>" <?=($u->country_id == $country->id ? 'selected' : '');?>><?=$country->name;?></option>
+										<?php } ?>
+									</select>
 								</div>
 							</div>
 							<div class="col-md-6">
 								<div class="form-group">
-									<label for="userpassword">Password</label>
-									<input type="password" class="form-control" id="userpassword" placeholder="Enter password">
-									<span class="form-text text-muted"><small>If you want to change password please <a href="javascript: void(0);">click</a> here.</small></span>
+									<label for="gender">Sexo</label>
+									<select id="gender" name="gender" class="form-control" require>
+										<option value="1" <?=($u->gender == '1' ? 'selected' : '');?>>Masculino</option>
+										<option value="2" <?=($u->gender == '2' ? 'selected' : '');?>>Feminino</option>
+									</select>
 								</div>
 							</div> <!-- end col -->
 						</div> <!-- end row -->
 
-						<h5 class="mb-3 text-uppercase bg-light p-2"><i class="mdi mdi-office-building mr-1"></i> Company Info</h5>
+						<h5 class="mb-3 text-uppercase bg-light p-2">
+							<i class="mdi mdi-lock mr-1"></i> ALterar Senha
+						</h5>
 						<div class="row">
 							<div class="col-md-6">
 								<div class="form-group">
-									<label for="companyname">Company Name</label>
-									<input type="text" class="form-control" id="companyname" placeholder="Enter company name">
+									<label for="password">Senha</label>
+									<input id="password" type="password" name="password" class="form-control" require>
 								</div>
 							</div>
 							<div class="col-md-6">
 								<div class="form-group">
-									<label for="cwebsite">Website</label>
-									<input type="text" class="form-control" id="cwebsite" placeholder="Enter website url">
-								</div>
-							</div> <!-- end col -->
-						</div> <!-- end row -->
-
-						<h5 class="mb-3 text-uppercase bg-light p-2"><i class="mdi mdi-earth mr-1"></i> Social</h5>
-						<div class="row">
-							<div class="col-md-6">
-								<div class="form-group">
-									<label for="social-fb">Facebook</label>
-									<div class="input-group">
-										<div class="input-group-prepend">
-											<span class="input-group-text"><i class="fab fa-facebook-square"></i></span>
-										</div>
-										<input type="text" class="form-control" id="social-fb" placeholder="Url">
-									</div>
-								</div>
-							</div>
-							<div class="col-md-6">
-								<div class="form-group">
-									<label for="social-tw">Twitter</label>
-									<div class="input-group">
-										<div class="input-group-prepend">
-											<span class="input-group-text"><i class="fab fa-twitter"></i></span>
-										</div>
-										<input type="text" class="form-control" id="social-tw" placeholder="Username">
-									</div>
-								</div>
-							</div> <!-- end col -->
-						</div> <!-- end row -->
-
-						<div class="row">
-							<div class="col-md-6">
-								<div class="form-group">
-									<label for="social-insta">Instagram</label>
-									<div class="input-group">
-										<div class="input-group-prepend">
-											<span class="input-group-text"><i class="fab fa-instagram"></i></span>
-										</div>
-										<input type="text" class="form-control" id="social-insta" placeholder="Url">
-									</div>
-								</div>
-							</div>
-							<div class="col-md-6">
-								<div class="form-group">
-									<label for="social-lin">Linkedin</label>
-									<div class="input-group">
-										<div class="input-group-prepend">
-											<span class="input-group-text"><i class="fab fa-linkedin"></i></span>
-										</div>
-										<input type="text" class="form-control" id="social-lin" placeholder="Url">
-									</div>
-								</div>
-							</div> <!-- end col -->
-						</div> <!-- end row -->
-
-						<div class="row">
-							<div class="col-md-6">
-								<div class="form-group">
-									<label for="social-sky">Skype</label>
-									<div class="input-group">
-										<div class="input-group-prepend">
-											<span class="input-group-text"><i class="fab fa-skype"></i></span>
-										</div>
-										<input type="text" class="form-control" id="social-sky" placeholder="@username">
-									</div>
-								</div>
-							</div>
-							<div class="col-md-6">
-								<div class="form-group">
-									<label for="social-gh">Github</label>
-									<div class="input-group">
-										<div class="input-group-prepend">
-											<span class="input-group-text"><i class="fab fa-github"></i></span>
-										</div>
-										<input type="text" class="form-control" id="social-gh" placeholder="Username">
-									</div>
+									<label for="password_confirmation">Confirmar Senha</label>
+									<input id="password_confirmation" type="password" name="password_confirmation" class="form-control" require>
 								</div>
 							</div> <!-- end col -->
 						</div> <!-- end row -->
 
 						<div class="text-right">
-							<button type="submit" class="btn btn-success waves-effect waves-light mt-2"><i class="mdi mdi-content-save"></i> Save</button>
+							<button type="submit" class="btn btn-success waves-effect waves-light mt-2">
+								<i class="mdi mdi-content-save"></i> Salvar Alterações
+							</button>
 						</div>
 					</form>
 				</div>
