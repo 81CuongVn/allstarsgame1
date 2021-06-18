@@ -24,7 +24,7 @@
 <!-- end row-->
 <div class="row">
 	<?php foreach ($users as $u) { ?>
-		<div class="col-lg-4">
+		<div class="col-md-6 col-lg-4 col-xl-3">
 			<div class="text-center card-box">
 				<div class="pt-2 pb-2">
 					<img src="<?=getGravatar($u->email);?>" class="rounded-circle img-thumbnail avatar-xl" />

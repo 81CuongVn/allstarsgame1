@@ -35,15 +35,19 @@ if ($_SESSION['user_id']) {
 	<link rel="shortcut icon" href="<?=image_url('favicon.ico');?>" />
 
 	<!-- Plugins css -->
-	<link href="<?=asset_url('admin/libs/icomoon/css/icomoon.css');?>" rel="stylesheet" type="text/css" />
-	<link href="<?=asset_url('admin/libs/summernote/summernote-bs4.css');?>" rel="stylesheet" type="text/css" />
-	<link href="<?=asset_url('admin/libs/select2/select2.min.css');?>" rel="stylesheet" type="text/css" />
-	<link href="<?=asset_url('admin/libs/sweetalert2/sweetalert2.min.css');?>" rel="stylesheet" type="text/css" />
+	<link rel="stylesheet" type="text/css" href="<?=asset_url('admin/libs/icomoon/css/icomoon.css');?>" />
+	<link rel="stylesheet" type="text/css" href="<?=asset_url('admin/libs/summernote/summernote-bs4.css');?>" />
+	<link rel="stylesheet" type="text/css" href="<?=asset_url('admin/libs/select2/select2.min.css');?>" />
+	<link rel="stylesheet" type="text/css" href="<?=asset_url('admin/libs/sweetalert2/sweetalert2.min.css');?>" />
+	<link rel="stylesheet" type="text/css" href="<?=asset_url('admin/libs/datatables/dataTables.bootstrap4.css');?>" />
+	<link rel="stylesheet" type="text/css" href="<?=asset_url('admin/libs/datatables/responsive.bootstrap4.css');?>" />
+	<link rel="stylesheet" type="text/css" href="<?=asset_url('admin/libs/datatables/buttons.bootstrap4.css');?>" />
+	<link rel="stylesheet" type="text/css" href="<?=asset_url('admin/libs/datatables/select.bootstrap4.css');?>" />
 
 	<!-- App css -->
-	<link href="<?=asset_url('admin/css/bootstrap.css');?>" rel="stylesheet" type="text/css" />
-	<link href="<?=asset_url('admin/css/icons.css');?>" rel="stylesheet" type="text/css" />
-	<link href="<?=asset_url('admin/css/app.css');?>" rel="stylesheet" type="text/css" />
+	<link rel="stylesheet" type="text/css" href="<?=asset_url('admin/css/bootstrap.css');?>" />
+	<link rel="stylesheet" type="text/css" href="<?=asset_url('admin/css/icons.css');?>" />
+	<link rel="stylesheet" type="text/css" href="<?=asset_url('admin/css/app.css');?>" />
 
 	<!-- Vendor js -->
 	<script src="<?=asset_url('admin/js/vendor.min.js');?>"></script>
@@ -58,6 +62,19 @@ if ($_SESSION['user_id']) {
 	<script src="<?=asset_url('admin/libs/summernote/lang/summernote-pt-BR.js');?>"></script>
 	<script src="<?=asset_url('admin/libs/select2/select2.min.js');?>"></script>
 	<script src="<?=asset_url('admin/libs/sweetalert2/sweetalert2.min.js');?>"></script>
+	<script src="<?=asset_url('admin/libs/datatables/jquery.dataTables.min.js');?>"></script>
+	<script src="<?=asset_url('admin/libs/datatables/dataTables.bootstrap4.js');?>"></script>
+	<script src="<?=asset_url('admin/libs/datatables/dataTables.responsive.min.js');?>"></script>
+	<script src="<?=asset_url('admin/libs/datatables/responsive.bootstrap4.min.js');?>"></script>
+	<script src="<?=asset_url('admin/libs/datatables/dataTables.buttons.min.js');?>"></script>
+	<script src="<?=asset_url('admin/libs/datatables/buttons.bootstrap4.min.js');?>"></script>
+	<script src="<?=asset_url('admin/libs/datatables/buttons.html5.min.js');?>"></script>
+	<script src="<?=asset_url('admin/libs/datatables/buttons.flash.min.js');?>"></script>
+	<script src="<?=asset_url('admin/libs/datatables/buttons.print.min.js');?>"></script>
+	<script src="<?=asset_url('admin/libs/datatables/dataTables.keyTable.min.js');?>"></script>
+	<script src="<?=asset_url('admin/libs/datatables/dataTables.select.min.js');?>"></script>
+	<script src="<?=asset_url('admin/libs/pdfmake/pdfmake.min.js');?>"></script>
+	<script src="<?=asset_url('admin/libs/pdfmake/vfs_fonts.js');?>"></script>
 
 	<script type="text/javascript">
 		var	_site_url				= "<?=$site_url;?>";
@@ -65,7 +82,7 @@ if ($_SESSION['user_id']) {
 		var _language				= "<?=$language->header;?>";
 	</script>
 </head>
-<body class="boxed-layout center-menu">
+<body class="boxed-layouts center-menu">
 <!-- Pre-loader -->
 <!-- <div id="preloader">
 	<div id="status">
@@ -94,7 +111,55 @@ if ($_SESSION['user_id']) {
 
 <script type="text/javascript">
 	$(document).ready(() => {
+		$.extend($.fn.dataTable.defaults, {
+			bLengthChange: true,
+			stateSave: true,
+			language: {
+				sEmptyTable: "Nenhum registro encontrado",
+				sInfo: "Exibindo _START_ até _END_ de _TOTAL_ registros",
+				sInfoEmpty: "Exibindo 0 até 0 de 0 registros",
+				sInfoFiltered: "(Filtrados de _MAX_ registros)",
+				sInfoPostFix: "",
+				sInfoThousands: ".",
+				sLengthMenu: "Exibir _MENU_ resultados.",
+				sLoadingRecords: "Carregando...",
+				sProcessing: '<i class="fa fa-spinner fa-pulse fa-4x fa-fw"></i>',
+				sZeroRecords: "Nenhum registro encontrado",
+				sSearch: "Buscar: ",
+				oPaginate: {
+					sNext: '<i class="mdi mdi-chevron-right">',
+					sPrevious: '<i class="mdi mdi-chevron-left">',
+					sFirst: "Primeira",
+					sLast: "Última"
+				},
+				oAria: {
+					sSortAscending: ": Ordenar colunas de forma ascendente",
+					sSortDescending: ": Ordenar colunas de forma descendente"
+				}
+			},
+			drawCallback: () => {
+				$('.dataTables_paginate > .pagination').addClass('pagination-rounded');
+			}
+		});
+
+		$('a[data-toggle="tab"]').click(function (e) {
+			e.preventDefault();
+			$(this).tab('show');
+		});
+
+		$('a[data-toggle="tab"]').on("shown.bs.tab", function (e) {
+			var id = $(e.target).attr("href");
+			localStorage.setItem('selectedTab', id)
+		});
+
+		var selectedTab = localStorage.getItem('selectedTab');
+		if (selectedTab != null) {
+			$('a[data-toggle="tab"][href="' + selectedTab + '"]').tab('show');
+		}
+
+		$(".data").DataTable();
 		$('[data-toggle=tooltip]').tooltip({ html: true });
+		$('[data-toggle="select2"]').select2();
 	});
 </script>
 </body>

@@ -31,23 +31,31 @@ class UsersController extends Controller {
 		}
 
 		$page			= !isset($_GET['page']) || !is_numeric($_GET['page']) ? 1 : $_GET['page'];
-		$items_per_page	= 6;
+		$items_per_page	= 12;
 		$all_players	= Recordset::query("SELECT COUNT(id) AS total FROM players WHERE user_id = '{$u->id}' AND removed = 0")->row()->total;
 		$pages			= ceil($all_players / $items_per_page);
 		$page			= (!is_numeric($page) || $page <= 0) ? 1 : $page;
 		$page			= ($page > $pages) ? $pages : $page;
 		$start			= ceil(($page * $items_per_page) - $items_per_page);
 		$start			= $start < 0 ? 0 : $start;
-		$players	= Player::find('user_id = ' . $u->id, [
+		$players		= Player::find('user_id = ' . $u->id, [
 			'skip_after_assign'	=> true,
 			'limit'				=> $start . ', ' . $items_per_page,
 			'reorder'			=> 'id asc'
 		]);
 
+		// Doações
+		$donates	= StarPurchase::find('user_id = ' . $u->id);
+
+		// Países
+		$countries	= Country::all();
+
 		$this->assign('u',			$u);
 		$this->assign('page',		$page);
 		$this->assign('pages',		$pages);
 		$this->assign('players',	$players);
+		$this->assign('donates',	$donates);
+		$this->assign('countries',	$countries);
 
 	}
 }
