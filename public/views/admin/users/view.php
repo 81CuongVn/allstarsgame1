@@ -114,7 +114,7 @@
 				<div class="col-8">
 					<div class="text-right">
 						<h3 class="text-dark mt-1">
-							<?=long2ip($u->last_login_ip);?>
+							<?=($u->last_login_ip);?>
 						</h3>
 						<p class="text-muted mb-1 text-truncate text-uppercase">Último IP</p>
 					</div>
