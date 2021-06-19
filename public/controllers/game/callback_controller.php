@@ -128,10 +128,9 @@ class CallbackController extends Controller {
 
                 $star_purchase	= StarPurchase::find_first("id=" . $paymentData['custom']);
                 if ($star_purchase) {
-                    $is_dbl     = StarDouble::find_first("'{$star_purchase->created_at}' BETWEEN data_init AND data_end");
                     $star_plan  = StarPlan::find_first("id = " . $star_purchase->star_plan_id);
                     $user       = User::find($star_purchase->user_id);
-                    $credits    = !$is_dbl ? $star_plan->credits : ($star_plan->credits * 2);
+                    $credits    = !$star_purchase->isDouble() ? $star_plan->credits : ($star_plan->credits * 2);
 
                     if ($paymentData['payment_status'] == 'Completed') {
                         if ($star_purchase->status != 'aprovado') {
@@ -198,10 +197,9 @@ class CallbackController extends Controller {
 
 			$star_purchase	= StarPurchase::find_first("id=" . $merchant_order->external_reference);
 			if ($star_purchase) {
-				$is_dbl     = StarDouble::find_first("'{$star_purchase->created_at}' BETWEEN data_init AND data_end");
 				$star_plan  = StarPlan::find_first("id = " . $star_purchase->star_plan_id);
 				$user       = User::find($star_purchase->user_id);
-				$credits    = !$is_dbl ? $star_plan->credits : ($star_plan->credits * 2);
+				$credits    = !$star_purchase->isDouble() ? $star_plan->credits : ($star_plan->credits * 2);
 
 				$statusCode = $merchant_order->order_status;
 				if (in_array($statusCode, ['paid'])) {
@@ -254,10 +252,9 @@ class CallbackController extends Controller {
 
                 $star_purchase	= StarPurchase::find_first("id=" . $transaction->getReference());
                 if ($star_purchase) {
-                    $is_dbl     = StarDouble::find_first("'{$star_purchase->created_at}' BETWEEN data_init AND data_end");
                     $star_plan  = StarPlan::find_first("id = " . $star_purchase->star_plan_id);
                     $user       = User::find($star_purchase->user_id);
-                    $credits    = !$is_dbl ? $star_plan->credits : ($star_plan->credits * 2);
+                    $credits    = !$star_purchase->isDouble() ? $star_plan->credits : ($star_plan->credits * 2);
 
                     $statusCode = $transaction->getStatus();
                     if (in_array($statusCode, [3, 4])) {

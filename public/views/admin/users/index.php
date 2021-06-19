@@ -26,6 +26,7 @@
 			<div class="btn-group mb-3 ml-1">
 				<button type="button" data-filter="active" class="filter-list btn btn-<?=($filter == 'active' ? 'primary' : 'light')?>">Ativos</button>
 				<button type="button" data-filter="vip" class="filter-list btn btn-<?=($filter == 'vip' ? 'primary' : 'light')?>">Vip</button>
+				<button type="button" data-filter="online" class="filter-list btn btn-<?=($filter == 'online' ? 'primary' : 'light')?>">Online</button>
 				<button type="button" data-filter="inactive" class="filter-list btn btn-<?=($filter == 'inactive' ? 'primary' : 'light')?>">Inativos</button>
 			</div>
 		</div>

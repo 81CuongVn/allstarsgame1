@@ -5,10 +5,8 @@ class UsersController extends Controller {
 
 		$filter	= 'active';
 		if (isset($_GET['filter']) && in_array($_GET['filter'], [
-			'all',
-			'active',
-			'inactive',
-			'vip'
+			'all', 'active',
+			'inactive', 'vip', 'online'
 		])) {
 			$filter = $_GET['filter'];
 		}
@@ -20,6 +18,8 @@ class UsersController extends Controller {
 			$addWhere	= ' AND active = 0';
 		} elseif ($filter == 'vip') {
 			$addWhere	= ' AND vip = 1';
+		} elseif ($filter == 'online') {
+			$addWhere	= ' AND last_activity >= ' . time() - (15 * 60);
 		}
 
 		$page	= 1;
