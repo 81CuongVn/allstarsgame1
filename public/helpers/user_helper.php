@@ -28,7 +28,7 @@ if (isset($_SESSION['user_id']) && $_SESSION['user_id']) {
 			if (!$user->hasBanishment()) {
 				// Verifica troca se IP
 				$last_login	= UserLogin::find_last('user_id = ' . $user->id);
-				$check_ip	= $last_login->ip != getIP();
+				$check_ip	= $last_login && $last_login->ip != getIP();
 				if ($check_ip) {
 					$keep	= false;
 				}
