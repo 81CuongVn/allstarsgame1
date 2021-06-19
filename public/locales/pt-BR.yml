@@ -2470,7 +2470,7 @@ pt-BR:
   donate:
     method:
       pagseguro: PagSeguro
-      mercaddopago: Mercado Pago
+      mercadopago: Mercado Pago
       paypal_brl: Paypal BRL
       paypal_usd: Paypal USD
       paypal_eur: Paypal EUR

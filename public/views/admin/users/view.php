@@ -75,14 +75,21 @@
 				<?php } ?>
 
 				<div class="row mt-2">
-					<div class="col-6">
+					<div class="col-4">
 						<div class="mt-3">
 							<h4><?=highamount($u->credits);?></h4>
 							<p class="mb-0 text-muted text-truncate">Estrelas</p>
 						</div>
 					</div>
 
-					<div class="col-6">
+					<div class="col-4">
+						<div class="mt-3">
+							<h4><?=highamount($u->level);?></h4>
+							<p class="mb-0 text-muted text-truncate">Nível</p>
+						</div>
+					</div>
+
+					<div class="col-4">
 						<div class="mt-3">
 							<h4><?=highamount($u->total_players());?></h4>
 							<p class="mb-0 text-muted text-truncate">Personagens</p>
