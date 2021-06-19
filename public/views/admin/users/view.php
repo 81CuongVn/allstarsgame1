@@ -48,7 +48,7 @@
 					<?php } ?>
 				</div>
 				<div class="mb-3" style="min-height: 22px;">
-					<?php if (!$u->vip) { ?>
+					<?php if ($u->vip) { ?>
 						<span class="badge badge-pink text-uppercase">Jogador Vip</span>
 					<?php } ?>
 					<?php if ($u->admin) { ?>
