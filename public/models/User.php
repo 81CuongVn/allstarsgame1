@@ -59,7 +59,7 @@ class User extends Relation {
 	}
 
 	function total_players() {
-		return Recordset::query("SELECT COUNT(id) AS total FROM players WHERE user_id=" . $this->id)->row()->total;
+		return Recordset::query("SELECT COUNT(id) AS total FROM players WHERE removed = 0 and user_id=" . $this->id)->row()->total;
 	}
 
 	function spend($amount) {
