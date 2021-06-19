@@ -47,6 +47,11 @@
 						<?php } ?>
 					<?php } ?>
 				</div>
+				<div class="mb-3" style="min-height: 22px;">
+					<?php if ($u->vip) { ?>
+						<span class="badge badge-dark text-uppercase">Jogador Vip</span>
+					<?php } ?>
+				</div>
 
 				<button type="button" data-id="<?=$u->id?>" class="login-user btn btn-primary btn-sm waves-effect waves-light mt-1">
 					Acessar Conta
@@ -357,7 +362,6 @@
 						</thead>
 						<tbody>
 							<?php foreach ($donates as $donate) { ?>
-								<?php $is_dbl = StarDouble::find_first("'{$donate->created_at}' BETWEEN data_init AND data_end"); ?>
 								<tr>
 									<td class="text-center">
 										<span style="display: none;"><?=strtotime($donate->created_at);?></span>
@@ -367,7 +371,7 @@
 									</td>
 									<td><?=$donate->plan()->name;?></td>
 									<td class="text-center">
-										<?php if ($is_dbl) { ?>
+										<?php if ($donate->isDouble()) { ?>
 											<span style="display: none;">1</span>
 											<span class="badge badge-success">
 												<i class="mdi mdi-check"></i>
@@ -380,7 +384,7 @@
 										<?php } ?>
 									</td>
 									<td class="text-center">
-										<?php if ($is_dbl) { ?>
+										<?php if ($donate->isDouble()) { ?>
 											<span class="text-success"><?=($donate->plan()->credits * 2);?></span>
 										<?php } else { ?>
 											<?=$donate->plan()->credits;?>

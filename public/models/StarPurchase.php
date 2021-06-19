@@ -8,4 +8,8 @@ class StarPurchase extends Relation {
 	function plan() {
 		return StarPlan::find_first('id = ' . $this->star_plan_id);
 	}
+
+	function isDouble() {
+		return StarDouble::find_first("'{$this->created_at}' BETWEEN data_init AND data_end");
+	}
 }
