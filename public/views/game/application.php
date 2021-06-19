@@ -1,5 +1,8 @@
 <?php
-$with_battle	= FALSE;
+$user			= false;
+$player			= false;
+$article		= false;
+$with_battle	= false;
 
 $language = Language::find($_SESSION['language_id']);
 if (!$language) {
@@ -9,40 +12,27 @@ if (!$language) {
 
 if ($_SESSION['user_id']) {
 	$user	= User::get_instance();
-	if ($user->banned && !$_SESSION['universal']) {
-		$user	= FALSE;
-		redirect_to('users/logout?banned');
-	} else {
-		if ($_SESSION['player_id']) {
-			$player	= Player::get_instance();
-			if ($player->banned && !$_SESSION['universal']) {
-				$player	= FALSE;
+	if ($_SESSION['player_id']) {
+		$player	= Player::get_instance();
 
-				$_SESSION['player_id'] = NULL;
-				redirect_to('characters/select?banned');
-			} else {
-				$player_fidelity_topo = PlayerFidelity::find_first("player_id=".$player->id);
+		// Tras informações sobre a fidelidade
+		$player_fidelity_topo = PlayerFidelity::find_first("player_id=".$player->id);
 
-				if ($player && ($player->battle_npc_id || $player->battle_pvp_id) && preg_match('/battle/', $controller)) {
-					$with_battle	= TRUE;
-				}
+		// Verifica se está em batalha
+		if ($player && ($player->battle_npc_id || $player->battle_pvp_id) && preg_match('/battle/', $controller)) {
+			$with_battle	= true;
+		}
 
-				$equipments		= [];
-				$techniques		= $player->character_theme()->attacks();
-				foreach ($techniques as $technique) {
-					$equipments[$technique->id]	= $technique->description()->name;
-				}
-			}
-		} else {
-			$player	= FALSE;
+		// Tras o nome dos ataques do anime/tema
+		$equipments		= [];
+		$techniques		= $player->character_theme()->attacks();
+		foreach ($techniques as $technique) {
+			$equipments[$technique->id]	= $technique->description()->name;
 		}
 	}
-} else {
-	$user	= FALSE;
-	$player	= FALSE;
 }
 
-$article = FALSE;
+// Verifica se o link é de noticia
 if (preg_match('/read_news/', $action)) {
 	$article_id = $params[0];
 	$article = SiteNew::find_first('id = ' . $article_id);

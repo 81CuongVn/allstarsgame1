@@ -64,6 +64,13 @@
 		});
     };
 
+	window.blockForm	= (form, status) => {
+		if (status) {
+			$('input, textarea, button, select', form).attr('disabled', true);
+		} else {
+			$('input, textarea, button, select', form).removeAttr('disabled');
+		}
+	};
     window.lockScreen	= (show) => {
         if (show) {
             var d	= $(document.createElement('DIV')).addClass('screen-lock');

@@ -18,7 +18,8 @@ function make_url($to = '', $params = [], $ignore_path = false) {
 	if (!$to[0] && !$rewrite_enabled) {
 		return ($ignore_path ? '' : $site_url . ($rewrite_enabled ? '/' : '/index.php'));
 	} else {
-		return ($ignore_path ? '' : $site_url . ($rewrite_enabled ? '/' : '/index.php/')) . $to[0] . (isset($to[1]) ? '/' . $to[1] : '') . $final_params;
+		$url	= implode('/', $to);
+		return ($ignore_path ? '' : $site_url . ($rewrite_enabled ? '/' : '/index.php/')) .$url . $final_params;
 	}
 }
 

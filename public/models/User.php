@@ -27,6 +27,16 @@ class User extends Relation {
 		}
 	}
 
+	function hasBanishment() {
+		// Verificar banimento ativo
+		$banishment	= Banishment::find_last("type = 'user' and user_id = " . $this->id);
+		return $banishment && between(
+			now(),
+			strtotime($banishment->created_at),
+			strtotime($banishment->finishes_at)
+		);
+	}
+
 	function character_theme_image($image_id) {
 		$user_image = UserCharacterThemeImage::find_first("user_id=" . $this->id . " AND character_theme_image_id=" . $image_id);
 		if ($user_image) {
@@ -98,6 +108,24 @@ class User extends Relation {
 
 	function account_quests() {
 		return UserDailyQuest::find('user_id=' . $this->id ." AND complete=0");
+	}
+
+	function is_online() {
+		return is_user_online($this->id);
+	}
+
+	function update_online() {
+		// Salva última ação no jogo
+		$this->last_activity = now();
+		$this->save();
+
+		$redis = new Redis();
+		if ($redis->pconnect(REDIS_SERVER, REDIS_PORT)) {
+			$redis->auth(REDIS_PASS);
+			$redis->select(0);
+
+			$redis->set('user_' . $this->id . '_online', now(true));
+		}
 	}
 
 	static function set_instance($user) {

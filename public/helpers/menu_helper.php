@@ -36,7 +36,7 @@ function generate_menu_data($admin = false) {
             $sub_item	= [
                 'id'		=> $menu->id,
                 'name'		=> $menu->name,
-                'href'		=> !$menu->external ? make_url(($admin ? 'admin/' : '') . $menu->href) : $menu->href,
+                'href'		=> !$menu->external ? make_url($menu->href) : $menu->href,
                 'hidden'	=> $menu->hidden,
 				'external'	=> $menu->external
 			];
@@ -56,7 +56,7 @@ function generate_menu_data($admin = false) {
         }
     }
 
-    $actions	= Menu::find('menu_category_id = 0 and is_admin = 0', [ 'cache' => true ]);
+    $actions	= Menu::find('menu_category_id = 0 and is_admin = '. ($admin ? 1 : 0), [ 'cache' => true ]);
     foreach ($actions as $action) {
         if (!is_menu_accessible($action, $instance)) {
             continue;
@@ -237,7 +237,7 @@ function is_menu_accessible($menu, $player) {
 
 function validate_current_url() {
     global	$menu_actions, $framework_force_denied,
-			$controller, $action, $_SERVER;
+			$controller, $action, $_SERVER, $is_admin;
 
     $captcha		= strpos($_SERVER['PATH_INFO'], 'captcha');
     $url_allowed	= false;
@@ -246,7 +246,7 @@ function validate_current_url() {
         return;
     }
 
-    $real_url	= $controller . '/' . $action;
+    $real_url	= ($is_admin ? 'admin/' : '') . $controller . '/' . $action;
 
     foreach ($menu_actions as $menu_action) {
         if (strpos($menu_action, '/') === false) {

@@ -48,10 +48,10 @@
         <div class="logo-box">
             <a href="<?=make_url('admin#home');?>" class="logo text-center">
                 <span class="logo-lg">
-                    <span class="logo-lg-text-dark">Painel Administrativo</span>
+                    <span class="logo-lg-text-dark">Admin Panel</span>
                 </span>
                 <span class="logo-sm">
-                    <b class="logo-sm-text-dark text-uppercase">Administração</b>
+                    <b class="logo-sm-text-dark text-uppercase">AdminPanel</b>
                 </span>
             </a>
         </div>
