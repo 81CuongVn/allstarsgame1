@@ -1,3 +1,0 @@
-background = 718 x 627 px
-
-Slots = 127 x 128 px

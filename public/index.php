@@ -112,6 +112,7 @@ if (!$_SERVER['PATH_INFO']) {
 			$action		= sizeof($parts) > 2 ? $parts[2] : NULL;
 			$params		= array_splice($parts, 3);
 		} else {
+			$home		= explode('#', $home);
 			$controller	= $home[0];
     		$action		= $home[1];
 		}
@@ -239,19 +240,6 @@ if (isset($framework_force_denied) && $framework_force_denied) {
         }
     }
 }
-
-// SID Checker --->
-if ($_SESSION['loggedin'] && !$_SESSION['universal']) {
-    $rSID = Recordset::query("SELECT session_key FROM users WHERE id=" . $_SESSION['user_id'])->result_array();
-
-    if ($rSID[0]['session_key'] != session_id()) {
-        session_destroy();
-        redirect_to();
-    } else {
-        //header("SIDCHECK: OK");
-    }
-}
-// <---
 
 if (isset($instance->render)) {
     if (is_a($instance, 'InternalController')) {

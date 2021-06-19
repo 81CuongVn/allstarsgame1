@@ -10,20 +10,40 @@ function is_player_online($id) {
             $date   = get_time_difference($last_time, now(true));
 
             if ($date['days'] == 0 && $date['hours'] == 0 && $date['minutes'] <= 15) {
-                return TRUE;
+                return true;
             }
         }
-
-        return FALSE;
     }
 
-    return FALSE;
+    return false;
 }
 
 if (isset($_SESSION['player_id']) && $_SESSION['player_id']) {
-    $player = Player::find($_SESSION['player_id']);
-    Player::set_instance($player);
+	$keep	= true;
+    $player	= Player::find_first('id = ' . $_SESSION['player_id']);
+	if ($player) {
+		// Verifica a titularidade do personagem
+		$check_user	= $player->user_id != $_SESSION['user_id'];
+		if (!$check_user) {
+			// Verifica banimento
+			$banishment	= Banishment::find_last("type = 'player' and player_id = " . $player->id);
+			$check_ban	= $banishment && between(now(), strtotime($banishment->created_at), strtotime($banishment->finishes_at));
+			if ($check_ban) {
+				$keep	= false;
+			}
+		} else {
+			$keep	= false;
+		}
+	}
 
-    $player->update_online();
-    $player->check_heal();
+	if ($keep) {
+		Player::set_instance($player);
+
+		$player->update_online();
+		$player->check_heal();
+	} else {
+		unset($_SESSION['player_id']);
+
+		redirect_to('characters#select');
+	}
 }

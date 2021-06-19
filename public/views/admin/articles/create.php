@@ -31,35 +31,38 @@
 </div>
 
 <script type="text/javascript">
-	(() => {
-		const createArticle	= $('#create-article');
-		createArticle.on('submit', () => {
-			lockScreen(true);
+	(function() {
+		var createArticle	= $('#create-article');
+		createArticle.on('submit', function(e) {
+			e.preventDefault()
 
 			$.ajax({
 				url:		makeUrl('admin/articles/create'),
 				data:		createArticle.serialize(),
 				type:		'post',
 				dataType:	'json',
-				success:	(result) => {
-					const $message	= result.success ? result.message : formatError(result.errors);
+				success:	function(result) {
+					var $message	= result.success ? result.message : formatError(result.errors);
 
-					jAlert($message, result.success, () => {
+					jAlert($message, result.success, function() {
 						if (result.redirect) {
 							window.location = makeUrl(result.redirect);
 						}
 					});
 
 					lockScreen(false);
+					blockForm(editArticle, false);
 				},
-				error:		(e) => {
+				error:		function(e) {
 					jAlert('Não foi possível adicionar! Tente mais tarde.', false);
 					lockScreen(false);
+					blockForm(editArticle, false);
 				}
-			})
-		});
+			});
 
-		$('[data-toggle="select2"]').select2();
+			lockScreen(true);
+			blockForm(createArticle, true);
+		});
 
 		$('#summernote-editor').summernote({
 			lang:			'pt-BR',

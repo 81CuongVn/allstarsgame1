@@ -16,6 +16,7 @@
         "phpmailer/phpmailer": "^6.3",
         "stichoza/google-translate-php": "^3.2",
         "mercadopago/dx-php": "^2.2",
-        "proxycheck/proxycheck-php": "^0.1.7"
+        "proxycheck/proxycheck-php": "^0.1.7",
+        "foroco/php-browser-detection": "^2.1"
     }
 }

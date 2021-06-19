@@ -1,9 +1,9 @@
 <?=partial('shared/title', [
-	'title'	=> 'Adicioar Noticia'
+	'title'	=> 'Editar Noticia'
 ]);?>
 <div class="card">
 	<div class="card-body">
-		<h4 class="header-title mb-3">Criar uma nova noticia</h4>
+		<h4 class="header-title mb-3">Editar noticia</h4>
 		<form id="edit-article" onsubmit="return false;">
 			<div class="form-row">
 				<div class="form-group col-md-9">
@@ -31,35 +31,38 @@
 </div>
 
 <script type="text/javascript">
-	(() => {
-		const editArticle	= $('#edit-article');
-		editArticle.on('submit', () => {
-			lockScreen(true);
+	(function() {
+		var editArticle	= $('#edit-article');
+		editArticle.on('submit', function(e) {
+			e.preventDefault();
 
 			$.ajax({
 				url:		makeUrl('admin/articles/edit/<?=$article->id;?>'),
 				data:		editArticle.serialize(),
 				type:		'post',
 				dataType:	'json',
-				success:	(result) => {
-					const $message	= result.success ? result.message : formatError(result.errors);
+				success:	function(result) {
+					var $message	= result.success ? result.message : formatError(result.errors);
 
-					jAlert($message, result.success, () => {
+					jAlert($message, result.success, function() {
 						if (result.redirect) {
 							window.location = makeUrl(result.redirect);
 						}
 					});
 
 					lockScreen(false);
+					blockForm(editArticle, false);
 				},
-				error:		(e) => {
+				error:		function(e) {
 					jAlert('Não foi possível editar! Tente mais tarde.', false);
 					lockScreen(false);
+					blockForm(editArticle, false);
 				}
-			})
-		});
+			});
 
-		$('[data-toggle="select2"]').select2();
+			lockScreen(true);
+			blockForm(editArticle, true);
+		});
 
 		$('#summernote-editor').summernote({
 			lang:			'pt-BR',

@@ -11,7 +11,7 @@ class CallbackController extends Controller {
         $token_url      = "https://graph.facebook.com/oauth/access_token?client_id=" . FB_APP_ID . "&redirect_uri=" . urlencode(make_url(FB_CALLBACK_URL)) . "&client_secret=" . FB_APP_SECRET . "&code=" . $_GET['code'];
         $response       = @file_get_contents($token_url);
         if ($response) {
-            $params         = json_decode($response, TRUE);
+            $params         = json_decode($response, true);
             $graph_url      = "https://graph.facebook.com/me?fields=name,email&access_token=" . $params['access_token'];
             $graph          = @file_get_contents($graph_url);
             if ($graph) {
@@ -19,43 +19,54 @@ class CallbackController extends Controller {
                 if (isset($fb_user->id) && isset($fb_user->email) && isset($fb_user->name)) {
                     $user = User::find_first('fb_id = ' . $fb_user->id);
                     if ($user) {
-                        if ($user->banned) {
+                        if ($user->hasBanishment()) {
                             redirect_to('?banned');
-                        } elseif (IS_BETA && !$user->beta_allowed) {
-                            redirect_to('?not_allowed');
                         } else {
-                            $_SESSION['loggedin']	= TRUE;
-                            $_SESSION['user_id']	= $user->id;
+							// Adiciona um log deste acesso
+							$login				= new UserLogin();
+							$login->user_id		= $user->id;
+							$login->ip			= getIP();
+							$login->user_agent	= $_SERVER['HTTP_USER_AGENT'];
+							if ($login->save()) {
+								$_SESSION['loggedin']	= true;
+								$_SESSION['user_id']	= $user->id;
 
-                            $user->last_login_ip	= getIP();
-                            $user->last_login_at    = now(TRUE);
-                            $user->session_key      = session_id();
-                            $user->active           = 1;
-                            $user->save();
+								$user->session_key      = session_id();
+								$user->active           = 1;
+								$user->save();
 
-                            if (sizeof($user->players()))   redirect_to('characters/select');
-                            else                            redirect_to('characters/create');
+								if (sizeof($user->players())) {
+									redirect_to('characters/select');
+								} else {
+									redirect_to('characters/create');
+								}
+							}
                         }
                     } else {
                         $user = User::find_first("email = '{$fb_user->email}'");
                         if ($user) {
-                            if ($user->banned) {
+                            if ($user->hasBanishment()) {
                                 redirect_to('?banned');
-                            } elseif (IS_BETA && !$user->beta_allowed) {
-                                redirect_to('?not_allowed');
                             } else {
-                                $_SESSION['loggedin']	= TRUE;
-                                $_SESSION['user_id']	= $user->id;
+                                // Adiciona um log deste acesso
+								$login				= new UserLogin();
+								$login->user_id		= $user->id;
+								$login->ip			= getIP();
+								$login->user_agent	= $_SERVER['HTTP_USER_AGENT'];
+								if ($login->save()) {
+									$_SESSION['loggedin']	= true;
+									$_SESSION['user_id']	= $user->id;
 
-                                $user->last_login_ip    = getIP();
-                                $user->last_login_at    = now(TRUE);
-                                $user->session_key      = session_id();
-                                $user->active           = 1;
-                                $user->fb_id            = $fb_user->id;
-                                $user->save();
+									$user->session_key      = session_id();
+									$user->active           = 1;
+									$user->save();
 
-                                if (sizeof($user->players()))   redirect_to('characters/select');
-                                else                            redirect_to('characters/create');
+									if (sizeof($user->players())) {
+										redirect_to('characters/select');
+									} else {
+										redirect_to('characters/create');
+									}
+								}
                             }
                         } else {
                             // Cadastro
@@ -67,25 +78,26 @@ class CallbackController extends Controller {
                             $user->activation_key	= uniqid(uniqid(), true);
                             $user->fb_id            = $fb_user->id;
                             $user->active           = 1;
+							if ($user->save()) {
+								// Dispara o email de cadastro com fb, informando a senha gerada
+								UserMailer::dispatch('send_join_fb', [ $user ]);
 
-                            if (!IS_BETA && $user->id) {
-                                // Login
-                                $user->last_login_ip    = getIP();
-                                $user->last_login_at    = now(TRUE);
-                                $user->session_key      = session_id();
+								// Adiciona um log deste acesso
+								$login				= new UserLogin();
+								$login->user_id		= $user->id;
+								$login->ip			= getIP();
+								$login->user_agent	= $_SERVER['HTTP_USER_AGENT'];
+								if ($login->save()) {
+	                                // Login
+            	                    $user->session_key      = session_id();
 
-                                // Segunda parte do login
-                                $_SESSION['loggedin']	= TRUE;
-                                $_SESSION['user_id']	= $user->id;
-                            }
+	                                // Segunda parte do login
+    	                            $_SESSION['loggedin']	= true;
+        	                        $_SESSION['user_id']	= $user->id;
 
-                            // Salva dados
-                            $user->save();
-
-                            // Dispara o email de cadastro com fb, informando a senha gerada
-                            UserMailer::dispatch('send_join_fb', [ $user ]);
-
-                            redirect_to('characters/create');
+									redirect_to('characters#create');
+            	                }
+							}
                         }
                     }
                 } else {
@@ -137,7 +149,7 @@ class CallbackController extends Controller {
 					$user->save();
 
 					$star_purchase->transid         = $paymentData['txn_id'];
-                    $star_purchase->completed_at    = now(TRUE);
+                    $star_purchase->completed_at    = now(true);
                     $star_purchase->save();
                 } else {
                     $this->bad_request();
@@ -184,7 +196,6 @@ class CallbackController extends Controller {
 				}
 			}
 
-			echo $merchant_order->external_reference . '<br />';
 			$star_purchase	= StarPurchase::find_first("id=" . $merchant_order->external_reference);
 			if ($star_purchase) {
 				$is_dbl     = StarDouble::find_first("'{$star_purchase->created_at}' BETWEEN data_init AND data_end");
@@ -218,21 +229,9 @@ class CallbackController extends Controller {
 				$user->save();
 
 				$star_purchase->transid             = $merchant_order->preference_id;
-				$star_purchase->completed_at        = now(TRUE);
+				$star_purchase->completed_at        = now(true);
 				$star_purchase->save();
 			}
-
-			echo '<pre>';
-			// If the payment's transaction amount is equal (or bigger) than the merchant_order's amount you can release your items
-			if ($paid_amount >= $merchant_order->total_amount) {
-				print_r("Totally paid. Release your item.<br />");
-			} else {
-				print_r("Not paid yet. Do not release your item.<br />");
-			}
-
-			echo print_r($star_purchase);
-			echo json_encode($merchant_order,	JSON_PRETTY_PRINT);
-			echo '</pre>';
 		} else {
 			$this->bad_request();
 			return;
@@ -277,14 +276,6 @@ class CallbackController extends Controller {
                             $star_purchase->status      = 'estornado';
                             echo "[{$star_purchase->star_plan_id}] Estrelas debitadas!";
                         }
-
-                        if (/*$star_purchase->status != 'disputa' && */$statusCode == 5) {
-                            $star_purchase->status  = 'disputa';
-                            $user->banned       = TRUE;
-                            $user->session_key  = NULL;
-
-                            echo "<br />[{$star_purchase->star_plan_id}] Conta banida!";
-                        }
                     } elseif (in_array($statusCode, [7])) {
                         $star_purchase->status      = 'cancelado';
 
@@ -294,7 +285,7 @@ class CallbackController extends Controller {
 					$user->save();
 
                     $star_purchase->transid             = $transaction->getCode();
-                    $star_purchase->completed_at        = now(TRUE);
+                    $star_purchase->completed_at        = now(true);
                     $star_purchase->save();
                 }
             } else {

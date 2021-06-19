@@ -7,10 +7,7 @@ if (!$language) {
 
 if ($_SESSION['user_id']) {
 	$user	= User::get_instance();
-	if ($user->banned && !$_SESSION['universal']) {
-		$user	= FALSE;
-		redirect_to('users/logout?banned');
-	} elseif (!$user->admin) {
+	if (!$user->admin) {
 		if (!$_SESSION['player_id']) {
 			redirect_to('home');
 		} else {
@@ -25,10 +22,8 @@ if ($_SESSION['user_id']) {
 <html lang="en">
 <head>
 	<meta charset="utf-8" />
-	<title><?=GAME_NAME;?> - Painel Administrativo</title>
+	<title><?=GAME_NAME;?> - Admin Panel</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta content="A fully featured admin theme which can be used to build CRM, CMS, etc." name="description" />
-	<meta content="Coderthemes" name="author" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
 	<!-- App favicon -->
@@ -43,10 +38,14 @@ if ($_SESSION['user_id']) {
 	<link rel="stylesheet" type="text/css" href="<?=asset_url('admin/libs/datatables/responsive.bootstrap4.css');?>" />
 	<link rel="stylesheet" type="text/css" href="<?=asset_url('admin/libs/datatables/buttons.bootstrap4.css');?>" />
 	<link rel="stylesheet" type="text/css" href="<?=asset_url('admin/libs/datatables/select.bootstrap4.css');?>" />
+	<link rel="stylesheet" type="text/css" href="<?=asset_url('admin/libs/custombox/custombox.min.css');?>" />
+	<link rel="stylesheet" type="text/css" href="<?=asset_url('admin/libs/bootstrap-datepicker/bootstrap-datepicker.min.css');?>" />
 
 	<!-- App css -->
+	<link rel="stylesheet" type="text/css" href="<?=asset_url('admin/css/colors.css');?>" />
 	<link rel="stylesheet" type="text/css" href="<?=asset_url('admin/css/bootstrap.css');?>" />
 	<link rel="stylesheet" type="text/css" href="<?=asset_url('admin/css/icons.css');?>" />
+	<link rel="stylesheet" type="text/css" href="<?=asset_url('admin/css/fa-pro.css');?>" />
 	<link rel="stylesheet" type="text/css" href="<?=asset_url('admin/css/app.css');?>" />
 
 	<!-- Vendor js -->
@@ -75,6 +74,8 @@ if ($_SESSION['user_id']) {
 	<script src="<?=asset_url('admin/libs/datatables/dataTables.select.min.js');?>"></script>
 	<script src="<?=asset_url('admin/libs/pdfmake/pdfmake.min.js');?>"></script>
 	<script src="<?=asset_url('admin/libs/pdfmake/vfs_fonts.js');?>"></script>
+	<script src="<?=asset_url('admin/libs/custombox/custombox.min.js');?>"></script>
+	<script src="<?=asset_url('admin/libs/bootstrap-datepicker/bootstrap-datepicker.min.js');?>"></script>
 
 	<script type="text/javascript">
 		var	_site_url				= "<?=$site_url;?>";
@@ -148,8 +149,10 @@ if ($_SESSION['user_id']) {
 		});
 
 		$('a[data-toggle="tab"]').on("shown.bs.tab", function (e) {
-			var id = $(e.target).attr("href");
-			localStorage.setItem('selectedTab', id)
+			var	id		= $(e.target).attr("href"),
+				page	= $(e.target).parent().parent().attr('id');
+
+				localStorage.setItem('selectedTab', id);
 		});
 
 		var selectedTab = localStorage.getItem('selectedTab');

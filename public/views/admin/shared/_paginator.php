@@ -1,4 +1,22 @@
 <?php
+$link	= '?';
+if (sizeof($_GET)) {
+	$fields			= [];
+	$queryString	= explode('&', $_SERVER['QUERY_STRING']);
+	foreach ($queryString as $value) {
+		list($k, $v)	= explode('=', $value);
+
+		if ($k == 'page') {
+			continue;
+		}
+
+		$fields[] = $k . '=' . $v;
+	}
+	if (sizeof($fields)) {
+		$link .= implode('&', $fields) . '&';
+	}
+}
+
 if ($pages > 1) {
 	$links  = false;
 	$rechts = false;
@@ -10,7 +28,7 @@ if ($pages > 1) {
 		</span></li>';
 	} else {
 		$back = $current - 1;
-		echo '<li class="page-item"><a href="?page=' . $back . '" class="page-link">
+		echo '<li class="page-item"><a href="' . $link . 'page=' . $back . '" class="page-link">
 			<i class="fa fa-arrow-left fa-fw" style="line-height: 15px;"></i>
 		</a></li>';
 	}
@@ -19,18 +37,18 @@ if ($pages > 1) {
 		if ((2 >= $i) && ($current == $i)) {
 			echo '<li class="page-item active"><span class="page-link">' . highamount($i) . '</span></li>';
 		} elseif ((2 >= $i) && ($current != $i)) {
-			echo '<li class="page-item"><a href="?page=' . $i . '" class="page-link">' . highamount($i) . '</a></li>';
+			echo '<li class="page-item"><a href="' . $link . 'page=' . $i . '" class="page-link">' . highamount($i) . '</a></li>';
 		} elseif (($pages-2 < $i) && ($current == $i)) {
 			echo '<li class="page-item active"><span class="page-link">' . highamount($i) . '</span></li>';
 		} elseif (($pages-2 < $i) && ($current != $i)) {
-			echo '<li class="page-item"><a href="?page=' . $i . '" class="page-link">' . highamount($i) . '</a></li>';
+			echo '<li class="page-item"><a href="' . $link . 'page=' . $i . '" class="page-link">' . highamount($i) . '</a></li>';
 		} else {
 			$max = $current + 3;
 			$min = $current - 3;
 			if ($current == $i) {
 				echo '<li class="page-item active"><span class="page-link">' . highamount($i) . '</span></li>';
 			} elseif (($min < $i) && ($max > $i)) {
-				echo '<li class="page-item"><a href="?page=' . $i . '" class="page-link">' . highamount($i) . '</a></li>';
+				echo '<li class="page-item"><a href="' . $link . 'page=' . $i . '" class="page-link">' . highamount($i) . '</a></li>';
 			} else {
 				if ($i < $current) {
 					if (!$links) {
@@ -52,7 +70,7 @@ if ($pages > 1) {
 		</span></li>';
 	} else {
 		$next = $current + 1;
-		echo '<li class="page-item"><a href="?page=' . $next . '" class="page-link">
+		echo '<li class="page-item"><a href="' . $link . 'page=' . $next . '" class="page-link">
 			<i class="fa fa-arrow-right fa-fw" style="line-height: 15px;"></i>
 		</a></li>';
 	}
