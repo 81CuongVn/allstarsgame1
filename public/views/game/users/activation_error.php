@@ -1,1 +1,5 @@
-<?php echo partial(isset($beta) && $beta ? 'shared/info_battle' : 'shared/info', array('id'=> 3, 'title' => $title, 'message' => $message)) ?>
+<?=partial('shared/info', [
+	'id'		=> 3,
+	'title'		=> $title,
+	'message' 	=> $message
+]);?>

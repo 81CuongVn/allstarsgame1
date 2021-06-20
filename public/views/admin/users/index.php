@@ -75,7 +75,7 @@
 							<span class="badge badge-secondary text-uppercase">Normal</span>
 						<?php } ?>
 
-						<?php if ($u->banned) { ?>
+						<?php if ($u->hasBanishment()) { ?>
 							<span class="badge badge-danger text-uppercase">Banido</span>
 						<?php } else { ?>
 							<?php if ($u->active) { ?>

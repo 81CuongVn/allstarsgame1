@@ -273,11 +273,4 @@ function validate_current_url() {
 }
 
 generate_menu_data($is_admin);
-
-if (!IS_MAINTENANCE) {
-    validate_current_url();
-} else {
-    if (!($controller == MAINTENANCE_CONTROLLER && $action == MAINTENANCE_ACTION)) {
-        validate_current_url();
-    }
-}
+validate_current_url();

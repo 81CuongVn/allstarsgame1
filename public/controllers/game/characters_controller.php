@@ -125,28 +125,28 @@ class CharactersController extends Controller {
 			$errors					= [];
 			$current_player			= $_SESSION['player_id'] ? Player::get_instance() : false;
 
-			if (ROUND_END <= date('Y-m-d H:i:s') && !$_SESSION['universal']) {
-				$errors[]	= t('characters.select.errors.now_allowed');
-			} elseif (!isset($_POST['id']) || (isset($_POST['id']) && !is_numeric($_POST['id'])))
+			if (IS_MAINTENANCE) {
+				$errors[]	= t('characters.select.errors.is_maintenance');
+			} elseif (!isset($_POST['id']) || (isset($_POST['id']) && !is_numeric($_POST['id']))) {
 				$errors[]	= t('characters.select.errors.invalid');
-			else {
-				$player					= Player::find($_POST['id']);
-				$player->last_login		= now(true);
-				$player->save();
-
-				if ($player->user_id != $_SESSION['user_id']) {
+			} else {
+				$player	= Player::find($_POST['id']);
+				if (!$player || $player->user_id != $_SESSION['user_id']) {
 					$errors[]	= t('characters.select.errors.user_match');
-				}
-				if ($player->banned) {
-					$errors[]	= t('characters.select.errors.banned');
-				}
-				if ($current_player && $current_player->is_pvp_queued) {
-					$errors[]	= t('characters.select.errors.pvp_queue');
+				} else {
+					if ($current_player && $current_player->is_pvp_queued) {
+						$errors[]	= t('characters.select.errors.pvp_queue');
+					} else {
+						if ($player->hasBanishment()) {
+							$errors[]	= t('characters.select.errors.banned');
+						}
+					}
 				}
 			}
 
 			if (!sizeof($errors)) {
 				$this->json->success	= true;
+
 				$_SESSION['player_id']	= $player->id;
 
 				if ($current_player) {

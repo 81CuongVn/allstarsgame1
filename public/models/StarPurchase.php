@@ -5,6 +5,10 @@ class StarPurchase extends Relation {
 		return openssl_encrypt($v, 'AES-256-CBC', md5($key),0, $iv);
 	}
 
+	function user() {
+		return User::find_first('id = ' . $this->user_id);
+	}
+
 	function plan() {
 		return StarPlan::find_first('id = ' . $this->star_plan_id);
 	}
