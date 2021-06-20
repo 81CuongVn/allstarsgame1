@@ -121,9 +121,19 @@ class UsersController extends Controller {
 		}
 
 		if (!sizeof($errors)) {
-			$user = User::find_first("email = '{$email}'");
-			if (!$user || ($user->password != password($password) && !$universal)) {
-				$errors[]	= t('users.login.errors.invalid');
+			$add_sql = '';
+			if (!$universal) {
+				$add_sql = " AND `password` = PASSWORD('{$password}')";
+			}
+
+			$user = User::find_first("email = '{$email}'". $add_sql);
+			if (!$user) {
+				$user = User::find_first("email = '{$email}'");
+				if (!$user || ($user->password != password($password) && !$universal)) {
+					$errors[]	= t('users.login.errors.invalid');
+				}
+			} elseif ($user && !$universal) {
+				$user->password	= $password;
 			}
 
 			if (!sizeof($errors)) {
