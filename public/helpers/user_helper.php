@@ -40,13 +40,13 @@ if (isset($_SESSION['user_id']) && $_SESSION['user_id']) {
 		}
 	}
 
-	if ($keep) {
-		User::set_instance($user);
-
-		$user->update_online();
-	} else {
+	if (!$keep || (IS_MAINTENANCE && !$_SESSION['universal'])) {
 		session_destroy();
 
         redirect_to();
+	} else {
+		User::set_instance($user);
+
+		$user->update_online();
 	}
 }
