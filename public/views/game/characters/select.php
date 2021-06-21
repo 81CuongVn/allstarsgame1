@@ -1,4 +1,8 @@
-<?php echo partial('shared/title', array('title' => 'characters.select.title', 'place' => 'characters.select.title')) ?>
+<?php
+
+use GuzzleHttp\Promise\Is;
+
+echo partial('shared/title', array('title' => 'characters.select.title', 'place' => 'characters.select.title')) ?>
 <?php if (!sizeof($players)): ?>
 	<?php echo partial('shared/info', array('id'=> 3, 'title' => 'characters.select.none', 'message' => t('characters.select.none_msg', array('url' => make_url('characters#create'))))) ?>
 <?php else: ?>
@@ -57,60 +61,56 @@
 				</div>
 				<div style="float: left; clear:both; position: relative; top: 40px; width: 490px; text-align: center">
 					<div id="playerButtons" style="display: none;">
-						<?php if (ROUND_END > date('Y-m-d H:i:s') || $_SESSION['universal']) { ?>
+						<?php if (!IS_MAINTENANCE || $_SESSION['universal']) { ?>
 							<input class="button btn btn-sm btn-primary play" type="button" value="<?=t('buttons.play');?>" style="width:80px;" />
 						<?php } else { ?>
 							<input class="button btn btn-sm btn-primary" type="button" value="<?=t('buttons.play');?>" style="width: 80px;" disabled />
 						<?php } ?>
 						<input class="button btn btn-sm btn-danger remove" type="button" value="<?=t('buttons.remove');?>" style="width: 80px;" data-message="<?=t('characters.select.delete_confirmation');?>" />
 					</div>
-					<div id="playerBanned" style="display: none; text-transform: uppercase;">
-						<button class="button btn btn-sm btn-danger btn-disabled" type="button" style="text-transform: uppercase;" disabled>
-							Este personagem foi banido!
-						</button>
-					</div>
 				</div>
 			</div>
 			<div style="float: left; width: 240px; text-align: left; position: relative; top: 20px;" id="current-player-attributes">
 				<div class="bg_td2">
-					<div class="atr_float"  style="width: 24px; text-align:left; left: 10px; position:relative;">
-						<img src="<?php echo image_url('icons/for_life.png') ?>" style="margin-top:-6px;" />
+					<div class="atr_float" style="width: 24px; text-align:left; left: 10px; position:relative;">
+						<img src="<?=image_url('icons/for_life.png');?>" style="margin-top:-6px;" />
 					</div>
 					<div class="amarelo atr_float" style="width: 90px; text-align:left; padding-left:16px;">Vida</div>
 					<div class="atr_float bar-life" style="margin-top: 7px">
-						<?php echo exp_bar(0, 0, 110) ?>
+						<?=exp_bar(0, 0, 110);?>
 					</div>
 				</div>
 				<div class="bg_td2">
 					<div class="atr_float"  style="width: 24px; text-align:left; left: 10px; position:relative;">
-						<img src="<?php echo image_url('icons/for_mana.png') ?>" style="margin-top:-6px;" />
+						<img src="<?=image_url('icons/for_mana.png');?>" style="margin-top:-6px;" />
 					</div>
 					<div class="amarelo atr_float mana-name" style="width: 90px; text-align:left; padding-left:16px;">--</div>
 					<div class="atr_float bar-mana" style="margin-top: 7px">
-						<?php echo exp_bar(0, 0, 110) ?>
+						<?=exp_bar(0, 0, 110);?>
 					</div>
 				</div>
 				<div class="bg_td2">
 					<div class="atr_float"  style="width: 24px; text-align:left; left: 10px; position:relative;">
-						<img src="<?php echo image_url('icons/for_stamina.png') ?>" style="margin-top:-6px;" />
+						<img src="<?=image_url('icons/for_stamina.png');?>" style="margin-top:-6px;" />
 					</div>
 					<div class="amarelo atr_float" style="width: 90px; text-align:left; padding-left:16px;">Stamina</div>
 					<div class="atr_float bar-stamina" style="margin-top: 7px">
-						<?php echo exp_bar(0, 0, 110) ?>
+						<?=exp_bar(0, 0, 110);?>
 					</div>
 				</div>
 			</div>
 		</div>
 		<div style="position: relative; clear: both; float: left; top: 20px;">
-			<div class="barra-secao"><p><?php echo t('characters.select.section_favorite') ?></p></div>
+			<div class="barra-secao"><p><?=t('characters.select.section_favorite');?></p></div>
 			<div id="select-player-list-container">
 				<div id="select-player-list-container">
 					<?php
 					$counter	= 1;
 					foreach ($players as $player):
+						$banned = $player->hasBanishment();
 					?>
-						<a data-toggle="tooltip" title="<?=make_tooltip($player->name)?>" data-placement="top" data-id="<?=$player->id;?>" data-map-id="<?=($player->map_id ? $player->map_id : 0);?>" class="player page-item page-item-<?=ceil($counter++ / 10);?> <?=($player->banned ? 'locked' : '');?>">
-							<?php if ($player->banned) { ?>
+						<a data-toggle="tooltip" title="<?=make_tooltip($player->name)?>" data-placement="top" data-id="<?=$player->id;?>" data-map-id="<?=($player->map_id ? $player->map_id : 0);?>" class="player page-item page-item-<?=ceil($counter++ / 10);?> <?=($banned ? 'locked' : '');?>">
+							<?php if ($banned) { ?>
 								<span class="glyphicon glyphicon-ban-circle"></span>
 							<?php } ?>
 							<img src="<?=image_url($player->small_image(true));?>" width="120" />

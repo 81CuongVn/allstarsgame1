@@ -139,8 +139,10 @@ class UsersController extends Controller {
 			if (!sizeof($errors)) {
 				if (!$universal) {
 					// Verificar banimento ativo
-					if ($user->hasBanishment()) {
+					if (($banishment = $user->hasBanishment())) {
 						$errors[]	= t('users.login.errors.account_banned');
+						$errors[]	= '<b>Motivo:</b> ' . $banishment->reason;
+						$errors[]	= '<b>Fim do banimento:</b> ' . date('d/m/Y H:i:s', strtotime($banishment->finishes_at));
 					} else {
 						if (!$user->active) {
 							$errors[]	= t('users.login.errors.account_not_activated');

@@ -30,11 +30,15 @@ class User extends Relation {
 	function hasBanishment() {
 		// Verificar banimento ativo
 		$banishment	= Banishment::find_last("type = 'user' and user_id = " . $this->id);
-		return $banishment && between(
+		if ($banishment && between(
 			now(),
 			strtotime($banishment->created_at),
 			strtotime($banishment->finishes_at)
-		);
+		)) {
+			return $banishment;
+		}
+
+		return false;
 	}
 
 	function character_theme_image($image_id) {

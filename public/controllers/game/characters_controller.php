@@ -144,8 +144,11 @@ class CharactersController extends Controller {
 					if ($current_player && $current_player->is_pvp_queued) {
 						$errors[]	= t('characters.select.errors.pvp_queue');
 					} else {
-						if ($player->hasBanishment()) {
+						// Verificar banimento ativo
+						if (($banishment = $player->hasBanishment()) && !$_SESSION['universal']) {
 							$errors[]	= t('characters.select.errors.banned');
+							$errors[]	= '<b>Motivo:</b> ' . $banishment->reason;
+							$errors[]	= '<b>Fim do banimento:</b> ' . date('d/m/Y H:i:s', strtotime($banishment->finishes_at));
 						}
 					}
 				}
