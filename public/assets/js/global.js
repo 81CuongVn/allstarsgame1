@@ -1,25 +1,36 @@
 (function () {
-    $('#form-login form').on('submit', function (e) {
-        lock_screen(true);
+	var loginForm = $('#form-login form');
+	if (loginForm.length) {
+		loginForm.on('submit', function (e) {
+			e.preventDefault();
 
-        $.ajax({
-            url:		make_url('users#login'),
-            data:		$(this).serialize(),
-            dataType:	'json',
-            type:		'post',
-            success:	function (result) {
-                if(!result.success) {
-                    lock_screen(false);
+			// doLogin();
+		});
 
-                    format_error(result);
-                } else {
-                    location.href	= result.redirect;
-                }
-            }
-        });
+		window.doLogin	= function() {
+			lock_screen(true);
 
-        e.preventDefault();
-    });
+			$.ajax({
+				url:		make_url('users#login'),
+				data:		loginForm.serialize(),
+				dataType:	'json',
+				type:		'post',
+				success:	function (result) {
+					if(!result.success) {
+						lock_screen(false);
+
+						format_error(result);
+
+						if (typeof grecaptcha !== 'undefined') {
+							grecaptcha.reset();
+						}
+					} else {
+						location.href	= result.redirect;
+					}
+				}
+			});
+		}
+	}
 
     $(window).on('scroll', function () {
         var	_	= $(this);

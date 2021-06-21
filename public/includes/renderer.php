@@ -43,8 +43,9 @@ function partial($partial, $vars = []) {
 		$__partial_path	= ROOT . '/views/' . ($is_admin ? 'admin' : 'game') . '/' . join('/', array_splice($__partial_path, 0, sizeof($__partial_path) - 1)) . '/_' . $__partial_file . '.php';
 	}
 
-	if (!file_exists($__partial_path))
+	if (!file_exists($__partial_path)) {
 		throw new Exception("Partial '" . $partial . "' not found", 1);
+	}
 
 	extract($vars);
 
