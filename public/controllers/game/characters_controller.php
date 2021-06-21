@@ -1,40 +1,40 @@
 <?php
 class CharactersController extends Controller {
-	function create() {
+	public function create() {
 		$user	= User::get_instance();
 		$total	= Player::find("user_id=".$user->id);
 
-		if($_POST) {
+		if ($_POST) {
 			$this->layout			= false;
 			$this->as_json			= true;
 			$this->render			= false;
 			$this->json->success	= false;
-			$errors					= array();
+			$errors					= [];
 
-			if(!isset($_POST['name']) || (isset($_POST['name']) && !preg_match(REGEX_PLAYER, $_POST['name']))) {
+			if (!isset($_POST['name']) || (isset($_POST['name']) && !preg_match(REGEX_PLAYER, $_POST['name']))) {
 				$errors[]	= t('characters.create.errors.invalid_name');
 			} else {
-				if(strlen($_POST['name']) > 14) {
+				if (strlen($_POST['name']) > 14) {
 					$errors[]	= t('characters.create.errors.name_length_max');
 				}
 
-				if(strlen($_POST['name']) < 6) {
+				if (strlen($_POST['name']) < 6) {
 					$errors[]	= t('characters.create.errors.name_length_min');
 				}
 
-				if(Player::find('name="' . addslashes($_POST['name']) . '"')) {
+				if (Player::find('name="' . addslashes($_POST['name']) . '"')) {
 					$errors[]	= t('characters.create.errors.existent');
 				}
-				if(sizeof($total) >= $user->character_slots){
+
+				if (sizeof($total) >= $user->character_slots) {
 					$errors[]	= t('characters.title_chars');
 				}
 			}
 
-			if(!isset($_POST['character_id']) || (isset($_POST['character_id']) && !Character::includes($_POST['character_id']))) {
+			if (!isset($_POST['character_id']) || (isset($_POST['character_id']) && !Character::includes($_POST['character_id']))) {
 				$errors[]	= t('characters.create.errors.invalid_character');
 			} else {
-				$character	= Character::find($_POST['character_id'], ['cache' => true]);
-
+				$character	= Character::find($_POST['character_id'], [ 'cache' => true ]);
 				if (!$character->unlocked($user)) {
 					$errors[]	= t('characters.create.errors.locked');
 				}
@@ -44,12 +44,11 @@ class CharactersController extends Controller {
 				$errors[]	= t('characters.create.errors.invalid_faction');
 			}
 
-			$faction = Faction::find_first($_POST['faction_id']);
-			if (!$faction) {
+			if (!Faction::includes($_POST['faction_id'])) {
 				$errors[]	= t('characters.create.errors.invalid_faction');
 			}
 
-			if(!sizeof($errors)) {
+			if (!sizeof($errors)) {
 				$this->json->success	= true;
 				$theme					= Character::find($_POST['character_id'])->default_theme();
 
@@ -63,43 +62,50 @@ class CharactersController extends Controller {
 				$player->last_login					= now(true);
 				$player->save();
 
-				//Adiciona as Habilidades do jogador
+				// Adiciona as Habilidades do jogador
 				$character_abilities = CharacterAbility::find("character_id=" . $player->character_id);
-				foreach ($character_abilities as $character_ability){
+				foreach ($character_abilities as $character_ability) {
 					$player_character_ability = new PlayerCharacterAbility();
-					$player_character_ability->player_id = $player->id;
-					$player_character_ability->character_ability_id = $character_ability->id;
-					$player_character_ability->character_id = $player->character_id;
-					$player_character_ability->item_effect_ids = $character_ability->item_effect_ids;
-					$player_character_ability->effect_chances = $character_ability->effect_chances;
-					$player_character_ability->effect_duration = $character_ability->effect_duration;
-					$player_character_ability->consume_mana = $character_ability->consume_mana;
-					$player_character_ability->cooldown = $character_ability->cooldown;
-					$player_character_ability->is_initial = $character_ability->is_initial;
+					$player_character_ability->player_id			= $player->id;
+					$player_character_ability->character_ability_id	= $character_ability->id;
+					$player_character_ability->character_id			= $player->character_id;
+					$player_character_ability->item_effect_ids		= $character_ability->item_effect_ids;
+					$player_character_ability->effect_chances		= $character_ability->effect_chances;
+					$player_character_ability->effect_duration		= $character_ability->effect_duration;
+					$player_character_ability->consume_mana			= $character_ability->consume_mana;
+					$player_character_ability->cooldown				= $character_ability->cooldown;
+					$player_character_ability->is_initial			= $character_ability->is_initial;
 					$player_character_ability->save();
 
 				}
-				//Adiciona as Especialidades do jogador
+
+				// Adiciona as Especialidades do jogador
 				$character_specialities = CharacterSpeciality::find("character_id=" . $player->character_id);
-				foreach ($character_specialities as $character_speciality){
+				foreach ($character_specialities as $character_speciality) {
 					$player_character_speciality = new PlayerCharacterSpeciality();
-					$player_character_speciality->player_id = $player->id;
-					$player_character_speciality->character_speciality_id = $character_speciality->id;
-					$player_character_speciality->character_id = $player->character_id;
-					$player_character_speciality->item_effect_ids = $character_speciality->item_effect_ids;
-					$player_character_speciality->effect_chances = $character_speciality->effect_chances;
-					$player_character_speciality->effect_duration = $character_speciality->effect_duration;
-					$player_character_speciality->consume_mana = $character_speciality->consume_mana;
-					$player_character_speciality->cooldown = $character_speciality->cooldown;
-					$player_character_speciality->is_initial = $character_speciality->is_initial;
+					$player_character_speciality->player_id					= $player->id;
+					$player_character_speciality->character_speciality_id	= $character_speciality->id;
+					$player_character_speciality->character_id				= $player->character_id;
+					$player_character_speciality->item_effect_ids			= $character_speciality->item_effect_ids;
+					$player_character_speciality->effect_chances			= $character_speciality->effect_chances;
+					$player_character_speciality->effect_duration			= $character_speciality->effect_duration;
+					$player_character_speciality->consume_mana				= $character_speciality->consume_mana;
+					$player_character_speciality->cooldown					= $character_speciality->cooldown;
+					$player_character_speciality->is_initial				= $character_speciality->is_initial;
 					$player_character_speciality->save();
 				}
 			} else {
 				$this->json->errors	= $errors;
 			}
 		} else {
-			$animes		= Anime::find($_SESSION['universal'] ? '1=1 AND playable=1' : 'active=1 AND playable=1', ['cache' => true, 'reorder' => 'id ASC']);
-			$factions	= Faction::find($_SESSION['universal'] ? '1=1' : 'active=1', ['cache' => true, 'reorder' => 'id ASC']);
+			$animes		= Anime::find('active = 1 and playable = 1', [
+				'cache'		=> true,
+				'reorder'	=> 'id asc'
+			]);
+			$factions	= Faction::find('active = 1', [
+				'cache'		=> true,
+				'reorder'	=> 'id asc'
+			]);
 
 			$this->assign('user',		$user);
 			$this->assign('total',		$total);
@@ -115,7 +121,8 @@ class CharactersController extends Controller {
 			]);
 		}
 	}
-	function select() {
+
+	public function select() {
 		if ($_POST) {
 			$this->layout			= false;
 			$this->as_json			= true;
@@ -125,28 +132,31 @@ class CharactersController extends Controller {
 			$errors					= [];
 			$current_player			= $_SESSION['player_id'] ? Player::get_instance() : false;
 
-			if (ROUND_END <= date('Y-m-d H:i:s') && !$_SESSION['universal']) {
-				$errors[]	= t('characters.select.errors.now_allowed');
-			} elseif (!isset($_POST['id']) || (isset($_POST['id']) && !is_numeric($_POST['id'])))
+			if (IS_MAINTENANCE && !$_SESSION['universal']) {
+				$errors[]	= t('characters.select.errors.is_maintenance');
+			} elseif (!isset($_POST['id']) || (isset($_POST['id']) && !is_numeric($_POST['id']))) {
 				$errors[]	= t('characters.select.errors.invalid');
-			else {
-				$player					= Player::find($_POST['id']);
-				$player->last_login		= now(true);
-				$player->save();
-
-				if ($player->user_id != $_SESSION['user_id']) {
+			} else {
+				$player	= Player::find($_POST['id']);
+				if (!$player || $player->user_id != $_SESSION['user_id']) {
 					$errors[]	= t('characters.select.errors.user_match');
-				}
-				if ($player->banned) {
-					$errors[]	= t('characters.select.errors.banned');
-				}
-				if ($current_player && $current_player->is_pvp_queued) {
-					$errors[]	= t('characters.select.errors.pvp_queue');
+				} else {
+					if ($current_player && $current_player->is_pvp_queued) {
+						$errors[]	= t('characters.select.errors.pvp_queue');
+					} else {
+						// Verificar banimento ativo
+						if (($banishment = $player->hasBanishment()) && !$_SESSION['universal']) {
+							$errors[]	= t('characters.select.errors.banned');
+							$errors[]	= '<b>Motivo:</b> ' . $banishment->reason;
+							$errors[]	= '<b>Fim do banimento:</b> ' . date('d/m/Y H:i:s', strtotime($banishment->finishes_at));
+						}
+					}
 				}
 			}
 
 			if (!sizeof($errors)) {
 				$this->json->success	= true;
+
 				$_SESSION['player_id']	= $player->id;
 
 				if ($current_player) {
@@ -174,11 +184,12 @@ class CharactersController extends Controller {
 			}
 		} else {
 			$this->assign('players', Player::find('user_id=' . $_SESSION['user_id'], [
-				'reorder'	=> 'level DESC'
+				'reorder'	=> 'level desc'
 			]));
 		}
 	}
-	function remove($id	= null, $key = null) {
+
+	public function remove($id	= null, $key = null) {
 		if (is_numeric($id) && $key) {
 			$player	= Player::find_first('id = ' . $id . ' AND remove_key="' . addslashes($key) . '"');
 			$user	= User::get_instance();
@@ -186,18 +197,21 @@ class CharactersController extends Controller {
 
 			$errors	= [];
 
-			if (!$player)
+			if (!$player) {
 				$errors[]	= t('characters.remove.not_found');
-			else {
+			} else {
 				if (sizeof($player_removed) >= $user->character_slots){
 					$errors[]	= t('characters.create.errors.removed');
 				}
+
 				if ($player->user_id != $_SESSION['user_id']) {
 					$errors[]	= t('characters.remove.same_user');
 				}
+
 				if ($player->id == $_SESSION['player_id']) {
 					$errors[]	= t('characters.remove.same_player');
 				}
+
 				if ($player->guild_id) {
 					$errors[]	= t('characters.remove.guild');
 				}
@@ -213,6 +227,7 @@ class CharactersController extends Controller {
 						$friend_players_request->destroy();
 					}
 				}
+
 				if ($player_friends_requests) {
 					foreach ($player_friends_requests as $player_friends_request) {
 						$player_friends_request->destroy();
@@ -223,13 +238,14 @@ class CharactersController extends Controller {
 				$friend_players = PlayerFriendList::find("friend_id=". $player->id);
 				$player_friends = PlayerFriendList::find("player_id=". $player->id);
 
-				if($friend_players){
-					foreach($friend_players as $friend_player){
+				if ($friend_players) {
+					foreach ($friend_players as $friend_player) {
 						$friend_player->destroy();
 					}
 				}
-				if($player_friends){
-					foreach($player_friends as $player_friend){
+
+				if ($player_friends) {
+					foreach ($player_friends as $player_friend) {
 						$player_friend->destroy();
 					}
 				}
@@ -239,7 +255,6 @@ class CharactersController extends Controller {
 				redirect_to('characters#select?deleted_ok');
 			} else {
 				$messages	= [];
-
 				foreach ($errors as $error) {
 					$messages[]	= '<li>' . $error . '</li>';
 				}
@@ -252,117 +267,53 @@ class CharactersController extends Controller {
 			$this->as_json			= true;
 			$this->render			= false;
 			$this->json->success	= false;
-			$errors					= array();
+			$errors					= [];
 
-			if(isset($_POST['id']) && is_numeric($_POST['id'])) {
-				$player	= Player::find($_POST['id']);
-				$user	= User::get_instance();
-				$player_removed = Recordset::query('select * from players WHERE user_id='.$user->id.' AND removed=1')->result_array();
+			if (isset($_POST['id']) && is_numeric($_POST['id'])) {
+				$player			= Player::find($_POST['id']);
+				$user			= User::get_instance();
+				$player_removed	= Recordset::query('select count(id) as total from players where user_id=' . $user->id . ' and removed = 1')->row()->total;
 
-				if(!$player) {
+				if (!$player) {
 					$errors[]	= t('characters.remove.not_found');
 				} else {
-					if(sizeof($player_removed) >= $user->character_slots){
+					if ($player_removed >= $user->character_slots) {
 						$errors[]	= t('characters.create.errors.removed');
 					}
-					if($player->user_id != $_SESSION['user_id']) {
+
+					if ($player->user_id != $_SESSION['user_id']) {
 						$errors[]	= t('characters.remove.same_user');
 					}
-					if($player->id == $_SESSION['player_id']) {
+
+					if ($player->id == $_SESSION['player_id']) {
 						$errors[]	= t('characters.remove.same_player');
 					}
-					if($player->guild_id) {
-					$errors[]	= t('characters.remove.guild');
+
+					if ($player->guild_id) {
+						$errors[]	= t('characters.remove.guild');
 					}
 				}
 			} else {
 				$errors[]	= t('characters.remove.invalid');
 			}
 
-			if(!sizeof($errors)) {
+			if (!sizeof($errors)) {
 				$this->json->success	= true;
 				$player->remove_key		= uniqid();
 				$player->save();
 
-				CharacterMailer::dispatch('character_deleted', [User::get_instance(), $player]);
+				CharacterMailer::dispatch('character_deleted', [ $user, $player ]);
 			} else {
 				$this->json->errors	= $errors;
 			}
 		}
 	}
 
-	function status() {
+	public function status() {
 		$player			= Player::get_instance();
 		$user			= User::get_instance();
 		$player_ranked	= $player->ranked();
 		$player_stat	= PlayerStat::find_first("player_id=". $player->id);
-
-		if ($_SESSION['universal'] && !($_SESSION['orig_player_id'] && $_SESSION['orig_user_id'] && $_SESSION['orig_ticket_id'])) {
-			/*$slots	= [
-				'head',
-				'shoulder',
-				'chest',
-				'neck',
-				'hand',
-				'leggings'
-			];
-			foreach ($slots as $slot) {
-				for ($i = 1; $i <= 5; $i++) {
-					Item::generate_equipment($player, null, $slot);
-				}
-			}*/
-
-			// $pages  = Item::find('item_type_id = 11');
-			// foreach ($pages as $page) {
-			// 	if (!$player->has_item($page->id)) {
-			// 		$player_grimoire_card				= new PlayerItem();
-			// 		$player_grimoire_card->item_id		= $page->id;
-			// 		$player_grimoire_card->player_id	= $player->id;
-			// 		$player_grimoire_card->save();
-			// 	}
-			// }
-
-			// $characters	= Character::all();
-			// foreach ($characters as $character) {
-			// 	if (!$user->is_character_bought($character->id)) {
-			// 		$insert = new UserCharacter();
-			// 		$insert->user_id		= $user->id;
-			// 		$insert->character_id	= $character->id;
-			// 		$insert->save();
-			// 	}
-			// }
-
-			// $themes	= CharacterTheme::all();
-			// foreach ($themes as $theme) {
-			// 	if (!$user->is_theme_bought($theme->id)) {
-			// 		$insert = new UserCharacterTheme();
-			// 		$insert->user_id			= $user->id;
-			// 		$insert->character_theme_id	= $theme->id;
-			// 		$insert->save();
-			// 	}
-			// }
-
-			// $headlines	= Headline::all();
-			// foreach ($headlines as $headline) {
-			// 	if (!$user->is_headline_bought($headline->id)) {
-			// 		$insert = new UserHeadline();
-			// 		$insert->user_id		= $user->id;
-			// 		$insert->headline_id	= $headline->id;
-			// 		$insert->save();
-			// 	}
-			// }
-
-			// $items	= Item::find('item_type_id = 3 and is_initial = 1');
-			// foreach ($items as $item) {
-			// 	if (!$player->has_item($item->id)) {
-			// 		$insert 			= new PlayerItem();
-			// 		$insert->player_id	= $player->id;
-			// 		$insert->item_id	= $item->id;
-			// 		$insert->exp		= 50000;
-			// 		$insert->save();
-			// 	}
-			// }
-		}
 
 		// Começando o novo modulo de missão de conta
 		$user_quest_counter = UserQuestCounter::find_first("user_id=". $player->user_id);
@@ -405,8 +356,7 @@ class CharactersController extends Controller {
 		$max	= 0;
 		foreach ($formulas as $_ => $formula) {
 			$value	= $player->{$_}();
-
-			if($value > $max) {
+			if ($value > $max) {
 				$max	= $value;
 			}
 		}
@@ -423,38 +373,43 @@ class CharactersController extends Controller {
 		$this->assign('player',					$player);
 		$this->assign('ranked_total',			$ranked_total);
 	}
-	function list_images_only() {
-		$this->layout	= false;
-		$player			= Player::get_instance();
 
-		$this->assign('images', CharacterTheme::find($_GET['theme_id'], array('cache' => true))->images());
+	public function list_images_only() {
+		$this->layout	= false;
+		$images			= CharacterTheme::find($_GET['theme_id'], [ 'cache' => true ])->images();
+
+		$this->assign('images',	$images);
 	}
-	function list_images() {
+
+	public function list_images() {
 		$this->layout	= false;
 		$player			= Player::get_instance();
 		$user			= User::get_instance();
 
-		if($_POST) {
+		if ($_POST) {
 			$this->as_json			= true;
 			$this->render			= false;
 			$this->json->success	= false;
-			$errors					= array();
-			$user_image 			= UserCharacterThemeImage::find_first("user_id=".$user->id." AND character_theme_image_id=".$_POST['id']);
-			if(is_numeric($_POST['id'])) {
+
+			$errors					= [];
+			$user_image 			= UserCharacterThemeImage::find_first("user_id=".$user->id." and character_theme_image_id=".$_POST['id']);
+
+			if (is_numeric($_POST['id'])) {
 				$image	= CharacterThemeImage::find($_POST['id']);
 
-				if(!$image || !$image->active) {
+				if (!$image || !$image->active) {
 					$errors[]	= t('character.status.change_image.errors.invalid');
 				} else {
-					if($image->character_theme_id != $player->character_theme_id) {
+					if ($image->character_theme_id != $player->character_theme_id) {
 						$errors[]	= t('character.status.change_image.errors.theme');
 					}
 
-					if($image->character_theme()->character_id != $player->character_id) {
+					if ($image->character_theme()->character_id != $player->character_id) {
 						$errors[]	= t('character.status.change_image.errors.belongs');
 					}
-					if(!$user_image){
-						if($image->is_buyable  && ($user->credits < $image->price_credits)) {
+
+					if (!$user_image) {
+						if ($image->is_buyable  && ($user->credits < $image->price_credits)) {
 							$errors[]	= "Você não tem créditos para comprar essa imagem";
 						}
 					}
@@ -463,18 +418,18 @@ class CharactersController extends Controller {
 				$errors[]	= t('character.status.change_image.errors.invalid');
 			}
 
-			if(!sizeof($errors)) {
-				$this->json->success				= true;
+			if (!sizeof($errors)) {
+				$this->json->success	= true;
 
-				if($image->is_buyable){
-					if(!$user_image){
+				if ($image->is_buyable) {
+					if (!$user_image) {
 						$user_character_theme_image								= new UserCharacterThemeImage();
 						$user_character_theme_image->user_id					= $user->id;
 						$user_character_theme_image->character_theme_image_id	= $_POST['id'];
 						$user_character_theme_image->price_credits				= $image->price_credits;
 						$user_character_theme_image->save();
 
-						$user->credits -= 5;
+						$user->spend($image->price_credits);
 						$user->save();
 					}
 
@@ -486,28 +441,30 @@ class CharactersController extends Controller {
 				$this->json->errors	= $errors;
 			}
 		} else {
-			$this->assign('user', $user);
-			$this->assign('images', $player->character_theme()->images());
+			$this->assign('user',	$user);
+			$this->assign('images',	$player->character_theme()->images());
 		}
 	}
-	function list_themes() {
+
+	public function list_themes() {
 		$this->layout	= false;
+
 		$player			= Player::get_instance();
 		$user			= User::get_instance();
 
-		if($_POST) {
+		if ($_POST) {
 			$this->as_json			= true;
 			$this->render			= false;
 			$this->json->success	= false;
-			$errors					= array();
+			$errors					= [];
 
-			if(isset($_POST['theme']) && is_numeric($_POST['theme'])) {
+			if (isset($_POST['theme']) && is_numeric($_POST['theme'])) {
 				$theme	= CharacterTheme::find($_POST['theme']);
-				if(!$theme) {
+				if (!$theme) {
 					$errors[]	= t('characters.themes.errors.invalid');
 				} else {
 					if ($_POST['type']) {
-						if($theme->character()->id != $player->character()->id) {
+						if ($theme->character()->id != $player->character()->id) {
 							$errors[]	= t('characters.themes.errors.character');
 						}
 					}
@@ -533,6 +490,7 @@ class CharactersController extends Controller {
 							if ($theme->price_credits && $theme->price_credits > $user->credits && $_POST['mode'] == 1) {
 								$errors[]	= t('characters.themes.errors.enough_credits');
 							}
+
 							if ($theme->price_currency && $theme->price_currency > $player->currency && $_POST['mode'] == 2) {
 								$errors[]	= t('characters.themes.errors.enough_currency', [
 									'currency' => t('currencies.' . $player->character()->anime_id)
@@ -599,9 +557,9 @@ class CharactersController extends Controller {
 		} else {
 			$filter = "";
 			if (!$_SESSION['universal']) {
-				$filter = " AND active=1";
+				$filter = " and active=1";
 			}
-			$this->assign('user', $user);
+			$this->assign('user',	$user);
 
 			if (isset($_GET['show_only'])) {
 				if (isset($_GET['character']) && is_numeric($_GET['character'])) {
@@ -619,26 +577,29 @@ class CharactersController extends Controller {
 		}
 	}
 
-	function talents() {
-		$items	= Item::find("item_type_id=6 ORDER BY mana_cost ASC");
+	public function talents() {
+		$items	= Item::find("item_type_id = 6", [
+			'reorder'	=> 'mana_cost asc'
+		]);
 		$player	= Player::get_instance();
 		$user	= User::get_instance();
 		$list	= [];
 
-		if($_POST) {
+		if ($_POST) {
 			$this->as_json			= true;
 			$this->json->success	= false;
+
 			$errors					= [];
 
-			if($player->has_item($_POST['item_id'])) {
+			if ($player->has_item($_POST['item_id'])) {
 				$errors[]	= t('characters.talents.errors.already');
 			} else {
-				if(!is_numeric($_POST['item_id'])) {
+				if (!is_numeric($_POST['item_id'])) {
 					$errors[]	= t('characters.talents.errors.invalid');
 				} else {
 					$item	= Item::find($_POST['item_id']);
 
-					if($item->item_type_id != 6) {
+					if ($item->item_type_id != 6) {
 						$errors[]	= t('characters.talents.errors.invalid');
 					} else {
 						$levels_learned	= [];
@@ -647,13 +608,13 @@ class CharactersController extends Controller {
 							$levels_learned[$talent->item()->mana_cost]	= true;
 						}
 
-						if(isset($levels_learned[$item->mana_cost])) {
+						if (isset($levels_learned[$item->mana_cost])) {
 							$errors[]	= t('characters.talents.errors.tree_level');
 						}
 
 						$reqs	= $item->has_requirement($player);
 
-						if(!$reqs['has_requirement']) {
+						if (!$reqs['has_requirement']) {
 							$errors[]	= t('characters.talents.errors.requirements');
 						}
 					}
@@ -668,10 +629,9 @@ class CharactersController extends Controller {
 				$this->json->messages	= $errors;
 			}
 		} else {
-			foreach($items as $item) {
+			foreach ($items as $item) {
 				$lvl	= $item->mana_cost;
-
-				if(!isset($list[$lvl])) {
+				if (!isset($list[$lvl])) {
 					$list[$lvl]	= [];
 				}
 
@@ -680,14 +640,14 @@ class CharactersController extends Controller {
 				$list[$lvl][]	= $item;
 			}
 
-			$this->assign('list', $list);
-			$this->assign('player', $player);
-			$this->assign('user', $user);
-			$this->assign('player_tutorial', $player->player_tutorial());
+			$this->assign('list',				$list);
+			$this->assign('player',				$player);
+			$this->assign('user',				$user);
+			$this->assign('player_tutorial',	$player->player_tutorial());
 		}
 	}
 
-	function next_level() {
+	public function next_level() {
 		$player	=& Player::get_instance();
 
 		if ($_POST) {
@@ -714,81 +674,82 @@ class CharactersController extends Controller {
 		}
 	}
 
-	function inventory() {
+	public function inventory() {
 		// REMOVED = 7
-		$ids			= [5, 10, 12, 13, 16];
-		$consumables	= [5];
+		$ids			= [ 5, 10, 12, 13, 16 ];
+		$consumables	= [ 5 ];
 		$player			=& Player::get_instance();
-		$items			= [];
 		$errors			= [];
+
+		$items			= [];
 		$results		= Recordset::query('
 			SELECT
 				a.id
-
 			FROM
-				player_items a JOIN items b ON b.id=a.item_id
-
+				player_items a
+				JOIN items b ON b.id = a.item_id
 			WHERE
-				b.item_type_id IN(' . implode(',', $ids) . ')
-				AND a.player_id=' . $player->id);
-
+				b.item_type_id IN (' . implode(', ', $ids) . ') AND
+				a.player_id = ' . $player->id);
 		foreach ($results->result_array() as $result) {
 			$items[]	= PlayerItem::find($result['id']);
 		}
 
-		if($_POST) {
+		if ($_POST) {
 			$this->as_json	= true;
 
-			if(!isset($_POST['item']) || (isset($_POST['item']) && !is_numeric($_POST['item']))) {
+			if (!isset($_POST['item']) || (isset($_POST['item']) && !is_numeric($_POST['item']))) {
 				$errors[]	= t('characters.inventory.errors.invalid');
 			} else {
-				if($player->has_item($_POST['item'])) {
+				if ($player->has_item($_POST['item'])) {
 					$player_item	= $player->get_item($_POST['item']);
 					$item			= $player_item->item();
 
-					if(!in_array($item->item_type_id, $consumables)) {
+					if (!in_array($item->item_type_id, $consumables)) {
 						$errors[]	= t('characters.inventory.errors.allowed');
 					}
 				} else {
 					$errors[]	= t('characters.inventory.errors.existent');
 				}
 
-				if($item->item_type_id == 5 && $player->less_life <= 0 && $item->for_life > 0) {
+				if ($item->item_type_id == 5 && $player->less_life <= 0 && $item->for_life > 0) {
 					$errors[]	= t('characters.create.errors.life');
 				}
-				if($item->item_type_id == 5 && $player->less_mana <= 0 && $item->for_mana > 0) {
+
+				if ($item->item_type_id == 5 && $player->less_mana <= 0 && $item->for_mana > 0) {
 					$errors[]	= t('characters.create.errors.mana', [
 						'mana' => strtolower(t('formula.for_mana.' . $player->character()->anime()->id))
 					]);
 				}
-				if($item->item_type_id == 5 && $player->less_stamina <= 0 && $item->for_stamina > 0) {
+
+				if ($item->item_type_id == 5 && $player->less_stamina <= 0 && $item->for_stamina > 0) {
 					$errors[]	= t('characters.create.errors.stamina');
 				}
 
-				if($player->hospital) {
+				if ($player->hospital) {
 					$errors[]	= t('characters.inventory.errors.hospital');
 				}
 
-				if($player->battle_pvp_id || $player->battle_npc_id) {
+				if ($player->battle_pvp_id || $player->battle_npc_id) {
 					$errors[]	= t('characters.inventory.errors.battle');
 				}
 			}
 
-			if(!sizeof($errors)) {
+			if (!sizeof($errors)) {
 				if ($item->item_type_id == 5) {
 					$player->less_life				-= $item->for_life;
 					$player->less_mana				-= $item->for_mana;
 					$player->less_stamina			-= $item->for_stamina;
 
-					if($player->less_life <= 0) {
+					if ($player->less_life <= 0) {
 						$player->less_life	= 0;
 					}
 
-					if($player->less_mana <= 0) {
+					if ($player->less_mana <= 0) {
 						$player->less_mana	= 0;
 					}
 
-					if($player->less_stamina <= 0) {
+					if ($player->less_stamina <= 0) {
 						$player->less_stamina	= 0;
 					}
 
@@ -804,7 +765,7 @@ class CharactersController extends Controller {
 				$this->json->stamina		= $player->for_stamina();
 				$this->json->max_stamina	= $player->for_stamina(true);
 
-				if($player_item->quantity - 1 <= 0) {
+				if ($player_item->quantity - 1 <= 0) {
 					$player_item->destroy();
 
 					$this->json->delete	= true;
@@ -822,19 +783,20 @@ class CharactersController extends Controller {
 		} else {
 			$this->layout	= false;
 
-			$this->assign('player', $player);
-			$this->assign('player_items', $items);
-			$this->assign('consumables', $consumables);
-			$this->assign('types', ItemType::all());
+			$this->assign('player',			$player);
+			$this->assign('player_items',	$items);
+			$this->assign('consumables',	$consumables);
+			$this->assign('types',			ItemType::all());
 		}
 	}
-	function fragments(){
-		$player		= Player::get_instance();
-		$total		= PlayerItem::find_first("player_id=". $player->id ." AND item_id=446");
 
-		$this->assign('player', $player);
-		$this->assign('total', $total);
-		$this->assign('player_tutorial', $player->player_tutorial());
+	public function fragments() {
+		$player		= Player::get_instance();
+		$total		= PlayerItem::find_first("player_id = ". $player->id ." and item_id = 446");
+
+		$this->assign('player',				$player);
+		$this->assign('total',				$total);
+		$this->assign('player_tutorial',	$player->player_tutorial());
 	}
 	function fragments_change() {
 		$this->as_json			= true;
@@ -895,7 +857,7 @@ class CharactersController extends Controller {
 		}
 	}
 
-	function pets() {
+	public function pets() {
 		$player		= Player::get_instance();
 		$page		= isset($_POST['page']) && is_numeric($_POST['page']) ? $_POST['page'] : 0;
 		$limit		= 20;
@@ -905,18 +867,17 @@ class CharactersController extends Controller {
 		$rarity		= 'all';
 		$status		= 'all';
 
-		// $pet = Item::add_random_pet($player, 'mega');
-		// var_dump($pet);
-
 		if ($_POST) {
 			if (isset($_POST['name']) && strlen(trim($_POST['name']))) {
 				$filter		.= ' AND c.name LIKE "%' . addslashes($_POST['name']) . '%"';
 				$name		= $_POST['name'];
 			}
+
 			if (isset($_POST['anime']) && strlen(trim($_POST['anime'])) && ($_POST['anime'] != "all")) {
 				$filter		.= ' AND c.anime_id = ' . addslashes($_POST['anime']);
 				$anime		= $_POST['anime'];
 			}
+
 			if (isset($_POST['rarity']) && strlen(trim($_POST['rarity'])) && ($_POST['rarity'] != "all")) {
 				$filter		.= ' AND b.rarity = "' . addslashes($_POST['rarity']) . '"';
 				$rarity		= $_POST['rarity'];
@@ -941,7 +902,7 @@ class CharactersController extends Controller {
 		$this->assign('player_tutorial',	$player->player_tutorial());
 	}
 
-	function pets_old() {
+	public function pets_old() {
 		$player		= Player::get_instance();
 		$mine_pets	= [];
 		$active_pet	= 0;
@@ -1010,9 +971,11 @@ class CharactersController extends Controller {
 		$this->assign('active',				$active);
 		$this->assign('player_tutorial',	$player->player_tutorial());
 	}
-	function remove_pet() {
+
+	public function remove_pet() {
 		$this->as_json			= true;
 		$this->json->success	= false;
+
 		$errors					= [];
 		$player					= Player::get_instance();
 
@@ -1034,9 +997,11 @@ class CharactersController extends Controller {
 			$this->json->messages	= $errors;
 		}
 	}
-	function learn_pet() {
+
+	public function learn_pet() {
 		$this->as_json			= true;
 		$this->json->success	= false;
+
 		$errors					= [];
 		$player					= Player::get_instance();
 
@@ -1064,7 +1029,7 @@ class CharactersController extends Controller {
 		}
 	}
 
-	function show_lock_info($id) {
+	public function show_lock_info($id) {
 		if (!is_numeric($id)) {
 			$this->denied	= true;
 		} else {
@@ -1076,14 +1041,14 @@ class CharactersController extends Controller {
 			if (!$character || $character && $character->unlocked($user)) {
 				$this->denied	= true;
 			} else {
-				$this->assign('character', $character);
-				$this->assign('user', $user);
-				$this->assign('player', $player);
+				$this->assign('character',	$character);
+				$this->assign('user',		$user);
+				$this->assign('player',		$player);
 			}
 		}
 	}
 
-	function unlock_character($id) {
+	public function unlock_character($id) {
 		if (!is_numeric($id)) {
 			$this->denied	= true;
 		} else {
@@ -1143,13 +1108,13 @@ class CharactersController extends Controller {
 		}
 	}
 
-	function change_headline() {
+	public function change_headline() {
 		$this->as_json			= true;
 		$this->json->success	= false;
 		$errors					= [];
 		$player					= Player::get_instance();
 
-		if (!isset($_POST['headline']) || (isset($_POST['headline']) && !is_numeric($_POST['headline']))) {
+		if (!isset($_POST['headline']) || !is_numeric($_POST['headline'])) {
 			$errors[]	= t('characters.change_headline.errors.invalid');
 		} else {
 			if ($_POST['headline']) {
@@ -1171,95 +1136,45 @@ class CharactersController extends Controller {
 		}
 	}
 
-	function tutorial() {
+	public function tutorial() {
 		$this->layout	= false;
-		$player			= Player::get_instance();
-
-		if($_POST) {
+		if ($_POST) {
 			$this->as_json			= true;
 			$this->render			= false;
 			$this->json->success	= false;
-			$errors					= array();
 
-			if(!sizeof($errors)) {
-				$this->json->success  = true;
+			$player		= Player::get_instance();
+			$errors		= [];
 
-				$player_tutorial = PlayerTutorial::find_first("player_id=". $player->id);
+			if (!sizeof($errors)) {
+				$this->json->success	= true;
 
-				switch($_POST['id']){
-					case 1:
-						$player_tutorial->status = 1;
-					break;
-					case 2:
-						$player_tutorial->habilidades = 1;
-					break;
-					case 3:
-						$player_tutorial->pets = 1;
-					break;
-					case 4:
-						$player_tutorial->equips = 1;
-					break;
-					case 5:
-						$player_tutorial->escola = 1;
-					break;
-					case 6:
-						$player_tutorial->mercado = 1;
-					break;
-					case 7:
-						$player_tutorial->ramen = 1;
-					break;
-					case 8:
-						$player_tutorial->treinamento = 1;
-					break;
-					case 9:
-						$player_tutorial->aprimoramentos = 1;
-					break;
-					case 10:
-						$player_tutorial->golpes = 1;
-					break;
-					case 11:
-						$player_tutorial->loja_pvp = 1;
-					break;
-					case 12:
-						$player_tutorial->missoes_tempo = 1;
-					break;
-					case 13:
-						$player_tutorial->missoes_pvp = 1;
-					break;
-					case 14:
-						$player_tutorial->missoes_diarias = 1;
-					break;
-					case 15:
-						$player_tutorial->missoes_seguidores = 1;
-					break;
-					case 16:
-						$player_tutorial->battle_pvp = 1;
-					break;
-					case 17:
-						$player_tutorial->battle_npc = 1;
-					break;
-					case 18:
-						$player_tutorial->fidelity = 1;
-					break;
-					case 19:
-						$player_tutorial->battle_village = 1;
-					break;
-					case 20:
-						$player_tutorial->bijuus = 1;
-					break;
-					case 21:
-						$player_tutorial->talents = 1;
-					break;
-					case 22:
-						$player_tutorial->missoes_conta = 1;
-					break;
-					case 23:
-						$player_tutorial->battle_ranked = 1;
-					break;
-					case 24:
-						$player_tutorial->objectives = 1;
-					break;
-
+				$player_tutorial		= PlayerTutorial::find_first("player_id = " . $player->id);
+				switch ($_POST['id']) {
+					case 1:		$player_tutorial->status				= 1;	break;
+					case 2:		$player_tutorial->habilidades			= 1;	break;
+					case 3:		$player_tutorial->pets					= 1;	break;
+					case 4:		$player_tutorial->equips				= 1;	break;
+					case 5:		$player_tutorial->escola				= 1;	break;
+					case 6:		$player_tutorial->mercado				= 1;	break;
+					case 7:		$player_tutorial->ramen					= 1;	break;
+					case 8:		$player_tutorial->treinamento			= 1;	break;
+					case 9:		$player_tutorial->aprimoramentos		= 1;	break;
+					case 10:	$player_tutorial->golpes				= 1;	break;
+					case 11:	$player_tutorial->loja_pvp				= 1;	break;
+					case 12:	$player_tutorial->missoes_tempo			= 1;	break;
+					case 13:	$player_tutorial->missoes_pvp			= 1;	break;
+					case 14:	$player_tutorial->missoes_diarias		= 1;	break;
+					case 15:	$player_tutorial->missoes_seguidores	= 1;	break;
+					case 16:	$player_tutorial->battle_pvp			= 1;	break;
+					case 17:	$player_tutorial->battle_npc			= 1;	break;
+					case 18:	$player_tutorial->fidelit				= 1;	break;
+					case 19:	$player_tutorial->battle_village		= 1;	break;
+					case 20:	$player_tutorial->bijuus				= 1;	break;
+					case 21:	$player_tutorial->talents				= 1;	break;
+					case 22:	$player_tutorial->missoes_conta			= 1;	break;
+					case 23:	$player_tutorial->battle_ranked			= 1;	break;
+					case 24:	$player_tutorial->objectives			= 1;	break;
 				}
 				$player_tutorial->save();
 			} else {

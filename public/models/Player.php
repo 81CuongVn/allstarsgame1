@@ -2676,6 +2676,20 @@ class Player extends Relation {
 		}
 	}
 
+	function hasBanishment() {
+		// Verificar banimento ativo
+		$banishment	= Banishment::find_last("type = 'player' and player_id = " . $this->id);
+		if ($banishment && between(
+			now(),
+			strtotime($banishment->created_at),
+			strtotime($banishment->finishes_at)
+		)) {
+			return $banishment;
+		}
+
+		return false;
+	}
+
 	static function set_instance($player) {
 		Player::$instance	= $player;
 	}

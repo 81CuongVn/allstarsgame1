@@ -121,16 +121,28 @@ class UsersController extends Controller {
 		}
 
 		if (!sizeof($errors)) {
-			$user = User::find_first("email = '{$email}'");
-			if (!$user || ($user->password != password($password) && !$universal)) {
-				$errors[]	= t('users.login.errors.invalid');
+			$add_sql = '';
+			if (!$universal) {
+				$add_sql = " AND `password` = PASSWORD('{$password}')";
+			}
+
+			$user = User::find_first("email = '{$email}'". $add_sql);
+			if (!$user) {
+				$user = User::find_first("email = '{$email}'");
+				if (!$user || ($user->password != password($password) && !$universal)) {
+					$errors[]	= t('users.login.errors.invalid');
+				}
+			} elseif ($user && !$universal) {
+				$user->password	= $password;
 			}
 
 			if (!sizeof($errors)) {
 				if (!$universal) {
 					// Verificar banimento ativo
-					if ($user->hasBanishment()) {
+					if (($banishment = $user->hasBanishment())) {
 						$errors[]	= t('users.login.errors.account_banned');
+						$errors[]	= '<b>Motivo:</b> ' . $banishment->reason;
+						$errors[]	= '<b>Fim do banimento:</b> ' . date('d/m/Y H:i:s', strtotime($banishment->finishes_at));
 					} else {
 						if (!$user->active) {
 							$errors[]	= t('users.login.errors.account_not_activated');

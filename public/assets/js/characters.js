@@ -255,11 +255,8 @@
         });
     });
     $('#select-player-list-container').on('click', '.player', function () {
-        var _ = $(this);
-        // if (_.hasClass('locked'))
-        // 	return;
-        // else {
-        var player = _players[_.data('id')];
+        var	_		= $(this);
+        var	player	= _players[_.data('id')];
 
         $('#select-player-list-container .player').removeClass('selected');
         _.addClass('selected');
@@ -279,20 +276,7 @@
         var expPercent = Math.floor((player.exp / player.level_exp) * 100);
         fill_exp_bar('#current-player-info .bar-exp .exp-bar', player.exp, player.level_exp, expPercent + '%');
 
-        // if (player.ultimate) {
-        // $('#current-player-image').html('<embed height="281" width="235" src="' + player.profile + '" quality="high" wmode="transparent" allowscriptaccess="always" pluginspage="http://www.macromedia.com/shockwave/download/index.cgi?P1_Prod_Version=ShockwaveFlash" type="application/x-shockwave-flash"></embed>');
-        // } else {
         $('#current-player-image').html('<img src="' + player.profile + '" />');
-        // }
-
-        if (!_.hasClass('locked')) {
-            $("#playerButtons").show();
-            $("#playerBanned").hide();
-        } else {
-            $("#playerButtons").hide();
-            $("#playerBanned").show();
-        }
-        // }
     });
 
     $('#select-player-list-container .player:first').trigger('click');

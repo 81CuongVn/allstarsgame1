@@ -123,22 +123,6 @@ if (!$_SERVER['PATH_INFO']) {
     }
 }
 
-if (IS_MAINTENANCE) {
-    define('MAINTENANCE_CONTROLLER',	'internal');
-    define('MAINTENANCE_ACTION',		'maintenance');
-
-	if (isset($_GET['is_admin'])) {
-        $_SESSION['skip_maintenance']	= TRUE;
-    }
-
-    if (!isset($_SESSION['skip_maintenance'])) {
-        if (!(($controller == 'users' && (preg_match('/beta|join_complete|beta_activ/', $action))) || $controller == 'captcha')) {
-            $controller	= MAINTENANCE_CONTROLLER;
-            $action		= MAINTENANCE_ACTION;
-        }
-    }
-}
-
 $___memory['before_libs']	    = memory_get_usage();
 
 if (is_dir(ROOT . '/lib')) {

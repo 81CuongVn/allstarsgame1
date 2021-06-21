@@ -7,9 +7,4 @@ class InternalController extends Controller {
 	function denied() {
 		$this->render	= '403';
 	}
-
-	function maintenance() {
-		$this->layout	= false;
-		$this->render	= 'maintenance';
-	}
 }
