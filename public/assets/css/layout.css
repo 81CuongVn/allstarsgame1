@@ -378,7 +378,13 @@ li {
 	margin-top: 2px
 }
 #form-login .play-button {
-	vertical-align: middle;
+	margin: 0 2px;
+	float: left;
+	width: 37px;
+    height: 23px;
+    background-image: url(../images/buttons/bt-jogar.png?v=2.0.1);
+    border: none;
+    background-color: transparent;
 }
 .in-login {
 	padding-left: 10px;

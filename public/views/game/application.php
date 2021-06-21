@@ -329,12 +329,17 @@ if (preg_match('/read_news/', $action)) {
 										<form method="post" onsubmit="return false">
 											<input type="email" name="email" placeholder="Digite seu Email" class="in-login" />
 											<input type="password" name="password" placeholder="Digite sua Senha" class="in-senha" />
-											<input type="text" name="captcha" class="in-codigo" placeholder="Digite o Código" />
-											<img class="in-captcha" src="<?=make_url('captcha#login');?>" alt="Captcha Code" />
-											<div style="position: relative; left: -8px; margin-top: -4px">
-												<a href="<?=make_url('users/reset_password');?>"><img src="<?=image_url('buttons/bt-senha.png');?>" data-toggle="tooltip" title="<?=make_tooltip('Esqueci minha Senha', 125);?>" /></a>
-												<input class="play-button" type="image" src="<?=image_url('buttons/bt-jogar.png');?>" width="37" height="23" />
-												<a href="<?=$fb_url;?>"><img src="<?=image_url('buttons/bt-face.png');?>" data-toggle="tooltip" title="<?=make_tooltip('Entrar com Facebook', 125);?>" /></a>
+											<!-- <input type="text" name="captcha" class="in-codigo" placeholder="Digite o Código" /> -->
+											<!-- <img class="in-captcha" src="<?=make_url('captcha#login');?>" alt="Captcha Code" /> -->
+											<div style="width: 114px; margin: 0 auto; margin-top: 28px;">
+												<a href="<?=make_url('users/reset_password');?>" style="float: left; margin: 0 2px;">
+													<img src="<?=image_url('buttons/bt-senha.png');?>" data-toggle="tooltip" title="<?=make_tooltip('Esqueci minha Senha', 125);?>" />
+												</a>
+												<button type="submit" class="play-button g-recaptcha" data-sitekey="<?=$recaptcha['site'];?>" data-callback="doLogin"></button>
+												<a href="<?=$fb_url;?>" style="float: left; margin: 0 2px;">
+													<img src="<?=image_url('buttons/bt-face.png');?>" data-toggle="tooltip" title="<?=make_tooltip('Entrar com Facebook', 125);?>" />
+												</a>
+												<div class="break"></div>
 											</div>
 										</form>
 									</div>

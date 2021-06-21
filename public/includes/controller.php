@@ -5,11 +5,16 @@ class Controller {
 	public	$json		= null;
 	public	$view		= null;
 	public	$layout		= null;
+	public	$recaptcha	= null;
 
 	function __construct() {
-		$this->json	= new stdClass();
+		global $recaptcha_keys;
 
-		$this->assign('fb_url', "https://www.facebook.com/dialog/oauth?client_id=" . FB_APP_ID . "&redirect_uri=" . urlencode(make_url(FB_CALLBACK_URL)) . "&scope=email");
+		$this->json			= new stdClass();
+		$this->recaptcha	= $recaptcha_keys['invisible'];
+
+		$this->assign('recaptcha',	$this->recaptcha);
+		$this->assign('fb_url',		"https://www.facebook.com/dialog/oauth?client_id=" . FB_APP_ID . "&redirect_uri=" . urlencode(make_url(FB_CALLBACK_URL)) . "&scope=email");
 	}
 
 	function assign($key, $value) {

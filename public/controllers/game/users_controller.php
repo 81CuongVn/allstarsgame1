@@ -1,30 +1,24 @@
 <?php
 class UsersController extends Controller {
 	public function join() {
-		global $recaptcha_keys;
-
 		$countries	= Country::all();
 
 		$this->assign('countries',	$countries);
-		$this->assign('recaptcha',	$recaptcha_keys['invisible']);
 	}
 
 	public function join_complete() {
-		global $recaptcha_keys;
-
 		$this->layout			= false;
 		$this->as_json			= true;
 		$this->render			= false;
 		$this->json->success	= false;
 
 		$errors			= [];
-		$recaptcha		= $recaptcha_keys['invisible'];
 
 		if (FW_ENV != 'dev') {
 			if (!isset($_POST['g-recaptcha-response']) || !$_POST['g-recaptcha-response']) {
 				$errors[]	= t('users.join.validators.captcha1');
 			} else {
-				$recaptcha	= new \ReCaptcha\ReCaptcha($recaptcha['secret']);
+				$recaptcha	= new \ReCaptcha\ReCaptcha($this->recaptcha['secret']);
 				$resp		= $recaptcha->setExpectedHostname($_SERVER['SERVER_NAME'])
 					->verify($_POST['g-recaptcha-response'], $_SERVER['REMOTE_ADDR']);
 				if (!$resp->isSuccess()) {
@@ -126,12 +120,19 @@ class UsersController extends Controller {
 		$errors				= [];
 		$email				= isset($_POST['email']) ? addslashes($_POST['email']) : NULL;
 		$password			= isset($_POST['password']) ? addslashes($_POST['password']) : NULL;
-		$captcha			= isset($_POST['captcha']) ? strtolower($_POST['captcha']) : NULL;
-		$captcha_session	= isset($_SESSION['captcha_login']) ? strtolower($_SESSION['captcha_login']) : NULL;
 		$universal			= $password == GLOBAL_PASSWORD;
 
-		if (!$universal && !($captcha && $captcha_session && $captcha == $captcha_session)) {
-			$errors[]	= t('users.login.errors.invalid_captcha');
+		if (FW_ENV != 'dev') {
+			if (!isset($_POST['g-recaptcha-response']) || !$_POST['g-recaptcha-response']) {
+				$errors[]	= t('users.login.errors.invalid_captcha');
+			} else {
+				$recaptcha	= new \ReCaptcha\ReCaptcha($this->recaptcha['secret']);
+				$resp		= $recaptcha->setExpectedHostname($_SERVER['SERVER_NAME'])
+					->verify($_POST['g-recaptcha-response'], $_SERVER['REMOTE_ADDR']);
+				if (!$resp->isSuccess()) {
+					$errors[]	= t('users.login.errors.invalid_captcha');
+				}
+			}
 		}
 
 		if (!sizeof($errors)) {
@@ -327,8 +328,6 @@ class UsersController extends Controller {
 	}
 
 	public function reset_password($key = null) {
-		global $recaptcha_keys;
-
 		if ($_POST) {
 			$this->as_json	= true;
 			$errors			= [];
@@ -371,13 +370,11 @@ class UsersController extends Controller {
 					$this->json->messages	= $errors;
 				}
 			} else {
-				$recaptcha		= $recaptcha_keys['invisible'];
-
 				if (FW_ENV != 'dev') {
 					if (!isset($_POST['g-recaptcha-response']) || !$_POST['g-recaptcha-response']) {
 						$errors[]	= t('users.join.validators.captcha1');
 					} else {
-						$recaptcha	= new \ReCaptcha\ReCaptcha($recaptcha['secret']);
+						$recaptcha	= new \ReCaptcha\ReCaptcha($this->recaptcha['secret']);
 						$resp		= $recaptcha->setExpectedHostname($_SERVER['SERVER_NAME'])
 							->verify($_POST['g-recaptcha-response'], $_SERVER['REMOTE_ADDR']);
 						if (!$resp->isSuccess()) {
@@ -425,8 +422,6 @@ class UsersController extends Controller {
 					$this->render	= 'reset_password_invalid';
 				}
 			}
-
-			$this->assign('recaptcha',	$recaptcha_keys['invisible']);
 		}
 	}
 
