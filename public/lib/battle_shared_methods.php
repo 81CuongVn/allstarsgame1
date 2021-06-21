@@ -380,28 +380,32 @@ trait BattleSharedMethods {
 			// Faz a transição de pontos para a batalha de animes
 
 			// Adiciona Felicidade em seu Mascote
-			$activePet = $p->get_active_pet();
-			if ($activePet) {
-				// Adiciona 2 pontos de felicidade ao mascote equipado
-				if ($activePet->happiness < 100) {
-					if (($activePet->happiness + 2) >= 100) {
-						$activePet->happiness = 100;
-					} else {
-						$activePet->happiness += 2;
+			if ($battle->battle_type_id != 4) {
+				$activePet = $p->get_active_pet();
+				if ($activePet) {
+					$addHappiness	= $is_pvp ? 2 : 1;
+
+					// Adiciona 2 pontos de felicidade ao mascote equipado
+					if ($activePet->happiness < 100) {
+						if (($activePet->happiness + $addHappiness) >= 100) {
+							$activePet->happiness = 100;
+						} else {
+							$activePet->happiness += $addHappiness;
+						}
 					}
+
+					// Adiciona exp para o mascote porque esta ativo em luta.
+					$petAddExp = percent(20, $e->battle_exp() * EXP_RATE);
+					$activePet->exp += $petAddExp > 0 ? $petAddExp : 0;
+					$activePet->save();
+
+					// Verifica de o mascote pode evoluir
+					$p->check_pet_level($activePet, true);
+
+					// Conquista para verificar a quantidade de pet / hapiness
+					$p->achievement_check("pets");
+					$p->check_objectives('pets');
 				}
-
-				// Adiciona exp para o mascote porque esta ativo em luta.
-				$petAddExp = percent(20, $e->battle_exp() * EXP_RATE);
-				$activePet->exp += $petAddExp > 0 ? $petAddExp : 0;
-				$activePet->save();
-
-				// Verifica de o mascote pode evoluir
-				$p->check_pet_level($activePet, true);
-
-				// Conquista para verificar a quantidade de pet / hapiness
-				$p->achievement_check("pets");
-				$p->check_objectives('pets');
 			}
 
 			$p->battle_npc_id	= 0;
