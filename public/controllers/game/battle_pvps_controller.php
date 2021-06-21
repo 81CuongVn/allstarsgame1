@@ -432,7 +432,7 @@ class BattlePvpsController extends Controller {
 				'graduation'		=> (int)$player->graduation()->sorting,
 				'won'				=> (int)$player->won_last_battle,
 				'battle_type_id'	=> (int)$battle_type_id,
-				'ip'				=> $player->last_ip
+				'ip'				=> getIP()
 			]), [ 'delivery_mode' => 2 ]);
 
 			$player->less_stamina	+= PVP_COST;
