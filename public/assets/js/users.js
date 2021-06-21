@@ -32,6 +32,10 @@
 					} else {
 						lock_screen(false);
 						format_error(result);
+
+						if (typeof grecaptcha !== 'undefined') {
+							grecaptcha.reset();
+						}
 					}
 				}
 			});

@@ -20,6 +20,10 @@
 
 					if(!result.success) {
 						format_error(result);
+
+						if (typeof grecaptcha !== 'undefined') {
+							grecaptcha.reset();
+						}
 					} else {
 						$('#reset-password-box').html(result.view);
 					}

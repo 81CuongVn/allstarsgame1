@@ -122,8 +122,6 @@ if (preg_match('/read_news/', $action)) {
         	I18n.translations		= <?=Lang::toJSON()?>;
 		});
     </script>
-
-	<script type="text/javascript" src="//www.google.com/recaptcha/api.js" async defer></script>
 	<style>
 		.grecaptcha-badge { z-index: 1; }
 	</style>
@@ -453,6 +451,7 @@ if (preg_match('/read_news/', $action)) {
 <script type="text/javascript" src="<?=asset_url('js/png_animator.js');?>"></script>
 <script type="text/javascript" src="<?=asset_url('js/tournaments.js');?>"></script>
 <?php if (FW_ENV != 'dev') { ?>
+	<script type="text/javascript" src="//www.google.com/recaptcha/api.js" async defer></script>
 	<script async defer crossorigin="anonymous"
 		src="https://connect.facebook.net/pt_BR/sdk.js#xfbml=1
 				&version=v10.0&appId=<?=FB_APP_ID;?>&autoLogAppEvents=1"

@@ -20,74 +20,78 @@ class UsersController extends Controller {
 		$errors			= [];
 		$recaptcha		= $recaptcha_keys['invisible'];
 
-		if (!isset($_POST['g-recaptcha-response']) && FW_ENV != 'dev') {
-			$errors[]	= t('users.join.validators.captcha1');
-		} else {
-			$recaptcha	= new \ReCaptcha\ReCaptcha($recaptcha['secret']);
-			$resp		= $recaptcha->setExpectedHostname($_SERVER['SERVER_NAME'])
-				->verify($_POST['g-recaptcha-response'], $_SERVER['REMOTE_ADDR']);
-			if (!$resp->isSuccess() && FW_ENV != 'dev') {
+		if (FW_ENV != 'dev') {
+			if (!isset($_POST['g-recaptcha-response']) || !$_POST['g-recaptcha-response']) {
 				$errors[]	= t('users.join.validators.captcha1');
 			} else {
-				if (!isset($_POST['name']) || !$_POST['name']) {
-					$errors[]	= t('users.join.validators.name');
+				$recaptcha	= new \ReCaptcha\ReCaptcha($recaptcha['secret']);
+				$resp		= $recaptcha->setExpectedHostname($_SERVER['SERVER_NAME'])
+					->verify($_POST['g-recaptcha-response'], $_SERVER['REMOTE_ADDR']);
+				if (!$resp->isSuccess()) {
+					$errors[]	= t('users.join.validators.captcha1');
 				}
+			}
+		}
 
-				if (!isset($_POST['email']) || !filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
-					$errors[]	= t('users.join.validators.email');
+		if (!sizeof($errors)) {
+			if (!isset($_POST['name']) || !$_POST['name']) {
+				$errors[]	= t('users.join.validators.name');
+			}
+
+			if (!isset($_POST['email']) || !filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
+				$errors[]	= t('users.join.validators.email');
+			} else {
+				if (!isset($_POST['email_confirmation']) || !$_POST['email_confirmation']) {
+					$errors[]	= t('users.join.validators.email_confirmation');
 				} else {
-					if (!isset($_POST['email_confirmation']) || !$_POST['email_confirmation']) {
-						$errors[]	= t('users.join.validators.email_confirmation');
+					if ($_POST['email'] !== $_POST['email_confirmation']) {
+						$errors[]	= t('users.join.validators.email_match');
 					} else {
-						if ($_POST['email'] !== $_POST['email_confirmation']) {
-							$errors[]	= t('users.join.validators.email_match');
-						} else {
-							if (User::find_first('email = "' . addslashes($_POST['email']) . '"')) {
-								$errors[]	= t('users.join.validators.email_exists');
-							}
+						if (User::find_first('email = "' . addslashes($_POST['email']) . '"')) {
+							$errors[]	= t('users.join.validators.email_exists');
 						}
 					}
 				}
+			}
 
-				if (!isset($_POST['password']) || !$_POST['password']) {
-					$errors[]	= t('users.join.validators.password');
+			if (!isset($_POST['password']) || !$_POST['password']) {
+				$errors[]	= t('users.join.validators.password');
+			} else {
+				if (!isset($_POST['password_confirmation']) || !$_POST['password_confirmation']) {
+					$errors[]	= t('users.join.validators.password_confirmation');
 				} else {
-					if (!isset($_POST['password_confirmation']) || !$_POST['password_confirmation']) {
-						$errors[]	= t('users.join.validators.password_confirmation');
-					} else {
-						if ($_POST['password'] != $_POST['password_confirmation']) {
-							$errors[]	= t('users.join.validators.password_match');
-						}
+					if ($_POST['password'] != $_POST['password_confirmation']) {
+						$errors[]	= t('users.join.validators.password_match');
+					}
 
-						if (strlen($_POST['password']) < 6) {
-							$errors[]	= t('users.join.validators.password_length');
-						}
+					if (strlen($_POST['password']) < 6) {
+						$errors[]	= t('users.join.validators.password_length');
 					}
 				}
+			}
 
-				if (!isset($_POST['country_id']) || !Country::includes($_POST['country_id'])) {
-					$errors[]	= t('users.join.validators.country');
-				}
+			if (!isset($_POST['country_id']) || !Country::includes($_POST['country_id'])) {
+				$errors[]	= t('users.join.validators.country');
+			}
 
-				if (!isset($_POST['gender']) || !in_array($_POST['gender'], array(1, 2))) {
-					$errors[]	= t('users.join.validators.gender');
-				}
+			if (!isset($_POST['gender']) || !in_array($_POST['gender'], array(1, 2))) {
+				$errors[]	= t('users.join.validators.gender');
+			}
 
-				if (!isset($_POST['term1']) || !$_POST['term1']) {
-					$errors[]	= t('users.join.validators.term1');
-				}
+			if (!isset($_POST['term1']) || !$_POST['term1']) {
+				$errors[]	= t('users.join.validators.term1');
+			}
 
-				if (!isset($_POST['term2']) || !$_POST['term2']) {
-					$errors[]	= t('users.join.validators.term2');
-				}
+			if (!isset($_POST['term2']) || !$_POST['term2']) {
+				$errors[]	= t('users.join.validators.term2');
+			}
 
-				if (!isset($_POST['term3']) || !$_POST['term3']) {
-					$errors[]	= t('users.join.validators.term3');
-				}
+			if (!isset($_POST['term3']) || !$_POST['term3']) {
+				$errors[]	= t('users.join.validators.term3');
+			}
 
-				if (!isset($_POST['term_all']) || !$_POST['term_all']) {
-					$errors[]	= t('users.join.validators.term_all');
-				}
+			if (!isset($_POST['term_all']) || !$_POST['term_all']) {
+				$errors[]	= t('users.join.validators.term_all');
 			}
 		}
 
@@ -369,24 +373,28 @@ class UsersController extends Controller {
 			} else {
 				$recaptcha		= $recaptcha_keys['invisible'];
 
-				if (!isset($_POST['g-recaptcha-response']) && FW_ENV != 'dev') {
-					$errors[]	= t('users.join.validators.captcha1');
-				} else {
-					$recaptcha	= new \ReCaptcha\ReCaptcha($recaptcha['secret']);
-					$resp		= $recaptcha->setExpectedHostname($_SERVER['SERVER_NAME'])
-						->verify($_POST['g-recaptcha-response'], $_SERVER['REMOTE_ADDR']);
-					if (!$resp->isSuccess() && FW_ENV != 'dev') {
+				if (FW_ENV != 'dev') {
+					if (!isset($_POST['g-recaptcha-response']) || !$_POST['g-recaptcha-response']) {
 						$errors[]	= t('users.join.validators.captcha1');
 					} else {
-						if (!isset($_POST['email']) || !$_POST['email']) {
-							$user	= false;
-						} else {
-							$user	= User::find_by_email($_POST['email']);
+						$recaptcha	= new \ReCaptcha\ReCaptcha($recaptcha['secret']);
+						$resp		= $recaptcha->setExpectedHostname($_SERVER['SERVER_NAME'])
+							->verify($_POST['g-recaptcha-response'], $_SERVER['REMOTE_ADDR']);
+						if (!$resp->isSuccess()) {
+							$errors[]	= t('users.join.validators.captcha1');
 						}
+					}
+				}
 
-						if (!$user) {
-							$errors[]	= t('users.password_reset.errors.invalid_email');
-						}
+				if (!sizeof($errors)) {
+					if (!isset($_POST['email']) || !$_POST['email']) {
+						$user	= false;
+					} else {
+						$user	= User::find_by_email($_POST['email']);
+					}
+
+					if (!$user) {
+						$errors[]	= t('users.password_reset.errors.invalid_email');
 					}
 				}
 
