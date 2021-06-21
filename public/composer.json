@@ -17,6 +17,8 @@
         "stichoza/google-translate-php": "^3.2",
         "mercadopago/dx-php": "^2.2",
         "proxycheck/proxycheck-php": "^0.1.7",
-        "foroco/php-browser-detection": "^2.1"
+        "foroco/php-browser-detection": "^2.1",
+        "google/recaptcha": "^1.2",
+        "wisembly/elephant.io": "^3.3"
     }
 }

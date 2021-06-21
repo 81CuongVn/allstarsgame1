@@ -36,7 +36,7 @@ $mailConfig			= [
 	'host'			=> 'smtp.gmail.com',
 	'port'			=> 465,
 	'username'		=> 'animeallstarsgamebr@gmail.com',
-	'password'		=> 'ffm160295',
+	'password'		=> 'allStars2@21',
 	'from'			=> 'animeallstarsgamebr@gmail.com',
 	'from_name'		=> GAME_NAME
 ];
@@ -53,11 +53,23 @@ $attrRate			= [
 	'for_init'		=> 2,
 ];
 
+// reCAPTCHA keys
+$recaptcha_keys		= [
+	'standard'	=> [
+		'site'		=> '6LfHukgbAAAAAMA1dG8__VZv0zCyHYneKN-o_60R',
+		'secret'	=> '6LfHukgbAAAAAH77ueUrFJuXVQadq-caO1agnPwF'
+	],
+	'invisible'	=> [
+		'site'		=> '6LeGwEgbAAAAAP6tVKTV_1NYxn8oHj_wmDqzlzFJ',
+		'secret'	=> '6LeGwEgbAAAAAF_B4I2OQ-9rxElOq-UfhfJ42Vt5'
+	]
+];
+
 // Ranked Schedules
 $ranked_schedules	= [
 	[ '10', '12' ],		// 10h at 12h
 	[ '16', '18' ],		// 16h at 18h
-	[ '22', '00' ]		// 22h at 00h
+	[ '22', '24' ]		// 22h at 00h
 ];
 
 // Default sessions

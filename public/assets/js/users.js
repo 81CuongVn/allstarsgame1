@@ -1,21 +1,25 @@
 (function () {
 	var	join_form		= $('#f-user-join');
 	var	account_form	= $('#f-account-join');
-	
-	$("#zip").keypress(function (e) {
-	 //if the letter is not digit then display error and don't type anything
-	 if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
-		//display error message
-		$("#errmsg").html("Somente Números no Cep").show().fadeOut("slow");
-			   return false;
-	}
-	});
-	
-	if(join_form.length) {
-		join_form.on('submit', function (e) {
-			lock_screen(true);
 
+	$("#zip").keypress(function (e) {
+		// if the letter is not digit then display error and don't type anything
+		if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+			// display error message
+			$("#errmsg").html("Somente Números no Cep").show().fadeOut("slow");
+			return false;
+		}
+	});
+
+	if (join_form.length) {
+		join_form.on('submit', function (e) {
 			e.preventDefault();
+
+			doRegister();
+		});
+
+		window.doRegister = function() {
+			lock_screen(true);
 
 			$.ajax({
 				url:		make_url('users#join_complete'),
@@ -31,7 +35,7 @@
 					}
 				}
 			});
-		});
+		}
 
 		$('#join-captcha-image-refresh').on('click', function () {
 			var	img	= $('#join-captcha-image');
@@ -39,7 +43,8 @@
 			img.attr('src', img.data('image') + '?_cache=' + (Math.random() * 512384));
 		});
 	}
-	if(account_form.length) {
+
+	if (account_form.length) {
 		account_form.on('submit', function (e) {
 			lock_screen(true);
 

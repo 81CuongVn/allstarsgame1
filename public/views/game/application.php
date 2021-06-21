@@ -122,6 +122,11 @@ if (preg_match('/read_news/', $action)) {
         	I18n.translations		= <?=Lang::toJSON()?>;
 		});
     </script>
+
+	<script type="text/javascript" src="//www.google.com/recaptcha/api.js" async defer></script>
+	<style>
+		.grecaptcha-badge { z-index: 1; }
+	</style>
 </head>
 <body>
 <script type="text/javascript">

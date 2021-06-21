@@ -16,7 +16,7 @@ if (in_array($_SERVER['HTTP_HOST'], ['allstarsgame.com.br'])) {
     $env = 'prod';
 }
 
-define('FW_ENV',                    $env);
+define('FW_ENV',                    'prod');//$env);
 define('ROOT',						dirname(__FILE__));
 
 require_once ROOT . '/config.' . $env . '.php';
