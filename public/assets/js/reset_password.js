@@ -1,25 +1,32 @@
 (function () {
-	$('#reset-password-form').on('submit', function (e) {
-		e.preventDefault();
+	var resetPassword	= $('#reset-password-form');
+	if (resetPassword.length) {
+		resetPassword.on('submit', function (e) {
+			e.preventDefault();
 
-		lock_screen(true);
+			doResetPassword();
+		})
 
-		$.ajax({
-			url:		make_url('users#reset_password'),
-			data:		$(this).serialize(),
-			type:		'post',
-			dataType:	'json',
-			success:	function (result) {
-				lock_screen(false);
+		window.doResetPassword	= function() {
+			lock_screen(true);
 
-				if(!result.success) {
-					format_error(result);
-				} else {
-					$('#reset-password-form').html(result.view);
+			$.ajax({
+				url:		make_url('users#reset_password'),
+				data:		resetPassword.serialize(),
+				type:		'post',
+				dataType:	'json',
+				success:	function (result) {
+					lock_screen(false);
+
+					if(!result.success) {
+						format_error(result);
+					} else {
+						$('#reset-password-box').html(result.view);
+					}
 				}
-			}
-		});
-	});
+			});
+		}
+	}
 
 	$('#reset-password-finish-form').on('submit', function (e) {
 		e.preventDefault();
