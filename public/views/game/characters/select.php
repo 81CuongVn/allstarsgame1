@@ -61,12 +61,13 @@ echo partial('shared/title', array('title' => 'characters.select.title', 'place'
 				</div>
 				<div style="float: left; clear:both; position: relative; top: 40px; width: 490px; text-align: center">
 					<div id="playerButtons" style="display: none;">
-						<?php if (!IS_MAINTENANCE || $_SESSION['universal']) { ?>
-							<input class="button btn btn-sm btn-primary play" type="button" value="<?=t('buttons.play');?>" style="width:80px;" />
-						<?php } else { ?>
+						<?php if (IS_MAINTENANCE && !$_SESSION['universal']) { ?>
 							<input class="button btn btn-sm btn-primary" type="button" value="<?=t('buttons.play');?>" style="width: 80px;" disabled />
+							<input class="button btn btn-sm btn-danger" type="button" value="<?=t('buttons.remove');?>" style="width: 80px;" disabled />
+						<?php } else { ?>
+							<input class="button btn btn-sm btn-primary play" type="button" value="<?=t('buttons.play');?>" style="width: 80px;" />
+							<input class="button btn btn-sm btn-danger remove" type="button" value="<?=t('buttons.remove');?>" style="width: 80px;" data-message="<?=t('characters.select.delete_confirmation');?>" />
 						<?php } ?>
-						<input class="button btn btn-sm btn-danger remove" type="button" value="<?=t('buttons.remove');?>" style="width: 80px;" data-message="<?=t('characters.select.delete_confirmation');?>" />
 					</div>
 				</div>
 			</div>
