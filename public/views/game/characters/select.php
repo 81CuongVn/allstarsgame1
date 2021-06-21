@@ -60,7 +60,7 @@ echo partial('shared/title', array('title' => 'characters.select.title', 'place'
 					</table>
 				</div>
 				<div style="float: left; clear:both; position: relative; top: 40px; width: 490px; text-align: center">
-					<div id="playerButtons" style="display: none;">
+					<div id="playerButtons">
 						<?php if (IS_MAINTENANCE && !$_SESSION['universal']) { ?>
 							<input class="button btn btn-sm btn-primary" type="button" value="<?=t('buttons.play');?>" style="width: 80px;" disabled />
 							<input class="button btn btn-sm btn-danger" type="button" value="<?=t('buttons.remove');?>" style="width: 80px;" disabled />
