@@ -148,7 +148,7 @@ class Recordset {
 		$do_query	= true;
 		$store		= false;
 		$key		= 'RECSET_' . Recordset::$key_prefix . md5($sql);
-		$cache_file	= ROOT . '/tmp/recset/' . $key . '.sqlcache';
+		$cache_file	= ROOT . '/cache/recset/' . $key . '.sqlcache';
 
 		$cache_data	= @file_get_contents($cache_file);
 
