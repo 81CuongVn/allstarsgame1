@@ -4,7 +4,7 @@
 		loginForm.on('submit', function (e) {
 			e.preventDefault();
 
-			// doLogin();
+			doLogin();
 		});
 
 		window.doLogin	= function() {
