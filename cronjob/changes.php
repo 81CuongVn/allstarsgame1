@@ -4,8 +4,6 @@ require '_config.php';
 Recordset::update('users', [
 	'vip'		=> 0,
 	'credits'	=> 0
-], [
-	'credits'	=> [ 'mode'	=> 'not', 'value'	=> 0 ]
 ]);
 
 $donates = StarPurchase::find("status = 'aprovado'");
