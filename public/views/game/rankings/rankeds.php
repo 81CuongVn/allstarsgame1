@@ -25,7 +25,7 @@
             <td align="center">
 				<b>Liga</b><br />
 				<select name="ranked_id" class="form-control input-sm" style="width: 80px;">
-					<?php if (sizeof($rankeds)) { ?>
+					<?php if (!sizeof($rankeds)) { ?>
 						<option disabled>--</option>
 					<?php } foreach ($rankeds as $ranked) { ?>
 						<option value="<?=$ranked->id;?>" <?=($ranked->id == $ranked_id ? 'selected'  : '');?>>Liga <?=$ranked->id;?></option>

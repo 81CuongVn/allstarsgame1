@@ -513,6 +513,7 @@ class RankingsController extends Controller {
 
 		if (!$_POST) {
 			$filter			.= '';
+			$filter			.= ' AND ranked_id = ' . ($last_ranked ? $last_ranked->id : 0);
 			$filter2		.= '';
 			$anime_id		= 0;
 			$faction_id		= 0;
@@ -555,7 +556,7 @@ class RankingsController extends Controller {
 					if ($anime_id) {
 						$filter	.= ' AND graduation_id=' . $_POST['graduation_id'];
 					} else {
-						$filter	.= ' AND graduation_id IN(SELECT id FROM graduations WHERE sorting=' . $_POST['graduation_id'] . ')';
+						$filter	.= ' AND graduation_id IN (SELECT id FROM graduations WHERE sorting=' . $_POST['graduation_id'] . ')';
 					}
 				}
 
@@ -572,7 +573,7 @@ class RankingsController extends Controller {
 			}
 		}
 
-		$result		= RankingRanked::filter($filter,$filter2, $page, $limit);
+		$result		= RankingRanked::filter($filter, $filter2, $page, $limit);
 		$animes		= Anime::find('active=1', ['cache' => true]);
 		$factions	= Faction::find('active=1', ['cache' => true]);
 		$rankeds	= Ranked::find('started = 1 order by id desc');
