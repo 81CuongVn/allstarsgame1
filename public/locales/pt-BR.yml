@@ -332,13 +332,12 @@ pt-BR:
         <p>Você ainda não possui nenhum personagem. <a href="#{url}">Clique aqui</a> para criar um novo personagem.</p>
       section_favorite: Escolha seu personagem favorito
       delete_confirmation: Você realmente deseja excluir esse personagem? Essa ação não pode ser desfeita!
-      end_round: Round finalizado!
-      end_round_message: |
-        No dia <span class="verde">#{date}</span>, chegamos ao fim de mais um round!<br />
-        No momento estamos trabalhando nos acertos para o próximo round, salvar o Hall da Fama e realizar a entrega das premiações.<br /><br />
+      maintenance: Em manutenção
+      maintenance_message: |
+        No momento o jogo encontra-se em manutenção.<br /><br />
 
-        Para mais Informações sobre o próximo round, fique ligados em nossos canais de comunicação:
-        <a href="https://discord.gg/ME8ugpZwSw" target="_blank">Discord</a>,
+        Para mais informações, vocês podem consultar nossos canais de comunicação:
+        <a href="https://discord.gg/5fXXatHAZP" target="_blank">Discord</a>,
         <a href="https://chat.whatsapp.com/LFT74CxmNJz3nVmTQGQi98" target="_blank">WhatsApp</a>,
         <a href="https://fb.com/AllStarsGame" target="_blank">Facebook</a> e
         <a href="https://instagram.com/allstarsgame.oficial" target="_blank">Instagram</a>.

@@ -40,7 +40,7 @@ if (isset($_SESSION['user_id']) && $_SESSION['user_id']) {
 		}
 	}
 
-	if (!$keep || (IS_MAINTENANCE && !$_SESSION['universal'])) {
+	if (!$keep) {
 		session_destroy();
 
         redirect_to();
