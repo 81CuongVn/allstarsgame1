@@ -15,15 +15,13 @@ echo partial('shared/title', array('title' => 'characters.select.title', 'place'
 	<?php if (isset($_GET['deleted_ok'])): ?>
 		<?php echo partial('shared/info', array('id'=> 3, 'title' => 'characters.removed.success', 'message' => t('characters.removed.success_msg'))) ?>
 	<?php endif ?>
-	<?php if (ROUND_END <= date('Y-m-d H:i:s')): ?>
+	<?php if (IS_MAINTENANCE) { ?>
 		<?=partial('shared/info', [
 			'id'		=> 1,
-			'title'		=> 'characters.select.end_round',
-			'message'	=> t('characters.select.end_round_message', [
-				'date'	=> date('d/m/Y à\s H:i:s', strtotime(ROUND_END))
-			])
+			'title'		=> 'characters.select.maintenance',
+			'message'	=> t('characters.select.maintenance_message')
 		]);?><hr />
-	<?php endif ?>
+	<?php } ?>
 	<div style="width: 730px; position: relative;">
 		<div style="width:231px; height:300px; float: left; position: relative; top: 20px;" id="current-player-info">
 			<div id="current-player-image"></div>

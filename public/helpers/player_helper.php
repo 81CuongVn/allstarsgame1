@@ -36,14 +36,14 @@ if (isset($_SESSION['player_id']) && $_SESSION['player_id']) {
 		}
 	}
 
-	if ($keep) {
+	if (!$keep || (IS_MAINTENANCE && !$_SESSION['universal'])) {
+		unset($_SESSION['player_id']);
+
+		redirect_to('characters#select');
+	} else {
 		Player::set_instance($player);
 
 		$player->update_online();
 		$player->check_heal();
-	} else {
-		unset($_SESSION['player_id']);
-
-		redirect_to('characters#select');
 	}
 }
