@@ -30,6 +30,9 @@ class HistoryModeGroup extends Relation {
 	}
 
 	function subgroups() {
-		return HistoryModeSubgroup::find('history_mode_group_id=' . $this->id . ($_SESSION['universal'] ? '' : ' AND active=1'), ['cache' => true, 'reorder' => 'sorting ASC']);
+		return HistoryModeSubgroup::find('history_mode_group_id=' . $this->id . ' and active = 1', [
+			'cache'		=> true,
+			'reorder'	=> 'sorting asc'
+		]);
 	}
 }

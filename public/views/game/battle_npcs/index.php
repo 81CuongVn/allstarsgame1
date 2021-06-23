@@ -30,7 +30,7 @@
 			<select id="character_id" class="form-control input-sm select2" name="character_id" style="width:180px">
 				<?php foreach ($animes as $anime): ?>
 					<optgroup label="<?=$anime->description()->name;?>">
-					<?php foreach ($anime->characters($_SESSION['universal'] ? '' : ' AND active = 1') as $character): ?>
+					<?php foreach ($anime->characters() as $character): ?>
 						<?php if ($character->id == $player->character_id) { continue; } ?>
 						<option value="<?=$character->id;?>"><?=$character->description()->name;?></option>
 					<?php endforeach; ?>

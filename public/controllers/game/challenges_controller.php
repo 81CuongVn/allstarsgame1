@@ -5,7 +5,7 @@
 
 		function index() {
 			$player	= Player::get_instance();
-			$challenges	= Challenge::find($_SESSION['universal'] ? '1=1' : 'active=1', ['cache' => true]);
+			$challenges	= Challenge::find('active=1', ['cache' => true]);
 			$this->assign('player', $player);
 			$this->assign('challenges', $challenges);
 		}

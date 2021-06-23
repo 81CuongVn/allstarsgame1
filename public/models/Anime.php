@@ -3,11 +3,13 @@ class Anime extends Relation {
 	static	$always_cached	= true;
 
 	public function description() {
-		return AnimeDescription::find_first('anime_id=' . $this->id . ' AND language_id=' . $_SESSION['language_id'], array('cache' => true));
+		return AnimeDescription::find_first('anime_id=' . $this->id . ' and language_id=' . $_SESSION['language_id'], array('cache' => true));
 	}
 
 	public function characters($extra = '') {
-		return Character::find('anime_id=' . $this->id . $extra, array('reorder' => 'ordem ASC'));
+		return Character::find('active = 1 and anime_id = ' . $this->id . $extra, [
+			'reorder' => 'sort,id asc'
+		]);
 	}
 
 	public function total_pets() {

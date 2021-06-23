@@ -84,6 +84,9 @@ if (!isset($_SESSION['orig_player_id']))	$_SESSION['orig_player_id']	= 0;
 // Timezone settings
 define('DEFAULT_TIMEZONE',		'America/Sao_Paulo');
 
+// Donate Prefix
+define('DONATE_PREFIX', 		'AASG');
+
 // Regex settings
 define('REGEX_PLAYER',			'/^[ÁÉÍÓÚÀÈÌÒÙÂÊÎÔÛÃÕÑÇáéíóúàèìòùâêîôûãõñç\w\d\s]+$/');
 define('REGEX_GUILD',			'/^[ÁÉÍÓÚÀÈÌÒÙÂÊÎÔÛÃÕÑÇáéíóúàèìòùâêîôûãõñç\w\d\s]+$/');

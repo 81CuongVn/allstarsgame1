@@ -213,9 +213,9 @@ if (preg_match('/read_news/', $action)) {
 				</div>
 				<div class="gift absolute">
 					<?php if (!$player_fidelity_topo->reward) { ?>
-						<span class="badge <?=(!$player_fidelity_topo->reward ? 'pulsate_icons' : '');?>">
+						<a href="<?=make_url('events#fidelity')?>" class="badge <?=(!$player_fidelity_topo->reward ? 'pulsate_icons' : '');?>">
 							<i class="fa fa-exclamation fa-fw"></i>
-						</span>
+						</a>
 					<?php } ?>
 					<a href="<?=make_url('events#fidelity')?>" class="requirement-popover" data-source="#tooltip-gift" data-title="<?=t('fidelity.topo_title');?>" data-trigger="hover" data-placement="bottom">
 						<img src="<?=image_url('icons/' . ($player_fidelity_topo->reward ? 'gift-off.png' : 'gift-on.png'));?>" />
@@ -231,9 +231,9 @@ if (preg_match('/read_news/', $action)) {
 				<div class="queue absolute">
 					<?php $rankedOpen = Ranked::isOpen(); ?>
 					<?php if ($rankedOpen) { ?>
-						<span class="badge <?=($rankedOpen ? 'pulsate_icons' : '');?>">
+						<a href="<?=make_url('battle_pvps')?>" class="badge <?=($rankedOpen ? 'pulsate_icons' : '');?>">
 							<i class="fa fa-exclamation fa-fw"></i>
-						</span>
+						</a>
 					<?php } ?>
 					<a href="<?=make_url('battle_pvps')?>" class="requirement-popover" data-source="#tooltip-queue" data-title="<?=t('popovers.titles.queue' . ($rankedOpen ? '_ranked' : ''));?>" data-trigger="hover" data-placement="bottom">
 						<img src="<?=image_url('icons/queue-' . ($player->is_pvp_queued ? 'on' : 'off') . '.png');?>" />

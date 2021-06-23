@@ -14,7 +14,7 @@ class BattleNpcsController extends Controller {
 
 	public function index() {
 		$player		= Player::get_instance();
-		$animes		= Anime::find($_SESSION['universal'] ? '1 = 1' : 'active = 1', [
+		$animes		= Anime::find('active = 1', [
 			'cache'		=> true,
 			'reorder'	=> 'id asc'
 		]);

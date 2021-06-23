@@ -5,7 +5,7 @@
 
 		function index() {
 			$player		= Player::get_instance();
-			$map_animes	= MapAnime::find($_SESSION['universal'] ? '1=1' : 'active=1', ['cache' => true]);
+			$map_animes	= MapAnime::find('active=1', ['cache' => true]);
 			$this->assign('player', $player);
 			$this->assign('map_animes', $map_animes);
 		}
@@ -22,20 +22,22 @@
 				$maps		= Map::find_first("anime_id = ".$map_anime->anime_id." ORDER BY RAND () LIMIT 1");
 				$map_anime->set_player($player);
 
-				if(!$_SESSION['universal']){
-					if (!$map_anime->active) {
-						$map_anime	= false;
-					}
+				if (!$map_anime->active) {
+					$map_anime	= false;
 				}
+
 				if(sizeof($map_anime->limit_by_day($map_anime->anime_id)) >= 1){
 					$errors[]	= t('friends.f26');
 				}
+
 				if ($player->level < 2) {
 					$errors[]	= 'Impossível ir para a Exploração no Nível 1.';
 				}
-				if($player->is_pvp_queued) {
+
+				if ($player->is_pvp_queued) {
 					$errors[]	= t('map.errors.8');
 				}
+
 				if (!$map_anime) {
 					$errors[]	= t('map.errors.1');
 				} else {
@@ -53,38 +55,37 @@
 				if ($_POST['mode'] == 2) {
 					$player->spend($map_anime->currency_cost);
 					$steps = 10;
-				} elseif($_POST['mode'] == 3) {
+				} elseif ($_POST['mode'] == 3) {
 					$player->user()->spend($map_anime->credits_cost);
 					$steps = 15;
-				}else{
+				} else {
 					$steps = 5;
 				}
-				//Salva o Map e os Passos na Tabela Player
+
+				// Salva o Map e os Passos na Tabela Player
 				$player->map_id 						= $maps->id;
 				$player->steps 							= $steps;
 				$player->save();
 
-				//Adiciona no Log Diario de Exploração
+				// Adiciona no Log Diario de Exploração
 				$player_map_anime						    = new PlayerMapAnime();
 				$player_map_anime->player_id				= $player->id;
 				$player_map_anime->map_anime_id				= $map_anime->anime_id;
 				$player_map_anime->save();
 
-				//Adiciona no Log de Exploração
+				// Adiciona no Log de Exploração
 				$player_exploration = PlayerMapLog::find_first("player_id=".$player->id." and map_id=".$maps->id);
-				if($player_exploration){
+				if ($player_exploration) {
 					$player_exploration->quantity++;
-				}else{
+				} else {
 					$player_exploration = new PlayerMapLog();
 					$player_exploration->player_id 		= $player->id;
 					$player_exploration->anime_id	 	= $maps->anime_id;
 					$player_exploration->map_id 		= $maps->id;
 					$player_exploration->quantity 		= 1;
 				}
-
 				$player_exploration->save();
-				//Adiciona no Log de Exploração
-
+				// Adiciona no Log de Exploração
 			} else {
 				$this->json->messages	= $errors;
 			}
@@ -94,52 +95,46 @@
 			$map 		  = Map::find_first("id=".$player->map_id);
 
 			switch($map->anime_id){
-				case 1:
-					$item_id = 1721;
-				break;
-
-				case 2:
-					$item_id = 1722;
-				break;
-
-				case 9:
-					$item_id = 1851;
-				break;
+				case 1:	$item_id = 1721;	break;
+				case 2:	$item_id = 1722;	break;
+				case 9:	$item_id = 1851;	break;
 			}
 
 			$player_stats = PlayerStat::find_first("player_id=".$player->id);
 
-			if($player_stats->rewards){
+			if ($player_stats->rewards) {
 				$rewards = MapReward::find_first("map_id =".$player->map_id);
 				$this->assign('rewards', $rewards);
 			}
-			if($player_stats->map_reward){
+
+			if ($player_stats->map_reward) {
 				$this->assign('map_reward', true);
 			}
-			if($player_stats->npc){
+
+			if ($player_stats->npc) {
 				$npc	= new NpcInstance($player, $map->npc_anime_id, [], NULL, NULL, NULL, NULL, $map->npc_character_id, $map->npc_character_theme_id);
 
 				// Cleanups -->
-				SharedStore::S('last_battle_item_of_' . $player->id, 0);
-				SharedStore::S('last_battle_npc_item_of_' . $player->id, 0);
+					SharedStore::S('last_battle_item_of_' . $player->id, 0);
+					SharedStore::S('last_battle_npc_item_of_' . $player->id, 0);
 
-				$player->clear_ability_lock();
-				$player->clear_speciality_lock();
-				$player->clear_technique_locks();
-				$player->clear_effects();
-				$player->save_npc($npc);
+					$player->clear_ability_lock();
+					$player->clear_speciality_lock();
+					$player->clear_technique_locks();
+					$player->clear_effects();
+					$player->save_npc($npc);
 				// <--
 
 				$player->refresh_talents();
 
-				$this->assign('npc', $npc);
+				$this->assign('npc',	$npc);
 			}
-			$this->assign('player', $player);
-			$this->assign('map', $map);
-			$this->assign('player_item', PlayerItem::find_first("player_id=".$player->id." AND item_id=".$item_id));
-			$this->assign('player_stats', $player_stats);
-			$this->assign('map_total', Map::find("anime_id=".$map->anime_id));
-			$this->assign('map_player_total', PlayerMapLog::find("player_id=".$player->id." and anime_id=".$map->anime_id));
+			$this->assign('player',				$player);
+			$this->assign('map',				$map);
+			$this->assign('player_item',		PlayerItem::find_first("player_id=".$player->id." AND item_id=".$item_id));
+			$this->assign('player_stats',		$player_stats);
+			$this->assign('map_total',			Map::find("anime_id=".$map->anime_id));
+			$this->assign('map_player_total',	PlayerMapLog::find("player_id=".$player->id." and anime_id=".$map->anime_id));
 		}
 		function navegation(){
 			$this->as_json			= true;

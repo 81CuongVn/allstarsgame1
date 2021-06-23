@@ -77,7 +77,7 @@ class Item extends Relation {
 		$formula->color_types->defense		= '';
 		$formula->color_types->hit_chance	= '';
 
-		//$value	= $this->mana_cost * 15 + $this->attack_speed / 2 - ($this->item_effect_ids ? $this->attack_speed/2 : 0);
+		// $value	= $this->mana_cost * 15 + $this->attack_speed / 2 - ($this->item_effect_ids ? $this->attack_speed/2 : 0);
 		$value = $this->damage;
 
 		// Buffs doesn't have attack of defense
@@ -172,7 +172,7 @@ class Item extends Relation {
 				$formula->color_types->consume_mana	= $plus;
 			}
 
-			if($this->is_defensive) {
+			if ($this->is_defensive) {
 				if ($this->_player->for_def() > $this->_player->for_def(true) || $formula->defense > $value) {
 					$formula->color_types->defense	= $plus;
 				} elseif ($this->_player->for_def() < $this->_player->for_def(true) || $formula->defense < $value) {
@@ -187,20 +187,18 @@ class Item extends Relation {
 			}
 		}
 
-		if($formula->cooldown < 0) {
+		if ($formula->cooldown < 0) {
 			$formula->cooldown	= 0;
 		}
 
-		if($this->item_type_id == 3 || $this->item_type_id == 4) { // Ability and speciality don't use mana
+		if ($this->item_type_id == 3 || $this->item_type_id == 4) { // Ability and speciality don't use mana
 			$formula->consume_mana	= 0;
 		} else {
-			/*
-			$formula->consume_mana	= floor($this->mana_cost);
+			// $formula->consume_mana	= floor($this->mana_cost);
 
-			if($this->_player) {
-				$formula->consume_mana	-= percent($this->_player->attributes()->sum_bonus_mana_consume, $formula->consume_mana);
-			}
-			*/
+			// if ($this->_player) {
+			// 	$formula->consume_mana	-= percent($this->_player->attributes()->sum_bonus_mana_consume, $formula->consume_mana);
+			// }
 		}
 
 		$this->_formula	= $formula;
@@ -292,23 +290,27 @@ class Item extends Relation {
 		if (!$anime_id) {
 			$anime_id = $this->description()->anime_id;
 		}
-		return AnimeDescription::find_first('anime_id=' . $anime_id . ' AND language_id=' . $_SESSION['language_id'], array('cache' => true));
+		return AnimeDescription::find_first('anime_id = ' . $anime_id . ' and language_id = ' . $_SESSION['language_id'], array('cache' => true));
 	}
 
 	function description($anime_id = null, $language_id = null) {
+		if (is_null($language_id)) {
+			$language_id = $_SESSION['language_id'];
+		}
+
 		$anime_id	= $anime_id ? $anime_id : $this->_anime_id;
 		if (($this->item_type_id == 3 && $this->_player) || ($this->item_type_id == 6 && $this->is_generic) || ($this->item_type_id == 11 && $this->is_generic)) {
-			return ItemDescription::find_first('item_id=' . $this->id . ' AND language_id=' . $_SESSION['language_id'], array('cache' => true));
+			return ItemDescription::find_first('item_id=' . $this->id . ' AND language_id=' . $language_id, array('cache' => true));
 		}
 
 		if(($this->is_generic && (!$anime_id || in_array($this->item_type_id, [5, 7, 9, 10, 12, 13, 15, 16]))) || in_array($this->id, [112, 113])) {
 			if($this->item_type_id == 3){
-				$description	= ItemDescription::find_first('item_id=' . $this->id . ' AND language_id=' . $_SESSION['language_id'], array('cache' => true));
+				$description	= ItemDescription::find_first('item_id=' . $this->id . ' AND language_id=' . $language_id, array('cache' => true));
 			}else{
 				if(!$this->parent_id){
-					$description	= ItemDescription::find_first('item_id=' . $this->id . ' AND anime_id=0 AND language_id=' . $_SESSION['language_id'], array('cache' => true));
+					$description	= ItemDescription::find_first('item_id=' . $this->id . ' AND anime_id=0 AND language_id=' . $language_id, array('cache' => true));
 				}else{
-					$description	= ItemDescription::find_first('item_id=' . $this->parent_id . ' AND anime_id=0 AND language_id=' . $_SESSION['language_id'], array('cache' => true));
+					$description	= ItemDescription::find_first('item_id=' . $this->parent_id . ' AND anime_id=0 AND language_id=' . $language_id, array('cache' => true));
 
 				}
 
@@ -319,30 +321,34 @@ class Item extends Relation {
 					throw new Exception("Anime not specified to get #{$this->id}", 1);
 				}
 				if(!$this->parent_id){
-					$description	= ItemDescription::find_first('item_id=' . $this->id . ' AND anime_id=' . $anime_id . ' AND language_id=' . $_SESSION['language_id'], array('cache' => true));
+					$description	= ItemDescription::find_first('item_id=' . $this->id . ' AND anime_id=' . $anime_id . ' AND language_id=' . $language_id, array('cache' => true));
 				}else{
-					$description	= ItemDescription::find_first('item_id=' . $this->parent_id . ' AND anime_id=' . $anime_id . ' AND language_id=' . $_SESSION['language_id'], array('cache' => true));
+					$description	= ItemDescription::find_first('item_id=' . $this->parent_id . ' AND anime_id=' . $anime_id . ' AND language_id=' . $language_id, array('cache' => true));
 
 				}
 			} else {
 				if(!$this->parent_id){
-					$description	= CharacterThemeItem::find_first('character_theme_id=' . $this->_character_theme_id . ' AND item_id=' . $this->id .' AND language_id=' . $_SESSION['language_id'], array('cache' => true));
+					$description	= CharacterThemeItem::find_first('character_theme_id=' . $this->_character_theme_id . ' AND item_id=' . $this->id .' AND language_id=' . $language_id, array('cache' => true));
 				}else{
-					$description	= CharacterThemeItem::find_first('character_theme_id=' . $this->_character_theme_id . ' AND item_id=' . $this->parent_id .' AND language_id=' . $_SESSION['language_id'], array('cache' => true));
+					$description	= CharacterThemeItem::find_first('character_theme_id=' . $this->_character_theme_id . ' AND item_id=' . $this->parent_id .' AND language_id=' . $language_id, array('cache' => true));
 
 				}
 			}
 		}
 
 		if($this->_player_item && $this->_player_item->level > 1) {
-			$description->name	.= " Lvl. " . $this->_player_item->level;
+			$description->name	.= " Nv. " . $this->_player_item->level;
 		}
 
 		return $description;
 	}
 
-	function descriptions($language_id) {
-		return ItemDescription::find('item_id=' . $this->id . ' AND language_id=' . $_SESSION['language_id'], array('cache' => true));
+	function descriptions($language_id = null) {
+		if (is_null($language_id)) {
+			$language_id = $_SESSION['language_id'];
+		}
+
+		return ItemDescription::find('item_id=' . $this->id . ' AND language_id=' . $language_id, array('cache' => true));
 	}
 
 	function image($path_only = false) {
@@ -360,33 +366,33 @@ class Item extends Relation {
 		if ($this->item_type_id != 8) {
 			$base	= 'items';
 
-			if($this->item_type_id == 6) {
+			if ($this->item_type_id == 6) {
 				$base	= 'talents';
 			}
 
-			if($this->_character_theme_id) {
+			if ($this->_character_theme_id) {
 				$path	= $base . '/' . $this->_anime_id . '/' . $this->_character_theme_id .'/' . $description->image;
 			} else {
-				if($this->is_generic && in_array($this->item_type_id, [5, 6, 7, 10, 12, 13, 15, 16])) {
+				if ($this->is_generic && in_array($this->item_type_id, [5, 6, 7, 10, 12, 13, 15, 16])) {
 					$path	= $base . '/' . $description->image;
 				} else {
 					$path	= $base . '/' . $this->_anime_id . '/' . $description->image;
 				}
 			}
 
-			if($path_only) {
+			if ($path_only) {
 				return $path;
 			} else {
 				return '<img src="' . image_url($path) . '" name="' . $description->name . '" title="' . $description->name . '" />';
 			}
 		} else {
-			if (in_array($this->_anime_id, [6])) {
+			if (in_array($this->_anime_id, [ 6 ])) {
 				$path	= 'equipments/' . $this->_anime_id . '/' . $this->_player_item->player()->character_id . '/' . $this->_player_item->rarity . '/' . $this->_player_item->slot_name . '.png';
 			} else {
 				$path	= 'equipments/' . $this->_anime_id . '/' . $this->_player_item->rarity . '/' . $this->_player_item->slot_name . '.png';
 			}
 
-			if($path_only) {
+			if ($path_only) {
 				return $path;
 			} else {
 				return '<img src="' . image_url($path) . '" />';
@@ -414,31 +420,32 @@ class Item extends Relation {
 	}
 
 	function technique_tooltip($battle_tooltip = false) {
-		if($this->_character_theme_id) {
+		if ($this->_character_theme_id) {
 			$unique			= t('techniques.types.unique');
 			$unique_class	= 'unique';
 		} else {
 			$unique			= t('techniques.types.generic');
 			$unique_class	= 'generic';
 		}
-		if($this->item_type_id == 3) {
+
+		if ($this->item_type_id == 3) {
 			$type		= t('techniques.types.ability');
 			$type_class	= 'ability';
-		} elseif($this->item_type_id == 4) {
+		} elseif ($this->item_type_id == 4) {
 			$type		= t('techniques.types.speciality');
 			$type_class	= 'speciality';
-		} elseif($this->item_type_id == 7) {
+		} elseif ($this->item_type_id == 7) {
 			$type			= t('techniques.types.weapons');
 			$type_class		= 'buff';
 
 			$unique_class	= 'unique';
 			$unique			= t('techniques.types.unique');
 		} else {
-			if($this->is_buff) {
+			if ($this->is_buff) {
 				$type		= t('techniques.types.buff');
 				$type_class	= 'buff';
 			} else {
-				if($this->formula()->defense) {
+				if ($this->formula()->defense) {
 					$type		= t('techniques.types.defense');
 					$type_class	= 'defense';
 				} else {
@@ -447,7 +454,7 @@ class Item extends Relation {
 				}
 			}
 		}
-		$assigns	= array(
+		$assigns	= [
 			'item'				=> $this,
 			'player_item'		=> $this->_player_item,
 			'description'		=> $this->description(),
@@ -458,18 +465,18 @@ class Item extends Relation {
 			'formula'			=> $this->formula(),
 			'battle_tooltip'	=> $battle_tooltip,
 			'player'			=> $this->_player
-		);
+		];
 
 		return partial('shared/technique_tooltip', $assigns);
 	}
 
 	function consumable_tooltip($battle_tooltip = false) {
-		$assigns	= array(
+		$assigns	= [
 			'item'				=> $this,
 			'player_item'		=> $this->_player_item,
 			'description'		=> $this->description(),
 			'battle_tooltip'	=> $battle_tooltip
-		);
+		];
 
 		return partial('shared/consumable_tooltip', $assigns);
 	}
@@ -478,65 +485,65 @@ class Item extends Relation {
 		$ok				= true;
 		$stats			= $this->_player_item->stats();
 		$player_item	= $this->_player_item;
-		$bonuses		= array();
-		$tooltip		= array();
+		$bonuses		= [];
+		$tooltip		= [];
 
-		if($player_item->level > 1) {
+		if ($player_item->level > 1) {
 			$where		= ' AND is_generic=' . $this->is_generic; //($this->_character_theme_id ? '0' : '1');
 			$where		.= ' AND is_defensive=' . $this->is_defensive;
 			$where		.= ' AND is_buff=' . $this->is_buff;
 			$where		.= ' AND req_graduation_sorting=' . $this->req_graduation_sorting;
 
-			$levels	= ItemLevel::find('1=1 ' . $where, array('cache' => true));
+			$levels	= ItemLevel::find('1=1 ' . $where, ['cache' => true]);
 
-			foreach($levels as $level) {
+			foreach ($levels as $level) {
 				if (!isset($bonuses[$level->sorting])) {
-					$bonuses[$level->sorting]	= array();
+					$bonuses[$level->sorting]	= [];
 				}
 
 				extract($level->parse($stats, $this->_player, $this->is_buff));
 				$bonus		= '';
 
 				// Bonuses -->
-					if($level->for_inc_crit) {
+					if ($level->for_inc_crit) {
 						$bonus	.= t('techniques.tooltip.level_req.for_inc_crit', array('count' => $level->for_inc_crit));
 					}
 
-					if($level->for_mana) {
+					if ($level->for_mana) {
 						$bonus	.= t('techniques.tooltip.level_req.for_mana', array(
 							'count' => $level->for_mana,
 							'mana'	=> t('formula.for_mana.' . $this->_player->character()->anime_id)
 						));
 					}
 
-					if($level->for_atk) {
+					if ($level->for_atk) {
 						$bonus	.= t('techniques.tooltip.level_req.for_atk', array('count' => $level->for_atk));
 					}
 
-					if($level->for_def) {
+					if ($level->for_def) {
 						$bonus	.= t('techniques.tooltip.level_req.for_def', array('count' => $level->for_def));
 					}
 
-					if($level->for_hit_chance) {
+					if ($level->for_hit_chance) {
 						$bonus	.= t('techniques.tooltip.level_req.for_hit_chance', array('count' => $level->for_hit_chance));
 					}
 
-					if($level->for_hit_chance_inc) {
+					if ($level->for_hit_chance_inc) {
 						$bonus	.= t('techniques.tooltip.level_req.for_hit_chance_inc', array('count' => $level->for_hit_chance_inc));
 					}
 
 					if ($this->is_buff) {
-						if($level->cooldown) {
+						if ($level->cooldown) {
 							$bonus	.= t('techniques.tooltip.level_req.duration', array('count' => $level->cooldown));
 						}
 					} else {
-						if($level->cooldown) {
+						if ($level->cooldown) {
 							$bonus	.= t('techniques.tooltip.level_req.cooldown', array('count' => $level->cooldown));
 						}
 					}
 				// <--
 
-				if($level->req_player_item_level > $player_item->level) {
+				if ($level->req_player_item_level > $player_item->level) {
 					$ok	= false;
 				}
 
@@ -547,8 +554,8 @@ class Item extends Relation {
 				);
 			}
 
-			foreach($bonuses as $slot => $bonus) {
-				if(!isset($tooltip[$slot])) {
+			foreach ($bonuses as $slot => $bonus) {
+				if (!isset($tooltip[$slot])) {
 					$tooltip[$slot]	= array();
 				}
 
@@ -556,17 +563,17 @@ class Item extends Relation {
 				$tooltip[$slot]['description']	= $bonus[2]['req'];
 				$next_was_shown					= false;
 
-				foreach($bonus as $level => $data) {
-					if($next_was_shown || $level > $player_item->level) {
+				foreach ($bonus as $level => $data) {
+					if ($next_was_shown || $level > $player_item->level) {
 						break;
 					}
 
-					if($data['ok']) {
-						if(isset($bonus[$level - 1])) {
+					if ($data['ok']) {
+						if (isset($bonus[$level - 1])) {
 							unset($tooltip[$slot]['levels'][$level - 1]);
 						}
 
-						if(isset($bonus[$level + 1])) {
+						if (isset($bonus[$level + 1])) {
 							$tooltip[$slot]['description']	= $bonus[$level + 1]['req'];
 						} else {
 							$tooltip[$slot]['description']	= $bonus[$level]['req'];
@@ -579,19 +586,19 @@ class Item extends Relation {
 				}
 			}
 
-			if($this->id == 35) {
-				//print_r($bonuses);
-				//print_r($tooltip);
+			if ($this->id == 35) {
+				// print_r($bonuses);
+				// print_r($tooltip);
 			}
 		}
 
-		return partial('shared/technique_level_tooltip', array(
+		return partial('shared/technique_level_tooltip', [
 			'item'				=> $this,
 			'player_item'		=> $player_item,
 			'stats'				=> $stats,
 			'tooltip'			=> $tooltip,
 			'battle_tooltip'	=> $battle_tooltip
-		));
+		]);
 	}
 
 	function talent_tooltip($battle_tooltip = false) {
@@ -606,20 +613,21 @@ class Item extends Relation {
 
 		return partial('shared/talent_tooltip', $assigns);
 	}
+
 	function weapon_tooltip($battle_tooltip = false) {
 		return $this->technique_tooltip($battle_tooltip);
 	}
 
 	function tooltip($battle_tooltip = false) {
-		if($this->item_type_id == 3) {
+		if ($this->item_type_id == 3) {
 			return $this->pet_tooltip($battle_tooltip);
-		} elseif($this->item_type_id == 5 || $this->item_type_id == 10 || $this->item_type_id == 12 || $this->item_type_id == 13 || $this->item_type_id == 15 || $this->item_type_id == 16) {
+		} elseif ($this->item_type_id == 5 || $this->item_type_id == 10 || $this->item_type_id == 12 || $this->item_type_id == 13 || $this->item_type_id == 15 || $this->item_type_id == 16) {
 			return $this->consumable_tooltip($battle_tooltip);
-		} elseif($this->item_type_id == 6) {
+		} elseif ($this->item_type_id == 6) {
 			return $this->talent_tooltip($battle_tooltip);
-		} elseif($this->item_type_id == 7) {
+		} elseif ($this->item_type_id == 7) {
 			return $this->weapon_tooltip($battle_tooltip);
-		} elseif($this->item_type_id == 8) {
+		} elseif ($this->item_type_id == 8) {
 			return $this->equipment_tooltip($battle_tooltip);
 		} else {
 			return $this->technique_tooltip($battle_tooltip);
@@ -628,13 +636,12 @@ class Item extends Relation {
 
 	function exp_needed_for_level() {
 		$rates	= [
-			2	=> [2400, 3000, 3600, 4200, 4800, 5400],
-			3	=> [3400, 4200, 5000, 5800, 6600, 7400],
-			4	=> [4400, 5400, 6400, 7400, 8400, 9400],
-			5	=> [5400, 6600, 7800, 9000, 10200, 11800],
-			6	=> [6800, 7800, 9400, 10200, 11600, 13400]
+			2	=> [ 2400, 3000, 3600, 4200,  4800,  5400  ],
+			3	=> [ 3400, 4200, 5000, 5800,  6600,  7400  ],
+			4	=> [ 4400, 5400, 6400, 7400,  8400,  9400  ],
+			5	=> [ 5400, 6600, 7800, 9000,  10200, 11800 ],
+			6	=> [ 6800, 7800, 9400, 10200, 11600, 13400 ]
 		];
-
 		return $rates[$this->_player_item->level + 1][$this->req_graduation_sorting - 1];
 	}
 
@@ -672,12 +679,8 @@ class Item extends Relation {
 
 	static function generate_equipment($player, $rarity_fragment = null, $slot = false) {
 		$slots	= [
-			'head',
-			'shoulder',
-			'chest',
-			'neck',
-			'hand',
-			'leggings'
+			'head', 'shoulder', 'chest',
+			'neck', 'hand', 'leggings'
 		];
 
 		if (!$slot) {
@@ -794,32 +797,33 @@ class Item extends Relation {
 
 		return $player_item;
 	}
+
 	static function upgrade_equipment($player, $item_id, $method) {
         // Zera os atributos do seu resumo geral
-        $player_attribute		= PlayerAttribute::find_first('player_id=' . $player->id);
-        $player_item_attribute	= PlayerItemAttribute::find_first('player_item_id=' . $item_id);
+			$player_attribute		= PlayerAttribute::find_first('player_id=' . $player->id);
+			$player_item_attribute	= PlayerItemAttribute::find_first('player_item_id=' . $item_id);
 
-        $player_attribute->currency_battle 			    	-= $player_item_attribute->currency_battle;
-        $player_attribute->exp_battle 			    		-= $player_item_attribute->exp_battle;
-        $player_attribute->currency_quest 	    			-= $player_item_attribute->currency_quest;
-        $player_attribute->exp_quest 	    				-= $player_item_attribute->exp_quest;
-        $player_attribute->sum_bonus_luck_discount 	    	-= $player_item_attribute->luck_discount;
-        $player_attribute->sum_bonus_drop		    		-= $player_item_attribute->item_drop_increase;
-        $player_attribute->generic_technique_damage		    -= $player_item_attribute->generic_technique_damage;
-        $player_attribute->unique_technique_damage	    	-= $player_item_attribute->unique_technique_damage;
-        $player_attribute->defense_technique_extra  		-= $player_item_attribute->defense_technique_extra;
-        $player_attribute->save();
+			$player_attribute->currency_battle 			    	-= $player_item_attribute->currency_battle;
+			$player_attribute->exp_battle 			    		-= $player_item_attribute->exp_battle;
+			$player_attribute->currency_quest 	    			-= $player_item_attribute->currency_quest;
+			$player_attribute->exp_quest 	    				-= $player_item_attribute->exp_quest;
+			$player_attribute->sum_bonus_luck_discount 	    	-= $player_item_attribute->luck_discount;
+			$player_attribute->sum_bonus_drop		    		-= $player_item_attribute->item_drop_increase;
+			$player_attribute->generic_technique_damage		    -= $player_item_attribute->generic_technique_damage;
+			$player_attribute->unique_technique_damage	    	-= $player_item_attribute->unique_technique_damage;
+			$player_attribute->defense_technique_extra  		-= $player_item_attribute->defense_technique_extra;
+			$player_attribute->save();
 
-        $player_item_attribute->currency_battle             = 0;
-        $player_item_attribute->exp_battle                  = 0;
-        $player_item_attribute->currency_quest              = 0;
-        $player_item_attribute->exp_quest                   = 0;
-        $player_item_attribute->luck_discount               = 0;
-        $player_item_attribute->item_drop_increase          = 0;
-        $player_item_attribute->generic_technique_damage    = 0;
-        $player_item_attribute->unique_technique_damage     = 0;
-        $player_item_attribute->defense_technique_extra     = 0;
-        $player_item_attribute->save();
+			$player_item_attribute->currency_battle             = 0;
+			$player_item_attribute->exp_battle                  = 0;
+			$player_item_attribute->currency_quest              = 0;
+			$player_item_attribute->exp_quest                   = 0;
+			$player_item_attribute->luck_discount               = 0;
+			$player_item_attribute->item_drop_increase          = 0;
+			$player_item_attribute->generic_technique_damage    = 0;
+			$player_item_attribute->unique_technique_damage     = 0;
+			$player_item_attribute->defense_technique_extra     = 0;
+			$player_item_attribute->save();
         // Zera os atributos do seu resumo geral
 
 		$attributes_by_chances	= [
@@ -848,11 +852,6 @@ class Item extends Relation {
         $attributes = [];
         foreach ($attributes_by_chances AS $attributes_by_chance) {
             $random_number  = rand(1, 100);
-
-			if ($_SESSION['universal']) {
-				$random_number = 100;
-			}
-
 			if ($random_number >= $attributes_by_chance[1]) {
                 array_push($attributes, $attributes_by_chance[0]);
 			}
@@ -944,11 +943,15 @@ class Item extends Relation {
 			'legendary'	=> 4,
 			'set'		=> 5
 		];
+		$ignores	= [
+			'id', 'player_item_id', 'graduation_sorting',
+			'have_extra', 'is_new', 'created_at'
+		];
 
 		$price		= $rarities[$this->_player_item->rarity] * 75;
 
 		foreach ($attributes as $attribute => $value) {
-			if (in_array($attribute, ['id', 'player_item_id', 'graduation_sorting', 'have_extra', 'is_new', 'created_at'])) {
+			if (in_array($attribute, $ignores)) {
 				continue;
 			}
 
@@ -988,18 +991,20 @@ class Item extends Relation {
 		return ItemAttackType::find('weak_to=' . $this->attack_type()->id, ['cache' => true]);
 	}
 
-	function get_buy_mode_for($player, $item_id = FALSE) {
-		if (!$item_id)
+	function get_buy_mode_for($player, $item_id = false) {
+		if (!$item_id) {
 			$item_id = $this->id;
+		}
 
 		$bought_free		= PlayerStarItem::find_first("player_id=" . $player . " AND item_id=" . $item_id . " AND buy_mode = 0");
 		$bought_currency	= PlayerStarItem::find_first("player_id=" . $player . " AND item_id=" . $item_id . " AND buy_mode = 1");
 
 		$buy_mode = 0;
-		if ($bought_free && !$bought_currency)
+		if ($bought_free && !$bought_currency) {
 			$buy_mode = 1;
-		elseif ($bought_free && $bought_currency)
+		} elseif ($bought_free && $bought_currency) {
 			$buy_mode = 2;
+		}
 
 		return $buy_mode;
 	}

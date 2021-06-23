@@ -2,7 +2,7 @@
 	class HistoryModeController extends Controller {
 		function index() {
 			$player	= Player::get_instance();
-			$groups	= HistoryModeGroup::find($_SESSION['universal'] ? '1=1' : 'active=1', ['cache' => true]);
+			$groups	= HistoryModeGroup::find('active=1', ['cache' => true]);
 
 			$this->assign('player', $player);
 			$this->assign('groups', $groups);
@@ -37,10 +37,8 @@
 				$player	= Player::get_instance();
 				$group	= HistoryModeGroup::find($_POST['group']);
 
-				if (!$_SESSION['universal']) {
-					if (!$group->active) {
-						$group	= false;
-					}
+				if (!$group->active) {
+					$group	= false;
 				}
 
 				if (!$group) {
