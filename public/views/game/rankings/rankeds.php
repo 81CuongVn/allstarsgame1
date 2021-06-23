@@ -24,10 +24,10 @@
 			</td>
             <td align="center">
 				<b>Liga</b><br />
-				<select name="league_id" class="form-control input-sm" style="width: 80px;">
-					<option value="0"><?=t('global.all');?></option>
+				<select name="ranked_id" class="form-control input-sm" style="width: 80px;">
+					<!-- <option value="0"><?=t('global.all');?></option> -->
 					<?php foreach ($rankeds as $ranked): ?>
-						<option value="<?=$ranked->id;?>" <?php if ($ranked->id == $ranked_id): ?>selected="selected"<?php endif ?>><?=$ranked->id;?></option>
+						<option value="<?=$ranked->id;?>" <?php if ($ranked->id == $ranked_id): ?>selected="selected"<?php endif ?>>Liga <?=$ranked->id;?></option>
 					<?php endforeach ?>
 				</select>
 			</td>

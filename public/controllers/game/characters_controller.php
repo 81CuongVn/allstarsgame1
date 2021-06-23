@@ -555,16 +555,12 @@ class CharactersController extends Controller {
 				$this->json->errors	= $errors;
 			}
 		} else {
-			$filter = "";
-			if (!$_SESSION['universal']) {
-				$filter = " and active=1";
-			}
 			$this->assign('user',	$user);
 
 			if (isset($_GET['show_only'])) {
 				if (isset($_GET['character']) && is_numeric($_GET['character'])) {
 					$this->assign('player',		false);
-					$this->assign('themes',		CharacterTheme::find('character_id=' . $_GET['character'] . $filter));
+					$this->assign('themes',		CharacterTheme::find('active = 1 and character_id=' . $_GET['character']));
 					$this->assign('character',	Character::find($_GET['character']));
 				} else {
 					$this->denied	= true;
@@ -572,7 +568,7 @@ class CharactersController extends Controller {
 			} else {
 				$this->assign('player',		$player);
 				$this->assign('character',	$player->character());
-				$this->assign('themes',		CharacterTheme::find('character_id=' . $player->character_id . $filter));
+				$this->assign('themes',		CharacterTheme::find('active = 1 and character_id=' . $player->character_id . $filter));
 			}
 		}
 	}

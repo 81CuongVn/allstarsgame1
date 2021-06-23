@@ -741,12 +741,13 @@ li {
 	position: relative;
 	width: 728px;
 	height: 199px;
+	background-image: url(../images/adventure/bg-on.png);
 }
 .msg-container-off {
 	position: relative;
 	width: 728px;
 	height: 199px;
-	background-image: url(../images/historia/bg-off.png);
+	background-image: url(../images/adventure/bg-off.png);
 }
 .msg-container-off2 {
 	position: relative;
@@ -1967,7 +1968,8 @@ table hr {
 }
 .faccao,
 .faccao img {
-	width: 80px;
+	width: 120px;
+	/* width: 80px; */
 }
 .faccao div {
 	margin: 0 auto;

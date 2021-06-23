@@ -67,9 +67,8 @@
 			$bleeding_image		= '<img src="' . image_url('icons/bleed.png') . '" align="absmiddle" />&nbsp;';
 			$strong_image		= '<span class="glyphicon glyphicon-chevron-up" style="color: #00b008"></span>&nbsp;';
 
+			// Player Effects
 			$player_effects		= $this->player->get_parsed_effects();
-			$enemy_effects		= $this->enemy->get_parsed_effects();
-
 			if ($player_effects['turns_attack_to_neutral']) {
 				$this->player_item->force_attack_type(0);
 			}
@@ -94,6 +93,8 @@
 				$this->player_item->force_attack_type(5);
 			}
 
+			// Enemy Effects
+			$enemy_effects		= $this->enemy->get_parsed_effects();
 			if ($enemy_effects['turns_attack_to_neutral']) {
 				$this->enemy_item->force_attack_type(0);
 			}
@@ -157,22 +158,6 @@
 			if (!$player_is_error) {
 				$player_attack	= $this->player->for_atk() + $this->player_item->formula()->damage;
 				$player_defense	= $this->player->for_def() + $this->player_item->formula()->defense;
-
-				// Carrega os valores que serão adicionados pelos equipamentos aos golpes.
-				if ($_SESSION['universal']) {
-					$extras = $this->player->attributes();
-					if (!$player_is_skip){
-						if ($extras->generic_technique_damage && $this->player_item->is_generic ) {
-							$player_attack	+= percent($extras->generic_technique_damage,$this->player_item->formula()->damage);
-						}
-						if ($extras->unique_technique_damage && !$this->player_item->is_generic ) {
-							$player_attack	+= percent($extras->unique_technique_damage,$this->player_item->formula()->damage);
-						}
-						if ($extras->defense_technique_extra && $this->player_item->is_defensive) {
-							$player_defense	+= percent($extras->defense_technique_extra,$this->player_item->formula()->defense);
-						}
-					}
-				}
 
 				if ($player_is_critical) {
 					if ($this->player_item->is_defensive) {
@@ -311,14 +296,13 @@
 						$attack	+= $p_effects['damage_in_' . $effect] + percent($p_effects['damage_in_' . $effect . '_percent'], $raw_attack);
 					}
 
-					/*
-					if ($p_effects['generic_attack_damage'] && $item->is_generic) {
-						$attack	+= $p_effects['generic_attack_damage'] + percent($p_effects['generic_attack_damage'], $raw_attack);
-					}
+					// if ($p_effects['generic_attack_damage'] && $item->is_generic) {
+					// 	$attack	+= $p_effects['generic_attack_damage'] + percent($p_effects['generic_attack_damage'], $raw_attack);
+					// }
 
-					if ($p_effects['unique_attack_damage'] && !$item->is_generic) {
-						$attack	+= $p_effects['unique_attack_damage'] + percent($p_effects['unique_attack_damage'], $raw_attack);
-					}*/
+					// if ($p_effects['unique_attack_damage'] && !$item->is_generic) {
+					// 	$attack	+= $p_effects['unique_attack_damage'] + percent($p_effects['unique_attack_damage'], $raw_attack);
+					// }
 				}
 			}
 
@@ -336,10 +320,6 @@
 
 			if ($player_effects['slowness'] || $player_effects['slowness_percent'] && has_chance($enemy_effects['damage_increase_in_slowness'])) {
 				$enemy_attack	+= percent(25, $enemy_attack);
-			}
-
-			if ($_SESSION['universal']) {
-				// print($player_attack);
 			}
 
 			$player_damage		= floor($player_attack - $enemy_defense);

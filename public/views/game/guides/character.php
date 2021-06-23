@@ -19,7 +19,7 @@
 					<div class="titulo-home3"><p><?php echo t('characters.create.section_anime') ?></p></div>
 				</div>
 				<div id="anime-list">
-					<?php 
+					<?php
 						$counter	= 1;
 					?>
 					<?php foreach ($animes as $anime): ?>
@@ -40,9 +40,9 @@
 				<div id="anime-character-list">
 					<?php foreach ($animes as $anime): ?>
 						<div id="anime-characters-<?php echo $anime->id ?>" class="anime-characters">
-							<?php 
+							<?php
 								$counter	= 1;
-								$characters	= $anime->characters($_SESSION['universal'] ? '' : ' AND active=1');
+								$characters	= $anime->characters();
 							?>
 							<?php foreach ($characters as $character): ?>
 								<?php $character_themes  = $character->themes_default($character->id); ?>
@@ -50,7 +50,7 @@
 									<a data-toggle="tooltip" title="<?=make_tooltip($character->description()->name);?>" data-placement="top" class="themes-uniques character page-item page-item-<?php echo ceil($counter++ / 10) ?>" data-id="<?php echo $character->id ?>" data-theme-id="<?php echo $character_theme->id ?>" style="height: 70px; width: 70px;">
 										<?php echo $character->small_image2() ?>
 									</a>
-								<?php endforeach ?>	
+								<?php endforeach ?>
 							<?php endforeach ?>
 							<div class="break"></div>
 							<div class="character-paginator" data-target-container="#anime-characters-<?php echo $anime->id ?>">
@@ -83,7 +83,7 @@
 	<?php foreach ($animes as $anime): ?>
 		_animes[<?php echo $anime->id ?>]	= '<?php echo addslashes($anime->description()->name) ?>';
 
-		<?php foreach ($anime->characters($_SESSION['universal'] ? '' : ' AND active=1') as $character): ?>
+		<?php foreach ($anime->characters() as $character): ?>
 			_characters[<?php echo $character->id ?>]	= {
 				name:		'<?php echo addslashes($character->description()->name) ?>',
 				anime:		<?php echo $anime->id ?>,

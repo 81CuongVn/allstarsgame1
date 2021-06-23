@@ -9,7 +9,7 @@ class GuidesController extends Controller {
 	}
 	function character() {
 		$user	= User::get_instance();
-		$animes	= Anime::find($_SESSION['universal'] ? '1=1 and playable = 1' : 'active = 1 and playable = 1', [
+		$animes	= Anime::find('active = 1 and playable = 1', [
 			'cache'		=> true,
 			'reorder'	=> 'id asc'
 		]);
@@ -22,14 +22,9 @@ class GuidesController extends Controller {
 
 		$user			= User::get_instance();
 		$player			= Player::get_instance();
-
-		$filter = "";
-		if (!$_SESSION['universal']) {
-			$filter = " and active = 1";
-		}
 		$character 		= Character::find($_POST['character_id']);
 
-		$this->assign('themes',			CharacterTheme::find('id=' . $_POST['id'] . $filter));
+		$this->assign('themes',			CharacterTheme::find('active = 1 and id=' . $_POST['id']));
 		$this->assign('character',		Character::find($_POST['character_id']));
 		$this->assign('abilities',		$character->abilities2());
 		$this->assign('specialities',	$character->specialities2());
@@ -43,11 +38,7 @@ class GuidesController extends Controller {
 		$player			= Player::get_instance();
 		$user			= User::get_instance();
 
-		$filter	= "";
-		if (!$_SESSION['universal']){
-			$filter = " and active = 1";
-		}
-		$this->assign('themes',		CharacterTheme::find('character_id=' . $_POST['id'] . $filter));
+		$this->assign('themes',		CharacterTheme::find('active = 1 and character_id=' . $_POST['id']));
 		$this->assign('character',	Character::find_first('id=' . $_POST['id']));
 		$this->assign('player',		$player);
 		$this->assign('user',		$user);

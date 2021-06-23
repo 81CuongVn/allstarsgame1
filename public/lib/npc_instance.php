@@ -108,18 +108,15 @@ class NpcInstance {
 		if ($is_challenge) {
 			$challenge  	= PlayerChallenge::find_first('player_id='. $player->id .' AND challenge_id='.$is_challenge." AND complete=0");
 			$total_points 	= round($total_points + ($challenge->quantity * 1.5));
-			if (!$_SESSION['universal']) {
-				if ($challenge->quantity % 5 == 0) {
-					$total_hp = $challenge->quantity * 10;
-				} else {
-					if ($challenge->quantity > 25) {
-						$total_hp = ($challenge->quantity - 25)  * 10;
-					} else {
-						$total_hp = 0;
-					}
-				}
+
+			if ($challenge->quantity % 5 == 0) {
+				$total_hp = $challenge->quantity * 10;
 			} else {
-				$total_hp 		= $challenge->quantity % 5 == 0  ? $challenge->quantity * 10 : 0;
+				if ($challenge->quantity > 25) {
+					$total_hp = ($challenge->quantity - 25)  * 10;
+				} else {
+					$total_hp = 0;
+				}
 			}
 			$total_mana		= $challenge->quantity % 5 == 0  ? $challenge->quantity / 5 : 0;
 

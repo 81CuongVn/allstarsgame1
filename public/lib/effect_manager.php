@@ -407,7 +407,8 @@ trait EffectManager {
 
 							if ($fetch_condition($type, $value)) {
 								if (array_key_exists($key, $return)) {
-									if ($type == 'player') { // we need to invert the sign for debuff + player, ebemies already have a minus sign
+									// we need to invert the sign for debuff + player, ebemies already have a minus sign
+									if ($type == 'player') {
 										$value	= -$value;
 									}
 
@@ -472,12 +473,6 @@ trait EffectManager {
 
 						if ($fetch_condition($type, $effect_data->renew_random_cooldown)) {
 							$locks	= $this->get_technique_locks();
-							if ($_SESSION['universal']) {
-								echo '<pre>';
-								print_r($locks);
-								echo '</pre>';
-							}
-
 							if ($locks) {
 								$this->remove_technique_lock(array_random_key($locks));
 							}

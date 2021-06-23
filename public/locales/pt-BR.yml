@@ -307,6 +307,7 @@ pt-BR:
       submit: Criar meu personagem!
       section_anime: Escolha seu anime favorito
       section_character: Escolha seu personagem favorito
+      section_faction: Facção
       created: Personagem criado
       created_msg: |
         <p>Parabéns! Seu personagem foi criado com sucesso. Para começar a jogar, basta seleciona-lo abaixo e clicar no botão "Jogar"</p>

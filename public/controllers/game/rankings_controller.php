@@ -1,6 +1,6 @@
 <?php
 class RankingsController extends Controller {
-	function hall_of_fames() {
+	public function hall_of_fames() {
 		$player		= Player::get_instance();
 		$page		= isset($_POST['page']) && is_numeric($_POST['page']) ? $_POST['page'] : 0;
 		$limit		= 32;
@@ -74,7 +74,8 @@ class RankingsController extends Controller {
 		$this->assign('animes',			$animes);
 		$this->assign('factions',		$factions);
 	}
-	function players() {
+
+	public function players() {
 		$player		= Player::get_instance();
 		$page		= isset($_POST['page']) && is_numeric($_POST['page']) ? $_POST['page'] : 0;
 		$limit		= 32;
@@ -174,7 +175,8 @@ class RankingsController extends Controller {
 		$this->assign('factions',		$factions);
 		$this->assign('graduations',	$graduations);
 	}
-	function battles() {
+
+	public function battles() {
 		$player		= Player::get_instance();
 		$page		= isset($_POST['page']) && is_numeric($_POST['page']) ? $_POST['page'] : 0;
 		$limit		= 32;
@@ -286,7 +288,8 @@ class RankingsController extends Controller {
     	$this->assign('factions',		$factions);
 		$this->assign('graduations',	$graduations);
 	}
-	function achievements() {
+
+	public function achievements() {
 		$player		= Player::get_instance();
 		$page		= isset($_POST['page']) && is_numeric($_POST['page']) ? $_POST['page'] : 0;
 		$limit		= 32;
@@ -386,11 +389,13 @@ class RankingsController extends Controller {
     	$this->assign('factions',		$factions);
 		$this->assign('graduations',	$graduations);
 	}
-	function list_characters() {
+
+	public function list_characters() {
 		$this->layout	= false;
 		$this->assign('characters', Character::find("active = 1 AND anime_id=".$_POST['anime_id']));
 	}
-	function challenges() {
+
+	public function challenges() {
 		$player		= Player::get_instance();
 		$page		= isset($_POST['page']) && is_numeric($_POST['page']) ? $_POST['page'] : 0;
 		$limit		= 32;
@@ -495,19 +500,23 @@ class RankingsController extends Controller {
 		$this->assign('challenges',		$challenges);
 		$this->assign('graduations',	$graduations);
 	}
-	function rankeds() {
-		$player		= Player::get_instance();
-		$page		= isset($_POST['page']) && is_numeric($_POST['page']) ? $_POST['page'] : 0;
-		$limit		= 32;
-		$filter		= '';
-		$filter2	= '';
+
+	public function rankeds() {
+		$player			= Player::get_instance();
+		$page			= isset($_POST['page']) && is_numeric($_POST['page']) ? $_POST['page'] : 0;
+		$limit			= 32;
+		$filter			= '';
+		$filter2		= '';
+		$last_ranked	= Ranked::find_first('started = 1', [
+			'reorder' => 'id desc'
+		]);
 
 		if (!$_POST) {
 			$filter			.= '';
 			$filter2		.= '';
 			$anime_id		= 0;
 			$faction_id		= 0;
-			$ranked_id		= 0;
+			$ranked_id		= $last_ranked ? $last_ranked->id : 0;
 			$graduation_id	= 0;
 			$name			= '';
 		} else {
@@ -537,6 +546,8 @@ class RankingsController extends Controller {
 				}
 
 				$ranked_id	= $_POST['ranked_id'];
+			} else {
+				$ranked_id	= $last_ranked ? $last_ranked->id : 0;
 			}
 
 			if (isset($_POST['graduation_id']) && is_numeric($_POST['graduation_id'])) {
