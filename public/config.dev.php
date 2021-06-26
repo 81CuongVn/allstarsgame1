@@ -116,10 +116,16 @@ define('INITIAL_MONEY',			0);
 // Techniques limit
 define('MAX_EQUIPPED_ATTACKS',	10);
 
+// Verifica se é final de semana
+$isWeekend			= date('w') % 6;
+if (!$isWeekend) {
+	$isWeekend	= date('w') == 5 && date('H') >= 5;
+}
+
 // Rate settings
-define('EXP_RATE',				1);
-define('MONEY_RATE',			1);
-define('DROP_RATE',				1);
+define('EXP_RATE',				!$isWeekend ? 1 : 1.5);
+define('MONEY_RATE',			!$isWeekend ? 1 : 1.5);
+define('DROP_RATE',				!$isWeekend ? 1 : 1.5);
 
 // PvP settings
 define('PVP_TURN_TIME',			90);
@@ -129,10 +135,10 @@ define('NPC_COST',				2);
 define('PVP_COST',				1);
 
 // NPC daily limit
-define('NPC_DAILY_LIMIT',		10);
+define('NPC_DAILY_LIMIT',		!$isWeekend ? 10 : 20);
 
 // Event settings
-define('EVENT_ACTIVE', 			true);
+define('EVENT_ACTIVE', 			false);
 define('EVENT_ITEM', 			2059);
 
 // PagSeguro settings
