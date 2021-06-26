@@ -568,7 +568,7 @@ class CharactersController extends Controller {
 			} else {
 				$this->assign('player',		$player);
 				$this->assign('character',	$player->character());
-				$this->assign('themes',		CharacterTheme::find('active = 1 and character_id=' . $player->character_id . $filter));
+				$this->assign('themes',		CharacterTheme::find('active = 1 and character_id=' . $player->character_id));
 			}
 		}
 	}
