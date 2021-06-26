@@ -117,7 +117,7 @@ define('INITIAL_MONEY',			0);
 define('MAX_EQUIPPED_ATTACKS',	10);
 
 // Verifica se é final de semana
-$isWeekend			= date('w') % 6;
+$isWeekend			= in_array(date('w'), [ 0, 6 ]);
 if (!$isWeekend) {
 	$isWeekend	= date('w') == 5 && date('H') >= 5;
 }

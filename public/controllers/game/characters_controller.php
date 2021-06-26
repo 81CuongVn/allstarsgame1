@@ -1164,7 +1164,7 @@ class CharactersController extends Controller {
 					case 15:	$player_tutorial->missoes_seguidores	= 1;	break;
 					case 16:	$player_tutorial->battle_pvp			= 1;	break;
 					case 17:	$player_tutorial->battle_npc			= 1;	break;
-					case 18:	$player_tutorial->fidelit				= 1;	break;
+					case 18:	$player_tutorial->fidelity				= 1;	break;
 					case 19:	$player_tutorial->battle_village		= 1;	break;
 					case 20:	$player_tutorial->bijuus				= 1;	break;
 					case 21:	$player_tutorial->talents				= 1;	break;
