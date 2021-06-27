@@ -58,11 +58,11 @@
     };
 
     window.image_url	= function (to) {
-        return _site_url + '/assets/images/' + to;
+        return _site_url + '/assets/images/' + to + '?v=' + _site_version;
     };
 
     window.resource_url	= function (to) {
-        return _site_url + '/assets/' + to;
+        return _site_url + '/assets/' + to + '?v=' + _site_version;
     };
 
     window.absolute_url	= function (to) {

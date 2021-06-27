@@ -1,8 +1,8 @@
 (function () {
     var queue_alert			= false;
     var timer_iv			= null;
-    var timer				= 15;
-	var timeout				= 15;
+    var timer				= 5;
+	var timeout				= 5;
     var audio				= $(document.createElement('AUDIO')).attr('src', resource_url('media/found.mp3')).attr('type', 'audio/mpeg');
     var room_search_friend	= $('#room-search-friend');
 
@@ -186,13 +186,16 @@
 
                     if (result.found && !queue_alert) {
                         audio[0].play();
-                        timer			= result.seconds + 2;
+                        timer			= result.seconds;
 						var $width		= (timer * 100 / timeout);
 						var progress	= `<div class="timer progress progress-striped active">
 							<div class="progress-bar" style="width: ${$width}%"></div>
-						</div>`;
+						</div>`
                         queue_alert		= bootbox.dialog({
-                            message: "<h4>" + I18n.t('battles.pvp.queue_found') + "</h4><br /><br />" + progress,
+                            message: `
+								<h4>${I18n.t('battles.pvp.queue_found')}</h4><br /><br />
+								${progress}
+							`
                         });
 
                         timer_iv		= setInterval(function () {
