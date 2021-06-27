@@ -788,7 +788,7 @@ class CharactersController extends Controller {
 
 	public function fragments() {
 		$player		= Player::get_instance();
-		$total		= PlayerItem::find_first("player_id = ". $player->id ." and item_id = 446");
+		$total		= PlayerItem::find_first("player_id = {$player->id} and item_id = 446");
 
 		$this->assign('player',				$player);
 		$this->assign('total',				$total);
@@ -798,14 +798,13 @@ class CharactersController extends Controller {
 		$this->as_json			= true;
 		$this->json->success	= false;
 
-		$user					= User::get_instance();
 		$player					= Player::get_instance();
 		$errors					= [];
 
-		$items					= [ '0', '1', '2' ];
-		$prices					= [ '80', '160', '320' ];
+		$items					= [ 0, 1, 2 ];
+		$prices					= [ 80, 160, 320 ];
 
-		if (!isset($_POST['mode']) || (isset($_POST['mode']) && !is_numeric($_POST['mode']))) {
+		if (!isset($_POST['mode']) || !is_numeric($_POST['mode'])) {
 			$errors[]	= t('fragments.error1');
 		} elseif (!in_array($_POST['mode'], $items)) {
 			$errors[]	= t('fragments.error1');
@@ -830,7 +829,7 @@ class CharactersController extends Controller {
 						$message = urlencode("Você ganhou um Equipamento Raro, visite a página de Equipamentos para mais detalhes!");
 						break;
 					case 2:
-						$message = urlencode("Você ganhou um Equipamento Lendário, visite a página de Equipamentos para mais detalhes!");
+						$message = urlencode("Você ganhou um Equipamento Épico, visite a página de Equipamentos para mais detalhes!");
 						break;
 				}
 
@@ -883,7 +882,7 @@ class CharactersController extends Controller {
 		$result		= Character::pets($player->id, $filter, $page, $limit);
 		$animes		= Anime::all([
 			'cache'		=> true,
-			'reorder'	=> 'id ASC'
+			'reorder'	=> 'id asc'
 		]);
 
 		$this->assign('animes',				$animes);
