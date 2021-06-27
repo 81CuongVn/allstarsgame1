@@ -153,14 +153,14 @@
 			</div>
 		</div>
 		<div class="bg_menu_esquerdo">
-			<?php $battles_pvp	= Recordset::query("SELECT `id` FROM `battle_pvps` WHERE `finished_at` IS NULL ", false)->num_rows; ?>
+			<?php $battles_pvp	= Recordset::query("SELECT `id` FROM `battle_pvps` WHERE `finished_at` IS NOT NULL ", false)->num_rows; ?>
 			<div class="menu_esquerdo_divisao">
-				<b class="amarelo" data-toggle="tooltip" title="<?=make_tooltip('Em Andamento');?>">Batalhas PvP</b>
+				<b class="amarelo" data-toggle="tooltip" title="<?=make_tooltip('Total de Batalhas PvP');?>">Batalhas PvP</b>
 				<b class=""><?=highamount($battles_pvp);?></b>
 			</div>
-			<?php $battles_npc	= Recordset::query("SELECT `id` FROM `battle_npcs` WHERE `finished_at` IS NULL ", false)->num_rows; ?>
+			<?php $battles_npc	= Recordset::query("SELECT `id` FROM `battle_npcs` WHERE `finished_at` IS NOT NULL ", false)->num_rows; ?>
 			<div class="menu_esquerdo_divisao">
-				<b class="amarelo" data-toggle="tooltip" title="<?=make_tooltip('Em Andamento');?>">Batalhas NPC</b>
+				<b class="amarelo" data-toggle="tooltip" title="<?=make_tooltip('Total de Batalhas NPC');?>">Batalhas NPC</b>
 				<b class=""><?=highamount($battles_npc);?></b>
 			</div>
 		</div>
