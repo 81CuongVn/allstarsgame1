@@ -1,22 +1,24 @@
 (function () {
-    var queue_alert = false;
-    var timer_iv = null;
-    var timer = 30;
-    var audio = $(document.createElement('AUDIO')).attr('src', resource_url('media/found.mp3')).attr('type', 'audio/mpeg');
-    var room_search_friend = $('#room-search-friend');
+    var queue_alert			= false;
+    var timer_iv			= null;
+    var timer				= 15;
+	var timeout				= 15;
+    var audio				= $(document.createElement('AUDIO')).attr('src', resource_url('media/found.mp3')).attr('type', 'audio/mpeg');
+    var room_search_friend	= $('#room-search-friend');
 
     // Filtro da página de ligas
     $('#leagues').on('change', function () {
         var _ = $(this);
         $.ajax({
-            url: make_url('battles_pvp#ranked'),
-            data: $(this).serialize(),
-            type: 'post',
-            data: { leagues: $(this).val() },
-            success: function (result) {
+            url:		make_url('battles_pvp#ranked'),
+            data:		$(this).serialize(),
+            type:		'post',
+            data:		{
+				leagues: $(this).val()
+			},
+            success:	function (result) {
                 $('#league-filter-form').trigger('submit');
             }
-
         });
     });
 
@@ -25,11 +27,13 @@
         lock_screen(true);
         var _ = $(this);
         $.ajax({
-            url: make_url('battle_pvps#reward'),
-            data: { id: _.data('league') },
-            dataType: 'json',
-            type: 'post',
-            success: function (result) {
+            url:		make_url('battle_pvps#reward'),
+            data:		{
+				id: _.data('league')
+			},
+            dataType:	'json',
+            type:		'post',
+            success:	function (result) {
                 if (result.success) {
                     location.href = make_url('battle_pvps#ranked');
                 } else {
@@ -44,9 +48,9 @@
         lock_screen(true);
 
         $.ajax({
-            url: make_url('battle_pvps#enter_queue'),
-            dataType: 'json',
-            success: function (result) {
+            url:		make_url('battle_pvps#enter_queue'),
+            dataType:	'json',
+            success:	function (result) {
                 lock_screen(false);
 
                 _check_pvp_queue = result.success;
@@ -65,13 +69,13 @@
         lock_screen(true);
         var _ = $(this);
         $.ajax({
-            url: make_url('battle_pvps#accept'),
-            data: {
+            url:		make_url('battle_pvps#accept'),
+            data:		{
                 id: _.data('id')
             },
-            dataType: 'json',
-            type: 'post',
-            success: function (result) {
+            dataType:	'json',
+            type:		'post',
+            success:	function (result) {
                 if (result.success) {
                     location.href = make_url('battle_pvps#fight');
                 } else {
@@ -87,10 +91,10 @@
         lock_screen(true);
         var _ = $(this);
         $.ajax({
-            url: make_url('battle_pvps#decline'),
-            dataType: 'json',
-            type: 'post',
-            success: function (result) {
+            url:		make_url('battle_pvps#decline'),
+            dataType:	'json',
+            type:		'post',
+            success:	function (result) {
                 if (result.success) {
                     location.href = make_url('characters#status');
                 } else {
@@ -107,11 +111,11 @@
             e.preventDefault();
             lock_screen(true);
             $.ajax({
-                url: make_url('battle_pvps#room_create'),
-                data: $(this).serialize(),
-                dataType: 'json',
-                type: 'post',
-                success: function (result) {
+                url:		make_url('battle_pvps#room_create'),
+                data:		$(this).serialize(),
+                dataType:	'json',
+                type:		'post',
+                success:	function (result) {
                     if (result.success) {
                         location.href = make_url('battle_pvps#waiting');
                     } else {
@@ -122,7 +126,7 @@
             });
         });
 
-        //room_search_friend.trigger('submit');
+        // room_search_friend.trigger('submit');
     }
 
     $(document).on('click', '#tooltip-queue-data .btn-primary', function () {
@@ -135,7 +139,6 @@
                 lock_screen(false);
                 _check_pvp_queue = true;
 
-                // location.href = make_url('battle_pvps');
                 location.reload();
             }
         });
@@ -151,7 +154,6 @@
                 lock_screen(false);
                 _check_pvp_queue = false;
 
-                // location.href = make_url('battle_pvps');
                 location.reload();
             }
         });
@@ -171,32 +173,37 @@
             }
         });
     });
-    setInterval(function () {
+
+	setInterval(function () {
         if (_check_pvp_queue) {
             $.ajax({
-                url: make_url('battle_pvps#check_queue'),
-                dataType: 'json',
-                success: function (result) {
+                url:		make_url('battle_pvps#check_queue'),
+                dataType:	'json',
+                success:	function (result) {
                     if (result.redirect) {
-                        location.href = result.redirect;
+                        location.href	= result.redirect;
                     }
 
                     if (result.found && !queue_alert) {
                         audio[0].play();
-                        var progress = '<div class="timer progress progress-striped active"><div class="progress-bar" style="width: 100%"></div></div>'
-                        timer = result.seconds;
-                        queue_alert = bootbox.dialog({
+                        timer			= result.seconds + 2;
+						var $width		= (timer * 100 / timeout);
+						var progress	= `<div class="timer progress progress-striped active">
+							<div class="progress-bar" style="width: ${$width}%"></div>
+						</div>`;
+                        queue_alert		= bootbox.dialog({
                             message: "<h4>" + I18n.t('battles.pvp.queue_found') + "</h4><br /><br />" + progress,
                         });
 
-                        timer_iv = setInterval(function () {
+                        timer_iv		= setInterval(function () {
+							$width	= (timer-- * 100 / timeout);
                             $('.progress-bar', queue_alert).css({
-                                width: (timer-- * 100 / 15) + '%'
+                                width: $width + '%'
                             });
 
                             if (timer <= 0) {
                                 queue_alert.modal('hide');
-                                queue_alert = false;
+                                queue_alert	= false;
 
                                 clearInterval(timer_iv);
 
@@ -207,7 +214,7 @@
 
                     if (!result.found && queue_alert) {
                         queue_alert.modal('hide');
-                        queue_alert = false;
+                        queue_alert	= false;
 
                         clearInterval(timer_iv);
                     }
