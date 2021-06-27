@@ -137,6 +137,28 @@
 				<b class=""><?=DROP_RATE;?>x</b>
 			</div>
 		</div>
+		<div class="bg_menu_esquerdo">
+			<?php
+			$timeout	= now() - (15 * 60);
+			$online		= Recordset::query("SELECT `id` FROM `players` WHERE `last_activity` > {$timeout}", FALSE)->num_rows;
+			$queueds	= Recordset::query("SELECT `id` FROM `players` WHERE `is_pvp_queued` = 1 AND `last_activity` > {$timeout}", FALSE)->num_rows;
+			?>
+			<div class="menu_esquerdo_divisao">
+				<b class="amarelo">Online</b>
+				<b class=""><?=highamount($online);?></b>
+			</div>
+			<div class="menu_esquerdo_divisao">
+				<b class="amarelo">Fila PvP</b>
+				<b class=""><?=highamount($queueds);?></b>
+			</div>
+		</div>
+		<div class="bg_menu_esquerdo">
+			<?php $battles_pvp	= Recordset::query("SELECT `id` FROM `battle_pvps` WHERE `finished_at` IS NULL ", FALSE)->num_rows; ?>
+			<div class="menu_esquerdo_divisao" style="width: 100%">
+				<b class="amarelo">PvP em Andamento</b>
+				<b class=""><?=highamount($battles_pvp);?></b>
+			</div>
+		</div>
 		<div class="clearfix"></div>
 	</div>
 <?php } else { ?>

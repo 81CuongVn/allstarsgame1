@@ -386,7 +386,7 @@ if (preg_match('/read_news/', $action)) {
 							</div>
 						</div>
 					<?php } ?>
-					<?php if (FW_ENV != 'dev') { ?><br />
+					<?php if (FW_ENV == 'devs') { ?><br />
 						<div style="width: <?=($_SESSION['player_id'] ? '240px' : '100%')?>;">
 							<script id="_wauae2">var _wau = _wau || []; _wau.push(["dynamic", "gq7qmwiq8v", "ae2", "c4302bffffff", "small"]);</script>
 							<script async src="//waust.at/d.js"></script>
