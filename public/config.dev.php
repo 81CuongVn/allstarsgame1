@@ -3,7 +3,7 @@ error_reporting(E_ALL);
 
 // General settings
 $home				= 'home#index';
-$site_url			= 'http://localhost/allstarsgame/public';
+$site_url			= 'http://localhost/allstarsgame';
 $rewrite_enabled	= false;
 
 // Game settings

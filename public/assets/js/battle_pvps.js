@@ -46,26 +46,6 @@
         });
     });
 
-    $('#battle-pvp-enter-queue').on('click', function () {
-        lock_screen(true);
-
-        $.ajax({
-            url:		make_url('battle_pvps#enter_queue'),
-            dataType:	'json',
-            success:	function (result) {
-                lock_screen(false);
-
-                _check_pvp_queue = result.success;
-
-                if (!result.success) {
-                    format_error(result);
-                } else {
-                    location.href = make_url('battle_pvps');
-                }
-            }
-        });
-    });
-
     // Aceita o Duelo
     $('#room-search-results').on('click', '.enter-pvp-training-battle', function () {
         lock_screen(true);
@@ -131,49 +111,66 @@
         // room_search_friend.trigger('submit');
     }
 
-    $(document).on('click', '#tooltip-queue-data .btn-primary', function () {
-        lock_screen(true);
+
+
+	window.enterQueue	= function() {
+		lock_screen(true);
 
         $.ajax({
-            url: make_url('battle_pvps#enter_queue'),
-            dataType: 'json',
-            success: function () {
+            url:		make_url('battle_pvps#enter_queue'),
+            dataType:	'json',
+            success:	function (result) {
                 lock_screen(false);
-                _check_pvp_queue = true;
 
-                location.reload();
+                _check_pvp_queue = result.success;
+
+                if (!result.success) {
+                    format_error(result);
+                } else {
+                    location.reload();
+                }
             }
         });
+	}
+
+	window.exitQueue	= function() {
+		lock_screen(true);
+
+        $.ajax({
+            url:		make_url('battle_pvps#exit_queue'),
+            dataType:	'json',
+            success:	function (result) {
+                lock_screen(false);
+
+                _check_pvp_queue = false;
+
+                if (!result.success) {
+                    format_error(result);
+                } else {
+                    location.reload();
+                }
+            }
+        });
+	}
+
+    $('#battle-pvp-enter-queue').on('click', function () {
+		enterQueue();
+		return;
+    });
+
+    $(document).on('click', '#tooltip-queue-data .btn-primary', function () {
+		enterQueue();
+		return;
     });
 
     $(document).on('click', '#tooltip-queue-data .btn-danger', function () {
-        lock_screen(true);
-
-        $.ajax({
-            url: make_url('battle_pvps#exit_queue'),
-            dataType: 'json',
-            success: function () {
-                lock_screen(false);
-                _check_pvp_queue = false;
-
-                location.reload();
-            }
-        });
+		exitQueue();
+		return;
     });
 
     $('#1x-queue-data').on('click', function () {
-        lock_screen(true);
-
-        $.ajax({
-            url: make_url('battle_pvps#exit_queue'),
-            dataType: 'json',
-            success: function () {
-                lock_screen(false);
-                _check_pvp_queue = false;
-
-                location.href = make_url('battle_pvps');
-            }
-        });
+		exitQueue();
+		return;
     });
 
 	setInterval(function () {
@@ -189,11 +186,13 @@
                     if (result.found && !queue_alert) {
                         audio[0].play();
                         timer			= result.seconds;
-						var $width		= (timer * 100 / timeout);
+
+						var width		= (timer * 100 / timeout);
 						var progress	= `<div class="timer progress progress-striped active">
-							<div class="progress-bar" style="width: ${$width}%"></div>
+							<div class="progress-bar" style="width: ${width}%"></div>
 						</div>`
-                        queue_alert		= bootbox.dialog({
+
+						queue_alert		= bootbox.dialog({
                             message: `
 								<h4>${I18n.t('battles.pvp.queue_found')}</h4><br /><br />
 								${progress}
@@ -201,9 +200,9 @@
                         });
 
                         timer_iv		= setInterval(function () {
-							$width	= (timer-- * 100 / timeout);
+							width		= (timer-- * 100 / timeout);
                             $('.progress-bar', queue_alert).css({
-                                width: $width + '%'
+                                width: width + '%'
                             });
 
                             if (timer <= 0) {
