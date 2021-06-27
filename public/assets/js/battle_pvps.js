@@ -2,8 +2,8 @@
     var queue_alert			= false;
     var timer_iv			= null;
 
-	var timer				= 5;
-	var timeout				= 5;
+	var timer				= 10;
+	var timeout				= 10;
 
 	var audio				= $(document.createElement('AUDIO')).attr('src', resource_url('media/found.mp3')).attr('type', 'audio/mpeg');
     var room_search_friend	= $('#room-search-friend');
