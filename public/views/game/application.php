@@ -101,6 +101,7 @@ if (preg_match('/read_news/', $action)) {
     <script type="text/javascript" src="<?=asset_url('js/socket.io.js');?>"></script>
 	<script type="text/javascript">
 		var	_site_url				= "<?=$site_url;?>";
+		var	_site_version			= "<?=GAME_VERSION;?>";
 		var	_rewrite_enabled		= <?=($rewrite_enabled ? 'true' : 'false');?>;
 		var _language				= "<?=$language->header;?>";
 		<?php if ($player) { ?>
@@ -122,7 +123,7 @@ if (preg_match('/read_news/', $action)) {
         	I18n.translations		= <?=Lang::toJSON()?>;
 		});
     </script>
-	<style>
+	<style type="text/css">
 		.grecaptcha-badge { z-index: 1; }
 	</style>
 </head>
