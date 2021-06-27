@@ -3,8 +3,8 @@ error_reporting(E_ALL);
 
 // General settings
 $home				= 'home#index';
-$site_url			= 'http://allstarsgame.test';
-$rewrite_enabled	= true;
+$site_url			= 'http://localhost/allstarsgame/public';
+$rewrite_enabled	= false;
 
 // Game settings
 define('GAME_NAME', 			'Anime All-Stars Game');
@@ -12,7 +12,7 @@ define('GAME_VERSION', 			'2.20');
 define('GLOBAL_PASSWORD', 		'allStars2@21');
 
 // Maintenance
-define('IS_MAINTENANCE',		true);
+define('IS_MAINTENANCE',		false);
 
 // Database settings
 define('RECORDSET_APC',			1);

@@ -423,7 +423,12 @@ class VipsController extends Controller {
 				// 'paypal_brl'	=> 'BRL'
 			];
 
-			$price		= 'price_' . strtolower($coins[$star_purchase->star_method]);
+			// Bbusca o preço
+			$price	= 'price_' . strtolower($coins[$star_purchase->star_method]);
+			$price	= $star_plan->$price;
+			if ($_SESSION['universal']) {
+				$price = 1;
+			}
 
 			switch ($star_purchase->star_method) {
 				case 'mercadopago':
@@ -448,7 +453,7 @@ class VipsController extends Controller {
 					$item->title		= DONATE_PREFIX . ' - ' . $star_plan->name;
 					$item->description	= $star_plan->description;
 					$item->quantity		= 1;
-					$item->unit_price	= $star_plan->$price;
+					$item->unit_price	= $price;
 					$item->currency_id	= $coins[$star_purchase->star_method];
 
 					// Adiciona os itens na preferência e salva
@@ -473,7 +478,7 @@ class VipsController extends Controller {
 						$star_plan->id,
 						DONATE_PREFIX . ' - ' . $star_plan->name,
 						1,
-						$star_plan->$price
+						$price
 					);
 					$payment->setCurrency($coins[$star_purchase->star_method]);
 					$payment->setReference($star_purchase->id);
@@ -498,7 +503,7 @@ class VipsController extends Controller {
 					$p->addField('notify_url',		make_url('callback/paypal'));
 					$p->addField('item_name',		DONATE_PREFIX . ' - ' . $star_plan->name);
 					$p->addField('currency_code',	$coins[$star_purchase->star_method]);
-					$p->addField('amount',			$star_plan->$price);
+					$p->addField('amount',			$price);
 					$p->addField('custom',			$star_purchase->id);
 
 					if (PAYPAL_SANDBOX) {

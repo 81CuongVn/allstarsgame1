@@ -461,7 +461,7 @@ function getBrowser() {
 }
 
 function isProxy($ip) {
-	if (in_array($ip, ['127.0.0.1', '0.0.0.0'])) {
+	if (!$ip || in_array($ip, ['127.0.0.1', '0.0.0.0'])) {
 		return false;
 	}
 
