@@ -83,7 +83,7 @@
 				<b class=""><?=$player->faction()->description()->name;?></b>
 			</div>
 		</div>
-		<?php /*<div class="bg_menu_esquerdo">
+		<div class="bg_menu_esquerdo">
 			<div class="menu_esquerdo_divisao">
 				<b class="amarelo">Estrelas</b>
 				<b class=""><?php echo $user->credits ? highamount($user->credits) : "-" ?></b>
@@ -92,7 +92,7 @@
 				<b class="amarelo">Pts. Evento</b>
 				<b class=""><?php echo $user->round_points ? highamount($user->round_points) : "-" ?></b>
 			</div>
-		</div>*/ ?>
+		</div>
 		<div class="bg_menu_esquerdo">
 			<div class="menu_esquerdo_divisao">
 				<b class="amarelo"><?php echo t('global.points') ?></b>
@@ -125,15 +125,15 @@
 		</div>
 		<div class="bg_menu_esquerdo">
 			<div class="menu_esquerdo_divisao" style="width: 80px;">
-				<b class="amarelo">Exp</b>
+				<b class="amarelo" data-toggle="tooltip" title="<?=make_tooltip('Multiplicador de Exp');?>">Exp</b>
 				<b class=""><?=EXP_RATE;?>x</b>
 			</div>
 			<div class="menu_esquerdo_divisao" style="width: 80px;">
-				<b class="amarelo"><?=t('currencies.' . $player->character()->anime_id);?></b>
+				<b class="amarelo" data-toggle="tooltip" title="<?=make_tooltip('Multiplicador de ' . t('currencies.' . $player->character()->anime_id));?>"><?=t('currencies.' . $player->character()->anime_id);?></b>
 				<b class=""><?=MONEY_RATE;?>x</b>
 			</div>
 			<div class="menu_esquerdo_divisao" style="width: 80px;">
-				<b class="amarelo">Drop</b>
+				<b class="amarelo" data-toggle="tooltip" title="<?=make_tooltip('Multiplicador de Drop');?>">Drop</b>
 				<b class=""><?=DROP_RATE;?>x</b>
 			</div>
 		</div>
