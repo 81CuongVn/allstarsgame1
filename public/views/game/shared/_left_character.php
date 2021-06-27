@@ -140,8 +140,8 @@
 		<div class="bg_menu_esquerdo">
 			<?php
 			$timeout	= now() - (15 * 60);
-			$online		= Recordset::query("SELECT `id` FROM `players` WHERE `last_activity` > {$timeout}", FALSE)->num_rows;
-			$queueds	= Recordset::query("SELECT `id` FROM `players` WHERE `is_pvp_queued` = 1", FALSE)->num_rows;
+			$online		= Recordset::query("SELECT `id` FROM `players` WHERE `last_activity` > {$timeout}", false)->num_rows;
+			$queueds	= Recordset::query("SELECT `id` FROM `players` WHERE `is_pvp_queued` = 1", false)->num_rows;
 			?>
 			<div class="menu_esquerdo_divisao">
 				<b class="amarelo">Online</b>
@@ -153,12 +153,12 @@
 			</div>
 		</div>
 		<div class="bg_menu_esquerdo">
-			<?php $battles_pvp	= Recordset::query("SELECT `id` FROM `battle_pvps` WHERE `finished_at` IS NULL ", FALSE)->num_rows; ?>
+			<?php $battles_pvp	= Recordset::query("SELECT `id` FROM `battle_pvps` WHERE `finished_at` IS NULL ", false)->num_rows; ?>
 			<div class="menu_esquerdo_divisao">
 				<b class="amarelo" data-toggle="tooltip" title="<?=make_tooltip('Em Andamento');?>">Batalhas PvP</b>
 				<b class=""><?=highamount($battles_pvp);?></b>
 			</div>
-			<?php $battles_npc	= Recordset::query("SELECT `id` FROM `battle_npcs` WHERE `finished_at` IS NULL ", FALSE)->num_rows; ?>
+			<?php $battles_npc	= Recordset::query("SELECT `id` FROM `battle_npcs` WHERE `finished_at` IS NULL ", false)->num_rows; ?>
 			<div class="menu_esquerdo_divisao">
 				<b class="amarelo" data-toggle="tooltip" title="<?=make_tooltip('Em Andamento');?>">Batalhas NPC</b>
 				<b class=""><?=highamount($battles_npc);?></b>
