@@ -112,7 +112,7 @@ class VipsController extends Controller {
 					}
 				}
 
-				// Já comprou em ouro, cobrar em estrelas
+				// Já comprou em ouro, cobrar em estrelas (deu merda)
 				if ($bought_currency) {
 					$buy_mode = 2;
 
