@@ -2667,6 +2667,10 @@ class Player extends Relation {
 	}
 
 	function update_online() {
+		// Salva última ação no jogo
+		$this->last_activity = now();
+		$this->save();
+
 		$redis = new Redis();
 		if ($redis->pconnect(REDIS_SERVER, REDIS_PORT)) {
 			$redis->auth(REDIS_PASS);
