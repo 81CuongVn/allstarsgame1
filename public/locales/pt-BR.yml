@@ -1127,7 +1127,7 @@ pt-BR:
       errors:
         invalid: Jogador inválido
         battle: Jogador em batalha não pode ser removido
-        leave_message_title: Sua organização perdeu um integrante
+      leave_message_title: Sua organização perdeu um integrante
       leave_message: |
         O jogador "#{name}" deixou a sua organização.
       kick_message_title: Expulso da organização

@@ -268,7 +268,7 @@ io.sockets.on 'connection', (socket) ->
 		# data.message	= emoticons.parse(data.message, player.gm)
 
 		channel_id		= 0 unless channel_id
-		broadcast		= from: player.name, message: data.message, channel: data.channel, channel_id: channel_id, id: player.uid, user_id: player.user_id, gm: player.gm, when: new Date()
+		broadcast		= from: player.name, avatar: player.avatar, faction: player.faction, message: data.message, channel: data.channel, channel_id: channel_id, id: player.uid, user_id: player.user_id, gm: player.gm, when: new Date()
 
 		if data.channel != 'faction'
 			broadcast.color	= player.color

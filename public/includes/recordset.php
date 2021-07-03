@@ -13,6 +13,7 @@ class Recordset {
 	public static	$count_cache_miss		= 0;
 	public static	$count_queries			= 0;
 	public static	$count_inserts			= 0;
+	public static	$count_selects			= 0;
 	public static	$count_updates			= 0;
 	public static	$count_deletes			= 0;
 	public static	$count_inserts_w_dup	= 0;
@@ -87,6 +88,7 @@ class Recordset {
 			Recordset::$sqls[$this->hash]['cached']	= true;
 		}
 	}
+
 	static function connect($name, $default, $host, $user, $pass, $db) {
 		if ($default) {
 			Recordset::$default_connection	= $name;
@@ -100,6 +102,7 @@ class Recordset {
 			echo 'Recordset::connect - Error: ' . $e->getMessage();
 		}
 	}
+
 	function repeat() {
 		$this->recordset	= [];
 		$this->num_rows		= 0;
@@ -108,6 +111,7 @@ class Recordset {
 
 		return $this;
 	}
+
 	private function __do_query($sql, $connection = true) {
 		if (!$sql) {
 			return $this;
@@ -140,6 +144,7 @@ class Recordset {
 
 		return $this;
 	}
+
 	private function __do_cached_query($sql) {
 		if (!$sql) {
 			return $this;
@@ -213,6 +218,7 @@ class Recordset {
 
 		return $this;
 	}
+
 	function row_array() {
 		if ($this->recordset) {
 			$current = current($this->recordset);
@@ -222,9 +228,11 @@ class Recordset {
 
 		return $current;
 	}
+
 	function result_array() {
 		return $this->recordset ? $this->recordset : [];
 	}
+
 	function result() {
 		if (!$this->recordset) {
 			return [];
@@ -243,33 +251,39 @@ class Recordset {
 
 		return $result;
 	}
+
 	function row() {
 		$current = $this->recordset[key($this->recordset)];
 
 		$ret = new stdClass();
-
 		foreach ($current as $k => $v) {
 			$ret->$k = $v;
 		}
 
 		return $ret;
 	}
+
 	function next_row() {
 		next($this->recordset);
 	}
+
 	function previous_row() {
 		prev($this->recordset);
 	}
+
 	function bof() {
 		return key($this->recordset) == 0;
 	}
+
 	function eof() {
 		return key($this->recordset) == $this->num_rows - 1;
 	}
+
 	function set_records($array) {
-		$this->recordset = $array;
-		$this->num_rows = sizeof($array);
+		$this->recordset	= $array;
+		$this->num_rows		= sizeof($array);
 	}
+
 	static function insert($table, $fields, $duplicate = null, $connection = true) {
 		$dp		= [];
 		$keys	= [];
@@ -283,7 +297,7 @@ class Recordset {
 			$dp = Recordset::_parse_where($duplicate);
 		}
 
-		$sql = 'INSERT INTO ' . $table . ' (' . join(',', $keys) . ') VALUES (' . join(',', $sets) . ')' . ($duplicate ? ' ON DUPLICATE KEY UPDATE ' . join(',', $dp) : '');
+		$sql = 'INSERT INTO ' . $table . ' (' . join(', ', $keys) . ') VALUES (' . join(', ', $sets) . ')' . ($duplicate ? ' ON DUPLICATE KEY UPDATE ' . join(',', $dp) : '');
 
 		$connection	= is_bool($connection) && $connection ? Recordset::$connections[Recordset::$default_connection] : Recordset::$connections[$connection];
 		$result		= $connection->query($sql);
@@ -305,6 +319,45 @@ class Recordset {
 		return $connection->lastInsertId();
 	}
 
+	static function select($table, $fields, $where = NULL, $connection = true) {
+		$keys	= [];
+		foreach ($fields as $k => $v) {
+			$keys[] = '`' . $k . '`';
+		}
+
+		$wh		= [];
+		if ($where) {
+			$wh = Recordset::_parse_where($where);
+		}
+
+		$sql	= 'SELECT ' . join(', ', $keys) . ' FROM ' . $table . ($where ? ' WHERE ' . join(' AND ', $wh) : '');
+
+		if (DB_LOGGING) {
+			$hash	= md5($sql);
+			Recordset::$sqls[$hash] = [
+				'sql'		=> $sql,
+				'count'		=> 1,
+				'cached'	=> false,
+				'duration'	=> microtime(true),
+				'traces'	=> []
+			];
+		}
+
+		$connection	= is_bool($connection) && $connection ? Recordset::$connections[Recordset::$default_connection] : Recordset::$connections[$connection];
+		$statement	= $connection->prepare($sql);
+		$statement->execute();
+
+		if ((int)$statement->errorCode()) {
+			throw new Exception("Select query error " . $sql, 1);
+		}
+
+		if (DB_LOGGING) {
+			Recordset::$sqls[$hash]['duration']	= microtime(true) - Recordset::$sqls[$hash]['duration'];
+		}
+
+		Recordset::$count_selects++;
+	}
+
 	static function update($table, $fields, $where = NULL, $connection = true) {
 		$wh		= [];
 		$sets	= Recordset::_parse_set($fields);
@@ -313,10 +366,10 @@ class Recordset {
 			$wh = Recordset::_parse_where($where);
 		}
 
-		$sql	= 'UPDATE ' . $table . ' SET ' . join(',', $sets) . ($where ? ' WHERE ' . join(' AND ', $wh) : '');
+		$sql	= 'UPDATE ' . $table . ' SET ' . join(', ', $sets) . ($where ? ' WHERE ' . join(' AND ', $wh) : '');
 
 		if (DB_LOGGING) {
-			$hash					= md5($sql);
+			$hash	= md5($sql);
 			Recordset::$sqls[$hash] = [
 				'sql'		=> $sql,
 				'count'		=> 1,
@@ -340,6 +393,7 @@ class Recordset {
 
 		Recordset::$count_updates++;
 	}
+
 	static function delete($table, $where, $connection = true) {
 		$wh = [];
 
@@ -358,26 +412,18 @@ class Recordset {
 
 		Recordset::$count_deletes++;
 	}
+
 	static function fromArray($array) {
 		$r = new Recordset();
 		$r->set_records($array);
 
 		return $r;
 	}
+
 	static function query($sql, $cache = false, $connection = true) {
 		return new Recordset($sql, $cache, $connection);
 	}
-	public static function static_query($sql) {
-		$val	= StaticCache::get(md5($sql));
 
-		if (!$val) {
-			$val	= new Recordset($sql, false);
-
-			StaticCache::store(md5($sql), $val);
-		}
-
-		return $val;
-	}
 	private static function _parse_where($where) {
 		$wh = [];
 
@@ -447,6 +493,31 @@ class Recordset {
 
 		return $wh;
 	}
+
+	private static function _parse_get($fields, $insert = false) {
+		$sets	= [];
+
+		foreach ($fields as $k => $v) {
+			if (is_array($v)) {
+				if ($v['escape'] !== false) {
+					$v = is_null($v['value']) ? 'NULL' : '\'' . addslashes($v['value']) . '\'';
+				} else {
+					$v = $v['value'];
+				}
+			} else {
+				$v = is_null($v) ? 'NULL' : '\'' . addslashes($v) . '\'';
+			}
+
+			if ($insert) {
+				$sets[] = $v;
+			} else {
+				$sets[]	= '`' . $k . '` = ' . $v;
+			}
+		}
+
+		return $sets;
+	}
+
 	private static function _parse_set($fields, $insert = false) {
 		$sets	= [];
 
