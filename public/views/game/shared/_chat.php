@@ -2,9 +2,10 @@
 	<div class="title">
         Chat All-Stars
 	</div>
-    <div class="messages">
+	<ul class="messages"></ul>
+    <!-- <div class="messages">
         <div class="wait">Conectando...</div>
-    </div>
+    </div> -->
     <div class="selector">
         <ul>
             <li data-channel="world" data-cmd="w">Mundo</li>
@@ -34,7 +35,7 @@ switch ($player->faction_id) {
 
 $icon_img	= image_url('factions/icons/big/' . $player->faction_id . '.png');
 $icon_name	= $player->faction()->description()->name;
-$icon		= '<img style="width: 16px; vertical-align: -5px;" src="' . $icon_img . '" title="' . $icon_name . '" /> ';
+$icon		= '<img style="width: 16px; height: 16px; vertical-align: -5px;" src="' . $icon_img . '" title="' . $icon_name . '" /> ';
 
 if ($_SESSION['universal']) {			// Admin
 	$color	= '#ffb34f';
@@ -49,6 +50,8 @@ $chat_data	    = [
     'uid'           => (int)$player->id,
 	'user_id'       => (int)$player->user_id,
 	'faction'       => (int)$player->faction_id,
+	'anime'			=> (int)$player->character()->anime_id,
+	'avatar'		=> $player->small_image(true),
 	'guild'         => (int)$player->guild_id,
 	'guild_owner'   => $guild ? $player->id == $guild->leader()->id : FALSE,
 	'battle'        => (int)$player->battle_pvp_id,
@@ -80,14 +83,14 @@ $registration   = openssl_encrypt(json_encode($chat_data), 'AES-256-CBC', $key, 
 		window.chat_embeds	= [];
 		window.chat_decoded	= [];
 
-		function resize_selector() {
+		function resizeSelector() {
 			var	tw	= $('#chat .selector-trigger').outerWidth() + 15;
 			$('#chat input[name=message]').css({
 				paddingLeft: tw
 			});
 		}
 
-		function diff_in_secs(d1, d2) {
+		function diffInSecs(d1, d2) {
 			var diff		= d2 - d1,
 				sign		= diff < 0 ? -1 : 1,
 				milliseconds,
@@ -104,12 +107,42 @@ $registration   = openssl_encrypt(json_encode($chat_data), 'AES-256-CBC', $key, 
 
 			return seconds;
 		}
+		function timeSince(date, nowDate = Date.now(), rft = new Intl.RelativeTimeFormat(undefined, { numeric: "auto" })) {
+			const SECOND	= 1000;
+			const MINUTE	= 60	* SECOND;
+			const HOUR		= 60	* MINUTE;
+			const DAY		= 24	* HOUR;
+			const WEEK		= 7		* DAY;
+			const MONTH		= 30	* DAY;
+			const YEAR		= 365	* DAY;
+			const intervals	= [
+				{ ge: YEAR,		divisor: YEAR,		unit: 'year' },
+				{ ge: MONTH,	divisor: MONTH,		unit: 'month' },
+				{ ge: WEEK,		divisor: WEEK,		unit: 'week' },
+				{ ge: DAY,		divisor: DAY,		unit: 'day' },
+				{ ge: HOUR,		divisor: HOUR,		unit: 'hour' },
+				{ ge: MINUTE,	divisor: MINUTE,	unit: 'minute' },
+				{ ge: SECOND,	divisor: SECOND,	unit: 'seconds' },
+				{ ge: 0,		divisor: 1,			text: 'agora' }
+			];
+			const now		= typeof nowDate === 'object' ? nowDate.getTime() : new Date(nowDate).getTime();
+			const diff		= now - (typeof date === 'object' ? date : new Date(date)).getTime();
+			const diffAbs	= Math.abs(diff);
+			for (const interval of intervals) {
+				if (diffAbs >= interval.ge) {
+					const x			= Math.round(Math.abs(diff) / interval.divisor);
+					const isFuture	= diff < 0;
+					return interval.unit ? rft.format(isFuture ? x : -x, interval.unit) : interval.text;
+				}
+			}
+		}
 
 		__chat_socket.on('error', function () {
-			$('#chat .messages').html(
-				'<div style="padding: 10px">Ocorreu um problema ao conectar ao chat.<br /><br />Você pode ter algum firewall(isso inclui programas anti-hack de jogos on-line)' +
-				' ou anti-vírus bloqueando o chat.<br /><br />Se sua rede está conectada através de um proxy, o proxy pode estar bloqueando as conexões ou não suporta conexões via websocket</div>'
-			);
+			$('#chat .messages').html(`<li style="padding: 10px">
+				Ocorreu um problema ao conectar ao chat.<br /><br />
+				Você pode ter algum firewall (isso inclui programas anti-hack de jogos on-line) ou anti-vírus bloqueando o chat.<br /><br />
+				Se sua rede está conectada através de um proxy, o proxy pode estar bloqueando as conexões ou não suporta conexões via websocket
+			</li>`);
 		});
 
 		__chat_socket.on('connect', function () {
@@ -171,7 +204,7 @@ $registration   = openssl_encrypt(json_encode($chat_data), 'AES-256-CBC', $key, 
 						pvt_dest	= pvt_data[0].id;
 
 						$('#chat input[name=message]').focus();
-						resize_selector();
+						resizeSelector();
 					});
 
 					if (pvt_data.length == 1) {
@@ -245,7 +278,11 @@ $registration   = openssl_encrypt(json_encode($chat_data), 'AES-256-CBC', $key, 
 			}
 
 			if (data.channel == 'system' || data.channel == 'warn') {
-				$('#chat .messages').append('<div class="chat-message chat-' + data.channel + '"><div>Aviso de sistema</div><div>' + data.message + '</div></div>')
+				var $message	= `<li class="chat-message chat-${data.channel}">
+					<div style="text-transform: uppercase;">Aviso do sistema</div>
+					<p style="font-weight: normal;">${data.message}</p>
+				</li>`;
+				$('#chat .messages').append($message)
 
 				return;
 			}
@@ -264,17 +301,30 @@ $registration   = openssl_encrypt(json_encode($chat_data), 'AES-256-CBC', $key, 
 				}
 			// <--
 
-            if (data.gm && data.channel != 'world') {
-                data.icon = '<span class="fa fa-star fa-fw"></span> ';
-            }
+			var $date	= timeSince(new Date(data.when));
 
-            $('#chat .messages').append(
-				'<div class="chat-message chat-' + data.channel + '' + (data.gm ? ' chat-gm' : '') + '" ' + (!(data.channel == real_channel) ? 'style="display: none;"' : '') + '>' +
-                    '<span ' + (data.color ? 'style="color: ' + data.color + '!important"' : '') + ' class="chat-user" data-id="' + data.id + '" data-from="' + data.from + '">' +
-                        (data.icon || '') + data.from +
-                    ':</span>' +
-                    '<span>' + data.message + '</span>' +
-                '</div>');
+			var $avatar		= image_url(data.avatar);
+			var $from		= data.id == _current_player ? 'me' : 'friend';
+			var $color		= (data.color ? 'color: ' + data.color + '!important' : '');
+			var $icon		= data.gm ? '<i class="fa fa-star fa-fw" style="vertical-align: -1px;"></i>' : '';
+			var $message	= `<li class="message-item ${$from} chat-${data.channel} ${(data.gm ? 'chat-gm' : '')}" ${(!(data.channel == real_channel) ? 'style="display: none;"' : '')}>
+				<img src="${$avatar}" alt="${data.from}" />
+				<div class="content">
+					<div class="message">
+						<div class="bubble">
+							<span style="${$color}" class="chat-user" data-id="${data.id}" data-from="${data.from}">
+								${$icon}${data.from}
+							</span>
+							<p>${data.message}</p>
+						</div>
+						<span class="chat-when" data-when="${data.when}">
+							${$date}
+						</span>
+					</div>
+				</div>
+			</li>`;
+			$('#chat .messages').append($message);
+			$("#chat .messages .message-item").tooltip({ html: true });
 
 			$('#chat .messages .chat-user').each(function() {
 				if (this.with_callback) {
@@ -286,7 +336,9 @@ $registration   = openssl_encrypt(json_encode($chat_data), 'AES-256-CBC', $key, 
 
 				_.on('click', function() {
 					if (channel == 'block') {
-						$('#chat input[name=message]').val($(this).data('from')).focus();
+						var $from = $(this).data('from');
+						console.log($from);
+						$('#chat input[name=message]').val($from).focus();
 
 						return;
 					}
@@ -302,7 +354,7 @@ $registration   = openssl_encrypt(json_encode($chat_data), 'AES-256-CBC', $key, 
 					pvt_dest	= _.data('id');
 
 					$('#chat input[name=message]').focus();
-					resize_selector();
+					resizeSelector();
 				});
 			});
 
@@ -323,7 +375,7 @@ $registration   = openssl_encrypt(json_encode($chat_data), 'AES-256-CBC', $key, 
 				if (e.keyCode == 13 && this.value) {
 					<?php if (!$_SESSION['universal']) { ?>
 						var now	= new Date();
-						if (last_msg && diff_in_secs(last_msg, now) < 10) {
+						if (last_msg && diffInSecs(last_msg, now) < 10) {
 							return;
 						}
 					<?php } ?>
@@ -354,8 +406,8 @@ $registration   = openssl_encrypt(json_encode($chat_data), 'AES-256-CBC', $key, 
                             var _iv1	= setInterval(function () {
                                 var	now	= new Date();
 
-                                if (last_msg && diff_in_secs(last_msg, now) < 10) {
-                                    message.attr('placeholder', 'Aguarde ' + (10 - diff_in_secs(last_msg, now)) + ' segundo(s)');
+                                if (last_msg && diffInSecs(last_msg, now) < 10) {
+                                    message.attr('placeholder', 'Aguarde ' + (10 - diffInSecs(last_msg, now)) + ' segundo(s)');
                                 } else {
                                     message.removeAttr('disabled').attr('placeholder', '');
                                     clearInterval(_iv1);
@@ -386,7 +438,7 @@ $registration   = openssl_encrypt(json_encode($chat_data), 'AES-256-CBC', $key, 
 						channel		= 'private';
 						pvt_dest	= dest;
 
-						resize_selector();
+						resizeSelector();
 					}
 
 					if (message.val().match('^/block')) {
@@ -395,7 +447,7 @@ $registration   = openssl_encrypt(json_encode($chat_data), 'AES-256-CBC', $key, 
 						channel	= 'block';
 
 						message.val('');
-						resize_selector();
+						resizeSelector();
 					}
 				}
 			}).on('focus', function () {
@@ -408,7 +460,7 @@ $registration   = openssl_encrypt(json_encode($chat_data), 'AES-256-CBC', $key, 
 				channel		= 'private';
 				pvt_dest	= dest;
 
-				resize_selector();
+				resizeSelector();
 			});
 
 			$('#chat .selector ul li').on('click', function () {
@@ -424,7 +476,7 @@ $registration   = openssl_encrypt(json_encode($chat_data), 'AES-256-CBC', $key, 
                 	$('#chat #message').attr('maxlength', chat_max_length);
 				<?php } ?>
 
-				$('#chat .messages .chat-message').hide();
+				$('#chat .messages li').hide();
 
 				$.cookie('chat_channel', channel);
 
@@ -433,7 +485,7 @@ $registration   = openssl_encrypt(json_encode($chat_data), 'AES-256-CBC', $key, 
 				$('#chat .messages .chat-system').show();
 
 				$('#chat input[name=message]').focus();
-				resize_selector();
+				resizeSelector();
 			});
 
 			$('#chat .selector-trigger').on('click', function () {
@@ -482,6 +534,19 @@ $registration   = openssl_encrypt(json_encode($chat_data), 'AES-256-CBC', $key, 
 			}
 		});
 
+		var __att_when	= setInterval(function () {
+			var chatTimers = $('.message-item > .content > .message > .chat-when');
+			chatTimers.each(function (key, value) {
+				var $elem	= $(value);
+				var $when	= $elem.data('when');
+				if ($when !== 'undefined') {
+					var $date	= timeSince(new Date($when));
+					$elem.html($date);
+					console.log($date);
+				}
+			});
+		}, 2500);
+
 		var	__pvt_iv	= setInterval(function() {
 			__chat_socket.emit('pvt-query');
 		}, 2000)
@@ -503,7 +568,7 @@ $registration   = openssl_encrypt(json_encode($chat_data), 'AES-256-CBC', $key, 
 				$.cookie('chat_show', 1);
 			}
 
-			resize_selector();
+			resizeSelector();
 		});
 
 		$('#chat .auto-scroll').on('click', function () {

@@ -38,6 +38,82 @@ and (max-device-width : 568px) {
 	padding: 4px;
 	overflow: auto;
 	word-break: break-word;
+	list-style-type: none;
+}
+#chat .messages .message-item {
+    display: flex;
+    max-width: 90%;
+    margin-bottom: 10px;
+}
+#chat .messages .message-item .content .bubble {
+    position: relative;
+    padding: 7px 15px;
+    margin-bottom: 4px;
+    width: -webkit-fit-content;
+    width: -moz-fit-content;
+    width: fit-content;
+}
+#chat .messages .message-item .content span {
+    /* font-size: 12px; */
+    color: #686868;
+}
+#chat .messages .message-item.friend img {
+    order: 1;
+    margin-right: 15px;
+}
+#chat .messages .message-item.friend .content {
+    order: 2;
+}
+#chat .messages .message-item.friend .content .bubble {
+    background: rgba(114,124,245,.1);
+    border-radius: 0 5px 5px
+}
+#chat .messages .message-item.friend .content .bubble:before {
+    content: "";
+    width: 0;
+    height: 0;
+    position: absolute;
+    left: -10px;
+    top: 0;
+    border-color: rgba(114,124,245,.1) rgba(114,124,245,.1) transparent transparent;
+    border-style: solid;
+    border-width: 5px
+}
+#chat .messages .message-item.me {
+    margin-left: auto;
+}
+#chat .messages .message-item.me img {
+    order: 2;
+    margin-left: 15px;
+}
+#chat .messages .message-item img {
+    width: 37px;
+    height: 37px;
+	border-radius: 50%!important;
+}
+#chat .messages .message-item.me .content {
+    order: 1;
+    margin-left: auto;
+}
+#chat .messages .message-item.me .content .bubble {
+    background: rgba(102,209,209,.1);
+    border-radius: 5px 0 5px 5px;
+    margin-left: auto;
+}
+#chat .messages .message-item.me .content .bubble:before {
+    content: "";
+    width: 0;
+    height:0 ;
+    position: absolute;
+    right: -10px;
+    top: 0;
+    border-color: rgba(102,209,209,.1) transparent transparent rgba(102,209,209,.1);
+    border-style: solid;
+    border-width: 5px;
+}
+#chat .messages .message-item.me .content span {
+    text-align: right;
+    display: block;
 }
 
 #chat .messages .embed {
@@ -115,10 +191,13 @@ textarea:focus, input:focus{
 #chat .chat-anime {
     color: #B2B2B2;
 }
-
-#chat .chat-message .chat-user {
+#chat .message-item .chat-when {
+	font-size: inherit !important;
+}
+#chat .message-item .chat-user {
     color: #ffe9a5;
-    margin-right: 5px;
+    margin-bottom: 5px;
+	text-align: left !important;
 }
 
 #chat .chat-gm .chat-user {
@@ -158,6 +237,10 @@ textarea:focus, input:focus{
     font-weight: bold;
     border: solid 1px #790505;
     color: #FFF;
+}
+#chat .chat-system,
+#chat .chat-warn {
+	margin-bottom: 10px;
 }
 
 .chat-pvt {

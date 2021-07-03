@@ -89,11 +89,11 @@ define('REGEX_GUILD',			'/^[ÁÉÍÓÚÀÈÌÒÙÂÊÎÔÛÃÕÑÇáéíóúàè
 
 // Chat settinsg
 define('CHAT_KEY',				'YAn8yK930907L2KUTnnSqLDuI6jl0G9N');
-define('CHAT_SERVER',			'http://allstarsgame.test:2934');
+define('CHAT_SERVER',			'http://localhost:2934');
 
 // Highligts settings
 define('HIGHLIGHTS_KEY',		'430rBdLShn8yK930907L2a8yeTszrDip');
-define('HIGHLIGHTS_SERVER',		'http://allstarsgame.test:2600');
+define('HIGHLIGHTS_SERVER',		'http://localhost:2600');
 
 // Redis Server settings
 define('REDIS_SERVER', 			'127.0.0.1');
