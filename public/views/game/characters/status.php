@@ -94,6 +94,18 @@
         <div class="msg_bot2"></div>
     </div>
 </div>
+<?php
+if ($is_dbl) {
+	$timestamp	= strtotime($is_dbl->data_end);
+	echo partial('shared/info', [
+		'id'		=> 4,
+		'title'		=> 'vips.make_donation.title',
+		'message'	=> t('vips.make_donation.description', [
+			'date'	=> date('d/m/Y à\s H:i:s', $timestamp)
+		])
+	]);
+}
+?>
 <?=partial('shared/title', [
 	'title'	=> 'characters.status.title',
 	'place'	=> 'characters.status.title'

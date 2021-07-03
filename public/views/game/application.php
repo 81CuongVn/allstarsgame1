@@ -80,12 +80,23 @@ if (preg_match('/read_news/', $action)) {
 	<link rel="stylesheet" type="text/css" href="<?=asset_url('css/bootstrap-theme.css');?>" />
 	<link rel="stylesheet" type="text/css" href="<?=asset_url('css/select2.css');?>" />
 	<link rel="stylesheet" type="text/css" href="<?=asset_url('css/select2-bootstrap.css');?>" />
+	<link rel="stylesheet" type="text/css" href="<?=asset_url('css/animate.css');?>" />
+	<link rel="stylesheet" type="text/css" href="<?=asset_url('css/anivers.css');?>" />
+	<link rel="stylesheet" type="text/css" href="<?=asset_url('css/inventory.css');?>" />
+	<link rel="stylesheet" type="text/css" href="<?=asset_url('css/battle.css');?>" />
+	<link rel="stylesheet" type="text/css" href="<?=asset_url('css/chat.css');?>" />
+	<link rel="stylesheet" type="text/css" href="<?=asset_url('css/quests.css');?>" />
+	<link rel="stylesheet" type="text/css" href="<?=asset_url('css/equipments.css');?>" />
+	<link rel="stylesheet" type="text/css" href="<?=asset_url('css/typeahead.css');?>" />
+	<link rel="stylesheet" type="text/css" href="<?=asset_url('css/techniques.css');?>" />
+	<link rel="stylesheet" type="text/css" href="<?=asset_url('css/history_mode.css');?>" />
+	<link rel="stylesheet" type="text/css" href="<?=asset_url('css/events.css');?>" />
+	<link rel="stylesheet" type="text/css" href="<?=asset_url('css/tournaments.css');?>" />
 	<link rel="stylesheet" type="text/css" href="<?=asset_url('css/layout.css');?>" />
 	<link rel="stylesheet" type="text/css" href="<?=asset_url('css/characters.css');?>" />
 	<link rel="stylesheet" type="text/css" href="<?=asset_url('css/tutorial.css');?>" />
 	<link rel="stylesheet" type="text/css" href="<?=asset_url('css/luck.css');?>" />
 	<link rel="stylesheet" type="text/css" href="<?=asset_url('css/highlights.css');?>" />
-	<link rel="stylesheet" type="text/css" href="<?=asset_url('css/animate.css');?>" />
 	<link rel="stylesheet" type="text/css" href="<?=asset_url('css/font-awesome.min.css');?>" />
 	<link rel="stylesheet" type="text/css" href="<?=asset_url('css/jquery.bracket.min.css');?>" />
 	<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans:400,700" />

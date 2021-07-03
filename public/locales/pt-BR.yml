@@ -2392,7 +2392,9 @@ pt-BR:
       title: |
         Promoção: Estrelas em Dobro
       description: |
-        Hoje você pode aproveitar nossa promoção de estrelas em dobro ao adquirir qualquer plano de doação abaixo! Promoção durará até o dia:
+        Hoje você pode aproveitar nossa promoção de estrelas em dobro ao adquirir qualquer plano de doação.<br /><br />
+
+        Promoção durará até o dia: <span class="laranja">#{date}</span>
     done_donation:
       you_have: Você está preste há fazer uma Doação de
       you_have2: tem certeza disso?
