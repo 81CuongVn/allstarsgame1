@@ -33,16 +33,13 @@ switch ($player->faction_id) {
 	case 3:		$color	= '#f4ffff';	break;
 }
 
-$icon_img	= image_url('factions/icons/big/' . $player->faction_id . '.png');
-$icon_name	= $player->faction()->description()->name;
-$icon		= '<img style="width: 16px; height: 16px; vertical-align: -5px;" src="' . $icon_img . '" title="' . $icon_name . '" /> ';
-
+$icon		= '';
 if ($_SESSION['universal']) {			// Admin
 	$color	= '#ffb34f';
-	$icon	= '<span class="fa fa-star fa-fw" style="vertical-align: -1px;"></span> ';
+	$icon	= '<i class="fa fa-star fa-fw" style="vertical-align: -1px;"></i>';
 } elseif (in_array($player->id, [])) {	// Mod
 	$color	= '#1abc9c';
-	$icon	= '<span class="fa fa-star fa-fw" style="vertical-align: -1px;"></span> ';
+	$icon	= '<i class="fa fa-star fa-fw" style="vertical-align: -1px;"></i>';
 }
 
 $guild          = $player->guild();
@@ -51,7 +48,7 @@ $chat_data	    = [
 	'user_id'       => (int)$player->user_id,
 	'faction'       => (int)$player->faction_id,
 	'anime'			=> (int)$player->character()->anime_id,
-	'avatar'		=> $player->small_image(true),
+	'avatar'		=> image_url($player->small_image(true)),
 	'guild'         => (int)$player->guild_id,
 	'guild_owner'   => $guild ? $player->id == $guild->leader()->id : FALSE,
 	'battle'        => (int)$player->battle_pvp_id,
@@ -303,17 +300,15 @@ $registration   = openssl_encrypt(json_encode($chat_data), 'AES-256-CBC', $key, 
 
 			var $date	= timeSince(new Date(data.when));
 
-			var $avatar		= image_url(data.avatar);
 			var $from		= data.id == _current_player ? 'me' : 'friend';
 			var $color		= (data.color ? 'color: ' + data.color + '!important' : '');
-			var $icon		= data.gm ? '<i class="fa fa-star fa-fw" style="vertical-align: -1px;"></i>' : '';
 			var $message	= `<li class="message-item ${$from} chat-${data.channel} ${(data.gm ? 'chat-gm' : '')}" ${(!(data.channel == real_channel) ? 'style="display: none;"' : '')}>
-				<img src="${$avatar}" alt="${data.from}" />
+				<img src="${data.avatar}" alt="${data.from}" />
 				<div class="content">
 					<div class="message">
 						<div class="bubble">
 							<span style="${$color}" class="chat-user" data-id="${data.id}" data-from="${data.from}">
-								${$icon}${data.from}
+								${data.icon}${data.from}
 							</span>
 							<p>${data.message}</p>
 						</div>
@@ -337,7 +332,6 @@ $registration   = openssl_encrypt(json_encode($chat_data), 'AES-256-CBC', $key, 
 				_.on('click', function() {
 					if (channel == 'block') {
 						var $from = $(this).data('from');
-						console.log($from);
 						$('#chat input[name=message]').val($from).focus();
 
 						return;
@@ -542,7 +536,6 @@ $registration   = openssl_encrypt(json_encode($chat_data), 'AES-256-CBC', $key, 
 				if ($when !== 'undefined') {
 					var $date	= timeSince(new Date($when));
 					$elem.html($date);
-					console.log($date);
 				}
 			});
 		}, 2500);
