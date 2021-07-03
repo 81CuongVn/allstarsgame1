@@ -330,15 +330,17 @@ $registration   = openssl_encrypt(json_encode($chat_data), 'AES-256-CBC', $key, 
 				var	_				= $(this);
 
 				_.on('click', function() {
+					var $from = $(this).data('from');
+
 					if (channel == 'block') {
-						var $from = $(this).data('from');
 						$('#chat input[name=message]').val($from).focus();
 
 						return;
 					}
+						alert('aaaa');
 
 					$('#chat .selector-trigger')
-						.html(this.innerHTML)[0].shown = false;
+						.html($from)[0].shown = false;
 
 					$('#chat .selector ul').animate({opacity: 0}, function () {
 						$(this).hide()
