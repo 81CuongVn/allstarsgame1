@@ -361,6 +361,9 @@ class CharactersController extends Controller {
 			}
 		}
 
+		$is_dbl		= StarDouble::find_first('NOW() BETWEEN data_init AND data_end');
+
+		$this->assign('is_dbl',					$is_dbl);
 		$this->assign('player',					$player);
 		$this->assign('stat',					$player_stat);
 		$this->assign('formulas',				$formulas);

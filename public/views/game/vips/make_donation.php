@@ -5,7 +5,9 @@ if ($is_dbl) {
 	echo partial('shared/info', [
 		'id'		=> 4,
 		'title'		=> 'vips.make_donation.title',
-		'message'	=> t('vips.make_donation.description') . ' <span class="laranja">'. date('d/m/Y H:i:s', $timestamp) .'<span>'
+		'message'	=> t('vips.make_donation.description', [
+			'date'	=> date('d/m/Y à\s H:i:s', $timestamp)
+		])
 	]);
 }
 ?>
