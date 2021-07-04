@@ -749,7 +749,7 @@ trait BattleSharedMethods {
 					if ($is_pvp) {
 						if ($battle->battle_type_id == 5) {
 							if ($player_ranked) {
-								$player_ranked->points	+= $tier->points_draws;
+								$player_ranked->points	+= $tier->points_draw;
 								$player_ranked->draws++;
 								$player_ranked->save();
 							}
