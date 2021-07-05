@@ -8,7 +8,7 @@ pt-BR:
         <p>Seja bem-vindo ao Anime All-Stars Game!</p>
       message: |
         Estamos felizes por ter-lo conosco!<br />
-        Oo dados de acesso à sua conta são:<br />
+        Os dados de acesso à sua conta são:<br />
         <b>E-mail:</b> #{email}<br />
         <b>Senha:</b> #{password}<br /><br />
 
