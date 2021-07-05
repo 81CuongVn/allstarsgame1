@@ -83,26 +83,28 @@ if ($_SESSION['user_id']) {
 		var _language				= "<?=$language->header;?>";
 	</script>
 </head>
-<body class="boxed-layouts center-menu">
+<body class="center-menus">
 <!-- Pre-loader -->
-<!-- <div id="preloader">
+<div id="preloader">
 	<div id="status">
 		<div class="spinner">Aguarde...</div>
 	</div>
-</div> -->
+</div>
 <!-- End Preloader-->
-<!-- Navigation Bar-->
-<header id="topnav">
+<!-- Begin page -->
+<div id="wrapper">
 	<?=partial('layout/topbar', [ 'user' => $user ]);?>
 
-	<?=partial('layout/horizontal-nav', [ 'user' => $user ]);?>
-</header>
-<!-- End Navigation Bar-->
+	<?=partial('layout/left-sidebar', [ 'user' => $user ]);?>
+	<div class="content-page">
+		<div class="content">
 
-<div class="wrapper">
-	<div class="container-fluid">
-		@yield
-	</div><!-- end container -->
+			<!-- Start Content-->
+			<div class="container-fluid">
+				@yield
+			</div><!-- end container -->
+		</div>
+	</div>
 </div><!-- end wrapper -->
 
 <?=partial('layout/footer');?>

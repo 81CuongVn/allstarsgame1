@@ -3,17 +3,87 @@ class HomeController extends Controller {
 	function index() {
 		// Contagem de contas
 		$couuntUsers	= [
-			'active'	=> Recordset::query("SELECT COUNT(id) AS total FROM users WHERE active = 1 AND banned = 0 AND removed = 0")->row()->total,
-			'inactive'	=> Recordset::query("SELECT COUNT(id) AS total FROM users WHERE active = 0 AND banned = 0 AND removed = 0")->row()->total,
-			'banned'	=> Recordset::query("SELECT COUNT(id) AS total FROM users WHERE banned = 1 AND removed = 0")->row()->total,
-			'total'		=> Recordset::query("SELECT COUNT(id) AS total FROM users WHERE removed = 0")->row()->total
+			'active'	=> Recordset::query("SELECT
+				COUNT(u.id) AS total
+			FROM
+				users u
+			WHERE
+				u.active = 1  AND
+				u.removed = 0 AND
+				u.id NOT IN (SELECT
+					b.user_id
+				FROM
+					banishments b
+				WHERE
+					b.type = 'user' AND
+					(NOW() BETWEEN b.created_at AND b.finishes_at)
+				)
+			")->row()->total,
+			'inactive'	=> Recordset::query("SELECT
+				COUNT(u.id) AS total
+			FROM
+				users u
+			WHERE
+				u.active = 0  AND
+				u.removed = 0 AND
+				u.id NOT IN (SELECT
+					b.user_id
+				FROM
+					banishments b
+				WHERE
+					b.type = 'user' AND
+					(NOW() BETWEEN b.created_at AND b.finishes_at)
+				)
+			")->row()->total,
+			'banned'	=> Recordset::query("SELECT
+				COUNT(u.id) AS total
+			FROM
+				users u
+			WHERE
+				u.removed = 0 AND
+				u.id IN (SELECT
+					b.user_id
+				FROM
+					banishments b
+				WHERE
+					b.type = 'user' AND
+					(NOW() BETWEEN b.created_at AND b.finishes_at)
+				)
+			")->row()->total
 		];
 
 		// Contagem de personagens
 		$countPlayers	= [
-			'active'	=> Recordset::query("SELECT COUNT(id) AS total FROM players WHERE banned = 0 AND removed = 0")->row()->total,
-			'banned'	=> Recordset::query("SELECT COUNT(id) AS total FROM players WHERE banned = 1 AND removed = 0")->row()->total,
-			'total'		=> Recordset::query("SELECT COUNT(id) AS total FROM players")->row()->total
+			'active'	=> Recordset::query("SELECT
+				COUNT(p.id) AS total
+			FROM
+				players p
+			WHERE
+				p.removed = 0 AND
+				p.id NOT IN (SELECT
+					b.player_id
+				FROM
+					banishments b
+				WHERE
+					b.type = 'player' AND
+					(NOW() BETWEEN b.created_at AND b.finishes_at)
+				)
+			")->row()->total,
+			'banned'	=> Recordset::query("SELECT
+				COUNT(p.id) AS total
+			FROM
+				players p
+			WHERE
+				p.removed = 0 AND
+				p.id IN (SELECT
+					b.player_id
+				FROM
+					banishments b
+				WHERE
+					b.type = 'player' AND
+					(NOW() BETWEEN b.created_at AND b.finishes_at)
+				)
+			")->row()->total
 		];
 
 		// Últimas contas criadas

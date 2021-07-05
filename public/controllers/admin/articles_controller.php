@@ -1,6 +1,11 @@
 <?php
 class ArticlesController extends Controller {
 	public function index() {
+		$counters		= [
+			'articles'	=> Recordset::query("SELECT COUNT(id) AS total FROM site_news")->row()->total,
+			'comments'	=> Recordset::query("SELECT COUNT(id) AS total FROM site_news_comments")->row()->total
+		];
+
 		$page			= !isset($_GET['page']) || !is_numeric($_GET['page']) ? 1 : $_GET['page'];
 		$items_per_page	= 10;
 		$all_articles	= Recordset::query("SELECT COUNT(id) AS total FROM site_news")->row()->total;
@@ -16,6 +21,7 @@ class ArticlesController extends Controller {
 
 		$this->assign('page',		$page);
 		$this->assign('pages',		$pages);
+		$this->assign('counters',	$counters);
 		$this->assign('articles',	$articles);
 	}
 

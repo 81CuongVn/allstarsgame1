@@ -3,6 +3,11 @@
 ]);?>
 <div class="row">
 	<div class="col-lg-4 col-xl-4">
+		<?php if (is_user_online($u->id)) { ?>
+			<button type="button" class="btn btn-danger btn-block mb-3">
+				Deslogar usuário
+			</button>
+		<?php } ?>
 		<div class="text-center card-box">
 			<div class="pt-2 pb-2">
 				<?php
@@ -125,7 +130,7 @@
 				<div class="col-8">
 					<div class="text-right">
 						<h3 class="text-dark mt-1">
-							<?=date('d/m/Y', strtotime($u->last_login_at));?>
+							<?=($lastLogin ? date('d/m/Y', strtotime($lastLogin->created_at)) : '-');?>
 						</h3>
 						<p class="text-muted mb-1 text-truncate text-uppercase">Último login</p>
 					</div>
@@ -142,7 +147,7 @@
 				<div class="col-8">
 					<div class="text-right">
 						<h3 class="text-dark mt-1">
-							<?=($u->last_login_ip);?>
+							<?=($lastLogin && $lastLogin->ip ? $lastLogin->ip : '-');?>
 						</h3>
 						<p class="text-muted mb-1 text-truncate text-uppercase">Último IP</p>
 					</div>
@@ -401,15 +406,25 @@
 										<?php } ?>
 									</td>
 									<td class="text-center">
-										<?php if (in_array($donate->star_method, [ 'mercadopago', 'pagseguro', 'paypal_brl' ])) { ?>
-											R$ <?=number_format($donate->plan()->price_brl, 2, ',', '.');?>
-										<?php } elseif ($donate->star_method == 'paypal_eur') { ?>
+										<?php if ($donate->star_method == 'paypal_eur') { ?>
 											€ <?=number_format($donate->plan()->price_eur, 2, '.', ',');?>
 										<?php } elseif ($donate->star_method == 'paypal_usd') { ?>
 											U$ <?=number_format($donate->plan()->price_usd, 2, '.', ',');?>
+										<?php } else { ?>
+											R$ <?=number_format($donate->plan()->price_brl, 2, ',', '.');?>
 										<?php } ?>
 									</td>
-									<td class="text-center"><?=t('donate.method.' . $donate->star_method);?></td>
+									<td class="text-center">
+										<?php if ($donate->star_method != 'admin') { ?>
+											<span data-toggle="tooltip" title="<?=$donate->transid;?>">
+												<?=t('donate.method.' . $donate->star_method);?>
+											</span>
+										<?php } else { ?>
+											<a href="<?=make_url('admin/users/view/' . $donate->transid);?>">
+												<?=$donate->admin()->name;?>
+											</a>
+										<?php } ?>
+									</td>
 									<td class="text-center">
 										<?php if ($donate->status == 'aprovado') { ?>
 											<span class="badge badge-success text-uppercase">Aprovado</span>
@@ -422,21 +437,15 @@
 										<?php } ?>
 									</td>
 									<td class="text-center">
-										<?php if ($donate->status == 'aprovado') { ?>
+										<?php if ($donate->status == 'aguardando' && $user->admin >= 2) { ?>
+											<button type="button" data-toggle="tooltip" title="Aprovar" data-id="<?=$donate->id;?>" data-action="approve" class="btn donate-change btn-xs btn-success waves-effect waves-light">
+												<i class="mdi mdi-check"></i>
+											</button>
 											<button type="button" data-toggle="tooltip" title="Cancelar" data-id="<?=$donate->id;?>" data-action="cancel" class="btn donate-change btn-xs btn-danger waves-effect waves-light">
 												<i class="mdi mdi-close"></i>
 											</button>
-										<?php } else {?>
-											<?php if ($donate->status == 'aguardando') { ?>
-												<button type="button" data-toggle="tooltip" title="Aprovar" data-id="<?=$donate->id;?>" data-action="approve" class="btn donate-change btn-xs btn-success waves-effect waves-light">
-													<i class="mdi mdi-check"></i>
-												</button>
-												<button type="button" data-toggle="tooltip" title="Cancelar" data-id="<?=$donate->id;?>" data-action="cancel" class="btn donate-change btn-xs btn-danger waves-effect waves-light">
-													<i class="mdi mdi-close"></i>
-												</button>
-											<?php } else { ?>
-												-
-											<?php } ?>
+										<?php } else { ?>
+											-
 										<?php } ?>
 									</td>
 								</tr>
@@ -561,6 +570,39 @@
 	</div>
 <?php } ?>
 <script type="text/javascript">
+	var donateChange = $(".donate-change");
+	if (donateChange.length) {
+		donateChange.on('click', function(e) {
+			e.preventDefault();
+
+			var __	= $(this);
+			$.ajax({
+				url:		makeUrl('admin/users/donate'),
+				data:		{
+					id:		__.data('id'),
+					action:	__.data('action')
+				},
+				type:		'post',
+				dataType:	'json',
+				success:	function (result) {
+					var $message	= result.success ? result.message : formatError(result.errors);
+					jAlert($message, result.success, function() {
+						if (result.redirect) {
+							window.location = makeUrl(result.redirect);
+						}
+					});
+
+					lockScreen(false);
+				},
+				error:		function(e) {
+					jAlert('Não foi possível continuar! Tente mais tarde.', false);
+					lockScreen(false);
+				}
+			});
+			console.log(__.data('action'));
+		});
+	}
+
 	var loginUser = $(".login-user");
 	if (loginUser.length) {
 		loginUser.on('click', function(e) {

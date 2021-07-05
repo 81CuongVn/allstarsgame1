@@ -9,6 +9,10 @@ class StarPurchase extends Relation {
 		return User::find_first('id = ' . $this->user_id);
 	}
 
+	function admin() {
+		return User::find_first('id = ' . $this->transid);
+	}
+
 	function plan() {
 		return StarPlan::find_first('id = ' . $this->star_plan_id);
 	}
