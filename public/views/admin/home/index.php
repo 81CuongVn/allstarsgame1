@@ -12,7 +12,11 @@
 				</div>
 				<div class="col-8">
 					<div class="text-right">
-						<h3 class="mt-1"><?=highamount($couuntUsers['total']);?></h3>
+						<h3 class="mt-1"><?=highamount(
+							$couuntUsers['active'] +
+							$couuntUsers['inactive'] +
+							$couuntUsers['banned']
+						);?></h3>
 						<p class="text-muted mb-1 text-truncate">Contas</p>
 					</div>
 				</div>
@@ -82,7 +86,10 @@
 				</div>
 				<div class="col-8">
 					<div class="text-right">
-						<h3 class="mt-1"><?=highamount($countPlayers['total']);?></h3>
+						<h3 class="mt-1"><?=highamount(
+							$countPlayers['active'] +
+							$countPlayers['banned']
+						);?></h3>
 						<p class="text-muted mb-1 text-truncate">Personagens</p>
 					</div>
 				</div>

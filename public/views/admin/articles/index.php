@@ -1,6 +1,42 @@
 <?=partial('shared/title', [
 	'title'	=> 'Lista de Noticías'
 ]);?>
+<div class="row">
+<div class="col-md-12 col-xl-6">
+		<div class="widget-rounded-circle card-box">
+			<div class="row">
+				<div class="col-4">
+					<div class="avatar-lg rounded-circle bg-soft-primary border-primary border">
+						<i class="icon-magazine font-22 avatar-title text-primary"></i>
+					</div>
+				</div>
+				<div class="col-8">
+					<div class="text-right">
+						<h3 class="mt-1"><?=highamount($counters['articles']);?></h3>
+						<p class="text-muted mb-1 text-truncate">Noticias Postadas</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-12 col-xl-6">
+		<div class="widget-rounded-circle card-box">
+			<div class="row">
+				<div class="col-4">
+					<div class="avatar-lg rounded-circle bg-soft-secondary border-secondary border">
+						<i class="icon-bubble-lines4 font-22 avatar-title text-secondary"></i>
+					</div>
+				</div>
+				<div class="col-8">
+					<div class="text-right">
+						<h3 class="mt-1"><?=highamount($counters['comments']);?></h3>
+						<p class="text-muted mb-1 text-truncate">Comentários</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
 <div class="text-right">
 	<a href="<?=make_url('admin/articles/create');?>" class="btn btn-success waves-effect waves-light">
 		<span class="btn-label">

@@ -63,6 +63,10 @@ class UsersController extends Controller {
 			exit;
 		}
 
+		$user	= User::get_instance();
+		$this->assign('user',	$user);
+
+		// Buscar e paginar personagens
 		$page			= !isset($_GET['page']) || !is_numeric($_GET['page']) ? 1 : $_GET['page'];
 		$items_per_page	= 12;
 		$all_players	= Recordset::query("SELECT COUNT(id) AS total FROM players WHERE user_id = '{$u->id}' AND removed = 0")->row()->total;
@@ -79,7 +83,12 @@ class UsersController extends Controller {
 
 		// Doações
 		$donates	= StarPurchase::find('user_id = ' . $u->id);
+
+		// User Logins
 		$logins		= UserLogin::find('user_id = ' . $u->id);
+
+		// Last login
+		$lastLogin	= UserLogin::find_last('user_id = ' . $u->id);
 
 		// Países
 		$countries	= Country::all();
@@ -96,6 +105,7 @@ class UsersController extends Controller {
 		$this->assign('players',		$players);
 		$this->assign('donates',		$donates);
 		$this->assign('countries',		$countries);
+		$this->assign('lastLogin',		$lastLogin);
 		$this->assign('banishments',	$banishments);
 	}
 
@@ -198,6 +208,58 @@ class UsersController extends Controller {
 				$this->json->message	= 'Acesso realizado com sucesso!';
 				$this->json->redirect	= 'characters/select';
 			}
+		} else {
+			$this->json->errors		= $errors;
+		}
+	}
+
+	public function donate() {
+		$this->layout			= false;
+		$this->as_json			= true;
+		$this->render			= false;
+		$this->json->success	= false;
+
+		$user		= User::get_instance();
+		$errors		= [];
+
+		if (!in_array($_POST['action'], ['approve', 'cancel']) || $user->admin < 2) {
+			$errors[]	= 'Ação inválida!';
+		} else {
+			$order	= StarPurchase::find_first('id = ' . $_POST['id']);
+			if (!$order)  {
+				$errors[]	= 'Pedido não encontrado';
+			} else {
+				if ($order->status != 'aguardando') {
+					$errors[]	= 'Este pedido ja foi processado!';
+				}
+
+				$plan	= $order->plan();
+				if (!$plan) {
+					$errors[]	= 'Plano não encontrado!';
+				}
+
+				$user	= $order->user();
+				if (!$user) {
+					$errors[]	= 'Jogador não encontrado!';
+				}
+			}
+		}
+
+		if (!sizeof($errors)) {
+			switch ($_POST['action']) {
+				case 'approve':
+					if ($order->status != 'aguardando') {
+						$errors[]	= 'Este pedido ja foi processado!';
+					}
+
+					break;
+				case 'cancel':
+					break;
+			}
+
+			$this->json->success	= true;
+			$this->json->message	= isset($message) ? $message : NULL;
+			$this->json->redirect	= 'admin/users/view/' . $user->id;
 		} else {
 			$this->json->errors		= $errors;
 		}
