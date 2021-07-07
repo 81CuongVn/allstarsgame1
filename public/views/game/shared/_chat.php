@@ -319,7 +319,6 @@ $registration   = openssl_encrypt(json_encode($chat_data), 'AES-256-CBC', $key, 
 				</div>
 			</li>`;
 			$('#chat .messages').append($message);
-			$("#chat .messages .message-item").tooltip({ html: true });
 
 			$('#chat .messages .chat-user').each(function() {
 				if (this.with_callback) {
@@ -337,7 +336,6 @@ $registration   = openssl_encrypt(json_encode($chat_data), 'AES-256-CBC', $key, 
 
 						return;
 					}
-						alert('aaaa');
 
 					$('#chat .selector-trigger')
 						.html($from)[0].shown = false;
