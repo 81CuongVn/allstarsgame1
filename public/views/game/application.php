@@ -137,6 +137,7 @@ if (preg_match('/read_news/', $action)) {
 	<style type="text/css">
 		.grecaptcha-badge { z-index: 1; }
 	</style>
+	<script data-ad-client="ca-pub-6665062829379662" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 </head>
 <body>
 <script type="text/javascript">

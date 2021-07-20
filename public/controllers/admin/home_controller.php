@@ -3,53 +3,9 @@ class HomeController extends Controller {
 	function index() {
 		// Contagem de contas
 		$couuntUsers	= [
-			'active'	=> Recordset::query("SELECT
-				COUNT(u.id) AS total
-			FROM
-				users u
-			WHERE
-				u.active = 1  AND
-				u.removed = 0 AND
-				u.id NOT IN (SELECT
-					b.user_id
-				FROM
-					banishments b
-				WHERE
-					b.type = 'user' AND
-					(NOW() BETWEEN b.created_at AND b.finishes_at)
-				)
-			")->row()->total,
-			'inactive'	=> Recordset::query("SELECT
-				COUNT(u.id) AS total
-			FROM
-				users u
-			WHERE
-				u.active = 0  AND
-				u.removed = 0 AND
-				u.id NOT IN (SELECT
-					b.user_id
-				FROM
-					banishments b
-				WHERE
-					b.type = 'user' AND
-					(NOW() BETWEEN b.created_at AND b.finishes_at)
-				)
-			")->row()->total,
-			'banned'	=> Recordset::query("SELECT
-				COUNT(u.id) AS total
-			FROM
-				users u
-			WHERE
-				u.removed = 0 AND
-				u.id IN (SELECT
-					b.user_id
-				FROM
-					banishments b
-				WHERE
-					b.type = 'user' AND
-					(NOW() BETWEEN b.created_at AND b.finishes_at)
-				)
-			")->row()->total
+			'active'	=> sizeof(AdminManager::activeUsers()),
+			'inactive'	=> sizeof(AdminManager::inactiveUsers()),
+			'banned'	=> sizeof(AdminManager::bannedUsers())
 		];
 
 		// Contagem de personagens
