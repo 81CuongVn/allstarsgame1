@@ -119,7 +119,6 @@ class NpcInstance {
 				}
 			}
 			$total_mana		= $challenge->quantity % 5 == 0  ? $challenge->quantity / 5 : 0;
-
 		} else {
 			$total_hp		= 0;
 			$total_mana		= 0;

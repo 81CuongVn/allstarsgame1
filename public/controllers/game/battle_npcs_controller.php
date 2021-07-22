@@ -114,7 +114,7 @@ class BattleNpcsController extends Controller {
 			$errors[]	= t('battles.errors.low_stat');
 		}
 
-		if ($player->for_stamina() < NPC_COST) {
+		if ($player->for_stamina() < NPC_EASY_COST) {
 			$errors[]	= t('battles.errors.no_stamina');
 		}
 		if ($_POST['type'] == 3) {
@@ -128,7 +128,7 @@ class BattleNpcsController extends Controller {
 			$battle->save();
 
 			if (!has_chance($player->get_parsed_effects()['no_consume_stamina'])) {
-				$player->less_stamina	+= NPC_COST;
+				$player->less_stamina	+= NPC_EASY_COST;
 			}
 			if ($_POST['type'] != 6){
 				// Adiciona o total de npc diário
@@ -171,7 +171,7 @@ class BattleNpcsController extends Controller {
 			$errors[]	= t('battles.errors.low_stat');
 		}
 
-		if ($player->for_stamina() < NPC_COST) {
+		if ($player->for_stamina() < NPC_EASY_COST) {
 			$errors[]	= t('battles.errors.no_stamina');
 		}
 		if ($_POST['type'] != 3) {
@@ -185,7 +185,7 @@ class BattleNpcsController extends Controller {
 			$battle->save();
 
 			if (!has_chance($player->get_parsed_effects()['no_consume_stamina'])) {
-				$player->less_stamina	+= NPC_COST;
+				$player->less_stamina	+= NPC_EASY_COST;
 			}
 
 			$player->battle_npc_id	= $battle->id;
