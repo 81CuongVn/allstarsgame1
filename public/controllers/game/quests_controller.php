@@ -325,7 +325,6 @@ class QuestsController extends Controller {
 
 		$player			= Player::get_instance();
 		$player_quest	= $player->player_time_quest($player->time_quest_id);
-		var_dump($player_quest);
 		if ($player_quest) {
 			// Apaga a missão
 			$player_quest->destroy();
