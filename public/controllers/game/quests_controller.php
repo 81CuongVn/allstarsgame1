@@ -324,12 +324,15 @@ class QuestsController extends Controller {
 		$this->render   = FALSE;
 
 		$player			= Player::get_instance();
-		$player->time_quest_id	= 0;
-		$player->save();
-
 		$player_quest	= $player->player_time_quest($player->time_quest_id);
+		var_dump($player_quest);
 		if ($player_quest) {
+			// Apaga a missão
 			$player_quest->destroy();
+
+			// Atualiza o jogador
+			$player->time_quest_id	= 0;
+			$player->save();
 		}
 	}
 
