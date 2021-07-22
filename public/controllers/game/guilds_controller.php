@@ -357,11 +357,11 @@ class GuildsController extends Controller {
 			}
 
 			if ($object->kind == 'npc') {
-				if ($player->for_stamina() < NPC_COST) {
+				if ($player->for_stamina() < NPC_EASY_COST) {
 					$errors[]	= t('battles.errors.no_stamina');
 				}
 			} else if($object->kind == 'sharednpc') {
-				if ($player->for_stamina() < (NPC_COST * 2)) {
+				if ($player->for_stamina() < NPC_EXTREME_COST) {
 					$errors[]	= t('battles.errors.no_stamina');
 				}
 			}
@@ -399,7 +399,7 @@ class GuildsController extends Controller {
 			}
 
 			if (!has_chance($player->get_parsed_effects()['no_consume_stamina'])) {
-				$player->less_stamina	+= NPC_COST * ($object->kind == 'npc' ? 1 : 2);
+				$player->less_stamina	+= ($object->kind == 'npc' ? NPC_EASY_COST : NPC_EXTREME_COST);
 			}
 
 			// Cleanups -->

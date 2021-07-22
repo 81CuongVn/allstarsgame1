@@ -2021,12 +2021,12 @@ pt-BR:
         requirements: Você não possui os requerimentos necessários para essa batalha
         not_enough_stamina: Você não tem stamina suficiente para entrar em batalha
   difficulties:
-    normal: Normal
     easy: |
       <span style="color: #1eda15">Fácil</span>
+    normal: Normal
     hard: |
       <span style="color: #ee8c00">Difícil</span>
-    very_hard: |
+    extreme: |
       <span style="color: #fc1a1a">Extremo</span>
   challenges:
     title: Arena do Céu

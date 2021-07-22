@@ -119,7 +119,7 @@ define('MAX_EQUIPPED_ATTACKS',	10);
 // Verifica se é final de semana
 $isWeekend			= in_array(date('w'), [ 0, 6 ]);
 if (!$isWeekend) {
-	$isWeekend	= date('w') == 5 && date('H') >= 5;
+	$isWeekend	= date('w') == 5 && date('H') >= 18;
 }
 
 // Rate settings
@@ -129,13 +129,14 @@ define('DROP_RATE',				!$isWeekend ? 1 : 1.5);
 
 // PvP settings
 define('PVP_TURN_TIME',			90);
+define('PVP_COST',				2);
 
-// Energy costs
-define('NPC_COST',				2);
-define('PVP_COST',				1);
-
-// NPC daily limit
+// NPC settings
 define('NPC_DAILY_LIMIT',		!$isWeekend ? 10 : 20);
+define('NPC_EASY_COST',			2);
+define('NPC_NORMAL_COST',		4);
+define('NPC_HARD_COST',			6);
+define('NPC_EXTREME_COST',		8);
 
 // Event settings
 define('EVENT_ACTIVE', 			false);
