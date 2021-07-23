@@ -40,8 +40,8 @@
 	<table width="725" border="0" cellpadding="0" cellspacing="0" class="table table-striped">
 		<?php
 		foreach ($quests as $quest) {
-			// if ($quest->req_level > $player->level || in_array($quest->id, $player_quests))
-			// 	continue;
+			if ($quest->req_level > $player->level || in_array($quest->id, $player_quests))
+				continue;
 
 			$expReward		= $quest->durations()[0]->exp + percent($effects['bonus_exp_mission_percent'], $quest->durations()[0]->exp) + $effects['bonus_exp_mission'] + percent($extras->exp_quest, $quest->durations()[0]->exp);
 			$coinsReward	= $quest->durations()[0]->currency + percent($effects['bonus_gold_mission_percent'], $quest->durations()[0]->currency) + $effects['bonus_gold_mission'] + percent($extras->currency_quest, $quest->durations()[0]->currency);
