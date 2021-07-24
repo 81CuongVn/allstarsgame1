@@ -422,6 +422,11 @@ if (preg_match('/read_news/', $action)) {
 </div>
 <?=partial('shared/footer', ['player' => $player]);?>
 
+<div style="display: none;">
+	<script id="_wau38g">var _wau = _wau || []; _wau.push(["dynamic", "j0ycq84tlk", "38g", "c4302bffffff", "small"]);</script>
+	<script async src="//waust.at/d.js"></script>
+</div>
+	
 <div class="box-cookies hide">
 	<p class="msg-cookies">Este site usa cookies para garantir que você obtenha a melhor experiência.</p>
 	<button class="btn btn-primary btn-cookies">Aceitar!</button>
