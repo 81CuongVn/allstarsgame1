@@ -24,7 +24,7 @@ class HistoryModeNpc extends Relation {
 	}
 
 	function characterThemes() {
-		return $this->character_theme_ids ? explode(', ', $this->character_theme_ids) : null;
+		return $this->character_theme_ids ? explode(',', $this->character_theme_ids) : null;
 	}
 
 	function staminaCost() {
