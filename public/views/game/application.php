@@ -408,6 +408,7 @@ if (preg_match('/read_news/', $action)) {
 				</div>
 			<?php } ?>
 			<div id="direita" class="<?=($player ? 'with-player' : '');?>">
+				<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6665062829379662" crossorigin="anonymous"></script>
 				@yield
 				<div class="clearfix"></div>
 			</div>
