@@ -83,7 +83,8 @@
 				case 31:
 					$descricao = "Roube ". ($quest->total > 640 ? 640 : $quest->total) ." de ".$player_quest[0]->total." tesouros de qualquer <span class='laranja'>Organização</span>";
 					break;
-				break;
+				default:
+					$descricao = '??? (' . $quest->id . ')';
 			}
 		?>
 		<?php echo $descricao?><br />
