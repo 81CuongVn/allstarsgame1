@@ -65,6 +65,7 @@ $registration   = openssl_encrypt(json_encode($chat_data), 'AES-256-CBC', $key, 
 <script type="text/javascript">
 	(function () {
 		var __chat_socket	= io.connect('<?=CHAT_SERVER;?>');
+
 		var has_type		= false;
 		var	channel			= 'world';
 		var	real_channel	= 'world';
