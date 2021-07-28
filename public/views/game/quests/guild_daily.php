@@ -26,8 +26,8 @@
 			Missão Semanal <?php echo $quest->daily_quest_id ?>
 		</div>
 		<div class="description" style="height: 60px !important;">
-		<?php
-			switch($quest->daily_quest_id){
+			<?php
+			switch ($quest->daily_quest_id) {
 				case 14:
 				case 20:
 				case 26:
@@ -37,6 +37,11 @@
 				case 21:
 				case 52:
 					$descricao = "Derrote ". ($quest->total > $player_quest[0]->total ? $player_quest[0]->total : $quest->total) ." de ".$player_quest[0]->total." vezes o jogador <span class='laranja'>". $personagem->name ."</span> da Organização <span class='laranja'>". $guild->name ."</span> em combates PvP";
+					break;
+				case 18:
+				case 24:
+				case 30:
+					$descricao = "Derrote ". ($quest->total > $player_quest[0]->total ? $player_quest[0]->total : $quest->total) ." de ".$player_quest[0]->total." oponentes PvP de qualquer <span class='laranja'>Organização</span>";
 					break;
 				case 16:
 				case 22:
@@ -48,24 +53,20 @@
 				case 29:
 					$descricao = "Roube ". ($quest->total > $player_quest[0]->total ? $player_quest[0]->total : $quest->total) ." de ".$player_quest[0]->total." tesouros do jogador <span class='laranja'>". $personagem->name ."</span> da Organização <span class='laranja'>". $guild->name ."</span> em combates PvP";
 					break;
-				case 18:
-				case 24:
-				case 30:
-					$descricao = "Derrote ". ($quest->total > $player_quest[0]->total ? $player_quest[0]->total : $quest->total) ." de ".$player_quest[0]->total." oponentes PvP de qualquer <span class='laranja'>Organização</span>";
-					break;
 				case 19:
 				case 25:
 				case 31:
 					$descricao = "Roube ". ($quest->total > $player_quest[0]->total ? $player_quest[0]->total : $quest->total) ." de ".$player_quest[0]->total." tesouros de qualquer <span class='laranja'>Organização</span>";
 					break;
 				default:
-					$descricao = '??? (' . $quest->id . ')';
+					$descricao = '??? (' . $quest->daily_quest_id . ')';
 			}
-		?>
-		<?php echo $descricao?><br />
+			?>
+		<?=$descricao;?><br />
 		</div>
 		<div class="details">
-			<img src="<?php echo image_url("icons/currency.png" ) ?>" /><span class="amarelo_claro" style="font-size: 16px; margin-left: 5px; top: 2px; position: relative"><?php echo $currency->currency?></span>
+			<img src="<?php echo image_url("icons/currency.png" ) ?>" />
+			<span class="amarelo_claro" style="font-size: 16px; margin-left: 5px; top: 2px; position: relative"><?=highamount($currency->currency);?></span>
 		</div>
 		<div class="change-mission" style="margin-top: 10px">
 			<?php if(!$quest->complete && $player->id == $total_treasure->player_id){?>
@@ -78,7 +79,7 @@
 
 								$valor_change = $buy_mode_change->weekly * 500;
 
-								echo "Trocar por ".$valor_change .' '. t('currencies.' . $player->character()->anime_id);
+								echo "Trocar por ".highamount($valor_change) .' '. t('currencies.' . $player->character()->anime_id);
 
 							}elseif($buy_mode_change->weekly > 4){
 
