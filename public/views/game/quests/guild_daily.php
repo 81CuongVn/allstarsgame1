@@ -29,59 +29,34 @@
 		<?php
 			switch($quest->daily_quest_id){
 				case 14:
-					$descricao = "Derrote ". ($quest->total > 40 ? 40 : $quest->total) ." de ".$player_quest[0]->total." vezes qualquer oponente PvP da Organização <span class='laranja'>". $guild->name ."</span>";
-					break;
 				case 20:
-					$descricao = "Derrote ". ($quest->total > 80 ? 80 : $quest->total) ." de ".$player_quest[0]->total." vezes qualquer oponente PvP da Organização <span class='laranja'>". $guild->name ."</span>";
-					break;
 				case 26:
-					$descricao = "Derrote ". ($quest->total > 160 ? 160 : $quest->total) ." de ".$player_quest[0]->total." vezes qualquer oponente PvP da Organização <span class='laranja'>". $guild->name ."</span>";
+					$descricao = "Derrote ". ($quest->total > $player_quest[0]->total ? $player_quest[0]->total : $quest->total) ." de ".$player_quest[0]->total." vezes qualquer oponente PvP da Organização <span class='laranja'>". $guild->name ."</span>";
 					break;
 				case 15:
-					$descricao = "Derrote ". ($quest->total > 20 ? 20 : $quest->total) ." de ".$player_quest[0]->total." vezes o jogador <span class='laranja'>". $personagem->name ."</span> da Organização <span class='laranja'>". $guild->name ."</span> em combates PvP";
-					break;
 				case 21:
-					$descricao = "Derrote ". ($quest->total > 40 ? 40 : $quest->total) ." de ".$player_quest[0]->total." vezes o jogador <span class='laranja'>". $personagem->name ."</span> da Organização <span class='laranja'>". $guild->name ."</span> em combates PvP";
-					break;
-				case 27:
-					$descricao = "Derrote ". ($quest->total > 60 ? 60 : $quest->total) ." de ".$player_quest[0]->total." vezes o jogador <span class='laranja'>". $personagem->name ."</span> da Organização <span class='laranja'>". $guild->name ."</span> em combates PvP";
+				case 52:
+					$descricao = "Derrote ". ($quest->total > $player_quest[0]->total ? $player_quest[0]->total : $quest->total) ." de ".$player_quest[0]->total." vezes o jogador <span class='laranja'>". $personagem->name ."</span> da Organização <span class='laranja'>". $guild->name ."</span> em combates PvP";
 					break;
 				case 16:
-					$descricao = "Roube ". ($quest->total > 80 ? 80 : $quest->total) ." de ".$player_quest[0]->total." tesouros de qualquer oponente PvP da Organização <span class='laranja'>". $guild->name ."</span>";
-					break;
 				case 22:
-					$descricao = "Roube ". ($quest->total > 160 ? 160 : $quest->total) ." de ".$player_quest[0]->total." tesouros de qualquer oponente PvP da Organização <span class='laranja'>". $guild->name ."</span>";
-					break;
 				case 28:
-					$descricao = "Roube ". ($quest->total > 320 ? 320 : $quest->total) ." de ".$player_quest[0]->total." tesouros de qualquer oponente PvP da Organização <span class='laranja'>". $guild->name ."</span>";
+					$descricao = "Roube ". ($quest->total > $player_quest[0]->total ? $player_quest[0]->total : $quest->total) ." de ".$player_quest[0]->total." tesouros de qualquer oponente PvP da Organização <span class='laranja'>". $guild->name ."</span>";
 					break;
 				case 17:
-					$descricao = "Roube ". ($quest->total > 40 ? 40 : $quest->total) ." de ".$player_quest[0]->total." tesouros do jogador <span class='laranja'>". $personagem->name ."</span> da Organização <span class='laranja'>". $guild->name ."</span> em combates PvP";
-					break;
 				case 23:
-					$descricao = "Roube ". ($quest->total > 80 ? 80 : $quest->total) ." de ".$player_quest[0]->total." tesouros do jogador <span class='laranja'>". $personagem->name ."</span> da Organização <span class='laranja'>". $guild->name ."</span> em combates PvP";
-					break;
 				case 29:
-					$descricao = "Roube ". ($quest->total > 160 ? 160 : $quest->total) ." de ".$player_quest[0]->total." tesouros do jogador <span class='laranja'>". $personagem->name ."</span> da Organização <span class='laranja'>". $guild->name ."</span> em combates PvP";
+					$descricao = "Roube ". ($quest->total > $player_quest[0]->total ? $player_quest[0]->total : $quest->total) ." de ".$player_quest[0]->total." tesouros do jogador <span class='laranja'>". $personagem->name ."</span> da Organização <span class='laranja'>". $guild->name ."</span> em combates PvP";
 					break;
 				case 18:
-					$descricao = "Derrote ". ($quest->total > 80 ? 80 : $quest->total) ." de ".$player_quest[0]->total." oponentes PvP de qualquer <span class='laranja'>Organização</span>";
-					break;
 				case 24:
-					$descricao = "Derrote ". ($quest->total > 160 ? 160 : $quest->total) ." de ".$player_quest[0]->total." oponentes PvP de qualquer <span class='laranja'>Organização</span>";
-					break;
 				case 30:
-					$descricao = "Derrote ". ($quest->total > 320 ? 320 : $quest->total) ." de ".$player_quest[0]->total." oponentes PvP de qualquer <span class='laranja'>Organização</span>";
+					$descricao = "Derrote ". ($quest->total > $player_quest[0]->total ? $player_quest[0]->total : $quest->total) ." de ".$player_quest[0]->total." oponentes PvP de qualquer <span class='laranja'>Organização</span>";
 					break;
-				break;
 				case 19:
-					$descricao = "Roube ". ($quest->total > 160 ? 160 : $quest->total) ." de ".$player_quest[0]->total." tesouros de qualquer <span class='laranja'>Organização</span>";
-					break;
 				case 25:
-					$descricao = "Roube ". ($quest->total > 320 ? 320 : $quest->total) ." de ".$player_quest[0]->total." tesouros de qualquer <span class='laranja'>Organização</span>";
-					break;
 				case 31:
-					$descricao = "Roube ". ($quest->total > 640 ? 640 : $quest->total) ." de ".$player_quest[0]->total." tesouros de qualquer <span class='laranja'>Organização</span>";
+					$descricao = "Roube ". ($quest->total > $player_quest[0]->total ? $player_quest[0]->total : $quest->total) ." de ".$player_quest[0]->total." tesouros de qualquer <span class='laranja'>Organização</span>";
 					break;
 				default:
 					$descricao = '??? (' . $quest->id . ')';
