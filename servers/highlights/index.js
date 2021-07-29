@@ -1,14 +1,17 @@
 // Needed extensions
-var express = require("express"),
-    app = express(),
-    fs = require('fs'),
-    bodyParser = require('body-parser'),
-    jsyaml = require('js-yaml'),
-    util = require('util');
+var express		= require("express"),
+    app			= express(),
+    fs			= require('fs'),
+    bodyParser	= require('body-parser'),
+    jsyaml		= require('js-yaml'),
+    util		= require('util'),
+	sio			= require('socket.io'),
+	cors		= require('cors'),
+	config		= require('./config');
 
-var token = '430rBdLShn8yK930907L2a8yeTszrDip',
-    languages = ['pt-BR'],
-    translations = {};
+var token			= config.key,
+    languages		= config.langs,
+    translations	= {};
 
 languages.forEach(function (lang) {
     console.log("- Translation '" + lang + "' is now buffered on thread");
@@ -19,23 +22,43 @@ languages.forEach(function (lang) {
     return translations[lang] = jsyaml.load(buffer);
 });
 
-var server = app.listen(2530, function () {
-    console.log("+ Highlights Thread Started on " + server.address().address + " at port " + server.address().port);
-});
-var io = require('socket.io').listen(server, { origins: '*:*' });
+app.use(cors());
+app.use(express.json({
+	type: 'application/json',
+}));
+app.use(express.urlencoded());
 
-var redis_auth = 'uD7uSr8Bgxb3fMzB9TKSURmeYGw6u1pHsf7HOo9r62mErXp9YDGrJERvkcPHDVGt3Ybw4v21SBhYcFOibvNkXux8DSU5HckhvAyS';
-var IORedis = require('socket.io-redis');
-var redis = require('redis');
+if (config.ssl.active) {
+	var https		= require('https');
+	var server		= https.createServer({
+		key:	config.ssl.key,
+		cert:	config.ssl.cert,
+	}, app);
+} else {
+	var http	= require('http');
+	var server	= http.createServer(app);
+}
+
+var io = sio(server, {
+	cors: {
+		origin: '*',
+		methods: ['GET', 'POST'],
+	},
+});
+
+var IORedis		= require('socket.io-redis');
+var redis		= require('redis');
 
 io.adapter(IORedis({
-    host: 'localhost',
-    port: 6379,
-    auth_pass: redis_auth
+    host:		'localhost',
+    port:		6379,
+    auth_pass:	config.redis
 }));
 
 var redisServer = redis.createClient();
-redisServer.auth(redis_auth);
+if (config.redis) {
+	redisServer.auth(config.redis);
+}
 
 setInterval(function () {
     console.log("- Checking for dungeon invites to send");
@@ -104,9 +127,6 @@ var sprintf = function (text, params) {
     return util.format.apply(null, [text].concat(params));
 };
 
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
-
 app.post('/console/write/', function (req, res) {
     var result = 'unknown error';
     if (req.body.token !== token) {
@@ -164,3 +184,7 @@ io.sockets.on('connection', function (socket) {
         }
     });
 });
+
+server.listen(config.port);
+
+console.log("+ Highlights Thread Started on " + server.address().address + " at port " + server.address().port);

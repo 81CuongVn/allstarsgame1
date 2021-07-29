@@ -8,17 +8,14 @@ var config = {
 		// Path to SSL Cert
 		cert:	''
 	},
-	// Database settings
-	db: {
-		host:	'localhost',
-		user:	'root',
-		pass:	'',
-		name:	'allstars_db'
-	},
 	// Your random key
-	key: 'YA930907TnnSqLn8yKDuI6jlL2KU0G9N',
-	// Set chat port
-	port: 2930
+	key:	'n8yK9309eTs430rBdLShzrD07L2a8yip',
+	// Set highlights port
+	port:	2530,
+	// Available languages
+	langs:	[ 'pt-BR' ],
+	// Redis password
+	redis:	''
 };
 
 module.exports = config;

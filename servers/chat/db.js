@@ -10,6 +10,7 @@ exports.connect		= function(config) {
 		}
 	});
 }
+
 exports.query		= function (sql, callback) {
 	connection.query(sql, function(error, results, fields) {
 		if (error) {
@@ -22,6 +23,7 @@ exports.query		= function (sql, callback) {
 		}
 	});
 };
+
 exports.disconnect	= function () {
 	connection.end();
 };
