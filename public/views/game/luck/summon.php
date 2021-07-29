@@ -14,13 +14,13 @@
 			</div>
 		</div>
 		<div class="luck-result">
-			
+
 		</div>
 		<div class="luck-credit">
 			<div class="summon-button" data-currency="2">
 				<span><?php echo  highamount($summon_credits) .' '. t('currencies.credits') ?></span>
 			</div>
-		</div>	
+		</div>
 	</div>
 	<div class="type-reward" style="left: 285px;">
 		<select name="type_reward" id="type_reward" class="form-control input-sm" style="width: auto">
