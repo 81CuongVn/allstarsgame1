@@ -12,7 +12,7 @@ var IORedis		= require('socket.io-redis');
 var redis		= require('redis');
 
 var app	= express();
-app.use(cors());
+// app.use(cors());
 app.use(express.json({
 	type: 'application/json',
 }));
