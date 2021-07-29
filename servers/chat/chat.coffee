@@ -44,7 +44,7 @@ bootstrap	= ->
 
 	db.connect config.db
 
-	server.listen 2934
+	server.listen 2930
 
 	console.log "+ Chat Thread Started on " + server.address().address + " at port " + server.address().port
 

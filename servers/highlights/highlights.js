@@ -19,7 +19,7 @@ languages.forEach(function (lang) {
     return translations[lang] = jsyaml.load(buffer);
 });
 
-var server = app.listen(2600, function () {
+var server = app.listen(2530, function () {
     console.log("+ Highlights Thread Started on " + server.address().address + " at port " + server.address().port);
 });
 var io = require('socket.io').listen(server, { origins: '*:*' });
