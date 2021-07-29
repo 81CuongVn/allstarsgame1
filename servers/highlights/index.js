@@ -1,27 +1,17 @@
 // Needed extensions
-var express		= require("express"),
-    app			= express(),
-    fs			= require('fs'),
-    bodyParser	= require('body-parser'),
-    jsyaml		= require('js-yaml'),
-    util		= require('util'),
-	sio			= require('socket.io'),
-	cors		= require('cors'),
-	config		= require('./config');
+var jsyaml		= require('js-yaml');
+var util		= require('util');
+var fs			= require('fs');
+var express		= require('express');
+var sio			= require('socket.io');
+var cors		= require('cors');
+var config		= require('./config');
 
-var token			= config.key,
-    languages		= config.langs,
-    translations	= {};
+// Redis
+var IORedis		= require('socket.io-redis');
+var redis		= require('redis');
 
-languages.forEach(function (lang) {
-    console.log("- Translation '" + lang + "' is now buffered on thread");
-
-    var buffer = fs.readFileSync(__dirname + '/../../public/locales/' + lang + '.yml', 'utf8').toString().replace(/\t/img, '  ');
-    buffer = buffer.replace(/:\|/, ': |');
-
-    return translations[lang] = jsyaml.load(buffer);
-});
-
+var app	= express();
 app.use(cors());
 app.use(express.json({
 	type: 'application/json',
@@ -46,9 +36,7 @@ var io = sio(server, {
 	},
 });
 
-var IORedis		= require('socket.io-redis');
-var redis		= require('redis');
-
+// Start dungeon system
 io.adapter(IORedis({
     host:		'localhost',
     port:		6379,
@@ -122,10 +110,29 @@ setInterval(function () {
         });
     });
 }, 2000);
+// End dungeon system
 
-var sprintf = function (text, params) {
-    return util.format.apply(null, [text].concat(params));
+var token			= config.key;
+var languages		= config.langs;
+var translations	= {};
+
+var sprintf = (text, params) => util.format.apply(null, [text].concat(params));
+
+var counters	= {
+	connecitons:	0,
+	broadcasts:		0,
+	broadcastsSent:	0,
+	currentClients:	0,
 };
+
+languages.forEach(function (lang) {
+    console.log("- Translation '" + lang + "' is now buffered on thread");
+
+    var buffer = fs.readFileSync(__dirname + '/../../public/locales/' + lang + '.yml', 'utf8').toString().replace(/\t/img, '  ');
+    buffer = buffer.replace(/:\|/, ': |');
+
+    return translations[lang] = jsyaml.load(buffer);
+});
 
 app.post('/console/write/', function (req, res) {
     var result = 'unknown error';
@@ -135,6 +142,7 @@ app.post('/console/write/', function (req, res) {
         if (req.body.message) {
             console.log('Will broadcast standard message');
             result = 'ok';
+			counters.broadcasts++;
 
             languages.forEach(function (lang) {
                 return io.sockets["in"]('lang_' + lang).emit('message', {
@@ -149,15 +157,18 @@ app.post('/console/write/', function (req, res) {
                 try {
                     message = sprintf(eval("translations[lang][lang]." + req.body.yaml), req.body.assigns);
                     console.log('* Will broadcast translatable message');
+					counters.broadcasts++;
                 } catch (_error) {
                     message = default_message;
                     console.log('* Will broadcast normal message');
+					counters.broadcasts++;
                 }
 
                 if (message === 'undefined') {
                     message = default_message;
                 }
-                return io.sockets["in"]('lang_' + lang).emit('message', {
+
+				return io.sockets["in"]('lang_' + lang).emit('message', {
                     message: message
                 });
             });
@@ -165,12 +176,26 @@ app.post('/console/write/', function (req, res) {
             result = 'missing message';
         }
     }
-    res.set('Content-Type', 'text/plain');
-    return res.send(result);
+
+	res.set('Content-Type', 'text/plain');
+	return res.send(result);
+});
+
+app.get('/status/:token', (req, res) => {
+	res.set('Content-Type', 'text/plain');
+
+	return res.send(`Clients connected: ${counters.currentClients}\nOverall connections: ${counters.connecitons}\nBroadcasts: ${counters.broadcasts}\nBroadcasts(Client count): ${counters.broadcastsSent}\n`);
 });
 
 io.sockets.on('connection', function (socket) {
-    console.log("+ Got client connection");
+	counters.connecitons++;
+	counters.currentClients++;
+
+	console.log("+ Got client connection");
+
+	socket.on('disconnect', () => {
+		counters.currentClients--;
+	});
 
     socket.on('set-language', function (data) {
         if (data.lang) {
