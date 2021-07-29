@@ -48,7 +48,7 @@ if (config.redis) {
 	redisServer.auth(config.redis);
 }
 
-setInterval(function () {
+/*setInterval(function () {
     console.log("- Checking for dungeon invites to send");
 
     var broadcastInvite = function (queue_id) {
@@ -109,7 +109,7 @@ setInterval(function () {
             }
         });
     });
-}, 2000);
+}, 2000);*/
 // End dungeon system
 
 var token			= config.key;
