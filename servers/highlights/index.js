@@ -29,12 +29,13 @@ if (config.ssl.active) {
 	var server	= http.createServer(app);
 }
 
-var io = sio(server, {
-	cors: {
-		origin: '*',
-		methods: ['GET', 'POST'],
-	}
-});
+var io = sio(server, { origins: '*:*' });
+// var io = sio(server, {
+// 	cors: {
+// 		origin: '*',
+// 		methods: ['GET', 'POST'],
+// 	}
+// });
 
 // Start dungeon system
 io.adapter(IORedis({
