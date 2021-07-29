@@ -44,7 +44,7 @@ io = sio(server, {
 	cors: {
 		origin: '*',
 		methods: ['GET', 'POST'],
-	},
+	}
 });
 
 Array::contains	= (k) ->

@@ -8,8 +8,8 @@ var cors		= require('cors');
 var config		= require('./config');
 
 // Redis
-var IORedis		= require('socket.io-redis');
-var redis		= require('redis');
+// var IORedis		= require('socket.io-redis');
+// var redis		= require('redis');
 
 var app	= express();
 app.use(cors());
@@ -33,11 +33,11 @@ var io = sio(server, {
 	cors: {
 		origin: '*',
 		methods: ['GET', 'POST'],
-	},
+	}
 });
 
 // Start dungeon system
-io.adapter(IORedis({
+/*io.adapter(IORedis({
     host:		'localhost',
     port:		6379,
     auth_pass:	config.redis
@@ -46,7 +46,7 @@ io.adapter(IORedis({
 var redisServer = redis.createClient();
 if (config.redis) {
 	redisServer.auth(config.redis);
-}
+}*/
 
 /*setInterval(function () {
     console.log("- Checking for dungeon invites to send");
