@@ -1,12 +1,12 @@
 # Initialization
 express				= require 'express'
-http				= require 'http'
 cluster				= require 'cluster'
 phpjs				= require './phpjs'
 util				= require 'util'
 fs					= require 'fs'
 crypto				= require 'crypto'
 sio					= require 'socket.io'
+cors				= require 'cors';
 emoticons			= require './emoticons'
 bbcodes	    		= require './bbcodes'
 config				= require './config'
@@ -27,9 +27,25 @@ max_messages		= 100
 user_message_size	= 140
 
 # Global server variables
-express_server		= express()
-server				= http.createServer express_server
-io					= sio.listen server
+app		= express()
+app.use(cors());
+
+if config.ssl.active
+	https		= require 'https';
+	server		= https.createServer({
+		key:	config.ssl.key,			# Path to SSL Key
+		cert:	config.ssl.certificate,	# Path to SSL Cert
+	}, app);
+else
+	http		= require 'http'
+	server		= http.createServer app;
+
+io = sio(server, {
+	cors: {
+		origin: '*',
+		methods: ['GET', 'POST'],
+	},
+});
 
 Array::contains	= (k) ->
 	for i, item of @
@@ -44,12 +60,12 @@ bootstrap	= ->
 
 	db.connect config.db
 
-	server.listen 2930
+	server.listen config.port
 
 	console.log "+ Chat Thread Started on " + server.address().address + " at port " + server.address().port
 
 decrypt_json	= (encrypted) ->
-	key				= 'YAn8yK930907L2KUTnnSqLDuI6jl0G9N'
+	key				= config.key
 	iv				= key.substr 0, 16
 
 	try
