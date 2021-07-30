@@ -4,7 +4,20 @@
     "express": "^4.17.1",
     "mysql": "^2.18.1",
     "mysql-native": "^0.4.7",
-    "socketio": "^1.0.0",
-    "spdy": "^4.0.2"
-  }
+    "socket.io": "^4.1.3"
+  },
+  "devDependencies": {
+    "eslint": "^7.24.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.22.1"
+  },
+  "name": "chat",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": ""
 }
