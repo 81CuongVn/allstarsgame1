@@ -427,7 +427,7 @@ if (preg_match('/read_news/', $action)) {
 	<script id="_wau38g">var _wau = _wau || []; _wau.push(["dynamic", "j0ycq84tlk", "38g", "c4302bffffff", "small"]);</script>
 	<script async src="//waust.at/d.js"></script>
 </div>
-	
+
 <div class="box-cookies hide">
 	<p class="msg-cookies">Este site usa cookies para garantir que você obtenha a melhor experiência.</p>
 	<button class="btn btn-primary btn-cookies">Aceitar!</button>
@@ -435,7 +435,7 @@ if (preg_match('/read_news/', $action)) {
 
 <?php if ($player) { ?>
 	<?=partial('shared/chat', ['player' => $player]);?>
-	<script type="text/javascript" src="<?=asset_url('js/highlights.js');?>"></script>
+	<!-- <script type="text/javascript" src="<?=asset_url('js/highlights.js');?>"></script> -->
 <?php } ?>
 <script type="text/javascript" src="<?=asset_url('js/bootstrap.min.js');?>"></script>
 <script type="text/javascript" src="<?=asset_url('js/select2.js');?>"></script>
