@@ -12,7 +12,7 @@ var IORedis		= require('socket.io-redis');
 var redis		= require('redis');
 
 var app	= express();
-// app.use(cors());
+app.use(cors());
 app.use(express.json({
 	type: 'application/json',
 }));
@@ -29,13 +29,12 @@ if (config.ssl.active) {
 	var server	= http.createServer(app);
 }
 
-var io = sio(server, { origins: '*:*' });
-// var io = sio(server, {
-// 	cors: {
-// 		origin: '*',
-// 		methods: ['GET', 'POST'],
-// 	}
-// });
+var io = sio(server, {
+	cors: {
+		origin: '*',
+		methods: ['GET', 'POST'],
+	}
+});
 
 // Start dungeon system
 io.adapter(IORedis({
@@ -117,9 +116,15 @@ var token			= config.key;
 var languages		= config.langs;
 var translations	= {};
 
-var sprintf = (text, params) => util.format.apply(null, [text].concat(params));
+var sprintf			= (text, params) => util.format.apply(null, [text].concat(params));
 
-var counters	= {
+var bootstrap		= () => {
+	server.listen(config.port);
+
+	console.log(`+ Highlights Thread Started on ${server.address().address} at port ${server.address().port}`);
+}
+
+var counters		= {
 	connecitons:	0,
 	broadcasts:		0,
 	broadcastsSent:	0,
@@ -211,6 +216,5 @@ io.sockets.on('connection', function (socket) {
     });
 });
 
-server.listen(config.port);
-
-console.log("+ Highlights Thread Started on " + server.address().address + " at port " + server.address().port);
+// Startup =)
+bootstrap()

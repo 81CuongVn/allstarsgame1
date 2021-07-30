@@ -28,7 +28,7 @@ user_message_size	= 140
 
 # Global server variables
 app		= express()
-# app.use(cors());
+app.use(cors());
 
 if config.ssl.active
 	https		= require 'https';
@@ -40,13 +40,13 @@ else
 	http		= require 'http'
 	server		= http.createServer app;
 
-io = sio(server, { origins: '*:*' });
-# io = sio(server, {
-# 	cors: {
-# 		origin: '*',
-# 		methods: ['GET', 'POST'],
-# 	}
-# });
+# io = sio(server, { origins: '*:*' });
+io = sio(server, {
+	cors: {
+		origin: '*',
+		methods: ['GET', 'POST'],
+	}
+});
 
 Array::contains	= (k) ->
 	for i, item of @
