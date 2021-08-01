@@ -92,7 +92,7 @@ class LuckController extends Controller {
 
 		if  (
 			isset($_POST['type']) && isset($_POST['currency']) &&
-			is_numeric($_POST['currency']) && in_array($_POST['current'], [1, 2])
+			is_numeric($_POST['currency']) && in_array($_POST['currency'], [1, 2])
 		) {
 			if ($_POST['type'] == 'daily') {
 				$is_weekly			= false;
@@ -268,7 +268,7 @@ class LuckController extends Controller {
 		$player					= Player::get_instance();
 		$user					= User::get_instance();
 
-		if (isset($_POST['currency']) && is_numeric($_POST['currency']) && in_array($_POST['current'], [1, 2])) {
+		if (isset($_POST['currency']) && is_numeric($_POST['currency']) && in_array($_POST['currency'], [1, 2])) {
 			$needed_currency	= $this->summon_currency;
 			$needed_credits		= $this->summon_credits;
 
