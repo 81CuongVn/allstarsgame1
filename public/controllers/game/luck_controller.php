@@ -334,15 +334,14 @@ class LuckController extends Controller {
 			}
 
 			$this->json->success	= true;
-			$this->json->slot		= [$choosen_reward->slot1, $choosen_reward->slot2, $choosen_reward->slot3, $choosen_reward->slot4];
+			$this->json->slot		= [
+				$choosen_reward->slot1, $choosen_reward->slot2,
+				$choosen_reward->slot3, $choosen_reward->slot4];
 			$this->json->today		= date('N');
 
 			$message	= '';
 
-			// Nada
-			if (!$choosen_reward->character_id && !$choosen_reward->character_theme_id) {
-				$message	.= t('tutorial.nada');
-			}
+			$nothing = false;
 
 			// Prêmios ( CHARACTERS )
 			if ($choosen_reward->character_id && !$user->is_character_bought($choosen_reward->character_id)) {
@@ -364,6 +363,8 @@ class LuckController extends Controller {
 						Character::find($choosen_reward->character_id)->description()->name
 					]);
 				}
+			} else {
+				$nothing = true;
 			}
 
 			// Prêmios ( THEME )
@@ -379,6 +380,19 @@ class LuckController extends Controller {
 				// verifica se desbloqueou novo personagem - conquista
 				$player->achievement_check("character_theme");
 				$player->check_objectives("character_theme");
+			} else {
+				$nothing = true;
+			}
+
+			// Nada
+			if ($nothing) {
+				$message	.= t('tutorial.nada');
+
+				// Devolve parte do dinheiro pro cara...
+				// Se pagou em estrelas, converte em moedas e devolve sempre 50%
+				$cashback	= $this->summon_currency / 2;
+				$message	.= '<br />Porém lhe devolvemos ' . highamount($cashback) . ' ' . t('currencies.' . $player->character()->anime_id) . '!';
+				$player->earn($cashback);
 			}
 
 			$log->player_id			= $player->id;

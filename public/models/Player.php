@@ -1821,7 +1821,7 @@ class Player extends Relation {
 					$total_factor++;
 				}
 
-				if ($quest_pet_npc->effect_ids) {
+				if ($quest_pet_npc->effect_ids && 1 != 1) {
 					$total_factor++;
 				}
 
@@ -1868,44 +1868,44 @@ class Player extends Relation {
 								if ($item->rarity == "common") {
 									$success += ($total_npc/$total_factor) / 4;
 								} elseif ($item->rarity == "rare") {
-									$success += ($total_npc/$total_factor) / 3;
+									$success += ($total_npc / $total_factor) / 3;
 								} elseif ($item->rarity == "legendary") {
-									$success += ($total_npc/$total_factor) / 2;
+									$success += ($total_npc / $total_factor) / 2;
 								} else {
-									$success += $total_npc/$total_factor;
+									$success += $total_npc / $total_factor;
 								}
 								break;
-
-						}
-
-						if ($quest_pet_npc->anime_id) {
-							if ($item->description()->anime_id == $quest_pet_npc->anime_id) {
-								$success += $total_npc/$total_factor;
-							}
-						}
-
-						if ($quest_pet_npc->happiness) {
-							if ($player_item->happiness >= $quest_pet_npc->happiness) {
-								$success += $total_npc/$total_factor;
-							} elseif ($player_item->happiness < $quest_pet_npc->happiness) {
-								$percentual_hapiness  = $player_item->happiness  / $quest_pet_npc->happiness;
-								$success += ($total_npc/$total_factor) * $percentual_hapiness;
-							}
-						}
-
-						if ($quest_pet_npc->effect_ids) {
-							if ($item) {
-								$effect_ids  = explode(',', $quest_pet_npc->effect_ids);
-								if (in_array($item->item_effect_ids,$effect_ids)) {
-									$success += $total_npc/$total_factor;
-								}
-							}
 						}
 					}
 
+					if ($quest_pet_npc->anime_id) {
+						if ($item->description()->anime_id == $quest_pet_npc->anime_id) {
+							$success += $total_npc / $total_factor;
+						}
+					}
+
+					if ($quest_pet_npc->happiness) {
+						if ($player_item->happiness >= $quest_pet_npc->happiness) {
+							$success += $total_npc / $total_factor;
+						} elseif ($player_item->happiness < $quest_pet_npc->happiness) {
+							$percentual_hapiness  = $player_item->happiness / $quest_pet_npc->happiness;
+							$success += ($total_npc / $total_factor) * $percentual_hapiness;
+						}
+					}
+
+					if ($quest_pet_npc->effect_ids && 1 != 1) {
+						if ($item) {
+							$effect_ids  = explode(',', $quest_pet_npc->effect_ids);
+							if (in_array($item->item_effect_ids, $effect_ids)) {
+								$success += $total_npc / $total_factor;
+							}
+						}
+					}
 				}
+
 				$counter++;
 			}
+
 			// Salva a chance de sucesso na tabela
 				$player_quests_pets->success_percent = round($success);
 				$player_quests_pets->save();
@@ -2140,7 +2140,7 @@ class Player extends Relation {
 				JOIN items b ON b.id = a.item_id
 			WHERE
 				a.player_id = ' . $this->id . ' AND
-				b.item_type_id IN(8) AND
+				b.item_type_id IN (8) AND
 				a.equipped = 1');
 		foreach ($items->result_array() as $item) {
 			$attributes						= PlayerItem::find($item['id'])->attributes();
