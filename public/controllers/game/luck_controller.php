@@ -390,7 +390,8 @@ class LuckController extends Controller {
 
 				// Devolve parte do dinheiro pro cara...
 				// Se pagou em estrelas, converte em moedas e devolve sempre 50%
-				$cashback	= $this->summon_currency / 2;
+				$percent	= ($_POST['currency'] == 1 ? 0.5 : 0.75);
+				$cashback	= floor($this->summon_currency * $percent);
 				$message	.= '<br />Nós te devolvemos ' . highamount($cashback) . ' ' . t('currencies.' . $player->character()->anime_id) . '!';
 				$player->earn($cashback);
 			}
