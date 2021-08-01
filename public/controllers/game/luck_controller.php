@@ -341,7 +341,7 @@ class LuckController extends Controller {
 
 			$message	= '';
 
-			$nothing = false;
+			$nothing = true;
 
 			// Prêmios ( CHARACTERS )
 			if ($choosen_reward->character_id && !$user->is_character_bought($choosen_reward->character_id)) {
@@ -357,14 +357,14 @@ class LuckController extends Controller {
 				$player->achievement_check("character");
 				$player->check_objectives("character");
 
+				$nothing = false;
+
 				if ($reward->chance == 2) {
 					global_message('hightlights.circulo', true,[
 						$player->name,
 						Character::find($choosen_reward->character_id)->description()->name
 					]);
 				}
-			} else {
-				$nothing = true;
 			}
 
 			// Prêmios ( THEME )
@@ -380,8 +380,8 @@ class LuckController extends Controller {
 				// verifica se desbloqueou novo personagem - conquista
 				$player->achievement_check("character_theme");
 				$player->check_objectives("character_theme");
-			} else {
-				$nothing = true;
+
+				$nothing = false;
 			}
 
 			// Nada
