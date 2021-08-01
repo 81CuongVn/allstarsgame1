@@ -318,13 +318,13 @@ class LuckController extends Controller {
 			while (true) {
 				foreach ($rewards as $reward) {
 					if ($_POST['currency'] == 1) {
-						if (rand(1, 100) <= $reward->chance) {
+						if (rand(1 * 10, 100 * 10) / 10 <= $reward->chance) {
 							$choosen_reward	= $reward;
 
 							break 2;
 						}
 					} else {
-						if (rand(1, 100) <= $reward->chance_credits) {
+						if (rand(1 * 10, 100 * 10) / 10 <= $reward->chance_credits) {
 							$choosen_reward	= $reward;
 
 							break 2;
