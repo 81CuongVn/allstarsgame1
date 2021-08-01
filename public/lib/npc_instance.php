@@ -17,7 +17,7 @@ class NpcInstance {
 	public	$battle_npc_id				= 0;
 	public	$battle_pvp_id				= 0;
 	public	$faction_id					= 0;
-	public	$guild_id			= 0;
+	public	$guild_id					= 0;
 	public	$character_id				= 0;
 
 	public	$name						= '';
