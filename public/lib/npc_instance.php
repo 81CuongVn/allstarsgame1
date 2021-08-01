@@ -17,7 +17,7 @@ class NpcInstance {
 	public	$battle_npc_id				= 0;
 	public	$battle_pvp_id				= 0;
 	public	$faction_id					= 0;
-	public	$guild_id			= 0;
+	public	$guild_id					= 0;
 	public	$character_id				= 0;
 
 	public	$name						= '';
@@ -91,8 +91,8 @@ class NpcInstance {
 		$this->guild_map_object_id	= $guild_map_object_id;
 
 		if ($this->guild_map_object_id) {
-			$map_object = $this->guild_map_object_id;
-			$map_object_session = GuildMapObjectSession::find_first('player_id=0 AND guild_accepted_event_id=' . $player->guild_accepted_event_id . ' AND guild_id=' . $player->guild_id . ' AND guild_map_object_id=' . $this->guild_map_object_id);
+			$map_object			= $this->guild_map_object_id;
+			$map_object_session	= GuildMapObjectSession::find_first('player_id=0 AND guild_accepted_event_id=' . $player->guild_accepted_event_id . ' AND guild_id=' . $player->guild_id . ' AND guild_map_object_id=' . $this->guild_map_object_id);
 			if ($map_object_session) {
 				$this->less_life = $map_object_session->less_life;
 			} else {
