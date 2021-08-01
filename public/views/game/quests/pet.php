@@ -63,138 +63,136 @@ echo partial('shared/info', [
 					} else
 						$image			= image_url('pet_unknown.png' );
 					?>
-					<?php if($can_finish || $quest->finish_at){?>
+					<?php if ($can_finish || $quest->finish_at) { ?>
 						<img src="<?=$image;?>" />
-					<?php } else {?>
+					<?php } else { ?>
 						<img src="<?=$image;?>" style="cursor: pointer" class="current-quest-change-pet <?=($has_pet ? 'remove-pet' : 'add-pet');?>" data-url="<?=make_url('quests#list_pets');?>" data-quest_id="<?=$quest->pet_quest_id;?>" data-counter="<?=$counter;?>" data-message="<?=t('quests.pet.message');?>" />
 					<?php } ?>
 				</div>
 				<div id="pet-container-<?php echo $npc->id ?>-1" class="technique-container">
 					<div class="status-popover-content" style="width: 230px;">
 						<ul>
-							<?php if($npc->rarity){?>
+							<?php if ($npc->rarity) { ?>
 								<li>
 									<b class="verde"><?php echo t('quests.pet.raridade')?></b><br />
-									<?php switch($npc->rarity){
+									<?php switch ($npc->rarity) {
 										case "common":
-											if($image_item){
+											if ($image_item) {
 												$rarity = "<span style='text-decoration: line-through;' class='verde'>".t('quests.pet.comum')."</span>";
-											}else{
+											} else {
 												$rarity = t('quests.pet.comum');
 											}
 											break;
 										case "rare":
-											if($image_item){
-												if($image_item->rarity=="common"){
+											if ($image_item) {
+												if ($image_item->rarity == "common") {
 													$rarity = "<span class='laranja'>".t('quests.pet.raro')."</span>";
-												}else{
+												} else {
 													$rarity = "<span style='text-decoration: line-through;' class='verde'>".t('quests.pet.raro')."</span>";
 												}
-											}else{
+											} else {
 												$rarity = t('quests.pet.raro');
 											}
 											break;
 										case "legendary":
-											if($image_item){
-												if($image_item->rarity=="common"){
+											if ($image_item) {
+												if ($image_item->rarity == "common") {
 													$rarity = "<span class='vermelho'>".t('quests.pet.lendario')."</span>";
-												}elseif($image_item->rarity=="rare"){
+												} elseif ($image_item->rarity == "rare") {
 													$rarity = "<span class='laranja'>".t('quests.pet.lendario')."</span>";
-												}else{
+												} else {
 													$rarity = "<span style='text-decoration: line-through;' class='verde'>".t('quests.pet.lendario')."</span>";
 												}
-											}else{
+											} else {
 												$rarity = t('quests.pet.lendario');
 											}
 											break;
 										case "mega":
-											if($image_item){
-												if($image_item->rarity=="common"){
+											if ($image_item) {
+												if ($image_item->rarity == "common") {
 													$rarity = "<span class='vermelho'>Mega</span>";
-												}elseif($image_item->rarity=="rare"){
+												} elseif ($image_item->rarity == "rare") {
 													$rarity = "<span class='vermelho'>Mega</span>";
-												}elseif($image_item->rarity=="legendary"){
+												} elseif ($image_item->rarity == "legendary") {
 													$rarity = "<span class='laranja'>Mega</span>";
-												}else{
+												} else {
 													$rarity = "<span style='text-decoration: line-through;' class='verde'>Mega</span>";
 												}
-											}else{
+											} else {
 												$rarity = t('quests.pet.lendario');
 											}
 											break;
 									}
 									?>
-									<?php echo $rarity ?><br /><br />
+									<?=$rarity;?><br /><br />
 								</li>
-							<?php }?>
-							<?php if($npc->effect_ids){?>
-								<?php $items = Item::find('item_effect_ids in ('.$npc->effect_ids.') AND rarity !="Mega" GROUP BY item_effect_ids',['cache' => true]);?>
+							<?php } ?>
 
+							<?php if ($npc->effect_ids && 1 != 1) { ?>
+								<?php $items = Item::find('item_effect_ids in (' . $npc->effect_ids . ') and rarity != "mega" group by item_effect_ids', ['cache' => true]); ?>
 								<li>
 									<b class="verde"><?php echo t('quests.pet.efeito')?></b><br />
-									<?php if($image_item){?>
+									<?php if ($image_item) { ?>
 										<?php
 										$effect_ids  	= explode(',', $image_item->item_effect_ids);
 										$effect_ids2  	= explode(',', $npc->effect_ids);
 										$effect 		= false;
 
-										foreach($effect_ids2 as $effect_id2){
-											if(in_array($effect_id2,$effect_ids)){
+										foreach ($effect_ids2 as $effect_id2) {
+											if (in_array($effect_id2, $effect_ids)) {
 												$effect = true;
 											}
 										}
 										?>
-										<?php if($effect){?>
-											<?php foreach($items as $item){?>
-												<span style='text-decoration: line-through;' class='verde'><?php echo $item->tooltip() ?></span>
-											<?php }?>
-										<?php }else{ ?>
-											<?php foreach($items as $item){?>
-												<span class='vermelho'><?php echo $item->tooltip() ?></span>
-											<?php }?>
-										<?php }?>
-
-									<?php }else{?>
-										<?php foreach($items as $item){?>
-											<?php echo $item->tooltip() ?>
-										<?php }?>
-									<?php }?>
-								</li>
-								<br />
-							<?php }?>
-							<?php if($npc->anime_id){?>
-								<li>
-									<b class="verde"><?php echo t('quests.pet.anime')?></b><br />
-									<?php if($image_item){?>
-										<?php if($npc->anime_id == $image_item->description()->anime_id){?>
-											<span style='text-decoration: line-through;' class='verde'><?php echo $npc->anime($npc->anime_id)->description()->name ?></span><br /><br />
-										<?php }else{ ?>
-											<span class="vermelho"><?php echo $npc->anime($npc->anime_id)->description()->name ?></span><br /><br />
-										<?php }?>
-									<?php }else{?>
-										<?php echo $npc->anime($npc->anime_id)->description()->name ?><br /><br />
-									<?php }?>
-								</li>
-							<?php }?>
-							<?php if($npc->happiness){?>
-								<li>
-									<b class="verde"><?php echo t('quests.pet.happiness')?></b><br />
-									<?php if($image_item){?>
-										<?php if($player_item && $player_item->happiness >= $npc->happiness){?>
-											<span style='text-decoration: line-through;' class='verde'><?php echo $npc->happiness ?></span>
-										<?php } else {?>
-											<span class='laranja'><?php echo $npc->happiness ?></span>
+										<?php if ($effect) { ?>
+											<?php foreach ($items as $item) { ?>
+												<span style='text-decoration: line-through;' class='verde'><?=$item->tooltip();?></span>
+											<?php } ?>
+										<?php } else { ?>
+											<?php foreach ($items as $item) { ?>
+												<span class='vermelho'><?=$item->tooltip();?></span>
+											<?php } ?>
 										<?php } ?>
 									<?php } else { ?>
-										<?php echo $npc->happiness ?>
+										<?php foreach ($items as $item) { ?>
+											<?=$item->tooltip();?>
+										<?php } ?>
 									<?php } ?>
+								</li><br />
+							<?php } ?>
 
+							<?php if ($npc->anime_id) { ?>
+								<li>
+									<b class="verde"><?=t('quests.pet.anime');?></b><br />
+									<?php if ($image_item) { ?>
+										<?php if ($npc->anime_id == $image_item->description()->anime_id) { ?>
+											<span style='text-decoration: line-through;' class='verde'><?=$npc->anime($npc->anime_id)->description()->name;?></span><br /><br />
+										<?php } else { ?>
+											<span class="vermelho"><?=$npc->anime($npc->anime_id)->description()->name;?></span><br /><br />
+										<?php } ?>
+									<?php } else { ?>
+										<?=$npc->anime($npc->anime_id)->description()->name;?><br /><br />
+									<?php } ?>
 								</li>
-							<?php }?>
+							<?php } ?>
+							<?php if ($npc->happiness) { ?>
+								<li>
+									<b class="verde"><?=t('quests.pet.happiness');?></b><br />
+									<?php if ($image_item) { ?>
+										<?php if ($player_item && $player_item->happiness >= $npc->happiness) { ?>
+											<span style='text-decoration: line-through;' class='verde'><?=$npc->happiness;?></span>
+										<?php } else { ?>
+											<span class='laranja'><?=$npc->happiness;?></span>
+										<?php } ?>
+									<?php } else { ?>
+										<?=$npc->happiness;?>
+									<?php } ?>
+								</li>
+							<?php } ?>
 						</ul>
 					</div>
 				</div>
-			<?php $counter++; }?>
+			<?php $counter++; } ?>
 		</div>
 		<div style="position: relative; top: 10px">
 			<div style="float: left; width: 107px;">
