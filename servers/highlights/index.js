@@ -27,8 +27,12 @@ if (config.ssl.active) {
 	var server	= http.createServer(app);
 }
 
-// var io	= sio(server, { origins: '*:*'});
-var io	= sio.listen(server, { origins: '*:*' });
+var io = sio(server, {
+    cors: {
+        origin: '*',
+        methods: ['GET', 'POST'],
+    }
+});
 
 // Start dungeon system
 io.adapter(IORedis({
@@ -42,7 +46,7 @@ if (config.redis) {
 	redisServer.auth(config.redis);
 }
 
-/*setInterval(function () {
+setInterval(function () {
     console.log("- Checking for dungeon invites to send");
 
     var broadcastInvite = function (queue_id) {
@@ -103,7 +107,7 @@ if (config.redis) {
             }
         });
     });
-}, 2000);*/
+}, 2000);
 // End dungeon system
 
 var token			= config.key;

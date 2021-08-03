@@ -435,7 +435,7 @@ if (preg_match('/read_news/', $action)) {
 
 <?php if ($player) { ?>
 	<?=partial('shared/chat', ['player' => $player]);?>
-	<!-- <script type="text/javascript" src="<?=asset_url('js/highlights.js');?>"></script> -->
+	<script type="text/javascript" src="<?=asset_url('js/highlights.js');?>"></script>
 <?php } ?>
 <script type="text/javascript" src="<?=asset_url('js/bootstrap.min.js');?>"></script>
 <script type="text/javascript" src="<?=asset_url('js/select2.js');?>"></script>
