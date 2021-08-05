@@ -297,31 +297,18 @@ class BattlePvpsController extends Controller {
 		$this->as_json	= true;
 		$player			= Player::get_instance();
 
-		$battle = BattlePvp::find_first("enemy_id = ".$player->id." AND battle_type_id = 4 AND finished_at is null");
+		$battle = BattlePvp::find_first("enemy_id = {$player->id} and battle_type_id = 4 and finished_at is null");
 		if ($battle) {
 			// Destroi a sala do jogador
-			$battle_room = BattleRoom::find_first("id=".$player->battle_room_id);
+			$battle_room = BattleRoom::find_first("id=" . $player->battle_room_id);
 			$battle_room->destroy();
 
 			// Jogador em espera
-			$player->battle_pvp_id = $battle->id;
-			$player->save();
-
-			// Apaga o número da sala da player
-			$player->battle_room_id = 0;
+			$player->battle_pvp_id	= $battle->id;
+			$player->battle_room_id	= 0;
 			$player->save();
 
 			$this->json->redirect	= make_url('battle_pvps#fight');
-		} else {
-			// Destroi a sala do jogador
-			// $battle_room = BattleRoom::find_first("id=".$player->battle_room_id);
-			// $battle_room->destroy();
-
-			// Apaga o número da sala da player
-			// $player->battle_room_id = 0;
-			// $player->save();
-
-			// $this->json->redirect	= make_url('characters#status');
 		}
 	}
 
@@ -355,7 +342,7 @@ class BattlePvpsController extends Controller {
 					$errors[]	= t('battles.errors.low_stat');
 				}
 
-				if ($player_enemy->battle_pvp_id){
+				if ($player_enemy->battle_pvp_id || $player_enemy->battle_npc_id) {
 					$errors[]	= t('battles.waiting.errors.room_invalid');
 				}
 			}
@@ -372,14 +359,9 @@ class BattlePvpsController extends Controller {
 			$battle->battle_type_id	= 4;
 			$battle->save();
 
-
 			// Jogador que clicou no botão
 			$player->battle_pvp_id	= $battle->id;
 			$player->save();
-
-			// Jogador em espera
-			// $player_enemy->battle_pvp_id = $battle->id;
-			// $player_enemy->save();
 
 			$this->json->success	= TRUE;
 		} else {
