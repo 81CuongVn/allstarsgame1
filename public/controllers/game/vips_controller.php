@@ -450,7 +450,7 @@ class VipsController extends Controller {
 					// Cria um item na preferência
 					$item				= new MercadoPago\Item();
 					$item->id			= $star_plan->id;
-					$item->title		= DONATE_PREFIX . ' - ' . $star_plan->name;
+					$item->title		= GAME_PREFIX . ' - ' . $star_plan->name;
 					$item->description	= $star_plan->description;
 					$item->quantity		= 1;
 					$item->unit_price	= $price;
@@ -458,7 +458,7 @@ class VipsController extends Controller {
 
 					// Adiciona os itens na preferência e salva
 					$preference->items					= [ $item ];
-					$preference->statement_descriptor	= DONATE_PREFIX;
+					$preference->statement_descriptor	= GAME_PREFIX;
 					$preference->external_reference		= $star_purchase->id;
 					$preference->notification_url		= make_url('callback/mercadopago?source_news=ipn');
 					$preference->save();
@@ -476,7 +476,7 @@ class VipsController extends Controller {
 					$payment = new \PagSeguro\Domains\Requests\Payment();
 					$payment->addItems()->withParameters(
 						$star_plan->id,
-						DONATE_PREFIX . ' - ' . $star_plan->name,
+						GAME_PREFIX . ' - ' . $star_plan->name,
 						1,
 						$price
 					);
@@ -501,7 +501,7 @@ class VipsController extends Controller {
 					$p->addField('return',			make_url('vips/make_donation?success'));
 					$p->addField('cancel_return',	make_url('vips/make_donation?cancel'));
 					$p->addField('notify_url',		make_url('callback/paypal'));
-					$p->addField('item_name',		DONATE_PREFIX . ' - ' . $star_plan->name);
+					$p->addField('item_name',		GAME_PREFIX . ' - ' . $star_plan->name);
 					$p->addField('currency_code',	$coins[$star_purchase->star_method]);
 					$p->addField('amount',			$price);
 					$p->addField('custom',			$star_purchase->id);
