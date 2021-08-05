@@ -8,7 +8,8 @@ $rewrite_enabled	= true;
 
 // Game settings
 define('GAME_NAME', 			'Anime All-Stars Game');
-define('GAME_VERSION', 			'2.20');
+define('GAME_PREFIX', 			'AASG');
+define('GAME_VERSION', 			'2.22');
 define('GLOBAL_PASSWORD', 		'allStars2@21');
 
 // Maintenance
@@ -24,7 +25,7 @@ $database			= [
 	'database'		=> 'allstars_db',
 	'connection'	=> 'primary',
 	'cache_mode'	=> RECORDSET_SHM,
-	'cache_id'		=> 'AASG'
+	'cache_id'		=> GAME_PREFIX
 ];
 
 // SMTP settings
@@ -79,9 +80,6 @@ if (!isset($_SESSION['orig_player_id']))	$_SESSION['orig_player_id']	= 0;
 
 // Timezone settings
 define('DEFAULT_TIMEZONE',		'America/Sao_Paulo');
-
-// Donate Prefix
-define('DONATE_PREFIX', 		'AASG');
 
 // Regex settings
 define('REGEX_PLAYER',			'/^[ÁÉÍÓÚÀÈÌÒÙÂÊÎÔÛÃÕÑÇáéíóúàèìòùâêîôûãõñç\w\d\s]+$/');
