@@ -14,7 +14,7 @@ var redis		= require('redis');
 var app	= express();
 app.use(cors());
 app.use(express.json())
-// app.use(express.urlencoded());
+app.use(express.urlencoded());
 
 if (config.ssl.active) {
 	var https		= require('https');
