@@ -1,7 +1,7 @@
 # Gem dependent
 require 'bunny'					# bunny
 require 'mysql2'				# mysql2
-require 'active_support/all'	# active_support
+require 'active_support/all'	# activesupport
 
 # Internal extensions
 require 'thread'
