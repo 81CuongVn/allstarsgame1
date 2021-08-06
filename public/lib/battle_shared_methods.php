@@ -1735,6 +1735,7 @@ trait BattleSharedMethods {
 				$battle->save();
 			}
 		} else {
+			$this->json->my_turn		= true;
 			$this->json->attack_text	= t('battles.mine_action', [
 				'turn' => $battle->current_turn
 			]);
