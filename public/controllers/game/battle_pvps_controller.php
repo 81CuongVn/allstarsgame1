@@ -164,7 +164,7 @@ class BattlePvpsController extends Controller {
 		$player	= Player::get_instance();
 
 		// Cleanups -->
-			SharedStore::S('last_battle_item_of_' . $player->id, 0);
+			SharedStore::S('LAST_BATTLE_ITEM_OF_' . $player->id, 0);
 
 			$player->clear_ability_lock();
 			$player->clear_speciality_lock();
@@ -297,31 +297,18 @@ class BattlePvpsController extends Controller {
 		$this->as_json	= true;
 		$player			= Player::get_instance();
 
-		$battle = BattlePvp::find_first("enemy_id = ".$player->id." AND battle_type_id = 4 AND finished_at is null");
+		$battle = BattlePvp::find_first("enemy_id = {$player->id} and battle_type_id = 4 and finished_at is null");
 		if ($battle) {
 			// Destroi a sala do jogador
-			$battle_room = BattleRoom::find_first("id=".$player->battle_room_id);
+			$battle_room = BattleRoom::find_first("id=" . $player->battle_room_id);
 			$battle_room->destroy();
 
 			// Jogador em espera
-			$player->battle_pvp_id = $battle->id;
-			$player->save();
-
-			// Apaga o número da sala da player
-			$player->battle_room_id = 0;
+			$player->battle_pvp_id	= $battle->id;
+			$player->battle_room_id	= 0;
 			$player->save();
 
 			$this->json->redirect	= make_url('battle_pvps#fight');
-		} else {
-			// Destroi a sala do jogador
-			// $battle_room = BattleRoom::find_first("id=".$player->battle_room_id);
-			// $battle_room->destroy();
-
-			// Apaga o número da sala da player
-			// $player->battle_room_id = 0;
-			// $player->save();
-
-			// $this->json->redirect	= make_url('characters#status');
 		}
 	}
 
@@ -355,7 +342,7 @@ class BattlePvpsController extends Controller {
 					$errors[]	= t('battles.errors.low_stat');
 				}
 
-				if ($player_enemy->battle_pvp_id){
+				if ($player_enemy->battle_pvp_id || $player_enemy->battle_npc_id) {
 					$errors[]	= t('battles.waiting.errors.room_invalid');
 				}
 			}
@@ -372,14 +359,9 @@ class BattlePvpsController extends Controller {
 			$battle->battle_type_id	= 4;
 			$battle->save();
 
-
 			// Jogador que clicou no botão
 			$player->battle_pvp_id	= $battle->id;
 			$player->save();
-
-			// Jogador em espera
-			// $player_enemy->battle_pvp_id = $battle->id;
-			// $player_enemy->save();
 
 			$this->json->success	= TRUE;
 		} else {
@@ -454,7 +436,7 @@ class BattlePvpsController extends Controller {
 
 		if ($player->pvp_queue_found > now()) {
 			// Cleanups -->
-				SharedStore::S('last_battle_item_of_' . $player->id, 0);
+				SharedStore::S('LAST_BATTLE_ITEM_OF_' . $player->id, 0);
 
 				$player->clear_ability_lock();
 				$player->clear_speciality_lock();
@@ -488,7 +470,7 @@ class BattlePvpsController extends Controller {
 
 		if ($player->pvp_queue_found > now()) {
 			// Cleanups -->
-				SharedStore::S('last_battle_item_of_' . $player->id, 0);
+				SharedStore::S('LAST_BATTLE_ITEM_OF_' . $player->id, 0);
 
 				$player->clear_ability_lock();
 				$player->clear_speciality_lock();
@@ -667,7 +649,7 @@ class BattlePvpsController extends Controller {
 					} else {
 						$item->set_anime($enemy->character()->anime_id);
 					}
-				}elseif($is_kill){
+				} elseif ($is_kill) {
 					$player_item	= $player->get_technique($_POST['item']);
 					$item			= $player_item->item();
 				} else {
@@ -682,7 +664,7 @@ class BattlePvpsController extends Controller {
 				$errors[]	= t('battles.errors.invalid');
 			} else {
 				if (!$is_copy && !$is_kill) {
-					if($item->formula()->consume_mana > $player->for_mana()) {
+					if ($item->formula()->consume_mana > $player->for_mana()) {
 						$can_run_action	= false;
 						$errors[]	= t('battles.errors.no_mana', ['mana' => t('formula.for_mana.' . $item->anime()->id)]);
 					}
@@ -719,11 +701,11 @@ class BattlePvpsController extends Controller {
 					// <--
 
 					// Clean up ability/speciality lock
-					SharedStore::S('battle_used_ability_' . $player->id, false);
-					SharedStore::S('battle_used_speciality_' . $player->id, false);
+					SharedStore::S('BATTLE_USED_ABILITY_' . $player->id, false);
+					SharedStore::S('BATTLE_USED_SPECIALITY_' . $player->id, false);
 
-					SharedStore::S('battle_used_ability_' . $enemy->id, false);
-					SharedStore::S('battle_used_speciality_' . $enemy->id, false);
+					SharedStore::S('BATTLE_USED_ABILITY_' . $enemy->id, false);
+					SharedStore::S('BATTLE_USED_SPECIALITY_' . $enemy->id, false);
 
 					$was_draw			= false;
 					$battle->last_atk	= now(true);

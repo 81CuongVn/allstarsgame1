@@ -126,7 +126,7 @@ define('MONEY_RATE',			!$isWeekend ? 1 : 1.5);
 define('DROP_RATE',				!$isWeekend ? 1 : 1.5);
 
 // PvP settings
-define('PVP_TURN_TIME',			90);
+define('PVP_TURN_TIME',			3600);
 define('PVP_COST',				2);
 
 // NPC settings

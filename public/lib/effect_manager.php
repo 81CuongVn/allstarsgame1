@@ -172,6 +172,7 @@ trait EffectManager {
 
 	function get_effects() {
 		$this->_alloc_effects();
+
 		return SharedStore::G($this->build_effects_uid(), null);
 	}
 
@@ -442,7 +443,10 @@ trait EffectManager {
 
 	function rotate_effects($got_technique = false) {
 		$this->_alloc_effects();
-		$new_effects	= ['player' => [], 'enemy' => []];
+		$new_effects	= [
+			'player'	=> [],
+			'enemy'		=> []
+		];
 
 		$fetch_condition	= function ($type, $value) {
 			if (($type == 'player' && $value > 0) || ($type == 'enemy' && $value < 0)) {
@@ -453,7 +457,8 @@ trait EffectManager {
 		};
 
 		foreach (['player', 'enemy'] as $type) {
-			foreach ($this->get_effects()[$type] as $item_key => $item) {
+			$getEffects	= $this->get_effects();
+			foreach ($getEffects[$type] as $item_key => $item) {
 				foreach ($item as $effect) {
 					$effect_data	= ItemEffect::find($effect->id);
 					if ($effect_data->effect_direction == 'buff') {
@@ -728,6 +733,7 @@ trait EffectManager {
 
 	public function clear_fixed_effects($kind) {
 		$this->_alloc_effects();
+
 		$effects		= $this->get_effects();
 		$new_effects	= [];
 
@@ -759,17 +765,6 @@ trait EffectManager {
 
 		$visible	= true;
 		$effects	= $this->get_effects();
-		if (!$effects) {
-			$content	= json_encode([
-				'hasVisibleEffect'	=> $effects
-			]);
-			Recordset::insert('log', [
-				'user_id'	=> 0,
-				'player_id'	=> 0,
-				'content'	=> $content
-			]);
-		}
-
 		foreach (['player', 'enemy'] as $type) {
 			if ($effects) {
 				foreach ($effects[$type] as $item_key => $item) {
@@ -790,16 +785,6 @@ trait EffectManager {
 		$this->_alloc_effects();
 
 		$effects		= $this->get_effects();
-		if (!$effects) {
-			$content	= json_encode([
-				'getSumEffect'	=> $effects
-			]);
-			Recordset::insert('log', [
-				'user_id'	=> 0,
-				'player_id'	=> 0,
-				'content'	=> $content
-			]);
-		}
 		$return			= 0;
 		$effect_name	= str_replace('_percent', '', $effect_name);
 
@@ -828,8 +813,8 @@ trait EffectManager {
 		$memory	= SharedStore::G($this->build_effects_uid(), null);
 		if (is_null($memory) || (is_array($memory) && !sizeof($memory)) || $clear) {
 			$memory	= [
-				'player' => [],
-				'enemy' => []
+				'player'	=> [],
+				'enemy'		=> []
 			];
 			SharedStore::S($this->build_effects_uid(), $memory);
 		}

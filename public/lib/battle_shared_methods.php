@@ -1,37 +1,55 @@
 <?php
 trait BattleSharedMethods {
-	function ability_speciality() {
+	public function ability_speciality() {
 		$this->layout		= false;
 		$this->as_json		= true;
+
 		$errors				= [];
 		$player				= Player::get_instance();
-		$battle				= $player->battle_pvp_id ? $player->battle_pvp() : $player->battle_npc();
-		$enemy				= $player->battle_pvp_id ? $battle->enemy() : ($player->battle_npc_challenge ? $player->get_npc_challenge() : $player->get_npc());
+		if ($player->battle_pvp_id) {
+			$battle	= $player->battle_pvp();
+			$enemy	= $battle->enemy();
+		} else {
+			$battle	= $player->battle_npc();
+			if ($player->battle_npc_challenge) {
+				$enemy	= $player->get_npc_challenge();
+			} else {
+				$enemy	= $player->get_npc();
+			}
+		}
+
 		$is_technique_copy	= false;
 		$kill_with_one_hit	= false;
 
-		if ($_POST['item'] == 'ability' || $_POST['item'] == 'speciality') {
+		if (in_array($_POST['item'], [ 'ability', 'speciality' ])) {
 			$target		= $_POST['item'] == 'ability' ? $player->ability() : $player->speciality();
 			$target_var	= $_POST['item'] == 'ability' ? 'ability' : 'speciality';
 
-			if($target->consume_mana > $player->for_mana()) {
-				$errors[]	= t('battles.errors.no_mana', ['mana' => t('formula.for_mana.' . $player->character()->anime_id)]);
+			if ($target->consume_mana > $player->for_mana()) {
+				$errors[]	= t('battles.errors.no_mana', [
+					'mana' => t('formula.for_mana.' . $player->character()->anime_id)
+				]);
 			}
 
-			if (SharedStore::G('battle_used_' . $target_var . '_' . $player->id)) {
+			if (SharedStore::G('BATTLE_USED_' . $target_var . '_' . $player->id)) {
 				$errors[]	= t('battles.errors.used_' . $target_var);
 			}
 
 			foreach ($target->effects() as $key => $effect) {
-				if($effect->kill_with_one_hit){
-					$rand = rand(0, 100);
-					if($rand <= $effect->kill_with_one_hit){
+				if ($effect->kill_with_one_hit) {
+					$rand = rand(0, 1000) / 10;
+					if ($rand <= $effect->kill_with_one_hit) {
 						$kill_with_one_hit	= true;
 					}
 				}
+
 				if ($effect->copy_last_technique) {
 					$is_technique_copy	= true;
-					$got_technique		= is_a($enemy, 'Player') ? SharedStore::G('last_battle_item_of_' . $enemy->id) : SharedStore::G('last_battle_npc_item_of_' . $player->id);
+					if (is_a($enemy, 'Player')) {
+						$got_technique	= SharedStore::G('LAST_BATTLE_ITEM_OF_' . $enemy->id);
+					} else {
+						$got_technique	= SharedStore::G('LAST_BATTLE_NPC_ITEM_OF_' . $player->id);
+					}
 
 					if (!$got_technique) {
 						$errors[]	= t('battles.errors.needs_technique_before');
@@ -44,18 +62,20 @@ trait BattleSharedMethods {
 					}
 				}
 			}
+
+			// Adicionei aqui
+			if ($player->battle_pvp_id) {
+				if ($battle->current_id != $player->id) {
+					$errors[]	= t('battles.errors.not_my_turn');
+				}
+			}
+
+			if ($player->{'has_' . $target_var . '_lock'}()) {
+				$errors[]	= t('battles.errors.used_' . $target_var);
+			}
+
 		} else {
 			$errors[]	= t('battles.errors.invalid');
-		}
-
-		if ($player->battle_pvp_id) {
-			if($battle->current_id != $player->id) {
-				$errors[]	= t('battles.errors.not_my_turn');
-			}
-		}
-
-		if ($player->{'has_' . $target_var . '_lock'}()) {
-			$errors[]	= t('battles.errors.used_' . $target_var);
 		}
 
 		if (!sizeof($errors)) {
@@ -68,7 +88,7 @@ trait BattleSharedMethods {
 			$chances	= explode(',', $target->effect_chances);
 			$durations	= explode(',', $target->effect_duration);
 
-			SharedStore::S('battle_used_' . $target_var . '_' . $player->id, true);
+			SharedStore::S('BATTLE_USED_' . $target_var . '_' . $player->id, true);
 
 			foreach ($target->effects() as $key => $effect) {
 				$player->add_ability_speciality_effect($player, $target_var, $effect, $chances[$key], $durations[$key], 'player');
@@ -83,32 +103,43 @@ trait BattleSharedMethods {
 
 			$log_field	= $battle->player_id == $player->id ? 'player_effect_log' : 'enemy_effect_log';
 			$tooltip_id	= 'bi-' . uniqid(uniqid(), true);
-			$log		= @unserialize($battle->{$log_field});
+			$log		= @unserialize($battle->$log_field);
+			if (!is_array($log)) {
+				$log	= [];
+			}
 
-			$battle->{$log_field}	= serialize(array_merge(is_array($log) ? $log : [], [
+			$battle->$log_field	= serialize(array_merge($log, [
 				t('battles.modifier_text', [
 					'player'	=> $player->name,
 					'item'		=> $target->description()->name,
 					'tooltip'	=> $tooltip_id
-				]) . '&nbsp;' . partial('shared/battle_ability_speciality', ['who' => $player, 'target' => $target, 'id' => $tooltip_id]) . '<br />'
+				]) . ' ' . partial('shared/battle_ability_speciality', [
+					'who'		=> $player,
+					'target'	=> $target,
+					'id'		=> $tooltip_id
+				]) . '<br />'
 			]));
 
 			$battle->save();
 			$player->save();
 
-			if($effect->kill_with_one_hit){
-				if($kill_with_one_hit){
+			if ($effect->kill_with_one_hit) {
+				if ($kill_with_one_hit) {
 					$_POST['item']	= 1722;
-				}else{
+				} else {
 					$_POST['item']	= 1723;
 				}
-				$this->attack(NULL, 'kill');
+
+				$this->attack(null, 'kill');
+
 				return;
 			}
 
 			if ($is_technique_copy) {
 				$_POST['item']	= $got_technique;
-				$this->attack('copy', NULL);
+
+				$this->attack('copy', null);
+
 				return;
 			}
 		} else {
@@ -419,8 +450,8 @@ trait BattleSharedMethods {
 			$effects			= $p->get_parsed_effects();
 
 			// Clean up ability/speciality lock
-			SharedStore::S('battle_used_ability_' . $p->id, false);
-			SharedStore::S('battle_used_speciality_' . $p->id, false);
+			SharedStore::S('BATTLE_USED_ABILITY_' . $p->id, false);
+			SharedStore::S('BATTLE_USED_SPECIALITY_' . $p->id, false);
 
 			// Variaveis para as missões de conta
 			$fragment_drop  = false;

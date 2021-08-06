@@ -19,6 +19,7 @@
     var negatives = ['attack_speed', 'attack_speed_percent', 'slowness', 'slowness_percent', 'bleeding', 'bleeding_percent', 'next_mana_cost', 'stun', 'reduce_critical_damage', 'reduce_critical_damage_percent'];
     var hidden = ['bonus_exp_mission', 'bonus_exp_mission_percent', 'bonus_gold_mission', 'bonus_gold_mission_percent', 'bonus_stamina_max', 'currency_reward_extra', 'exp_reward_extra', 'currency_reward_extra_percent', 'exp_reward_extra_percent', 'bonus_stamina_heal', 'no_consume_stamina', 'fragment_find', 'item_find', 'pets_find'];
     var images = [];
+	var is_my_turn = false;
 
     function update_log_tooltip() {
         $('.log .i', battle_container).each(function () {
@@ -230,7 +231,12 @@
         function parse_technique() {
             var _ = $(this);
 
-            if (locked[_.data('id')]) {
+			if (!is_my_turn) {
+				jalert(I18n.t('battles.errors.not_my_turn'));
+                return;
+			}
+
+            if (_.hasClass('locked') || locked[_.data('id')]) {
                 jalert(I18n.t('battles.errors.technique_locked'));
                 return;
             }
@@ -277,6 +283,8 @@
 
                 update_log_tooltip();
             }
+
+			is_my_turn = result.my_turn;
 
             if (!result.flight) {
                 if (result.tooltips && result.tooltips.length) {
@@ -629,22 +637,6 @@
                 $('#finished-message').html(result.finished);
                 $('#battle-container #technique-container').html('').hide();
                 $('#battle-container .player-container #players').css({ height: '430px' });
-
-                // var	win	= bootbox.dialog({
-                // 	message: result.finished,
-                // 	buttons: [{
-                // 		label:		'Fechar',
-                // 		class:		'btn btn-sm btn-default',
-                // 		callback:	function () {
-                // 			lock_screen(true);
-                // 			location.href	= result.redirect;
-                // 			// location.href	= parseInt(result.end_type) ? result.redirect : make_url('hospital') ;
-                // 		}
-                // 	}]
-                // });
-
-                // $('.modal-dialog', win).addClass('pattern-container');
-                // $('.modal-content', win).addClass('with-pattern');
             }
 
             if (result.messages && result.messages.length) {
@@ -724,3 +716,5 @@
         $(document.body).append(audio);
     })
 })();
+
+

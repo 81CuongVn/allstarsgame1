@@ -208,8 +208,8 @@
 					$this->render	= 'show_denied';
 				} else {
 					// Cleanups -->
-						SharedStore::S('last_battle_item_of_' . $player->id, 0);
-						SharedStore::S('last_battle_npc_item_of_' . $player->id, 0);
+						SharedStore::S('LAST_BATTLE_ITEM_OF_' . $player->id, 0);
+						SharedStore::S('LAST_BATTLE_NPC_ITEM_OF_' . $player->id, 0);
 
 						$player->clear_ability_lock();
 						$player->clear_speciality_lock();

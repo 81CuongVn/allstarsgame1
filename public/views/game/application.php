@@ -110,6 +110,7 @@ if (preg_match('/read_news/', $action)) {
 	<script type="text/javascript" src="<?=asset_url('js/jquery.bracket.min.js');?>"></script>
     <script type="text/javascript" src="<?=asset_url('js/i18n.js');?>"></script>
     <script type="text/javascript" src="<?=asset_url('js/socket.io.js');?>"></script>
+	<!-- <script type="text/javascript" src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script> -->
 	<script type="text/javascript">
 		var	_site_url				= "<?=$site_url;?>";
 		var	_site_version			= "<?=GAME_VERSION;?>";
@@ -433,7 +434,7 @@ if (preg_match('/read_news/', $action)) {
 	<button class="btn btn-primary btn-cookies">Aceitar!</button>
 </div>
 
-<?php if ($player) { ?>
+<?php if ($player && FW_ENV != 'dev') { ?>
 	<?=partial('shared/chat', ['player' => $player]);?>
 	<script type="text/javascript" src="<?=asset_url('js/highlights.js');?>"></script>
 <?php } ?>
