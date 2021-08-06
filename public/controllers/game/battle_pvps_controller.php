@@ -164,7 +164,7 @@ class BattlePvpsController extends Controller {
 		$player	= Player::get_instance();
 
 		// Cleanups -->
-			SharedStore::S('LAST_BATTLE_ITEM_OF_' . $player->id, 0);
+			SharedStore::S('last_battle_item_of_' . $player->id, 0);
 
 			$player->clear_ability_lock();
 			$player->clear_speciality_lock();
@@ -436,7 +436,7 @@ class BattlePvpsController extends Controller {
 
 		if ($player->pvp_queue_found > now()) {
 			// Cleanups -->
-				SharedStore::S('LAST_BATTLE_ITEM_OF_' . $player->id, 0);
+				SharedStore::S('last_battle_item_of_' . $player->id, 0);
 
 				$player->clear_ability_lock();
 				$player->clear_speciality_lock();
@@ -470,7 +470,7 @@ class BattlePvpsController extends Controller {
 
 		if ($player->pvp_queue_found > now()) {
 			// Cleanups -->
-				SharedStore::S('LAST_BATTLE_ITEM_OF_' . $player->id, 0);
+				SharedStore::S('last_battle_item_of_' . $player->id, 0);
 
 				$player->clear_ability_lock();
 				$player->clear_speciality_lock();
@@ -701,11 +701,11 @@ class BattlePvpsController extends Controller {
 					// <--
 
 					// Clean up ability/speciality lock
-					SharedStore::S('BATTLE_USED_ABILITY_' . $player->id, false);
-					SharedStore::S('BATTLE_USED_SPECIALITY_' . $player->id, false);
+					SharedStore::S('battle_used_ability_' . $player->id, false);
+					SharedStore::S('battle_used_speciality_' . $player->id, false);
 
-					SharedStore::S('BATTLE_USED_ABILITY_' . $enemy->id, false);
-					SharedStore::S('BATTLE_USED_SPECIALITY_' . $enemy->id, false);
+					SharedStore::S('battle_used_ability_' . $enemy->id, false);
+					SharedStore::S('battle_used_speciality_' . $enemy->id, false);
 
 					$was_draw			= false;
 					$battle->last_atk	= now(true);
