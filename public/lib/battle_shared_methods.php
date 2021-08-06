@@ -31,7 +31,7 @@ trait BattleSharedMethods {
 				]);
 			}
 
-			if (SharedStore::G('BATTLE_USED_' . $target_var . '_' . $player->id)) {
+			if (SharedStore::G('battle_used_' . $target_var . '_' . $player->id)) {
 				$errors[]	= t('battles.errors.used_' . $target_var);
 			}
 
@@ -46,9 +46,9 @@ trait BattleSharedMethods {
 				if ($effect->copy_last_technique) {
 					$is_technique_copy	= true;
 					if (is_a($enemy, 'Player')) {
-						$got_technique	= SharedStore::G('LAST_BATTLE_ITEM_OF_' . $enemy->id);
+						$got_technique	= SharedStore::G('last_battle_item_of_' . $enemy->id);
 					} else {
-						$got_technique	= SharedStore::G('LAST_BATTLE_NPC_ITEM_OF_' . $player->id);
+						$got_technique	= SharedStore::G('last_battle_npc_item_of_' . $player->id);
 					}
 
 					if (!$got_technique) {
@@ -88,7 +88,7 @@ trait BattleSharedMethods {
 			$chances	= explode(',', $target->effect_chances);
 			$durations	= explode(',', $target->effect_duration);
 
-			SharedStore::S('BATTLE_USED_' . $target_var . '_' . $player->id, true);
+			SharedStore::S('battle_used_' . $target_var . '_' . $player->id, true);
 
 			foreach ($target->effects() as $key => $effect) {
 				$player->add_ability_speciality_effect($player, $target_var, $effect, $chances[$key], $durations[$key], 'player');
@@ -450,8 +450,8 @@ trait BattleSharedMethods {
 			$effects			= $p->get_parsed_effects();
 
 			// Clean up ability/speciality lock
-			SharedStore::S('BATTLE_USED_ABILITY_' . $p->id, false);
-			SharedStore::S('BATTLE_USED_SPECIALITY_' . $p->id, false);
+			SharedStore::S('battle_used_ability_' . $p->id, false);
+			SharedStore::S('battle_used_speciality_' . $p->id, false);
 
 			// Variaveis para as missões de conta
 			$fragment_drop  = false;

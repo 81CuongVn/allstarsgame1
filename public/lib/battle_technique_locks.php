@@ -1,5 +1,6 @@
 <?php
 trait BattleTechniqueLocks {
+	// Techniques
 	function get_technique_locks() {
 		return SharedStore::G($this->build_technique_lock_uid(), []);
 	}
@@ -32,11 +33,11 @@ trait BattleTechniqueLocks {
 		$new_locks	= [];
 
 		foreach ($locks as $key => $lock) {
-			if(!$lock['infinity']) {
+			if (!$lock['infinity']) {
 				$lock['turns']--;
 			}
 
-			if($lock['turns'] > 0) {
+			if ($lock['turns'] > 0) {
 				$new_locks[$key]	= $lock;
 			}
 		}
@@ -48,6 +49,7 @@ trait BattleTechniqueLocks {
 		SharedStore::S($this->build_technique_lock_uid(), []);
 	}
 
+	// Ability
 	function add_ability_lock() {
 		SharedStore::S($this->build_ability_lock_uid(), [
 			'ability'	=> $this->character_ability_id,
@@ -76,6 +78,7 @@ trait BattleTechniqueLocks {
 		SharedStore::S($this->build_ability_lock_uid(), null);
 	}
 
+	// Speciality
 	function add_speciality_lock() {
 		SharedStore::S($this->build_speciality_lock_uid(), [
 			'ability'	=> $this->character_speciality_id,

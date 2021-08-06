@@ -209,7 +209,7 @@
 						if(!$enemy){
 							$enemy		= $player->get_npc_challenge();
 						}
-						$copied_id	= SharedStore::G('LAST_BATTLE_NPC_ITEM_OF_' . $player->id);
+						$copied_id	= SharedStore::G('last_battle_npc_item_of_' . $player->id);
 					}
 
 					if ($copied_id) {
