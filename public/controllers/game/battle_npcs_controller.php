@@ -34,7 +34,7 @@ class BattleNpcsController extends Controller {
 		}
 
 		// Cleanups -->
-			SharedStore::S('last_battle_item_of_' . $player->id, 0);
+			SharedStore::S('LAST_BATTLE_ITEM_OF_' . $player->id, 0);
 			SharedStore::S('last_battle_npc_item_of_' . $player->id, 0);
 
 			$player->clear_ability_lock();
@@ -315,8 +315,8 @@ class BattleNpcsController extends Controller {
 				}
 
 				if ($can_run_action) {
-					SharedStore::S('battle_used_ability_' . $player->id, false);
-					SharedStore::S('battle_used_speciality_' . $player->id, false);
+					SharedStore::S('BATTLE_USED_ABILITY_' . $player->id, false);
+					SharedStore::S('BATTLE_USED_SPECIALITY_' . $player->id, false);
 
 					$player_effects	= $player->get_parsed_effects();
 					$enemy_effects	= $npc->get_parsed_effects();

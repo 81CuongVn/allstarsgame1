@@ -17,9 +17,9 @@
 			$this->player_item	=& $item;
 
 			if (is_a($this->player, 'Player')) {
-				SharedStore::S('last_battle_item_of_' . $this->player->id, $item->id);
+				SharedStore::S('LAST_BATTLE_ITEM_OF_' . $this->player->id, $item->id);
 			} else {
-				SharedStore::S('last_battle_npc_item_of_' . $this->enemy->id, $item->id);
+				SharedStore::S('LAST_BATTLE_NPC_ITEM_OF_' . $this->enemy->id, $item->id);
 			}
 		}
 
@@ -31,9 +31,9 @@
 			$this->enemy_item	=& $item;
 
 			if (is_a($this->enemy, 'Player')) {
-				SharedStore::S('last_battle_item_of_' . $this->enemy->id, $item->id);
+				SharedStore::S('LAST_BATTLE_ITEM_OF_' . $this->enemy->id, $item->id);
 			} else {
-				SharedStore::S('last_battle_npc_item_of_' . $this->player->id, $item->id);
+				SharedStore::S('LAST_BATTLE_NPC_ITEM_OF_' . $this->player->id, $item->id);
 			}
 		}
 
