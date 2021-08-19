@@ -9,23 +9,23 @@
 	var	ranks_container	= $('.noticias-4');
 	var	leagues_container	= $('.noticias-5');
 	var	comments_form	= $('#news-comment-form');
-		
+
 	if(news_container.length) {
 		(function () {
 			news_container.on('click', '.prev', function () {
 				if(news_page == 1) {
 					return;
 				}
-				
+
 				news_page--;
 				refresh_news();
 			});
-	
+
 			news_container.on('click', '.next', function () {
 				news_page++;
 				refresh_news();
 			});
-			
+
 			function refresh_news() {
 				$.ajax({
 					url:		make_url('home#news_list/' + news_page),
@@ -34,7 +34,7 @@
 					}
 				});
 			}
-			
+
 			refresh_news();
 		})();
 	}
@@ -45,16 +45,16 @@
 				if(players_page == 1) {
 					return;
 				}
-				
+
 				players_page--;
 				refresh_news();
 			});
-	
+
 			players_container.on('click', '.next', function () {
 				players_page++;
 				refresh_news();
 			});
-			
+
 			function refresh_news() {
 				$.ajax({
 					url:		make_url('home#statistic_list/' + players_page),
@@ -63,7 +63,7 @@
 					}
 				});
 			}
-			
+
 			refresh_news();
 		})();
 	}
@@ -74,16 +74,16 @@
 				if(tops_page == 1) {
 					return;
 				}
-				
+
 				tops_page--;
 				refresh_news();
 			});
-	
+
 			tops_container.on('click', '.next', function () {
 				tops_page++;
 				refresh_news();
 			});
-			
+
 			function refresh_news() {
 				$.ajax({
 					url:		make_url('home#top_list/' + tops_page),
@@ -92,7 +92,7 @@
 					}
 				});
 			}
-			
+
 			refresh_news();
 		})();
 	}
@@ -108,7 +108,18 @@
 		}
 		refresh_news();
 	});
-	
+
+	$('#sl-leagues').on('change', function () {
+		function refresh_news() {
+			$.ajax({
+				url:		make_url('home#league_list/'+ $('#sl-leagues').val()),
+				success:	function (result) {
+					$('.leagues-list', leagues_container).html(result);
+				}
+			});
+		}
+		refresh_news();
+	});
 	if(leagues_container.length) {
 		(function () {
 			function refresh_news() {
@@ -129,16 +140,16 @@
 				if(ranks_page == 1) {
 					return;
 				}
-				
+
 				ranks_page--;
 				refresh_news();
 			});
-	
+
 			ranks_container.on('click', '.next', function () {
 				ranks_page++;
 				refresh_news();
 			});
-			
+
 			function refresh_news() {
 				$.ajax({
 					url:		make_url('home#rank_list/' + ranks_page +'/'+ $('#sl-ranks').val()),
@@ -147,7 +158,7 @@
 					}
 				});
 			}
-			
+
 			refresh_news();
 		})();
 	}

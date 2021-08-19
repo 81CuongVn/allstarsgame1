@@ -6,23 +6,14 @@
             </div>
         </div>
         <div id="texto-rodape">
-            <p>Personagens e desenhos &copy; CopyRight by seus Respectivos criadores. Todos os direitos reservados<br />
-                <b>&copy; 2013-<?=date('Y');?> <a href="<?=make_url('/');?>"><?=GAME_NAME;?></a> - Todos os direitos reservados sobre o sistema e gráficos</b>
-            </p>
+			<p>
+				&copy;<?=date('Y');?> <b><?=GAME_NAME;?></b>
+				| <a href="<?=make_url('legal#privacy');?>">Política de Privacidade</a>
+				- <a href="<?=make_url('legal#terms');?>">Termos de Uso</a>
+				- <a href="<?=make_url('legal#rules');?>">Regras e Punições</a><br />
+				Personagens e desenhos &copy; CopyRight by seus Respectivos criadores. Todos os direitos reservados
+			</p>
         </div>
-        <div id="outros-jogos">
-			<!-- <div style="padding-top: 12px;">
-				<a href="https://bleachforce.com.br" target="_blank">
-					<img src="<?=image_url('logos/bg-logo.png')?>" alt="Bleach Force" />
-				</a>
-				<div class="clearfix"></div>
-			</div> -->
-			<!-- <div style="padding-top: 20px;">
-				<a href="https://bleach.sugoigame.com.br" target="_blank">
-					<img src="<?=image_url('logos/bg-logo.png')?>" alt="Bleach Game" />
-				</a>
-				<div class="clearfix"></div>
-			</div> -->
-		</div>
+        <div id="outros-jogos"></div>
     </div>
 </div>
