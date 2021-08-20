@@ -57,7 +57,7 @@
 				<div class="checkbox">
 					<label>
 						<input type="checkbox" name="term1" value="1" />
-						<?php echo t('users.join.terms.t1', array('link' => make_url('home#usege_terms'))) ?>
+						<?php echo t('users.join.terms.t1', array('link' => make_url('legal#terms'))) ?>
 					</label>
 				</div>
 			</div>
@@ -65,7 +65,7 @@
 				<div class="checkbox">
 					<label>
 						<input type="checkbox" name="term2" value="1" />
-						<?php echo t('users.join.terms.t2', array('link' => make_url('home#usege_terms'))) ?>
+						<?php echo t('users.join.terms.t2', array('link' => make_url('legal#privacy'))) ?>
 					</label>
 				</div>
 			</div>
@@ -73,7 +73,7 @@
 				<div class="checkbox">
 					<label>
 						<input type="checkbox" name="term3" value="1" />
-						<?php echo t('users.join.terms.t3', array('link' => make_url('home#usege_terms'))) ?>
+						<?php echo t('users.join.terms.t3', array('link' => make_url('legal#rules'))) ?>
 					</label>
 				</div>
 			</div>
