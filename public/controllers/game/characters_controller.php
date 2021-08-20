@@ -14,11 +14,11 @@ class CharactersController extends Controller {
 			if (!isset($_POST['name']) || (isset($_POST['name']) && !preg_match(REGEX_PLAYER, $_POST['name']))) {
 				$errors[]	= t('characters.create.errors.invalid_name');
 			} else {
-				if (strlen($_POST['name']) > 14) {
+				if (strlen(trim($_POST['name'])) > 14) {
 					$errors[]	= t('characters.create.errors.name_length_max');
 				}
 
-				if (strlen($_POST['name']) < 6) {
+				if (strlen(trim($_POST['name'])) < 6) {
 					$errors[]	= t('characters.create.errors.name_length_min');
 				}
 
