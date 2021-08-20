@@ -8,7 +8,8 @@
         <div id="texto-rodape">
 			<p>
 				&copy;<?=date('Y');?> <b><?=GAME_NAME;?></b>
-				| <a href="<?=make_url('legal#privacy');?>">Política de Privacidade</a>
+				| <a href="<?=make_url('legal');?>">Aviso Legal</a>
+				- <a href="<?=make_url('legal#privacy');?>">Política de Privacidade</a>
 				- <a href="<?=make_url('legal#terms');?>">Termos de Uso</a>
 				- <a href="<?=make_url('legal#rules');?>">Regras e Punições</a><br />
 				Personagens e desenhos &copy; CopyRight by seus Respectivos criadores. Todos os direitos reservados
