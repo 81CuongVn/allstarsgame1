@@ -129,15 +129,15 @@
 			$this->enemy_item->formula(true);
 
 			if (!$this->player_item->is_buff && !$player_is_skip) {
-				$player_is_critical		= rand(1, 100) <= $this->player->for_crit();
-				$player_is_absorb		= rand(1, 100) <= $this->player->for_abs();
+				$player_is_critical		= (rand(1, 100 * 10) / 10) <= $this->player->for_crit();
+				$player_is_absorb		= (rand(1, 100 * 10) / 10) <= $this->player->for_abs();
 			} else {
 				$player_is_critical		= false;
 				$player_is_absorb		= false;
 			}
 
-			$player_is_precision	= rand(1, 100) <= $this->player->for_prec() && !$this->player_item->is_defensive;
-			$player_is_error		= $this->player_item->formula()->hit_chance < 100 ? rand(1, 100) > $this->player_item->formula()->hit_chance : false;
+			$player_is_precision	= (rand(1, 100 * 10) / 10) <= $this->player->for_prec() && !$this->player_item->is_defensive;
+			$player_is_error		= $this->player_item->formula()->hit_chance < 100 ? (rand(1, 100 * 10) / 10) > $this->player_item->formula()->hit_chance : false;
 
 			if ($player_effects['next_is_critical']) {
 				$player_is_critical	= true;
@@ -192,15 +192,15 @@
 			}
 
 			if (!$this->enemy_item->is_buff && !$enemy_is_skip) {
-				$enemy_is_critical		= rand(1, 100) <= $this->enemy->for_crit();
-				$enemy_is_absorb		= rand(1, 100) <= $this->enemy->for_abs();
+				$enemy_is_critical		= (rand(1, 100 * 10) / 10) <= $this->enemy->for_crit();
+				$enemy_is_absorb		= (rand(1, 100 * 10) / 10) <= $this->enemy->for_abs();
 			} else {
 				$enemy_is_critical		= false;
 				$enemy_is_absorb		= false;
 			}
 
-			$enemy_is_precision		= rand(1, 100) <= $this->enemy->for_prec() && !$this->enemy_item->is_defensive;
-			$enemy_is_error			= $this->enemy_item->formula()->hit_chance < 100 ? rand(1, 100) > $this->enemy_item->formula()->hit_chance : false;
+			$enemy_is_precision		= (rand(1, 100 * 10) / 10) <= $this->enemy->for_prec() && !$this->enemy_item->is_defensive;
+			$enemy_is_error			= $this->enemy_item->formula()->hit_chance < 100 ? (rand(1, 100 * 10) / 10) > $this->enemy_item->formula()->hit_chance : false;
 
 			if ($enemy_effects['next_is_critical']) {
 				$enemy_is_critical	= true;
@@ -265,11 +265,11 @@
 			// <--
 
 			// Absorb values -->
-				if($player_is_absorb && !($player_is_error || $player_is_skip)) {
+				if ($player_is_absorb && !($player_is_error || $player_is_skip)) {
 					$enemy_attack	-= percent($this->player->for_abs_inc(), $enemy_attack);
 				}
 
-				if($enemy_is_absorb && !($enemy_is_error || $enemy_is_skip)) {
+				if ($enemy_is_absorb && !($enemy_is_error || $enemy_is_skip)) {
 					$player_attack	-= percent($this->enemy->for_abs_inc(), $player_attack);
 				}
 			// <--
