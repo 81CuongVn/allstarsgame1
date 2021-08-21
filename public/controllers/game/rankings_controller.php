@@ -82,10 +82,12 @@ class RankingsController extends Controller {
 		$filter		= '';
 
 		if (!$_POST) {
-			$filter			.= ' AND faction_id=' . $player->faction_id;
+			$filter			.= '';
+			// $filter			.= ' AND faction_id=' . $player->faction_id;
 			$anime_id		= 0;
 			$character_id	= 0;
-			$faction_id		= $player->faction_id;
+			// $faction_id		= $player->faction_id;
+			$faction_id		= 0;
 			$graduation_id	= 0;
 			$name			= '';
 		} else {
@@ -183,8 +185,10 @@ class RankingsController extends Controller {
 		$filter		= '';
 
 		if (!$_POST) {
-			$filter					.= ' AND anime_id=' . $player->character()->anime_id;
-			$anime_id				= $player->character()->anime_id;
+			$filter			.= '';
+			// $filter					.= ' AND anime_id=' . $player->character()->anime_id;
+			$anime_id				= 0;
+			// $anime_id		= $player->character()->anime_id;
 			$character_id			= 0;
 			$faction_id				= 0;
 			$periodo				= "";
@@ -296,8 +300,10 @@ class RankingsController extends Controller {
 		$filter		= '';
 
 		if (!$_POST) {
-			$filter			.= ' AND anime_id=' . $player->character()->anime_id;
-			$anime_id		= $player->character()->anime_id;
+			$filter			.= '';
+			// $filter			.= ' AND anime_id=' . $player->character()->anime_id;
+			// $anime_id		= $player->character()->anime_id;
+			$anime_id		= 0;
 			$character_id	= 0;
 			$faction_id		= 0;
 			$graduation_id	= 0;
@@ -618,8 +624,10 @@ class RankingsController extends Controller {
 		$filter		= '';
 
 		if (!$_POST) {
-			$filter		   .= ' AND faction_id=' . $player->faction_id;
-			$faction_id		= $player->faction_id;
+			$filter			.= '';
+			$faction_id		= 0;
+			// $filter		   .= ' AND faction_id=' . $player->faction_id;
+			// $faction_id		= $player->faction_id;
 			$name			= '';
 		} else {
 			if (isset($_POST['faction_id']) && is_numeric($_POST['faction_id'])) {
