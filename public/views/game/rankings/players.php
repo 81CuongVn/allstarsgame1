@@ -4,7 +4,7 @@
 	}
 </style>
 <?php echo partial('shared/title', array('title' => 'rankings.players.title', 'place' => 'rankings.players.title')) ?>
-<div class="barra-secao barra-secao-<?php echo $player->character()->anime_id ?>">
+<div class="barra-secao barra-secao-1">
 	<p>Filtro do Ranking</p>
 </div>
 <form id="ranking-players-filter-form" method="post">
