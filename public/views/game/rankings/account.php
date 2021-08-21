@@ -1,5 +1,5 @@
 <?php echo partial('shared/title', array('title' => 'rankings.account.title', 'place' => 'rankings.account.title')) ?>
-<div class="barra-secao barra-secao-<?php echo $player->character()->anime_id ?>">
+<div class="barra-secao barra-secao-1">
 	<p>Filtro do Ranking</p>
 </div>
 <form id="ranking-players-filter-form" method="post">
@@ -17,7 +17,7 @@
 	<br />
 	<br />
 	<input type="hidden" name="page" value="<?php echo $page ?>" />
-	<div class="barra-secao barra-secao-<?php echo $player->character()->anime_id ?>">
+	<div class="barra-secao barra-secao-1">
 		<table width="725" border="0" cellpadding="0" cellspacing="0">
 		<tr>
 			<td width="40">&nbsp;</td>
@@ -30,7 +30,7 @@
 	</div>
 	<table width="725" border="0" cellpadding="0" cellspacing="0">
 		<?php $counter = 0; ?>
-		<?php foreach ($players as $p): 
+		<?php foreach ($players as $p):
 				$color	= $counter++ % 2 ? '091e30' : '173148';
 		?>
 			<tr bgcolor="<?php echo $color ?>" height="30">

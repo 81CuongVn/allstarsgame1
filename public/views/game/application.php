@@ -383,7 +383,7 @@ if (preg_match('/read_news/', $action)) {
 									foreach ($menu_data as $menu_category) {
 										if (sizeof($menu_category['menus'])) {
 									?>
-									<img src="<?=image_url('menus/' . $_SESSION['language_id'] . '/' . $menu_category['id'] . '_' . ($player ? $player->character()->anime_id : rand(1, 7)) . '.png');?>" />
+									<img src="<?=image_url('menus/' . $_SESSION['language_id'] . '/' . $menu_category['id'] . '_' . ($player ? $player->character()->anime_id : rand(1, 6)) . '.png');?>" />
 									<?php
 											foreach ($menu_category['menus'] as $menu) {
 												if ($menu['hidden']) continue;

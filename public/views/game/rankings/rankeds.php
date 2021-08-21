@@ -7,7 +7,7 @@
 	'title'	=> 'rankings.rankeds.title',
 	'place'	=> 'rankings.rankeds.title'
 ]);?>
-<div class="barra-secao barra-secao-<?=$player->character()->anime_id;?>">
+<div class="barra-secao barra-secao-1">
 	<p>Filtro do Ranking</p>
 </div>
 <form id="ranking-players-filter-form" method="post">

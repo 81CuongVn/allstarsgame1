@@ -4,7 +4,7 @@
 	}
 </style>
 <?php echo partial('shared/title', array('title' => 'rankings.battles.title', 'place' => 'rankings.players.title')) ?>
-<div class="barra-secao barra-secao-<?php echo $player->character()->anime_id ?>">
+<div class="barra-secao barra-secao-1">
 	<p>Filtro do Ranking</p>
 </div>
 <form id="ranking-players-filter-form" method="post">
@@ -84,10 +84,10 @@
 		$looses_npc 	= ($periodo == "daily" || !$periodo)  ? "looses_npc" : "looses_npc_".$periodo;
 		$draws_pvp 		= ($periodo == "daily" || !$periodo)  ? "draws_pvp" : "draws_pvp_".$periodo;
 		$draws_npc 		= ($periodo == "daily" || !$periodo)  ? "draws_npc" : "draws_npc_".$periodo;
-		
+
 	?>
 		<?php $counter = 0; ?>
-		<?php foreach ($players as $p): 
+		<?php foreach ($players as $p):
 			  $counter++;
 		?>
 			<?php
