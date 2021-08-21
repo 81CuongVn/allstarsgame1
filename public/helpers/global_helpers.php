@@ -306,12 +306,12 @@ function get_time_difference( $start, $end ) {
 }
 
 function has_chance($val) {
-	$rnd = rand(0, 400) / 4;
+	$rnd = rand(0, 100 * 10) / 10;
 	return $rnd <= $val ? true : false;
 }
 
 function get_chance() {
-	return rand(0, 400) / 4;
+	return rand(0, 100 * 10) / 10;
 }
 
 function array_random_key($arr) {
