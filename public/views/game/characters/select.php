@@ -130,15 +130,13 @@
 				</div>
 			</div>
 			<div style="position: relative; top: 10px; float:left; width: 300px; left: 10px">
-				<script type="text/javascript">
-					google_ad_client = "ca-pub-9166007311868806";
-					google_ad_slot = "2739661773";
-					google_ad_width = 300;
-					google_ad_height = 600;
-				</script>
 				<!-- AASG - Trocar Lateral -->
-				<script type="text/javascript"
-				src="//pagead2.googlesyndication.com/pagead/show_ads.js">
+				<ins class="adsbygoogle"
+					style="display:inline-block;width:336px;height:280px"
+					data-ad-client="ca-pub-6665062829379662"
+					data-ad-slot="2509912687"></ins>
+				<script>
+					(adsbygoogle = window.adsbygoogle || []).push({});
 				</script>
 			</div>
 		</div>
