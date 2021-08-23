@@ -2,8 +2,16 @@
 	'title'	=> 'quests.time.wait.title',
 	'place'	=> 'quests.time.wait.title'
 ]);?>
+<!-- AASG - Quests -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:728px;height:90px"
+     data-ad-client="ca-pub-6665062829379662"
+     data-ad-slot="8048824605"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script><br />
 <div class="msg-container">
-	<div class="msg_top"></div>	
+	<div class="msg_top"></div>
 	 <div class="msg_repete">
 		<div class="msg" style="background:url(<?=image_url('msg/'. $player->character()->anime_id . '-3.png');?>); background-repeat: no-repeat;">
 		</div>
@@ -36,7 +44,7 @@
 					</script>
 				<?php } ?>
 			</div>
-		</div>		
+		</div>
 	</div>
 	<div class="msg_bot"></div>
 	<div class="msg_bot2"></div>
@@ -44,9 +52,9 @@
 <?php if (!$can_finish) { ?><br />
 	<div align="center">
 		<a id="timer-quest-cancel" class="btn btn-sm btn-danger" href="javascript:;"><?php echo t('quests.cancel') ?></a>
-	</div>	
+	</div>
 <?php } else { ?>
 	<div align="center">
 		<a id="timer-quest-finish" class="btn btn-sm btn-primary" href="javascript:;"><?=t('quests.finish');?></a>
-	</div>		
+	</div>
 <?php } ?>

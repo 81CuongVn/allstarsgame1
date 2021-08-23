@@ -6,6 +6,14 @@
 <div id="descricao-topo">
 	<p><?php echo t('global.descricao', ['game' => GAME_NAME])?></p>
 </div>
+<!-- AASG - Home -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:728px;height:90px"
+     data-ad-client="ca-pub-6665062829379662"
+     data-ad-slot="4041296834"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script><br />
 <div id="banner">
 	<div id="my-slide">
 		<a href="<?=make_url('users/join');?>"><img data-lazy-src="<?php echo image_url('banner.png') ?>" /></a>

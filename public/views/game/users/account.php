@@ -1,4 +1,12 @@
 <?php echo partial('shared/title', array('title' => 'menus.account', 'place' => 'menus.account')) ?>
+<!-- AASG - Users -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:728px;height:90px"
+     data-ad-client="ca-pub-6665062829379662"
+     data-ad-slot="3196308392"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script><br />
 <form class="form" id="f-account-join" onsubmit="return false">
 	<div class="row">
 		<div class="form-group col-md-6">
@@ -8,7 +16,7 @@
 		<div class="form-group col-md-6">
 			<label class="control-label"><?php echo t('users.join.labels.email') ?></label>
 			<input type="text" class="form-control input-sm" name="email" value="<?php echo $user->email?>" disabled="disabled" />
-		</div>			
+		</div>
 	</div>
 	<div class="row">
 		<div class="form-group col-md-6">
@@ -17,7 +25,7 @@
 				<option value="1" <?php echo $user->gender == 1 ? "selected='selected'" : ""?>><?php echo t('genders.male') ?></option>
 				<option value="2" <?php echo $user->gender == 2 ? "selected='selected'" : ""?>><?php echo t('genders.female') ?></option>
 			</select>
-		</div>		
+		</div>
 	</div>
 	<hr />
 	<div class="row">
@@ -28,7 +36,7 @@
 		<div class="form-group col-md-6">
 			<label class="control-label"><?php echo t('users.join.labels.city') ?></label>
 			<input type="text" class="form-control input-sm"  placeholder="<?php echo t('users.join.placeholders.city') ?>" name="city" value="<?php echo $user->city?>" />
-		</div>			
+		</div>
 	</div>
 	<div class="row">
 		<div class="form-group col-md-6">
@@ -38,13 +46,13 @@
 		<div class="form-group col-md-6">
 			<label class="control-label"><?php echo t('users.join.labels.state') ?></label>
 			<input type="text" class="form-control input-sm"  placeholder="<?php echo t('users.join.placeholders.state') ?>" name="state" value="<?php echo $user->state?>" />
-		</div>			
+		</div>
 	</div>
 	<div class="row">
 		<div class="form-group col-md-6">
 			<label class="control-label"><?php echo t('users.join.labels.zip') ?></label>
 			<input type="text" class="form-control input-sm" id="zip" name="zip" placeholder="<?php echo t('users.join.placeholders.zip') ?>" value="<?php echo $user->zip?>" maxlength="8"/><span id="errmsg"></span>
-		</div>	
+		</div>
 		<div class="form-group col-md-6">
 			<label class="control-label"><?php echo t('users.join.labels.country') ?></label>
 			<select name="country_id" class="form-control input-sm select2">
@@ -77,4 +85,4 @@
 	<div class="form-group text-center">
 		<input type="submit" class="btn btn-sm btn-primary" value="<?php echo t('users.join.update_account') ?>" />
 	</div>
-</form>	
+</form>

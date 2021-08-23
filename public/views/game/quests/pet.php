@@ -2,6 +2,14 @@
 	'title'	=> 'quests.pet.title',
 	'place'	=> 'quests.pet.title'
 ]);?>
+<!-- AASG - Quests -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:728px;height:90px"
+     data-ad-client="ca-pub-6665062829379662"
+     data-ad-slot="8048824605"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script><br />
 <?php if(!$player_tutorial->missoes_seguidores) { ?>
 	<script type="text/javascript">
 		$(function () {

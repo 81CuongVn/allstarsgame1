@@ -1,9 +1,17 @@
 <style>
 	.technique-data {
-		width: 250px !important;	
+		width: 250px !important;
 	}
 </style>
 <?php echo partial('shared/title', array('title' => 'menus.enchant', 'place' => 'menus.enchant')) ?>
+<!-- AASG - Techniques -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:728px;height:90px"
+     data-ad-client="ca-pub-6665062829379662"
+     data-ad-slot="7857252910"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script><br />
 <?php if (!$player_tutorial->aprimoramentos) { ?>
 	<script type="text/javascript">
 		$(function () {
@@ -70,7 +78,7 @@
 	</form>
 </div>
 <div class="msg-container" style="clear:both">
-	<div class="msg_top"></div>	
+	<div class="msg_top"></div>
 	 <div class="msg_repete">
 		<div class="msg" style="background:url(<?php echo image_url('msg/encantamento.png')?>); background-repeat: no-repeat;">
 		</div>
@@ -88,12 +96,12 @@
 						<span class="verde"><?php echo t('enchant.criou')?>:</span> <br />
 						<img src="<?php echo image_url("items/".$_GET['joia'].".png")?>" />
 					</div>
-				<?php }?>	
+				<?php }?>
 			</div>
-		</div>		
+		</div>
 	</div>
-	<div class="msg_bot"></div>	
-	<div class="msg_bot2"></div>	
+	<div class="msg_bot"></div>
+	<div class="msg_bot2"></div>
 </div>
 <br />
 <div class="barra-secao barra-secao-<?php echo $player->character()->anime_id ?>"><p><?php echo t('enchant.enchant') ?></p></div>
@@ -108,7 +116,7 @@
 				</div>
 				<span class="quantity">x<?php echo $quantity ? $quantity->quantity : 0?></span>
 			</div>
-		</div>	
+		</div>
 	<?php endforeach ?>
 </div><br />
 <?php
@@ -140,33 +148,33 @@
 	<div class="enchant-item enchant-1 dropzone" data-slot="1">
 		<?php if(isset($player_item_gem) && $player_item_gem){?>
 			<img class="<?php echo $player_item_gem->gem_1 ? "remove-gem cursor_pointer" : ""?>" data-counter="1" data-item="<?php echo $item_equipped->id ?>" data-message="<?php echo t('enchant.message');?>" src="<?php echo image_url($player_item_gem->gem_1 ? "items/".$player_item_gem->gem_1.".png" : "enchant/".$item_combinations_item_1[0].".png")?>" />
-		<?php }else{?>	
+		<?php }else{?>
 			<img src="<?php echo image_url("enchant/sem-gem.png")?>" />
-		<?php }?>	
+		<?php }?>
 	</div>
 	<div class="enchant-item enchant-2 dropzone" data-slot="2">
 		<?php if(isset($player_item_gem) && $player_item_gem){?>
 			<img class="<?php echo $player_item_gem->gem_2 ? "remove-gem cursor_pointer" : ""?>" data-counter="2" data-item="<?php echo $item_equipped->id ?>" data-message="<?php echo t('enchant.message');?>" src="<?php echo image_url($player_item_gem->gem_2 ? "items/".$player_item_gem->gem_2.".png" : "enchant/".$item_combinations_item_1[1].".png")?>" />
-		<?php }else{?>	
+		<?php }else{?>
 			<img src="<?php echo image_url("enchant/sem-gem.png")?>" />
 		<?php }?>
 	</div>
 	<div class="enchant-item enchant-3 dropzone" data-slot="3">
 		<?php if(isset($player_item_gem) && $player_item_gem){?>
 			<img class="<?php echo $player_item_gem->gem_3 ? "remove-gem cursor_pointer" : ""?>" data-counter="3" data-item="<?php echo $item_equipped->id ?>" data-message="<?php echo t('enchant.message');?>" src="<?php echo image_url($player_item_gem->gem_3 ? "items/".$player_item_gem->gem_3.".png" : "enchant/sem-gem.png")?>" />
-		<?php }else{?>	
+		<?php }else{?>
 			<img src="<?php echo image_url("enchant/sem-gem.png")?>" />
 		<?php }?>
 	</div>
 	<div class="enchant-item enchant-4 dropzone" data-slot="4">
 		<?php if(isset($player_item_gem) && $player_item_gem){?>
 			<img class="<?php echo $player_item_gem->gem_4 ? "remove-gem cursor_pointer" : ""?>" data-counter="4" data-item="<?php echo $item_equipped->id ?>" data-message="<?php echo t('enchant.message');?>" src="<?php echo image_url($player_item_gem->gem_4 ? "items/".$player_item_gem->gem_4.".png" : "enchant/sem-gem.png")?>" />
-		<?php }else{?>	
+		<?php }else{?>
 			<img src="<?php echo image_url("enchant/sem-gem.png")?>" />
 		<?php }?>
 	</div>
-	<?php 
-		if(isset($item_equipped) && $item_equipped){	
+	<?php
+		if(isset($item_equipped) && $item_equipped){
 			$counter = 1;
 			foreach($item_enchanteds as $item_enchanted){
 				$verification = true;
@@ -183,22 +191,22 @@
 						$combination = $item_combinations_item_1;
 						if(isset($player_item_gem) && $player_item_gem){
 							if($player_item_gem->gem_4 || $player_item_gem->gem_3){
-								$verification = false;	
+								$verification = false;
 							}
 						}
 						$enchanted = $player_item_gem->enchanted;
 					break;
-					
+
 					case 2:
 						$combination = $item_combinations_item_2;
 						if(isset($player_item_gem) && $player_item_gem){
 							if($player_item_gem->gem_4){
-								$verification = false;	
+								$verification = false;
 							}
 						}
 						$enchanted = $player_item_gem->enchanted;
 					break;
-					
+
 					case 3:
 						$combination = $item_combinations_item_3;
 						$enchanted = $player_item_gem->enchanted;
@@ -217,9 +225,9 @@
 						<a class="btn btn-sm btn-success button_enchant<?php echo $counter?>"><?php echo t('enchant.encantado')?></a>
 					<?php }?>
 			</div>
-		<?php 
+		<?php
 				$counter++;
 			}
 		}
-		?>	
+		?>
 </div>

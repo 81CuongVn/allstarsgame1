@@ -164,10 +164,16 @@
 	</div>
 	<div id="divider"></div>
 </div><br />
-<!-- <div align="center">
-	<script id="_wauae2">var _wau = _wau || []; _wau.push(["dynamic", "gq7qmwiq8v", "ae2", "c4302bffffff", "small"]);</script>
-	<script async src="//waust.at/d.js"></script>
-</div> -->
+<div align="center">
+	<!-- AASG - Batalhas -->
+	<ins class="adsbygoogle"
+		style="display:inline-block;width:728px;height:90px"
+		data-ad-client="ca-pub-6665062829379662"
+		data-ad-slot="5606300570"></ins>
+	<script>
+		(adsbygoogle = window.adsbygoogle || []).push({});
+	</script>
+</div>
 <?php if ($player->battle_npc_id) { ?>
 	<script type="text/javascript">
 		$(document).ready(function () {

@@ -1,4 +1,12 @@
 <?php echo partial('shared/title', array('title' => 'menus.quests_daily', 'place' => 'menus.quests_daily')) ?>
+<!-- AASG - Quests -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:728px;height:90px"
+     data-ad-client="ca-pub-6665062829379662"
+     data-ad-slot="8048824605"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script><br />
 <?php if (!$player_tutorial->missoes_diarias) { ?>
 	<script type="text/javascript">
 		$(function () {

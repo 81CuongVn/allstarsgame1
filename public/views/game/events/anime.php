@@ -1,4 +1,12 @@
 <?php echo partial('shared/title', array('title' => 'menus.events_anime', 'place' => 'menus.events_anime')) ?>
+<!-- AASG - Eventos -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:728px;height:90px"
+     data-ad-client="ca-pub-6665062829379662"
+     data-ad-slot="7809792082"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script><br />
 <?php if (!$player_tutorial->battle_village) { ?>
 	<script type="text/javascript">
 		$(function () {
@@ -28,7 +36,7 @@
 			tour.init(true);
 			tour.start(true);
 		});
-	</script>	
+	</script>
 <?php } ?>
 <?php
 echo partial('shared/info', [
@@ -81,7 +89,7 @@ if ($activeEvent) {
 		    <img src="<?=image_url('events/anime/0.png');?>"/><br />
 		<?php } ?>
 	</div>
-</div>	
+</div>
 <div class="ev-reward">
 	<div class="titulo-home">
 		<p><?=t('event.e3');?></p>
@@ -93,7 +101,7 @@ if ($activeEvent) {
 				<div class="status-popover-content">
 					<?=t('event.e5');?>
 				</div>
-			</div>	
+			</div>
 		</div>
 		<div class="ev-req requirement-popover" data-source="#tooltip-req-gold" data-title="<?=t('event.e7');?>" data-trigger="hover" data-placement="bottom">
 			<img src="<?=image_url('events/gold.png');?>"/>
@@ -101,7 +109,7 @@ if ($activeEvent) {
 				<div class="status-popover-content">
 					<?=t('event.e7');?>
 				</div>
-			</div>	
+			</div>
 		</div>
 		<div class="ev-req requirement-popover" data-source="#tooltip-req-drop" data-title="<?=t('event.e8');?>" data-trigger="hover" data-placement="bottom">
 			<img src="<?=image_url('events/drop.png');?>"/>
@@ -109,8 +117,8 @@ if ($activeEvent) {
 				<div class="status-popover-content">
 					<?=t('event.e9');?>
 				</div>
-			</div>	
-		</div>			
+			</div>
+		</div>
 	</div>
 </div>
 <div style="clear: left" class="titulo-home3">
