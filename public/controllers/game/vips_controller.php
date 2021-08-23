@@ -152,7 +152,7 @@ class VipsController extends Controller {
 							$errors[]	= t('guilds.errors.not_leader');
 						}
 
-						if (!between(strlen($_POST['name_guild']), 6, 20) || !preg_match(REGEX_GUILD, $_POST['name_guild'])) {
+						if (!between(strlen(trim($_POST['name_guild'])), 6, 20) || !preg_match(REGEX_GUILD, $_POST['name_guild'])) {
 							$errors[]	= t('guilds.create.errors.invalid_name');
 						}
 					}
@@ -180,11 +180,11 @@ class VipsController extends Controller {
 						$errors[]	= t('characters.create.errors.existent');
 					}
 
-					if (strlen($_POST['name']) > 14) {
+					if (strlen(trim($_POST['name'])) > 14) {
 						$errors[]	= t('characters.create.errors.name_length_max');
 					}
 
-					if (strlen($_POST['name']) < 6) {
+					if (strlen(trim($_POST['name'])) < 6) {
 						$errors[]	= t('characters.create.errors.name_length_min');
 					}
 				}
