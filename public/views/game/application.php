@@ -424,6 +424,20 @@ if (preg_match('/read_news/', $action)) {
 </div>
 <?=partial('shared/footer', ['player' => $player]);?>
 
+
+<div id="l-banner" style="position: absolute; height: auto; width: 160px; top: -200px; right: -180px; z-index: 1000;">
+	<div style="position: fixed">
+		<!-- AASG - Lateral -->
+		<ins class="adsbygoogle"
+			style="display:inline-block;width:300px;height:600px"
+			data-ad-client="ca-pub-6665062829379662"
+			data-ad-slot="3399133151"></ins>
+		<script>
+			(adsbygoogle = window.adsbygoogle || []).push({});
+		</script>
+	</div>
+</div>
+
 <div style="display: none;">
 	<script id="_wau38g">var _wau = _wau || []; _wau.push(["dynamic", "j0ycq84tlk", "38g", "c4302bffffff", "small"]);</script>
 	<script async src="//waust.at/d.js"></script>
