@@ -139,7 +139,6 @@ if (preg_match('/read_news/', $action)) {
 		.grecaptcha-badge { z-index: 1; }
 	</style>
 	<script data-ad-client="ca-pub-6665062829379662" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-	<!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6665062829379662" crossorigin="anonymous"></script> -->
 </head>
 <body>
 <script type="text/javascript">
@@ -425,7 +424,7 @@ if (preg_match('/read_news/', $action)) {
 <?=partial('shared/footer', ['player' => $player]);?>
 
 
-<div id="l-banner" style="position: absolute; height: auto; width: 160px; top: -200px; right: -180px; z-index: 1000;">
+<?php /*<div id="l-banner" style="position: absolute; height: auto; width: 160px; top: -200px; right: -180px; z-index: 1000;">
 	<div style="position: fixed">
 		<!-- AASG - Lateral -->
 		<ins class="adsbygoogle"
@@ -436,7 +435,7 @@ if (preg_match('/read_news/', $action)) {
 			(adsbygoogle = window.adsbygoogle || []).push({});
 		</script>
 	</div>
-</div>
+</div>*/ ?>
 
 <div style="display: none;">
 	<script id="_wau38g">var _wau = _wau || []; _wau.push(["dynamic", "j0ycq84tlk", "38g", "c4302bffffff", "small"]);</script>
