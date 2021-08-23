@@ -105,27 +105,41 @@
 		</div>
 		<div style="position: relative; clear: both; float: left; top: 20px;">
 			<div class="barra-secao"><p><?=t('characters.select.section_favorite');?></p></div>
-			<div id="select-player-list-container">
+			<div style="width: 426px; float: left;" id="select-player-list-container">
 				<div id="select-player-list-container">
-					<?php
-					$counter	= 1;
-					foreach ($players as $player):
-						$banned = $player->hasBanishment();
-					?>
-						<a data-toggle="tooltip" title="<?=make_tooltip($player->name)?>" data-placement="top" data-id="<?=$player->id;?>" data-map-id="<?=($player->map_id ? $player->map_id : 0);?>" class="player page-item page-item-<?=ceil($counter++ / 10);?> <?=($banned ? 'locked' : '');?>">
-							<?php if ($banned) { ?>
-								<span class="glyphicon glyphicon-ban-circle"></span>
-							<?php } ?>
-							<img src="<?=image_url($player->small_image(true));?>" width="120" />
-						</a>
-					<?php endforeach ?>
-					<div class="break"></div>
-					<div class="character-paginator" data-target-container="#select-player-list-container">
-						<?php for($f = 1; $f <= ceil(sizeof($players) / 10); $f++): ?>
-							<div class="page" data-page="<?php echo $f ?>"><?php echo $f ?></div>
-						<?php endfor; ?>
+					<div id="select-player-list-container">
+						<?php
+						$counter	= 1;
+						foreach ($players as $player):
+							$banned = $player->hasBanishment();
+						?>
+							<a data-toggle="tooltip" title="<?=make_tooltip($player->name)?>" data-placement="top" data-id="<?=$player->id;?>" data-map-id="<?=($player->map_id ? $player->map_id : 0);?>" class="player page-item page-item-<?=ceil($counter++ / 12);?> <?=($banned ? 'locked' : '');?>">
+								<?php if ($banned) { ?>
+									<span class="glyphicon glyphicon-ban-circle"></span>
+								<?php } ?>
+								<img src="<?=image_url($player->small_image(true));?>" width="120" />
+							</a>
+						<?php endforeach ?>
+						<div class="break"></div>
+						<div class="character-paginator" data-target-container="#select-player-list-container">
+							<?php for($f = 1; $f <= ceil(sizeof($players) / 12); $f++): ?>
+								<div class="page" data-page="<?php echo $f ?>"><?php echo $f ?></div>
+							<?php endfor; ?>
+						</div>
 					</div>
 				</div>
+			</div>
+			<div style="position: relative; top: 10px; float:left; width: 300px; left: 10px">
+				<script type="text/javascript">
+					google_ad_client = "ca-pub-9166007311868806";
+					google_ad_slot = "2739661773";
+					google_ad_width = 300;
+					google_ad_height = 600;
+				</script>
+				<!-- AASG - Trocar Lateral -->
+				<script type="text/javascript"
+				src="//pagead2.googlesyndication.com/pagead/show_ads.js">
+				</script>
 			</div>
 		</div>
 	</div>
