@@ -1,4 +1,12 @@
 <?php echo partial('shared/title', array('title' => 'private_messages.index.title', 'place' => 'private_messages.index.title')) ?>
+<!-- AASG - Mensagens -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:728px;height:90px"
+     data-ad-client="ca-pub-6665062829379662"
+     data-ad-slot="1807205109"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script><br />
 <div>
 	<div class="pull-left">
 		<a class="btn btn-sm btn-danger" id="private-message-delete-selected"><?php echo t('private_messages.delete_selected') ?></a>

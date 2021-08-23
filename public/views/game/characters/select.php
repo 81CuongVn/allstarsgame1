@@ -1,8 +1,12 @@
-<?php
-
-use GuzzleHttp\Promise\Is;
-
-echo partial('shared/title', array('title' => 'characters.select.title', 'place' => 'characters.select.title')) ?>
+<?php echo partial('shared/title', array('title' => 'characters.select.title', 'place' => 'characters.select.title')) ?>
+<!-- AASG - Personagem -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:728px;height:90px"
+     data-ad-client="ca-pub-6665062829379662"
+     data-ad-slot="7609647387"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script><br />
 <?php if (!sizeof($players)): ?>
 	<?php echo partial('shared/info', array('id'=> 3, 'title' => 'characters.select.none', 'message' => t('characters.select.none_msg', array('url' => make_url('characters#create'))))) ?>
 <?php else: ?>

@@ -2,6 +2,14 @@
 	<p><?php echo $map->name?></p>
 	<span><a href="<?=make_url('/');?>">Página Principal</a> <b> &gt;&gt; </b> <?php echo $map->name?></span>
 </div>
+<!-- AASG - Exploração -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:728px;height:90px"
+     data-ad-client="ca-pub-6665062829379662"
+     data-ad-slot="3371212995"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script><br />
 <!-- Aqui é o menu da esquerda para não ter que fazer verificações fora da controller do mapa -->
 <div style="position:absolute; left:-283px; top:11px">
 	<div style="width:242px; height:310px; float: left; text-align: center">

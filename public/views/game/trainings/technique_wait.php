@@ -1,6 +1,14 @@
 <?php echo partial('shared/title', array('title' => 'techniques.training.wait.title', 'place' => 'techniques.training.wait.title')) ?>
+<!-- AASG - Treinamento -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:728px;height:90px"
+     data-ad-client="ca-pub-6665062829379662"
+     data-ad-slot="5650532609"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script><br />
 <div class="msg-container" id="technique-training-status-container">
-	<div class="msg_top"></div>	
+	<div class="msg_top"></div>
 	<div class="msg_repete">
 <?php if ($finished): ?>
 	<div class="msg" style="background:url(<?php echo image_url('msg/'. $player->character()->anime_id . '-2.png')?>); background-repeat: no-repeat;"></div>

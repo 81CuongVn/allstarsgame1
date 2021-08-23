@@ -1,4 +1,12 @@
 <?php echo partial('shared/title', array('title' => 'menus.wanted', 'place' => 'menus.wanted')) ?>
+<!-- AASG - Eventos -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:728px;height:90px"
+     data-ad-client="ca-pub-6665062829379662"
+     data-ad-slot="7809792082"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script><br />
 <?php if (!$player_tutorial->bijuus) { ?>
 	<script type="text/javascript">
 		$(function () {
@@ -17,7 +25,7 @@
 			tour.init(true);
 			tour.start(true);
 		});
-	</script>	
+	</script>
 <?php } ?>
 <?=partial('shared/info', [
 	'id'		=> 1,
@@ -26,7 +34,7 @@
 ]);?>
 <form id="wanteds-filter-form" method="post">
 	<input type="hidden" name="page" value="<?=$page;?>" />
-	<?php 
+	<?php
 	if ($wanteds) {
 		foreach ($wanteds as $wanted) {
 			$player_wanted = PlayerWanted::find_first("player_id=" . $wanted->id ." AND death = 0");
@@ -43,7 +51,7 @@
 			</div>
 		</div>
 	<?php } ?>
-	<div style="clear:both"></div>		
+	<div style="clear:both"></div>
 	<?=partial('shared/paginator', [
 		'pages'		=> $pages,
 		'current'	=> $page + 1
@@ -54,5 +62,5 @@
 			<b class='laranja' style='font-size:14px;'>" . t('wanted.sem_nenhum') . "</b>
 		</div>";
 	}
-	?>	
+	?>
 </form>

@@ -4,6 +4,14 @@
 	}
 </style>
 <?php echo partial('shared/title', array('title' => 'rankings.battles.title', 'place' => 'rankings.players.title')) ?>
+<!-- AASG - Rankings -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:728px;height:90px"
+     data-ad-client="ca-pub-6665062829379662"
+     data-ad-slot="5869383826"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script><br />
 <div class="barra-secao barra-secao-1">
 	<p>Filtro do Ranking</p>
 </div>

@@ -1,5 +1,13 @@
 <div class="new2">
 	<?php echo partial('shared/title', [ 'title' => 'users.join.title', 'place' => 'users.join.title' ]) ?>
+	<!-- AASG - Users -->
+	<ins class="adsbygoogle"
+		style="display:inline-block;width:728px;height:90px"
+		data-ad-client="ca-pub-6665062829379662"
+		data-ad-slot="3196308392"></ins>
+	<script>
+		(adsbygoogle = window.adsbygoogle || []).push({});
+	</script><br />
 </div>
 <div class="new2">
 	<div class="conteudo">

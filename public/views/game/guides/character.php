@@ -9,6 +9,14 @@
 	}
 </style>
 <?php echo partial('shared/title', array('title' => 'menus.character_guide', 'place' => 'menus.character_guide')) ?>
+<!-- AASG - Guias -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:728px;height:90px"
+     data-ad-client="ca-pub-6665062829379662"
+     data-ad-slot="7729901030"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script><br />
 <form id="f-create-character">
 	<input type="hidden" name="faction_id" value="1" />
 	<input type="hidden" name="character_id" value="" />

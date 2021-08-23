@@ -1,4 +1,12 @@
 <?php echo partial('shared/title', array('title' => 'menus.exploration', 'place' => 'menus.exploration')) ?>
+<!-- AASG - Exploração -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:728px;height:90px"
+     data-ad-client="ca-pub-6665062829379662"
+     data-ad-slot="3371212995"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script><br />
 <?php
 	echo partial('shared/info', [
 		'id'		=> 1,
@@ -12,13 +20,12 @@
 		<div>
 			<div class="image">
 				<img src="<?php echo image_url('maps/buy/'.$map_anime->id.'.png') ?>" />
-	
 			</div>
 			<div class="name" style="height: 15px !important;">
 				<?php echo $map_anime->description()->name ?>
 			</div>
 			<div class="description" style="height: 28px !important;">
-			<?php echo $map_anime->description()->description ?><br />
+				<?php echo $map_anime->description()->description ?><br />
 			</div>
 			<div class="button" style="position:relative; top: 15px;">
 				<?php $map_anime->set_player($player) ?>
@@ -29,10 +36,10 @@
 						<a class="btn btn-sm btn-success unlock" style="width:160px; position: relative; top: 15px;" data-id="<?php echo $map_anime->id?>" data-mode="3">15 Passos por <?php echo highamount($map_anime->credits_cost); ?> <?php echo t('currencies.credits')?></a>
 					<?php else: ?>
 						<a class="btn btn-sm btn-danger"><?php echo t('friends.f26')?></a>
-					<?php endif ?>			
+					<?php endif ?>
 				<?php else: ?>
 					<a class="btn btn-sm btn-danger"><?php echo t('challenges.challenge_active_error') ?></a>
-				<?php endif ?>			
+				<?php endif ?>
 			</div>
 		</div>
 	</div>

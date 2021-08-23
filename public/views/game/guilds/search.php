@@ -1,4 +1,12 @@
 <?php echo partial('shared/title', array('title' => 'guilds.search.title', 'place' => 'guilds.search.title')) ?>
+<!-- AASG - Guild -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:728px;height:90px"
+     data-ad-client="ca-pub-6665062829379662"
+     data-ad-slot="7693601385"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script><br />
 <div class="msg-container">
 	<div class="msg_top"></div>
 	 <div class="msg_repete">
