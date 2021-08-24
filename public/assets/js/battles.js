@@ -40,11 +40,11 @@
         var item = $(document.createElement('DIV')).addClass('item status');
         var item_id = 'i-' + (Math.random() * 65535) + '.' + (Math.random() * 65535);
         var popover = $(document.createElement('DIV')).attr('id', item_id).css({ display: 'none' });
-        var html = '<div class="modifier-tooltip">' + I18n.t('battles.status_tooltip.atk', { image: image_url('icons/for_atk.png'), value: status.atk }) + "<br />" +
-            I18n.t('battles.status_tooltip.def', { image: image_url('icons/for_def.png'), value: status.def }) + "<br />" +
-            I18n.t('battles.status_tooltip.crit', { image: image_url('icons/for_crit.png'), value: status.crit, inc: status.crit_inc }) + "<br />" +
-            I18n.t('battles.status_tooltip.abs', { image: image_url('icons/for_abs.png'), value: status.abs, inc: status.abs_inc }) + "<br />" +
-            I18n.t('battles.status_tooltip.prec', { image: image_url('icons/for_prec.png'), value: status.prec }) + "<br />" +
+        var html = '<div class="modifier-tooltip">' + I18n.t('battles.status_tooltip.atk', { image: image_url('icons/for_atk.png'), value: (status.atk).toFixed(2) }) + "<br />" +
+            I18n.t('battles.status_tooltip.def', { image: image_url('icons/for_def.png'), value: (status.def).toFixed(2) }) + "<br />" +
+            I18n.t('battles.status_tooltip.crit', { image: image_url('icons/for_crit.png'), value: (status.crit).toFixed(2), inc: (status.crit_inc).toFixed(2) }) + "<br />" +
+            I18n.t('battles.status_tooltip.abs', { image: image_url('icons/for_abs.png'), value: (status.abs).toFixed(2), inc: status.abs_inc }) + "<br />" +
+            I18n.t('battles.status_tooltip.prec', { image: image_url('icons/for_prec.png'), value: (status.prec).toFixed(2) }) + "<br />" +
             I18n.t('battles.status_tooltip.init', { image: image_url('icons/for_inti.png'), value: (status.init).toFixed(2), init: status.init.toFixed(2) }) + "<br />";
 
         item.append('<img src="' + image_url('battle/details.png') + '" class="technique-popover" data-placement="' + container.data('placement') + '" data-source="' + item_id + '" data-trigger="hover" data-placement="bottom"	/>')
