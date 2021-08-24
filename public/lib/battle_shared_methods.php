@@ -1700,8 +1700,8 @@ trait BattleSharedMethods {
 			}
 		}
 
-		if (!isset($_SESSION['pvp_time_reduced'])) {
-			$_SESSION['pvp_time_reduced']	= 0;
+		if (!isset($_SESSION['pvp_time_reduced']) || $_SESSION['pvp_time_reduced'] < 1) {
+			$_SESSION['pvp_time_reduced']	= 1;
 		}
 
 		if ($is_pvp) {
