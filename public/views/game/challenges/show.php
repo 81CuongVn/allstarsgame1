@@ -1,12 +1,14 @@
 <?php echo partial('shared/title', array('title' => 'challenges.title', 'place' => 'challenges.title')) ?>
-<!-- AASG - Challenges -->
-<ins class="adsbygoogle"
-     style="display:inline-block;width:728px;height:90px"
-     data-ad-client="ca-pub-6665062829379662"
-     data-ad-slot="3722922000"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script><br />
+<?php if (FW_ENV != 'dev') { ?>
+	<!-- AASG - Challenges -->
+	<ins class="adsbygoogle"
+		style="display:inline-block;width:728px;height:90px"
+		data-ad-client="ca-pub-6665062829379662"
+		data-ad-slot="3722922000"></ins>
+	<script>
+		(adsbygoogle = window.adsbygoogle || []).push({});
+	</script><br />
+<?php } ?>
 <div class="msg-challenge-on" style="background-image:url(<?php echo image_url('msg/challenges/'.$challenge_active->challenge_id.'.jpg')?>)">
 	<div class="msgb" style="position:relative; margin-left: 231px; text-align: left; top: 35px">
 		<b>Arena do Ceú - <?php echo $challenge->description()->name?></b>

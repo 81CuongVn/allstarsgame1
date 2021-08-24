@@ -1653,7 +1653,6 @@ trait BattleSharedMethods {
 
 			foreach ($secrets as $secret) {
 				$effect	= ItemEffect::find_first($secret, ['cache' => true])->as_array();
-
 				foreach ($effect as $key => $value) {
 					if ((int)$value != 0)
 						unset($parsed[$key]);
@@ -1663,7 +1662,10 @@ trait BattleSharedMethods {
 			$this->json->effects_roundup->{$target}	= $parsed;
 		}
 
-		foreach (['player_locks' => $p, 'enemy_locks' => $e] as $lock_target => $instance) {
+		foreach ([
+			'player_locks'	=> $p,
+			'enemy_locks'	=> $e
+		] as $lock_target => $instance) {
 			$lock_target_final	=& $$lock_target;
 
 			if ($lock_target != 'enemy_locks') {
@@ -1677,7 +1679,7 @@ trait BattleSharedMethods {
 				}
 			}
 
-			if ($lock = $instance->has_ability_lock()) {
+			if (($lock = $instance->has_ability_lock())) {
 				if ($instance->has_visible_effect($instance->ability()->effects()[0]->id) || $instance->id == Player::get_instance()->id) {
 					$l				= new stdClass();
 					$l->remaining	= $lock['duration'];
@@ -1687,7 +1689,7 @@ trait BattleSharedMethods {
 				}
 			}
 
-			if ($lock = $instance->has_speciality_lock()) {
+			if (($lock = $instance->has_speciality_lock())) {
 				if ($instance->has_visible_effect($instance->speciality()->effects()[0]->id) || $instance->id == Player::get_instance()->id) {
 					$l				= new stdClass();
 					$l->remaining	= $lock['duration'];
@@ -1698,8 +1700,9 @@ trait BattleSharedMethods {
 			}
 		}
 
-		if (!isset($_SESSION['pvp_time_reduced']))
+		if (!isset($_SESSION['pvp_time_reduced'])) {
 			$_SESSION['pvp_time_reduced']	= 0;
+		}
 
 		if ($is_pvp) {
 			$this->json->attack_text	= $battle->current_id == $p->id ? t('battles.mine_action', [
@@ -1708,9 +1711,6 @@ trait BattleSharedMethods {
 				'turn' => $battle->current_turn
 			]);
 			$this->json->my_turn		= $battle->current_id == $p->id;
-
-			if (!isset($_SESSION['pvp_time_reduced']))
-				$_SESSION['pvp_time_reduced']	= 0;
 
 			$battle_now			= BattlePVP::find_first($battle->id);
 			$current			= now();
@@ -1721,12 +1721,15 @@ trait BattleSharedMethods {
 				'seconds'	=> $timer_diff['seconds'] < 0 ? 0 : $timer_diff['seconds']
 			];
 
-			// if ($action_was_made) {
-			// 	if ($timer_diff['minutes'] < 1 && $timer_diff['seconds'] < 30) {
-			// 		if ($_SESSION['pvp_time_reduced'] < 60)
-			// 			$_SESSION['pvp_time_reduced']	+= 30;
-			// 	}
-			// }
+			if ($action_was_made) {
+				if ($_SESSION['universal']) {
+					if ($timer_diff['minutes'] < 1 && $timer_diff['seconds'] < 30) {
+						if ($_SESSION['pvp_time_reduced'] < PVP_TURN_TIME) {
+							$_SESSION['pvp_time_reduced']	+= round(PVP_TURN_TIME / 2);
+						}
+					}
+				}
+			}
 
 			if ($current > $future && !$battle_now->finished_at) {
 				$battle->finished_at	= now(true);
@@ -1748,16 +1751,17 @@ trait BattleSharedMethods {
 		$this->json->enemy->effects		= $e_effects;
 		$this->json->current_turn		= $battle->current_turn;
 
-		// if (isset($_GET['initial']) || !$is_pvp)
-		// 	$this->json->enemy->update_existent_locks		= TRUE;
-		// else {
-		// 	// So quando a trigger fizer a ação que não zera os dados
-		// 	if ($is_pvp && $battle->should_process) {
-		// 		$this->json->enemy->locks					= [];
-		// 		$this->json->enemy->effects					= [];
-		// 		$this->json->enemy->update_existent_locks	= FALSE;
-		// 	} elseif($is_pvp && !$battle->should_process)
-		// 		$this->json->enemy->update_existent_locks	= TRUE;
-		// }
+		if (isset($_GET['initial']) || !$is_pvp) {
+			$this->json->enemy->update_existent_locks		= true;
+		} else {
+			// So quando a trigger fizer a ação que não zera os dados
+			if ($is_pvp && $battle->should_process) {
+				// $this->json->enemy->locks					= [];
+				// $this->json->enemy->effects					= [];
+				$this->json->enemy->update_existent_locks	= false;
+			} elseif ($is_pvp && !$battle->should_process) {
+				$this->json->enemy->update_existent_locks	= true;
+			}
+		}
 	}
 }

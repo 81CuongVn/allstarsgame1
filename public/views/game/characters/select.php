@@ -1,12 +1,14 @@
 <?php echo partial('shared/title', array('title' => 'characters.select.title', 'place' => 'characters.select.title')) ?>
-<!-- AASG - Personagem -->
-<ins class="adsbygoogle"
-     style="display:inline-block;width:728px;height:90px"
-     data-ad-client="ca-pub-6665062829379662"
-     data-ad-slot="7609647387"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script><br />
+<?php if (FW_ENV != 'dev') { ?>
+	<!-- AASG - Personagem -->
+	<ins class="adsbygoogle"
+		style="display:inline-block;width:728px;height:90px"
+		data-ad-client="ca-pub-6665062829379662"
+		data-ad-slot="7609647387"></ins>
+	<script>
+		(adsbygoogle = window.adsbygoogle || []).push({});
+	</script><br />
+<?php } ?>
 <?php if (!sizeof($players)): ?>
 	<?php echo partial('shared/info', array('id'=> 3, 'title' => 'characters.select.none', 'message' => t('characters.select.none_msg', array('url' => make_url('characters#create'))))) ?>
 <?php else: ?>
@@ -130,14 +132,16 @@
 				</div>
 			</div>
 			<div style="position: relative; top: 10px; float: left; left: 10px">
-				<!-- AASG - Trocar Lateral -->
-				<ins class="adsbygoogle"
-					style="display:inline-block;width:336px;height:280px"
-					data-ad-client="ca-pub-6665062829379662"
-					data-ad-slot="2509912687"></ins>
-				<script>
-					(adsbygoogle = window.adsbygoogle || []).push({});
-				</script>
+				<?php if (FW_ENV != 'dev') { ?>
+					<!-- AASG - Trocar Lateral -->
+					<ins class="adsbygoogle"
+						style="display:inline-block;width:336px;height:280px"
+						data-ad-client="ca-pub-6665062829379662"
+						data-ad-slot="2509912687"></ins>
+					<script>
+						(adsbygoogle = window.adsbygoogle || []).push({});
+					</script>
+				<?php } ?>
 			</div>
 		</div>
 	</div>

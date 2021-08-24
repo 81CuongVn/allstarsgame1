@@ -1,12 +1,14 @@
 <?php echo partial('shared/title', array('title' => 'luck.index.title', 'place' => 'luck.index.title')) ?>
-<!-- AASG - Luck -->
-<ins class="adsbygoogle"
-     style="display:inline-block;width:728px;height:90px"
-     data-ad-client="ca-pub-6665062829379662"
-     data-ad-slot="6444098891"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script><br />
+<?php if (FW_ENV != 'dev') { ?>
+	<!-- AASG - Luck -->
+	<ins class="adsbygoogle"
+		style="display:inline-block;width:728px;height:90px"
+		data-ad-client="ca-pub-6665062829379662"
+		data-ad-slot="6444098891"></ins>
+	<script>
+		(adsbygoogle = window.adsbygoogle || []).push({});
+	</script><br />
+<?php } ?>
 <div id="luck-container">
 	<div id="daynames">
 		<?php for($f = 1; $f <= 7; $f++): ?>

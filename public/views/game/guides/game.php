@@ -2,14 +2,16 @@
 	'title'	=> 'menus.game_guide',
 	'place'	=> 'menus.game_guide'
 ]);?>
-<!-- AASG - Guias -->
-<ins class="adsbygoogle"
-     style="display:inline-block;width:728px;height:90px"
-     data-ad-client="ca-pub-6665062829379662"
-     data-ad-slot="7729901030"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script><br />
+<?php if (FW_ENV != 'dev') { ?>
+	<!-- AASG - Guias -->
+	<ins class="adsbygoogle"
+		style="display:inline-block;width:728px;height:90px"
+		data-ad-client="ca-pub-6665062829379662"
+		data-ad-slot="7729901030"></ins>
+	<script>
+		(adsbygoogle = window.adsbygoogle || []).push({});
+	</script><br />
+<?php } ?>
 <div class="barra-secao barra-secao-<?=rand(1, 12);?>">
 	<p>Categorias</p>
 </div>

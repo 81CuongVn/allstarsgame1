@@ -110,14 +110,16 @@ if ($is_dbl) {
 	'title'	=> 'characters.status.title',
 	'place'	=> 'characters.status.title'
 ]);?>
-<!-- AASG - Personagem -->
-<ins class="adsbygoogle"
-     style="display:inline-block;width:728px;height:90px"
-     data-ad-client="ca-pub-6665062829379662"
-     data-ad-slot="7609647387"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script><br />
+<?php if (FW_ENV != 'dev') { ?>
+	<!-- AASG - Personagem -->
+	<ins class="adsbygoogle"
+		style="display:inline-block;width:728px;height:90px"
+		data-ad-client="ca-pub-6665062829379662"
+		data-ad-slot="7609647387"></ins>
+	<script>
+		(adsbygoogle = window.adsbygoogle || []).push({});
+	</script><br />
+<?php } ?>
 <div style="width: 730px; position: relative;">
     <div style="position: relative; float: left; width:365px;">
 		<div class="tutorial_formulas">
