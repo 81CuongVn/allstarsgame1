@@ -1714,7 +1714,7 @@ trait BattleSharedMethods {
 
 			$battle_now			= BattlePVP::find_first($battle->id);
 			$current			= now();
-			$future				= strtotime('+' . (PVP_TURN_TIME - $_SESSION['pvp_time_reduced']) . ' seconds', strtotime($battle_now->last_atk));
+			$future				= strtotime('+' . ceil(PVP_TURN_TIME / $_SESSION['pvp_time_reduced']) . ' seconds', strtotime($battle_now->last_atk));
 			$timer_diff			= get_time_difference($current, $future);
 			$this->json->timer	= [
 				'minutes'	=> $timer_diff['minutes'] < 0 ? 0 : $timer_diff['minutes'],
@@ -1724,8 +1724,8 @@ trait BattleSharedMethods {
 			if ($action_was_made) {
 				if ($_SESSION['universal']) {
 					if ($timer_diff['minutes'] < 1 && $timer_diff['seconds'] < 30) {
-						if ($_SESSION['pvp_time_reduced'] < PVP_TURN_TIME) {
-							$_SESSION['pvp_time_reduced']	+= round(PVP_TURN_TIME / 2);
+						if ($_SESSION['pvp_time_reduced'] < 2) {
+							++$_SESSION['pvp_time_reduced'];
 						}
 					}
 				}
