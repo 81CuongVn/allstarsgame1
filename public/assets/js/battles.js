@@ -412,9 +412,9 @@
                 if (result.effects_roundup) {
                     ['p', 'e'].forEach(function (word) {
 						// Update enemy existent locks
-                        if (word == 'e' && !result.enemy.update_existent_locks) {
-                                return;
-                        }
+                        /*if (word === 'e' && !result.enemy.update_existent_locks) {
+                            return false;
+                        }*/
 
                         var fixed_values_positive = '';
                         var fixed_values_negative = '';
@@ -485,29 +485,29 @@
                             }
                         }
 
-                        if (got_effect && normal_html) {
-                            var item = $(document.createElement('DIV')).addClass('item status');
-                            var item_id = 'i-' + (Math.random() * 65535) + '.' + (Math.random() * 65535);
-                            var popover = $(document.createElement('DIV')).attr('id', item_id).css({ display: 'none' });
+                        // if (got_effect && normal_html) {
+                        //     var item = $(document.createElement('DIV')).addClass('item status');
+                        //     var item_id = 'i-' + (Math.random() * 65535) + '.' + (Math.random() * 65535);
+                        //     var popover = $(document.createElement('DIV')).attr('id', item_id).css({ display: 'none' });
 
-                            item.append('<img src="' + image_url('battle/arrows.png') + '"	class="technique-popover" data-placement="' + container.data('placement') + '" data-source="' + item_id + '" data-trigger="hover" data-placement="bottom"	/>')
-                            item.append(popover);
-                            popover.append('<div class="modifier-tooltip">' + normal_html + '</div>');
-                            container.append(item);
+                        //     item.append('<img src="' + image_url('battle/arrows.png') + '"	class="technique-popover" data-placement="' + container.data('placement') + '" data-source="' + item_id + '" data-trigger="hover" data-placement="bottom"	/>')
+                        //     item.append(popover);
+                        //     popover.append('<div class="modifier-tooltip">' + normal_html + '</div>');
+                        //     container.append(item);
 
-                            $('img', item).each(function () {
-                                var _ = $(this);
+                        //     $('img', item).each(function () {
+                        //         var _ = $(this);
 
-                                _.popover({
-                                    content: function () {
-                                        return $(document.getElementById($(this).data('source'))).html();
-                                    },
-                                    html: true,
-                                    placement: _.data('placement'),
-                                    trigger: 'hover'
-                                });
-                            });
-                        }
+                        //         _.popover({
+                        //             content: function () {
+                        //                 return $(document.getElementById($(this).data('source'))).html();
+                        //             },
+                        //             html: true,
+                        //             placement: _.data('placement'),
+                        //             trigger: 'hover'
+                        //         });
+                        //     });
+                        // }
 
                         if (fixed_values_positive) {
                             var item = $(document.createElement('DIV')).addClass('item status');

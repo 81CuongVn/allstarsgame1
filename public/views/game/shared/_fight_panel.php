@@ -103,7 +103,7 @@
 				</div>
 			</div>
 			<!-- <div class="bijuu_enemy" style="background: url(<?=image_url('bijuus/battle/3109-2.png')?>);"></div> -->
-			<div id="enemy" class="player-box"  data-anime="<?=$enemy->anime()->description()->name;?>" data-character="<?=$enemy->character()->description()->name;?>" data-faction-id="<?=$enemy->faction_id;?>" data-faction="<?=$enemy->faction()->description()->name;?>" data-guild="<?=($enemy->guild_id ? $enemy->guild()->name : '--');?>" <?=(!$player->battle_npc_id ? ($enemy_wanted ? 'data-wanted="1" data-wanted-reward="' . ($enemy->won_last_battle > 100 ? highamount(100 * 250) : highamount($enemy->won_last_battle * 250)) . ' ' . t('currencies.' . $player->character()->anime_id) . '" data-wanted-type="' . t('wanted.' . $enemy_wanted->type_death) . '"' : '') : '');?>>
+			<div id="enemy" class="player-box" data-anime="<?=$enemy->anime()->description()->name;?>" data-character="<?=$enemy->character()->description()->name;?>" data-faction-id="<?=$enemy->faction_id;?>" data-faction="<?=$enemy->faction()->description()->name;?>" data-guild="<?=($enemy->guild_id ? $enemy->guild()->name : '--');?>" <?=(!$player->battle_npc_id ? ($enemy_wanted ? 'data-wanted="1" data-wanted-reward="' . ($enemy->won_last_battle > 100 ? highamount(100 * 250) : highamount($enemy->won_last_battle * 250)) . ' ' . t('currencies.' . $player->character()->anime_id) . '" data-wanted-type="' . t('wanted.' . $enemy_wanted->type_death) . '"' : '') : '');?>>
 				<div class="modifiers" data-placement="left"></div>
 				<div class="image">
 					<?=$enemy->profile_image();?>
