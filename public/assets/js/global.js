@@ -334,11 +334,15 @@
         }
     };
 
-    window.$id = function() {
+    window.$id			= function() {
         return 'id-' + parseInt(Math.random() * 512384).toString(16) + '-' + parseInt(Math.random() * 512384).toString(16) + '-' + parseInt(Math.random() * 512384).toString(16) + '-' + parseInt(Math.random() * 512384).toString(16);
     }
 
-    window.highamount	= function (number, decimals, dec_point, thousands_sep) {
+	window.roundToTwo	= function (number) {
+		return Math.round(number * 100 + Number.EPSILON) / 100;
+	}
+
+	window.highamount	= function (number, decimals, dec_point, thousands_sep) {
 		number = (number + '').replace(/[^0-9+\-Ee.]/g, '');
 		var n = !isFinite(+number) ? 0 : +number,
 			prec = !isFinite(+decimals) ? 0 : Math.abs(decimals),
