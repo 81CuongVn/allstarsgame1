@@ -1,12 +1,14 @@
 <?php echo partial('shared/title', array('title' => 'menus.account', 'place' => 'menus.account')) ?>
-<!-- AASG - Users -->
-<ins class="adsbygoogle"
-     style="display:inline-block;width:728px;height:90px"
-     data-ad-client="ca-pub-6665062829379662"
-     data-ad-slot="3196308392"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script><br />
+<?php if (FW_ENV != 'dev') { ?>
+	<!-- AASG - Users -->
+	<ins class="adsbygoogle"
+		style="display:inline-block;width:728px;height:90px"
+		data-ad-client="ca-pub-6665062829379662"
+		data-ad-slot="3196308392"></ins>
+	<script>
+		(adsbygoogle = window.adsbygoogle || []).push({});
+	</script><br />
+<?php } ?>
 <form class="form" id="f-account-join" onsubmit="return false">
 	<div class="row">
 		<div class="form-group col-md-6">

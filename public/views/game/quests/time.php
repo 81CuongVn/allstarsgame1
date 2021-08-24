@@ -1,12 +1,14 @@
 <?php echo partial('shared/title', array('title' => 'quests.time.title', 'place' => 'quests.time.title')); ?>
-<!-- AASG - Quests -->
-<ins class="adsbygoogle"
-     style="display:inline-block;width:728px;height:90px"
-     data-ad-client="ca-pub-6665062829379662"
-     data-ad-slot="8048824605"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script><br />
+<?php if (FW_ENV != 'dev') { ?>
+	<!-- AASG - Quests -->
+	<ins class="adsbygoogle"
+		style="display:inline-block;width:728px;height:90px"
+		data-ad-client="ca-pub-6665062829379662"
+		data-ad-slot="8048824605"></ins>
+	<script>
+		(adsbygoogle = window.adsbygoogle || []).push({});
+	</script><br />
+<?php } ?>
 <?php if (!$player_tutorial->missoes_tempo) { ?>
 	<script type="text/javascript">
 		$(function () {

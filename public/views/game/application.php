@@ -138,7 +138,9 @@ if (preg_match('/read_news/', $action)) {
 	<style type="text/css">
 		.grecaptcha-badge { z-index: 1; }
 	</style>
-	<script data-ad-client="ca-pub-6665062829379662" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+	<?php if (FW_ENV != 'dev') { ?>
+		<script data-ad-client="ca-pub-6665062829379662" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+	<?php } ?>
 </head>
 <body>
 <script type="text/javascript">
@@ -424,23 +426,27 @@ if (preg_match('/read_news/', $action)) {
 <?=partial('shared/footer', ['player' => $player]);?>
 
 
-<?php /*<div id="l-banner" style="position: absolute; height: auto; width: 160px; top: -200px; right: -180px; z-index: 1000;">
-	<div style="position: fixed">
-		<!-- AASG - Lateral -->
-		<ins class="adsbygoogle"
-			style="display:inline-block;width:300px;height:600px"
-			data-ad-client="ca-pub-6665062829379662"
-			data-ad-slot="3399133151"></ins>
-		<script>
-			(adsbygoogle = window.adsbygoogle || []).push({});
-		</script>
-	</div>
-</div>*/ ?>
+<?php if (FW_ENV != 'dev') { ?>
+	<?php /*<div id="l-banner" style="position: absolute; height: auto; width: 160px; top: -200px; right: -180px; z-index: 1000;">
+		<div style="position: fixed">
+			<!-- AASG - Lateral -->
+			<ins class="adsbygoogle"
+				style="display:inline-block;width:300px;height:600px"
+				data-ad-client="ca-pub-6665062829379662"
+				data-ad-slot="3399133151"></ins>
+			<script>
+				(adsbygoogle = window.adsbygoogle || []).push({});
+			</script>
+		</div>
+	</div>*/ ?>
+<?php } ?>
 
-<div style="display: none;">
-	<script id="_wau38g">var _wau = _wau || []; _wau.push(["dynamic", "j0ycq84tlk", "38g", "c4302bffffff", "small"]);</script>
-	<script async src="//waust.at/d.js"></script>
-</div>
+<?php if (FW_ENV != 'dev') { ?>
+	<div style="display: none;">
+		<script id="_wau38g">var _wau = _wau || []; _wau.push(["dynamic", "j0ycq84tlk", "38g", "c4302bffffff", "small"]);</script>
+		<script async src="//waust.at/d.js"></script>
+	</div>
+<?php } ?>
 
 <div class="box-cookies hide">
 	<p class="msg-cookies">Este site usa cookies para garantir que você obtenha a melhor experiência.</p>
@@ -451,6 +457,7 @@ if (preg_match('/read_news/', $action)) {
 	<?=partial('shared/chat', ['player' => $player]);?>
 	<script type="text/javascript" src="<?=asset_url('js/highlights.js');?>"></script>
 <?php } ?>
+
 <script type="text/javascript" src="<?=asset_url('js/bootstrap.min.js');?>"></script>
 <script type="text/javascript" src="<?=asset_url('js/select2.js');?>"></script>
 <script type="text/javascript" src="<?=asset_url('js/tutorial.js');?>"></script>

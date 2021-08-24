@@ -1,12 +1,14 @@
 <?php echo partial('shared/title', array('title' => 'support.ticket.title', 'place' => 'support.ticket.title')) ?>
-<!-- AASG - Suporte -->
-<ins class="adsbygoogle"
-     style="display:inline-block;width:728px;height:90px"
-     data-ad-client="ca-pub-6665062829379662"
-     data-ad-slot="6963614279"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script><br />
+<?php if (FW_ENV != 'dev') { ?>
+	<!-- AASG - Suporte -->
+	<ins class="adsbygoogle"
+		style="display:inline-block;width:728px;height:90px"
+		data-ad-client="ca-pub-6665062829379662"
+		data-ad-slot="6963614279"></ins>
+	<script>
+		(adsbygoogle = window.adsbygoogle || []).push({});
+	</script><br />
+<?php } ?>
 <table>
 	<tr>
 		<td width="170" align="center" style="min-height: 90px">

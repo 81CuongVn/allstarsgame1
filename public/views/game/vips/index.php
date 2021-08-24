@@ -1,12 +1,14 @@
 <?php echo partial('shared/title', array('title' => 'vips.title', 'place' => 'vips.title')) ?>
-<!-- AASG - Vips -->
-<ins class="adsbygoogle"
-     style="display:inline-block;width:728px;height:90px"
-     data-ad-client="ca-pub-6665062829379662"
-     data-ad-slot="4540824433"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script><br />
+<?php if (FW_ENV != 'dev') { ?>
+	<!-- AASG - Vips -->
+	<ins class="adsbygoogle"
+		style="display:inline-block;width:728px;height:90px"
+		data-ad-client="ca-pub-6665062829379662"
+		data-ad-slot="4540824433"></ins>
+	<script>
+		(adsbygoogle = window.adsbygoogle || []).push({});
+	</script><br />
+<?php } ?>
 <div class="barra-secao barra-secao-<?php echo $player->character()->anime_id ?>">
 	<table width="725" border="0" cellpadding="0" cellspacing="0">
 	<tr>

@@ -310,10 +310,11 @@
                     $('.activatables-player .modifier-turn-data').remove();
                     $('.activatables-player .technique-popover').css({ opacity: 1 });
 
-                    //if ($('.activatables-enemy .modifier-turn-data').length && result.enemy.update_existent_locks) {
-                    $('.activatables-enemy .modifier-turn-data').remove();
-                    $('.activatables-enemy .technique-popover').css({ opacity: 1 });
-                    //}
+					// Update enemy existent locks
+                    if ($('.activatables-enemy .modifier-turn-data').length && result.enemy.update_existent_locks) {
+						$('.activatables-enemy .modifier-turn-data').remove();
+						$('.activatables-enemy .technique-popover').css({ opacity: 1 });
+                    }
 
                     result.enemy.locks.forEach(function (item) {
                         if (item.type == 'speciality' || item.type == 'ability') {
@@ -410,9 +411,10 @@
 
                 if (result.effects_roundup) {
                     ['p', 'e'].forEach(function (word) {
-                        /*if (word == 'e' && !result.enemy.update_existent_locks) {
+						// Update enemy existent locks
+                        if (word == 'e' && !result.enemy.update_existent_locks) {
                                 return;
-                        }*/
+                        }
 
                         var fixed_values_positive = '';
                         var fixed_values_negative = '';

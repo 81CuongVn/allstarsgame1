@@ -7,14 +7,16 @@
 	'title'	=> 'rankings.hall.title',
 	'place'	=> 'rankings.hall.title'
 ]);?>
-<!-- AASG - Rankings -->
-<ins class="adsbygoogle"
-     style="display:inline-block;width:728px;height:90px"
-     data-ad-client="ca-pub-6665062829379662"
-     data-ad-slot="5869383826"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script><br />
+<?php if (FW_ENV != 'dev') { ?>
+	<!-- AASG - Rankings -->
+	<ins class="adsbygoogle"
+		style="display:inline-block;width:728px;height:90px"
+		data-ad-client="ca-pub-6665062829379662"
+		data-ad-slot="5869383826"></ins>
+	<script>
+		(adsbygoogle = window.adsbygoogle || []).push({});
+	</script><br />
+<?php } ?>
 <div class="barra-secao barra-secao-1">
 	<p>Filtro do Hall da Fama</p>
 </div>

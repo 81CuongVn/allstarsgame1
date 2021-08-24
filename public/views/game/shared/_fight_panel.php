@@ -164,16 +164,18 @@
 	</div>
 	<div id="divider"></div>
 </div><br />
-<div align="center">
-	<!-- AASG - Batalhas -->
-	<ins class="adsbygoogle"
-		style="display:inline-block;width:728px;height:90px"
-		data-ad-client="ca-pub-6665062829379662"
-		data-ad-slot="5606300570"></ins>
-	<script>
-		(adsbygoogle = window.adsbygoogle || []).push({});
-	</script>
-</div>
+<?php if (FW_ENV != 'dev') { ?>
+	<div align="center">
+		<!-- AASG - Batalhas -->
+		<ins class="adsbygoogle"
+			style="display:inline-block;width:728px;height:90px"
+			data-ad-client="ca-pub-6665062829379662"
+			data-ad-slot="5606300570"></ins>
+		<script>
+			(adsbygoogle = window.adsbygoogle || []).push({});
+		</script>
+	</div>
+<?php } ?>
 <?php if ($player->battle_npc_id) { ?>
 	<script type="text/javascript">
 		$(document).ready(function () {
