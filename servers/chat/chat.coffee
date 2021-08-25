@@ -73,13 +73,11 @@ isGame			= (url) ->
 
 haveUrl			= (string) ->
 	urlRegex = /(https?:\/\/[^\s]+)/g;
-	return string.replace(urlRegex, function(url) {
-		if (isGame(url)) {
+	return string.replace urlRegex, (url) ->
+		if isGame(url)
 			return '<a href="' + url + '">' + url + '</a>';
-		} else {
+		else
 			return '<a href="' + url + '" target="_blank">' + url + '</a>';
-		}
-	})
 
 decrypt_json	= (encrypted) ->
 	key				= config.key
@@ -301,7 +299,7 @@ io.sockets.on 'connection', (socket) ->
 			# Character limtit for non-gm users
 			data.message	= data.message.substr(0, user_message_size)
 
-		data.message	= haveUrl(data.message)
+		data.message	= haveUrl data.message
 		data.message	= bbcodes.parse(data.message, player.gm)
 		data.message	= emoticons.parse(data.message, player.gm)
 
