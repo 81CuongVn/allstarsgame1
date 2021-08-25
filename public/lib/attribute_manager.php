@@ -106,8 +106,8 @@ trait AttributeManager {
             $value		+= $effects['attack_half_life'] + percent($effects['attack_half_life_percent'], $base);
         }
 
-		// return $value < 0 ? 0 : floor($value);
-		return round($value, 2);
+		return $value < 0 ? 0 : round($value, 2);
+		// return round($value, 2);
     }
 
     function for_def($raw = false) {
@@ -125,8 +125,8 @@ trait AttributeManager {
             $value		+= $effects['defense_half_life'] + percent($effects['defense_half_life_percent'], $base);
         }
 
-        // return $value < 0 ? 0 : floor($value);
-		return round($value, 2);
+        return $value < 0 ? 0 : round($value, 2);
+		// return round($value, 2);
     }
 
     function for_crit() {
@@ -147,6 +147,7 @@ trait AttributeManager {
             $base	/= 2;
         }
 
+		return rand(100, 250) / 10;
         return $base  + (($this->attributes()->for_inc_crit + $this->for_inc_crit) / $attrRate['for_crit_inc']) + $this->attributes()->sum_for_inc_crit + $effects['for_crit_inc'] + percent($effects['for_crit_inc_percent'], $base);
     }
 
@@ -169,6 +170,7 @@ trait AttributeManager {
             $base	/= 2;
         }
 
+		return rand(100, 250) / 10;
         return $base + (($this->attributes()->for_inc_abs + $this->for_inc_abs) / $attrRate['for_abs_inc']) + $this->attributes()->sum_for_inc_abs + $effects['for_abs_inc'] + percent($effects['for_abs_inc_percent'], $base);
     }
 

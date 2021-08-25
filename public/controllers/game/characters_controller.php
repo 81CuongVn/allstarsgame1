@@ -346,9 +346,9 @@ class CharactersController extends Controller {
 			'for_atk'		=> t('formula.for_atk'),
 			'for_def'		=> t('formula.for_def'),
 			'for_crit'		=> t('formula.for_crit'),
-			'for_crit_inc'	=> t('formula.for_inc_crit'),
+			// 'for_crit_inc'	=> t('formula.for_inc_crit'),
 			'for_abs'		=> t('formula.for_abs'),
-			'for_abs_inc'	=> t('formula.for_inc_abs'),
+			// 'for_abs_inc'	=> t('formula.for_inc_abs'),
 			'for_prec'		=> t('formula.for_prec'),
 			'for_init'		=> t('formula.for_init')
 		];
