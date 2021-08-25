@@ -477,8 +477,8 @@ trait BattleSharedMethods {
 				$drop_chance_fragment	 = (7.5	* DROP_RATE);
 				$drop_chance_equipment	 = (5	* DROP_RATE) + ($bonus_active ? 10 : 0);	// +10% se o anime do jogador tiver ganhado o último evento de anime
 				$drop_chance_pet 	 	 = (5	* DROP_RATE) + ($bonus_active ? 10 : 0);	// +10% se o anime do jogador tiver ganhado o último evento de anime
-				$drop_areia 			 = (2.5	* DROP_RATE);
-				$drop_sangue			 = (0.5	* DROP_RATE);
+				// $drop_areia 			 = (2.5	* DROP_RATE);
+				// $drop_sangue			 = (0.5	* DROP_RATE);
 				$drop_event		 		 = (2.5	* DROP_RATE);
 			}
 
@@ -487,7 +487,7 @@ trait BattleSharedMethods {
 				// Não dropa nada!
 			} else {
 				// Drop de Areia Estelar
-				if (has_chance($drop_areia + $extras->sum_bonus_drop)) {
+				if ($is_pvp && isset($drop_areia) && has_chance($drop_areia + $extras->sum_bonus_drop)) {
 					$item_1719 = PlayerItem::find_first("player_id =". $p->id. " AND item_id = 1719");
 					if ($item_1719) {
 						$player_areia			= $p->get_item(1719);
@@ -516,7 +516,7 @@ trait BattleSharedMethods {
 				}
 
 				// Drop de Sangue de Deus
-				if (has_chance($drop_sangue + $extras->sum_bonus_drop)) {
+				if ($is_pvp && isset($drop_sangue) && has_chance($drop_sangue + $extras->sum_bonus_drop)) {
 					$item_1720 = PlayerItem::find_first("player_id =". $p->id. " AND item_id=1720");
 					if ($item_1720){
 						$player_sangue			= $p->get_item(1720);
