@@ -55,7 +55,7 @@ Array::contains	= (k) ->
 
 	return false
 
-bootstrap	= ->
+bootstrap		= ->
 	channels['system']	= []
 	channels['world']	= []
 
@@ -64,6 +64,22 @@ bootstrap	= ->
 	server.listen config.port
 
 	console.log "+ Chat Thread Started on " + server.address().address + " at port " + server.address().port
+
+isUrl			= (url) ->
+    return url.match(new RegExp(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&/=]*)/gi))
+
+isGame			= (url) ->
+	return url.match(new RegExp(/https?:\/\/(www\.)?allstarsgame.com.br/, 'gi'));
+
+haveUrl			= (string) ->
+	urlRegex = /(https?:\/\/[^\s]+)/g;
+	return string.replace(urlRegex, function(url) {
+		if (isGame(url)) {
+			return '<a href="' + url + '">' + url + '</a>';
+		} else {
+			return '<a href="' + url + '" target="_blank">' + url + '</a>';
+		}
+	})
 
 decrypt_json	= (encrypted) ->
 	key				= config.key
@@ -285,8 +301,9 @@ io.sockets.on 'connection', (socket) ->
 			# Character limtit for non-gm users
 			data.message	= data.message.substr(0, user_message_size)
 
+		data.message	= haveUrl(data.message)
 		data.message	= bbcodes.parse(data.message, player.gm)
-		# data.message	= emoticons.parse(data.message, player.gm)
+		data.message	= emoticons.parse(data.message, player.gm)
 
 		db.query "INSERT INTO `chats` (`from_id`, `from_user_id`, `channel`, `message`) VALUES (" + player.uid + ", " + player.user_id + ", '" + data.channel + "', '" + data.message + "')"
 		channel_id		= 0 unless channel_id
