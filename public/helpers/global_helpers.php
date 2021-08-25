@@ -310,12 +310,12 @@ function has_chance($val) {
 	// $random	= rand(1, 1000) / 10;
 	// return $number >= $random ? true : false;
 
-	$rnd = rand(1, 1000) / 10;
+	$rnd = rand(1, 100);
 	return $rnd <= $val ? true : false;
 }
 
 function get_chance() {
-	return rand(1, 1000) / 10;
+	return rand(1, 100);
 }
 
 function array_random_key($arr) {
