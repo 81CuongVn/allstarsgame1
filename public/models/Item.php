@@ -708,8 +708,8 @@ class Item extends Relation {
 			'for_def'		=> [ 1, 6 ],
 			'for_crit'		=> [ 1, 6 ],
 			'for_abs'		=> [ 1, 6 ],
-			'for_inc_crit'	=> [ 1, 7 ],
-			'for_inc_abs'	=> [ 1, 7 ],
+			// 'for_inc_crit'	=> [ 1, 7 ],
+			// 'for_inc_abs'	=> [ 1, 7 ],
 			'for_prec'		=> [ 1, 6 ],
 			'for_init'		=> [ 1, 6 ]
 		];
@@ -753,11 +753,21 @@ class Item extends Relation {
 					}
 
 					// Se o equipamento tem ataque, não pode dar defesa e vice-versa
+					// !!!!!!!!!!!!!!!!!!!!!!!!! NOVA REGRA !!!!!!!!!!!!!!!!!!!!!!!!!
+					// SE O EQUIPAMENTO VEM COM ATAQUE, ELE SÓ PODE VIR COM METADE DO VALOR DE DEFESA
+					// O MESMO ACONTECE CASO SEJA EQUIPAMENTO COM DEFESA!
+					// !!!!!!!!!!!!!!!!!!!!!!!!! NOVA REGRA !!!!!!!!!!!!!!!!!!!!!!!!!
 					if (
 						($attribute == 'for_atk' && isset($values['for_def'])) ||
 						($attribute == 'for_def' && isset($values['for_atk']))
 					) {
-						continue;
+						if ($attribute == 'for_atk' && isset($values['for_def'])) {
+							$value	= [1, ($values['for_def'] / 2)];
+						}
+						if ($attribute == 'for_def' && isset($values['for_atk'])) {
+							$value	= [1, ($values['for_atk'] / 2)];
+						}
+						// continue;
 					}
 
 					// Pra tornar mais divertido
