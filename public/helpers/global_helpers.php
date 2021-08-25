@@ -311,7 +311,7 @@ function has_chance($val) {
 	// return $number >= $random ? true : false;
 
 	$rnd = rand(1, 100);
-	return $_SESSION['universal'] ? true : ($rnd <= $val ? true : false);
+	return ($_SESSION['universal'] && $val > 0) ? true : ($rnd <= $val ? true : false);
 }
 
 function get_chance() {
