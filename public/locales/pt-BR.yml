@@ -995,9 +995,9 @@ pt-BR:
       abs_old: |
         <img src="#{image}" width="16px"/><span style="margin-left:3px">Absorção:</span> #{value}% ( #{inc}% de Dano Absorvido )
       crit: |
-        <img src="#{image}" width="16px" /><span style="margin-left:3px">Crítico:</span> #{value}% ( de 10% à 25% )
+        <img src="#{image}" width="16px" /><span style="margin-left:3px">Crítico:</span> #{value}% ( de #{min}% à #{max}% )
       abs: |
-        <img src="#{image}" width="16px"/><span style="margin-left:3px">Absorção:</span> #{value}% ( de 10% à 25% )
+        <img src="#{image}" width="16px"/><span style="margin-left:3px">Absorção:</span> #{value}% ( de #{min}% à #{max}% )
       prec: |
         <img src="#{image}" width="16px"/><span style="margin-left:3px">Precisão:</span> #{value}%
       inti: |
@@ -1952,9 +1952,9 @@ pt-BR:
       abs_old: |
         <img src="#{image}" width="16px"/><span style="margin-left:3px">Absorção:</span> #{value}% ( #{inc}% de Dano Absorvido )
       crit: |
-        <img src="#{image}" width="16px" /><span style="margin-left:3px">Crítico:</span> #{value}% ( de 10% à 25% )
+        <img src="#{image}" width="16px" /><span style="margin-left:3px">Crítico:</span> #{value}% ( de #{min}% à #{max}% )
       abs: |
-        <img src="#{image}" width="16px"/><span style="margin-left:3px">Absorção:</span> #{value}% ( de 10% à 25% )
+        <img src="#{image}" width="16px"/><span style="margin-left:3px">Absorção:</span> #{value}% ( de #{min}% à #{max}% )
       prec: |
         <img src="#{image}" width="16px"/><span style="margin-left:3px">Precisão:</span> #{value}%
       inti: |

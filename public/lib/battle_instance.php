@@ -161,9 +161,17 @@
 
 				if ($player_is_critical) {
 					if ($this->player_item->is_defensive) {
-						$player_defense	+= percent($this->player->for_crit_inc(), $player_defense);
+						// $player_defense	+= percent($this->player->for_crit_inc(), $player_defense);
+
+						$crit_inc		= $this->player->for_crit_inc();
+						$get_crit_inc	= rand($crit_inc['min'] * 10, $crit_inc['max'] * 10) / 10;
+						$player_defense	+= percent($get_crit_inc, $player_defense);
 					} else {
-						$player_attack	+= percent($this->player->for_crit_inc(), $player_attack);
+						// $player_attack	+= percent($this->player->for_crit_inc(), $player_attack);
+
+						$crit_inc		= $this->player->for_crit_inc();
+						$get_crit_inc	= rand($crit_inc['min'] * 10, $crit_inc['max'] * 10) / 10;
+						$player_attack	+= percent($get_crit_inc, $player_attack);
 					}
 				}
 
@@ -218,15 +226,23 @@
 				$enemy_is_error	= false;
 			}
 
-			if(!$enemy_is_error) {
+			if (!$enemy_is_error) {
 				$enemy_attack	= $this->enemy->for_atk() + $this->enemy_item->formula()->damage;
 				$enemy_defense	= $this->enemy->for_def() + $this->enemy_item->formula()->defense;
 
-				if($enemy_is_critical) {
-					if($this->enemy_item->is_defensive) {
-						$enemy_defense	+= percent($this->enemy->for_crit_inc(), $enemy_defense);
+				if ($enemy_is_critical) {
+					if ($this->enemy_item->is_defensive) {
+						// $enemy_defense	+= percent($this->enemy->for_crit_inc(), $enemy_defense);
+
+						$crit_inc		= $this->enemy->for_crit_inc();
+						$get_crit_inc	= rand($crit_inc['min'] * 10, $crit_inc['max'] * 10) / 10;
+						$enemy_defense	+= percent($get_crit_inc, $enemy_defense);
 					} else {
-						$enemy_attack	+= percent($this->enemy->for_crit_inc(), $enemy_attack);
+						// $enemy_attack	+= percent($this->enemy->for_crit_inc(), $enemy_attack);
+
+						$crit_inc		= $this->enemy->for_crit_inc();
+						$get_crit_inc	= rand($crit_inc['min'] * 10, $crit_inc['max'] * 10) / 10;
+						$enemy_attack	+= percent($get_crit_inc, $enemy_attack);
 					}
 				}
 
@@ -266,11 +282,19 @@
 
 			// Absorb values -->
 				if ($player_is_absorb && !($player_is_error || $player_is_skip)) {
-					$enemy_attack	-= percent($this->player->for_abs_inc(), $enemy_attack);
+					// $enemy_attack	-= percent($this->enemy->for_abs_inc(), $enemy_attack);
+
+					$abs_inc		= $this->player->for_abs_inc();
+					$get_abs_inc	= rand($abs_inc['min'] * 10, $abs_inc['max'] * 10) / 10;
+					$enemy_attack	-= percent($get_abs_inc, $enemy_attack);
 				}
 
 				if ($enemy_is_absorb && !($enemy_is_error || $enemy_is_skip)) {
-					$player_attack	-= percent($this->enemy->for_abs_inc(), $player_attack);
+					// $player_attack	-= percent($this->enemy->for_abs_inc(), $player_attack);
+
+					$abs_inc		= $this->enemy->for_abs_inc();
+					$get_abs_inc	= rand($abs_inc['min'] * 10, $abs_inc['max'] * 10) / 10;
+					$player_attack	-= percent($get_abs_inc, $player_attack);
 				}
 			// <--
 

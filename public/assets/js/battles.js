@@ -42,8 +42,10 @@
         var popover = $(document.createElement('DIV')).attr('id', item_id).css({ display: 'none' });
         var html = '<div class="modifier-tooltip">' + I18n.t('battles.status_tooltip.atk', { image: image_url('icons/for_atk.png'), value: roundToTwo(status.atk) }) + "<br />" +
             I18n.t('battles.status_tooltip.def', { image: image_url('icons/for_def.png'), value: roundToTwo(status.def) }) + "<br />" +
-            I18n.t('battles.status_tooltip.crit', { image: image_url('icons/for_crit.png'), value: roundToTwo(status.crit), inc: roundToTwo(status.crit_inc) }) + "<br />" +
-            I18n.t('battles.status_tooltip.abs', { image: image_url('icons/for_abs.png'), value: roundToTwo(status.abs), inc: roundToTwo(status.abs_inc) }) + "<br />" +
+            // I18n.t('battles.status_tooltip.crit', { image: image_url('icons/for_crit.png'), value: roundToTwo(status.crit), inc: roundToTwo(status.crit_inc) }) + "<br />" +
+            // I18n.t('battles.status_tooltip.abs', { image: image_url('icons/for_abs.png'), value: roundToTwo(status.abs), inc: roundToTwo(status.abs_inc) }) + "<br />" +
+			I18n.t('battles.status_tooltip.crit', { image: image_url('icons/for_crit.png'), value: roundToTwo(status.crit), min: roundToTwo(status.crit_inc.min), max: roundToTwo(status.crit_inc.max) }) + "<br />" +
+            I18n.t('battles.status_tooltip.abs', { image: image_url('icons/for_abs.png'), value: roundToTwo(status.abs), min: roundToTwo(status.abs_inc.min), max: roundToTwo(status.abs_inc.max) }) + "<br />" +
             I18n.t('battles.status_tooltip.prec', { image: image_url('icons/for_prec.png'), value: roundToTwo(status.prec) }) + "<br />" +
             I18n.t('battles.status_tooltip.init', { image: image_url('icons/for_inti.png'), value: roundToTwo(status.init), init: roundToTwo(status.init)}) + "<br />";
 

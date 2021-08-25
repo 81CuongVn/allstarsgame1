@@ -141,14 +141,24 @@ trait AttributeManager {
 		global $attrRate;
 
         $effects	= $this->get_parsed_effects();
-        $base		= 10;
+        // $base		= 10;
+        // if (has_chance(abs($effects['reduce_critical_damage']))) {
+        //     $base	/= 2;
+        // }
 
-        if (has_chance(abs($effects['reduce_critical_damage']))) {
-            $base	/= 2;
+        // return $base  + (($this->attributes()->for_inc_crit + $this->for_inc_crit) / $attrRate['for_crit_inc']) + $this->attributes()->sum_for_inc_crit + $effects['for_crit_inc'] + percent($effects['for_crit_inc_percent'], $base);
+
+		$min	= 10;
+		$max	= 25 + $effects['for_crit_inc'] + percent($effects['for_crit_inc_percent'], 25);
+		if (has_chance(abs($effects['reduce_critical_damage']))) {
+			$min	/= 2;
+			$max	/= 2;
         }
 
-		return rand(100, 250) / 10;
-        return $base  + (($this->attributes()->for_inc_crit + $this->for_inc_crit) / $attrRate['for_crit_inc']) + $this->attributes()->sum_for_inc_crit + $effects['for_crit_inc'] + percent($effects['for_crit_inc_percent'], $base);
+		return [
+			'min'	=> $min,
+			'max'	=> $max
+		];
     }
 
     function for_abs() {
@@ -164,14 +174,24 @@ trait AttributeManager {
 		global $attrRate;
 
         $effects	= $this->get_parsed_effects();
-        $base		= 10;
+        // $base		= 10;
+        // if (has_chance(abs($effects['enemy_absorb_reduction']))) {
+        //     $base	/= 2;
+        // }
 
-        if (has_chance(abs($effects['enemy_absorb_reduction']))) {
-            $base	/= 2;
+        // return $base + (($this->attributes()->for_inc_abs + $this->for_inc_abs) / $attrRate['for_abs_inc']) + $this->attributes()->sum_for_inc_abs + $effects['for_abs_inc'] + percent($effects['for_abs_inc_percent'], $base);
+
+		$min	= 10;
+		$max	= 25 + $effects['for_abs_inc'] + percent($effects['for_abs_inc_percent'], 25);
+		if (has_chance(abs($effects['enemy_absorb_reduction']))) {
+			$min	/= 2;
+			$max	/= 2;
         }
 
-		return rand(100, 250) / 10;
-        return $base + (($this->attributes()->for_inc_abs + $this->for_inc_abs) / $attrRate['for_abs_inc']) + $this->attributes()->sum_for_inc_abs + $effects['for_abs_inc'] + percent($effects['for_abs_inc_percent'], $base);
+		return [
+			'min'	=> $min,
+			'max'	=> $max
+		];
     }
 
     function for_prec() {
