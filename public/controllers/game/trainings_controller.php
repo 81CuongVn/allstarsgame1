@@ -86,7 +86,7 @@ class TrainingsController extends Controller {
 		$player				= Player::get_instance();
 		$max				= 0;
 		$avail				= $player->available_training_points();
-		$allowed_attributes	= ['for_atk', 'for_def', 'for_crit', 'for_abs', 'for_prec', 'for_init','for_inc_crit','for_inc_abs'];
+		$allowed_attributes	= ['for_atk', 'for_def', 'for_crit', 'for_abs', 'for_prec', 'for_init'/*,'for_inc_crit','for_inc_abs'*/];
 		$errors				= [];
 
 		// Normal point distribution
@@ -136,8 +136,8 @@ class TrainingsController extends Controller {
 			'for_abs'		=> t('formula.tooltip.title.for_abs'),
 			'for_prec'		=> t('formula.tooltip.title.for_prec'),
 			'for_init'		=> t('formula.tooltip.title.for_init'),
-			'for_inc_crit'	=> t('formula.tooltip.title.for_inc_crit'),
-			'for_inc_abs'	=> t('formula.tooltip.title.for_inc_abs')
+			// 'for_inc_crit'	=> t('formula.tooltip.title.for_inc_crit'),
+			// 'for_inc_abs'	=> t('formula.tooltip.title.for_inc_abs')
 		];
 
 		foreach ($attributes as $_ => $attribute) {

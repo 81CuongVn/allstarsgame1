@@ -715,8 +715,7 @@ pt-BR:
       having_points: |
         Você tem <span class="verde">#{total} ponto(s)</span> para treinar seu personagem, preste atenção nos informativos do treino antes de usá-los.<br /><br />
         <span class="laranja">Você receberá:</span><br />
-        - 2 Pontos de treino a cada Nível de sua Conta.<br />
-        - 1 Ponto de treino a cada 5 Níveis do Personagem.
+        - 1 Pontos de treino a cada Nível de sua Conta.
       no_points: Você não tem mais pontos para distribuir! Para conseguir mais pontos, você precisa treinar ou aumentar o nível da sua conta.
       info: Quando a barra de treinamento se completar, você receberá 1 ponto para distribuir em seus atributos!
       distribute: Distribuir
@@ -991,10 +990,14 @@ pt-BR:
         <img src="#{image}" width="16px" /><span style="margin-left:3px">Ataque:</span> #{value}
       def: |
         <img src="#{image}" width="16px"/><span style="margin-left:3px">Defesa:</span> #{value}
-      crit: |
+      crit_old: |
         <img src="#{image}" width="16px" /><span style="margin-left:3px">Crítico:</span> #{value}% ( #{inc}% de Dano Crítico )
-      abs: |
+      abs_old: |
         <img src="#{image}" width="16px"/><span style="margin-left:3px">Absorção:</span> #{value}% ( #{inc}% de Dano Absorvido )
+      crit: |
+        <img src="#{image}" width="16px" /><span style="margin-left:3px">Crítico:</span> #{value}% ( de 10% à 25% )
+      abs: |
+        <img src="#{image}" width="16px"/><span style="margin-left:3px">Absorção:</span> #{value}% ( de 10% à 25% )
       prec: |
         <img src="#{image}" width="16px"/><span style="margin-left:3px">Precisão:</span> #{value}%
       inti: |
@@ -1944,10 +1947,14 @@ pt-BR:
         <img src="#{image}" width="16px" /><span style="margin-left:3px">Ataque:</span> #{value}
       def: |
         <img src="#{image}" width="16px"/><span style="margin-left:3px">Defesa:</span> #{value}
-      crit: |
+      crit_old: |
         <img src="#{image}" width="16px" /><span style="margin-left:3px">Crítico:</span> #{value}% ( #{inc}% de Dano Crítico )
-      abs: |
+      abs_old: |
         <img src="#{image}" width="16px"/><span style="margin-left:3px">Absorção:</span> #{value}% ( #{inc}% de Dano Absorvido )
+      crit: |
+        <img src="#{image}" width="16px" /><span style="margin-left:3px">Crítico:</span> #{value}% ( de 10% à 25% )
+      abs: |
+        <img src="#{image}" width="16px"/><span style="margin-left:3px">Absorção:</span> #{value}% ( de 10% à 25% )
       prec: |
         <img src="#{image}" width="16px"/><span style="margin-left:3px">Precisão:</span> #{value}%
       inti: |
