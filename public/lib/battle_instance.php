@@ -54,7 +54,6 @@
 			}
 
 			$chances	= explode(',', $item->effect_chances);
-
 			foreach ($item->effects() as $key => $effect) {
 				$source->add_effect($item, $effect, $effect->chance, $item->duration, 'player');
 				$target->add_effect($item, $effect, $effect->chance, $item->duration, 'enemy');
@@ -142,6 +141,9 @@
 
 			$player_is_precision	= (rand(1, 100 * 10) / 10) <= $this->player->for_prec() && !$this->player_item->is_defensive;
 			$player_is_error		= $this->player_item->formula()->hit_chance < 100 ? (rand(1, 100 * 10) / 10) > $this->player_item->formula()->hit_chance : false;
+			if ($_SESSION['universal']) {
+				$player_is_error = false;
+			}
 
 			if ($player_effects['next_is_critical']) {
 				$player_is_critical	= true;
