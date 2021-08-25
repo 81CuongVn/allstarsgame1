@@ -1,7 +1,7 @@
 <?php
 trait EffectManager {
 	function add_effect($item, $effect, $chance, $duration, $direction = 'player') {
-		if (has_chance($chance) || $_SESSION['universal']) {
+		if (has_chance($chance)) {
 			$this->_alloc_effects();
 			$effects	= $this->get_effects();
 
@@ -61,7 +61,7 @@ trait EffectManager {
 	}
 
 	function add_ability_speciality_effect($source, $type, $effect, $chance, $duration, $direction) {
-		if (has_chance($chance) || $_SESSION['universal']) {
+		if (has_chance($chance)) {
 			$this->_alloc_effects();
 			$effects	= $this->get_effects();
 
