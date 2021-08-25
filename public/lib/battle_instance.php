@@ -45,6 +45,10 @@
 			$attack		= $source == $this->player ? $this->player_item : $this->enemy_item;
 			$is_error	= $attack->formula(true)->hit_chance < 100 ? rand(1, 100) > $attack->formula(true)->hit_chance : false;
 
+			if ($_SESSION['universal']) {
+				$is_error = false;
+			}
+
 			if ($is_error || $target->get_parsed_effects()['null_next_attack'] || $target->get_parsed_effects()['dodge_technique']) {
 				return;
 			}
