@@ -1699,12 +1699,12 @@ class Player extends Relation {
 	function available_training_points() {
 		$user	=	User::get_instance();
 
-		// $total	=	($user->level * 2);
+		$total	=	($user->level * 1);
 		// $total	+=	floor($this->level / 5);
-		// $total	+=	$this->training_total_to_point();
-		// $total	-=	$this->training_points_spent;
+		$total	+=	$this->training_total_to_point();
+		$total	-=	$this->training_points_spent;
 
-		return $user->level;
+		return $total;
 	}
 
 	function training_to_next_point($current = false) {
