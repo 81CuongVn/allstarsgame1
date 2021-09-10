@@ -12,6 +12,9 @@
 		(adsbygoogle = window.adsbygoogle || []).push({});
 	</script><br />
 <?php } ?>
+
+<?=partial('shared/battle_menu', [ 'player' => $player ]);?>
+
 <form class="form-horizontal" id="room-search-friend">
 	<?=partial('shared/info', [
 			'id'		=> 1,

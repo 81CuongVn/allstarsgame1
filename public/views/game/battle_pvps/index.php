@@ -32,6 +32,9 @@
 		});
 	</script>
 <?php } ?>
+
+<?=partial('shared/battle_menu', [ 'player' => $player ]);?>
+
 <div class="msg-container">
 	<div class="msg_top"></div>
 	 <div class="msg_repete">

@@ -3,6 +3,7 @@ $user			= false;
 $player			= false;
 $article		= false;
 $with_battle	= false;
+$is_profile		= false;
 
 $language = Language::find($_SESSION['language_id']);
 if (!$language) {
@@ -30,6 +31,11 @@ if ($_SESSION['user_id']) {
 			$equipments[$technique->id]	= $technique->description()->name;
 		}
 	}
+}
+
+// Ta vendo um pefil?
+if (preg_match('/profile/', $controller)) {
+	$is_profile		= true;
 }
 
 // Verifica se o link é de noticia
@@ -110,7 +116,6 @@ if (preg_match('/read_news/', $action)) {
 	<script type="text/javascript" src="<?=asset_url('js/jquery.bracket.min.js');?>"></script>
     <script type="text/javascript" src="<?=asset_url('js/i18n.js');?>"></script>
     <script type="text/javascript" src="<?=asset_url('js/socket.io.js');?>"></script>
-	<!-- <script type="text/javascript" src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script> -->
 	<script type="text/javascript">
 		var	_site_url				= "<?=$site_url;?>";
 		var	_site_version			= "<?=GAME_VERSION;?>";
@@ -333,10 +338,15 @@ if (preg_match('/read_news/', $action)) {
 			<?php if (!$player || !$with_battle) { ?>
 				<div id="esquerda" class="<?=($player ? 'with-player' : '');?>">
 					<?php if ($player) { ?>
-						<?=partial('shared/left_character', [
-							'user'		=> $user,
-							'player'	=> $player
-						]);?>
+						<?php if (!$player->map_id && !$is_profile) { ?>
+							<?=partial('shared/left_character', [
+								'user'		=> $user,
+								'player'	=> $player
+							]);?>
+						<?php } else { ?>
+							<div style="height: 680px;"></div>
+						<?php } ?>
+						<div style="clear:both; float: left"></div>
 					<?php } else { ?>
 						<div id="menu">
 							<?php if (!$_SESSION['loggedin']) { ?>
@@ -494,6 +504,7 @@ if (preg_match('/read_news/', $action)) {
 <script type="text/javascript" src="<?=asset_url('js/guilds.js');?>"></script>
 <script type="text/javascript" src="<?=asset_url('js/vips.js');?>"></script>
 <script type="text/javascript" src="<?=asset_url('js/png_animator.js');?>"></script>
+<script type="text/javascript" src="<?=asset_url('js/ranked.js');?>"></script>
 <script type="text/javascript" src="<?=asset_url('js/tournaments.js');?>"></script>
 <?php if (FW_ENV != 'dev') { ?>
 	<script type="text/javascript" src="//www.google.com/recaptcha/api.js" async defer></script>

@@ -35,6 +35,8 @@
 	</script>
 <?php } ?>
 
+<?=partial('quests/menu', [ 'player' => $player ]);?>
+
 <div class="barra-secao barra-secao-<?=$player->character()->anime_id;?>">
 	<table width="725" border="0" cellpadding="0" cellspacing="0">
 		<tr>

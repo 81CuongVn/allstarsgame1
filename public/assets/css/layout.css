@@ -1757,11 +1757,13 @@ table hr {
 	display: block;
 	background-color: rgba(0, 0, 0, .85)
 }
+.menu .menu-content ul li ul li.active,
 .menu .menu-content ul li ul li:hover,
 .menu .menu-content ul li ul li:active {
 	background-color: rgba(51, 122, 183, .5);
 	border-radius: 2px;
 }
+.menu .menu-content ul li ul li.active a,
 .menu .menu-content ul li ul li:hover a,
 .menu .menu-content ul li ul li:hover a:active,
 .menu .menu-content ul li ul li:active a,

@@ -12,6 +12,9 @@
 		(adsbygoogle = window.adsbygoogle || []).push({});
 	</script><br />
 <?php } ?>
+
+<?=partial('shared/battle_menu', [ 'player' => $player ]);?>
+
 <?=partial('shared/info', [
 	'id'		=> 1,
 	'title'		=> 'battles.npcs.title',

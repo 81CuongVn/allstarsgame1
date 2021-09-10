@@ -95,6 +95,7 @@ class Player extends Relation {
 
 		$this->clear_fixed_effects('fixed');
 		$this->refresh_talents();
+		$this->check_expired_items();
 	}
 
 	protected function before_update() {
@@ -1515,6 +1516,53 @@ class Player extends Relation {
 	function has_consumable($consumable) {
 		return PlayerItem::find('player_id=' . $this->id . ' AND item_id=' . $consumable->id) ? true : false;
 	}
+
+	// NOVO SISTEMA DE ITENS VIP ------>
+		function add_vip_item($item) {
+			$player_item	= PlayerItem::find_first('player_id = ' . $this->id . ' and item_id = ' . $item->id);
+			if (!$player_item) {
+				$player_item	= new PlayerItem();
+				$player_item->player_id	= $this->id;
+				$player_item->item_id	= $item->id;
+				$player_item->quantity	= $item->duration;
+			} else {
+				$player_item->quantity	+= $item->duration;
+			}
+			$player_item->save();
+
+			return $player_item;
+		}
+
+		private function check_expired_items() {
+			Recordset::query("DELETE FROM player_items WHERE player_id = {$this->id} AND expires_at IS NOT NULL AND expires_at < NOW()");
+		}
+
+		function has_vip_item($itemId) {
+			if (is_array($itemId)) {
+				$itemId	= join(', ', $itemId);
+			}
+
+			return PlayerItem::find_last('player_id = ' . $this->id . ' and item_id in (' . $itemId . ') and quantity > 0', [
+				'reorder'	=> 'item_id desc',
+			]);
+		}
+
+		function use_vip_item($id) {
+			$item	= PlayerItem::find_first('id = ' . $id);
+			if ($item && $item->quantity > 0) {
+				--$item->quantity;
+				if ($item->quantity <= 0) {
+					$item->destroy();
+				} else {
+					$item->save();
+				}
+
+				return true;
+			}
+
+			return false;
+		}
+	// NOVO SISTEMA DE ITENS VIP <-----
 
 	function has_item($item) {
 		if (is_numeric($item)) {

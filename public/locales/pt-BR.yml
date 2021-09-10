@@ -34,8 +34,9 @@ pt-BR:
     report_users: Relatório de Usuários
     report_players: Relatório de Personagens
   menus:
+    quests: Misssões
     rules: Regras & Punições
-    admin: Administração
+    admin: Painel Administrativo
     discord: Servidor no Discord
     whatsapp: Grupo no WhatsApp
     tournaments: Torneio All-Star
@@ -93,6 +94,7 @@ pt-BR:
     guild_quests_daily: Missões Semanais
     battles_ranked: Liga All-Stars
     battles:
+      field: Campo de Batalha
       npc: Batalha NPC
       pvp: Batalha PVP
       npc_in_battle: Batalha com NPC
@@ -108,8 +110,7 @@ pt-BR:
       rankeds: Liga All-Stars
       battles: Combates
     prox_level: Ir para o próximo nível
-    support: |
-      <b>Suporte</b>
+    support: Área de Suporte
     quests_time: Missões de Tempo
     quests_time_wait: Status da Missão de Tempo
     quests_pet: Missões de Mascote
@@ -1659,6 +1660,9 @@ pt-BR:
       <p>Você não tem privilégios suficiente para acessar a página solicitada.</p>
       <p>Se você acha que isso é um problema, por favor entre em contato com o administrador</p>
   global:
+    remaining: Restante
+    remaining_uses: |
+      <strong class="amarelo">Restante:</strong> #{remaining} uso(s)
     wanted: Procurado
     wanted_reward: Recompensa
     guild: Organização
@@ -2484,6 +2488,12 @@ pt-BR:
       paypal_brl: Paypal BRL
       paypal_usd: Paypal USD
       paypal_eur: Paypal EUR
+  profile:
+    unknow:
+      title: Jogador não encontrado
+      description: |
+        Infelizmente não foi possível localizar o jogador solicitado.<br />
+        Verifique as informações e tente novamente!
   legal:
     index:
       title: Aviso Legal

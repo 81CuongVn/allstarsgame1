@@ -29,6 +29,9 @@
 		});
 	</script>
 <?php } ?>
+
+<?=partial('quests/menu', [ 'player' => $player ]);?>
+
 <div class="tab-content" id="pvp-quests-list-content">
 	<div class="barra-secao barra-secao-<?php echo $player->character()->anime_id ?>">
 		<table width="725" border="0" cellpadding="0" cellspacing="0">

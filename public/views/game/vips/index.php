@@ -22,17 +22,18 @@
 <div class="item-vip-list">
 	<?php
 	$counter = 0;
-	foreach ($vips as $vip) {
-		if ($vip->id == 1745) {
-			$player_guild = Guild::find_first('id='.$player->guild_id);
+	foreach ($vips as $item) {
+		if ($item->id == 1745) {
+			$player_guild = Guild::find_first('id=' . $player->guild_id);
 			if (!$player->guild_id || $player_guild->player_id != $player->id) {
 				continue;
 			}
 		}
+
 		$color	= $counter++ % 2 ? '091e30' : '173148';
-		if ($vip->sorting == 0) {
+		if ($item->sorting == 0) {
 			echo partial("item", [
-				"item"				=> $vip,
+				"item"				=> $item,
 				"player"			=> $player,
 				"animes"			=> $animes,
 				"player_vip_items"	=> $player_vip_items,

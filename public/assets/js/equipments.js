@@ -408,6 +408,9 @@
 
 	container.on('click', '.slot', function (e) {
 		var element = $(this);
+		if (element.hasClass('is-profile')) {
+			return;
+		}
 
 		var buttons = [];
 		if (!$(this).hasClass('equipped')) {

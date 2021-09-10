@@ -34,6 +34,9 @@
 		});
 	</script>
 <?php } ?>
+
+<?=partial('quests/menu', [ 'player' => $player ]);?>
+
 <?php
 	echo partial('shared/info', [
 		'id'		=> 1,
