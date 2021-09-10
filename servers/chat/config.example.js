@@ -16,7 +16,7 @@ var config = {
 		name:	'allstars_db'
 	},
 	// Your random key
-	key: 'YA930907TnnSqLn8yKDuI6jlL2KU0G9N',
+	key: 'YAn8yK930907L2KUTnnSqLDuI6jl0G9N',
 	// Set chat port
 	port: 2930
 };

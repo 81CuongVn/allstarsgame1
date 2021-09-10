@@ -87,11 +87,11 @@ define('REGEX_GUILD',			'/^[ÁÉÍÓÚÀÈÌÒÙÂÊÎÔÛÃÕÑÇáéíóúàè
 
 // Chat settinsg
 define('CHAT_KEY',				'YAn8yK930907L2KUTnnSqLDuI6jl0G9N');
-define('CHAT_SERVER',			'http://allstarsgame.test:2934');
+define('CHAT_SERVER',			'http://allstarsgame.test:2930');
 
 // Highligts settings
 define('HIGHLIGHTS_KEY',		'430rBdLShn8yK930907L2a8yeTszrDip');
-define('HIGHLIGHTS_SERVER',		'http://allstarsgame.test:2600');
+define('HIGHLIGHTS_SERVER',		'http://allstarsgame.test:2530');
 
 // Redis Server settings
 define('REDIS_SERVER', 			'127.0.0.1');
@@ -109,7 +109,7 @@ define('MAX_LEVEL_PLAYER',		50);
 define('MAX_LEVEL_GUILD',		15);
 
 // Initial settings
-define('INITIAL_MONEY',			0);
+define('INITIAL_MONEY',			1000);
 
 // Techniques limit
 define('MAX_EQUIPPED_ATTACKS',	10);
