@@ -9,6 +9,9 @@
 		(adsbygoogle = window.adsbygoogle || []).push({});
 	</script><br />
 <?php } ?>
+
+<?=partial('quests/menu', [ 'player' => $player ]);?>
+
 <?php
 	foreach ($quests as $quest):
 		$player_quest = CombatQuest::find_first('id='.$quest->combat_quest_id,['cache' => true]);
@@ -19,14 +22,14 @@
 		<div class="name" style="height: 15px;"> <?php echo $player_quest->name_br?> </div>
 		<div class="description" style="height: 100px;"> <br />
 			<img src="<?=image_url("icons/currency.png");?>" />
-			<span class="amarelo_claro" style="font-size: 16px; margin-left: 5px; top: 2px; position: relative"><?=$player_quest->currency;?></span><br />
+			<span class="amarelo_claro" style="font-size: 16px; margin-left: 5px; top: 2px; position: relative"><?=highamount($player_quest->currency);?></span><br />
 
 			<img src="<?=image_url("icons/exp.png");?>" />
-			<span class="amarelo_claro" style="font-size: 16px; margin-left: 5px; top: 2px; position: relative"><?=$player_quest->exp;?></span><br />
+			<span class="amarelo_claro" style="font-size: 16px; margin-left: 5px; top: 2px; position: relative"><?=highamount($player_quest->exp);?></span><br />
 
 			<?php if ($player_quest->credits) { ?>
 				<img src="<?=image_url("icons/vip-on.png");?>" />
-				<span class="amarelo_claro" style="font-size: 16px; margin-left: 5px; top: 2px; position: relative"><?=$player_quest->credits;?></span>
+				<span class="amarelo_claro" style="font-size: 16px; margin-left: 5px; top: 2px; position: relative"><?=highamount($player_quest->credits);?></span>
 			<?php } ?>
 		</div>
 		<div class="details text-center">
@@ -39,7 +42,7 @@
 			<b style="font-size:16px"><?=$player_combat_quest->name;?></b><br />
 			<?=$player_combat_quest->anime()->description()->name;?><br />
 			<?=$player_combat_quest->graduation()->description($player_combat_quest->anime_id)->name;?><br /><br />
-			<span class="laranja"><?=($player_combat_quest->$type . ' ' . $player_quest->status_br);?></span>
+			<span class="laranja"><?=(highamount($player_combat_quest->$type) . ' ' . $player_quest->status_br);?></span>
 		</div>
 	</div>
 </div>

@@ -402,12 +402,28 @@ class Recordset {
 		}
 
 		$sql		= 'DELETE FROM ' . $table . ($where ? ' WHERE ' . join(' AND ', $wh) : '');
+
+		if (DB_LOGGING) {
+			$hash	= md5($sql);
+			Recordset::$sqls[$hash] = [
+				'sql'		=> $sql,
+				'count'		=> 1,
+				'cached'	=> false,
+				'duration'	=> microtime(true),
+				'traces'	=> []
+			];
+		}
+
 		$connection	= is_bool($connection) && $connection ? Recordset::$connections[Recordset::$default_connection] : Recordset::$connections[$connection];
 		$statement	= $connection->prepare($sql);
 		$statement->execute();
 
 		if ((int)$statement->errorCode()) {
 			throw new Exception("Delete query error: " . $sql, 1);
+		}
+
+		if (DB_LOGGING) {
+			Recordset::$sqls[$hash]['duration']	= microtime(true) - Recordset::$sqls[$hash]['duration'];
 		}
 
 		Recordset::$count_deletes++;
@@ -453,32 +469,24 @@ class Recordset {
 							$wh[] = '(' . $k . ' BETWEEN ' . $raw_v['value'][0] . ' AND ' . $raw_v['value'][1] . ')';
 							break;
 						case 'in':
-							if (is_array($raw_v['value'])) {
-								$wh[] = '`' . $k . '` IN (' . implode(', ', $raw_v['value']) . ')';
-							} else {
-								$wh[] = '`' . $k . '` IN (' . $raw_v['value'] . ')';
-							}
+							$wh[] = '`' . $k . '` IN (' . $raw_v['value'] . ')';
 							break;
 						case 'not_in':
-							if (is_array($raw_v['value'])) {
-								$wh[] = '`' . $k . '` NOT IN (' . implode(', ', $raw_v['value']) . ')';
-							} else {
-								$wh[] = '`' . $k . '` NOT IN (' . $raw_v['value'] . ')';
-							}
+							$wh[] = '`' . $k . '` NOT IN (' . $raw_v['value'] . ')';
 							break;
 						case 'not':
 							$wh[] = '`' . $k . '` != ' . $raw_v['value'];
 							break;
-						case 'smaller':
+						case 'lt':
 							$wh[] = '`' . $k . '` < ' . $raw_v['value'];
 							break;
-						case 'smaller_equal':
+						case 'lte':
 							$wh[] = '`' . $k . '` <= ' . $raw_v['value'];
 							break;
-						case 'bigger':
+						case 'gt':
 							$wh[] = '`' . $k . '` > ' . $raw_v['value'];
 							break;
-						case 'bigger_equal':
+						case 'gte':
 							$wh[] = '`' . $k . '` >= ' . $raw_v['value'];
 							break;
 					}

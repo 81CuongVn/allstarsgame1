@@ -25,4 +25,4 @@
 	}
 	?>
 </ul>
-<div id="make-list-achievement"></div>
+<div id="make-list-achievement" data-url="<?=make_url('achievements#make_list');?>"></div>

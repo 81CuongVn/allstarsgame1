@@ -84,7 +84,7 @@ class VipsController extends Controller {
 							'currency'	=> t('currencies.' . $player->character()->anime_id)
 						]);
 					}
-				} elseif ($item->id == 432 || $item->id == 1709 || $item->id == 1715 || $item->id == 1718  || $item->id == 2112) {
+				} elseif (in_array($item->id, [1709, 1715, 1718, 2112, 2113, 2114, 2115, 2116])) {
 					$buy_mode			= 2;
 					$bought_free		= false;
 					$bought_currency	= true;
@@ -201,6 +201,10 @@ class VipsController extends Controller {
 				$player->spend($item->price_currency);
 			} elseif ($buy_mode == 2) {
 				$user->spend($item->price_credits);
+			}
+
+			if (in_array($item->id, [2113, 2114, 2115, 2116])) {
+				$player->add_vip_item($item);
 			}
 
 			/* Adicionar log da compra */
