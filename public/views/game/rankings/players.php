@@ -112,7 +112,7 @@
 			}
 		}
 		?>
-		<div class="ability-speciality-box" style="width: 175px; height: 280px; padding-bottom: 40px;">
+		<div class="ability-speciality-box" style="width: 175px; height: <?=($player ? 280 : 250);?>px; padding-bottom: 40px;">
 			<div class="image" align="center">
 				<div class="<?=$class;?>">
 					<div class="position">
@@ -162,24 +162,26 @@
 				</div>
 			</div>
 			<div class="button" style="position: relative; top: 15px;">
-				<a href="<?=make_url('profile#achievements', [
-					'player'	=> $p->player_id
-				]);?>">
-					<img src="<?=image_url('icons/achievements.png')?>" style="margin: 0 5px" data-toggle="tooltip" title="<?=make_tooltip('Ver Conquisstas', 125);?>" />
-				</a>
-				<?php if ($player->has_vip_item(2114)) { ?>
-					<a href="<?=make_url('profile#talents', [
+				<?php if ($player) { ?>
+					<a href="<?=make_url('profile#achievements', [
 						'player'	=> $p->player_id
 					]);?>">
-						<img src="<?=image_url('icons/talents.png')?>" style="margin: 0 5px" data-toggle="tooltip" title="<?=make_tooltip('Ver Talentos', 125);?>" />
+						<img src="<?=image_url('icons/achievements.png')?>" style="margin: 0 5px" data-toggle="tooltip" title="<?=make_tooltip('Ver Conquisstas', 125);?>" />
 					</a>
-				<?php } ?>
-				<?php if ($player->has_vip_item(2115)) { ?>
-					<a href="<?=make_url('profile#equipments', [
-						'player'	=> $p->player_id
-					]);?>">
-						<img src="<?=image_url('icons/equipments.png')?>" style="margin: 0 5px" data-toggle="tooltip" title="<?=make_tooltip('Ver Equipamentos', 125);?>" />
-					</a>
+					<?php if ($player->has_vip_item(2114)) { ?>
+						<a href="<?=make_url('profile#talents', [
+							'player'	=> $p->player_id
+						]);?>">
+							<img src="<?=image_url('icons/talents.png')?>" style="margin: 0 5px" data-toggle="tooltip" title="<?=make_tooltip('Ver Talentos', 125);?>" />
+						</a>
+					<?php } ?>
+					<?php if ($player->has_vip_item(2115)) { ?>
+						<a href="<?=make_url('profile#equipments', [
+							'player'	=> $p->player_id
+						]);?>">
+							<img src="<?=image_url('icons/equipments.png')?>" style="margin: 0 5px" data-toggle="tooltip" title="<?=make_tooltip('Ver Equipamentos', 125);?>" />
+						</a>
+					<?php } ?>
 				<?php } ?>
 			</div>
 		</div>

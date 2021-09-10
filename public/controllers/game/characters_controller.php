@@ -11,41 +11,45 @@ class CharactersController extends Controller {
 			$this->json->success	= false;
 			$errors					= [];
 
-			if (!isset($_POST['name']) || (isset($_POST['name']) && !preg_match(REGEX_PLAYER, $_POST['name']))) {
-				$errors[]	= t('characters.create.errors.invalid_name');
+			if (IS_MAINTENANCE && !$_SESSION['universal']) {
+				$errors[]	= t('characters.select.errors.is_maintenance');
 			} else {
-				if (strlen(trim($_POST['name'])) > 14) {
-					$errors[]	= t('characters.create.errors.name_length_max');
+				if (!isset($_POST['name']) || (isset($_POST['name']) && !preg_match(REGEX_PLAYER, $_POST['name']))) {
+					$errors[]	= t('characters.create.errors.invalid_name');
+				} else {
+					if (strlen(trim($_POST['name'])) > 14) {
+						$errors[]	= t('characters.create.errors.name_length_max');
+					}
+
+					if (strlen(trim($_POST['name'])) < 6) {
+						$errors[]	= t('characters.create.errors.name_length_min');
+					}
+
+					if (Player::find('name="' . addslashes($_POST['name']) . '"')) {
+						$errors[]	= t('characters.create.errors.existent');
+					}
+
+					if (sizeof($total) >= $user->character_slots) {
+						$errors[]	= t('characters.title_chars');
+					}
 				}
 
-				if (strlen(trim($_POST['name'])) < 6) {
-					$errors[]	= t('characters.create.errors.name_length_min');
+				if (!isset($_POST['character_id']) || (isset($_POST['character_id']) && !Character::includes($_POST['character_id']))) {
+					$errors[]	= t('characters.create.errors.invalid_character');
+				} else {
+					$character	= Character::find($_POST['character_id'], [ 'cache' => true ]);
+					if (!$character->unlocked($user)) {
+						$errors[]	= t('characters.create.errors.locked');
+					}
 				}
 
-				if (Player::find('name="' . addslashes($_POST['name']) . '"')) {
-					$errors[]	= t('characters.create.errors.existent');
+				if (!isset($_POST['faction_id']) || (isset($_POST['faction_id']) && !is_numeric($_POST['faction_id']))) {
+					$errors[]	= t('characters.create.errors.invalid_faction');
 				}
 
-				if (sizeof($total) >= $user->character_slots) {
-					$errors[]	= t('characters.title_chars');
+				if (!Faction::includes($_POST['faction_id'])) {
+					$errors[]	= t('characters.create.errors.invalid_faction');
 				}
-			}
-
-			if (!isset($_POST['character_id']) || (isset($_POST['character_id']) && !Character::includes($_POST['character_id']))) {
-				$errors[]	= t('characters.create.errors.invalid_character');
-			} else {
-				$character	= Character::find($_POST['character_id'], [ 'cache' => true ]);
-				if (!$character->unlocked($user)) {
-					$errors[]	= t('characters.create.errors.locked');
-				}
-			}
-
-			if (!isset($_POST['faction_id']) || (isset($_POST['faction_id']) && !is_numeric($_POST['faction_id']))) {
-				$errors[]	= t('characters.create.errors.invalid_faction');
-			}
-
-			if (!Faction::includes($_POST['faction_id'])) {
-				$errors[]	= t('characters.create.errors.invalid_faction');
 			}
 
 			if (!sizeof($errors)) {

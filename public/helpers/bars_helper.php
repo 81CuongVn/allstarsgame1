@@ -4,9 +4,7 @@ function exp_bar_windth($v, $m, $w) {
 		return 0;
 	}
 
-	$r = @(($w
-	 / $m)
-	 * $v);
+	$r = @(($w / $m) * $v);
 
     return $r > $w ? $w : $r;
 }
