@@ -43,16 +43,30 @@
 			<div class="tutorial_formulas">
 				<div class="titulo-home"><p>Fórmulas</p></div>
 				<?php foreach ($formulas as $_ => $formula) { ?>
+					<?php
+					if (in_array($_, ['for_crit', 'for_abs'])) {
+						$function		= $_ . '_inc';
+						$formule		= $player->{$function}();
+						$description	= t('formula.tooltip.description.' . $_, [
+							'min'	=> $seeAttributes && !$antSpy ? $formule['min'] : '???',
+							'max'	=> $seeAttributes && !$antSpy ? $formule['max'] : '???'
+						]);
+					} else {
+						$description	= t('formula.tooltip.description.' . $_);
+					}
+					?>
 					<div class="bg_td">
 						<div class="amarelo atr_float" style="width: 130px; text-align:left; padding-left:16px; text-align: center"><?=$formula;?></div>
 						<div class="atr_float" style="width: 20px; text-align:left;margin-left: 6px;">
 							<img src="<?=image_url('icons/' . $_ . '.png');?>" style="position: relative; top: -5px; left: 2px;" class="requirement-popover" data-source="#attribute-tooltip-<?=$_;?>" data-title="<?=t('formula.tooltip.title.' . $_);?>" data-trigger="hover" data-placement="bottom" />
 							<div id="attribute-tooltip-<?=$_;?>" class="status-popover-container">
-								<div class="status-popover-content"><?=t('formula.tooltip.description.' . $_);?></div>
+								<div class="status-popover-content">
+									<?=$description;?>
+								</div>
 							</div>
 						</div>
 						<div class="atr_float" style="margin-top: 7px; margin-left: 20px">
-							<?=exp_bar(($seeAttributes && !$antSpy ? $profile->{$_}() : 0), $max, 175, ($seeAttributes && !$antSpy ? $profile->{$_}() : '???'));?>
+						<?=exp_bar(($seeAttributes && !$antSpy ? $profile->{$_}() : 0), $max, 175, ($seeAttributes && !$antSpy ? $profile->{$_}() : '???'));?>
 						</div>
 					</div>
 				<?php } ?>
