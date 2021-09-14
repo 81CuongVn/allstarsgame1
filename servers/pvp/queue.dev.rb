@@ -23,7 +23,7 @@ require 'securerandom'
 	'host'	=> 'localhost',
 	'user'	=> 'root',
 	'pass'	=> '',
-	'name'	=> 'allstars_db'
+	'name'	=> 'aasg_db'
 }
 
 # PvP range settings
