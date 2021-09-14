@@ -22,7 +22,7 @@ $database			= [
 	'host'			=> '127.0.0.1',
 	'username'		=> 'root',
 	'password'		=> '',
-	'database'		=> 'allstars_db',
+	'database'		=> 'aasg_db',
 	'connection'	=> 'primary',
 	'cache_mode'	=> RECORDSET_SHM,
 	'cache_id'		=> GAME_PREFIX
@@ -87,11 +87,11 @@ define('REGEX_GUILD',			'/^[ÁÉÍÓÚÀÈÌÒÙÂÊÎÔÛÃÕÑÇáéíóúàè
 
 // Chat settinsg
 define('CHAT_KEY',				'YAn8yK930907L2KUTnnSqLDuI6jl0G9N');
-define('CHAT_SERVER',			'http://allstarsgame.test:2930');
+define('CHAT_SERVER',			'http://chat.allstarsgame.test');
 
 // Highligts settings
 define('HIGHLIGHTS_KEY',		'430rBdLShn8yK930907L2a8yeTszrDip');
-define('HIGHLIGHTS_SERVER',		'http://allstarsgame.test:2530');
+define('HIGHLIGHTS_SERVER',		'http://alerts.allstarsgame.test');
 
 // Redis Server settings
 define('REDIS_SERVER', 			'127.0.0.1');
