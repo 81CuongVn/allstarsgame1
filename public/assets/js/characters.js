@@ -14,6 +14,8 @@
             success: function (result) {
                 lock_screen(false);
                 results_theme.html(result);
+
+				update_tooltips();
             }
         });
     });
@@ -68,7 +70,6 @@
     });
 
     if (form.length) {
-
         $('#anime-list').on('click', '.anime', function () {
             var _ = $(this);
 
@@ -103,6 +104,8 @@
                     data: { show_only: 1, character: creation_current_character },
                     success: function (result) {
                         $('.bootbox-body', win).html(result);
+
+						update_tooltips();
                     }
                 });
 
@@ -251,6 +254,8 @@
             success: function (result) {
                 lock_screen(false);
                 results.html(result);
+
+				update_tooltips();
             }
         });
     });

@@ -26,7 +26,7 @@
 <div id="challenge-list">
 	<?php foreach ($challenges as $challenge): ?>
 		<div class="group">
-			<div class="technique-popover buff" data-source="#challenges-container-<?php echo $challenge->id ?>" data-title="<?php echo $challenge->description()->name ?>" data-trigger="click" data-placement="bottom">
+			<div class="aasg-popover buff" data-source="#challenges-container-<?php echo $challenge->id ?>" data-title="<?php echo $challenge->description()->name ?>" data-trigger="click" data-placement="bottom">
 			<?php $challenge->set_player($player) ?>
 
 			<div class="<?php echo $challenge->unlocked() ? '' : 'efeito'?>">

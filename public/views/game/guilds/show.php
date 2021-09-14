@@ -76,7 +76,7 @@
 					</td>
 					<td align="center">
 						<?php for ($level = 1; $level <= MAX_LEVEL_GUILD; ++$level) {?>
-							<div style="display: inline-block; padding-left: 4px;" class="technique-popover" data-source="#guild-level-container-<?=$level;?>" data-title="Nível <?=$level;?>" data-trigger="click" data-placement="top">
+							<div style="display: inline-block; padding-left: 4px;" class="aasg-popover" data-source="#guild-level-container-<?=$level;?>" data-title="Nível <?=$level;?>" data-trigger="click" data-placement="top">
 								<img src="<?=image_url('icons/star-' . ($guild->level >= $level ? 'on' : 'off') . '.png')?>" style="cursor: pointer;" />
 							</div>
 							<div id="guild-level-container-<?=$level;?>" class="technique-container">

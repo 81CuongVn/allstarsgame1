@@ -39,7 +39,6 @@ pt-BR:
     admin: Painel Administrativo
     discord: Servidor no Discord
     whatsapp: Grupo no WhatsApp
-    tournaments: Torneio All-Star
     tutorial: Tutorial
     objectives: Objetivos de Round
     quests_battle: Missões de Combate
@@ -1493,8 +1492,14 @@ pt-BR:
         for_atk: Esse é o total de seu ataque fora de combate e ele é somado ao valor dos seus golpes ofensivos em batalha
         for_def: Esse é o total de sua defesa fora de combate e ela é somado ao valor dos seus golpes defensivos em batalha
         for_hit: Esse é o total de sua chance de acerto fora de combate e ela fará com que você não erre seus golpes em batalha
-        for_crit: Esse é o total de seu crítico fora de combate e com ele seus golpes ocasionalmente poderão ser mais poderosos
-        for_abs: Esse é o total de sua absorção fora de combate e com ela seus golpes ocasionalmente recebidos poderão ser mais fracos
+        for_crit: |
+          Esse é o total de seu crítico fora de combate e com ele seus golpes ocasionalmente poderão ser mais poderosos<br /><br />
+          <b class="amarelo">Minímo:</b> #{min}%<br />
+          <b class="amarelo">Máximo:</b> #{max}%
+        for_abs: |
+          Esse é o total de sua absorção fora de combate e com ela seus golpes ocasionalmente recebidos poderão ser mais fracos<br /><br />
+          <b class="amarelo">Minímo:</b> #{min}%<br />
+          <b class="amarelo">Máximo:</b> #{max}%
         for_prec: Esse é o total de sua precisão fora de combate e com ela seus golpes ocasionalmente poderão ignorar a defesa de seu oponente
         for_inti: Esse é o total de sua intimidação fora de combate e ela reduzirá o total de chance de acerto do seu oponente em combate
         for_conv: Esse é o total de sua convicção fora de combate e ele aumentará o total de iniciativa do seu personagem em combate
@@ -2436,39 +2441,6 @@ pt-BR:
       not_enough_vip: Você não tem estrela(s) suficiente
       invalid_character: Personagem inválido
       dont_have: Você não tem mais esse talento disponivel para ativa-lo.
-  tournaments:
-    requirements:
-      level: |
-        Você precisa ter nível #{level} ou maior
-    success:
-      subscribe: Inscrição realizada com sucesso!
-    errors:
-      already_subscribed: Você já tem um personagens inscrito nesse torneio!
-      wait_draw: Aguardando o sorteio da chave.
-      enough_credits: Você não possui estrelas suficientes
-      enough_currency: |
-        Você não possui #{currency} suficientes
-    view:
-      bracket: Chave do Torneio
-      players: Jogadores inscritos no torneio
-    status:
-      canceled: Cancelado
-      finished: Finalizado
-    rounds:
-      subscriptions: Inscrições
-      final: Final
-      semifinal: Semifinal
-      quarterfinals: Quartas de inal
-      normal: |
-        Rodada #{round}
-    title: Torneio ALl-Star
-    info:
-      title: Como funciona o torneio?
-      description: |
-        Os torneios são realizados toda sexta-feira, sábado e domingo.<br />
-        As inscrições serão encerradas 30 minutos antes do inicio do torneio. A inscrição pode ser paga com #{currency} ou Estrelas<br /><br />
-
-        <span class="laranja">* Caso o torneio não alcance o total de inscrições, o mesmo será cancelado e a taxa de inscrição reembolsada.</span>
   welcome_message:
     subject: Seja bem vindo(a)!
     message: |

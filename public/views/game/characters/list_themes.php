@@ -1,27 +1,3 @@
-<script type="text/javascript">
-	$('.technique-popover, .requirement-popover, .shop-item-popover').each(function () {
-		$(this).popover({
-			trigger:	'manual',
-			content:	function () {
-				return $($(this).data('source')).html();
-			},
-			html:		true
-		}).on("mouseenter", function () {
-		    var _this = this;
-		    $(this).popover("show");
-		    $(this).siblings(".popover").on("mouseleave", function () {
-		        $(_this).popover('hide');
-		    });
-		}).on("mouseleave", function () {
-		    var _this = this;
-		    setTimeout(function () {
-		        if (!$(".popover:hover").length) {
-		            $(_this).popover("hide")
-		        }
-		    }, 100);
-		});
-	});
-</script>
 <div id="popup-character-themes">
 	<div id="theme-list" class="card-container">
 		<?php foreach ($themes as $theme) { ?>
@@ -43,7 +19,7 @@
 				</div>
 				<div class="attack-list attack-list-<?=$theme->id;?>">
 					<?php foreach ($theme->attacks(true) as $attack) { ?>
-						<img src="<?=image_url($attack->image(true));?>" class="technique-popover item-image" data-source="#technique-content-<?=$attack->description()->character_theme_id;?>-<?=$attack->id;?>" data-title="<?=$attack->description()->name;?>" data-trigger="hover" data-placement="bottom" />
+						<img src="<?=image_url($attack->image(true));?>" class="aasg-popover item-image" data-source="#technique-content-<?=$attack->description()->character_theme_id;?>-<?=$attack->id;?>" data-title="<?=$attack->description()->name;?>" data-trigger="hover" data-placement="bottom" />
 						<div class="technique-container" id="technique-content-<?=$attack->description()->character_theme_id;?>-<?=$attack->id;?>">
 							<?=$attack->technique_tooltip();?>
 						</div>

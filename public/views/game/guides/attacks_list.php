@@ -1,29 +1,3 @@
-<script>
-(function () {
-	$('.technique-popover, .requirement-popover, .shop-item-popover').each(function () {
-		$(this).popover({
-			trigger:	'manual',
-			content:	function () {
-				return $($(this).data('source')).html();
-			},
-			html:		true
-		}).on("mouseenter", function () {
-			var _this = this;
-			$(this).popover("show");
-			$(this).siblings(".popover").on("mouseleave", function () {
-				$(_this).popover('hide');
-			});
-		}).on("mouseleave", function () {
-			var _this = this;
-			setTimeout(function () {
-				if (!$(".popover:hover").length) {
-					$(_this).popover("hide")
-				}
-			}, 100);
-		});
-	});
-})();
-</script>
 <?php foreach ($themes as $theme): ?>
 	<div style="float: left; width: 495px;">
 		<div class="titulo-home2"><p>Habilidades</p></div>
@@ -34,7 +8,7 @@
 					<div id="ability-container-<?php echo $ability->id ?>" class="technique-container">
 						<?php echo $ability->tooltip() ?>
 					</div>
-				<?php endforeach ?>	
+				<?php endforeach ?>
 			</div>
 		</div>
 	</div>
@@ -47,7 +21,7 @@
 					<div id="speciality-container-<?php echo $speciality->id ?>" class="technique-container">
 						<?php echo $speciality->tooltip() ?>
 					</div>
-				<?php endforeach ?>	
+				<?php endforeach ?>
 			</div>
 		</div>
 	</div>
@@ -59,7 +33,7 @@
 				<div class="technique-container" id="technique-content-<?php echo $attack->id ?>">
 					<?php echo $attack->technique_tooltip() ?>
 				</div>
-			<?php endforeach ?>	
+			<?php endforeach ?>
 		</div>
 	</div>
 <?php endforeach ?>
@@ -93,13 +67,13 @@
 				<a href="javascript:;" class="btn btn-sm btn-warning disabled"><?php echo t('characters.themes.already_bought') ?></a>
 			<?php endif ?>
 	<?php else: ?>
-		<?php if (!$theme->is_default && $theme->reward_lock && !$theme->map_lock){ 
+		<?php if (!$theme->is_default && $theme->reward_lock && !$theme->map_lock){
 			$subgroup = HistoryModeSubgroup::find_first('reward_character_theme_id='. $theme->id)->description()->name;
 		?>
 			<a href="javascript:;" class="btn btn-sm btn-warning disabled"><?php echo t('characters.themes.liberado') ?></a>
-		<?php }elseif(!$theme->is_default && !$theme->reward_lock && $theme->map_lock){?>				
+		<?php }elseif(!$theme->is_default && !$theme->reward_lock && $theme->map_lock){?>
 			<a href="javascript:;" class="btn btn-sm btn-warning disabled"><?php echo t('characters.themes.liberado2') ?></a>
 		<?php } ?>
 	<?php endif ?>
 <?php endif ?>
-</div>			
+</div>
