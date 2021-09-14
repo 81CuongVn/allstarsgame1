@@ -18,7 +18,7 @@
 			?>
 				<div class="equipment">
 					<?php if ($attributes->is_new) { ?>
-						<div class="badge">
+						<div class="badge pulsate_icons">
 							<i class="fa fa-exclamation fa-fw"></i>
 						</div>
 						<?php

@@ -114,30 +114,32 @@
         $('[data-toggle="popover"]').popover({html: true});
     }
 
-    $('.technique-popover, .requirement-popover, .shop-item-popover').each(function () {
-        var placement = $(this).data('placement');
-        $(this).popover({
-			trigger:	'manual',
-			content:	function () {
-				return $($(this).data('source')).html();
-			},
-			html:		true,
-            placement:  'auto ' + placement
-		}).on("mouseenter", function () {
-		    var _this = this;
-		    $(this).popover("show");
-		    $(this).siblings(".popover").on("mouseleave", function () {
-		        $(_this).popover('hide');
-		    });
-		}).on("mouseleave", function () {
-		    var _this = this;
-		    setTimeout(function () {
-		        if (!$(".popover:hover").length) {
-		            $(_this).popover("hide")
-		        }
-		    }, 100);
+	window.update_tooltips	= function() {
+		$('.technique-popover, .requirement-popover, .shop-item-popover').each(function () {
+			var placement = $(this).data('placement');
+			$(this).popover({
+				trigger:	'manual',
+				content:	function () {
+					return $($(this).data('source')).html();
+				},
+				html:		true,
+				placement:  'auto ' + placement
+			}).on("mouseenter", function () {
+				var _this = this;
+				$(this).popover("show");
+				$(this).siblings(".popover").on("mouseleave", function () {
+					$(_this).popover('hide');
+				});
+			}).on("mouseleave", function () {
+				var _this = this;
+				setTimeout(function () {
+					if (!$(".popover:hover").length) {
+						$(_this).popover("hide")
+					}
+				}, 100);
+			});
 		});
-    });
+	};
 
     window.exp_bar_width	= function (v, m ,w) {
         var	r = (w / m) * v;
@@ -172,52 +174,61 @@
         bootbox.alert($('#mr-sql-trace-' + $(this).data('id')).html());
     });
 
-    window.jalert	= function (msg, ok_callback, options) {
-        options	= options || {};
-
-        var	win		= bootbox.dialog({message: msg, buttons: [
-            {
-                'label':	'Fechar',
-                callback:	function () {
-                    if(ok_callback) {
-                        ok_callback.apply(null, []);
-                    }
-                }
-            }
-        ]});
-
-        if(options.texturize) {
-            $('.modal-dialog', win).addClass('pattern-container');
-            $('.modal-content', win).addClass('with-pattern');
-        }
+	window.jalert	= function (message, callback) {
+		const swalAlert = Swal.mixin({
+			customClass: {
+				confirmButton: 'btn btn-success mt-2'
+			},
+			buttonsStyling: false
+		});
+        swalAlert.fire({
+			title:	'Oops!',
+			html:	message,
+			icon:	'warning',
+		}).then(() => {
+			if (callback) {
+				callback.apply(null, []);
+			}
+		});
     };
 
-    window.jconfirm	= function (msg, ok_callback, cancel_callback, options) {
-        options	= options || {};
+	window.jconfirm		= function (msg, ok_callback, cancel_callback) {
+		const swalConfirm = Swal.mixin({
+			customClass: {
+				confirmButton: 'btn btn-success mt-2',
+				cancelButton: 'btn btn-danger mr-2 mt-2'
+			},
+			buttonsStyling: false
+		});
 
-        var	win		= bootbox.dialog({message: msg, buttons: [
-            {
-                'label':	'Fechar',
-                callback:	function () {
-                    if(cancel_callback) {
-                        cancel_callback.apply(null, []);
-                    }
-                }
-            }, {
-                'label':	'Ok',
-                callback:	function () {
-                    if(ok_callback) {
-                        ok_callback.apply(null, []);
-                    }
-                }
-            }
-        ]});
+		swalConfirm.fire({
+			title: 'Tem certeza?',
+			html: msg,
+			icon: 'question',
+			showCancelButton: true,
+			confirmButtonText: 'Sim, continuar!',
+			cancelButtonText: 'Não, cancelar!',
+			reverseButtons: true
+		}).then((result) => {
+			if (result.isConfirmed) {
+				if (ok_callback) {
+					ok_callback.apply(null, []);
+				}
+			} else if (result.dismiss === Swal.DismissReason.cancel) {
+				if (cancel_callback) {
+					cancel_callback.apply(null, []);
+				}
+			}
+		});
+	}
 
-        if(options.texturize) {
-            $('.modal-dialog', win).addClass('pattern-container');
-            $('.modal-content', win).addClass('with-pattern');
-        }
-    };
+	window.block_form	= (form, status) => {
+		if (status) {
+			$('input, textarea, button, select', form).attr('disabled', true);
+		} else {
+			$('input, textarea, button, select', form).removeAttr('disabled');
+		}
+	};
 
     var ___timers = [];
     window.create_timer	= function(h, m, s, t, f, identifier, change_title) {
@@ -369,6 +380,7 @@
     }
 
     generate_tooltips();
+	update_tooltips();
 
     function acceptCookies() {
         $(".box-cookies").hide();

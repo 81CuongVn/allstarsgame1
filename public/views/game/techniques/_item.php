@@ -7,11 +7,11 @@
 			$class	= "buff";
 		} else {
 			if($item->formula()->damage && $item->formula()->generic){
-				$class = "attack";	
+				$class = "attack";
 			}else if($item->formula()->damage && !$item->formula()->generic){
 				$class = "unique";
 			}else{
-				$class = "defense";	
+				$class = "defense";
 			}
 			//$class	= $item->formula()->damage ? "attack" : "defense";
 		}

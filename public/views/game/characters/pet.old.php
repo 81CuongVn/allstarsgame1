@@ -39,7 +39,7 @@
 				<input type="text" class="form-control input-sm" style="max-width: 150px" name="name" value="<?php echo $name ?>" />
 			</td>
 			<td width="0%" align="center">
-				<b><?php echo t('rankings.players.header.description') ?></b><br />	
+				<b><?php echo t('rankings.players.header.description') ?></b><br />
 				<input type="text" class="form-control input-sm" style="max-width: 150px" name="description" value="<?php echo $description ?>" />
 			</td>
 			<td width="0%" align="center">
@@ -69,7 +69,7 @@
 		<?php
 			$others		= '';
 			$actives	= '';
-			
+
 			unset($pets['pages']);
 			unset($pets['pets']);
 		?>
@@ -106,18 +106,18 @@
 					</div>
 					<div class="details">
 						<div class="pet-tooltip">
-							<?php 
+							<?php
 								$exp_pet	= 0;
 								$happiness	= 0;
 								$info_pet	= $player->happiness_int($pet->id);
 								if ($info_pet) {
 									$exp_pet	= $info_pet->exp;
 									$happiness	= $info_pet->happiness;
-								}	
+								}
 							?>
 							<?=$player->happiness($pet->id);?><br />
 							<?=$happiness;?> / 100
-							<?php 
+							<?php
 								switch ($pet->rarity) {
 									case "common":
 										$exp_total = 2500;
@@ -129,12 +129,12 @@
 										$exp_total = 20000;
 										break;
 								}
-							?>	
+							?>
 							<?php if ($pet->rarity != "mega") { ?>
 								<div style="margin-top:10px">
 									<?=pet_exp_bar($exp_pet, $exp_total, 150, highamount($exp_pet) . '/' . highamount($exp_total));?>
 								</div>
-							<?php }?>	
+							<?php }?>
 						</div>
 					</div>
 					<div id="pet-container-<?php echo $pet->id ?>" class="technique-container">
@@ -142,7 +142,7 @@
 					</div>
 				</div>
 			</div>
-			
+
 			<?php
 				if ($active) {
 					$actives	.= ob_get_clean();

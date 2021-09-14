@@ -69,7 +69,7 @@
 		?>
 		<div class="<?php echo $equipped ? "equipped" : "" ?> slot slot-<?php echo $position->slot_name ?>" style="top: <?php echo $position->y ?>px; left: <?php echo $position->x ?>px; background-image: <?php echo $background ?>" data-url="<?php echo make_url('equipments#list_equipments') ?>" data-slot="<?php echo $position->slot_name ?>" data-id="<?php echo $equipped ? $equipped->id : 0 ?>" data-embed="<?php echo $equipped ? $item->embed() : '' ?>">
 			<?php if ($is_new): ?>
-				<div class="badge">
+				<div class="badge pulsate_icons">
 					<i class="fa fa-exclamation fa-fw"></i>
 				</div>
 			<?php endif ?>

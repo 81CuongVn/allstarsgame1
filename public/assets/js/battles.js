@@ -2,11 +2,6 @@
     var locked = [];
     var battle_container = $('#battle-container');
     var log_container = $('.log', battle_container);
-    var all_loaded = false;
-    var images_to_load = 0;
-    var load_count = 0;
-    var lcanvas = null;
-    var rcanvas = null;
     var max_log_scroll = 0;
     var current_log_scroll = 0;
     var ping_iv = null;
@@ -18,7 +13,6 @@
     var audio = $(document.createElement('AUDIO')).attr('src', resource_url('media/battle.mp3')).attr('type', 'audio/mpeg');
     var negatives = ['attack_speed', 'attack_speed_percent', 'slowness', 'slowness_percent', 'bleeding', 'bleeding_percent', 'next_mana_cost', 'stun', 'reduce_critical_damage', 'reduce_critical_damage_percent'];
     var hidden = ['bonus_exp_mission', 'bonus_exp_mission_percent', 'bonus_gold_mission', 'bonus_gold_mission_percent', 'bonus_stamina_max', 'currency_reward_extra', 'exp_reward_extra', 'currency_reward_extra_percent', 'exp_reward_extra_percent', 'bonus_stamina_heal', 'no_consume_stamina', 'fragment_find', 'item_find', 'pets_find'];
-    var images = [];
 	var is_my_turn = false;
 
     function update_log_tooltip() {
@@ -29,7 +23,8 @@
                 content: $(document.getElementById(_.data('tooltip'))).html(),
                 html: true,
                 placement: 'bottom',
-                trigger: 'hover'
+                trigger: 'hover',
+				container: '.log'
             });
         });
     }
@@ -186,60 +181,17 @@
         }
     }
 
-    for (var i in images) {
-        var el = document.createElement('img');
-        el.src = image_url(images[i].url);
-        el.style.display = 'none';
-        el.onload = function () {
-            load_count++;
-
-            if (load_count >= images_to_load) {
-                all_loaded = true;
-            }
-
-            images[this.getAttribute('data-key')].loaded = true;
-        }
-
-        el.setAttribute('data-key', i);
-
-        images[i].element = el;
-        images_to_load++;
-    }
-
-    for (var i in images) {
-        document.body.appendChild(images[i].element);
-    }
-
     if (battle_container.length) {
-        $('.log-scroller .up', battle_container).on('click', function () {
-            current_log_scroll -= 10;
-
-            if (current_log_scroll < 0) {
-                current_log_scroll = 0;
-            }
-
-            log_container.scrollTop(current_log_scroll);
-        });
-
-        $('.log-scroller .down', battle_container).on('click', function () {
-            current_log_scroll += 10;
-            log_container.scrollTop(current_log_scroll);
-
-            if (current_log_scroll > log_container.scrollTop()) {
-                current_log_scroll = log_container.scrollTop();
-            }
-        });
-
         function parse_technique() {
             var _ = $(this);
 
 			if (!is_my_turn) {
-				jalert(I18n.t('battles.errors.not_my_turn'));
+				jalert(I18n.t('battles.errors.not_my_turn'), false);
                 return;
 			}
 
             if (_.hasClass('locked') || locked[_.data('id')]) {
-                jalert(I18n.t('battles.errors.technique_locked'));
+                jalert(I18n.t('battles.errors.technique_locked'), false);
                 return;
             }
 

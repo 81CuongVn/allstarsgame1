@@ -7,13 +7,13 @@ if ($item) {
         $class	= "buff";
     } else {
         if ($item->formula()->damage && $item->formula()->generic) {
-            $class = "attack";	
+            $class = "attack";
         } elseif ($item->formula()->damage && !$item->formula()->generic) {
             $class = "unique";
         } else {
-            $class = "defense";	
+            $class = "defense";
         }
-    }
+  	  }
 }
 
 $locked	= $item->locked && !$player->has_unlocked_item($item->id);

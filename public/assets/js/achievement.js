@@ -18,6 +18,8 @@
             success:	function (result) {
                 lock_screen(false);
                 results.html(result);
+
+				update_tooltips();
             }
         });
     });
