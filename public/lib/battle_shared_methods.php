@@ -1721,15 +1721,15 @@ trait BattleSharedMethods {
 				'seconds'	=> $timer_diff['seconds'] < 0 ? 0 : $timer_diff['seconds']
 			];
 
-			if ($action_was_made) {
-				if ($_SESSION['universal']) {
-					if ($timer_diff['minutes'] < 1 && $timer_diff['seconds'] < 30) {
-						if ($_SESSION['pvp_time_reduced'] < 2) {
-							++$_SESSION['pvp_time_reduced'];
-						}
-					}
-				}
-			}
+			// if ($action_was_made) {
+			// 	if ($_SESSION['universal']) {
+			// 		if ($timer_diff['minutes'] < 1 && $timer_diff['seconds'] < 30) {
+			// 			if ($_SESSION['pvp_time_reduced'] < 2) {
+			// 				++$_SESSION['pvp_time_reduced'];
+			// 			}
+			// 		}
+			// 	}
+			// }
 
 			if ($current > $future && !$battle_now->finished_at) {
 				$battle->finished_at	= now(true);

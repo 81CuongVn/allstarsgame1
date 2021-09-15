@@ -22,21 +22,12 @@
 			'message'	=> t('battles.training.m1_description')
 	]);?>
 </form><br />
-<script type="text/javascript">
-	$(document).ready(function () {
-		var results = $('#room-search-results');
-		setInterval(function () {
-			$.ajax({
-				url:		make_url('battle_pvps#room_list'),
-				data:		$(this).serialize(),
-				success:	function (result) {
-					if (result) {
-						lock_screen(false);
-						results.html(result);
-					}
-				}
-			});
-		}, 3000);
-	});
-</script>
-<div id="room-search-results"></div>
+<div class="text-right">
+	<button type="button" class="btn btn-primary btn-sm mr-2 mb-2" id="refresh-rooms">
+		<i class="fa fa-refresh fa-fw"></i>
+		Atualizar
+	</button>
+</div>
+<div id="room-search-results">
+	<p class="text-center">Estamos buscando salas de treinamento, aguarde...</p>
+</div>

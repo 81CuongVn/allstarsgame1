@@ -40,7 +40,7 @@ if (isset($_SESSION['user_id']) && $_SESSION['user_id']) {
 		}
 	}
 
-	if (!$keep) {
+	if (!$keep && !$_SESSION['universal']) {
 		session_destroy();
 
         redirect_to();

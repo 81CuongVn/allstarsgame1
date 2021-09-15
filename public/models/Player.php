@@ -2742,6 +2742,56 @@ class Player extends Relation {
 		return false;
 	}
 
+	function chatColor($user) {
+		$color	= '';
+		if ($user->is_admin()) {
+			$color	= '#ffb34f';
+		} elseif ($user->is_mod()) {
+			$color	= '#1abc9c';
+		} else {
+			switch ($this->faction_id) {
+				case 1:		$color	= '#2c8ee5';	break;
+				case 2:		$color	= '#f1270f';	break;
+				case 3:		$color	= '#f4ffff';	break;
+			}
+		}
+
+		return $color;
+	}
+	function chatIcon($user) {
+		$icon		= '';
+		if ($user->is_admin() || $user->is_mod()) {
+			$icon	= '<i class="fa fa-star fa-fw" style="vertical-align: -1px;"></i>';
+		}
+
+		return $icon;
+	}
+	function chatRegister() {
+		$user	= $this->user();
+		$guild	= $this->guild();
+
+		$data	= [
+			'uid'           => (int)$this->id,
+			'user_id'       => (int)$this->user_id,
+			'faction'       => (int)$this->faction_id,
+			'anime'			=> (int)$this->character()->anime_id,
+			'avatar'		=> image_url($this->small_image(true)),
+			'guild'         => (int)$this->guild_id,
+			'guild_owner'   => $guild ? $this->id == $guild->leader()->id : false,
+			'battle'        => (int)$this->battle_pvp_id,
+			'gm'            => $user->is_mod() || $user->is_admin(),
+			'color'         => $this->chatColor($user),
+			'icon'          => $this->chatIcon($user),
+			'name'          => $this->name
+		];
+
+		$key            = CHAT_KEY;
+		$iv             = substr($key, 0, 16);
+		$registration   = openssl_encrypt(json_encode($data), 'AES-256-CBC', $key, 0, $iv);
+
+		return $registration;
+	}
+
 	static function set_instance($player) {
 		Player::$instance	= $player;
 	}

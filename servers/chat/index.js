@@ -249,7 +249,7 @@ io.sockets.on('connection', (socket) => {
 			const playerDest	= players[data.dest]
 			// Check if the destination user has blocked the one that's sending the message
 			if (playerDest) {
-				if (playerDest.user_id == _player.user_id && 1!=1) {
+				if (playerDest.user_id == _player.user_id) {
 					socket.emit('broadcast', {
 						from: 'Sistema',
 						message: 'Você não pode enviar uma mensagem privada para você mesmo!',
@@ -313,15 +313,15 @@ io.sockets.on('connection', (socket) => {
 			}
 
 			// Não pode bloquear você mesmo
-			// if (playerToBlock.user_id == _player.user_id) {
-			// 	socket.emit('broadcast', {
-			// 		from: 'Sistema',
-			// 		message: 'Você não pode bloquear a sua propria conta!',
-			// 		channel: 'warn'
-			// 	});
+			if (playerToBlock.user_id == _player.user_id) {
+				socket.emit('broadcast', {
+					from: 'Sistema',
+					message: 'Você não pode bloquear a sua propria conta!',
+					channel: 'warn'
+				});
 
-			// 	return;
-			// }
+				return;
+			}
 
 			db.query(`INSERT INTO chat_blocked (user_id, user_blocked) VALUES (${_player.user_id}, ${playerToBlock.user_id})`);
 
