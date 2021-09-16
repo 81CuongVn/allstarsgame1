@@ -120,6 +120,9 @@ if (preg_match('/read_news/', $action)) {
 		<?php } ?>
 
 		var	_check_pvp_queue		= <?=($player && $player->is_pvp_queued ? 'true': 'false');?>;
+
+		// Servers
+		var _chat_server			= "<?=CHAT_SERVER;?>";
 		var _highlights_server		= "<?=HIGHLIGHTS_SERVER;?>";
 
 		$(document).ready(function() {

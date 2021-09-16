@@ -8,27 +8,50 @@
 	var audio				= $(document.createElement('AUDIO')).attr('src', resource_url('media/found.mp3')).attr('type', 'audio/mpeg');
     var room_search_friend	= $('#room-search-friend');
 
-    // Aceita o Duelo
-    $('#room-search-results').on('click', '.enter-pvp-training-battle', function () {
-        lock_screen(true);
-        var _ = $(this);
-        $.ajax({
-            url:		make_url('battle_pvps#accept'),
-            data:		{
-                id: _.data('id')
-            },
-            dataType:	'json',
-            type:		'post',
-            success:	function (result) {
-                if (result.success) {
-                    location.href = make_url('battle_pvps#fight');
-                } else {
-                    lock_screen(false);
-                    format_error(result);
-                }
-            }
-        });
-    });
+	var trainingRooms = $('#room-search-results');
+	if (trainingRooms.length) {
+		function reloadRooms() {
+			lock_screen(true);
+			$.ajax({
+				url:		make_url('battle_pvps#room_list'),
+				data:		$(this).serialize(),
+				success:	function (result) {
+					if (result) {
+						lock_screen(false);
+						trainingRooms.html(result);
+					}
+				}
+			});
+		}
+		reloadRooms();
+
+		// Atualiza a lista de salas
+		$('#refresh-rooms').on('click', function() {
+			reloadRooms();
+		});
+
+		// Aceita o Duelo
+		$('#room-search-results').on('click', '.enter-pvp-training-battle', function () {
+			lock_screen(true);
+			var _ = $(this);
+			$.ajax({
+				url:		make_url('battle_pvps#accept'),
+				data:		{
+					id: _.data('id')
+				},
+				dataType:	'json',
+				type:		'post',
+				success:	function (result) {
+					if (result.success) {
+						location.href = make_url('battle_pvps#fight');
+					} else {
+						lock_screen(false);
+						format_error(result);
+					}
+				}
+			});
+		});
+	}
 
     // Deleta uma Sala de Treinamento
     $('#waiting').on('click', '.decline', function () {
@@ -69,8 +92,6 @@
                 }
             });
         });
-
-        // room_search_friend.trigger('submit');
     }
 
 
