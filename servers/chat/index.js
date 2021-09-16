@@ -8,6 +8,7 @@ const emoticons		= require('./emoticons');
 const bbcodes		= require('./bbcodes');
 const config		= require('./config');
 const db			= require('./db');
+const exp = require('constants');
 
 // Chat variables
 const players			= {};
@@ -124,8 +125,8 @@ const diffInSeconds = (d1, d2) => {
 };
 
 io.sockets.on('connection', (socket) => {
-	let _uid;
-	let _player;
+	let __uid;
+	let __player;
 
 	// We got a player connection
 	console.log('[SIO] Connection');
@@ -148,8 +149,8 @@ io.sockets.on('connection', (socket) => {
 			playersByName[decryptedData.name.toLowerCase()]		= players[decryptedData.uid];
 			lastMessages[decryptedData.user_id]					= null;
 
-			_uid												= decryptedData.uid;
-			_player												= players[decryptedData.uid];
+			__uid												= decryptedData.uid;
+			__player											= players[decryptedData.uid];
 
 			counters[decryptedData.uid]							= true;
 
@@ -186,21 +187,21 @@ io.sockets.on('connection', (socket) => {
 
 	// Mark a private message as read
 	socket.on('pvt-was-read', (data) => {
-		const pvtIndex = Object.keys(privates[_uid])[data.index];
-		if (privates[_uid] && privates[_uid][pvtIndex]) {
-			delete privates[_uid][pvtIndex];
+		const pvtIndex = Object.keys(privates[__uid])[data.index];
+		if (privates[__uid] && privates[__uid][pvtIndex]) {
+			delete privates[__uid][pvtIndex];
 		}
 	});
 
 	// Player want to send a message
 	socket.on('message', async (data) => {
-		if (!_player) {
+		if (!__player) {
 			console.log('invalid player trying to send a message');
 			return;
 		}
 
 		// Check for blacklisted words in the message
-		if (!_player.gm) {
+		if (!__player.gm) {
 			let hasBlacklistedWord = false;
 
 			blacklist.forEach((word) => {
@@ -220,11 +221,11 @@ io.sockets.on('connection', (socket) => {
 			}
 		}
 
-		if (data.channel == 'system' && !_player.gm) {
+		if (data.channel == 'system' && !__player.gm) {
 			return
 		}
 
-		if (!_player.gm) {
+		if (!__player.gm) {
 			data.message = phpjs.htmlspecialchars(data.message);
 		}
 
@@ -249,7 +250,7 @@ io.sockets.on('connection', (socket) => {
 			const playerDest	= players[data.dest]
 			// Check if the destination user has blocked the one that's sending the message
 			if (playerDest) {
-				if (playerDest.user_id == _player.user_id) {
+				if (playerDest.user_id == __player.user_id) {
 					socket.emit('broadcast', {
 						from: 'Sistema',
 						message: 'Você não pode enviar uma mensagem privada para você mesmo!',
@@ -259,7 +260,7 @@ io.sockets.on('connection', (socket) => {
 					return;
 				}
 
-				db.query(`SELECT id FROM chat_blocked WHERE user_id = ${playerDest.user_id} AND user_blocked = ${_player.user_id}`, (error, results, fields) => {
+				db.query(`SELECT id FROM chat_blocked WHERE user_id = ${playerDest.user_id} AND user_blocked = ${__player.user_id}`, (error, results, fields) => {
 					if (results.length) {
 						socket.emit('broadcast', {
 							from: 'Sistema',
@@ -269,15 +270,15 @@ io.sockets.on('connection', (socket) => {
 
 						return;
 					} else {
-						db.query(`INSERT INTO chats (from_id, to_id, from_user_id, to_user_id, channel, message) VALUES (${_player.uid}, ${playerDest.uid}, ${_player.user_id}, ${playerDest.user_id}, 'pvt', '${data.message}')`);
+						db.query(`INSERT INTO chats (from_id, to_id, from_user_id, to_user_id, channel, message) VALUES (${__player.uid}, ${playerDest.uid}, ${__player.user_id}, ${playerDest.user_id}, 'pvt', '${data.message}')`);
 
 						if (!privates[data.dest]) {
 							privates[data.dest] = {};
 						}
 						privates[data.dest][Math.random() * 512384] = {
-							name:		_player.name,
+							name:		__player.name,
 							message:	data.message,
-							id:			_player.uid,
+							id:			__player.uid,
 						};
 
 						return;
@@ -313,7 +314,7 @@ io.sockets.on('connection', (socket) => {
 			}
 
 			// Não pode bloquear você mesmo
-			if (playerToBlock.user_id == _player.user_id) {
+			if (playerToBlock.user_id == __player.user_id) {
 				socket.emit('broadcast', {
 					from: 'Sistema',
 					message: 'Você não pode bloquear a sua propria conta!',
@@ -323,7 +324,7 @@ io.sockets.on('connection', (socket) => {
 				return;
 			}
 
-			db.query(`INSERT INTO chat_blocked (user_id, user_blocked) VALUES (${_player.user_id}, ${playerToBlock.user_id})`);
+			db.query(`INSERT INTO chat_blocked (user_id, user_blocked) VALUES (${__player.user_id}, ${playerToBlock.user_id})`);
 
 			socket.emit('broadcast', {
 				from: 'Sistema',
@@ -336,9 +337,9 @@ io.sockets.on('connection', (socket) => {
 		// Set Channel Id
 		let channelId;
 		switch (data.channel) {
-			case 'faction':	channelId = _player.faction;	break;
-			case 'guild':	channelId = _player.guild;	break;
-			case 'battle':	channelId = _player.battle;	break;
+			case 'faction':	channelId = __player.faction;	break;
+			case 'guild':	channelId = __player.guild;	break;
+			case 'battle':	channelId = __player.battle;	break;
 		}
 
 		// Invalid Channel Id
@@ -349,7 +350,7 @@ io.sockets.on('connection', (socket) => {
 		}
 
 		// Check user global ban
-		if (_player.user_id && banned[_player.user_id]) {
+		if (__player.user_id && banned[__player.user_id]) {
 			socket.emit('broadcast', {
 				from: 'Sistema',
 				message: 'Você foi banido do chat!',
@@ -359,9 +360,9 @@ io.sockets.on('connection', (socket) => {
 			return;
 		}
 
-		if (!_player.gm) {
+		if (!__player.gm) {
 			const now = new Date();
-			const sendingTooOften = lastMessages[_player.user_id] && diffInSeconds(lastMessages[_player.user_id], now).seconds < 5;
+			const sendingTooOften = lastMessages[__player.user_id] && diffInSeconds(lastMessages[__player.user_id], now).seconds < 5;
 			if (sendingTooOften) {
 				socket.emit('broadcast', {
 					from: 'Sistema',
@@ -372,15 +373,15 @@ io.sockets.on('connection', (socket) => {
 				return;
 			}
 
-			lastMessages[_player.user_id]	= now;
+			lastMessages[__player.user_id]	= now;
 
 			// Character limtit for non-gm users
 			data.message	= data.message.substr(0, userMessageSize);
 		}
 
 		data.message	= haveUrl(data.message);
-		data.message	= bbcodes.parse(data.message, _player.gm)
-		data.message	= emoticons.parse(data.message, _player.gm);
+		data.message	= bbcodes.parse(data.message, __player.gm)
+		data.message	= emoticons.parse(data.message, __player.gm);
 
 		// If don't have Channel Id, set to default 0
 		if (!channelId) {
@@ -388,24 +389,24 @@ io.sockets.on('connection', (socket) => {
 		}
 
 		const broadcast = {
-			from:		_player.name,
-			avatar:		_player.avatar,
-			faction:	_player.faction,
+			from:		__player.name,
+			avatar:		__player.avatar,
+			faction:	__player.faction,
 			message:	data.message,
 			channel:	data.channel,
 			channel_id:	channelId,
-			id:			_player.uid,
-			user_id:	_player.user_id,
-			gm:			_player.gm,
+			id:			__player.uid,
+			user_id:	__player.user_id,
+			gm:			__player.gm,
 			when:		new Date(),
 		};
 
 		if (data.channel != 'faction') {
-			broadcast.color	= _player.color;
-			broadcast.icon	= _player.icon;
+			broadcast.color	= __player.color;
+			broadcast.icon	= __player.icon;
 		}
 
-		if (data.channel == 'guild' && _player.guild_owner) {
+		if (data.channel == 'guild' && __player.guild_owner) {
 			broadcast.color	= '#BF2121';
 		}
 
@@ -443,24 +444,24 @@ io.sockets.on('connection', (socket) => {
 
 	// Get player block list
 	socket.on('blocked-query', () => {
-		if (!players[_uid]) {
+		if (!players[__uid]) {
 			return;
 		}
 
-		db.query(`SELECT user_blocked FROM chat_blocked WHERE user_id = ${players[_uid].user_id}`, (error, results, fields) => {
+		db.query(`SELECT user_blocked FROM chat_blocked WHERE user_id = ${players[__uid].user_id}`, (error, results, fields) => {
 			socket.emit('blocked-broadcast', results.map((row) => row.user_blocked));
 		});
 	});
 
 	// Player queries for private messages
 	socket.on('pvt-query', (data) => {
-		if (!players[_uid]) {
+		if (!players[__uid]) {
 			return;
 		}
 
-		console.log(`[CHAT] Get private messages - ${_uid}`);
+		console.log(`[CHAT] Get private messages - ${__uid}`);
 
-		const privateMessages	= Object.values(privates[_uid] || {});
+		const privateMessages	= Object.values(privates[__uid] || {});
 		const broadcast			= privateMessages.map((message, i) => ({
 			from:		message.name,
 			message:	message.message,
@@ -476,16 +477,16 @@ io.sockets.on('connection', (socket) => {
 
 	// Player disconnect
 	socket.on('disconnect', () => {
-		console.log(`[SIO] Disconnect - ${_uid}`);
-		if (!players[_uid]) {
+		console.log(`[SIO] Disconnect - ${__uid}`);
+		if (!players[__uid]) {
 			return;
 		}
 
-		counters[_uid]	= false;
+		counters[__uid]	= false;
 
-		socket.leave(`faction_${players[_uid].faction}`);
-		socket.leave(`guild_${players[_uid].guild}`);
-		socket.leave(`battle_${players[_uid].battle}`);
+		socket.leave(`faction_${players[__uid].faction}`);
+		socket.leave(`guild_${players[__uid].guild}`);
+		socket.leave(`battle_${players[__uid].battle}`);
 		socket.leave('world_0');
 		socket.leave('system_0');
 	});
@@ -497,9 +498,7 @@ setInterval(() => {
 
 	blacklist	= []
 	db.query('SELECT * FROM chat_word_blacklist', (error, words, fields) => {
-		for (row in words) {
-			blacklist.push(row.expr);
-		}
+		words.map((row) => blacklist.push(row.expr));
 	});
 }, 2000);
 
@@ -509,9 +508,7 @@ setInterval(() => {
 
 	banned	= []
 	db.query('SELECT * FROM chat_banned', (error, users, fields) => {
-		for (row in users) {
-			banned[row.user_id]	= true;
-		}
+		users.map((row) => banned[row.user_id]	= true);
 	});
 }, 5000);
 
@@ -541,7 +538,7 @@ setInterval(() => {
 			return;
 		}
 
-		db.query(`UPDATE played_time SET minutes = minutes+1 WHERE player_id = ${user}`);
+		// db.query(`UPDATE played_time SET minutes = minutes+1 WHERE player_id = ${user}`);
 	});
 }, 60000);
 
