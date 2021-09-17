@@ -22,9 +22,3 @@ jobs:
 
             git status
             git pull https://fmedeiros95:${{ secrets.TOKEN }}@github.com/fmedeiros95/allstarsgame.git main
-
-            pm2 delete aasg-alerts
-            pm2 delete aasg-chat
-
-            pm2 start /var/www/allstarsgame/servers/highlights/index.js --name aasg-alerts
-            pm2 start /var/www/allstarsgame/servers/chat/index.js --name aasg-chat
