@@ -14,82 +14,78 @@ class UsersController extends Controller {
 
 		$errors			= [];
 
-		if (IS_MAINTENANCE) {
-			$errors[]	= t('characters.select.errors.is_maintenance');
-		} else {
-			if (FW_ENV != 'dev') {
-				if (!isset($_POST['g-recaptcha-response']) || !$_POST['g-recaptcha-response']) {
+		if (FW_ENV != 'dev') {
+			if (!isset($_POST['g-recaptcha-response']) || !$_POST['g-recaptcha-response']) {
+				$errors[]	= t('users.join.validators.captcha1');
+			} else {
+				$recaptcha	= new \ReCaptcha\ReCaptcha($this->recaptcha['secret']);
+				$resp		= $recaptcha->setExpectedHostname($_SERVER['SERVER_NAME'])
+					->verify($_POST['g-recaptcha-response'], $_SERVER['REMOTE_ADDR']);
+				if (!$resp->isSuccess()) {
 					$errors[]	= t('users.join.validators.captcha1');
+				}
+			}
+		}
+
+		if (!sizeof($errors)) {
+			if (!isset($_POST['name']) || !$_POST['name']) {
+				$errors[]	= t('users.join.validators.name');
+			}
+
+			if (!isset($_POST['email']) || !filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
+				$errors[]	= t('users.join.validators.email');
+			} else {
+				if (!isset($_POST['email_confirmation']) || !$_POST['email_confirmation']) {
+					$errors[]	= t('users.join.validators.email_confirmation');
 				} else {
-					$recaptcha	= new \ReCaptcha\ReCaptcha($this->recaptcha['secret']);
-					$resp		= $recaptcha->setExpectedHostname($_SERVER['SERVER_NAME'])
-						->verify($_POST['g-recaptcha-response'], $_SERVER['REMOTE_ADDR']);
-					if (!$resp->isSuccess()) {
-						$errors[]	= t('users.join.validators.captcha1');
+					if ($_POST['email'] !== $_POST['email_confirmation']) {
+						$errors[]	= t('users.join.validators.email_match');
+					} else {
+						if (User::find_first('email = "' . addslashes($_POST['email']) . '"')) {
+							$errors[]	= t('users.join.validators.email_exists');
+						}
 					}
 				}
 			}
 
-			if (!sizeof($errors)) {
-				if (!isset($_POST['name']) || !$_POST['name']) {
-					$errors[]	= t('users.join.validators.name');
-				}
-
-				if (!isset($_POST['email']) || !filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
-					$errors[]	= t('users.join.validators.email');
+			if (!isset($_POST['password']) || !$_POST['password']) {
+				$errors[]	= t('users.join.validators.password');
+			} else {
+				if (!isset($_POST['password_confirmation']) || !$_POST['password_confirmation']) {
+					$errors[]	= t('users.join.validators.password_confirmation');
 				} else {
-					if (!isset($_POST['email_confirmation']) || !$_POST['email_confirmation']) {
-						$errors[]	= t('users.join.validators.email_confirmation');
-					} else {
-						if ($_POST['email'] !== $_POST['email_confirmation']) {
-							$errors[]	= t('users.join.validators.email_match');
-						} else {
-							if (User::find_first('email = "' . addslashes($_POST['email']) . '"')) {
-								$errors[]	= t('users.join.validators.email_exists');
-							}
-						}
+					if ($_POST['password'] != $_POST['password_confirmation']) {
+						$errors[]	= t('users.join.validators.password_match');
+					}
+
+					if (strlen($_POST['password']) < 6) {
+						$errors[]	= t('users.join.validators.password_length');
 					}
 				}
+			}
 
-				if (!isset($_POST['password']) || !$_POST['password']) {
-					$errors[]	= t('users.join.validators.password');
-				} else {
-					if (!isset($_POST['password_confirmation']) || !$_POST['password_confirmation']) {
-						$errors[]	= t('users.join.validators.password_confirmation');
-					} else {
-						if ($_POST['password'] != $_POST['password_confirmation']) {
-							$errors[]	= t('users.join.validators.password_match');
-						}
+			if (!isset($_POST['country_id']) || !Country::includes($_POST['country_id'])) {
+				$errors[]	= t('users.join.validators.country');
+			}
 
-						if (strlen($_POST['password']) < 6) {
-							$errors[]	= t('users.join.validators.password_length');
-						}
-					}
-				}
+			if (!isset($_POST['gender']) || !in_array($_POST['gender'], array(1, 2))) {
+				$errors[]	= t('users.join.validators.gender');
+			}
 
-				if (!isset($_POST['country_id']) || !Country::includes($_POST['country_id'])) {
-					$errors[]	= t('users.join.validators.country');
-				}
+			if (!isset($_POST['term1']) || !$_POST['term1']) {
+				$errors[]	= t('users.join.validators.term1');
+			}
 
-				if (!isset($_POST['gender']) || !in_array($_POST['gender'], array(1, 2))) {
-					$errors[]	= t('users.join.validators.gender');
-				}
+			if (!isset($_POST['term2']) || !$_POST['term2']) {
+				$errors[]	= t('users.join.validators.term2');
+			}
 
-				if (!isset($_POST['term1']) || !$_POST['term1']) {
-					$errors[]	= t('users.join.validators.term1');
-				}
+			if (!isset($_POST['term3']) || !$_POST['term3']) {
+				$errors[]	= t('users.join.validators.term3');
+			}
 
-				if (!isset($_POST['term2']) || !$_POST['term2']) {
-					$errors[]	= t('users.join.validators.term2');
-				}
-
-				if (!isset($_POST['term3']) || !$_POST['term3']) {
-					$errors[]	= t('users.join.validators.term3');
-				}
-
-				if (!isset($_POST['term_all']) || !$_POST['term_all']) {
-					$errors[]	= t('users.join.validators.term_all');
-				}
+			if (!isset($_POST['term_all']) || !$_POST['term_all']) {
+				$errors[]	= t('users.join.validators.term_all');
 			}
 		}
 
