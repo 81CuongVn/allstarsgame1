@@ -186,7 +186,7 @@ socket.on('message', function (data) {
 	var m = $(document.createElement('DIV')).addClass('highlight-text');
 	var len = $('.highlight-window').length;
 
-	m.html('data.message');
+	m.html(data.message);
 	d.append(m);
 
 	$(document.body).append(d);
