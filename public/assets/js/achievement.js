@@ -10,14 +10,16 @@
         _.tab('show');
 
         $.ajax({
-            url: make_url('achievements#make_list'),
-            data: {
+            url:		results.data('url'),
+            data:		{
                 achievement_id: _.data('id')
             },
-            type: 'post',
-            success: function (result) {
+            type: 	'post',
+            success:	function (result) {
                 lock_screen(false);
                 results.html(result);
+
+				update_tooltips();
             }
         });
     });

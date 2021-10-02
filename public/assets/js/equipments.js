@@ -7,7 +7,7 @@
 			'<span class="rarity rarity-' + base.rarity + '">' + I18n.t('rarities.' + base.rarity) +
 			(parseInt(base.have_extra) ? ' - <span class="extra">' + I18n.t('equipments.attributes.have_extra') + '</span>' : '') +
 			'</span><hr /><div class="break"></div><table>';
-		var ignores = ['id', 'player_item_id', 'created_at', 'graduation_sorting', 'rarity', 'have_extra', 'is_new', 'cooldown_reduction_id', 'technique_attack_increase_id', 'technique_mana_reduction_id', 'technique_crit_increase_id', 'technique_zero_mana_id'];
+		var ignores = ['id', 'player_item_id', 'created_at', 'graduation_sorting', 'rarity', 'have_extra', 'is_new', 'cooldown_reduction_id', 'technique_attack_increase_id', 'technique_mana_reduction_id', 'technique_crit_increase_id', 'technique_zero_mana_id', 'for_inc_crit', 'for_inc_abs'];
 		var percents = ['currency_battle', 'exp_battle', 'currency_quest', 'exp_quest', 'luck_discount', 'consumable_price_discount', 'amplifier_price_discount', 'item_drop_increase', 'defense_technique_extra', 'generic_technique_damage', 'unique_technique_damage', 'technique_attack_increase', 'technique_mana_reduction', 'stamina_regen', 'life_regen', 'mana_regen', 'for_crit', 'for_inc_crit', 'for_abs', 'for_inc_abs', 'for_prec', 'for_inti', 'for_conv', 'technique_crit_increase'];
 		var colors = ['currency_battle', 'exp_battle', 'currency_quest', 'exp_quest', 'luck_discount', 'consumable_price_discount', 'amplifier_price_discount', 'item_drop_increase', 'defense_technique_extra', 'generic_technique_damage', 'unique_technique_damage', 'technique_attack_increase', 'technique_mana_reduction', 'stamina_regen', 'life_regen', 'mana_regen', 'technique_crit_increase'];
 		var with_ids = ['cooldown_reduction', 'technique_attack_increase', 'technique_mana_reduction', 'technique_crit_increase', 'technique_zero_mana'];
@@ -408,6 +408,9 @@
 
 	container.on('click', '.slot', function (e) {
 		var element = $(this);
+		if (element.hasClass('is-profile')) {
+			return;
+		}
 
 		var buttons = [];
 		if (!$(this).hasClass('equipped')) {

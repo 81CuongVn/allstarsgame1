@@ -1,4 +1,14 @@
 <?php echo partial('shared/title', array('title' => 'menus.grimoire', 'place' => 'menus.grimoire')) ?>
+<?php if (FW_ENV != 'dev') { ?>
+	<!-- AASG - Techniques -->
+	<ins class="adsbygoogle"
+		style="display:inline-block;width:728px;height:90px"
+		data-ad-client="ca-pub-6665062829379662"
+		data-ad-slot="7857252910"></ins>
+	<script>
+		(adsbygoogle = window.adsbygoogle || []).push({});
+	</script><br />
+<?php } ?>
 <?php if (!$player_tutorial->escola) { ?>
 	<script type="text/javascript">
 		$(function () {
@@ -40,12 +50,12 @@
 			<span class="amarelo"><?=$item->description()->name;?></span>
 		</div>
 		<div class="details" style="height: 95px">
-			<?php foreach($player->pages($item->id) as $page): ?>	
-				<?php 
+			<?php foreach($player->pages($item->id) as $page): ?>
+				<?php
 				$player_pages = $player->player_pages($page->id);
 				$class = "";
 				if (!$player_pages){
-					$class = "style='opacity:.3'";	
+					$class = "style='opacity:.3'";
 				}
 				?>
 				<div data-toggle="tooltip" data-title="<?php echo make_tooltip($page->description()->name); ?>" data-placement="bottom" style="display:inline-block; text-align:center">

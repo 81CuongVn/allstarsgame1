@@ -2,11 +2,6 @@
     var locked = [];
     var battle_container = $('#battle-container');
     var log_container = $('.log', battle_container);
-    var all_loaded = false;
-    var images_to_load = 0;
-    var load_count = 0;
-    var lcanvas = null;
-    var rcanvas = null;
     var max_log_scroll = 0;
     var current_log_scroll = 0;
     var ping_iv = null;
@@ -18,7 +13,7 @@
     var audio = $(document.createElement('AUDIO')).attr('src', resource_url('media/battle.mp3')).attr('type', 'audio/mpeg');
     var negatives = ['attack_speed', 'attack_speed_percent', 'slowness', 'slowness_percent', 'bleeding', 'bleeding_percent', 'next_mana_cost', 'stun', 'reduce_critical_damage', 'reduce_critical_damage_percent'];
     var hidden = ['bonus_exp_mission', 'bonus_exp_mission_percent', 'bonus_gold_mission', 'bonus_gold_mission_percent', 'bonus_stamina_max', 'currency_reward_extra', 'exp_reward_extra', 'currency_reward_extra_percent', 'exp_reward_extra_percent', 'bonus_stamina_heal', 'no_consume_stamina', 'fragment_find', 'item_find', 'pets_find'];
-    var images = [];
+	var is_my_turn = false;
 
     function update_log_tooltip() {
         $('.log .i', battle_container).each(function () {
@@ -28,7 +23,8 @@
                 content: $(document.getElementById(_.data('tooltip'))).html(),
                 html: true,
                 placement: 'bottom',
-                trigger: 'hover'
+                trigger: 'hover',
+				container: '.log'
             });
         });
     }
@@ -39,12 +35,14 @@
         var item = $(document.createElement('DIV')).addClass('item status');
         var item_id = 'i-' + (Math.random() * 65535) + '.' + (Math.random() * 65535);
         var popover = $(document.createElement('DIV')).attr('id', item_id).css({ display: 'none' });
-        var html = '<div class="modifier-tooltip">' + I18n.t('battles.status_tooltip.atk', { image: image_url('icons/for_atk.png'), value: status.atk }) + "<br />" +
-            I18n.t('battles.status_tooltip.def', { image: image_url('icons/for_def.png'), value: status.def }) + "<br />" +
-            I18n.t('battles.status_tooltip.crit', { image: image_url('icons/for_crit.png'), value: status.crit, inc: status.crit_inc }) + "<br />" +
-            I18n.t('battles.status_tooltip.abs', { image: image_url('icons/for_abs.png'), value: status.abs, inc: status.abs_inc }) + "<br />" +
-            I18n.t('battles.status_tooltip.prec', { image: image_url('icons/for_prec.png'), value: status.prec }) + "<br />" +
-            I18n.t('battles.status_tooltip.init', { image: image_url('icons/for_inti.png'), value: (status.init).toFixed(2), init: status.init.toFixed(2) }) + "<br />";
+        var html = '<div class="modifier-tooltip">' + I18n.t('battles.status_tooltip.atk', { image: image_url('icons/for_atk.png'), value: roundToTwo(status.atk) }) + "<br />" +
+            I18n.t('battles.status_tooltip.def', { image: image_url('icons/for_def.png'), value: roundToTwo(status.def) }) + "<br />" +
+            // I18n.t('battles.status_tooltip.crit', { image: image_url('icons/for_crit.png'), value: roundToTwo(status.crit), inc: roundToTwo(status.crit_inc) }) + "<br />" +
+            // I18n.t('battles.status_tooltip.abs', { image: image_url('icons/for_abs.png'), value: roundToTwo(status.abs), inc: roundToTwo(status.abs_inc) }) + "<br />" +
+			I18n.t('battles.status_tooltip.crit', { image: image_url('icons/for_crit.png'), value: roundToTwo(status.crit), min: roundToTwo(status.crit_inc.min), max: roundToTwo(status.crit_inc.max) }) + "<br />" +
+            I18n.t('battles.status_tooltip.abs', { image: image_url('icons/for_abs.png'), value: roundToTwo(status.abs), min: roundToTwo(status.abs_inc.min), max: roundToTwo(status.abs_inc.max) }) + "<br />" +
+            I18n.t('battles.status_tooltip.prec', { image: image_url('icons/for_prec.png'), value: roundToTwo(status.prec) }) + "<br />" +
+            I18n.t('battles.status_tooltip.init', { image: image_url('icons/for_inti.png'), value: roundToTwo(status.init), init: roundToTwo(status.init)}) + "<br />";
 
         item.append('<img src="' + image_url('battle/details.png') + '" class="technique-popover" data-placement="' + container.data('placement') + '" data-source="' + item_id + '" data-trigger="hover" data-placement="bottom"	/>')
         item.append(popover);
@@ -183,55 +181,17 @@
         }
     }
 
-    for (var i in images) {
-        var el = document.createElement('img');
-        el.src = image_url(images[i].url);
-        el.style.display = 'none';
-        el.onload = function () {
-            load_count++;
-
-            if (load_count >= images_to_load) {
-                all_loaded = true;
-            }
-
-            images[this.getAttribute('data-key')].loaded = true;
-        }
-
-        el.setAttribute('data-key', i);
-
-        images[i].element = el;
-        images_to_load++;
-    }
-
-    for (var i in images) {
-        document.body.appendChild(images[i].element);
-    }
-
     if (battle_container.length) {
-        $('.log-scroller .up', battle_container).on('click', function () {
-            current_log_scroll -= 10;
-
-            if (current_log_scroll < 0) {
-                current_log_scroll = 0;
-            }
-
-            log_container.scrollTop(current_log_scroll);
-        });
-
-        $('.log-scroller .down', battle_container).on('click', function () {
-            current_log_scroll += 10;
-            log_container.scrollTop(current_log_scroll);
-
-            if (current_log_scroll > log_container.scrollTop()) {
-                current_log_scroll = log_container.scrollTop();
-            }
-        });
-
         function parse_technique() {
             var _ = $(this);
 
-            if (locked[_.data('id')]) {
-                jalert(I18n.t('battles.errors.technique_locked'));
+			if (!is_my_turn) {
+				jalert(I18n.t('battles.errors.not_my_turn'), false);
+                return;
+			}
+
+            if (_.hasClass('locked') || locked[_.data('id')]) {
+                jalert(I18n.t('battles.errors.technique_locked'), false);
                 return;
             }
 
@@ -278,6 +238,8 @@
                 update_log_tooltip();
             }
 
+			is_my_turn = result.my_turn;
+
             if (!result.flight) {
                 if (result.tooltips && result.tooltips.length) {
                     result.tooltips.forEach(function (tooltip) {
@@ -302,10 +264,11 @@
                     $('.activatables-player .modifier-turn-data').remove();
                     $('.activatables-player .technique-popover').css({ opacity: 1 });
 
-                    //if ($('.activatables-enemy .modifier-turn-data').length && result.enemy.update_existent_locks) {
-                    $('.activatables-enemy .modifier-turn-data').remove();
-                    $('.activatables-enemy .technique-popover').css({ opacity: 1 });
-                    //}
+					// Update enemy existent locks
+                    if ($('.activatables-enemy .modifier-turn-data').length && result.enemy.update_existent_locks) {
+						$('.activatables-enemy .modifier-turn-data').remove();
+						$('.activatables-enemy .technique-popover').css({ opacity: 1 });
+                    }
 
                     result.enemy.locks.forEach(function (item) {
                         if (item.type == 'speciality' || item.type == 'ability') {
@@ -402,8 +365,9 @@
 
                 if (result.effects_roundup) {
                     ['p', 'e'].forEach(function (word) {
-                        /*if (word == 'e' && !result.enemy.update_existent_locks) {
-                                return;
+						// Update enemy existent locks
+                        /*if (word === 'e' && !result.enemy.update_existent_locks) {
+                            return false;
                         }*/
 
                         var fixed_values_positive = '';
@@ -475,29 +439,29 @@
                             }
                         }
 
-                        if (got_effect && normal_html) {
-                            var item = $(document.createElement('DIV')).addClass('item status');
-                            var item_id = 'i-' + (Math.random() * 65535) + '.' + (Math.random() * 65535);
-                            var popover = $(document.createElement('DIV')).attr('id', item_id).css({ display: 'none' });
+                        // if (got_effect && normal_html) {
+                        //     var item = $(document.createElement('DIV')).addClass('item status');
+                        //     var item_id = 'i-' + (Math.random() * 65535) + '.' + (Math.random() * 65535);
+                        //     var popover = $(document.createElement('DIV')).attr('id', item_id).css({ display: 'none' });
 
-                            item.append('<img src="' + image_url('battle/arrows.png') + '"	class="technique-popover" data-placement="' + container.data('placement') + '" data-source="' + item_id + '" data-trigger="hover" data-placement="bottom"	/>')
-                            item.append(popover);
-                            popover.append('<div class="modifier-tooltip">' + normal_html + '</div>');
-                            container.append(item);
+                        //     item.append('<img src="' + image_url('battle/arrows.png') + '"	class="technique-popover" data-placement="' + container.data('placement') + '" data-source="' + item_id + '" data-trigger="hover" data-placement="bottom"	/>')
+                        //     item.append(popover);
+                        //     popover.append('<div class="modifier-tooltip">' + normal_html + '</div>');
+                        //     container.append(item);
 
-                            $('img', item).each(function () {
-                                var _ = $(this);
+                        //     $('img', item).each(function () {
+                        //         var _ = $(this);
 
-                                _.popover({
-                                    content: function () {
-                                        return $(document.getElementById($(this).data('source'))).html();
-                                    },
-                                    html: true,
-                                    placement: _.data('placement'),
-                                    trigger: 'hover'
-                                });
-                            });
-                        }
+                        //         _.popover({
+                        //             content: function () {
+                        //                 return $(document.getElementById($(this).data('source'))).html();
+                        //             },
+                        //             html: true,
+                        //             placement: _.data('placement'),
+                        //             trigger: 'hover'
+                        //         });
+                        //     });
+                        // }
 
                         if (fixed_values_positive) {
                             var item = $(document.createElement('DIV')).addClass('item status');
@@ -629,22 +593,6 @@
                 $('#finished-message').html(result.finished);
                 $('#battle-container #technique-container').html('').hide();
                 $('#battle-container .player-container #players').css({ height: '430px' });
-
-                // var	win	= bootbox.dialog({
-                // 	message: result.finished,
-                // 	buttons: [{
-                // 		label:		'Fechar',
-                // 		class:		'btn btn-sm btn-default',
-                // 		callback:	function () {
-                // 			lock_screen(true);
-                // 			location.href	= result.redirect;
-                // 			// location.href	= parseInt(result.end_type) ? result.redirect : make_url('hospital') ;
-                // 		}
-                // 	}]
-                // });
-
-                // $('.modal-dialog', win).addClass('pattern-container');
-                // $('.modal-content', win).addClass('with-pattern');
             }
 
             if (result.messages && result.messages.length) {
@@ -724,3 +672,5 @@
         $(document.body).append(audio);
     })
 })();
+
+

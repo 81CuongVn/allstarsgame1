@@ -48,7 +48,7 @@
 			$attrPoints = $attrRate[$_];
 		}
 		?>
-		<div class="ability-speciality-box Ataque" style="width: 178px !important; height: auto !important; padding-bottom: 40px">
+		<div class="ability-speciality-box Ataque" style="height: auto !important; padding-bottom: 40px">
 			<div class="image">
 				<img src="<?php echo image_url('icons/' . str_replace('_trained', '', $_) . '.png') ?>" class="requirement-popover" data-source="#attribute-tooltip-<?php echo $_ ?>" data-title="<?php echo t('formula.tooltip.title.' . $_) ?>" data-trigger="hover" data-placement="bottom" />
 				<div id="attribute-tooltip-<?php echo $_ ?>" class="status-popover-container">
@@ -56,12 +56,12 @@
 				</div>
 			</div>
 			<div class="name" style="height: 60px !important;">
-				<span class="amarelo"><?php echo $attribute ?></span><br>
+				<span class="amarelo"><?php echo $attribute ?></span><br />
 				<span class="verde" style="font-size: 11px"><?php echo t('formula.tooltip.description2.' . $_, [
 					'points'	=> $attrPoints
 				]) ?></span>
 			</div>
-			<div class="description" style="height: auto; font-size:11px">
+			<div class="description" style="height: auto; font-size:11px" align="center">
 				<?php echo exp_bar($player->{$_} / $attrPoints, $max, 145);	?>
 			</div>
 			<div class="details text-center">

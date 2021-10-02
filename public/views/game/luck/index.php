@@ -1,4 +1,14 @@
 <?php echo partial('shared/title', array('title' => 'luck.index.title', 'place' => 'luck.index.title')) ?>
+<?php if (FW_ENV != 'dev') { ?>
+	<!-- AASG - Luck -->
+	<ins class="adsbygoogle"
+		style="display:inline-block;width:728px;height:90px"
+		data-ad-client="ca-pub-6665062829379662"
+		data-ad-slot="6444098891"></ins>
+	<script>
+		(adsbygoogle = window.adsbygoogle || []).push({});
+	</script><br />
+<?php } ?>
 <div id="luck-container">
 	<div id="daynames">
 		<?php for($f = 1; $f <= 7; $f++): ?>
@@ -55,17 +65,17 @@
 <ul class="nav nav-pills nav-justified" id="luck-list-tabs">
 	<?php $first = true; ?>
 	<?php foreach ($item_type_ids->result() as $item_type_id): ?>
-		<?php 
+		<?php
 			switch($item_type_id->item_type_id){
 				case 1:
 					$name = t('currencies.' . $player->character()->anime_id);
 					break;
 				default:
 					$name = t('luck.index.names.'.$item_type_id->item_type_id);
-					break;	
+					break;
 			}
-		?>	
-	
+		?>
+
 		<li <?php echo $first ? 'class="active"' : '' ?>><a href="#luck-tab-<?php echo $item_type_id->item_type_id ?>"><?php echo $name ?></a></li>
 		<?php $first = false; ?>
 	<?php endforeach ?>
@@ -75,7 +85,7 @@
 	<?php $first = true; ?>
 	<?php foreach ($item_type_ids->result() as $item_type_id): ?>
 	<div class="tab-pane<?php echo $first ? ' active' : '' ?>" id="luck-tab-<?php echo $item_type_id->item_type_id ?>">
-	
+
 		<div class="barra-secao barra-secao-<?php echo $player->character()->anime_id ?>">
 			<table width="725" border="0" cellpadding="0" cellspacing="0">
 				<tr>
@@ -89,7 +99,7 @@
 			<?php $counter = 0; ?>
 			<?php foreach ($reward_list->result() as $choosen_reward): ?>
 				<?php if ($choosen_reward->item_type_id != $item_type_id->item_type_id) { continue; } ?>
-	
+
 				<?php
 					$color	= $counter++ % 2 ? '091e30' : '173148';
 				?>
@@ -97,30 +107,30 @@
 					<td align="center">
 						<?php
 							$message	= '';
-							
+
 							if($choosen_reward->enchant_points) {
 								$message	.= highamount($choosen_reward->quantity) . ' ' . t('luck.index.names.8');
 							}
-							
+
 							if($choosen_reward->currency) {
 								$message	.= highamount($choosen_reward->currency) . ' ' . t('currencies.' . $player->character()->anime_id);
 							}
 							if($choosen_reward->exp) {
 								$message	.= highamount($choosen_reward->exp) . ' ' . t('attributes.attributes.exp2');
 							}
-		
+
 							if($choosen_reward->credits) {
 								$message	.= highamount($choosen_reward->credits) . ' ' . t('currencies.credits');
 							}
 							if($choosen_reward->equipment) {
 								$message	.= $choosen_reward->equipment . ' ' . t('luck.index.header.equipment');
 							}
-		
+
 							if($choosen_reward->item_id) {
 								$item		= Item::find_first($choosen_reward->item_id);
 								$message	.= $item->description()->name . ' x' . $choosen_reward->quantity;
 							}
-		
+
 							$ats	= array(
 								'for_atk'		=> t('formula.for_atk'),
 								'for_def'		=> t('formula.for_def'),
@@ -131,7 +141,7 @@
 								'for_inc_crit'	=> t('formula.for_inc_crit'),
 								'for_inc_abs'	=> t('formula.for_inc_abs')
 							);
-		
+
 							foreach ($ats as $key => $value) {
 								if($choosen_reward->$key) {
 									$message	.= t('luck.index.messages.point', array('count' => highamount($choosen_reward->$key), 'attribute' => $value));
@@ -150,7 +160,7 @@
 				<tr height="4"></tr>
 			<?php endforeach ?>
 		</table>
-	</div>	
+	</div>
 	<?php $first = false; ?>
 	<?php endforeach ?>
-</div>	
+</div>

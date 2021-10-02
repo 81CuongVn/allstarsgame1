@@ -110,17 +110,41 @@ if ($is_dbl) {
 	'title'	=> 'characters.status.title',
 	'place'	=> 'characters.status.title'
 ]);?>
+<?php if (FW_ENV != 'dev') { ?>
+	<!-- AASG - Personagem -->
+	<ins class="adsbygoogle"
+		style="display:inline-block;width:728px;height:90px"
+		data-ad-client="ca-pub-6665062829379662"
+		data-ad-slot="7609647387"></ins>
+	<script>
+		(adsbygoogle = window.adsbygoogle || []).push({});
+	</script><br />
+<?php } ?>
 <div style="width: 730px; position: relative;">
     <div style="position: relative; float: left; width:365px;">
 		<div class="tutorial_formulas">
 			<div class="titulo-home"><p>Fórmulas</p></div>
 			<?php foreach ($formulas as $_ => $formula) { ?>
+				<?php
+				if (in_array($_, ['for_crit', 'for_abs'])) {
+					$function		= $_ . '_inc';
+					$formule		= $player->{$function}();
+					$description	= t('formula.tooltip.description.' . $_, [
+						'min'	=> $formule['min'],
+						'max'	=> $formule['max']
+					]);
+				} else {
+					$description	= t('formula.tooltip.description.' . $_);
+				}
+				?>
 				<div class="bg_td">
 					<div class="amarelo atr_float" style="width: 130px; text-align:left; padding-left:16px; text-align: center"><?=$formula;?></div>
 					<div class="atr_float" style="width: 20px; text-align:left;margin-left: 6px;">
 						<img src="<?=image_url('icons/' . $_ . '.png');?>" style="position: relative; top: -5px; left: 2px;" class="requirement-popover" data-source="#attribute-tooltip-<?=$_;?>" data-title="<?=t('formula.tooltip.title.' . $_);?>" data-trigger="hover" data-placement="bottom" />
 						<div id="attribute-tooltip-<?=$_;?>" class="status-popover-container">
-							<div class="status-popover-content"><?=t('formula.tooltip.description.' . $_);?></div>
+							<div class="status-popover-content">
+								<?=$description;?>
+							</div>
 						</div>
 					</div>
 					<div class="atr_float" style="margin-top: 7px; margin-left: 20px">

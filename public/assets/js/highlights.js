@@ -161,7 +161,7 @@ function createInviteModal(eventId) {
 
 var socket = io.connect(_highlights_server);
 socket.on('connect', function () {
-	console.log('Highlights service connected');
+	console.log('Highlights service connected!');
 
 	socket.emit('set-language', {
 		lang: _language
@@ -174,8 +174,8 @@ socket.on('connect', function () {
 	};
 });
 
-socket.on('error', function () {
-	console.log('Highlights service error');
+socket.on('error', function (arguments) {
+	console.log('Highlights service error!');
 	console.log(arguments);
 });
 
@@ -190,6 +190,12 @@ socket.on('message', function (data) {
 	d.append(m);
 
 	$(document.body).append(d);
+
+	d.on('click', function() {
+		$(this).animate({opacity: 0}, function () {
+			$(this).remove();
+		});
+	})
 
 	if(len) {
 		d.css({marginTop: len * (d.height() + 10)});

@@ -1,3 +1,25 @@
+@charset "UTF-8";
+
+/* Google Fonts */
+@import url(https://fonts.googleapis.com/css?family=Nunito:400,600,700,900);
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,900);
+
+/* Game Modules / Helpers */
+@import url(helpers.css);
+@import url(bootstrap-theme.css);
+@import url(anivers.css);
+@import url(inventory.css);
+@import url(battle.css);
+@import url(chat.css);
+@import url(quests.css);
+@import url(equipments.css);
+@import url(techniques.css);
+@import url(history_mode.css);
+@import url(events.css);
+@import url(characters.css);
+@import url(luck.css);
+@import url(highlights.css);
+
 @-moz-keyframes spin {
 	100% {
 		-moz-transform: rotate(360deg);
@@ -1757,11 +1779,13 @@ table hr {
 	display: block;
 	background-color: rgba(0, 0, 0, .85)
 }
+.menu .menu-content ul li ul li.active,
 .menu .menu-content ul li ul li:hover,
 .menu .menu-content ul li ul li:active {
 	background-color: rgba(51, 122, 183, .5);
 	border-radius: 2px;
 }
+.menu .menu-content ul li ul li.active a,
 .menu .menu-content ul li ul li:hover a,
 .menu .menu-content ul li ul li:hover a:active,
 .menu .menu-content ul li ul li:active a,

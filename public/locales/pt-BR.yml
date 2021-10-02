@@ -34,10 +34,11 @@ pt-BR:
     report_users: Relatório de Usuários
     report_players: Relatório de Personagens
   menus:
-    admin: Administração
+    quests: Misssões
+    rules: Regras & Punições
+    admin: Painel Administrativo
     discord: Servidor no Discord
     whatsapp: Grupo no WhatsApp
-    tournaments: Torneio All-Star
     tutorial: Tutorial
     objectives: Objetivos de Round
     quests_battle: Missões de Combate
@@ -92,6 +93,7 @@ pt-BR:
     guild_quests_daily: Missões Semanais
     battles_ranked: Liga All-Stars
     battles:
+      field: Campo de Batalha
       npc: Batalha NPC
       pvp: Batalha PVP
       npc_in_battle: Batalha com NPC
@@ -107,8 +109,7 @@ pt-BR:
       rankeds: Liga All-Stars
       battles: Combates
     prox_level: Ir para o próximo nível
-    support: |
-      <b>Suporte</b>
+    support: Área de Suporte
     quests_time: Missões de Tempo
     quests_time_wait: Status da Missão de Tempo
     quests_pet: Missões de Mascote
@@ -714,8 +715,7 @@ pt-BR:
       having_points: |
         Você tem <span class="verde">#{total} ponto(s)</span> para treinar seu personagem, preste atenção nos informativos do treino antes de usá-los.<br /><br />
         <span class="laranja">Você receberá:</span><br />
-        - 2 Pontos de treino a cada Nível de sua Conta.<br />
-        - 1 Ponto de treino a cada 5 Níveis do Personagem.
+        - 1 Pontos de treino a cada Nível de sua Conta.
       no_points: Você não tem mais pontos para distribuir! Para conseguir mais pontos, você precisa treinar ou aumentar o nível da sua conta.
       info: Quando a barra de treinamento se completar, você receberá 1 ponto para distribuir em seus atributos!
       distribute: Distribuir
@@ -990,10 +990,14 @@ pt-BR:
         <img src="#{image}" width="16px" /><span style="margin-left:3px">Ataque:</span> #{value}
       def: |
         <img src="#{image}" width="16px"/><span style="margin-left:3px">Defesa:</span> #{value}
-      crit: |
+      crit_old: |
         <img src="#{image}" width="16px" /><span style="margin-left:3px">Crítico:</span> #{value}% ( #{inc}% de Dano Crítico )
-      abs: |
+      abs_old: |
         <img src="#{image}" width="16px"/><span style="margin-left:3px">Absorção:</span> #{value}% ( #{inc}% de Dano Absorvido )
+      crit: |
+        <img src="#{image}" width="16px" /><span style="margin-left:3px">Crítico:</span> #{value}% ( de #{min}% à #{max}% )
+      abs: |
+        <img src="#{image}" width="16px"/><span style="margin-left:3px">Absorção:</span> #{value}% ( de #{min}% à #{max}% )
       prec: |
         <img src="#{image}" width="16px"/><span style="margin-left:3px">Precisão:</span> #{value}%
       inti: |
@@ -1488,8 +1492,14 @@ pt-BR:
         for_atk: Esse é o total de seu ataque fora de combate e ele é somado ao valor dos seus golpes ofensivos em batalha
         for_def: Esse é o total de sua defesa fora de combate e ela é somado ao valor dos seus golpes defensivos em batalha
         for_hit: Esse é o total de sua chance de acerto fora de combate e ela fará com que você não erre seus golpes em batalha
-        for_crit: Esse é o total de seu crítico fora de combate e com ele seus golpes ocasionalmente poderão ser mais poderosos
-        for_abs: Esse é o total de sua absorção fora de combate e com ela seus golpes ocasionalmente recebidos poderão ser mais fracos
+        for_crit: |
+          Esse é o total de seu crítico fora de combate e com ele seus golpes ocasionalmente poderão ser mais poderosos<br /><br />
+          <b class="amarelo">Minímo:</b> #{min}%<br />
+          <b class="amarelo">Máximo:</b> #{max}%
+        for_abs: |
+          Esse é o total de sua absorção fora de combate e com ela seus golpes ocasionalmente recebidos poderão ser mais fracos<br /><br />
+          <b class="amarelo">Minímo:</b> #{min}%<br />
+          <b class="amarelo">Máximo:</b> #{max}%
         for_prec: Esse é o total de sua precisão fora de combate e com ela seus golpes ocasionalmente poderão ignorar a defesa de seu oponente
         for_inti: Esse é o total de sua intimidação fora de combate e ela reduzirá o total de chance de acerto do seu oponente em combate
         for_conv: Esse é o total de sua convicção fora de combate e ele aumentará o total de iniciativa do seu personagem em combate
@@ -1655,6 +1665,9 @@ pt-BR:
       <p>Você não tem privilégios suficiente para acessar a página solicitada.</p>
       <p>Se você acha que isso é um problema, por favor entre em contato com o administrador</p>
   global:
+    remaining: Restante
+    remaining_uses: |
+      <strong class="amarelo">Restante:</strong> #{remaining} uso(s)
     wanted: Procurado
     wanted_reward: Recompensa
     guild: Organização
@@ -1943,10 +1956,14 @@ pt-BR:
         <img src="#{image}" width="16px" /><span style="margin-left:3px">Ataque:</span> #{value}
       def: |
         <img src="#{image}" width="16px"/><span style="margin-left:3px">Defesa:</span> #{value}
-      crit: |
+      crit_old: |
         <img src="#{image}" width="16px" /><span style="margin-left:3px">Crítico:</span> #{value}% ( #{inc}% de Dano Crítico )
-      abs: |
+      abs_old: |
         <img src="#{image}" width="16px"/><span style="margin-left:3px">Absorção:</span> #{value}% ( #{inc}% de Dano Absorvido )
+      crit: |
+        <img src="#{image}" width="16px" /><span style="margin-left:3px">Crítico:</span> #{value}% ( de #{min}% à #{max}% )
+      abs: |
+        <img src="#{image}" width="16px"/><span style="margin-left:3px">Absorção:</span> #{value}% ( de #{min}% à #{max}% )
       prec: |
         <img src="#{image}" width="16px"/><span style="margin-left:3px">Precisão:</span> #{value}%
       inti: |
@@ -2424,39 +2441,6 @@ pt-BR:
       not_enough_vip: Você não tem estrela(s) suficiente
       invalid_character: Personagem inválido
       dont_have: Você não tem mais esse talento disponivel para ativa-lo.
-  tournaments:
-    requirements:
-      level: |
-        Você precisa ter nível #{level} ou maior
-    success:
-      subscribe: Inscrição realizada com sucesso!
-    errors:
-      already_subscribed: Você já tem um personagens inscrito nesse torneio!
-      wait_draw: Aguardando o sorteio da chave.
-      enough_credits: Você não possui estrelas suficientes
-      enough_currency: |
-        Você não possui #{currency} suficientes
-    view:
-      bracket: Chave do Torneio
-      players: Jogadores inscritos no torneio
-    status:
-      canceled: Cancelado
-      finished: Finalizado
-    rounds:
-      subscriptions: Inscrições
-      final: Final
-      semifinal: Semifinal
-      quarterfinals: Quartas de inal
-      normal: |
-        Rodada #{round}
-    title: Torneio ALl-Star
-    info:
-      title: Como funciona o torneio?
-      description: |
-        Os torneios são realizados toda sexta-feira, sábado e domingo.<br />
-        As inscrições serão encerradas 30 minutos antes do inicio do torneio. A inscrição pode ser paga com #{currency} ou Estrelas<br /><br />
-
-        <span class="laranja">* Caso o torneio não alcance o total de inscrições, o mesmo será cancelado e a taxa de inscrição reembolsada.</span>
   welcome_message:
     subject: Seja bem vindo(a)!
     message: |
@@ -2476,3 +2460,248 @@ pt-BR:
       paypal_brl: Paypal BRL
       paypal_usd: Paypal USD
       paypal_eur: Paypal EUR
+  profile:
+    unknow:
+      title: Jogador não encontrado
+      description: |
+        Infelizmente não foi possível localizar o jogador solicitado.<br />
+        Verifique as informações e tente novamente!
+  legal:
+    index:
+      title: Aviso Legal
+      text: |
+        <em>#{game}</em> é um site de fãs, não tendo nenhuma relação com qualquer série ou
+        personagem citado no site, bem como nenhuma participação em qualquer etapa de produção
+        ou comercialização das séries.<br />
+        <br />
+        O sistema de jogo baseado em WEB <em>#{game}</em> foi desenvolvido por uma equipe de fãs de
+        Animes, sendo gratuito e sem fins lucrativos, podendo sofrer alterações a qualquer momento
+        sem prévio aviso. Todos os direitos relativos ao sistema de jogo baseado em WEB <em>#{game}</em>,
+        bem como os de utilização do software e de sua base de dados, são de propriedade da
+        referida equipe, nos termos dos art. 1&ordm; e 2&ordm; da Lei Brasileira de Proteção ao Software &ndash; Lei
+        Federal n.&ordm; 9.609/98. O objetivo do site é a divulgação do anime/mangá como fonte de cultura
+        para o público em geral, nos termos do art. 215 da Constituição Federal de 1988 da República
+        Federativa do Brasil, respeitados os respectivos direitos autorais, de propriedade de seus respectivos criadores.<br />
+        <br />
+        Todas as imagens, logotipos e nomes do anime supracitado são marcas registradas de seu
+        criador, pelo que o uso de &ldquo;screenshots&rdquo; dos personagens e eventuais referências à série não
+        constitui ofensa aos direitos autorais dos proprietários da série, nos termos do art. 46, inciso
+        VIII da Lei Brasileira de Direitos Autorais &ndash; Lei Federal n.&ordm; 9610/98, e art. 13 do Acordo
+        Internacional sobre Aspectos dos Direitos de Propriedade Intelectual Relacionados ao
+        Comércio (<em>TRIPS &ndash; Trade Related Aspects of Intellectual Property Rights</em>).<br />
+        <br />
+        Para todas as questões relacionadas ao servidor no qual a mídia específica ao jogo é
+        disponibilizada, informações originadas deste servidor residem em um sistema de computador
+        financiado pela equipe de fãs responsável pelo sistema de jogo e/ou terceiros a ela associados,
+        podendo a utilização deste sistema ser monitorada para fins de segurança. Todo acesso não autorizado
+        a este sistema, por quaisquer meios, é proibido, e o infrator está sujeito às sanções
+        penais cabíveis &ndash; sem prejuízo da responsabilização civil e consequente indenização por perdas
+        e danos, nos termos dos arts. 186, 187 e 927, todos do Código Civil Brasileiro de 2002.<br />
+        <br />
+        Em nenhuma hipótese poderá o site <em>#{game}</em>, bem como sua equipe responsável ou
+        quaisquer pessoas ou sites relacionados a este, serem responsabilizados por qualquer usuário
+        ou parte legitimada pela ocorrência de quaisquer danos diretos, indiretos, potenciais ou outros
+        danos conseq&uuml;entes da utilização deste site ou qualquer de seus links, estando cientes desde
+        já da possibilidade &ndash; ainda que tomadas todas as diligências necessárias ao bom
+        funcionamento do programa por parte da equipe &ndash; da ocorrência de tais danos.<br />
+        <br />
+        Qualquer tipo de arrecadação ou doações feitas ao <em>#{game}</em> serão revertidas em
+        melhorias ao site, divulgação deste e do anime, em observância ao projeto não ter quaisquer
+        fins lucrativos.
+        Todas as doações são pessoais e intransferiveis, ou seja, não podem ser repassadas a outro jogador ou conta cadastrada no jogo<br />
+        <br />
+        Ao continuar o acesso ao <em>#{game}</em>, você está expressamente concordando com todos os
+        avisos e condições de uso citadas no site, bem como com todos os termos supracitados,
+        afirmando ainda que você preenche os requisitos estabelecidos em Lei sobre o conteúdo e
+        utilização deste site.
+    privacy:
+      title: Política de Privacidade
+      text: |
+        <b style="font-size:14px; color:#399de2">Política Geral de Respeito ao Usuário</b><br /><br />
+        Os termos a seguir regulam a política do <em>#{game}</em> sobre a obtenção e utilização de
+        informações de seus usuários, pelo que estes, ao utilizar o <em>#{game}</em>, declaram estar
+        cientes e concordar com todos seus termos.<br /><br />
+
+        Em linhas gerais, <em>#{game}</em> valoriza a privacidade de seus membros e usuários, e não
+        compartilhará com terceiros nenhuma informação pessoal de seus usuários, incluindo e-mail,
+        nome, endereço ou localização. Por fim, ao utilizar o <em>#{game}</em>, o endereço de IP e
+        respectivo servidor do usuário serão registrados para fins estatísticos e razões de segurança.<br /><br />
+
+        <b style="font-size:14px; color:#399de2">Utilização de "Cookies"</b><br /><br />
+        Um "cookie" é um pequeno arquivo de texto colocado no sistema do usuário registrado entrar
+        no <em>#{game}</em> (assim como na maioria dos sites). Este arquivo tem a finalidade de ser o
+        cartão de identificação de cada usuário, é único e somente pode ser acessado pelo servidor
+        que enviou tal arquivo ao usuário. “Cookies” são utilizados exclusivamente para registrar as
+        preferências dos usuários dentro dos domínios do <em>#{game}</em>, ajudando-nos a desenvolver
+        cada vez mais um site que atenda às expectativas de nossos usuários.<br /><br />
+
+        <b style="font-size:14px; color:#399de2">Armazenamento e Divulgação de Informações</b><br /><br />
+        <em>#{game}</em> pode armazenar e, excepcionalmente, divulgar informações pessoais de seus
+        usuários, quando permitido ou exigido por Lei, de acordo com sua conveniência e necessidade.
+        Desta forma, poderão ser divulgadas informações armazenadas pelo servidor do site para
+        satisfazer determinações legais, requerimentos regulatórios das autoridades competentes,
+        bem como quando necessária à proteção dos direitos de propriedade do sistema de jogo ou
+        garantia da segurança de seus usuários e do público em geral.<br /><br />
+
+        <b style="font-size:14px; color:#399de2">Segurança das Informações</b><br /><br />
+        O site e sistema de jogo <em>#{game}</em> promove razoáveis esforços para proteger a segurança
+        de informações pessoais, tais como utilização de senhas e usos de tecnologia como
+        criptografia, procedimentos de controle e firewalls, dentre outros mecanismos de segurança.
+        Aconselhamos ao usuário, no momento de seu registro, a cadastrar uma senha que contenha
+        letras e números, bem como não divulgá-la a ninguém, a fim de proteger sua conta pessoal no
+        <em>#{game}</em>. Qualquer acesso proveniente da conta do usuário é de sua inteira e exclusiva
+        responsabilidade, ainda que comprovadamente realizado por outras pessoas que não o
+        usuário registrado.<br /><br />
+
+        O <em>#{game}</em> se reserva, comprovada a má utilização do site pelo usuário – dentre elas a
+        utilização de falhas de programação do próprio jogo (“bugs”) ou programas específicos para
+        trapacear –ou verificada conduta em desacordo com os termos do site, ao direito de tomar
+        quaisquer medidas que julgar necessárias, dentre elas a exclusão permanente da conta do
+        usuário.<br /><br />
+
+        <b style="font-size:14px; color:#399de2">Alteração das Políticas de Privacidade e Uso do Site</b><br /><br />
+        <em>#{game}</em> se reserva no direito de mudar quaisquer termos e políticas de utilização neste
+        site, a qualquer momento, sem a prévia notificação de seus usuários. Em caso de quaisquer
+        comentários, questionamentos ou dúvidas dos usuários sobre este ou qualquer outro termo
+        presente neste site, estas deverão ser enviadas para nós no seguinte endereço eletrônico:
+        <a href="mailto:animeallstarsgamebr@gmail.com">animeallstarsgamebr@gmail.com</a>.<br /><br />
+        Ao continuar o acesso ao <em>#{game}</em>, você está expressamente concordando com todos os
+        avisos e condições de uso citadas no site, bem como com todos os termos supracitados,
+        afirmando ainda que você preenche os requisitos estabelecidos em Lei sobre o conteúdo e
+        utilização deste site.
+    terms:
+      title: Termos de Uso
+      text: |
+        <b style="font-size:13px; color:#399de2">Uso do HTML, design e conteúdo de #{game}.</b><br><br>
+        Ao utilizar o <em>#{game}</em>, o usuário aceita em não utilizar nenhum elemento de HTML, design<br>
+        ou conteúdo do site, sem a devida permissão de seus proprietários. Em caso de
+        descumprimento desta obrigação por parte do usuário, este será notificado para remover
+        qualquer conteúdo do qual tenha indevidamente se apropriado, no prazo de 48 horas, sob
+        pena de serem tomadas todas as medidas legais cabíveis.<br><br>
+
+        <b style="font-size:13px; color:#399de2">Postagem de Notícias</b><br><br>
+        Todas as notícias postadas no <em>#{game}</em>, são para uso exclusivo do site, a não ser que outra
+        fonte seja citada, sendo permitida sua referência em qualquer meio, desde que reproduzida
+        em sua íntegra e citado o site <em>#{game}</em> como fonte.<br><br>
+
+        <b style="font-size:13px; color:#399de2">Contribuições de Dados pelos Usuários</b><br><br>
+        Ocasionalmente são nos enviadas contribuições da dados pelos usuários, nas mais diversas
+        formas (arte, desenhos, fanfics, vídeos, etc.). Pelo presente termo o usuário, ao enviar
+        contribuições de dados sob qualquer forma, afirma ceder a propriedade de tais dados ao <em>#{game}</em>, que fica livre para utilizar ou não tais dados de acordo com sua conveniência e
+        necessidade, podendo inclusive serem utilizados neste site.<br><br>
+
+        <b style="font-size:13px; color:#399de2">Download de Multimídias e Eventuais Incompatibilidades e/ou Danos</b><br><br>
+        Ao utilizar o <em>#{game}</em>, o usuário afirma ter ciência e concordar que em nenhuma hipótese
+        poderá o site <em>#{game}</em>, bem como sua equipe responsável ou quaisquer pessoas ou sites
+        relacionados a este, serem responsabilizados por qualquer usuário ou parte legitimada pela
+        ocorrência de quaisquer danos diretos, indiretos, potenciais ou outros danos conseqüentes da
+        utilização ou incompatibilidade deste site ou qualquer de seus links, afirmando ainda o usuário
+        estar ciente desde já da possibilidade – ainda que tomadas todas as diligências necessárias ao
+        bom funcionamento do programa por parte da equipe – da ocorrência de tais danos e/ou
+        incompatibilidades.<br><br>
+        Ao “dowloadear” qualquer mídia ou imagem, o usuário afirma ainda que detém a posse do
+        material original, ou no caso de não detê-la, compromete-se a deletar a referida mídia no
+        prazo de 24 horas, pelo que o <em>#{game}</em> não se responsabiliza pelas ações e/ou omissões
+        de seus usuários.<br><br>
+
+        <b style="font-size:13px; color:#399de2">Acesso ao Servidor</b><br><br>
+        Para todas as questões relacionadas ao servidor no qual a mídia específica ao jogo é
+        disponibilizada, informações originadas deste servidor residem em um sistema de computador
+        financiado pela equipe de fãs responsável pelo sistema de jogo e/ou terceiros a ela associados.
+        Ao utilizar o <em>#{game}</em>, o usuário afirma estar ciente e de acordo que a utilização deste
+        sistema poderá ser monitorada para fins de segurança. Afirma ainda o usuário estar ciente que
+        todo acesso não-autorizado a este sistema, por quaisquer meios, é expressamente proibido,
+        estando sujeito o usuário infrator, em caso de violação, às sanções penais cabíveis – sem
+        prejuízo da responsabilização civil e consequente indenização por perdas e danos, nos termos
+        dos arts. 186, 187 e 927, todos do Código Civil Brasileiro de 2002.<br><br>
+
+        Ao continuar o acesso ao <em>#{game}</em>, você está expressamente concordando com todos os
+        avisos e condições de uso citadas no site, bem como com todos os termos supracitados,
+        afirmando ainda que você preenche os requisitos estabelecidos em Lei sobre o conteúdo e
+        utilização deste site.
+    rules:
+      title: Regras e Punições
+      text: |
+        O <b>#{game}</b> conta com regras simples, mas necessárias para o convívio ideal entre os jogadores.
+        Regras fundamentais e importantes, para melhor orientar a conduta do jogador.
+        Se houver dúvidas se estará infringindo alguma delas, entre em contato com o Suporte, e espere ter a resposta.
+        No decorrer do jogo, podemos adicionar novas regras e punições, dependendo dos acontecimentos.<br /><br />
+
+        Os jogadores que não as cumprirem, ignorarem ou simplesmente tentar burlá-las, poderão ser punidos de acordo com as regras, que podem ser alteradas, sem aviso prévio.<br /><br />
+
+        <b>Temos como base, dois conceitos simples, que acabam abrindo um leque de opções dentro de cada uma delas:</b><br />
+        - Os jogadores não podem utilizar métodos imprevistos no jogo, que dêem vantagens  em relação aos outros jogadores ou crie desvantagens para os outros jogadores<br />
+        - Ofensas no geral, contra outros jogadores e administradores não são permitidas. Sobre ofensas, palavras, nomes e imagens estão inclusas.<br /><br />
+
+        Quando usamos a expressão roubar, nós nos referimos a qualquer forma de exploração que exista no jogo que lhe dê vantagem sobre os outros de forma ilegal ou não prevista.
+        Isto inclui ter mais de uma conta na qual se use para ter vantagem, se aproveitar de bugs no jogo ao invés de reportá-los aos administradores.<br /><br />
+
+        Ofender, inclui imagens e palavras que possam ofender os outros.
+        Isto também inclui spam no sistema de mensagens, chat, ofensas no fórum ou em nome de seus personagens, equipes e/ou organizações.
+        Caso você seja uma pessoa de bom senso, não terá nenhum tipo de problema.<br /><br />
+
+        São regras bem simples, que não há motivos para a falta de compreensão ou descumprí-las. Mas podemos deixar alguns termos, com uma melhor compreensão:<br><br>
+
+        <b style="font-size: 14px; color:#399de2;">1) Multi conta:</b><br />
+        - Multi é o mesmo que ter mais de uma conta, para tirar vantagem.<br />
+        - No #{game} é permitido ter mais de uma conta, contudo se você usar para ajudar na pontuação de um personagem principal, com batalhas, isto JAMAIS será permitido.<br />
+        - Caso você tenha uma conta e compartilhe o mesmo computador e/ou internet com um amigo, irmão ou outro parente, deve nos informar imediatamente, pois todos de sua família podem jogar, mas em momento algum, devem BATALHAR ENTRE SÍ.<br /><br />
+
+        <b style="font-size:14px; color:#399de2">2) Divisão de contas:</b><br />
+        - Não aconselhamos que se divida a conta com outros jogadores, se por algum motivo algo aconteça na conta que é dividida, nós NÃO iremos interferir.
+        E há o risco de sua conta ser usada por outra pessoa que tenha o acesso, para fazer multi, que será banido.<br /><br />
+
+        <b style="font-size:14px; color:#399de2">3) Vitórias combinadas (SWAP):</b><br />
+        - Troca de vitórias é um meio de tirar vantagem, de forma desonesta, e totalmente cabível à punição.<br /><br />
+
+        <b style="font-size:14px; color:#399de2">4) Bots & Scripts:</b><br />
+        - O #{game} deve ser jogado com os navegadores suportados nas versões oficiais da web ou nos aplicativos móveis oficiais e atualizados. Qualquer tipo de ação no jogo deve ser feita manualmente pelo jogador.<br />
+        - Bots, ferramentas, scripts e outros meios que fornecem ações automatizadas ou replicam e/ou permitem o acesso à funcionalidades VIP são proibidas, a menos que sejam explicitamente permitidos pelos administradores.<br />
+        - Informe-nos imediatamente assim que encontrar algum destes programas.<br /><br />
+
+        <b style="font-size:14px; color:#399de2">5) Conteúdo ofensivo:</b><br />
+        - Conteúdos ofensivos incluem qualquer mensagem de texto e/ou imagem que agrida os membros ou possa a vir a agredir.<br />
+        - Imagens com tópicos religiosos e semelhantes devem ser evitados ao máximo e em caso de reclamação por parte de alguém, será editado.<br />
+        - Imagens e textos pornográficos são proibidos.<br />
+        - Quando a agressão for não intencional ela não será levada em conta, desde que seja corrigida assim que solicitado.<br />
+        - No caso de reincidência ou conteúdo com objeto claro de ofender haverá punição que pode ser aplicada somente sobre o líder ou todos os membros da equipe e/ou organização, dependendo do julgamento.<br />
+        - O conteúdo ofensivo se aplica para nomes de personagens, equipes, organizações, fóruns, chat, mensagens, comunicados e semelhantes.<br /><br />
+
+        <b style="font-size:14px; color:#399de2">6) Nomes:</b><br />
+        - Não é permitido o uso de nome que seja referente à administração do jogo, nomes ofensivos, homofóbicos, racista ou de cunho sexual, tanto para jogadores, equipes ou organizações.<br /><br />
+
+        <b style="font-size:14px; color:#399de2">7) Calúnia:</b><br />
+        - Ao ser comprovado que um jogador deseja difamar alguém, o mesmo será punido severamente, pois não aceitaremos esta atitude desrespeitosa de criar má fama há algum jogador sem motivo.<br /><br />
+
+        <b style="font-size:14px; color:#399de2">Sobre as punições:</b><br />
+        Vale ressaltar que podemos, a qualquer momento, de acordo com o grau de conduta do jogador, pular alguma etapa de punição ou mudar a punição, de acordo com a decisão dos administradores.<br /><br />
+
+        <b style="font-size:14px; color:#399de2">Existem basicamente 6 tipos de punições:</b><br />
+        - Advertência;<br />
+        - Suspensão temporária do personagem;<br />
+        - Banimento permanente do personagem;<br />
+        - Suspensão temporária da conta;<br />
+        - Banimento permanente da conta.<br /><br />
+
+        Ainda há a possibilidade, se reconhecer que houve ganho de experiência, habilidades, itens ou qualquer outra coisa ganha de forma ilegal dentro do jogo, poderá ser retirado do personagem.<br /><br />
+
+        <b style="font-size:14px; color:#399de2">- Multis / SWAP:</b><br /><br />
+        <b style="color:#f77801">1ª incidência:</b> Os personagens envolvidos serão suspensos temporariamente.<br />
+        <b style="color:#f77801">2ª incidência:</b> Os personagens envolvidos serão banidos permanentemente.<br />
+        <b style="color:#f77801">3ª incidência:</b> Banimento permanente das contas e personagens.<br /><br />
+
+        <b style="font-size:14px; color:#399de2">- Ofensas / Ameaças / Calúnias:</b><br /><br />
+        <b style="color:#f77801">1ª incidência:</b> Advertência.<br />
+        <b style="color:#f77801">2ª incidência:</b> Suspensão mínima de 7 dias.<br />
+        <b style="color:#f77801">3ª incidência:</b> Suspensão temporaria do personagem.<br />
+        <b style="color:#f77801">4ª incidência:</b> Banimento permanente do personagem.<br />
+        <b style="color:#f77801">5ª incidência:</b> Banimento permanente da conta.<br /><br />
+
+        <b style="font-size:14px; color:#399de2">- Utilização de bots, bugs e táticas não previstas:</b><br /><br />
+        <b style="color:#f77801">1ª incidência:</b> Suspensão mínima de 7 dias e punição de acordo com irregularidade praticada pelo jogador.<br />
+        <b style="color:#f77801">2ª incidência:</b> Suspensão temporaria do personagem.<br />
+        <b style="color:#f77801">3ª incidência:</b> Banimento permanente do personagem.<br />
+        <b style="color:#f77801">4ª incidência:</b> Banimento permanente da conta.<br /><br />
+
+        Vale lembrar que todos são iguais nos direitos e deveres. Tanto jogadores VIP como os que não são, serão submetidos às mesmas regras e punições.
+        Em caso de situações não previstas neste código ou em casos diferenciados, as penalidades podem ser re-ordenadas e modificadas a qualquer instante pelos administradores.

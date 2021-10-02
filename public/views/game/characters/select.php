@@ -1,8 +1,14 @@
-<?php
-
-use GuzzleHttp\Promise\Is;
-
-echo partial('shared/title', array('title' => 'characters.select.title', 'place' => 'characters.select.title')) ?>
+<?php echo partial('shared/title', array('title' => 'characters.select.title', 'place' => 'characters.select.title')) ?>
+<?php if (FW_ENV != 'dev') { ?>
+	<!-- AASG - Personagem -->
+	<ins class="adsbygoogle"
+		style="display:inline-block;width:728px;height:90px"
+		data-ad-client="ca-pub-6665062829379662"
+		data-ad-slot="7609647387"></ins>
+	<script>
+		(adsbygoogle = window.adsbygoogle || []).push({});
+	</script><br />
+<?php } ?>
 <?php if (!sizeof($players)): ?>
 	<?php echo partial('shared/info', array('id'=> 3, 'title' => 'characters.select.none', 'message' => t('characters.select.none_msg', array('url' => make_url('characters#create'))))) ?>
 <?php else: ?>
@@ -101,27 +107,41 @@ echo partial('shared/title', array('title' => 'characters.select.title', 'place'
 		</div>
 		<div style="position: relative; clear: both; float: left; top: 20px;">
 			<div class="barra-secao"><p><?=t('characters.select.section_favorite');?></p></div>
-			<div id="select-player-list-container">
+			<div style="width: 370px; float: left;" id="select-player-list-container">
 				<div id="select-player-list-container">
-					<?php
-					$counter	= 1;
-					foreach ($players as $player):
-						$banned = $player->hasBanishment();
-					?>
-						<a data-toggle="tooltip" title="<?=make_tooltip($player->name)?>" data-placement="top" data-id="<?=$player->id;?>" data-map-id="<?=($player->map_id ? $player->map_id : 0);?>" class="player page-item page-item-<?=ceil($counter++ / 10);?> <?=($banned ? 'locked' : '');?>">
-							<?php if ($banned) { ?>
-								<span class="glyphicon glyphicon-ban-circle"></span>
-							<?php } ?>
-							<img src="<?=image_url($player->small_image(true));?>" width="120" />
-						</a>
-					<?php endforeach ?>
-					<div class="break"></div>
-					<div class="character-paginator" data-target-container="#select-player-list-container">
-						<?php for($f = 1; $f <= ceil(sizeof($players) / 10); $f++): ?>
-							<div class="page" data-page="<?php echo $f ?>"><?php echo $f ?></div>
-						<?php endfor; ?>
+					<div id="select-player-list-container">
+						<?php
+						$counter	= 1;
+						foreach ($players as $player):
+							$banned = $player->hasBanishment();
+						?>
+							<a data-toggle="tooltip" title="<?=make_tooltip($player->name)?>" data-placement="top" data-id="<?=$player->id;?>" data-map-id="<?=($player->map_id ? $player->map_id : 0);?>" class="player page-item page-item-<?=ceil($counter++ / 6);?> <?=($banned ? 'locked' : '');?>">
+								<?php if ($banned) { ?>
+									<span class="glyphicon glyphicon-ban-circle"></span>
+								<?php } ?>
+								<img src="<?=image_url($player->small_image(true));?>" width="120" />
+							</a>
+						<?php endforeach ?>
+						<div class="break"></div>
+						<div class="character-paginator" data-target-container="#select-player-list-container">
+							<?php for($f = 1; $f <= ceil(sizeof($players) / 6); $f++): ?>
+								<div class="page" data-page="<?php echo $f ?>"><?php echo $f ?></div>
+							<?php endfor; ?>
+						</div>
 					</div>
 				</div>
+			</div>
+			<div style="position: relative; top: 10px; float: left; left: 10px">
+				<?php if (FW_ENV != 'dev') { ?>
+					<!-- AASG - Trocar Lateral -->
+					<ins class="adsbygoogle"
+						style="display:inline-block;width:336px;height:280px"
+						data-ad-client="ca-pub-6665062829379662"
+						data-ad-slot="2509912687"></ins>
+					<script>
+						(adsbygoogle = window.adsbygoogle || []).push({});
+					</script>
+				<?php } ?>
 			</div>
 		</div>
 	</div>

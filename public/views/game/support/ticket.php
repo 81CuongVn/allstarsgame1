@@ -1,4 +1,14 @@
 <?php echo partial('shared/title', array('title' => 'support.ticket.title', 'place' => 'support.ticket.title')) ?>
+<?php if (FW_ENV != 'dev') { ?>
+	<!-- AASG - Suporte -->
+	<ins class="adsbygoogle"
+		style="display:inline-block;width:728px;height:90px"
+		data-ad-client="ca-pub-6665062829379662"
+		data-ad-slot="6963614279"></ins>
+	<script>
+		(adsbygoogle = window.adsbygoogle || []).push({});
+	</script><br />
+<?php } ?>
 <table>
 	<tr>
 		<td width="170" align="center" style="min-height: 90px">
@@ -81,7 +91,7 @@
 	<?php foreach ($replies as $reply): ?>
 		<?php $reply_attachments = $reply->uploads() ?>
 		<div class="support-ticket-reply">
-			<span class="laranja"><?php echo t('support.ticket.replied_by', ['user' => $reply->user()->name]) ?> - 
+			<span class="laranja"><?php echo t('support.ticket.replied_by', ['user' => $reply->user()->name]) ?> -
 			<?php echo date('d/m/Y H:i:s', strtotime($reply->created_at)) ?></span>
 			<div class="content">
 				<br /><?php echo nl2br($reply->content) ?>

@@ -1,5 +1,14 @@
 <?php echo partial('shared/title', array('title' => 'titles.news', 'place' => 'titles.news')) ?>
-
+<?php if (FW_ENV != 'dev') { ?>
+	<!-- AASG - Home -->
+	<ins class="adsbygoogle"
+		style="display:inline-block;width:728px;height:90px"
+		data-ad-client="ca-pub-6665062829379662"
+		data-ad-slot="4041296834"></ins>
+	<script>
+		(adsbygoogle = window.adsbygoogle || []).push({});
+	</script><br />
+<?php } ?>
 <div class="titulo-home3">
 	<div style="float:left">
 		<b><?php echo $new->title ?></b>

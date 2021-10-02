@@ -5,161 +5,6 @@ use PhpAmqpLib\Message\AMQPMessage;
 class BattlePvpsController extends Controller {
 	use BattleSharedMethods;
 
-	function ranked() {
-		$player		= Player::get_instance();
-		$rankeds	= Ranked::find('started = 1 order by league asc');
-		$tiers		= RankedTier::all(['reorder' => 'sort desc']);
-		$best_rank	= PlayerRanked::find_first('player_id = ' . $player->id, [
-			'reorder'	=> 'points desc',
-			'limit'		=> 1
-		]);
-
-		if (!$_POST) {
-			$ranked	= Ranked::find_first('started = 1 order by league desc');
-		} else {
-			$ranked	= Ranked::find_first($_POST['leagues']);
-		}
-
-		if ($ranked) {
-			$player_ranked	= $player->ranked($ranked->id);
-			if ($player_ranked)  {
-				$player_ranked->update();
-			}
-		} else {
-			$player_ranked	= FALSE;
-		}
-
-		$ranked_total	= false;
-		if ($best_rank) {
-			$ranked_total	= Recordset::query("SELECT SUM(wins) AS total_wins, SUM(losses) AS total_losses, SUM(draws) AS total_draws FROM player_rankeds WHERE player_id = {$player->id}")->row();
-		}
-
-		// Verifica se você tem liga completa - Conquista
-		$player->achievement_check("league");
-		$player->check_objectives("league");
-
-		$this->assign('tiers',				$tiers);
-		$this->assign('player',				$player);
-		$this->assign('ranked',				$ranked);
-		$this->assign('rankeds',			$rankeds);
-		$this->assign('best_rank',			$best_rank);
-		$this->assign('ranked_total',		$ranked_total);
-		$this->assign('player_ranked',		$player_ranked);
-		$this->assign('player_tutorial',	$player->player_tutorial());
-	}
-
-	function reward() {
-		$this->as_json			= true;
-		$this->json->success	= false;
-
-		$player					= Player::get_instance();
-		$user					= User::get_instance();
-		$errors					= [];
-		$content				= "";
-
-		if (isset($_POST['id']) && is_numeric($_POST['id'])) {
-			$ranked			= Ranked::find($_POST['id']);
-			if ($ranked || !$ranked->finished) {
-				$player_ranked	=  $player->ranked($ranked->id);
-				if (!$player_ranked) {
-					$errors[]	= t('ranked.errors.not_league');
-				} else {
-					if ($player_ranked->reward) {
-						$errors[]	= t('ranked.errors.no_reward');
-					}
-
-					if ($player->id != $player_ranked->player_id) {
-						$errors[]	= t('ranked.errors.no_player');
-					}
-				}
-			} else {
-				$errors[]	= t('ranked.errors.not_league');
-			}
-
-			if (!sizeof($errors)) {
-				$player_ranked->reward = 1;
-				$player_ranked->save();
-
-				//
-				$rewards	= $ranked->reward($player_ranked->ranked_tier_id);
-				if ($rewards->currency) {
-					$player->earn($rewards->currency);
-					$content .= highamount($rewards->currency) . " " . t('currencies.' . $player->character()->anime_id) . "<br />";
-
-					$player->achievement_check("currency");
-					$player->check_objectives("currency");
-				}
-
-				if ($rewards->exp) {
-					$player->earn_exp($rewards->exp);
-					$content .= highamount($rewards->exp) . " " . t('ranked.exp') . "<br />" ;
-				}
-
-				if ($rewards->credits) {
-					$user->earn($rewards->credits);
-					$content .= highamount($rewards->credits) . " " . t('treasure.show.credits'). "<br />";
-
-					// Verifica os créditos do jogador.
-					$player->achievement_check("credits");
-					$player->check_objectives("credits");
-				}
-
-				if ($rewards->exp_user) {
-					$user->exp($rewards->exp_user);
-					$content .= highamount($rewards->exp_user) . " " . t('ranked.exp_account')."<br />";
-				}
-
-				if ($rewards->headline_id && !$user->is_headline_bought($rewards->headline_id)) {
-					$reward_headline				= new UserHeadline();
-					$reward_headline->user_id		= $player->user_id;
-					$reward_headline->headline_id	= $rewards->headline_id;
-					$reward_headline->save();
-
-					$content .= t('treasure.show.headline') . " " . Headline::find($rewards->headline_id)->description()->name . "<br />";
-				}
-
-				if ($rewards->character_id && !$user->is_character_bought($rewards->character_id)) {
-					$reward_character				= new UserCharacter();
-					$reward_character->user_id		= $player->user_id;
-					$reward_character->character_id	= $rewards->character_id;
-					$reward_character->was_reward	= 1;
-					$reward_character->save();
-
-					$content .= t('treasure.show.character') . " " . Character::find($rewards->character_id)->description()->name . "<br />";
-				}
-
-				if ($rewards->character_theme_id && !$user->is_theme_bought($rewards->character_theme_id)) {
-					$reward_theme						= new UserCharacterTheme();
-					$reward_theme->user_id				= $player->user_id;
-					$reward_theme->character_theme_id	= $rewards->character_theme_id;
-					$reward_theme->was_reward			= 1;
-					$reward_theme->save();
-
-					$content .= t('treasure.show.theme') . " " . CharacterTheme::find($rewards->character_theme_id)->description()->name . "<br />";
-				}
-
-				if ($rewards->item_id) {
-					$item		= Item::find_first($rewards->item_id);
-					$player->add_consumable($item, $rewards->quantity);
-
-					$content .= highamount($rewards->quantity) . "x " . Item::find($rewards->item_id)->description()->name . "<br />";
-				}
-
-				$pm				= new PrivateMessage();
-				$pm->to_id		= $player->id;
-				$pm->subject	= t("ranked.reward_league") . " - " . $player_ranked->tier()->description()->name;
-				$pm->content	= $content;
-				$pm->save();
-
-				$this->json->success = true;
-			}
-		} else {
-			$errors[]	= t('ranked.errors.not_league');
-		}
-
-		$this->json->messages	= $errors;
-	}
-
 	function index() {
 		$player	= Player::get_instance();
 
@@ -203,7 +48,9 @@ class BattlePvpsController extends Controller {
 	}
 
 	function training() {
+		$player	= Player::get_instance();
 
+		$this->assign('player',				$player);
 	}
 
 	function waiting() {
@@ -280,7 +127,7 @@ class BattlePvpsController extends Controller {
 
 		if (!sizeof($errors)) {
 			// Destroi a sala do jogador
-			$battle_room = BattleRoom::find_first("id=".$player->battle_room_id);
+			$battle_room = BattleRoom::find_first("id=" . $player->battle_room_id);
 			$battle_room->destroy();
 
 			// Tira o jogador da sala
@@ -297,31 +144,9 @@ class BattlePvpsController extends Controller {
 		$this->as_json	= true;
 		$player			= Player::get_instance();
 
-		$battle = BattlePvp::find_first("enemy_id = ".$player->id." AND battle_type_id = 4 AND finished_at is null");
+		$battle = BattlePvp::find_first("enemy_id = {$player->id} and battle_type_id = 4 and finished_at is null");
 		if ($battle) {
-			// Destroi a sala do jogador
-			$battle_room = BattleRoom::find_first("id=".$player->battle_room_id);
-			$battle_room->destroy();
-
-			// Jogador em espera
-			$player->battle_pvp_id = $battle->id;
-			$player->save();
-
-			// Apaga o número da sala da player
-			$player->battle_room_id = 0;
-			$player->save();
-
 			$this->json->redirect	= make_url('battle_pvps#fight');
-		} else {
-			// Destroi a sala do jogador
-			// $battle_room = BattleRoom::find_first("id=".$player->battle_room_id);
-			// $battle_room->destroy();
-
-			// Apaga o número da sala da player
-			// $player->battle_room_id = 0;
-			// $player->save();
-
-			// $this->json->redirect	= make_url('characters#status');
 		}
 	}
 
@@ -337,7 +162,7 @@ class BattlePvpsController extends Controller {
 			if (!$room) {
 				$errors[]	= t('battles.waiting.errors.room_invalid');
 			} else {
-				$player_enemy 	= Player::find($room->player_id);
+				$enemy 	= Player::find($room->player_id);
 
 				if ($player->is_pvp_queued) {
 					$errors[]	= t('battles.npc.errors.pvp_queue');
@@ -355,7 +180,7 @@ class BattlePvpsController extends Controller {
 					$errors[]	= t('battles.errors.low_stat');
 				}
 
-				if ($player_enemy->battle_pvp_id){
+				if ($enemy->battle_pvp_id || $enemy->battle_npc_id) {
 					$errors[]	= t('battles.waiting.errors.room_invalid');
 				}
 			}
@@ -372,16 +197,19 @@ class BattlePvpsController extends Controller {
 			$battle->battle_type_id	= 4;
 			$battle->save();
 
-
 			// Jogador que clicou no botão
 			$player->battle_pvp_id	= $battle->id;
 			$player->save();
 
-			// Jogador em espera
-			// $player_enemy->battle_pvp_id = $battle->id;
-			// $player_enemy->save();
+			// Destroi a sala do jogador
+			$room->destroy();
 
-			$this->json->success	= TRUE;
+			// Jogador em espera
+			$enemy->battle_pvp_id	= $battle->id;
+			$enemy->battle_room_id	= 0;
+			$enemy->save();
+
+			$this->json->success	= true;
 		} else {
 			$this->json->messages	= $errors;
 		}
@@ -667,7 +495,7 @@ class BattlePvpsController extends Controller {
 					} else {
 						$item->set_anime($enemy->character()->anime_id);
 					}
-				}elseif($is_kill){
+				} elseif ($is_kill) {
 					$player_item	= $player->get_technique($_POST['item']);
 					$item			= $player_item->item();
 				} else {
@@ -682,7 +510,7 @@ class BattlePvpsController extends Controller {
 				$errors[]	= t('battles.errors.invalid');
 			} else {
 				if (!$is_copy && !$is_kill) {
-					if($item->formula()->consume_mana > $player->for_mana()) {
+					if ($item->formula()->consume_mana > $player->for_mana()) {
 						$can_run_action	= false;
 						$errors[]	= t('battles.errors.no_mana', ['mana' => t('formula.for_mana.' . $item->anime()->id)]);
 					}

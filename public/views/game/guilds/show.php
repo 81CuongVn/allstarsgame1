@@ -1,4 +1,14 @@
 <?php echo partial('shared/title', array('title' => 'guilds.show.title', 'place' => 'guilds.show.title')) ?>
+<?php if (FW_ENV != 'dev') { ?>
+	<!-- AASG - Guild -->
+	<ins class="adsbygoogle"
+		style="display:inline-block;width:728px;height:90px"
+		data-ad-client="ca-pub-6665062829379662"
+		data-ad-slot="7693601385"></ins>
+	<script>
+		(adsbygoogle = window.adsbygoogle || []).push({});
+	</script><br />
+<?php } ?>
 <div style="height: 255px">
 	<div>
 		<div style="position: relative; width: 684px; height:188px;  left: 25px; background-image:url(<?=image_url('bg-org.jpg');?>)">
@@ -66,7 +76,7 @@
 					</td>
 					<td align="center">
 						<?php for ($level = 1; $level <= MAX_LEVEL_GUILD; ++$level) {?>
-							<div style="display: inline-block; padding-left: 4px;" class="technique-popover" data-source="#guild-level-container-<?=$level;?>" data-title="Nível <?=$level;?>" data-trigger="click" data-placement="top">
+							<div style="display: inline-block; padding-left: 4px;" class="aasg-popover" data-source="#guild-level-container-<?=$level;?>" data-title="Nível <?=$level;?>" data-trigger="click" data-placement="top">
 								<img src="<?=image_url('icons/star-' . ($guild->level >= $level ? 'on' : 'off') . '.png')?>" style="cursor: pointer;" />
 							</div>
 							<div id="guild-level-container-<?=$level;?>" class="technique-container">

@@ -84,7 +84,7 @@ class VipsController extends Controller {
 							'currency'	=> t('currencies.' . $player->character()->anime_id)
 						]);
 					}
-				} elseif ($item->id == 432 || $item->id == 1709 || $item->id == 1715 || $item->id == 1718  || $item->id == 2112) {
+				} elseif (in_array($item->id, [1709, 1715, 1718, 2112, 2113, 2114, 2115, 2116])) {
 					$buy_mode			= 2;
 					$bought_free		= false;
 					$bought_currency	= true;
@@ -152,7 +152,7 @@ class VipsController extends Controller {
 							$errors[]	= t('guilds.errors.not_leader');
 						}
 
-						if (!between(strlen($_POST['name_guild']), 6, 20) || !preg_match(REGEX_GUILD, $_POST['name_guild'])) {
+						if (!between(strlen(trim($_POST['name_guild'])), 6, 20) || !preg_match(REGEX_GUILD, $_POST['name_guild'])) {
 							$errors[]	= t('guilds.create.errors.invalid_name');
 						}
 					}
@@ -180,11 +180,11 @@ class VipsController extends Controller {
 						$errors[]	= t('characters.create.errors.existent');
 					}
 
-					if (strlen($_POST['name']) > 14) {
+					if (strlen(trim($_POST['name'])) > 14) {
 						$errors[]	= t('characters.create.errors.name_length_max');
 					}
 
-					if (strlen($_POST['name']) < 6) {
+					if (strlen(trim($_POST['name'])) < 6) {
 						$errors[]	= t('characters.create.errors.name_length_min');
 					}
 				}
@@ -201,6 +201,10 @@ class VipsController extends Controller {
 				$player->spend($item->price_currency);
 			} elseif ($buy_mode == 2) {
 				$user->spend($item->price_credits);
+			}
+
+			if (in_array($item->id, [2113, 2114, 2115, 2116])) {
+				$player->add_vip_item($item);
 			}
 
 			/* Adicionar log da compra */
@@ -353,8 +357,8 @@ class VipsController extends Controller {
 	public function make_donation() {
 		$is_dbl		= StarDouble::find_first('NOW() BETWEEN data_init AND data_end');
 		$methods	= [
-			'mercadopago'	=> 'BRL',
-			// 'pagseguro'	=> 'BRL',
+			// 'mercadopago'	=> 'BRL',
+			'pagseguro'		=> 'BRL',
 			'paypal_eur'	=> 'EUR',
 			'paypal_usd'	=> 'USD',
 			// 'paypal_brl'	=> 'BRL'
@@ -416,8 +420,8 @@ class VipsController extends Controller {
 		if ($star_purchase) {
 			$star_plan	= StarPlan::find_first("id = " . $star_purchase->star_plan_id);
 			$coins		= [
-				'mercadopago'	=> 'BRL',
-				// 'pagseguro'	=> 'BRL',
+				// 'mercadopago'	=> 'BRL',
+				'pagseguro'		=> 'BRL',
 				'paypal_eur'	=> 'EUR',
 				'paypal_usd'	=> 'USD',
 				// 'paypal_brl'	=> 'BRL'
@@ -450,7 +454,7 @@ class VipsController extends Controller {
 					// Cria um item na preferência
 					$item				= new MercadoPago\Item();
 					$item->id			= $star_plan->id;
-					$item->title		= DONATE_PREFIX . ' - ' . $star_plan->name;
+					$item->title		= GAME_PREFIX . ' - ' . $star_plan->name;
 					$item->description	= $star_plan->description;
 					$item->quantity		= 1;
 					$item->unit_price	= $price;
@@ -458,7 +462,7 @@ class VipsController extends Controller {
 
 					// Adiciona os itens na preferência e salva
 					$preference->items					= [ $item ];
-					$preference->statement_descriptor	= DONATE_PREFIX;
+					$preference->statement_descriptor	= GAME_PREFIX;
 					$preference->external_reference		= $star_purchase->id;
 					$preference->notification_url		= make_url('callback/mercadopago?source_news=ipn');
 					$preference->save();
@@ -476,7 +480,7 @@ class VipsController extends Controller {
 					$payment = new \PagSeguro\Domains\Requests\Payment();
 					$payment->addItems()->withParameters(
 						$star_plan->id,
-						DONATE_PREFIX . ' - ' . $star_plan->name,
+						GAME_PREFIX . ' - ' . $star_plan->name,
 						1,
 						$price
 					);
@@ -501,7 +505,7 @@ class VipsController extends Controller {
 					$p->addField('return',			make_url('vips/make_donation?success'));
 					$p->addField('cancel_return',	make_url('vips/make_donation?cancel'));
 					$p->addField('notify_url',		make_url('callback/paypal'));
-					$p->addField('item_name',		DONATE_PREFIX . ' - ' . $star_plan->name);
+					$p->addField('item_name',		GAME_PREFIX . ' - ' . $star_plan->name);
 					$p->addField('currency_code',	$coins[$star_purchase->star_method]);
 					$p->addField('amount',			$price);
 					$p->addField('custom',			$star_purchase->id);

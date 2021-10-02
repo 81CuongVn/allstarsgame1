@@ -1,0 +1,10 @@
+1 - Mágico
+2 - Elemental
+3 - Mágico
+4 - Mágico
+5 - Atirador
+6 - Corpo-a-Corpo
+7 - Elemental
+8 - Mágico
+9 - Mágico
+10 - Guerreiro

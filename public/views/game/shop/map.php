@@ -1,4 +1,14 @@
 <?php echo partial('shared/title', array('title' => 'menus.shop_map', 'place' => 'menus.shop_map')) ?>
+<?php if (FW_ENV != 'dev') { ?>
+	<!-- AASG - Shop -->
+	<ins class="adsbygoogle"
+		style="display:inline-block;width:728px;height:90px"
+		data-ad-client="ca-pub-6665062829379662"
+		data-ad-slot="5422661269"></ins>
+	<script>
+		(adsbygoogle = window.adsbygoogle || []).push({});
+	</script><br />
+<?php } ?>
 <?php
 foreach($player_items as $player_item){
 	switch($player_item->item_id){
@@ -10,15 +20,15 @@ foreach($player_items as $player_item){
 		break;
 	}
 }
-?>	
+?>
 <?php
 	echo partial('shared/info', [
 		'id'		=> 1,
 		'title'		=> 'map.store.title',
 		'message'	=> t('map.store.description') . (isset($item_1721) ? $item_1721 : "<br /><br />Você tem <span class='laranja'>0x Pergaminho(s)</span>") . (isset($item_1851) ? $item_1851 : "<br />Você tem <span class='laranja'>0x Material(ais)</span>")
-		
+
 	]);
-?>	
+?>
 <div class="barra-secao barra-secao-<?php echo $player->character()->anime_id ?>">
 	<table width="725" border="0" cellpadding="0" cellspacing="0">
 	<tr>
@@ -53,7 +63,7 @@ foreach($player_items as $player_item){
 				<b style="font-size:16px">x<?php echo highamount($map_store->quantity); ?></b>
 			</td>
 			<td width="120" align="center">
-				<?php 
+				<?php
 					switch($map_store->anime_id){
 						case 1:
 							$type = "Pergaminho";

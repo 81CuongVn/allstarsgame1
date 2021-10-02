@@ -95,6 +95,7 @@ class Player extends Relation {
 
 		$this->clear_fixed_effects('fixed');
 		$this->refresh_talents();
+		$this->check_expired_items();
 	}
 
 	protected function before_update() {
@@ -1516,6 +1517,53 @@ class Player extends Relation {
 		return PlayerItem::find('player_id=' . $this->id . ' AND item_id=' . $consumable->id) ? true : false;
 	}
 
+	// NOVO SISTEMA DE ITENS VIP ------>
+		function add_vip_item($item) {
+			$player_item	= PlayerItem::find_first('player_id = ' . $this->id . ' and item_id = ' . $item->id);
+			if (!$player_item) {
+				$player_item	= new PlayerItem();
+				$player_item->player_id	= $this->id;
+				$player_item->item_id	= $item->id;
+				$player_item->quantity	= $item->duration;
+			} else {
+				$player_item->quantity	+= $item->duration;
+			}
+			$player_item->save();
+
+			return $player_item;
+		}
+
+		private function check_expired_items() {
+			Recordset::query("DELETE FROM player_items WHERE player_id = {$this->id} AND expires_at IS NOT NULL AND expires_at < NOW()");
+		}
+
+		function has_vip_item($itemId) {
+			if (is_array($itemId)) {
+				$itemId	= join(', ', $itemId);
+			}
+
+			return PlayerItem::find_last('player_id = ' . $this->id . ' and item_id in (' . $itemId . ') and quantity > 0', [
+				'reorder'	=> 'item_id desc',
+			]);
+		}
+
+		function use_vip_item($id) {
+			$item	= PlayerItem::find_first('id = ' . $id);
+			if ($item && $item->quantity > 0) {
+				--$item->quantity;
+				if ($item->quantity <= 0) {
+					$item->destroy();
+				} else {
+					$item->save();
+				}
+
+				return true;
+			}
+
+			return false;
+		}
+	// NOVO SISTEMA DE ITENS VIP <-----
+
 	function has_item($item) {
 		if (is_numeric($item)) {
 			$id	= $item;
@@ -1699,8 +1747,8 @@ class Player extends Relation {
 	function available_training_points() {
 		$user	=	User::get_instance();
 
-		$total	=	($user->level * 2);
-		$total	+=	floor($this->level / 5);
+		$total	=	($user->level * 1);
+		// $total	+=	floor($this->level / 5);
 		$total	+=	$this->training_total_to_point();
 		$total	-=	$this->training_points_spent;
 
@@ -2692,6 +2740,56 @@ class Player extends Relation {
 		}
 
 		return false;
+	}
+
+	function chatColor($user) {
+		$color	= '';
+		if ($user->is_admin()) {
+			$color	= '#ffb34f';
+		} elseif ($user->is_mod()) {
+			$color	= '#1abc9c';
+		} else {
+			switch ($this->faction_id) {
+				case 1:		$color	= '#2c8ee5';	break;
+				case 2:		$color	= '#f1270f';	break;
+				case 3:		$color	= '#f4ffff';	break;
+			}
+		}
+
+		return $color;
+	}
+	function chatIcon($user) {
+		$icon		= '';
+		if ($user->is_admin() || $user->is_mod()) {
+			$icon	= '<i class="fa fa-star fa-fw" style="vertical-align: -1px;"></i>';
+		}
+
+		return $icon;
+	}
+	function chatRegister() {
+		$user	= $this->user();
+		$guild	= $this->guild();
+
+		$data	= [
+			'uid'           => (int)$this->id,
+			'user_id'       => (int)$this->user_id,
+			'faction'       => (int)$this->faction_id,
+			'anime'			=> (int)$this->character()->anime_id,
+			'avatar'		=> image_url($this->small_image(true)),
+			'guild'         => (int)$this->guild_id,
+			'guild_owner'   => $guild ? $this->id == $guild->leader()->id : false,
+			'battle'        => (int)$this->battle_pvp_id,
+			'gm'            => $user->is_mod() || $user->is_admin(),
+			'color'         => $this->chatColor($user),
+			'icon'          => $this->chatIcon($user),
+			'name'          => $this->name
+		];
+
+		$key            = CHAT_KEY;
+		$iv             = substr($key, 0, 16);
+		$registration   = openssl_encrypt(json_encode($data), 'AES-256-CBC', $key, 0, $iv);
+
+		return $registration;
 	}
 
 	static function set_instance($player) {

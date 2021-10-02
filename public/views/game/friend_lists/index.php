@@ -1,4 +1,14 @@
 <?php echo partial('shared/title', array('title' => 'menus.friend_list', 'place' => 'menus.friend_list')) ?>
+<?php if (FW_ENV != 'dev') { ?>
+	<!-- AASG - Friends -->
+	<ins class="adsbygoogle"
+		style="display:inline-block;width:728px;height:90px"
+		data-ad-client="ca-pub-6665062829379662"
+		data-ad-slot="3870547077"></ins>
+	<script>
+		(adsbygoogle = window.adsbygoogle || []).push({});
+	</script><br />
+<?php } ?>
 <?php
 	echo partial('shared/info', [
 		'id'		=> 1,

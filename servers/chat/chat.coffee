@@ -55,7 +55,7 @@ Array::contains	= (k) ->
 
 	return false
 
-bootstrap	= ->
+bootstrap		= ->
 	channels['system']	= []
 	channels['world']	= []
 
@@ -64,6 +64,20 @@ bootstrap	= ->
 	server.listen config.port
 
 	console.log "+ Chat Thread Started on " + server.address().address + " at port " + server.address().port
+
+isUrl			= (url) ->
+    return url.match(new RegExp(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&/=]*)/gi))
+
+isGame			= (url) ->
+	return url.match(new RegExp(/https?:\/\/(www\.)?allstarsgame.com.br/, 'gi'));
+
+haveUrl			= (string) ->
+	urlRegex = /(https?:\/\/[^\s]+)/g;
+	return string.replace urlRegex, (url) ->
+		if isGame(url)
+			return '<a href="' + url + '">' + url + '</a>';
+		else
+			return '<a href="' + url + '" target="_blank">' + url + '</a>';
 
 decrypt_json	= (encrypted) ->
 	key				= config.key
@@ -188,8 +202,10 @@ io.sockets.on 'connection', (socket) ->
 
 				data.dest	= players_by_name[data.dest.toLowerCase()].uid
 
-			if players[data.dest]
-				if players[data.dest].user_id == player.user_id
+			playerDest	= players[data.dest]
+
+			if playerDest
+				if playerDest.user_id == player.user_id
 					socket.emit 'broadcast',
 						from: 'Sistema',
 						message: 'Você não pode enviar uma mensagem privada para você mesmo!',
@@ -197,7 +213,7 @@ io.sockets.on 'connection', (socket) ->
 
 					return
 				else
-					db.query "SELECT `id` FROM `chat_blocked` WHERE `user_id` = " + players[data.dest].user_id + " AND `user_blocked` = " + player.user_id, (error, results, fields) ->
+					db.query "SELECT `id` FROM `chat_blocked` WHERE `user_id` = " + playerDest.user_id + " AND `user_blocked` = " + player.user_id, (error, results, fields) ->
 						if results.length
 							socket.emit 'broadcast',
 								from: 'Sistema',
@@ -206,6 +222,8 @@ io.sockets.on 'connection', (socket) ->
 
 							return
 						else
+							db.query "INSERT INTO `chats` (`from_id`, `to_id`, `from_user_id`, `to_user_id`, `channel`, `message`) VALUES (" + player.uid + ", " + playerDest.uid + ", " + player.user_id + ", " + playerDest.user_id + ", 'pvt', '" + data.message + "')"
+
 							privates[data.dest]	= {} unless privates[data.dest]
 							privates[data.dest][Math.random() * 512384] = name: player.name, message: data.message, id: player.uid
 
@@ -281,9 +299,11 @@ io.sockets.on 'connection', (socket) ->
 			# Character limtit for non-gm users
 			data.message	= data.message.substr(0, user_message_size)
 
+		data.message	= haveUrl data.message
 		data.message	= bbcodes.parse(data.message, player.gm)
-		# data.message	= emoticons.parse(data.message, player.gm)
+		data.message	= emoticons.parse(data.message, player.gm)
 
+		db.query "INSERT INTO `chats` (`from_id`, `from_user_id`, `channel`, `message`) VALUES (" + player.uid + ", " + player.user_id + ", '" + data.channel + "', '" + data.message + "')"
 		channel_id		= 0 unless channel_id
 		broadcast		= from: player.name, avatar: player.avatar, faction: player.faction, message: data.message, channel: data.channel, channel_id: channel_id, id: player.uid, user_id: player.user_id, gm: player.gm, when: new Date()
 

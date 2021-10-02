@@ -235,6 +235,19 @@ function is_menu_accessible($menu, $player) {
     return $ok;
 }
 
+function is_menu_active($menu_href) {
+	global $controller, $action, $is_admin, $site_url;
+
+	$menu_url	= str_replace([$site_url . '/', '#'], ['', '/'], $menu_href);
+	$real_url	= ($is_admin ? 'admin/' : '') . $controller . '/' . $action;
+	$real_url	= str_replace('/index', '', $real_url);
+	if ($real_url == $menu_url) {
+		return true;
+	}
+
+	return false;
+}
+
 function validate_current_url() {
     global	$menu_actions, $framework_force_denied,
 			$controller, $action, $_SERVER, $is_admin;

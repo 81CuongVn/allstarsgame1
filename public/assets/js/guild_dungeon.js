@@ -369,7 +369,7 @@ $(document).ready(function () {
         var cY = parseInt(self.data('y'));
 
         if (cX > myX + 1 || cX < myX - 1 || cY > myY + 1 || cY < myY - 1) {
-            jalert('O lugar onde você quer ir é muito longe');
+            jalert('O lugar onde você quer ir é muito longe', false);
 
             return;
         }

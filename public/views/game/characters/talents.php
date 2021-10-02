@@ -1,4 +1,14 @@
 <?php echo partial('shared/title', array('title' => 'characters.talents.title', 'place' => 'characters.talents.title')) ?>
+<?php if (FW_ENV != 'dev') { ?>
+	<!-- AASG - Personagem -->
+	<ins class="adsbygoogle"
+		style="display:inline-block;width:728px;height:90px"
+		data-ad-client="ca-pub-6665062829379662"
+		data-ad-slot="7609647387"></ins>
+	<script>
+		(adsbygoogle = window.adsbygoogle || []).push({});
+	</script><br />
+<?php } ?>
 <?php if (!$player_tutorial->talents) { ?>
 	<script type="text/javascript">
 		$(function () {
@@ -17,7 +27,7 @@
 			tour.init(true);
 			tour.start(true);
 		});
-	</script>	
+	</script>
 <?php } ?>
 <?php
 	echo partial('shared/info', [
@@ -46,6 +56,6 @@
 					</div>
 				</div>
 			<?php endforeach ?>
-		</div>	
+		</div>
 	<?php endforeach ?>
 </div>

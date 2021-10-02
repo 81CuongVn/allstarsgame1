@@ -3,6 +3,7 @@ $user			= false;
 $player			= false;
 $article		= false;
 $with_battle	= false;
+$is_profile		= false;
 
 $language = Language::find($_SESSION['language_id']);
 if (!$language) {
@@ -30,6 +31,11 @@ if ($_SESSION['user_id']) {
 			$equipments[$technique->id]	= $technique->description()->name;
 		}
 	}
+}
+
+// Ta vendo um pefil?
+if (preg_match('/profile/', $controller)) {
+	$is_profile		= true;
 }
 
 // Verifica se o link é de noticia
@@ -75,41 +81,28 @@ if (preg_match('/read_news/', $action)) {
 	<link ref="apple-touch-icon" href="/icon-192x192.png" />
 	<link ref="canonical" href="<?=$site_url;?>/" />
 
-	<!-- CSS -->
-	<link rel="stylesheet" type="text/css" href="<?=asset_url('css/bootstrap.min.css');?>" />
-	<link rel="stylesheet" type="text/css" href="<?=asset_url('css/bootstrap-theme.css');?>" />
-	<link rel="stylesheet" type="text/css" href="<?=asset_url('css/select2.css');?>" />
-	<link rel="stylesheet" type="text/css" href="<?=asset_url('css/select2-bootstrap.css');?>" />
-	<link rel="stylesheet" type="text/css" href="<?=asset_url('css/animate.css');?>" />
-	<link rel="stylesheet" type="text/css" href="<?=asset_url('css/anivers.css');?>" />
-	<link rel="stylesheet" type="text/css" href="<?=asset_url('css/inventory.css');?>" />
-	<link rel="stylesheet" type="text/css" href="<?=asset_url('css/battle.css');?>" />
-	<link rel="stylesheet" type="text/css" href="<?=asset_url('css/chat.css');?>" />
-	<link rel="stylesheet" type="text/css" href="<?=asset_url('css/quests.css');?>" />
-	<link rel="stylesheet" type="text/css" href="<?=asset_url('css/equipments.css');?>" />
-	<link rel="stylesheet" type="text/css" href="<?=asset_url('css/typeahead.css');?>" />
-	<link rel="stylesheet" type="text/css" href="<?=asset_url('css/techniques.css');?>" />
-	<link rel="stylesheet" type="text/css" href="<?=asset_url('css/history_mode.css');?>" />
-	<link rel="stylesheet" type="text/css" href="<?=asset_url('css/events.css');?>" />
-	<link rel="stylesheet" type="text/css" href="<?=asset_url('css/tournaments.css');?>" />
-	<link rel="stylesheet" type="text/css" href="<?=asset_url('css/layout.css');?>" />
-	<link rel="stylesheet" type="text/css" href="<?=asset_url('css/characters.css');?>" />
-	<link rel="stylesheet" type="text/css" href="<?=asset_url('css/tutorial.css');?>" />
-	<link rel="stylesheet" type="text/css" href="<?=asset_url('css/luck.css');?>" />
-	<link rel="stylesheet" type="text/css" href="<?=asset_url('css/highlights.css');?>" />
-	<link rel="stylesheet" type="text/css" href="<?=asset_url('css/font-awesome.min.css');?>" />
-	<link rel="stylesheet" type="text/css" href="<?=asset_url('css/jquery.bracket.min.css');?>" />
-	<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans:400,700" />
+	<!-- Plugins CSS -->
+	<link rel="stylesheet" type="text/css" href="<?=asset_url('libs/bootstrap/css/bootstrap.min.css');?>" />
+	<link rel="stylesheet" type="text/css" href="<?=asset_url('libs/select2/css/select2.css');?>" />
+	<link rel="stylesheet" type="text/css" href="<?=asset_url('libs/select2/css/select2-bootstrap.css');?>" />
+	<link rel="stylesheet" type="text/css" href="<?=asset_url('libs/animate/css/animate.css');?>" />
+	<link rel="stylesheet" type="text/css" href="<?=asset_url('libs/typeahead/css/typeahead.css');?>" />
+	<link rel="stylesheet" type="text/css" href="<?=asset_url('libs/bootstrap-tour/css/bootstrap-tour.css');?>" />
+	<link rel="stylesheet" type="text/css" href="<?=asset_url('libs/font-awesome/css/font-awesome.min.css');?>" />
+	<link rel="stylesheet" type="text/css" href="<?=asset_url('libs/sweetalert2/css/sweetalert2.css');?>" />
 
-	<!-- JS -->
-	<script type="text/javascript" src="<?=asset_url('js/jquery.js');?>"></script>
-	<script type="text/javascript" src="<?=asset_url('js/jquery.ui.js');?>"></script>
-	<script type="text/javascript" src="<?=asset_url('js/jquery.ui.touch-punch.min.js');?>"></script>
-	<script type="text/javascript" src="<?=asset_url('js/jquery.devrama.slider.js');?>"></script>
-	<script type="text/javascript" src="<?=asset_url('js/jquery.cookie.js');?>"></script>
-	<script type="text/javascript" src="<?=asset_url('js/jquery.bracket.min.js');?>"></script>
-    <script type="text/javascript" src="<?=asset_url('js/i18n.js');?>"></script>
-    <script type="text/javascript" src="<?=asset_url('js/socket.io.js');?>"></script>
+	<!-- App CSS -->
+	<link rel="stylesheet" type="text/css" href="<?=asset_url('css/layout.css');?>" />
+
+	<!-- Plugins JS -->
+	<script type="text/javascript" src="<?=asset_url('libs/jquery/js/jquery.js');?>"></script>
+	<script type="text/javascript" src="<?=asset_url('libs/jquery/js/jquery.ui.js');?>"></script>
+	<script type="text/javascript" src="<?=asset_url('libs/jquery/js/jquery.ui.touch-punch.min.js');?>"></script>
+	<script type="text/javascript" src="<?=asset_url('libs/jquery/js/jquery.devrama.slider.js');?>"></script>
+	<script type="text/javascript" src="<?=asset_url('libs/jquery/js/jquery.cookie.js');?>"></script>
+    <script type="text/javascript" src="<?=asset_url('libs/socket.io/js/socket.io.js');?>"></script>
+
+	<!-- App JS -->
 	<script type="text/javascript">
 		var	_site_url				= "<?=$site_url;?>";
 		var	_site_version			= "<?=GAME_VERSION;?>";
@@ -127,30 +120,26 @@ if (preg_match('/read_news/', $action)) {
 		<?php } ?>
 
 		var	_check_pvp_queue		= <?=($player && $player->is_pvp_queued ? 'true': 'false');?>;
+
+		// Servers
+		var _chat_server			= "<?=CHAT_SERVER;?>";
 		var _highlights_server		= "<?=HIGHLIGHTS_SERVER;?>";
 
 		$(document).ready(function() {
-        	I18n.default_locale		= _language;
-        	I18n.translations		= <?=Lang::toJSON()?>;
+        	// I18n.default_locale		= _language;
+        	// I18n.translations		= <?//=Lang::toJSON()?>;
 		});
     </script>
+	<script type="text/javascript" src="<?=asset_url('js/i18n.js');?>"></script>
+
 	<style type="text/css">
 		.grecaptcha-badge { z-index: 1; }
 	</style>
-	<script data-ad-client="ca-pub-6665062829379662" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+	<?php if (FW_ENV != 'dev') { ?>
+		<script data-ad-client="ca-pub-6665062829379662" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+	<?php } ?>
 </head>
 <body>
-<script type="text/javascript">
-	if ('serviceWorker' in navigator) {
-		navigator.serviceWorker.register('/sw.js')
-			.then(function(registration) {
-				console.log('Registration successful, scope is:', registration.scope);
-			})
-			.catch(function(error) {
-				console.log('Service worker registration failed, error:', error);
-			});
-	}
-</script>
 <div id="fb-root"></div>
 <!-- Topo -->
 <?php if (!$_SESSION['player_id']) { ?>
@@ -177,10 +166,10 @@ if (preg_match('/read_news/', $action)) {
 				<div class="life absolute"><span class="c"><?=highamount($player->for_life());?></span></div>
 				<div class="mana absolute"><span class="c"><?=highamount($player->for_mana());?></span></div>
 				<?php
-					$staminaPercent = floor(($player->for_stamina() / $player->for_stamina(true)) * 100);
-					if ($staminaPercent <= 33)								$staminaColor = "vermelho";
-					else if ($staminaPercent > 34 && $staminaPercent <= 66)	$staminaColor = "laranja";
-					else													$staminaColor = "verde";
+				$staminaPercent = floor(($player->for_stamina() / $player->for_stamina(true)) * 100);
+				if ($staminaPercent <= 33)								$staminaColor = "vermelho";
+				else if ($staminaPercent > 34 && $staminaPercent <= 66)	$staminaColor = "laranja";
+				else													$staminaColor = "verde";
 				?>
 				<div style="cursor: pointer;" class="stamina absolute requirement-popover" data-source="#tooltip-stamina" data-title="Recuperação de Stamina" data-trigger="hover" data-placement="bottom">
 					<div id="tooltip-stamina" class="status-popover-container">
@@ -295,8 +284,8 @@ if (preg_match('/read_news/', $action)) {
 				</div>
 			</div>
 			<div class="menu-content">
-				<?php global $raw_menu_data; ?>
 				<ul>
+					<?php global $raw_menu_data; ?>
 					<?php foreach ($raw_menu_data as $menu_category) { ?>
 						<li class="hoverable">
 							<img src="<?=image_url('menu-icons/' . $menu_category['id'] . (!sizeof($menu_category['menus']) ? '-D' : '') . '.png');?>">
@@ -304,7 +293,7 @@ if (preg_match('/read_news/', $action)) {
 							<?php if (sizeof($menu_category['menus'])) { ?>
 								<ul>
 									<?php foreach ($menu_category['menus'] as $menu) { ?>
-										<li><a href="<?=$menu['href'];?>"<?=($menu['external'] ? ' target="_blank"' : '');?>><?=t($menu['name']);?></a></li>
+										<li><a href="<?=$menu['href'];?>" <?=($menu['external'] ? 'target="_blank"' : '');?>><?=t($menu['name']);?></a></li>
 									<?php } ?>
 								</ul>
 							<?php } ?>
@@ -330,10 +319,15 @@ if (preg_match('/read_news/', $action)) {
 			<?php if (!$player || !$with_battle) { ?>
 				<div id="esquerda" class="<?=($player ? 'with-player' : '');?>">
 					<?php if ($player) { ?>
-						<?=partial('shared/left_character', [
-							'user'		=> $user,
-							'player'	=> $player
-						]);?>
+						<?php if (!$player->map_id && !$is_profile) { ?>
+							<?=partial('shared/left_character', [
+								'user'		=> $user,
+								'player'	=> $player
+							]);?>
+						<?php } else { ?>
+							<div style="height: 680px;"></div>
+						<?php } ?>
+						<div style="clear:both; float: left"></div>
 					<?php } else { ?>
 						<div id="menu">
 							<?php if (!$_SESSION['loggedin']) { ?>
@@ -381,14 +375,11 @@ if (preg_match('/read_news/', $action)) {
 									global $menu_data;
 									foreach ($menu_data as $menu_category) {
 										if (sizeof($menu_category['menus'])) {
-									?>
-									<img src="<?=image_url('menus/' . $_SESSION['language_id'] . '/' . $menu_category['id'] . '_' . ($player ? $player->character()->anime_id : rand(1, 7)) . '.png');?>" />
-									<?php
+											echo '<img src="' . image_url('menus/' . $_SESSION['language_id'] . '/' . $menu_category['id'] . '_' . ($player ? $player->character()->anime_id : rand(1, 6)) . '.png') . '" />';
 											foreach ($menu_category['menus'] as $menu) {
 												if ($menu['hidden']) continue;
-									?>
-									<li><a href="<?=$menu['href'];?>"<?=($menu['external'] ? ' target="_blank"' : '');?>><?=t($menu['name']);?></a></li>
-									<?php
+
+												echo '<li><a href="' . $menu['href'] . '" ' . ($menu['external'] ? 'target="_blank"' : '') . '>' . t($menu['name']) . '</a></li>';
 											}
 										}
 									}
@@ -399,16 +390,9 @@ if (preg_match('/read_news/', $action)) {
 							</div>
 						</div>
 					<?php } ?>
-					<?php if (FW_ENV == 'devs') { ?><br />
-						<div style="width: <?=($_SESSION['player_id'] ? '240px' : '100%')?>;">
-							<script id="_wauae2">var _wau = _wau || []; _wau.push(["dynamic", "gq7qmwiq8v", "ae2", "c4302bffffff", "small"]);</script>
-							<script async src="//waust.at/d.js"></script>
-						</div>
-					<?php } ?>
 				</div>
 			<?php } ?>
 			<div id="direita" class="<?=($player ? 'with-player' : '');?>">
-				<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6665062829379662" crossorigin="anonymous"></script>
 				@yield
 				<div class="clearfix"></div>
 			</div>
@@ -423,10 +407,12 @@ if (preg_match('/read_news/', $action)) {
 </div>
 <?=partial('shared/footer', ['player' => $player]);?>
 
-<div style="display: none;">
-	<script id="_wau38g">var _wau = _wau || []; _wau.push(["dynamic", "j0ycq84tlk", "38g", "c4302bffffff", "small"]);</script>
-	<script async src="//waust.at/d.js"></script>
-</div>
+<?php if (FW_ENV != 'dev') { ?>
+	<div style="display: none;">
+		<script id="_wau38g">var _wau = _wau || []; _wau.push(["dynamic", "j0ycq84tlk", "38g", "c4302bffffff", "small"]);</script>
+		<script async src="//waust.at/d.js"></script>
+	</div>
+<?php } ?>
 
 <div class="box-cookies hide">
 	<p class="msg-cookies">Este site usa cookies para garantir que você obtenha a melhor experiência.</p>
@@ -437,11 +423,16 @@ if (preg_match('/read_news/', $action)) {
 	<?=partial('shared/chat', ['player' => $player]);?>
 	<script type="text/javascript" src="<?=asset_url('js/highlights.js');?>"></script>
 <?php } ?>
-<script type="text/javascript" src="<?=asset_url('js/bootstrap.min.js');?>"></script>
-<script type="text/javascript" src="<?=asset_url('js/select2.js');?>"></script>
-<script type="text/javascript" src="<?=asset_url('js/tutorial.js');?>"></script>
-<script type="text/javascript" src="<?=asset_url('js/typeahead.js');?>"></script>
-<script type="text/javascript" src="<?=asset_url('js/bootbox.js');?>"></script>
+
+<!-- Plugins JS -->
+<script type="text/javascript" src="<?=asset_url('libs/bootstrap/js/bootstrap.min.js');?>"></script>
+<script type="text/javascript" src="<?=asset_url('libs/select2/js/select2.js');?>"></script>
+<script type="text/javascript" src="<?=asset_url('libs/bootstrap-tour/js/bootstrap-tour.js');?>"></script>
+<script type="text/javascript" src="<?=asset_url('libs/typeahead/js/typeahead.js');?>"></script>
+<script type="text/javascript" src="<?=asset_url('libs/bootbox/js/bootbox.js');?>"></script>
+<script type="text/javascript" src="<?=asset_url('libs/sweetalert2/js/sweetalert2.min.js');?>"></script>
+
+<!-- App JS -->
 <script type="text/javascript" src="<?=asset_url('js/global.js');?>"></script>
 <script type="text/javascript" src="<?=asset_url('js/users.js');?>"></script>
 <script type="text/javascript" src="<?=asset_url('js/characters.js');?>"></script>
@@ -472,8 +463,10 @@ if (preg_match('/read_news/', $action)) {
 <script type="text/javascript" src="<?=asset_url('js/maps.js');?>"></script>
 <script type="text/javascript" src="<?=asset_url('js/guilds.js');?>"></script>
 <script type="text/javascript" src="<?=asset_url('js/vips.js');?>"></script>
-<script type="text/javascript" src="<?=asset_url('js/png_animator.js');?>"></script>
-<script type="text/javascript" src="<?=asset_url('js/tournaments.js');?>"></script>
+<script type="text/javascript" src="<?=asset_url('js/ranked.js');?>"></script>
+<script type="text/javascript" src="<?=asset_url('js/blockadblock.js');?>"></script>
+
+<!-- External Plugins -->
 <?php if (FW_ENV != 'dev') { ?>
 	<script type="text/javascript" src="//www.google.com/recaptcha/api.js" async defer></script>
 	<script async defer crossorigin="anonymous"
@@ -482,6 +475,7 @@ if (preg_match('/read_news/', $action)) {
 		nonce="z3ba4zPG">
 	</script>
 <?php } ?>
+
 <?php
 // if ($player) {
 // 	$redis = new Redis();
@@ -512,7 +506,7 @@ if (preg_match('/read_news/', $action)) {
 // 	}
 // }
 ?>
-<!-- Conteúdo -->
+
 <script type="text/javascript">
 	$(document).ready(function() {
 		$('.select2').select2({

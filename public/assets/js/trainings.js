@@ -17,14 +17,7 @@
 
 				distribute_container.html(result.view);
 
-				$('.requirement-popover', distribute_container).each(function () {
-                    $(this).popover({
-						content:	function () {
-							return $($(this).data('source')).html();
-						},
-						html:		true
-					});
-				});
+				update_tooltips();
 			}
 		})
 	}

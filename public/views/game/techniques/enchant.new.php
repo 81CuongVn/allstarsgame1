@@ -1,6 +1,6 @@
 <style>
 	.technique-data {
-		width: 250px !important;	
+		width: 250px !important;
 	}
 </style>
 <?php echo partial('shared/title', array('title' => 'menus.enchant', 'place' => 'menus.enchant')) ?>
@@ -70,7 +70,7 @@
 	</form>
 </div>
 <div class="msg-container" style="clear:both">
-	<div class="msg_top"></div>	
+	<div class="msg_top"></div>
 	 <div class="msg_repete">
 		<div class="msg" style="background:url(<?php echo image_url('msg/encantamento.png')?>); background-repeat: no-repeat;">
 		</div>
@@ -88,12 +88,12 @@
 						<span class="verde"><?php echo t('enchant.criou')?>:</span> <br />
 						<img src="<?php echo image_url("items/".$_GET['joia'].".png")?>" />
 					</div>
-				<?php }?>	
+				<?php }?>
 			</div>
-		</div>		
+		</div>
 	</div>
-	<div class="msg_bot"></div>	
-	<div class="msg_bot2"></div>	
+	<div class="msg_bot"></div>
+	<div class="msg_bot2"></div>
 </div>
 <br />
 <div class="barra-secao barra-secao-<?php echo $player->character()->anime_id ?>"><p><?php echo t('enchant.enchant') ?></p></div>
@@ -108,7 +108,7 @@
 				</div>
 				<span class="quantity">x<?php echo $quantity ? $quantity->quantity : 0?></span>
 			</div>
-		</div>	
+		</div>
 	<?php endforeach ?>
 </div><br />
 <div class="barra-secao barra-secao-<?php echo $player->character()->anime_id ?>">
@@ -119,11 +119,11 @@
 	foreach ($items as $item) {
 		$item->set_player($player);
 		$item->formula(true);
-		
+
 		echo partial('item_enchant', [
 			'item'		=> $item,
 			'player'	=> $player,
-			'type'		=> 'source', 
+			'type'		=> 'source',
 			'equipped'	=> $item_equipped
 		]);
 	}
@@ -148,7 +148,7 @@
 	}
 ?>
 <div class="enchant">
-	<?php 
+	<?php
 	if (isset($item_equipped) && $item_equipped) {
 		$counter = 1;
 		foreach ($item_enchanteds as $item_enchanted) {
@@ -222,7 +222,7 @@
 			<?php } ?>
 		</div>
 	</div>
-	<?php 
+	<?php
 			$counter++;
 		}
 	}
@@ -230,7 +230,7 @@
 	<?php /*foreach ($item_combinations as $combination) { ?>
 	<div class="ability-speciality-box" style="width: 231px !important; height: 270px !important; padding-bottom: 40px">
 		<div class="image">
-			<img data-source="#technique-content-<?php echo $item_enchanted->id ?>" data-title="<?php echo $item_enchanted->description()->name; ?>" data-trigger="hover" data-placement="bottom" class="technique-popover item-image" data-url="<?php echo make_url('techniques#list_golpes') ?>" data-item="<?php echo $item_enchanted->id?>" src="<?php echo image_url($item_enchanted->image(true)) ?>" />
+			<img data-source="#technique-content-<?php echo $item_enchanted->id ?>" data-title="<?php echo $item_enchanted->description()->name; ?>" data-trigger="hover" data-placement="bottom" class="aasg-popover item-image" data-url="<?php echo make_url('techniques#list_golpes') ?>" data-item="<?php echo $item_enchanted->id?>" src="<?php echo image_url($item_enchanted->image(true)) ?>" />
 			<div class="technique-container" id="technique-content-<?php echo $item_enchanted->id ?>">
 				<?php echo $item_enchanted->tooltip() ?>
 			</div>
@@ -251,7 +251,7 @@
 </div>
 <div class="enchant" style="display: none;">
 	<div class="enchant-golpe">
-		<img style="cursor:pointer" data-source="#technique-content-<?php echo $id ?>" data-title="<?php echo $name ?>" data-trigger="hover" data-placement="bottom" class="change_golpe_enchant technique-popover item-image" data-url="<?php echo make_url('techniques#list_golpes') ?>" data-item="<?php echo $id?>" src="<?php echo $image ?>" />
+		<img style="cursor:pointer" data-source="#technique-content-<?php echo $id ?>" data-title="<?php echo $name ?>" data-trigger="hover" data-placement="bottom" class="change_golpe_enchant aasg-popover item-image" data-url="<?php echo make_url('techniques#list_golpes') ?>" data-item="<?php echo $id?>" src="<?php echo $image ?>" />
 		<div class="technique-container" id="technique-content-<?php echo $id ?>">
 			<div style="width: 250px">
 				<?php echo $tooltip ?>
@@ -261,33 +261,33 @@
 	<div class="enchant-item enchant-1 dropzone" data-slot="1">
 		<?php if(isset($player_item_gem) && $player_item_gem){?>
 			<img class="<?php echo $player_item_gem->gem_1 ? "remove-gem cursor_pointer" : ""?>" data-counter="1" data-item="<?php echo $item_equipped->id ?>" data-message="<?php echo t('enchant.message');?>" src="<?php echo image_url($player_item_gem->gem_1 ? "items/".$player_item_gem->gem_1.".png" : "enchant/".$item_combinations_item_1[0].".png")?>" />
-		<?php }else{?>	
+		<?php }else{?>
 			<img src="<?php echo image_url("enchant/sem-gem.png")?>" />
-		<?php }?>	
+		<?php }?>
 	</div>
 	<div class="enchant-item enchant-2 dropzone" data-slot="2">
 		<?php if(isset($player_item_gem) && $player_item_gem){?>
 			<img class="<?php echo $player_item_gem->gem_2 ? "remove-gem cursor_pointer" : ""?>" data-counter="2" data-item="<?php echo $item_equipped->id ?>" data-message="<?php echo t('enchant.message');?>" src="<?php echo image_url($player_item_gem->gem_2 ? "items/".$player_item_gem->gem_2.".png" : "enchant/".$item_combinations_item_1[1].".png")?>" />
-		<?php }else{?>	
+		<?php }else{?>
 			<img src="<?php echo image_url("enchant/sem-gem.png")?>" />
 		<?php }?>
 	</div>
 	<div class="enchant-item enchant-3 dropzone" data-slot="3">
 		<?php if(isset($player_item_gem) && $player_item_gem){?>
 			<img class="<?php echo $player_item_gem->gem_3 ? "remove-gem cursor_pointer" : ""?>" data-counter="3" data-item="<?php echo $item_equipped->id ?>" data-message="<?php echo t('enchant.message');?>" src="<?php echo image_url($player_item_gem->gem_3 ? "items/".$player_item_gem->gem_3.".png" : "enchant/sem-gem.png")?>" />
-		<?php }else{?>	
+		<?php }else{?>
 			<img src="<?php echo image_url("enchant/sem-gem.png")?>" />
 		<?php }?>
 	</div>
 	<div class="enchant-item enchant-4 dropzone" data-slot="4">
 		<?php if(isset($player_item_gem) && $player_item_gem){?>
 			<img class="<?php echo $player_item_gem->gem_4 ? "remove-gem cursor_pointer" : ""?>" data-counter="4" data-item="<?php echo $item_equipped->id ?>" data-message="<?php echo t('enchant.message');?>" src="<?php echo image_url($player_item_gem->gem_4 ? "items/".$player_item_gem->gem_4.".png" : "enchant/sem-gem.png")?>" />
-		<?php }else{?>	
+		<?php }else{?>
 			<img src="<?php echo image_url("enchant/sem-gem.png")?>" />
 		<?php }?>
 	</div>
-	<?php 
-		if(isset($item_equipped) && $item_equipped){	
+	<?php
+		if(isset($item_equipped) && $item_equipped){
 			$counter = 1;
 			foreach($item_enchanteds as $item_enchanted){
 				$verification = true;
@@ -304,22 +304,22 @@
 						$combination = $item_combinations_item_1;
 						if(isset($player_item_gem) && $player_item_gem){
 							if($player_item_gem->gem_4 || $player_item_gem->gem_3){
-								$verification = false;	
+								$verification = false;
 							}
 						}
 						$enchanted = $player_item_gem->enchanted;
 					break;
-					
+
 					case 2:
 						$combination = $item_combinations_item_2;
 						if(isset($player_item_gem) && $player_item_gem){
 							if($player_item_gem->gem_4){
-								$verification = false;	
+								$verification = false;
 							}
 						}
 						$enchanted = $player_item_gem->enchanted;
 					break;
-					
+
 					case 3:
 						$combination = $item_combinations_item_3;
 						$enchanted = $player_item_gem->enchanted;
@@ -327,7 +327,7 @@
 				}
 			?>
 			<div class="item-enchanted-<?php echo $counter?>">
-				<img data-source="#technique-content-<?php echo $item_enchanted->id ?>" data-title="<?php echo $item_enchanted->description()->name; ?>" data-trigger="hover" data-placement="bottom" class="technique-popover item-image" data-url="<?php echo make_url('techniques#list_golpes') ?>" data-item="<?php echo $item_enchanted->id?>" src="<?php echo image_url($item_enchanted->image(true)) ?>" />
+				<img data-source="#technique-content-<?php echo $item_enchanted->id ?>" data-title="<?php echo $item_enchanted->description()->name; ?>" data-trigger="hover" data-placement="bottom" class="aasg-popover item-image" data-url="<?php echo make_url('techniques#list_golpes') ?>" data-item="<?php echo $item_enchanted->id?>" src="<?php echo image_url($item_enchanted->image(true)) ?>" />
 				<div class="technique-container" id="technique-content-<?php echo $item_enchanted->id ?>">
 					<?php echo $item_enchanted->tooltip() ?>
 				</div>
@@ -338,9 +338,9 @@
 						<a class="btn btn-sm btn-success button_enchant<?php echo $counter?>"><?php echo t('enchant.encantado')?></a>
 					<?php }?>
 			</div>
-		<?php 
+		<?php
 				$counter++;
 			}
 		}
-		?>	
+		?>
 </div>

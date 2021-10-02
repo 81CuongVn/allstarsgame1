@@ -114,6 +114,14 @@ class User extends Relation {
 		return UserDailyQuest::find('user_id=' . $this->id ." AND complete=0");
 	}
 
+	function is_admin() {
+		return $this->admin >= 2;
+	}
+
+	function is_mod() {
+		return $this->admin;
+	}
+
 	function is_online() {
 		return is_user_online($this->id);
 	}

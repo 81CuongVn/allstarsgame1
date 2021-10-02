@@ -1,6 +1,16 @@
 <?php echo partial('shared/title', array('title' => 'quests.pvp.status.title', 'place' => 'quests.pvp.status.title')) ?>
+<?php if (FW_ENV != 'dev') { ?>
+	<!-- AASG - Quests -->
+	<ins class="adsbygoogle"
+		style="display:inline-block;width:728px;height:90px"
+		data-ad-client="ca-pub-6665062829379662"
+		data-ad-slot="8048824605"></ins>
+	<script>
+		(adsbygoogle = window.adsbygoogle || []).push({});
+	</script><br />
+<?php } ?>
 <div class="msg-container">
-	<div class="msg_top"></div>	
+	<div class="msg_top"></div>
 	 <div class="msg_repete">
 		<div class="msg" style="background:url(<?php echo image_url('msg/'. $player->character()->anime_id . '-3.png')?>); background-repeat: no-repeat;">
 		</div>
@@ -45,7 +55,7 @@
 					<?php } ?>
 				<?php endif ?>
 			</div>
-		</div>		
+		</div>
 	</div>
 	<div class="msg_bot"></div>
 	<div class="msg_bot2"></div>

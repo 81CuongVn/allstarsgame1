@@ -302,16 +302,20 @@ function get_time_difference( $start, $end ) {
 	} else {
 		trigger_error( "Invalid date/time data detected", E_USER_WARNING );
 	}
-	return( false );
+	return false;
 }
 
 function has_chance($val) {
-	$rnd = rand(0, 400) / 4;
-	return $rnd <= $val ? true : false;
+	// $number	= 100 - $val;
+	// $random	= rand(1, 1000) / 10;
+	// return $number >= $random ? true : false;
+
+	$rnd = rand(1, 100);
+	return ($_SESSION['universal'] && $val > 0) ? true : ($rnd <= $val ? true : false);
 }
 
 function get_chance() {
-	return rand(0, 400) / 4;
+	return rand(1, 100);
 }
 
 function array_random_key($arr) {

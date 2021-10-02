@@ -1,4 +1,14 @@
 <?php echo partial('shared/title', array('title' => 'vips.purchase.title', 'place' => 'vips.purchase.title')) ?>
+<?php if (FW_ENV != 'dev') { ?>
+	<!-- AASG - Vips -->
+	<ins class="adsbygoogle"
+		style="display:inline-block;width:728px;height:90px"
+		data-ad-client="ca-pub-6665062829379662"
+		data-ad-slot="4540824433"></ins>
+	<script>
+		(adsbygoogle = window.adsbygoogle || []).push({});
+	</script><br />
+<?php } ?>
 <?php
 if ($is_dbl) {
 	$timestamp	= strtotime($is_dbl->data_end);

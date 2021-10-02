@@ -1,4 +1,14 @@
 <?php echo partial('shared/title', array('title' => 'menus.quests_account', 'place' => 'menus.quests_account')) ?>
+<?php if (FW_ENV != 'dev') { ?>
+	<!-- AASG - Quests -->
+	<ins class="adsbygoogle"
+		style="display:inline-block;width:728px;height:90px"
+		data-ad-client="ca-pub-6665062829379662"
+		data-ad-slot="8048824605"></ins>
+	<script>
+		(adsbygoogle = window.adsbygoogle || []).push({});
+	</script><br />
+<?php } ?>
 <?php if (!$player_tutorial->missoes_conta) { ?>
 	<script type="text/javascript">
 		$(function () {
@@ -22,8 +32,11 @@
 			tour.init(true);
 			tour.start(true);
 		});
-	</script>	
+	</script>
 <?php }?>
+
+<?=partial('quests/menu', [ 'player' => $player ]);?>
+
 <?php
 	echo partial('shared/info', [
 		'id'		=> 1,
@@ -32,11 +45,11 @@
 	]);
 ?>
 <br />
-<?php 
+<?php
 	foreach ($quests as $quest):
-		
+
 		if(!$quest->complete){
-		
+
 		$player_quest = DailyQuest::find('id='.$quest->daily_quest_id,['cache' => true]);
 		$personagem = Character::find($quest->character_id, array('cache' => true));
 		$anime 		= Anime::find($quest->anime_id, array('cache' => true));
@@ -52,7 +65,7 @@
 			Missão Diária <?php echo $quest->daily_quest_id ?>
 		</div>
 		<div class="description" style="height: 60px !important;">
-		<?php 
+		<?php
 			switch($quest->daily_quest_id){
 				case 32:
 				case 42:
@@ -90,7 +103,7 @@
 				case 51:
 					$descricao = "Drope ". ($quest->total > 10 ? 10 : $quest->total) ." de ".$player_quest[0]->total." <span class='laranja'>Mascotes</span> em combates PVP / NPC com Personagem do Anime <span class='laranja'>". $anime->description()->name ."</span>";
 				break;
-				
+
 			}
 		?>
 		<?php echo $descricao?><br />
@@ -101,24 +114,24 @@
 		<div class="change-mission" style="margin-top: 10px">
 			<?php if(!$quest->complete){?>
 				<a data-id="<?php echo $quest->id ?>" data-quest="<?php echo $quest->daily_quest_id ?>" class="btn btn-sm btn-primary account_quests_change">
-					
-					<?php 
+
+					<?php
 						if($buy_mode_change){
 							if($buy_mode_change->daily == 0){
-								echo "Trocar grátis";							
+								echo "Trocar grátis";
 							}elseif($buy_mode_change->daily > 0 && $buy_mode_change->daily < 5){
-								
+
 								$valor_change = $buy_mode_change->daily * 500;
-								
+
 								echo "Trocar por ".$valor_change .' '. t('currencies.' . $player->character()->anime_id);
-					
+
 							}elseif($buy_mode_change->daily > 4){
-								
+
 								if($buy_mode_change->daily > 4  && $buy_mode_change->daily < 10){
 									$valor_change = 1;
 								}elseif($buy_mode_change->daily > 9  && $buy_mode_change->daily < 15){
 									$valor_change = 2;
-								}elseif($buy_mode_change->daily > 14  && $buy_mode_change->daily < 20){	
+								}elseif($buy_mode_change->daily > 14  && $buy_mode_change->daily < 20){
 									$valor_change = 3;
 								}elseif($buy_mode_change->daily >= 20){
 									$valor_change = 5;
@@ -129,9 +142,9 @@
 							echo "Trocar grátis";
 						}
 					?>
-					
+
 				</a>
-			<?php }?>	
+			<?php }?>
 		</div>
 	</div>
 </div>
@@ -139,8 +152,8 @@
 <?php endforeach ?>
 <?php
 	if(sizeof($quests)){
-?>	
+?>
 <div class="clearfix" align="center" style="position:relative; top:10px;">
 	<a id="account_quests_finish" class="btn btn-sm btn-primary"><?php echo t('quests.daily.finish') ?></a>
-</div>					
+</div>
 <?php } ?>

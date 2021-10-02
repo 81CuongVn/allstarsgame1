@@ -1,4 +1,14 @@
 <?php echo partial('shared/title', array('title' => 'abilities.index.title', 'place' => 'abilities.index.title')) ?>
+<?php if (FW_ENV != 'dev') { ?>
+	<!-- AASG - Techniques -->
+	<ins class="adsbygoogle"
+		style="display:inline-block;width:728px;height:90px"
+		data-ad-client="ca-pub-6665062829379662"
+		data-ad-slot="7857252910"></ins>
+	<script>
+		(adsbygoogle = window.adsbygoogle || []).push({});
+	</script><br />
+<?php } ?>
 <?php if (!$player_tutorial->habilidades) { ?>
 	<script type="text/javascript">
 		$(function () {

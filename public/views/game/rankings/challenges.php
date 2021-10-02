@@ -4,7 +4,17 @@
 	}
 </style>
 <?php echo partial('shared/title', array('title' => 'rankings.challenges.title', 'place' => 'rankings.challenges.title')) ?>
-<div class="barra-secao barra-secao-<?php echo $player->character()->anime_id ?>">
+<?php if (FW_ENV != 'dev') { ?>
+	<!-- AASG - Rankings -->
+	<ins class="adsbygoogle"
+		style="display:inline-block;width:728px;height:90px"
+		data-ad-client="ca-pub-6665062829379662"
+		data-ad-slot="5869383826"></ins>
+	<script>
+		(adsbygoogle = window.adsbygoogle || []).push({});
+	</script><br />
+<?php } ?>
+<div class="barra-secao barra-secao-1">
 	<p>Filtro do Ranking</p>
 </div>
 <form id="ranking-players-filter-form" method="post">
@@ -101,7 +111,7 @@
 			}
 		}
 		?>
-		<div class="ability-speciality-box" style="width: 175px !important; height: 250px !important; padding-bottom: 40px">
+		<div class="ability-speciality-box" style="width: 175px !important; height: <?=($player ? 280 : 250);?>px !important; padding-bottom: 40px">
 			<div class="image" align="center">
 				<div class="<?=$class;?>">
 					<div class="position">
@@ -114,15 +124,13 @@
 					<?=$p->character_theme()->first_image()->small_image();?>
 				</div>
 			</div>
-			<div class="name" style="height: 45px !important;">
-				<div class="amarelo" style="margin-bottom: 6px;">
-					<?php if (is_player_online($p->player_id)): ?>
-						<img src="<?php echo image_url("on.png" ) ?>"/>
-					<?php else: ?>
-						<img src="<?php echo image_url("off.png" ) ?>"/>
-					<?php endif ?>
+			<div class="name" style="height: 45px;">
+				<a href="<?=make_url('profile', [
+					'player'	=> $p->player_id
+				]);?>" class="amarelo" style="margin-bottom: 6px; text-decoration: none; display: block;">
+					<img src="<?=image_url((is_player_online($p->player_id) ? 'on' : 'off') . ".png");?>" />
 					<b><?=$p->name;?></b>
-				</div>
+				</a>
 				<img src="<?=image_url('factions/icons/big/' . $p->faction_id . ".png");?>" width="25" />
 			</div>
 			<div class="description" style="height: auto; font-size:11px">
@@ -135,7 +143,28 @@
 			<div class="details">
 				<b class="laranja" style="cursor: pointer; font-size: 14px">Andar <?=highamount($p->score);?></b>
 			</div>
-			<div class="button" style="position:relative; top: 15px;">
+			<div class="button" style="position: relative; top: 15px;">
+				<?php if ($player) { ?>
+					<a href="<?=make_url('profile#achievements', [
+						'player'	=> $p->player_id
+					]);?>">
+						<img src="<?=image_url('icons/achievements.png')?>" style="margin: 0 5px" data-toggle="tooltip" title="<?=make_tooltip('Ver Conquisstas', 125);?>" />
+					</a>
+					<?php if ($player->has_vip_item(2114)) { ?>
+						<a href="<?=make_url('profile#talents', [
+							'player'	=> $p->player_id
+						]);?>">
+							<img src="<?=image_url('icons/talents.png')?>" style="margin: 0 5px" data-toggle="tooltip" title="<?=make_tooltip('Ver Talentos', 125);?>" />
+						</a>
+					<?php } ?>
+					<?php if ($player->has_vip_item(2115)) { ?>
+						<a href="<?=make_url('profile#equipments', [
+							'player'	=> $p->player_id
+						]);?>">
+							<img src="<?=image_url('icons/equipments.png')?>" style="margin: 0 5px" data-toggle="tooltip" title="<?=make_tooltip('Ver Equipamentos', 125);?>" />
+						</a>
+					<?php } ?>
+				<?php } ?>
 			</div>
 		</div>
 	<?php } ?>

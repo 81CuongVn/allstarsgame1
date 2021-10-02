@@ -17,7 +17,6 @@ en-US:
   menus:
     discord: Servidor no Discord
     whatsapp: WhatsApp Group
-    tournaments: All-Star Tournament
     tutorial: Tutorial
     objectives: Round Objectives
     quests_battle: Battle QUests
@@ -2402,39 +2401,6 @@ en-US:
       not_enough_vip: Você não tem estrela(s) suficiente
       invalid_character: Personagem inválido
       dont_have: Você não tem mais esse talento disponivel para ativa-lo.
-  tournaments:
-    requirements:
-      level: |
-        Você precisa ter nível #{level} ou maior
-    success:
-      subscribe: Inscrição realizada com sucesso!
-    errors:
-      already_subscribed: Você já tem um personagens inscrito nesse torneio!
-      wait_draw: Aguardando o sorteio da chave.
-      enough_credits: Você não possui estrelas suficientes
-      enough_currency: |
-        Você não possui #{currency} suficientes
-    view:
-      bracket: Chave do Torneio
-      players: Jogadores inscritos no torneio
-    status:
-      canceled: Cancelado
-      finished: Finalizado
-    rounds:
-      subscriptions: Inscrições
-      final: Final
-      semifinal: Semifinal
-      quarterfinals: Quartas de inal
-      normal: |
-        Rodada #{round}
-    title: Torneio ALl-Star
-    info:
-      title: Como funciona o torneio?
-      description: |
-        Os torneios são realizados toda sexta-feira, sábado e domingo.<br />
-        As inscrições serão encerradas 30 minutos antes do inicio do torneio. A inscrição pode ser paga com #{currency} ou Estrelas<br /><br />
-
-        <span class="laranja">* Caso o torneio não alcance o total de inscrições, o mesmo será cancelado e a taxa de inscrição reembolsada.</span>
   welcome_message:
     subject: Seja bem vindo(a)!
     message: |

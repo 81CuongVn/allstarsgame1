@@ -8,7 +8,8 @@ $rewrite_enabled	= true;
 
 // Game settings
 define('GAME_NAME', 			'Anime All-Stars Game');
-define('GAME_VERSION', 			'2.20');
+define('GAME_PREFIX', 			'AASG');
+define('GAME_VERSION', 			'2.22');
 define('GLOBAL_PASSWORD', 		'allStars2@21');
 
 // Maintenance
@@ -21,10 +22,10 @@ $database			= [
 	'host'			=> '127.0.0.1',
 	'username'		=> 'root',
 	'password'		=> '',
-	'database'		=> 'allstars_db',
+	'database'		=> 'aasg_db',
 	'connection'	=> 'primary',
 	'cache_mode'	=> RECORDSET_SHM,
-	'cache_id'		=> 'AASG'
+	'cache_id'		=> GAME_PREFIX
 ];
 
 // SMTP settings
@@ -80,20 +81,17 @@ if (!isset($_SESSION['orig_player_id']))	$_SESSION['orig_player_id']	= 0;
 // Timezone settings
 define('DEFAULT_TIMEZONE',		'America/Sao_Paulo');
 
-// Donate Prefix
-define('DONATE_PREFIX', 		'AASG');
-
 // Regex settings
 define('REGEX_PLAYER',			'/^[ÁÉÍÓÚÀÈÌÒÙÂÊÎÔÛÃÕÑÇáéíóúàèìòùâêîôûãõñç\w\d\s]+$/');
 define('REGEX_GUILD',			'/^[ÁÉÍÓÚÀÈÌÒÙÂÊÎÔÛÃÕÑÇáéíóúàèìòùâêîôûãõñç\w\d\s]+$/');
 
 // Chat settinsg
 define('CHAT_KEY',				'YAn8yK930907L2KUTnnSqLDuI6jl0G9N');
-define('CHAT_SERVER',			'http://allstarsgame.test:2934');
+define('CHAT_SERVER',			'http://chat.allstarsgame.test');
 
 // Highligts settings
 define('HIGHLIGHTS_KEY',		'430rBdLShn8yK930907L2a8yeTszrDip');
-define('HIGHLIGHTS_SERVER',		'http://allstarsgame.test:2600');
+define('HIGHLIGHTS_SERVER',		'http://alerts.allstarsgame.test');
 
 // Redis Server settings
 define('REDIS_SERVER', 			'127.0.0.1');
@@ -111,7 +109,7 @@ define('MAX_LEVEL_PLAYER',		50);
 define('MAX_LEVEL_GUILD',		15);
 
 // Initial settings
-define('INITIAL_MONEY',			0);
+define('INITIAL_MONEY',			1000);
 
 // Techniques limit
 define('MAX_EQUIPPED_ATTACKS',	10);

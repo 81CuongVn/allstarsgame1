@@ -1,5 +1,15 @@
 <script type="text/javascript" src="<?php echo asset_url('js/guild_dungeon.js') ?>"></script>
 <?php echo partial('shared/title', array('title' => 'battles.npc.title', 'place' => 'battles.npc.title')) ?>
+<?php if (FW_ENV != 'dev') { ?>
+	<!-- AASG - Guild -->
+	<ins class="adsbygoogle"
+		style="display:inline-block;width:728px;height:90px"
+		data-ad-client="ca-pub-6665062829379662"
+		data-ad-slot="7693601385"></ins>
+	<script>
+		(adsbygoogle = window.adsbygoogle || []).push({});
+	</script><br />
+<?php } ?>
 <style type="text/css">
 	#dungeon-map-container {
 		position: relative;

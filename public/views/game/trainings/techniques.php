@@ -1,9 +1,19 @@
 <?php echo partial('shared/title', array('title' => 'techniques.training.title', 'place' => 'techniques.training.title')) ?>
+<?php if (FW_ENV != 'dev') { ?>
+	<!-- AASG - Treinamento -->
+	<ins class="adsbygoogle"
+		style="display:inline-block;width:728px;height:90px"
+		data-ad-client="ca-pub-6665062829379662"
+		data-ad-slot="5650532609"></ins>
+	<script>
+		(adsbygoogle = window.adsbygoogle || []).push({});
+	</script><br />
+<?php } ?>
 <?php if (!sizeof($techniques)): ?>
 	<?php echo partial('shared/info', array('id' => 4, 'title' => 'techniques.training.no_technique_title', 'message' => t('techniques.training.no_technique'))) ?>
 <?php else: ?>
 	<div class="msg-container">
-		<div class="msg_top"></div>	
+		<div class="msg_top"></div>
 		 <div class="msg_repete">
 			<div class="msg" style="background:url(<?php echo image_url('msg/'. $player->character()->anime_id . '-2.png')?>); background-repeat: no-repeat;">
 			</div>
@@ -12,8 +22,8 @@
 				<div class="content">
 					<?php echo t('techniques.training.info') ?><br /><br />
 					<?php echo exp_bar($player->technique_training_spent, $max_training, 455, $player->technique_training_spent . ' / ' . $max_training) ?>
-				</div>	
-			</div>		
+				</div>
+			</div>
 		</div>
 		<div class="msg_bot"></div>
 		<div class="msg_bot2"></div>
@@ -50,7 +60,7 @@
 					<b class="amarelo" style="font-size:14px; position: relative; top: 5px;"><?php echo $item->description()->name ?></b><hr />
 					<?php /*if ($technique->level < 5): ?>
 						<?php echo exp_bar($stats->exp, $item->exp_needed_for_level(), 250, $stats->exp . ' / ' . $item->exp_needed_for_level()) ?>
-						<br /><br />						
+						<br /><br />
 					<?php endif*/ ?>
 				</td>
 				<td width="140" align="center">
@@ -71,7 +81,7 @@
 						<?php else: ?>
 							<input type="button" class="btn btn-sm btn-primary train" value="<?php echo t('techniques.training.train') ?>" data-item="<?php echo $technique->id ?>" />
 						<?php endif ?>
-					</td>					
+					</td>
 				<?php else: ?>
 					<td colspan="2" align="center">
 						<?php echo t('techniques.training.max_level_reached') ?>

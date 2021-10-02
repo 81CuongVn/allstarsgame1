@@ -1,4 +1,14 @@
 <?php echo partial('shared/title', array('title' => 'challenges.title', 'place' => 'challenges.title')) ?>
+<?php if (FW_ENV != 'dev') { ?>
+	<!-- AASG - Challenges -->
+	<ins class="adsbygoogle"
+		style="display:inline-block;width:728px;height:90px"
+		data-ad-client="ca-pub-6665062829379662"
+		data-ad-slot="3722922000"></ins>
+	<script>
+		(adsbygoogle = window.adsbygoogle || []).push({});
+	</script><br />
+<?php } ?>
 <div class="msg-container">
 	<div class="msg_top"></div>
 	 <div class="msg_repete">
@@ -9,22 +19,22 @@
 			<div class="content"><?php echo t('challenges.descriptions') ?></div>
 		</div>
 	</div>
-	<div class="msg_bot"></div>	
+	<div class="msg_bot"></div>
 	<div class="msg_bot2"></div>
 </div>
 <br />
 <div id="challenge-list">
 	<?php foreach ($challenges as $challenge): ?>
 		<div class="group">
-			<div class="technique-popover buff" data-source="#challenges-container-<?php echo $challenge->id ?>" data-title="<?php echo $challenge->description()->name ?>" data-trigger="click" data-placement="bottom">
+			<div class="aasg-popover buff" data-source="#challenges-container-<?php echo $challenge->id ?>" data-title="<?php echo $challenge->description()->name ?>" data-trigger="click" data-placement="bottom">
 			<?php $challenge->set_player($player) ?>
-				
+
 			<div class="<?php echo $challenge->unlocked() ? '' : 'efeito'?>">
 				<?php echo $challenge->image() ?>
-			</div>	
+			</div>
 			<div class="clearfix"></div>
 			<div class="name-anime"><?php echo $challenge->description()->name ?></div>
-			<div class="clearfix"></div>	
+			<div class="clearfix"></div>
             <div class="buttons">
 			<?php if ($challenge->unlocked()): ?>
 				<a class="btn btn-sm btn-primary" href="<?php echo make_url('challenges#show/' . $challenge->id) ?>"><?php echo t('history_mode.index.go_battles') ?></a>
@@ -39,10 +49,10 @@
 						<?php endif ?>
 					<?php else: ?>
 							<a class="btn btn-sm btn-danger"><?php echo t('friends.f26')?></a>
-					<?php endif ?>			
+					<?php endif ?>
 				<?php else: ?>
 					<a class="btn btn-sm btn-danger"><?php echo t('challenges.challenge_active_error') ?></a>
-				<?php endif ?>	
+				<?php endif ?>
 			<?php endif ?>
             </div>
 			<div id="challenges-container-<?php echo $challenge->id ?>" class="technique-container">

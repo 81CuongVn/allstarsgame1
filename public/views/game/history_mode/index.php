@@ -1,4 +1,14 @@
 <?php echo partial('shared/title', array('title' => 'history_mode.index.title', 'place' => 'history_mode.index.title')) ?>
+<?php if (FW_ENV != 'dev') { ?>
+	<!-- AASG - Modo Aventura -->
+	<ins class="adsbygoogle"
+		style="display:inline-block;width:728px;height:90px"
+		data-ad-client="ca-pub-6665062829379662"
+		data-ad-slot="8659839325"></ins>
+	<script>
+		(adsbygoogle = window.adsbygoogle || []).push({});
+	</script><br />
+<?php } ?>
 <?php
 	echo partial('shared/info', [
 		'id'		=> 1,
@@ -12,13 +22,13 @@
 		<div class="group">
 			<div class="technique-popover buff" data-source="#history-container-<?php echo $group->id ?>" data-title="<?php echo $group->description()->name ?>" data-trigger="click" data-placement="bottom">
 				<?php $group->set_player($player) ?>
-					
+
 				<div class="<?php echo $group->unlocked() ? '' : 'efeito'?>">
 					<?php echo $group->image() ?>
-				</div>	
+				</div>
 				<div class="clearfix"></div>
 				<div class="name-anime"><?php echo $group->description()->name ?></div>
-				<div class="clearfix"></div>	
+				<div class="clearfix"></div>
 				<div class="buttons">
 				<?php if ($group->unlocked()): ?>
 					<a class="btn btn-sm btn-primary" href="<?php echo make_url('history_mode#show/' . $group->id) ?>"><?php echo t('history_mode.index.go_battles') ?></a>
