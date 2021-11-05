@@ -333,7 +333,7 @@ class BattleNpcsController extends Controller {
 						$player->add_technique_lock($item);
 					}
 
-					$npc->add_technique_lock($item);
+					$npc->add_technique_lock($enemy_item);
 
 					// first players, then items, then effects
 					$battle_instance->set_player($player);

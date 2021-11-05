@@ -1,7 +1,5 @@
 <?php
 function make_url($to = '', $params = [], $ignore_path = false) {
-	global $rewrite_enabled, $site_url, $is_admin;
-
 	$to	= explode('#', $to);
 
 	if (sizeof($params)) {
@@ -15,27 +13,24 @@ function make_url($to = '', $params = [], $ignore_path = false) {
 		$final_params	= '';
 	}
 
-	if (!$to[0] && !$rewrite_enabled) {
-		return ($ignore_path ? '' : $site_url . ($rewrite_enabled ? '/' : '/index.php'));
+	if (!$to[0] && !REWRITE_ENABLED) {
+		return ($ignore_path ? '' : SITE_URL . (REWRITE_ENABLED ? '/' : '/index.php'));
 	} else {
 		$url	= implode('/', $to);
-		return ($ignore_path ? '' : $site_url . ($rewrite_enabled ? '/' : '/index.php/')) .$url . $final_params;
+		return ($ignore_path ? '' : SITE_URL . (REWRITE_ENABLED ? '/' : '/index.php/')) .$url . $final_params;
 	}
 }
 
 function resource_url($path) {
-	global $site_url;
-	return $site_url . '/' . $path;
+	return SITE_URL . '/' . $path;
 }
 
 function asset_url($path) {
-	global $site_url;
-	return $site_url . '/assets/' . $path  . '?v=' . GAME_VERSION;
+	return SITE_URL . '/assets/' . $path  . '?v=' . GAME_VERSION;
 }
 
 function image_url($path) {
-	global $site_url;
-	return $site_url . '/assets/images/' . $path  . '?v=' . GAME_VERSION;
+	return SITE_URL . '/assets/images/' . $path  . '?v=' . GAME_VERSION;
 }
 
 function redirect_to($to = '', $params = []) {

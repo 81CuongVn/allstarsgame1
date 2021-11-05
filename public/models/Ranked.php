@@ -1,8 +1,6 @@
 <?php
 class Ranked extends Relation {
 	static function isOpen() {
-		global $ranked_schedules;
-
 		$ranked_time	= false;
 		$ranked			= Ranked::find_first('started = 1 and finished = 0 order by id desc');
 		if ($ranked) {
@@ -12,7 +10,7 @@ class Ranked extends Relation {
 			// }
 
 			// Verifica horario da fila ranqueada
-			$schedules		= $ranked_schedules;
+			$schedules		= RANKED_SCHEDULES;
 			foreach ($schedules as $schedule) {
 				$start	= $schedule[0];
 				$end	= $schedule[1] - 1;

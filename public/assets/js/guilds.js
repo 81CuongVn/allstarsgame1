@@ -24,27 +24,29 @@
 			});
 		});
 	}
+
 	// Treasures
 	$('.treasures_change').on('click', function () {
 
-			lock_screen(true);
-			var	_	= $(this);
+		lock_screen(true);
+		var	_	= $(this);
 
-			$.ajax({
-				url:		make_url('guilds#treasures_change'),
-				data:		{ mode: _.data('mode')},
-				dataType:	'json',
-				type:		'post',
-				success:	function (result) {
-					if(result.success) {
-						location.href	= make_url('guilds#treasure');
-					} else {
-						lock_screen(false);
-						format_error(result);
-					}
+		$.ajax({
+			url:		make_url('guilds#treasures_change'),
+			data:		{ mode: _.data('mode')},
+			dataType:	'json',
+			type:		'post',
+			success:	function (result) {
+				if(result.success) {
+					location.href	= make_url('guilds#treasure');
+				} else {
+					lock_screen(false);
+					format_error(result);
 				}
-			});
+			}
 		});
+	});
+
 	if (search_form.length) {
 		search_form.on('submit', function (e) {
 			e.preventDefault();
@@ -147,7 +149,8 @@
 			}
 		});
 	});
-	// Remove todos os pedidos de amizade
+
+	// Remove todos os pedidos
 	$('#guild-accept-list').on('click', '.remove_all', function () {
 		var _	= $(this);
 
@@ -312,6 +315,7 @@
 		$('.modal-dialog', win).addClass('pattern-container mini');
 		$('.modal-content', win).addClass('with-pattern');
 	});
+
 	$('#guild-event-list').on('click', '.unlock', function () {
 		lock_screen(true);
 

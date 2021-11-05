@@ -4,7 +4,7 @@ class Lang {
 	private static $parsed	= [];
 
 
-	// static function toJSON($lid = NULL) {
+	// static function toJSON($lid = null) {
 	// 	if (is_null($lid)) {
 	// 		$lid	= $_SESSION['language_id'];
 	// 	}
@@ -35,8 +35,8 @@ class Lang {
     }
 	static function initialize() {
 		$path		= dirname(__FILE__);
-		$cache_root	= ROOT . '/cache/';
-		$cache_path	= ROOT . '/cache/yaml/';
+		$cache_root	= ROOT . '/../tmp/';
+		$cache_path	= ROOT . '/../tmp/yaml/';
 
 		if (!is_dir($cache_path)) {
 			if (is_writable(realpath($cache_root))) {
@@ -49,22 +49,22 @@ class Lang {
 		if (file_exists($path . '/../locales')) {
 			$files				= glob($path . '/../locales/*.yml');
 			foreach ($files as $file) {
-				$is_cached	= TRUE;
+				$is_cached	= true;
 				$cache_file	= $cache_path . md5(basename($file)) . '.data';
 				$cache_date	= $cache_path . md5(basename($file)) . '.ts';
 
 				if (file_exists($cache_file)) {
 					if (file_get_contents($cache_date) != filemtime($file)) {
-						$is_cached	= FALSE;
+						$is_cached	= false;
 					}
 				} else {
-					$is_cached	= FALSE;
+					$is_cached	= false;
 				}
 
-				$is_cached	= FALSE;
+				$is_cached	= false;
 				if (!$is_cached) {
 					$data	= spyc_load_file($file);
-					if ($data === FALSE) {
+					if ($data === false) {
 						echo "Error found when parsing translation file:\n\n";
 						spyc_load_file($file);
 						exit;
@@ -72,7 +72,7 @@ class Lang {
 
 					$header	= key($data);
 					$lid	= Language::find_first('header="' . $header . '"', [
-					    'cache' => TRUE
+					    'cache' => true
                     ])->id;
 
 					if (!isset(Lang::$strings[$lid])) {
@@ -123,7 +123,7 @@ class Lang {
 		}
 	}
 
-	static function translate($path, $assigns = [], $lid = NULL) {
+	static function translate($path, $assigns = [], $lid = null) {
 		if (is_null($lid))
 			$lid	= $_SESSION['language_id'];
 
@@ -134,16 +134,16 @@ class Lang {
 
 			return $parsed[$path];
 		} else
-			return FALSE;
+			return false;
 	}
 }
 Lang::initialize();
 
-function t($path, $assigns = [], $lid = NULL) {
+function t($path, $assigns = [], $lid = null) {
 	$translation	= Lang::translate($path, $assigns, $lid);
 	return $translation === false ? '-- TRANSLATION MISSING: ' . $path . ' --' : $translation;
 }
-function tb($path, $assigns = [], $lid = NULL) {
+function tb($path, $assigns = [], $lid = null) {
 	$translation	= Lang::translate($path, $assigns, $lid);
 	return $translation === false ? false : $translation;
 }

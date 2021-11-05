@@ -54,32 +54,27 @@ if (preg_match('/read_news/', $action)) {
     <title><?=GAME_NAME;?> - Seja o Herói de nossa História</title>
     <meta name="description" content="<?=GAME_NAME;?> é o novo jogo para fãs de anime, em nosso jogo você será um dos personagens emblemáticos dos principais animes que fizeram e fazem parte de nossa vida." />
     <meta name="keywords" content="aasg, naruto, boruto, one, piece, cdz, anime, all, stars, game, jogo, online" />
+
+	<!-- Facebook Dynamic OG Tags -->
 	<?php if (!preg_match('/read_news/', $action)) { ?>
-
-	<meta property="og:url" content="<?=make_url('/')?>" />
-	<meta property="og:type" content="website" />
-	<meta property="og:title" content="<?=GAME_NAME;?> - Seja o Herói de nossa História" />
-	<meta property="og:description" content="<?=GAME_NAME;?> é o novo jogo para fãs de anime, em nosso jogo você será um dos personagens emblemáticos dos principais animes que fizeram e fazem parte de nossa vida." />
+		<meta property="og:url" content="<?=make_url('/')?>" />
+		<meta property="og:type" content="website" />
+		<meta property="og:title" content="<?=GAME_NAME;?> - Seja o Herói de nossa História" />
+		<meta property="og:description" content="<?=GAME_NAME;?> é o novo jogo para fãs de anime, em nosso jogo você será um dos personagens emblemáticos dos principais animes que fizeram e fazem parte de nossa vida." />
 	<?php } else { ?>
-
-	<meta property="og:url" content="<?=make_url('home#read_news/' . $article->id)?>" />
-	<meta property="og:title" content="<?=$article->title;?>" />
-	<meta property="og:description" content="<?=str_limit(strip_tags($article->description), 100, '');?>" />
-	<meta property="og:type" content="article" />
-	<meta property="article:author" content="<?=$article->user()->name;?>" />
-	<meta property="article:section" content="<?=$article->type;?>" />
-	<meta property="article:published_time" content="<?=$article->created_at;?>" />
+		<meta property="og:url" content="<?=make_url('home#read_news/' . $article->id)?>" />
+		<meta property="og:title" content="<?=$article->title;?>" />
+		<meta property="og:description" content="<?=str_limit(strip_tags($article->description), 100, '');?>" />
+		<meta property="og:type" content="article" />
+		<meta property="article:author" content="<?=$article->user()->name;?>" />
+		<meta property="article:section" content="<?=$article->type;?>" />
+		<meta property="article:published_time" content="<?=$article->created_at;?>" />
 	<?php } ?>
 
+	<!-- Facebook OG Tags -->
 	<meta property="og:image" itemprop="image" content="<?=image_url('social/cover.jpg');?>" />
 	<meta property="og:locale" content="<?=str_replace('-', '_', $language->header);?>" />
 	<meta property="fb:app_id" content="<?=FB_APP_ID;?>" />
-
-	<!-- PWA -->
-	<meta name="theme-color" content="#06101a" />
-	<link rel="manifest" href="/manifest.json" />
-	<link ref="apple-touch-icon" href="/icon-192x192.png" />
-	<link ref="canonical" href="<?=$site_url;?>/" />
 
 	<!-- Plugins CSS -->
 	<link rel="stylesheet" type="text/css" href="<?=asset_url('libs/bootstrap/css/bootstrap.min.css');?>" />
@@ -104,19 +99,20 @@ if (preg_match('/read_news/', $action)) {
 
 	<!-- App JS -->
 	<script type="text/javascript">
-		var	_site_url				= "<?=$site_url;?>";
+		var	_site_url				= "<?=SITE_URL;?>";
 		var	_site_version			= "<?=GAME_VERSION;?>";
-		var	_rewrite_enabled		= <?=($rewrite_enabled ? 'true' : 'false');?>;
-		var _language				= "<?=$language->header;?>";
-		<?php if ($player) { ?>
 
-		var _current_anime			= <?=$player->character()->anime_id;?>,
-			_current_graduation		= <?=$player->graduation()->sorting;?>,
-			_current_guild			= <?=$player->guild_id;?>,
-			_current_player			= <?=$player->id;?>,
-			_is_guild_leader		= <?=(($player->guild_id && $player->guild_id == $player->guild()->player_id) ? 'true' : 'false');?>,
-			_equipments_names		= <?=json_encode($equipments);?>,
-			_graduations			= [];
+		var	_rewrite_enabled		= <?=(REWRITE_ENABLED ? 'true' : 'false');?>;
+		var _language				= "<?=$language->header;?>";
+
+		<?php if ($player) { ?>
+			var _current_anime			= <?=$player->character()->anime_id;?>,
+				_current_graduation		= <?=$player->graduation()->sorting;?>,
+				_current_guild			= <?=$player->guild_id;?>,
+				_current_player			= <?=$player->id;?>,
+				_is_guild_leader		= <?=(($player->guild_id && $player->guild_id == $player->guild()->player_id) ? 'true' : 'false');?>,
+				_equipments_names		= <?=json_encode($equipments);?>,
+				_graduations			= [];
 		<?php } ?>
 
 		var	_check_pvp_queue		= <?=($player && $player->is_pvp_queued ? 'true': 'false');?>;
@@ -125,9 +121,12 @@ if (preg_match('/read_news/', $action)) {
 		var _chat_server			= "<?=CHAT_SERVER;?>";
 		var _highlights_server		= "<?=HIGHLIGHTS_SERVER;?>";
 
+		// Chat Register
+		_chat_register				= "<?=$player->chatRegister();?>";
+
 		$(document).ready(function() {
         	// I18n.default_locale		= _language;
-        	// I18n.translations		= <?//=Lang::toJSON()?>;
+        	// I18n.translations		= <?=Lang::toJSON()?>;
 		});
     </script>
 	<script type="text/javascript" src="<?=asset_url('js/i18n.js');?>"></script>
@@ -143,13 +142,13 @@ if (preg_match('/read_news/', $action)) {
 <div id="fb-root"></div>
 <!-- Topo -->
 <?php if (!$_SESSION['player_id']) { ?>
-<div id="background-topo">
-	<div id="logo">
-		<a href="<?=make_url();?>">
-			<img src="<?=image_url('logo.png');?>" border="0" />
-		</a>
+	<div id="background-topo">
+		<div id="logo">
+			<a href="<?=make_url();?>">
+				<img src="<?=image_url('logo.png');?>" />
+			</a>
+		</div>
 	</div>
-</div>
 <?php } else { ?>
 	<div id="background-topo2" style="background-image: url(<?=image_url($player->character_theme()->header_image(true));?>)">
 		<div class="bg" style="background-image: url(<?=image_url($player->character_theme()->header_image(true));?>)"></div>

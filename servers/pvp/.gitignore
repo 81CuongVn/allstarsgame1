@@ -1,2 +1,2 @@
-queue.prod.rb
+queue.rb
 *.pid

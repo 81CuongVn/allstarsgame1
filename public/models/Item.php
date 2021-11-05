@@ -69,8 +69,8 @@ class Item extends Relation {
 		$formula->hit_chance			= $this->for_hit;
 		$formula->attack_speed			= $this->attack_speed;
 		$formula->is_player_item		= $this->_player_item ? true : false;
-		$formula->color_types			= new stdClass();
 
+		$formula->color_types			= new stdClass();
 		$formula->color_types->attack_speed	= '';
 		$formula->color_types->consume_mana	= '';
 		$formula->color_types->damage		= '';
@@ -99,7 +99,7 @@ class Item extends Relation {
 
 			if ($formula->cooldown) {
 				$formula->cooldown	+= (($effects['slowness_percent'] || $effects['slowness'])  ? 1 : 0);
-				//$formula->cooldown	-= $this->_player->attributes()->sum_bonus_cooldown;
+				// $formula->cooldown	-= $this->_player->attributes()->sum_bonus_cooldown;
 			}
 
 			$formula->attack_speed	+= -($effects['slowness'] + percent($effects['slowness_percent'], $this->attack_speed));
@@ -708,8 +708,8 @@ class Item extends Relation {
 			'for_def'		=> [ 1, 6 ],
 			'for_crit'		=> [ 1, 6 ],
 			'for_abs'		=> [ 1, 6 ],
-			// 'for_inc_crit'	=> [ 1, 7 ],
-			// 'for_inc_abs'	=> [ 1, 7 ],
+			'for_inc_crit'	=> [ 1, 7 ],
+			'for_inc_abs'	=> [ 1, 7 ],
 			'for_prec'		=> [ 1, 6 ],
 			'for_init'		=> [ 1, 6 ]
 		];

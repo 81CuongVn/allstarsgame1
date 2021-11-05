@@ -990,14 +990,10 @@ pt-BR:
         <img src="#{image}" width="16px" /><span style="margin-left:3px">Ataque:</span> #{value}
       def: |
         <img src="#{image}" width="16px"/><span style="margin-left:3px">Defesa:</span> #{value}
-      crit_old: |
-        <img src="#{image}" width="16px" /><span style="margin-left:3px">Crítico:</span> #{value}% ( #{inc}% de Dano Crítico )
-      abs_old: |
-        <img src="#{image}" width="16px"/><span style="margin-left:3px">Absorção:</span> #{value}% ( #{inc}% de Dano Absorvido )
       crit: |
-        <img src="#{image}" width="16px" /><span style="margin-left:3px">Crítico:</span> #{value}% ( de #{min}% à #{max}% )
+        <img src="#{image}" width="16px" /><span style="margin-left:3px">Crítico:</span> #{value}% ( #{inc}% de Dano Crítico )
       abs: |
-        <img src="#{image}" width="16px"/><span style="margin-left:3px">Absorção:</span> #{value}% ( de #{min}% à #{max}% )
+        <img src="#{image}" width="16px"/><span style="margin-left:3px">Absorção:</span> #{value}% ( #{inc}% de Dano Absorvido )
       prec: |
         <img src="#{image}" width="16px"/><span style="margin-left:3px">Precisão:</span> #{value}%
       inti: |
@@ -1492,14 +1488,8 @@ pt-BR:
         for_atk: Esse é o total de seu ataque fora de combate e ele é somado ao valor dos seus golpes ofensivos em batalha
         for_def: Esse é o total de sua defesa fora de combate e ela é somado ao valor dos seus golpes defensivos em batalha
         for_hit: Esse é o total de sua chance de acerto fora de combate e ela fará com que você não erre seus golpes em batalha
-        for_crit: |
-          Esse é o total de seu crítico fora de combate e com ele seus golpes ocasionalmente poderão ser mais poderosos<br /><br />
-          <b class="amarelo">Minímo:</b> #{min}%<br />
-          <b class="amarelo">Máximo:</b> #{max}%
-        for_abs: |
-          Esse é o total de sua absorção fora de combate e com ela seus golpes ocasionalmente recebidos poderão ser mais fracos<br /><br />
-          <b class="amarelo">Minímo:</b> #{min}%<br />
-          <b class="amarelo">Máximo:</b> #{max}%
+        for_crit: Esse é o total de seu crítico fora de combate e com ele seus golpes ocasionalmente poderão ser mais poderosos
+        for_abs: Esse é o total de sua absorção fora de combate e com ela seus golpes ocasionalmente recebidos poderão ser mais fracos
         for_prec: Esse é o total de sua precisão fora de combate e com ela seus golpes ocasionalmente poderão ignorar a defesa de seu oponente
         for_inti: Esse é o total de sua intimidação fora de combate e ela reduzirá o total de chance de acerto do seu oponente em combate
         for_conv: Esse é o total de sua convicção fora de combate e ele aumentará o total de iniciativa do seu personagem em combate
@@ -1956,14 +1946,10 @@ pt-BR:
         <img src="#{image}" width="16px" /><span style="margin-left:3px">Ataque:</span> #{value}
       def: |
         <img src="#{image}" width="16px"/><span style="margin-left:3px">Defesa:</span> #{value}
-      crit_old: |
-        <img src="#{image}" width="16px" /><span style="margin-left:3px">Crítico:</span> #{value}% ( #{inc}% de Dano Crítico )
-      abs_old: |
-        <img src="#{image}" width="16px"/><span style="margin-left:3px">Absorção:</span> #{value}% ( #{inc}% de Dano Absorvido )
       crit: |
-        <img src="#{image}" width="16px" /><span style="margin-left:3px">Crítico:</span> #{value}% ( de #{min}% à #{max}% )
+        <img src="#{image}" width="16px" /><span style="margin-left:3px">Crítico:</span> #{value}% ( #{inc}% de Dano Crítico )
       abs: |
-        <img src="#{image}" width="16px"/><span style="margin-left:3px">Absorção:</span> #{value}% ( de #{min}% à #{max}% )
+        <img src="#{image}" width="16px"/><span style="margin-left:3px">Absorção:</span> #{value}% ( #{inc}% de Dano Absorvido )
       prec: |
         <img src="#{image}" width="16px"/><span style="margin-left:3px">Precisão:</span> #{value}%
       inti: |

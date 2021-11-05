@@ -78,8 +78,8 @@ if ($_SESSION['user_id']) {
 	<script src="<?=asset_url('admin/libs/bootstrap-datepicker/bootstrap-datepicker.min.js');?>"></script>
 
 	<script type="text/javascript">
-		var	_site_url				= "<?=$site_url;?>";
-		var	_rewrite_enabled		= <?=($rewrite_enabled ? 'true' : 'false');?>;
+		var	_site_url				= "<?=SITE_URL;?>";
+		var	_rewrite_enabled		= <?=(REWRITE_ENABLED ? 'true' : 'false');?>;
 		var _language				= "<?=$language->header;?>";
 	</script>
 </head>

@@ -94,8 +94,6 @@
         });
     }
 
-
-
 	window.enterQueue	= function() {
 		lock_screen(true);
 
@@ -176,10 +174,7 @@
 						</div>`
 
 						queue_alert		= bootbox.dialog({
-                            message: `
-								<h4>${I18n.t('battles.pvp.queue_found')}</h4><br /><br />
-								${progress}
-							`
+                            message: `<h4>${I18n.t('battles.pvp.queue_found')}</h4><br /><br />${progress}`
                         });
 
                         timer_iv		= setInterval(function () {

@@ -24,7 +24,7 @@ let banned				= [];
 
 // How many messages the chat should have
 const maxMessages		= 100;
-const userMessageSize	= 140;
+const userMessageSize	= 280;
 
 // Global server variables
 const app	= express();
@@ -200,12 +200,15 @@ io.sockets.on('connection', (socket) => {
 			return;
 		}
 
+		// Instance message text
+		let message = data.message;
+
 		// Check for blacklisted words in the message
 		if (!__player.gm) {
 			let hasBlacklistedWord = false;
 
 			blacklist.forEach((word) => {
-				if (data.message.match(new RegExp(word, 'img')) && !hasBlacklistedWord) {
+				if (message.match(new RegExp(word, 'img')) && !hasBlacklistedWord) {
 					hasBlacklistedWord = true;
 
 					socket.emit('broadcast', {
@@ -226,7 +229,24 @@ io.sockets.on('connection', (socket) => {
 		}
 
 		if (!__player.gm) {
-			data.message = phpjs.htmlspecialchars(data.message);
+			message = phpjs.htmlspecialchars(message);
+
+			// Character limtit for non-gm users
+			message = message.substr(0, userMessageSize);
+		}
+
+		message	= haveUrl(message);							// Parse URL
+		message	= bbcodes.parse(message, __player.gm)		// Parse BBCode
+		message	= emoticons.parse(message, __player.gm);	// Parse Emoticons
+
+		if (message.trim().length < 1) {
+			socket.emit('broadcast', {
+				from: 'System',
+				message: 'Você está tentando enviar uma mensagem muito curta!',
+				channel: 'warn',
+			});
+
+			return;
 		}
 
 		// Send private message
@@ -270,14 +290,14 @@ io.sockets.on('connection', (socket) => {
 
 						return;
 					} else {
-						db.query(`INSERT INTO chats (from_id, to_id, from_user_id, to_user_id, channel, message) VALUES (${__player.uid}, ${playerDest.uid}, ${__player.user_id}, ${playerDest.user_id}, 'pvt', '${data.message}')`);
+						db.query(`INSERT INTO chats (from_id, to_id, from_user_id, to_user_id, channel, message) VALUES (${__player.uid}, ${playerDest.uid}, ${__player.user_id}, ${playerDest.user_id}, 'pvt', '${message}')`);
 
 						if (!privates[data.dest]) {
 							privates[data.dest] = {};
 						}
 						privates[data.dest][Math.random() * 512384] = {
 							name:		__player.name,
-							message:	data.message,
+							message:	message,
 							id:			__player.uid,
 						};
 
@@ -289,13 +309,13 @@ io.sockets.on('connection', (socket) => {
 
 		// Block another player
 		if (data.channel === 'block') {
-			const playerToBlock = playersByName[data.message.toLowerCase()];
+			const playerToBlock = playersByName[message.toLowerCase()];
 
 			// Não encontrei ninguém paraa bloquear
 			if (!playerToBlock) {
 				socket.emit('broadcast', {
 					from: 'Sistema',
-					message: `Usuário "${data.message}" não encontrado`,
+					message: `Usuário "${message}" não encontrado`,
 					channel: 'warn',
 				});
 
@@ -328,7 +348,7 @@ io.sockets.on('connection', (socket) => {
 
 			socket.emit('broadcast', {
 				from: 'Sistema',
-				message: 'Usuário "' + data.message + '" bloqueado com sucesso!',
+				message: 'Usuário "' + message + '" bloqueado com sucesso!',
 				channel: 'success'
 			});
 			return;
@@ -374,14 +394,7 @@ io.sockets.on('connection', (socket) => {
 			}
 
 			lastMessages[__player.user_id]	= now;
-
-			// Character limtit for non-gm users
-			data.message	= data.message.substr(0, userMessageSize);
 		}
-
-		data.message	= haveUrl(data.message);
-		data.message	= bbcodes.parse(data.message, __player.gm)
-		data.message	= emoticons.parse(data.message, __player.gm);
 
 		// If don't have Channel Id, set to default 0
 		if (!channelId) {
@@ -392,7 +405,7 @@ io.sockets.on('connection', (socket) => {
 			from:		__player.name,
 			avatar:		__player.avatar,
 			faction:	__player.faction,
-			message:	data.message,
+			message:	message,
 			channel:	data.channel,
 			channel_id:	channelId,
 			id:			__player.uid,

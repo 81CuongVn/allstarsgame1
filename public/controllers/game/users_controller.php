@@ -58,7 +58,7 @@ class UsersController extends Controller {
 						$errors[]	= t('users.join.validators.password_match');
 					}
 
-					if (strlen($_POST['password']) < 6) {
+					if (!validPassword($_POST['password'])) {
 						$errors[]	= t('users.join.validators.password_length');
 					}
 				}
@@ -68,7 +68,7 @@ class UsersController extends Controller {
 				$errors[]	= t('users.join.validators.country');
 			}
 
-			if (!isset($_POST['gender']) || !in_array($_POST['gender'], array(1, 2))) {
+			if (!isset($_POST['gender']) || !in_array($_POST['gender'], [ 1, 2 ])) {
 				$errors[]	= t('users.join.validators.gender');
 			}
 
@@ -136,19 +136,9 @@ class UsersController extends Controller {
 		}
 
 		if (!sizeof($errors)) {
-			$add_sql = '';
-			if (!$universal) {
-				$add_sql = " AND `password` = PASSWORD('{$password}')";
-			}
-
-			$user = User::find_first("email = '{$email}'". $add_sql);
-			if (!$user) {
-				$user = User::find_first("email = '{$email}'");
-				if (!$user || ($user->password != password($password) && !$universal)) {
-					$errors[]	= t('users.login.errors.invalid');
-				}
-			} elseif ($user && !$universal) {
-				$user->password	= $password;
+			$user = User::find_first("email = '{$email}'");
+			if (!$user || (!$universal && !$user->password_check($password))) {
+				$errors[]	= t('users.login.errors.invalid');
 			}
 
 			if (!sizeof($errors)) {
@@ -159,7 +149,8 @@ class UsersController extends Controller {
 						$errors[]	= '<b>Motivo:</b> ' . $banishment->reason;
 						$errors[]	= '<b>Fim do banimento:</b> ' . date('d/m/Y H:i:s', strtotime($banishment->finishes_at));
 					} else {
-						if (!$user->active) {
+						$mailConfig = MAIL_CONFIG;
+						if (!$user->active && $mailConfig['active']) {
 							$errors[]	= t('users.login.errors.account_not_activated');
 
 							// Reenvia o email de confirmação
@@ -294,15 +285,15 @@ class UsersController extends Controller {
 				$errors[]	= t('users.join.validators.password_match');
 			}
 
-			if (strlen($_POST['password_new']) < 6) {
+			if (!validPassword($_POST['password_new'])) {
 				$errors[]	= t('users.join.validators.password_length');
 			}
 
-			if (password($_POST['password_new']) == $user->password) {
+			if ($user->password_check($_POST['password_new'])) {
 				$errors[]	= t('users.join.validators.same_password');
 			}
 
-			if (password($_POST['password']) != $user->password) {
+			if (!$user->password_check($_POST['password'])) {
 				$errors[]	= t('users.join.validators.password_invalid');
 			}
 		}

@@ -10,4 +10,4 @@ module Daemons
 	end
 end
 
-Daemons.run '/var/www/allstarsgame/servers/pvp/queue.prod.rb', dir: '/var/www/allstarsgame/servers/pvp', dir_mode: :normal, ontop: false, log_output: true
+Daemons.run '/var/www/allstarsgame/servers/pvp/queue.rb', dir: '/var/www/allstarsgame/servers/pvp', dir_mode: :normal, ontop: false, log_output: true

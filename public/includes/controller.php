@@ -8,7 +8,7 @@ class Controller {
 	public	$recaptcha	= null;
 
 	function __construct() {
-		global $recaptcha_keys;
+		$recaptcha_keys	= RECAPTCHA_KEYS;
 
 		$this->json			= new stdClass();
 		$this->recaptcha	= $recaptcha_keys['invisible'];

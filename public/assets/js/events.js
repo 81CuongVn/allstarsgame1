@@ -1,8 +1,6 @@
 (function () {
-	var	container	= $('#wanteds-filter-form');
-	var	wanteds	= $('#wanteds-filter-form');
-
-	if(wanteds.length) {
+	var	wanteds		= $('#wanteds-filter-form');
+	if (wanteds.length) {
 		wanteds.on('click', '.pagination a', function () {
 			lock_screen(true);
 			$('[name=page]', wanteds).val($(this).data('page') - 1);
@@ -51,46 +49,47 @@
 			}
 		});
 	}
+
 	// Fidelity
 	$('.reward_fidelity').on('click', function () {
-			lock_screen(true);
-			var	_	= $(this);
+		lock_screen(true);
+		var	_	= $(this);
 
-			$.ajax({
-				url:		make_url('events#reward_fidelity'),
-				data:		{ day: _.data('day')},
-				dataType:	'json',
-				type:		'post',
-				success:	function (result) {
-					if(result.success) {
-						location.href	= make_url('events#fidelity');
-					} else {
-						lock_screen(false);
-						format_error(result);
-					}
+		$.ajax({
+			url:		make_url('events#reward_fidelity'),
+			data:		{ day: _.data('day')},
+			dataType:	'json',
+			type:		'post',
+			success:	function (result) {
+				if(result.success) {
+					location.href	= make_url('events#fidelity');
+				} else {
+					lock_screen(false);
+					format_error(result);
 				}
-			});
+			}
 		});
+	});
+
 	// Troca de Prêmios por Round
 	$('.objective_change').on('click', function () {
-		
-			lock_screen(true);
-			var	_	= $(this);
+		lock_screen(true);
+		var	_	= $(this);
 
-			$.ajax({
-				url:		make_url('events#objective_reward'),
-				data:		{ id: _.data('id')},
-				dataType:	'json',
-				type:		'post',
-				success:	function (result) {
-					if(result.success) {
-						location.href	= make_url('events#objectives');
-					} else {
-						lock_screen(false);
-						format_error(result);
-					}
+		$.ajax({
+			url:		make_url('events#objective_reward'),
+			data:		{ id: _.data('id')},
+			dataType:	'json',
+			type:		'post',
+			success:	function (result) {
+				if(result.success) {
+					location.href	= make_url('events#objectives');
+				} else {
+					lock_screen(false);
+					format_error(result);
 				}
-			});
+			}
 		});
-			
+	});
+
 })();

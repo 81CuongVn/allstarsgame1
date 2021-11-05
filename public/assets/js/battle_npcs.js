@@ -19,6 +19,7 @@
 			}
 		});
 	});
+
 	$('#btn-enter-npc-battle-challenge').on('click', function () {
 		lock_screen(true);
 		var	_	= $(this);
@@ -37,9 +38,10 @@
 			}
 		});
 	});
+
 	$('.change-oponent').on('click', function () {
 		bootbox.confirm($(this).data('message'), function (result) {
-			if(result) {
+			if (result) {
 				lock_screen(true);
 				$.ajax({
 					url:		make_url('battle_npcs#change_oponent'),

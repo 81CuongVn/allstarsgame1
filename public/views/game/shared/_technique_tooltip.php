@@ -113,12 +113,12 @@
 			<?php if ($type): ?>
 				<div class="weak">
 					<?php foreach ($item->get_weakness() as $weakness): ?>
-						<div style="color: #ff3333 !important"><?php echo $weakness->description()->description ?> <span class="glyphicon glyphicon-chevron-down"></span></div>
+						<div style="color: #ff3333 !important"><?php echo $weakness->description()->description ?> <span class="fa fa-chevron-down fa-fw"></span></div>
 					<?php endforeach ?>
 				</div>
 				<div class="strong">
 					<?php foreach ($item->get_strenght() as $strenght): ?>
-						<div style="color: #00b008 !important"><span class="glyphicon glyphicon-chevron-up"></span> <?php echo $strenght->description()->description ?></div>
+						<div style="color: #00b008 !important"><span class="fa fa-chevron-up fa-fw"></span> <?php echo $strenght->description()->description ?></div>
 					<?php endforeach ?>
 				</div>
 				<?php echo $type->description()->description ?>

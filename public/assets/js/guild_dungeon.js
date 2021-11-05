@@ -75,10 +75,10 @@ $(document).ready(function () {
         popoverContent = [];
 
         response.players.forEach(function (player) {
-            var image = mapContainer.find('[data-player=' + player.id + ']');
-            var popoverKey = player.x + ':' + player.y;
-            var iconSrc = image_url('maps/sprites/' + player.theme + '.png');
-            var visible = player.x >= myX - 2 && player.x <= myX + 2 && player.y >= myY - 2 && player.y <= myY + 2;
+            var image		= mapContainer.find('[data-player=' + player.id + ']');
+            var popoverKey	= player.x + ':' + player.y;
+            var iconSrc		= image_url('maps/sprites/' + player.theme + '.png');
+            var visible		= player.x >= myX - 2 && player.x <= myX + 2 && player.y >= myY - 2 && player.y <= myY + 2;
 
             foundIds.push(parseInt(player.id));
 
@@ -93,100 +93,100 @@ $(document).ready(function () {
 
             mapContainer.find('.initial-dark').remove();
 
-            var baseDarkLeft = boxWidth * (myX - 2);
-            var baseDarkTop = boxHeight * (myY - 2);
-            var baseDarkWidth = boxWidth * 5
-            var baseDarkHeight = boxHeight * 4
+            var baseDarkLeft	= boxWidth * (myX - 2);
+            var baseDarkTop		= boxHeight * (myY - 2);
+            var baseDarkWidth	= boxWidth * 5
+            var baseDarkHeight	= boxHeight * 4
 
             dark_60_1.css({
-                height: boxHeight,
-                top: boxHeight * (myY - 2),
-                left: baseDarkLeft,
-                width: baseDarkWidth
+                height:	boxHeight,
+                top:	boxHeight * (myY - 2),
+                left:	baseDarkLeft,
+                width:	baseDarkWidth
             });
             dark_60_2.css({
-                height: boxHeight,
-                bottom: boxHeight * (totalCoords - myY - 3),
-                left: baseDarkLeft,
-                width: baseDarkWidth
+                height:	boxHeight,
+                bottom:	boxHeight * (totalCoords - myY - 3),
+                left:	baseDarkLeft,
+                width:	baseDarkWidth
             });
             dark_60_3.css({
-                width: boxWidth,
-                top: baseDarkTop + boxWidth,
-                left: baseDarkLeft,
-                height: baseDarkHeight - boxHeight
+                width:	boxWidth,
+                top:	baseDarkTop + boxWidth,
+                left:	baseDarkLeft,
+                height:	baseDarkHeight - boxHeight
             });
             dark_60_4.css({
-                width: boxWidth,
-                top: baseDarkTop + boxWidth,
-                left: baseDarkLeft + baseDarkWidth - boxWidth,
-                height: baseDarkHeight - boxHeight
+                width:	boxWidth,
+                top:	baseDarkTop + boxWidth,
+                left:	baseDarkLeft + baseDarkWidth - boxWidth,
+                height:	baseDarkHeight - boxHeight
             });
 
             dark_80_1.css({
-                height: boxHeight,
-                top: boxHeight * (myY - 3),
-                left: baseDarkLeft,
-                width: baseDarkWidth
+                height:	boxHeight,
+                top:	boxHeight * (myY - 3),
+                left:	baseDarkLeft,
+                width:	baseDarkWidth
             });
             dark_80_2.css({
-                height: boxHeight,
-                bottom: boxHeight * (totalCoords - myY - 4),
-                left: baseDarkLeft,
-                width: baseDarkWidth
+                height:	boxHeight,
+                bottom:	boxHeight * (totalCoords - myY - 4),
+                left:	baseDarkLeft,
+                width:	baseDarkWidth
             });
             dark_80_3.css({
-                width: boxWidth,
-                top: baseDarkTop - boxWidth,
-                left: baseDarkLeft - boxWidth,
-                height: baseDarkHeight + boxHeight * 3
+                width:	boxWidth,
+                top:	baseDarkTop - boxWidth,
+                left:	baseDarkLeft - boxWidth,
+                height:	baseDarkHeight + boxHeight * 3
             });
             dark_80_4.css({
-                width: boxWidth,
-                top: baseDarkTop - boxWidth,
-                left: baseDarkLeft + baseDarkWidth,
-                height: baseDarkHeight + boxHeight * 3
+                width:	boxWidth,
+                top:	baseDarkTop - boxWidth,
+                left:	baseDarkLeft + baseDarkWidth,
+                height:	baseDarkHeight + boxHeight * 3
             });
 
             dark_100_1.css({
-                height: boxHeight * (myY - 3),
-                left: baseDarkLeft,
-                width: baseDarkWidth
+                height:	boxHeight * (myY - 3),
+                left:	baseDarkLeft,
+                width:	baseDarkWidth
             });
             dark_100_2.css({
-                height: boxHeight * (totalCoords - myY - 4),
-                bottom: 0,
-                left: baseDarkLeft,
-                width: baseDarkWidth
+                height:	boxHeight * (totalCoords - myY - 4),
+                bottom:	0,
+                left:	baseDarkLeft,
+                width:	baseDarkWidth
             });
             dark_100_3.css({
-                width: boxWidth * (myX - 3),
-                top: baseDarkTop - boxWidth,
-                left: 0,
-                height: baseDarkHeight + boxHeight * 3
+                width:	boxWidth * (myX - 3),
+                top:	baseDarkTop - boxWidth,
+                left:	0,
+                height:	baseDarkHeight + boxHeight * 3
             });
             dark_100_4.css({
-                width: boxWidth * (totalCoords - myX - 4),
-                top: baseDarkTop - boxWidth,
-                right: 0,
-                height: baseDarkHeight + boxHeight * 3
+                width:	boxWidth * (totalCoords - myX - 4),
+                top:	baseDarkTop - boxWidth,
+                right:	0,
+                height:	baseDarkHeight + boxHeight * 3
             });
 
             fill1.css({
-                width: baseDarkLeft,
-                height: baseDarkTop - boxHeight
+                width:	baseDarkLeft,
+                height:	baseDarkTop - boxHeight
             });
             fill2.css({
-                width: boxWidth * (totalCoords - myX - 3),
-                height: baseDarkTop - boxHeight
+                width:	boxWidth * (totalCoords - myX - 3),
+                height:	baseDarkTop - boxHeight
             });
             fill3.css({
-                width: baseDarkLeft,
-                height: boxHeight * (totalCoords - myY - 4)
+                width:	baseDarkLeft,
+                height:	boxHeight * (totalCoords - myY - 4)
             })
             fill4.css({
-                width: boxWidth * (totalCoords - myX - 3),
-                height: boxHeight * (totalCoords - myY - 4)
+                width:	boxWidth * (totalCoords - myX - 3),
+                height:	boxHeight * (totalCoords - myY - 4)
             })
 
             if (!image.length) {
@@ -201,8 +201,8 @@ $(document).ready(function () {
             }
 
             image.css({
-                left: player.x * boxWidth,
-                top: player.y * boxHeight
+                left:	player.x * boxWidth,
+                top:	player.y * boxHeight
             });
 
             if (visible || parseInt(player.id) == myself) {
@@ -217,27 +217,27 @@ $(document).ready(function () {
         mapContainer.find('.block').removeClass('sharedchest chest door npc sharednpc');
 
         response.objects.forEach(function (objekt) {
-            var image = mapContainer.find('[data-object=' + objekt.id + ']');
-            var visible = objekt.x >= myX - 2 && objekt.x <= myX + 2 && objekt.y >= myY - 2 && objekt.y <= myY + 2;
+            var image	= mapContainer.find('[data-object=' + objekt.id + ']');
+            var visible	= objekt.x >= myX - 2 && objekt.x <= myX + 2 && objekt.y >= myY - 2 && objekt.y <= myY + 2;
 
             var popoverKey = objekt.x + ':' + objekt.y;
 
             if (objekt.kind == 'door') {
-                var iconSrc = image_url('maps/door.png');
-                var objectClass = 'door';
+                var iconSrc		= image_url('maps/door.png');
+                var objectClass	= 'door';
             } else if (objekt.kind == 'chest') {
-                var iconSrc = image_url('maps/chest.png');
-                var objectClass = 'chest';
+                var iconSrc		= image_url('maps/chest.png');
+                var objectClass	= 'chest';
 
                 objekt.name = '<a href="javascript:;" data-object="' + objekt.id + '" class="take">' + objekt.name + '</a>';
             } else if (objekt.kind == 'sharedchest') {
-                var iconSrc = image_url('maps/sharedchest.png');
-                var objectClass = 'sharedchest';
+                var iconSrc		= image_url('maps/sharedchest.png');
+                var objectClass	= 'sharedchest';
 
                 objekt.name = '<a href="javascript:;" data-object="' + objekt.id + '" class="take">' + objekt.name + '</a>';
             } else if (objekt.kind == 'npc' || objekt.kind == 'sharednpc') {
-                var objectClass = objekt.kind;
-                var iconSrc = image_url('maps/sprites/' + objekt.theme + '.png');
+                var objectClass	= objekt.kind;
+                var iconSrc		= image_url('maps/sprites/' + objekt.theme + '.png');
 
                 objekt.name = '<a href="javascript:;" data-object="' + objekt.id + '" class="attack">' + objekt.name + '</a>';
             }
@@ -278,7 +278,6 @@ $(document).ready(function () {
         mapContainer.find('[data-player]')
             .each(function (i, el) {
                 $el = $(el);
-
                 if (foundIds.indexOf($el.data('player')) == -1) {
                     $el.remove();
                 }
@@ -298,18 +297,17 @@ $(document).ready(function () {
         lock_screen(true);
 
         $.ajax({
-            url: make_url('guilds#dungeon_take'),
-            type: 'post',
-            data: {
-                id: self.data('object'),
-                key: postKey
+            url:		make_url('guilds#dungeon_take'),
+            type:		'post',
+            data:		{
+                id:		self.data('object'),
+                key:	postKey
             },
-            success: function (result) {
+            success:	function(result) {
                 if (result.success) {
                     lock_screen(false);
 
                     jalert(result.reward, function () {
-                        // location.reload()
                         __loadPositions();
                     });
                 } else {
@@ -324,13 +322,13 @@ $(document).ready(function () {
         lock_screen(true);
 
         $.ajax({
-            url: make_url('guilds#dungeon_fight'),
-            type: 'post',
-            data: {
-                id: self.data('object'),
-                key: postKey
+            url:		make_url('guilds#dungeon_fight'),
+            type:		'post',
+            data:		{
+                id:		self.data('object'),
+                key:	postKey
             },
-            success: function (result) {
+            success:	function(result) {
                 if (result.success) {
                     location.href = make_url('battle_npcs#fight');
                 } else {
@@ -341,32 +339,32 @@ $(document).ready(function () {
             }
         });
     }).on('click', 'img', function () {
-        var self = $(this);
+        var self		= $(this);
         mapContainer.find('.block[data-x=' + self.data('x') + '][data-y=' + self.data('y') + ']').trigger('click');
     }).on('dblclick', 'img', function () {
-        var self = $(this);
+        var self		= $(this);
         mapContainer.find('.block[data-x=' + self.data('x') + '][data-y=' + self.data('y') + ']').trigger('dblclick');
     }).on('click', '.block', function () {
-        var self = $(this);
-        var popoverKey = self.data('x') + ':' + self.data('y');
+        var self		= $(this);
+        var popoverKey	= self.data('x') + ':' + self.data('y');
 
         mapContainer.find('.block').popover('destroy');
 
         if (popoverContent[popoverKey]) {
             self.popover({
-                content: popoverContent[popoverKey],
-                trigger: 'manual',
-                title: 'O que tem aqui?',
-                html: true,
-                // container: 'body'
+                content:	popoverContent[popoverKey],
+                trigger:	'manual',
+                title:		'O que tem aqui?',
+                html:		true,
+                // container:	'body'
             });
 
             self.popover('show');
         }
     }).on('dblclick', '.block', function () {
-        var self = $(this);
-        var cX = parseInt(self.data('x'));
-        var cY = parseInt(self.data('y'));
+        var self	= $(this);
+        var cX		= parseInt(self.data('x'));
+        var cY		= parseInt(self.data('y'));
 
         if (cX > myX + 1 || cX < myX - 1 || cY > myY + 1 || cY < myY - 1) {
             jalert('O lugar onde você quer ir é muito longe', false);
@@ -375,15 +373,15 @@ $(document).ready(function () {
         }
 
         $.ajax({
-            url: make_url('guilds#dungeon_move'),
-            type: 'post',
-            data: {
-                key: postKey,
-                x: self.data('x'),
-                y: self.data('y')
+            url:		make_url('guilds#dungeon_move'),
+            type:		'post',
+            data:		{
+                key:	postKey,
+                x:		self.data('x'),
+                y:		self.data('y')
             },
-            dataType: 'json',
-            success: function (result) {
+            dataType:	'json',
+            success:	function(result) {
                 parseResponse(result);
             }
         });
@@ -398,10 +396,10 @@ $(document).ready(function () {
                 .attr('data-x', x)
                 .attr('data-y', y)
                 .css({
-                    width: boxWidth,
-                    height: boxHeight,
-                    top: y * boxWidth + 'px',
-                    left: x * boxHeight + 'px'
+                    width:	boxWidth,
+                    height:	boxHeight,
+                    top:	y * boxWidth + 'px',
+                    left:	x * boxHeight + 'px'
                 });
 
             mapContainer.append(mapBlock);
@@ -410,13 +408,11 @@ $(document).ready(function () {
 
     function __loadPositions() {
         $.ajax({
-            url: make_url('guilds#dungeon_move'),
-            dataType: 'json',
-            type: 'post',
-            data: {
-                key: postKey
-            },
-            success: function (result) {
+            url:		make_url('guilds#dungeon_move'),
+            dataType:	'json',
+            type:		'post',
+            data:		{ key: postKey },
+            success:	function(result) {
                 parseResponse(result);
             }
         });

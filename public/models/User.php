@@ -27,7 +27,7 @@ class User extends Relation {
 		}
 	}
 
-	function hasBanishment() {
+	public function hasBanishment() {
 		// Verificar banimento ativo
 		$banishment	= Banishment::find_last("type = 'user' and user_id = " . $this->id);
 		if ($banishment && between(
@@ -41,92 +41,92 @@ class User extends Relation {
 		return false;
 	}
 
-	function character_theme_image($image_id) {
+	public function character_theme_image($image_id) {
 		$user_image = UserCharacterThemeImage::find_first("user_id=" . $this->id . " AND character_theme_image_id=" . $image_id);
 		if ($user_image) {
-			return TRUE;
+			return true;
 		} else {
-			return FALSE;
+			return false;
 		}
 	}
 
-	function level_exp() {
+	public function level_exp() {
 		return (1000 / 5) * $this->level;
 	}
 
-	function is_next_level() {
+	public function is_next_level() {
 		return $this->exp >= $this->level_exp() && $this->level < MAX_LEVEL_USER;
 	}
 
-	function players() {
+	public function players() {
 		return Player::find('user_id=' . $this->id);
 	}
 
-	function total_players() {
+	public function total_players() {
 		return Recordset::query("SELECT COUNT(id) AS total FROM players WHERE removed = 0 and user_id=" . $this->id)->row()->total;
 	}
 
-	function spend($amount) {
+	public function spend($amount) {
 		$this->credits	-= $amount;
 		$this->save();
 	}
 
-	function earn($amount) {
+	public function earn($amount) {
 		$this->credits	+= $amount;
 		$this->save();
 	}
 
-	function round_points($points) {
+	public function round_points($points) {
 		$this->round_points	+= $points;
 		$this->save();
 	}
 
-	function exp($amount) {
+	public function exp($amount) {
 		$this->exp	+= $amount;
 		$this->save();
 	}
 
-	function quest_counters() {
+	public function quest_counters() {
 		return UserQuestCounter::find_first('user_id=' . $this->id);
 	}
 
-	function is_theme_bought($theme_id) {
+	public function is_theme_bought($theme_id) {
 		return UserCharacterTheme::find_first('user_id=' . $this->id . ' AND character_theme_id=' . $theme_id) ? TRUE : FALSE;
 	}
 
-	function is_character_bought($character_id) {
+	public function is_character_bought($character_id) {
 		return UserCharacter::find_first('user_id=' . $this->id . ' AND character_id=' . $character_id) ? TRUE : FALSE;
 	}
 
-	function is_headline_bought($headline_id) {
+	public function is_headline_bought($headline_id) {
 		return UserHeadline::find_first('user_id=' . $this->id . ' AND headline_id=' . $headline_id) ? TRUE : FALSE;
 	}
 
-	function is_theme_image_bought($theme_image_id) {
+	public function is_theme_image_bought($theme_image_id) {
 		return UserCharacterThemeImage::find_first('user_id=' . $this->id . ' AND character_theme_image_id=' . $theme_image_id) ? TRUE : FALSE;
 	}
 
-	function headlines() {
+	public function headlines() {
 		return UserHeadline::find('user_id=' . $this->id . ' group by headline_id');
 	}
 
-	function account_quests() {
+	public function account_quests() {
 		return UserDailyQuest::find('user_id=' . $this->id ." AND complete=0");
 	}
 
-	function is_admin() {
+	public function is_admin() {
 		return $this->admin >= 2;
 	}
 
-	function is_mod() {
+	public function is_mod() {
 		return $this->admin;
 	}
 
-	function is_online() {
+	public function is_online() {
 		return is_user_online($this->id);
 	}
 
-	function update_online() {
+	public function update_online() {
 		// Salva última ação no jogo
 		$this->last_activity = now();
 		$this->save();
@@ -138,6 +138,34 @@ class User extends Relation {
 
 			$redis->set('user_' . $this->id . '_online', now(true));
 		}
+	}
+
+	public function password_check($password) {
+		$att	= true;
+		$check	= false;
+
+		$size	= strlen($this->password);
+		switch ($size) {
+			case 32:
+				$check		= md5($password) == $this->password;
+				break;
+			case 41:
+				$mysqlPass	= '*' . strtoupper(sha1(sha1($password, true)));
+				$check		= $mysqlPass == $this->password;
+				break;
+			default:
+				$att		= false;
+				$check		= password_verify($password, $this->password);
+				break;
+		}
+
+		if ($att) {
+			$update	= User::find($this->id);
+			$update->password	= $password;
+			$update->save();
+		}
+
+		return $check;
 	}
 
 	static function set_instance($user) {

@@ -236,9 +236,9 @@ function is_menu_accessible($menu, $player) {
 }
 
 function is_menu_active($menu_href) {
-	global $controller, $action, $is_admin, $site_url;
+	global $controller, $action, $is_admin;
 
-	$menu_url	= str_replace([$site_url . '/', '#'], ['', '/'], $menu_href);
+	$menu_url	= str_replace([SITE_URL . '/', '#'], ['', '/'], $menu_href);
 	$real_url	= ($is_admin ? 'admin/' : '') . $controller . '/' . $action;
 	$real_url	= str_replace('/index', '', $real_url);
 	if ($real_url == $menu_url) {

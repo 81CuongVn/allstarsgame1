@@ -7,7 +7,7 @@
 			type:		'post',
 			dataType:	'json',
 			success:	function (result) {
-				if(result.success) {
+				if (result.success) {
 					location.reload();
 				} else {
 					lock_screen(false);

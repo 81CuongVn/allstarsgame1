@@ -65,8 +65,8 @@
 					<?php } ?>
 				</div>
 				<div class="log-scroller">
-					<span class="up glyphicon glyphicon-chevron-up"></span>
-					<span class="down glyphicon glyphicon-chevron-down"></span>
+					<span class="up fa fa-chevron-up fa-fw"></span>
+					<span class="down fa fa-chevron-down fa-fw"></span>
 				</div>
 				<div class="log-timer"></div>
 				<div id="attack-text"></div>

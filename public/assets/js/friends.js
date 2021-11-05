@@ -4,25 +4,24 @@
 
 	// Presenteando
 	$('#friend-list-player').on('click','.gift', function () {
+		lock_screen(true);
+		var	_	= $(this);
 
-			lock_screen(true);
-			var	_	= $(this);
-
-			$.ajax({
-				url:		make_url('friend_lists#gift'),
-				data:		{ player: _.data('player'), gift: _.data('gift')},
-				dataType:	'json',
-				type:		'post',
-				success:	function (result) {
-					if(result.success) {
-						location.href	= make_url('friend_lists');
-					} else {
-						lock_screen(false);
-						format_error(result);
-					}
+		$.ajax({
+			url:		make_url('friend_lists#gift'),
+			data:		{ player: _.data('player'), gift: _.data('gift')},
+			dataType:	'json',
+			type:		'post',
+			success:	function (result) {
+				if(result.success) {
+					location.href	= make_url('friend_lists');
+				} else {
+					lock_screen(false);
+					format_error(result);
 				}
-			});
+			}
 		});
+	});
 
 	$('#friend-list-player').on('click', '.kick', function () {
 		var _	= $(this);
@@ -60,7 +59,7 @@
 		$('.modal-content', win).addClass('with-pattern');
 	});
 
-	//Status do jogador
+	// Status do jogador
 	$('.current-player').on('click', function () {
 		var	_	= $(this);
 		var	win	= bootbox.dialog({message: '...', buttons: [
@@ -82,7 +81,6 @@
 				$('.bootbox-body', win).html(result);
 
 				// This one is for the images
-
 			}
 		});
 	});
@@ -106,6 +104,7 @@
 
 		search_friend_form.trigger('submit');
 	}
+
 	if (results.length) {
 		var join_cb	= function (id) {
 			lock_screen(true);
@@ -152,6 +151,7 @@
 		results.on('click', '.accept', function () {
 			accept_cb($(this).data('id'));
 		});
+
 		var refuse_cb	= function (id) {
 			lock_screen(true);
 
@@ -174,6 +174,7 @@
 		results.on('click', '.refuse', function () {
 			refuse_cb($(this).data('id'));
 		});
+
 		// Remove todos os pedidos de amizade
 		var remove_all_cb	= function (id) {
 			bootbox.confirm(id, function (result) {
@@ -201,11 +202,12 @@
 			remove_all_cb($(this).data('message'));
 		});
 	}
-	$('#friend-details-tabs a').click(function (e) {
 
+	$('#friend-details-tabs a').click(function (e) {
 		e.preventDefault()
 		$(this).tab('show')
 	});
+
 	$('#friend-accept-list').on('click', '.refuse', function () {
 		var _	= $(this);
 
