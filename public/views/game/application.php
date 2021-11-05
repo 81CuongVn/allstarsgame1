@@ -199,9 +199,7 @@ if (preg_match('/read_news/', $action)) {
 				</div>
 				<div class="currency absolute"><?=highamount($player->currency);?></div>
 				<div class="relogio absolute">
-					<a href="javascript:void(0)" class="requirement-popover" data-source="#tooltip-relogio" data-title="<?=t('popovers.titles.routines');?>" data-trigger="hover" data-placement="bottom">
-						<img src="<?=image_url('icons/relogio.png');?>" />
-					</a>
+					<img style="cursor: help;" src="<?=image_url('icons/relogio.png');?>" class="requirement-popover" data-source="#tooltip-relogio" data-title="<?=t('popovers.titles.routines');?>" data-trigger="hover" data-placement="bottom" />
 					<div id="tooltip-relogio" class="status-popover-container">
 						<div class="status-popover-content">
 							<?=t('popovers.description.routines', [
@@ -216,8 +214,8 @@ if (preg_match('/read_news/', $action)) {
 							<i class="fa fa-exclamation fa-fw"></i>
 						</a>
 					<?php } ?>
-					<a href="<?=make_url('events#fidelity')?>" class="requirement-popover" data-source="#tooltip-gift" data-title="<?=t('fidelity.topo_title');?>" data-trigger="hover" data-placement="bottom">
-						<img src="<?=image_url('icons/' . ($player_fidelity_topo->reward ? 'gift-off.png' : 'gift-on.png'));?>" />
+					<a href="<?=make_url('events#fidelity')?>">
+						<img src="<?=image_url('icons/' . ($player_fidelity_topo->reward ? 'gift-off.png' : 'gift-on.png'));?>" class="requirement-popover" data-source="#tooltip-gift" data-title="<?=t('fidelity.topo_title');?>" data-trigger="hover" data-placement="bottom" />
 					</a>
 					<div id="tooltip-gift" class="status-popover-container">
 						<div class="status-popover-content">
@@ -234,8 +232,8 @@ if (preg_match('/read_news/', $action)) {
 							<i class="fa fa-exclamation fa-fw"></i>
 						</a>
 					<?php } ?>
-					<a href="<?=make_url('battle_pvps')?>" class="requirement-popover" data-source="#tooltip-queue" data-title="<?=t('popovers.titles.queue' . ($rankedOpen ? '_ranked' : ''));?>" data-trigger="hover" data-placement="bottom">
-						<img src="<?=image_url('icons/queue-' . ($player->is_pvp_queued ? 'on' : 'off') . '.png');?>" />
+					<a href="<?=make_url('battle_pvps')?>">
+						<img src="<?=image_url('icons/queue-' . ($player->is_pvp_queued ? 'on' : 'off') . '.png');?>" class="requirement-popover" data-source="#tooltip-queue" data-title="<?=t('popovers.titles.queue' . ($rankedOpen ? '_ranked' : ''));?>" data-trigger="hover" data-placement="bottom" />
 					</a>
 					<div id="tooltip-queue" class="status-popover-container">
 						<div id="tooltip-queue-data" class="status-popover-content">
@@ -266,7 +264,7 @@ if (preg_match('/read_news/', $action)) {
 				</div>
 				<div class="vip absolute">
 					<a href="<?=make_url('vips');?>">
-						<img src="<?=image_url('icons/vip-on.png');?>" class="requirement-popover" data-source="#tooltip-vip" data-title="<?=t('popovers.titles.credits');?>" data-trigger="hover" data-placement="bottom" />
+						<img src="<?=image_url('icons/vip-' . ($user->vip ? 'on' : 'off') . '.png');?>" class="requirement-popover" data-source="#tooltip-vip" data-title="<?=t('popovers.titles.credits');?>" data-trigger="hover" data-placement="bottom" />
 					</a>
 					<div id="tooltip-vip" class="status-popover-container">
 						<div class="status-popover-content">
