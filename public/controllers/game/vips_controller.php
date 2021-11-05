@@ -357,8 +357,8 @@ class VipsController extends Controller {
 	public function make_donation() {
 		$is_dbl		= StarDouble::find_first('NOW() BETWEEN data_init AND data_end');
 		$methods	= [
-			'mercadopago'	=> 'BRL',
-			// 'pagseguro'	=> 'BRL',
+			// 'mercadopago'	=> 'BRL',
+			'pagseguro'		=> 'BRL',
 			'paypal_eur'	=> 'EUR',
 			'paypal_usd'	=> 'USD',
 			// 'paypal_brl'	=> 'BRL'
@@ -420,8 +420,8 @@ class VipsController extends Controller {
 		if ($star_purchase) {
 			$star_plan	= StarPlan::find_first("id = " . $star_purchase->star_plan_id);
 			$coins		= [
-				'mercadopago'	=> 'BRL',
-				// 'pagseguro'	=> 'BRL',
+				// 'mercadopago'	=> 'BRL',
+				'pagseguro'		=> 'BRL',
 				'paypal_eur'	=> 'EUR',
 				'paypal_usd'	=> 'USD',
 				// 'paypal_brl'	=> 'BRL'
