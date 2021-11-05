@@ -45,15 +45,10 @@
 			$attack		= $source == $this->player ? $this->player_item : $this->enemy_item;
 			$is_error	= $attack->formula(true)->hit_chance < 100 ? rand(1, 100) > $attack->formula(true)->hit_chance : false;
 
-			if ($_SESSION['universal']) {
-				$is_error = false;
-			}
-
 			if ($is_error || $target->get_parsed_effects()['null_next_attack'] || $target->get_parsed_effects()['dodge_technique']) {
 				return;
 			}
 
-			$chances	= explode(',', $item->effect_chances);
 			foreach ($item->effects() as $key => $effect) {
 				$source->add_effect($item, $effect, $effect->chance, $item->duration, 'player');
 				$target->add_effect($item, $effect, $effect->chance, $item->duration, 'enemy');
@@ -64,11 +59,11 @@
 			$this->log			= [];
 			$log				= [];
 
-			$critical_image		= '<img src="' . image_url('icons/for_crit.png') . '" align="absmiddle" />&nbsp;';
-			$absorb_image		= '<img src="' . image_url('icons/for_abs.png') . '" align="absmiddle" />&nbsp;';
-			$precision_image	= '<img src="' . image_url('icons/for_prec.png') . '" align="absmiddle" />&nbsp;';
-			$bleeding_image		= '<img src="' . image_url('icons/bleed.png') . '" align="absmiddle" />&nbsp;';
-			$strong_image		= '<span class="glyphicon glyphicon-chevron-up" style="color: #00b008"></span>&nbsp;';
+			$critical_image		= '<img src="' . image_url('icons/for_crit.png') . '" align="absmiddle" /> ';
+			$absorb_image		= '<img src="' . image_url('icons/for_abs.png') . '" align="absmiddle" /> ';
+			$precision_image	= '<img src="' . image_url('icons/for_prec.png') . '" align="absmiddle" /> ';
+			$bleeding_image		= '<img src="' . image_url('icons/bleed.png') . '" align="absmiddle" /> ';
+			$strong_image		= '<span class="fa fa-chevron-up fa-fw" style="color: #00b008"></span> ';
 
 			// Player Effects
 			$player_effects		= $this->player->get_parsed_effects();
@@ -132,18 +127,15 @@
 			$this->enemy_item->formula(true);
 
 			if (!$this->player_item->is_buff && !$player_is_skip) {
-				$player_is_critical		= (rand(1, 100 * 10) / 10) <= $this->player->for_crit();
-				$player_is_absorb		= (rand(1, 100 * 10) / 10) <= $this->player->for_abs();
+				$player_is_critical		= get_chance() <= $this->player->for_crit();
+				$player_is_absorb		= get_chance() <= $this->player->for_abs();
 			} else {
 				$player_is_critical		= false;
 				$player_is_absorb		= false;
 			}
 
-			$player_is_precision	= (rand(1, 100 * 10) / 10) <= $this->player->for_prec() && !$this->player_item->is_defensive;
-			$player_is_error		= $this->player_item->formula()->hit_chance < 100 ? (rand(1, 100 * 10) / 10) > $this->player_item->formula()->hit_chance : false;
-			if ($_SESSION['universal']) {
-				$player_is_error = false;
-			}
+			$player_is_precision	= get_chance() <= $this->player->for_prec() && !$this->player_item->is_defensive;
+			$player_is_error		= $this->player_item->formula()->hit_chance < 100 ? get_chance() > $this->player_item->formula()->hit_chance : false;
 
 			if ($player_effects['next_is_critical']) {
 				$player_is_critical	= true;
@@ -167,17 +159,9 @@
 
 				if ($player_is_critical) {
 					if ($this->player_item->is_defensive) {
-						// $player_defense	+= percent($this->player->for_crit_inc(), $player_defense);
-
-						$crit_inc		= $this->player->for_crit_inc();
-						$get_crit_inc	= rand($crit_inc['min'] * 10, $crit_inc['max'] * 10) / 10;
-						$player_defense	+= percent($get_crit_inc, $player_defense);
+						$player_defense	+= percent($this->player->for_crit_inc(), $player_defense);
 					} else {
-						// $player_attack	+= percent($this->player->for_crit_inc(), $player_attack);
-
-						$crit_inc		= $this->player->for_crit_inc();
-						$get_crit_inc	= rand($crit_inc['min'] * 10, $crit_inc['max'] * 10) / 10;
-						$player_attack	+= percent($get_crit_inc, $player_attack);
+						$player_attack	+= percent($this->player->for_crit_inc(), $player_attack);
 					}
 				}
 
@@ -206,15 +190,15 @@
 			}
 
 			if (!$this->enemy_item->is_buff && !$enemy_is_skip) {
-				$enemy_is_critical		= (rand(1, 100 * 10) / 10) <= $this->enemy->for_crit();
-				$enemy_is_absorb		= (rand(1, 100 * 10) / 10) <= $this->enemy->for_abs();
+				$enemy_is_critical		= get_chance() <= $this->enemy->for_crit();
+				$enemy_is_absorb		= get_chance() <= $this->enemy->for_abs();
 			} else {
 				$enemy_is_critical		= false;
 				$enemy_is_absorb		= false;
 			}
 
-			$enemy_is_precision		= (rand(1, 100 * 10) / 10) <= $this->enemy->for_prec() && !$this->enemy_item->is_defensive;
-			$enemy_is_error			= $this->enemy_item->formula()->hit_chance < 100 ? (rand(1, 100 * 10) / 10) > $this->enemy_item->formula()->hit_chance : false;
+			$enemy_is_precision		= get_chance() <= $this->enemy->for_prec() && !$this->enemy_item->is_defensive;
+			$enemy_is_error			= $this->enemy_item->formula()->hit_chance < 100 ? get_chance() > $this->enemy_item->formula()->hit_chance : false;
 
 			if ($enemy_effects['next_is_critical']) {
 				$enemy_is_critical	= true;
@@ -238,17 +222,9 @@
 
 				if ($enemy_is_critical) {
 					if ($this->enemy_item->is_defensive) {
-						// $enemy_defense	+= percent($this->enemy->for_crit_inc(), $enemy_defense);
-
-						$crit_inc		= $this->enemy->for_crit_inc();
-						$get_crit_inc	= rand($crit_inc['min'] * 10, $crit_inc['max'] * 10) / 10;
-						$enemy_defense	+= percent($get_crit_inc, $enemy_defense);
+						$enemy_defense	+= percent($this->enemy->for_crit_inc(), $enemy_defense);
 					} else {
-						// $enemy_attack	+= percent($this->enemy->for_crit_inc(), $enemy_attack);
-
-						$crit_inc		= $this->enemy->for_crit_inc();
-						$get_crit_inc	= rand($crit_inc['min'] * 10, $crit_inc['max'] * 10) / 10;
-						$enemy_attack	+= percent($get_crit_inc, $enemy_attack);
+						$enemy_attack	+= percent($this->enemy->for_crit_inc(), $enemy_attack);
 					}
 				}
 
@@ -288,19 +264,11 @@
 
 			// Absorb values -->
 				if ($player_is_absorb && !($player_is_error || $player_is_skip)) {
-					// $enemy_attack	-= percent($this->enemy->for_abs_inc(), $enemy_attack);
-
-					$abs_inc		= $this->player->for_abs_inc();
-					$get_abs_inc	= rand($abs_inc['min'] * 10, $abs_inc['max'] * 10) / 10;
-					$enemy_attack	-= percent($get_abs_inc, $enemy_attack);
+					$enemy_attack	-= percent($this->enemy->for_abs_inc(), $enemy_attack);
 				}
 
 				if ($enemy_is_absorb && !($enemy_is_error || $enemy_is_skip)) {
-					// $player_attack	-= percent($this->enemy->for_abs_inc(), $player_attack);
-
-					$abs_inc		= $this->enemy->for_abs_inc();
-					$get_abs_inc	= rand($abs_inc['min'] * 10, $abs_inc['max'] * 10) / 10;
-					$player_attack	-= percent($get_abs_inc, $player_attack);
+					$player_attack	-= percent($this->enemy->for_abs_inc(), $player_attack);
 				}
 			// <--
 

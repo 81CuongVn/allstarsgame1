@@ -427,7 +427,7 @@ class VipsController extends Controller {
 				// 'paypal_brl'	=> 'BRL'
 			];
 
-			// Bbusca o preço
+			// Busca o preço
 			$price	= 'price_' . strtolower($coins[$star_purchase->star_method]);
 			$price	= $star_plan->$price;
 			if ($_SESSION['universal']) {

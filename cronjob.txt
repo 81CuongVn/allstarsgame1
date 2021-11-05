@@ -1,6 +1,3 @@
-#######################################
-############# PRODDUCTION #############
-#######################################
 # UMA VEZ POR HORA
 0 * * * * php /var/www/allstarsgame/cronjob/objectives.php
 0 * * * * php /var/www/allstarsgame/cronjob/ranking_players.php
@@ -34,41 +31,3 @@
 
 # A CADA 12 HORAS
 0 0,12 * * * php /var/www/allstarsgame/cronjob/wanteds.php
-
-
-#######################################
-############## LOCALHOST ##############
-#######################################
-# UMA VEZ POR HORA
-0 * * * * php /var/www/allstarsgame/cronjob/objectives.php localhost
-0 * * * * php /var/www/allstarsgame/cronjob/ranking_players.php localhost
-0 * * * * php /var/www/allstarsgame/cronjob/ranking_achievements.php localhost
-0 * * * * php /var/www/allstarsgame/cronjob/ranking_accounts.php localhost
-0 * * * * php /var/www/allstarsgame/cronjob/ranking_challenges.php localhost
-0 * * * * php /var/www/allstarsgame/cronjob/ranking_guilds.php localhost
-0 * * * * php /var/www/allstarsgame/cronjob/ranking_rankeds.php localhost
-
-# AO FINAL DO DIA
-55 23 * * * php /var/www/allstarsgame/cronjob/combat_quests_rewards.php localhost
-
-# UMA VEZ POR DIA
-0 0 * * * php /var/www/allstarsgame/cronjob/account_quests.php localhost
-0 0 * * * php /var/www/allstarsgame/cronjob/combat_quests.php localhost
-0 0 * * * php /var/www/allstarsgame/cronjob/daily_quests.php localhost
-0 0 * * * php /var/www/allstarsgame/cronjob/guild_requests.php localhost
-0 0 * * * php /var/www/allstarsgame/cronjob/pets_daily_quests.php localhost
-0 0 * * * php /var/www/allstarsgame/cronjob/ranking_combats.php localhost
-
-# TODA SEGUNDA-FEIRA
-0 0 * * 1 php /var/www/allstarsgame/cronjob/guild_daily_quests.php localhost
-0 0 * * 1 php /var/www/allstarsgame/cronjob/pet_happiness.php localhost
-0 0 * * 1 php /var/www/allstarsgame/cronjob/treasure_guild.php localhost
-
-# AS 5H DA MANHÃ
-0 5 * * * php /var/www/allstarsgame/cronjob/statistic_players.php localhost
-
-# A CADA 3 HORAS
-0 */3 * * * php /var/www/allstarsgame/cronjob/battle_animes.php localhost
-
-# A CADA 12 HORAS
-0 0,12 * * * php /var/www/allstarsgame/cronjob/wanteds.php localhost

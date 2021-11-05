@@ -7,19 +7,23 @@ set_error_handler(function($severity, $message, $file, $line) {
 		}
     }
 });
+
 session_start();
 
-$env = 'dev';
-if (in_array($_SERVER['HTTP_HOST'], ['allstarsgame.com.br'])) {
-    $env = 'prod';
-}
-
-define('FW_ENV',                    $env);
 define('ROOT',						dirname(__FILE__));
-
-require_once ROOT . '/config.' . $env . '.php';
+require_once ROOT . '/config.php';
 
 date_default_timezone_set(DEFAULT_TIMEZONE);
+
+// Inicialização da sessão --->
+	if (!isset($_SESSION['language_id']))		$_SESSION['language_id']	= 1;
+	if (!isset($_SESSION['user_id']))			$_SESSION['user_id']		= null;
+	if (!isset($_SESSION['player_id']))			$_SESSION['player_id']		= null;
+	if (!isset($_SESSION['loggedin']))			$_SESSION['loggedin']		= false;
+	if (!isset($_SESSION['universal']))			$_SESSION['universal'] 		= false;
+	if (!isset($_SESSION['orig_user_id']))		$_SESSION['orig_user_id']	= 0;
+	if (!isset($_SESSION['orig_player_id']))	$_SESSION['orig_player_id']	= 0;
+// <---
 
 if (isset($_SERVER['REDIRECT_URL']) && $_SERVER['REDIRECT_URL']) {
     $_SERVER['PATH_INFO'] = $_SERVER['REDIRECT_URL'];
@@ -29,8 +33,7 @@ define('DB_LOGGING',		        TRUE);
 define('BACKTRACE_SELECTS',	        TRUE);
 define('BACKTRACE_UPDATES',	        TRUE);
 define('BACKTRACE_DELETES',	        TRUE);
-
-define('RECORDSET_CACHE_OFF_FORCE',	$env == 'dev');
+define('RECORDSET_CACHE_OFF_FORCE',	FW_ENV == 'dev');
 
 $___clear_cache_key				= 'vaMALORuhvCTTiCGvnDehblfdIJnPNbUak7OxcE1knbPGuwwTuPrpTGCGzdbYVwXBusrqhXcvqqIjhBIetDDPvzOvPaqzLHVE7eb';
 $___start						= microtime(TRUE);
@@ -88,7 +91,7 @@ $params		= [];
 
 $is_admin = false;
 if (!$_SERVER['PATH_INFO']) {
-    $home	= explode('#', $home);
+    $home	= explode('#', SITE_HOME);
 
     $controller	= $home[0];
     $action		= $home[1];
@@ -110,7 +113,7 @@ if (!$_SERVER['PATH_INFO']) {
 			$action		= sizeof($parts) > 2 ? $parts[2] : NULL;
 			$params		= array_splice($parts, 3);
 		} else {
-			$home		= explode('#', $home);
+			$home		= explode('#', SITE_HOME);
 			$controller	= $home[0];
     		$action		= $home[1];
 		}

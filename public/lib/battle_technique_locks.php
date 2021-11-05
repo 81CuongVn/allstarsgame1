@@ -7,6 +7,7 @@ trait BattleTechniqueLocks {
 
 	function add_technique_lock($instance, $cooldown = null) {
 		$locks					= SharedStore::G($this->build_technique_lock_uid(), []);
+
 		$locks[$instance->id]	= [
 			'turns'		=> is_null($cooldown) ? $instance->formula()->cooldown : $cooldown,
 			'infinity'	=> false

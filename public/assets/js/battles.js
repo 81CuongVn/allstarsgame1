@@ -1,30 +1,30 @@
 (function () {
-    var locked = [];
-    var battle_container = $('#battle-container');
-    var log_container = $('.log', battle_container);
-    var max_log_scroll = 0;
-    var current_log_scroll = 0;
-    var ping_iv = null;
-    var can_ping = true;
-    var timer_mins = 1;
-    var timer_secs = 30;
-    var battle_timer_iv = 0;
-    var sound_was_played = false;
-    var audio = $(document.createElement('AUDIO')).attr('src', resource_url('media/battle.mp3')).attr('type', 'audio/mpeg');
-    var negatives = ['attack_speed', 'attack_speed_percent', 'slowness', 'slowness_percent', 'bleeding', 'bleeding_percent', 'next_mana_cost', 'stun', 'reduce_critical_damage', 'reduce_critical_damage_percent'];
-    var hidden = ['bonus_exp_mission', 'bonus_exp_mission_percent', 'bonus_gold_mission', 'bonus_gold_mission_percent', 'bonus_stamina_max', 'currency_reward_extra', 'exp_reward_extra', 'currency_reward_extra_percent', 'exp_reward_extra_percent', 'bonus_stamina_heal', 'no_consume_stamina', 'fragment_find', 'item_find', 'pets_find'];
-	var is_my_turn = false;
+    var locked				= [];
+    var battle_container	= $('#battle-container');
+    var log_container		= $('.log', battle_container);
+    var max_log_scroll		= 0;
+    var current_log_scroll	= 0;
+    var ping_iv				= null;
+    var can_ping			= true;
+    var timer_mins			= 1;
+    var timer_secs			= 30;
+    var battle_timer_iv		= 0;
+    var sound_was_played	= false;
+    var audio				= $(document.createElement('AUDIO')).attr('src', resource_url('media/battle.mp3')).attr('type', 'audio/mpeg');
+    var negatives			= [ 'attack_speed', 'attack_speed_percent', 'slowness', 'slowness_percent', 'bleeding', 'bleeding_percent', 'next_mana_cost', 'stun', 'reduce_critical_damage', 'reduce_critical_damage_percent' ];
+    var hidden				= [ 'bonus_exp_mission', 'bonus_exp_mission_percent', 'bonus_gold_mission', 'bonus_gold_mission_percent', 'bonus_stamina_max', 'currency_reward_extra', 'exp_reward_extra', 'currency_reward_extra_percent', 'exp_reward_extra_percent', 'bonus_stamina_heal', 'no_consume_stamina', 'fragment_find', 'item_find', 'pets_find' ];
+	var is_my_turn			= false;
 
     function update_log_tooltip() {
         $('.log .i', battle_container).each(function () {
             var _ = $(this);
 
             _.popover({
-                content: $(document.getElementById(_.data('tooltip'))).html(),
-                html: true,
-                placement: 'bottom',
-                trigger: 'hover',
-				container: '.log'
+                content:	$(document.getElementById(_.data('tooltip'))).html(),
+                html:		true,
+                placement:	'bottom',
+                trigger:	'hover',
+				container:	'.log'
             });
         });
     }
@@ -32,15 +32,13 @@
     function draw_modifiers(objekt, status, container) {
         $('.item', container).remove();
 
-        var item = $(document.createElement('DIV')).addClass('item status');
-        var item_id = 'i-' + (Math.random() * 65535) + '.' + (Math.random() * 65535);
-        var popover = $(document.createElement('DIV')).attr('id', item_id).css({ display: 'none' });
-        var html = '<div class="modifier-tooltip">' + I18n.t('battles.status_tooltip.atk', { image: image_url('icons/for_atk.png'), value: roundToTwo(status.atk) }) + "<br />" +
+        var item	= $(document.createElement('DIV')).addClass('item status');
+        var item_id	= 'i-' + (Math.random() * 65535) + '.' + (Math.random() * 65535);
+        var popover	= $(document.createElement('DIV')).attr('id', item_id).css({ display: 'none' });
+        var html	= '<div class="modifier-tooltip">' + I18n.t('battles.status_tooltip.atk', { image: image_url('icons/for_atk.png'), value: roundToTwo(status.atk) }) + "<br />" +
             I18n.t('battles.status_tooltip.def', { image: image_url('icons/for_def.png'), value: roundToTwo(status.def) }) + "<br />" +
-            // I18n.t('battles.status_tooltip.crit', { image: image_url('icons/for_crit.png'), value: roundToTwo(status.crit), inc: roundToTwo(status.crit_inc) }) + "<br />" +
-            // I18n.t('battles.status_tooltip.abs', { image: image_url('icons/for_abs.png'), value: roundToTwo(status.abs), inc: roundToTwo(status.abs_inc) }) + "<br />" +
-			I18n.t('battles.status_tooltip.crit', { image: image_url('icons/for_crit.png'), value: roundToTwo(status.crit), min: roundToTwo(status.crit_inc.min), max: roundToTwo(status.crit_inc.max) }) + "<br />" +
-            I18n.t('battles.status_tooltip.abs', { image: image_url('icons/for_abs.png'), value: roundToTwo(status.abs), min: roundToTwo(status.abs_inc.min), max: roundToTwo(status.abs_inc.max) }) + "<br />" +
+            I18n.t('battles.status_tooltip.crit', { image: image_url('icons/for_crit.png'), value: roundToTwo(status.crit), inc: roundToTwo(status.crit_inc) }) + "<br />" +
+            I18n.t('battles.status_tooltip.abs', { image: image_url('icons/for_abs.png'), value: roundToTwo(status.abs), inc: roundToTwo(status.abs_inc) }) + "<br />" +
             I18n.t('battles.status_tooltip.prec', { image: image_url('icons/for_prec.png'), value: roundToTwo(status.prec) }) + "<br />" +
             I18n.t('battles.status_tooltip.init', { image: image_url('icons/for_inti.png'), value: roundToTwo(status.init), init: roundToTwo(status.init)}) + "<br />";
 
@@ -54,10 +52,10 @@
                 if (mod.infinity) {
                     $('#activatables #infinity-container-' + mod.id + ' .technique-popover img', container.parent()).css('opacity', 1);
                 } else {
-                    var item = $(document.createElement('DIV')).addClass('item');
-                    var item_id = 'i-' + (Math.random() * 65535) + '.' + (Math.random() * 65535);
-                    var popover = $(document.createElement('DIV')).attr('id', item_id).css({ display: 'none' });
-                    var html = '<div class="modifier-tooltip">' + mod.tooltip + '</div>';
+                    var item	= $(document.createElement('DIV')).addClass('item');
+                    var item_id	= 'i-' + (Math.random() * 65535) + '.' + (Math.random() * 65535);
+                    var popover	= $(document.createElement('DIV')).attr('id', item_id).css({ display: 'none' });
+                    var html	= '<div class="modifier-tooltip">' + mod.tooltip + '</div>';
 
                     item.append('<img src="' + image_url(mod.image) + '" width="24" height="24" class="technique-popover" data-placement="' + container.data('placement') + '" data-source="' + item_id + '" data-title="' + mod.name + '" data-trigger="click" data-placement="bottom"	/>')
                     item.append(popover);
@@ -71,12 +69,12 @@
             var _ = $(this);
 
             _.popover({
-                content: function () {
+                content:	function () {
                     return $(document.getElementById($(this).data('source'))).html();
                 },
-                html: true,
-                placement: _.data('placement'),
-                trigger: 'hover'
+                html:		true,
+                placement:	_.data('placement'),
+                trigger:	'hover'
             });
         });
     }
@@ -86,15 +84,15 @@
 
         $('.faction', container).remove();
 
-        var item = $(document.createElement('DIV')).addClass('faction status').css('margin-bottom', '5px');
-        var item_id = 'i-' + (Math.random() * 65535) + '.' + (Math.random() * 65535);
-        var popover = $(document.createElement('DIV')).attr('id', item_id).css({ display: 'none' });
-        var anime = $('#battle-container #' + target).data('anime');
-        var character = $('#battle-container #' + target).data('character');
-        var faction = $('#battle-container #' + target).data('faction');
-        var faction_id = parseInt($('#battle-container #' + target).data('faction-id'));
-        var guild = $('#battle-container #' + target).data('guild');
-        var html = '<b class="verde">' + I18n.t('characters.select.labels.anime') + ':</b> ' + anime + ' <br /> ' +
+        var item		= $(document.createElement('DIV')).addClass('faction status').css('margin-bottom', '5px');
+        var item_id		= 'i-' + (Math.random() * 65535) + '.' + (Math.random() * 65535);
+        var popover		= $(document.createElement('DIV')).attr('id', item_id).css({ display: 'none' });
+        var anime		= $('#battle-container #' + target).data('anime');
+        var character	= $('#battle-container #' + target).data('character');
+        var faction		= $('#battle-container #' + target).data('faction');
+        var faction_id	= parseInt($('#battle-container #' + target).data('faction-id'));
+        var guild		= $('#battle-container #' + target).data('guild');
+        var html		= '<b class="verde">' + I18n.t('characters.select.labels.anime') + ':</b> ' + anime + ' <br /> ' +
             '<b class="verde">' + I18n.t('global.character') + ':</b> ' + character + ' <br /> ' +
             '<b class="verde">' + I18n.t('characters.select.labels.faction') + ':</b> ' + faction + ' <br /> ' +
             '<b class="verde">' + I18n.t('global.guild') + ':</b> ' + guild;
@@ -108,30 +106,31 @@
             var _ = $(this);
 
             _.popover({
-                content: function () {
+                content:	function () {
                     return $(document.getElementById($(this).data('source'))).html();
                 },
-                html: true,
-                placement: _.data('placement'),
-                trigger: 'hover'
+                html:		true,
+                placement:	_.data('placement'),
+                trigger:	'hover'
             });
         });
 
     }
-    function draw_wanted(target) {
+
+	function draw_wanted(target) {
         var container = $('#battle-container #' + target + ' .modifiers');
 
         $('.wanted', container).remove();
 
-        var item = $(document.createElement('DIV')).addClass('wanted status').css('margin-bottom', '5px');
-        var item_id = 'i-' + (Math.random() * 65535) + '.' + (Math.random() * 65535);
-        var popover = $(document.createElement('DIV')).attr('id', item_id).css({ display: 'none' });
-        var wanted = parseInt($('#battle-container #' + target).data('wanted'));
-        var wanted_reward = $('#battle-container #' + target).data('wanted-reward');
-        var wanted_type = $('#battle-container #' + target).data('wanted-type');
-        var html = '<b style="font-size:14px; color:#f53b3b">' + I18n.t('global.wanted') + '</b><br />';
-        html = html + I18n.t('global.wanted_reward') + ': ' + wanted_reward + '<br />';
-        html = html + wanted_type;
+        var item			= $(document.createElement('DIV')).addClass('wanted status').css('margin-bottom', '5px');
+        var item_id			= 'i-' + (Math.random() * 65535) + '.' + (Math.random() * 65535);
+        var popover			= $(document.createElement('DIV')).attr('id', item_id).css({ display: 'none' });
+        var wanted			= parseInt($('#battle-container #' + target).data('wanted'));
+        var wanted_reward	= $('#battle-container #' + target).data('wanted-reward');
+        var wanted_type		= $('#battle-container #' + target).data('wanted-type');
+        var html			= '<b style="font-size:14px; color:#f53b3b">' + I18n.t('global.wanted') + '</b><br />';
+        html				= html + I18n.t('global.wanted_reward') + ': ' + wanted_reward + '<br />';
+        html				= html + wanted_type;
 
         if (wanted) {
             item.append('<img src="' + image_url('icons/wanted.png') + '"	class="technique-popover" data-placement="' + container.data('placement') + '" data-source="' + item_id + '" data-trigger="hover" data-placement="bottom"	/>')
@@ -144,12 +143,12 @@
             var _ = $(this);
 
             _.popover({
-                content: function () {
+                content:	function () {
                     return $(document.getElementById($(this).data('source'))).html();
                 },
-                html: true,
-                placement: _.data('placement'),
-                trigger: 'hover'
+                html:		true,
+                placement:	_.data('placement'),
+                trigger:	'hover'
             });
         });
 
@@ -202,11 +201,11 @@
             }
 
             $.ajax({
-                url: battle_container.data('target') + '/' + variant,
-                data: { item: _.data('item') },
-                type: 'post',
-                dataType: 'json',
-                success: function (result) {
+                url:		battle_container.data('target') + '/' + variant,
+                data:		{ item: _.data('item') },
+                type:		'post',
+                dataType:	'json',
+                success:	function (result) {
                     parse(result);
                 }
             })
@@ -219,17 +218,16 @@
             draw_wanted('enemy');
 
             if (result.log && result.log.length) {
-                html = '';
-
+                html	= '';
                 result.log.forEach(function (entry) {
                     html += '<div>' + entry + '</div><hr />';
                 });
 
-                current_log_scroll = log_container.scrollTop();
-                old_max_scroll = max_log_scroll;
+                current_log_scroll	= log_container.scrollTop();
+                old_max_scroll		= max_log_scroll;
 
                 log_container.html(html).scrollTop(1000000);
-                max_log_scroll = log_container.scrollTop();
+                max_log_scroll		= log_container.scrollTop();
 
                 if (current_log_scroll != old_max_scroll) {
                     log_container.scrollTop(current_log_scroll);
@@ -370,21 +368,25 @@
                             return false;
                         }*/
 
-                        var fixed_values_positive = '';
-                        var fixed_values_negative = '';
-                        var infinity_values = '';
-                        var roundup = result.effects_roundup[word];
-                        var normal_html = '';
-                        var container = $('#' + (word == 'p' ? 'player' : 'enemy') + ' .modifiers', battle_container);
-                        var got_effect = false;
-                        var special_ic = [
+                        var fixed_values_positive	= '';
+                        var fixed_values_negative	= '';
+                        var infinity_values			= '';
+                        var roundup					= result.effects_roundup[word];
+                        var normal_html				= '';
+                        var container				= $('#' + (word == 'p' ? 'player' : 'enemy') + ' .modifiers', battle_container);
+                        var got_effect				= false;
+                        var special_ic				= [
                             { icon: image_url('icons/stun.png'), values: [] },
                             { icon: image_url('icons/bleed.png'), values: [] },
                             { icon: image_url('icons/slow.png'), values: [] },
                             { icon: image_url('icons/conf.png'), values: [] }
                         ];
-
-                        var specials = [['stun'], ['bleeding', 'bleeding_percent'], ['slowness', 'slowness_percent'], ['confusion', 'confusion_percent']]
+                        var specials				= [
+							[ 'stun' ],
+							[ 'bleeding', 'bleeding_percent' ],
+							[ 'slowness', 'slowness_percent' ],
+							[ 'confusion', 'confusion_percent' ]
+						];
 
                         for (var attribute in roundup) {
                             if (hidden.indexOf(attribute) != -1) {
@@ -392,10 +394,8 @@
                             }
 
                             var values = roundup[attribute];
-
                             if (values) {
                                 var got_special = false;
-
                                 for (var special in specials) {
                                     for (var prop in specials[special]) {
                                         if (specials[special][prop] == attribute) {
@@ -421,7 +421,10 @@
                                             continue;
                                         }
 
-                                        var current_html = I18n.t('effects_roundup.' + attribute, { turns: turns, value: total }) + '<br />';
+                                        var current_html = I18n.t('effects_roundup.' + attribute, {
+											turns: turns,
+											value: total
+										}) + '<br />';
 
                                         if (turn == 'infinity') {
                                             infinity_values += current_html;
@@ -464,9 +467,9 @@
                         // }
 
                         if (fixed_values_positive) {
-                            var item = $(document.createElement('DIV')).addClass('item status');
-                            var item_id = 'i-' + (Math.random() * 65535) + '.' + (Math.random() * 65535);
-                            var popover = $(document.createElement('DIV')).attr('id', item_id).css({ display: 'none' });
+                            var item	= $(document.createElement('DIV')).addClass('item status');
+                            var item_id	= 'i-' + (Math.random() * 65535) + '.' + (Math.random() * 65535);
+                            var popover	= $(document.createElement('DIV')).attr('id', item_id).css({ display: 'none' });
 
                             fixed_values_positive = fixed_values_positive.replace(/por NaN turno\(s\)/img, '');
 
@@ -479,20 +482,20 @@
                                 var _ = $(this);
 
                                 _.popover({
-                                    content: function () {
+                                    content:	function () {
                                         return $(document.getElementById($(this).data('source'))).html();
                                     },
-                                    html: true,
-                                    placement: _.data('placement'),
-                                    trigger: 'hover'
+                                    html:		true,
+                                    placement:	_.data('placement'),
+                                    trigger:	'hover'
                                 });
                             });
                         }
 
                         if (fixed_values_negative) {
-                            var item = $(document.createElement('DIV')).addClass('item status');
-                            var item_id = 'i-' + (Math.random() * 65535) + '.' + (Math.random() * 65535);
-                            var popover = $(document.createElement('DIV')).attr('id', item_id).css({ display: 'none' });
+                            var item	= $(document.createElement('DIV')).addClass('item status');
+                            var item_id	= 'i-' + (Math.random() * 65535) + '.' + (Math.random() * 65535);
+                            var popover	= $(document.createElement('DIV')).attr('id', item_id).css({ display: 'none' });
 
                             fixed_values_negative = fixed_values_negative.replace(/por NaN turno\(s\)/img, '');
 
@@ -505,21 +508,21 @@
                                 var _ = $(this);
 
                                 _.popover({
-                                    content: function () {
+                                    content:	function () {
                                         return $(document.getElementById($(this).data('source'))).html();
                                     },
-                                    html: true,
-                                    placement: _.data('placement'),
-                                    trigger: 'hover'
+                                    html:		true,
+                                    placement:	_.data('placement'),
+                                    trigger:	'hover'
                                 });
                             });
                         }
 
 
                         if (infinity_values) {
-                            var item = $(document.createElement('DIV')).addClass('item status');
-                            var item_id = 'i-' + (Math.random() * 65535) + '.' + (Math.random() * 65535);
-                            var popover = $(document.createElement('DIV')).attr('id', item_id).css({ display: 'none' });
+                            var item	= $(document.createElement('DIV')).addClass('item status');
+                            var item_id	= 'i-' + (Math.random() * 65535) + '.' + (Math.random() * 65535);
+                            var popover	= $(document.createElement('DIV')).attr('id', item_id).css({ display: 'none' });
 
                             infinity_values = infinity_values.replace(/por NaN turno\(s\)/img, '');
 
@@ -532,27 +535,27 @@
                                 var _ = $(this);
 
                                 _.popover({
-                                    content: function () {
+                                    content:	function () {
                                         return $(document.getElementById($(this).data('source'))).html();
                                     },
-                                    html: true,
-                                    placement: _.data('placement'),
-                                    trigger: 'hover'
+                                    html:		true,
+                                    placement:	_.data('placement'),
+                                    trigger:	'hover'
                                 });
                             });
                         }
 
-                        special_ic.forEach(function (icon) {
+                        special_ic.forEach(function(icon) {
                             if (!icon.values.length) {
                                 return;
                             }
 
-                            var item = $(document.createElement('DIV')).addClass('item status');
-                            var item_id = 'i-' + (Math.random() * 65535) + '.' + (Math.random() * 65535);
-                            var popover = $(document.createElement('DIV')).attr('id', item_id).css({ display: 'none' });
-                            var html = '<div class="modifier-tooltip">';
+                            var item	= $(document.createElement('DIV')).addClass('item status');
+                            var item_id	= 'i-' + (Math.random() * 65535) + '.' + (Math.random() * 65535);
+                            var popover	= $(document.createElement('DIV')).attr('id', item_id).css({ display: 'none' });
+                            var html	= '<div class="modifier-tooltip">';
 
-                            icon.values.forEach(function (effects, index) {
+                            icon.values.forEach(function(effects, index) {
                                 for (var turn in effects.values) {
                                     var turns = parseInt(turn);
                                     var value = parseInt(effects.values[turn]);
@@ -561,7 +564,10 @@
                                         value = -value;
                                     }
 
-                                    html += I18n.t('effects_roundup.' + effects.prop, { value: value, turns: turns }) + '<br />';
+                                    html += I18n.t('effects_roundup.' + effects.prop, {
+										value: value,
+										turns: turns
+									}) + '<br />';
                                 }
                             });
 
@@ -570,16 +576,16 @@
                             popover.append(html + '</div></div>');
                             container.append(item);
 
-                            $('img', item).each(function () {
+                            $('img', item).each(function() {
                                 var _ = $(this);
 
                                 _.popover({
-                                    content: function () {
+                                    content:	function() {
                                         return $(document.getElementById($(this).data('source'))).html();
                                     },
-                                    html: true,
-                                    placement: _.data('placement'),
-                                    trigger: 'hover'
+                                    html:		true,
+                                    placement:	_.data('placement'),
+                                    trigger:	'hover'
                                 });
                             });
                         });
@@ -591,7 +597,7 @@
                 clearInterval(ping_iv);
 
                 $('#finished-message').html(result.finished);
-                $('#battle-container #technique-container').html('').hide();
+                $('#battle-container #technique-container').remove();
                 $('#battle-container .player-container #players').css({ height: '430px' });
             }
 
@@ -616,10 +622,10 @@
 
         function ping(initial) {
             $.ajax({
-                url: battle_container.data('target') + '/ping' + (initial ? '?initial' : ''),
-                type: 'post',
-                dataType: 'json',
-                success: function (result) {
+                url:		battle_container.data('target') + '/ping' + (initial ? '?initial' : ''),
+                type:		'post',
+                dataType:	'json',
+                success:	function(result) {
                     parse(result);
                 }
             });
@@ -642,16 +648,16 @@
                 can_ping = false;
 
                 $.ajax({
-                    url: absolute_url('pvp_ping.php?uuid=' + battle_container.data('ping')),
-                    dataType: 'json',
-                    success: function (result) {
+                    url:		absolute_url('pvp_ping.php?uuid=' + battle_container.data('ping')),
+                    dataType:	'json',
+                    success:	function(result) {
                         if (result.ping) {
                             ping();
                         }
 
                         can_ping = true;
                     },
-                    error: function (result) {
+                    error:		function (result) {
                         can_ping = true;
                     }
                 });
@@ -661,8 +667,8 @@
         update_log_tooltip();
         log_container.scrollTop(1000000);
 
-        current_log_scroll = log_container.scrollTop();
-        max_log_scroll = current_log_scroll;
+        current_log_scroll	= log_container.scrollTop();
+        max_log_scroll		= current_log_scroll;
 
         // Initial ping to draw status
         ping(true);

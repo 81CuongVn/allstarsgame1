@@ -197,7 +197,7 @@ socket.on('message', function (data) {
 		});
 	})
 
-	if(len) {
+	if (len) {
 		d.css({marginTop: len * (d.height() + 10)});
 	}
 
@@ -256,12 +256,10 @@ socket.on('dungeon-invite', function(dungeon) {
 				inviteModal.modal('hide');
 
 				$.ajax({
-					url: make_url('guilds#dungeon_accept'),
-					type: 'post',
-					dataType: 'json',
-					data: {
-						queue_id: dungeon.queue
-					}
+					url:		make_url('guilds#dungeon_accept'),
+					type:		'post',
+					dataType:	'json',
+					data:		{ queue_id: dungeon.queue }
 				});
 			}).on('click', '.btn-danger', function() {
 				ignoreInviteCalls = true;
@@ -269,11 +267,9 @@ socket.on('dungeon-invite', function(dungeon) {
 				inviteModal.modal('hide');
 
 				$.ajax({
-					url: make_url('guilds#dungeon_refuse'),
-					type: 'post',
-					data: {
-						queue_id: dungeon.queue
-					}
+					url:	make_url('guilds#dungeon_refuse'),
+					type:	'post',
+					data:	{ queue_id: dungeon.queue }
 				});
 			});
 	}
@@ -297,7 +293,7 @@ socket.on('dungeon-redirect', function(players) {
 		return;
 	}
 
-	location.href = make_url('guilds/dungeon');
+	location.href = make_url('guilds#dungeon');
 });
 
 $(document).on('ready', function() {

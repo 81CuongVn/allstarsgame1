@@ -260,7 +260,6 @@ class NpcInstance {
 	}
 
 	function faction() {
-		// return Faction::find_first('id = ' . $this->faction_id);
 		return $this->faction;
 	}
 

@@ -1,4 +1,6 @@
 <?php
+$database	= DATABASE;
+
 Recordset::connect(
 	$database['connection'],
 	true,
@@ -7,5 +9,5 @@ Recordset::connect(
 	$database['password'],
 	$database['database']
 );
-Recordset::$cache_mode	= $database['cache_mode'];
 Recordset::$key_prefix	= $database['cache_id'];
+Recordset::$cache_mode	= $database['cache_mode'];

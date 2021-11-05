@@ -17,9 +17,9 @@ class Recordset {
 	public static	$count_updates			= 0;
 	public static	$count_deletes			= 0;
 	public static	$count_inserts_w_dup	= 0;
-	public static	$cache_mode				= RECORDSET_SHM;
-	private	static	$_result_store			= [];
+	public static	$cache_mode				= 'file';
 
+	private	static	$_result_store			= [];
 	public static	$sqls					= [];
 
 	function __construct($sql = '', $cache = false, $connection = true) {
@@ -101,6 +101,12 @@ class Recordset {
 		} catch (PDOException $e) {
 			echo 'Recordset::connect - Error: ' . $e->getMessage();
 		}
+
+		if (Recordset::$cache_mode === 'file' && !is_dir(ROOT . '/../tmp/recordset')) {
+			mkdir(ROOT . '/../tmp/recordset');
+		} elseif (Recordset::$cache_mode === 'shared' && !is_dir(ROOT . '/../tmp/shared')) {
+			mkdir(ROOT . '/../tmp/shared');
+		}
 	}
 
 	function repeat() {
@@ -153,18 +159,32 @@ class Recordset {
 		$do_query	= true;
 		$store		= false;
 		$key		= 'RECSET_' . Recordset::$key_prefix . md5($sql);
-		$cache_file	= ROOT . '/cache/recset/' . $key . '.sqlcache';
 
-		$cache_data	= @file_get_contents($cache_file);
+		if (Recordset::$cache_mode == 'file') {
+			$cache_file	= ROOT . '/../tmp/recordset/' . $key . '.sqlcache';
+			$cache_data	= @file_get_contents($cache_file);
 
-		if (!($cache_data === false)) {
-			$cache			= unserialize($cache_data);
-			$do_query		= false;
+			if (!($cache_data === false)) {
+				$cache			= unserialize($cache_data);
+				$do_query		= false;
 
-			$data			= $cache['data'];
-			$this->num_rows	= $cache['rows'];
-		} else {
-			$store	= true;
+				$data			= $cache['data'];
+				$this->num_rows	= $cache['rows'];
+			} else {
+				$store	= true;
+			}
+		} elseif (Recordset::$cache_mode == 'shared') {
+			$cache_data = SharedStore::G($key);
+
+			if (is_null($cache_data)) {
+				$store = true;
+			} else {
+				$cache = unserialize($cache_data);
+				$do_query = false;
+
+				$data = $cache['data'];
+				$this->num_rows = $cache['rows'];
+			}
 		}
 
 		if ($do_query) {
@@ -202,7 +222,11 @@ class Recordset {
 				'sql'	=> $sql
 			];
 
-			file_put_contents($cache_file, serialize($data_store));
+			if (Recordset::$cache_mode === 'file') {
+				file_put_contents($cache_file, serialize($data_store));
+			} elseif (Recordset::$cache_mode === 'shared') {
+				SharedStore::S($key, $data_store);
+			}
 		}
 
 		if (!isset(Recordset::$_result_store[$this->hash])) {
@@ -317,45 +341,6 @@ class Recordset {
 		unset($sets);
 
 		return $connection->lastInsertId();
-	}
-
-	static function select($table, $fields, $where = NULL, $connection = true) {
-		$keys	= [];
-		foreach ($fields as $k => $v) {
-			$keys[] = '`' . $k . '`';
-		}
-
-		$wh		= [];
-		if ($where) {
-			$wh = Recordset::_parse_where($where);
-		}
-
-		$sql	= 'SELECT ' . join(', ', $keys) . ' FROM ' . $table . ($where ? ' WHERE ' . join(' AND ', $wh) : '');
-
-		if (DB_LOGGING) {
-			$hash	= md5($sql);
-			Recordset::$sqls[$hash] = [
-				'sql'		=> $sql,
-				'count'		=> 1,
-				'cached'	=> false,
-				'duration'	=> microtime(true),
-				'traces'	=> []
-			];
-		}
-
-		$connection	= is_bool($connection) && $connection ? Recordset::$connections[Recordset::$default_connection] : Recordset::$connections[$connection];
-		$statement	= $connection->prepare($sql);
-		$statement->execute();
-
-		if ((int)$statement->errorCode()) {
-			throw new Exception("Select query error " . $sql, 1);
-		}
-
-		if (DB_LOGGING) {
-			Recordset::$sqls[$hash]['duration']	= microtime(true) - Recordset::$sqls[$hash]['duration'];
-		}
-
-		Recordset::$count_selects++;
 	}
 
 	static function update($table, $fields, $where = NULL, $connection = true) {

@@ -9,7 +9,7 @@ var config = {
 		cert:	''
 	},
 	// Your random key
-	key:	'430rBdLShn8yK930907L2a8yeTszrDip',
+	key:	'430BdLS9ye07L2aTszrr8hn8yK930Dip',
 	// Set highlights port
 	port:	2530,
 	// Available languages

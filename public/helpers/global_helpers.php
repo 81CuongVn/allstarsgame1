@@ -10,12 +10,19 @@ function random_str($length) {
 	return $str;
 }
 
-function generate_key(){
+function generate_key() {
 	return md5(microtime().serialize($_SERVER));
 }
 
 function password($str) {
-	return md5($str);
+	return password_hash($str, PASSWORD_BCRYPT);
+}
+
+function validPassword($str) {
+    return	preg_match('/[a-z]/', $str)				// tem pelo menos uma letra minúscula
+			&& preg_match('/[A-Z]/', $str)			// tem pelo menos uma letra maiúscula
+			&& preg_match('/[0-9]/', $str)			// tem pelo menos um número
+			&& preg_match('/^[\w$@]{6,}$/', $str);	// tem 6 ou mais caracteres
 }
 
 function between($value, $start, $end) {
@@ -260,7 +267,7 @@ function global_message($message, $is_yaml = FALSE, $assigns = []) {
 }
 
 function now($mysql_format = FALSE) {
-	return $mysql_format ? date('Y-m-d H:i:s') : strtotime('+0 minute');
+	return $mysql_format ? date('Y-m-d H:i:s') : time();
 }
 
 function get_time_difference( $start, $end ) {
@@ -306,16 +313,12 @@ function get_time_difference( $start, $end ) {
 }
 
 function has_chance($val) {
-	// $number	= 100 - $val;
-	// $random	= rand(1, 1000) / 10;
-	// return $number >= $random ? true : false;
-
-	$rnd = rand(1, 100);
-	return ($_SESSION['universal'] && $val > 0) ? true : ($rnd <= $val ? true : false);
+	$rnd = get_chance();
+	return $rnd <= $val ? true : false;
 }
 
 function get_chance() {
-	return rand(1, 100);
+	return rand(1, 400) / 4;
 }
 
 function array_random_key($arr) {

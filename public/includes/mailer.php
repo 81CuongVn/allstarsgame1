@@ -3,7 +3,10 @@ use PHPMailer\PHPMailer\PHPMailer;
 
 class Mailer {
 	function deliver($subject, $to, $message) {
-		global $mailConfig;
+		$mailConfig	= MAIL_CONFIG;
+		if (!$mailConfig['active']) {
+			return true;
+		}
 
 		$mail = new PHPMailer(true);
 
@@ -14,13 +17,13 @@ class Mailer {
 		$mail->Password		= $mailConfig['password'];						// SMTP password
 
 		$mail->isSMTP();													// Send using SMTP
-		$mail->SMTPAuth		= TRUE;											// Enable SMTP authentication
+		$mail->SMTPAuth		= true;											// Enable SMTP authentication
 		$mail->SMTPSecure	= 'ssl';										// Enable SSL encryption; `PHPMailer::ENCRYPTION_STARTTLS` encouraged
 		$mail->SMTPOptions	= [
 			'ssl' => [
-				'verify_peer'		=> FALSE,
-				'verify_peer_name'	=> FALSE,
-				'allow_self_signed'	=> TRUE
+				'verify_peer'		=> false,
+				'verify_peer_name'	=> false,
+				'allow_self_signed'	=> true
 			]
 		];
 

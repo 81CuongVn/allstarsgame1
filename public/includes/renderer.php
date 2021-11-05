@@ -1,13 +1,12 @@
 <?php
 function render_file($__view_file, $vars) {
-	global $site_url;
-	global $rewrite_enabled;
 	global $controller;
 	global $action;
 	global $params;
 
-	if(!file_exists($__view_file))
+	if (!file_exists($__view_file)) {
 		throw new Exception('View was not found at "' . $__view_file . '"');
+	}
 
 	extract($vars);
 
@@ -17,9 +16,6 @@ function render_file($__view_file, $vars) {
 }
 
 function render_mailer($mailer, $method, $vars) {
-	global $site_url;
-	global $rewrite_enabled;
-
 	$__view_path	= ROOT . '/views/' . $mailer . '/' . $method . '.php';
 
 	extract($vars);
@@ -29,8 +25,6 @@ function render_mailer($mailer, $method, $vars) {
 }
 
 function partial($partial, $vars = []) {
-	global $site_url;
-	global $rewrite_enabled;
 	global $controller;
 	global $action;
 	global $is_admin;

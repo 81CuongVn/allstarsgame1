@@ -1,7 +1,6 @@
 (function () {
-    var __chat              = $('#chat');
-    var __chat_register     = __chat.data('register');
-    var __chat_universal    = __chat.data('universal') || false;
+    var _chat              = $('#chat');
+    var _chat_universal    = _chat.data('universal') || false;
 
     var has_type		= false;
     var	channel			= 'world';
@@ -19,8 +18,8 @@
     window.chat_decoded	= [];
 
     function resizeSelector() {
-        var	tw	= $('.selector-trigger', __chat).outerWidth() + 15;
-        $('input[name=message]', __chat).css({
+        var	tw	= $('.selector-trigger', _chat).outerWidth() + 15;
+        $('input[name=message]', _chat).css({
             paddingLeft: tw
         });
     }
@@ -73,11 +72,11 @@
     }
 
     // Init Socket.IO
-    var __chat_socket	= io.connect(_chat_server);
+    var _chat_socket	= io.connect(_chat_server);
 
     // On connect error
-    __chat_socket.on('error', function () {
-        $('.messages', __chat).html(`<li style="padding: 10px">
+    _chat_socket.on('error', function () {
+        $('.messages', _chat).html(`<li style="padding: 10px">
             Ocorreu um problema ao conectar ao chat.<br /><br />
             Você pode ter algum firewall (isso inclui programas anti-hack de jogos on-line) ou anti-vírus bloqueando o chat.<br /><br />
             Se sua rede está conectada através de um proxy, o proxy pode estar bloqueando as conexões ou não suporta conexões via websocket
@@ -85,20 +84,20 @@
     });
 
     // On connect
-    __chat_socket.on('connect', function () {
+    _chat_socket.on('connect', function () {
         console.log('Chat service connected!');
 
-        __chat_socket.emit('register', {
-            data: __chat_register
+        _chat_socket.emit('register', {
+            data: _chat_register
         });
 
-        $('.messages', __chat).empty();
+        $('.messages', _chat).empty();
     });
 
-    __chat_socket.on('blocked-broadcast', function (data) {
+    _chat_socket.on('blocked-broadcast', function (data) {
         blocked	= data;
     });
-    __chat_socket.on('pvt-broadcast', function (data) {
+    _chat_socket.on('pvt-broadcast', function (data) {
         var	container	= $('.chat-pvt .r');
 
         pvt_data	= data;
@@ -119,7 +118,7 @@
 
             c.on('click', function () {
                 function dispatch_pvt_read(id) {
-                    __chat_socket.emit('pvt-was-read', {index: id});
+                    _chat_socket.emit('pvt-was-read', {index: id});
                 }
 
                 if (this.shown) {
@@ -139,13 +138,13 @@
                 var	msg_text		= $(document.createElement('SPAN')).html(pvt_data[0].message).addClass('text');
 
                 msg_reply.on('click', function () {
-                    $('.selector-trigger', __chat)
+                    $('.selector-trigger', _chat)
                         .html(pvt_data[0].from)[0].shown = false;
 
                     channel		= 'private';
                     pvt_dest	= pvt_data[0].id;
 
-                    $('input[name=message]', __chat).focus();
+                    $('input[name=message]', _chat).focus();
                     resizeSelector();
                 });
 
@@ -212,7 +211,7 @@
         }
     });
 
-    __chat_socket.on('broadcast', function (data) {
+    _chat_socket.on('broadcast', function (data) {
         if (data.decodes) {
             data.decodes.forEach(function (decoded) {
                 chat_decoded[decoded[0]]	= decoded[1];
@@ -224,7 +223,7 @@
                 <div style="text-transform: uppercase;">Aviso do sistema</div>
                 <p style="font-weight: normal;">${data.message}</p>
             </li>`;
-            $('.messages', __chat).append($message)
+            $('.messages', _chat).append($message)
 
             return;
         }
@@ -263,9 +262,9 @@
                 </div>
             </div>
         </li>`;
-        $('.messages', __chat).append($message);
+        $('.messages', _chat).append($message);
 
-        $('.messages .chat-user', __chat).each(function() {
+        $('.messages .chat-user', _chat).each(function() {
             if (this.with_callback) {
                 return;
             }
@@ -277,42 +276,47 @@
                 var $from = $(this).data('from');
 
                 if (channel == 'block') {
-                    $('input[name=message]', __chat).val($from).focus();
+                    $('input[name=message]', _chat).val($from).focus();
 
                     return;
                 }
 
-                $('.selector-trigger', __chat)
+                $('.selector-trigger', _chat)
                     .html($from)[0].shown = false;
 
-                $('.selector ul', __chat).animate({opacity: 0}, function () {
+                $('.selector ul', _chat).animate({opacity: 0}, function () {
                     $(this).hide()
                 });
 
                 channel		= 'private';
                 pvt_dest	= _.data('id');
 
-                $('input[name=message]', __chat).focus();
+                $('input[name=message]', _chat).focus();
                 resizeSelector();
             });
         });
 
         if (has_type) {
-            $('.messages', __chat).scrollTop(1000000);
+            $('.messages', _chat).scrollTop(1000000);
 
             has_type	= false;
         }
-        if ($('.auto-scroll:checked', __chat).length) {
-            $('.messages', __chat).scrollTop(1000000);
+        if ($('.auto-scroll:checked', _chat).length) {
+            $('.messages', _chat).scrollTop(1000000);
         }
     });
 
     $(document).ready(function(e) {
-        $('input[name=message]', __chat).on('keyup', function(e) {
-            var	message	= $(this);
+        $('input[name=message]', _chat).on('keyup', function(e) {
+            var	message		= $(this),
+				msg_text	= message.val();
 
-            if (e.keyCode == 13 && this.value) {
-                if (!__chat_universal) {
+            if (e.keyCode == 13 && msg_text) {
+				if (msg_text.trim().length < 1) {
+					return;
+				}
+
+				if (!_chat_universal) {
                     var now	= new Date();
                     if (last_msg && diffInSecs(last_msg, now) < 5) {
                         return;
@@ -320,26 +324,26 @@
                 }
 
                 var broadcast_data	= {
-                    message:	this.value,
+                    message:	msg_text,
                     channel:	channel,
                     dest:		pvt_dest,
                     embeds: 	chat_embeds
                 };
 
-                __chat_socket.emit('message', broadcast_data);
+                _chat_socket.emit('message', broadcast_data);
 
                 this.value	= '';
                 chat_embeds	= [];
                 has_type	= true;
 
                 if (channel == 'private') {
-                    $('.selector ul li', __chat).each(function () {
+                    $('.selector ul li', _chat).each(function () {
                         if ($(this).data('channel') == real_channel) {
                             $(this).trigger('click');
                         }
                     });
                 } else {
-                    if (!__chat_universal) {
+                    if (!_chat_universal) {
                         message.attr('disabled', 'disabled');
                         last_msg	= now;
                         var _iv1	= setInterval(function () {
@@ -357,7 +361,7 @@
             }
 
             if (e.keyCode == 32) {
-                $('.selector ul li', __chat).each(function () {
+                $('.selector ul li', _chat).each(function () {
                     var _	= $(this);
 
                     if (message.val().match(new RegExp('\^/' + _.data('cmd')))) {
@@ -370,7 +374,7 @@
                 if (message.val().match(/^@[^\s]+/)) {
                     var	dest	= message.val().replace(/[@<>]/img, '');
 
-                    $('.selector-trigger', __chat).html(dest)[0].shown = false;
+                    $('.selector-trigger', _chat).html(dest)[0].shown = false;
 
                     message.val('');
 
@@ -381,7 +385,7 @@
                 }
 
                 if (message.val().match('^/block')) {
-                    $('.selector-trigger', __chat).html('Bloquear')[0].shown = false;
+                    $('.selector-trigger', _chat).html('Bloquear')[0].shown = false;
 
                     channel	= 'block';
 
@@ -390,11 +394,11 @@
                 }
             }
         }).on('focus', function () {
-            $('#as', __chat).stop().animate({opacity: 0});
+            $('#as', _chat).stop().animate({opacity: 0});
         }).on('blur', function () {
-            $('#as', __chat).stop().animate({opacity: 1});
+            $('#as', _chat).stop().animate({opacity: 1});
         }).on('pvt-switch', function (e, dest) {
-            $('.selector-trigger', __chat).html(dest)[0].shown = false;
+            $('.selector-trigger', _chat).html(dest)[0].shown = false;
 
             channel		= 'private';
             pvt_dest	= dest;
@@ -402,38 +406,38 @@
             resizeSelector();
         });
 
-        $('.selector ul li', __chat).on('click', function () {
-            $('.selector-trigger', __chat).html(this.innerHTML)[0].shown = false;
-            $('.selector ul', __chat).animate({opacity: 0}, function () {
+        $('.selector ul li', _chat).on('click', function () {
+            $('.selector-trigger', _chat).html(this.innerHTML)[0].shown = false;
+            $('.selector ul', _chat).animate({opacity: 0}, function () {
                 $(this).hide()
             });
 
             channel			= $(this).data('channel');
             real_channel	= channel;
 
-            if (!__chat_universal) {
-                $('#message', __chat).attr('maxlength', chat_max_length);
+            if (!_chat_universal) {
+                $('#message', _chat).attr('maxlength', chat_max_length);
             }
 
-            $('.messages li', __chat).hide();
+            $('.messages li', _chat).hide();
 
             $.cookie('chat_channel', channel);
 
-            $('.messages .chat-' + channel, __chat).show();
-            $('.messages .chat-warn', __chat).show();
-            $('.messages .chat-system', __chat).show();
+            $('.messages .chat-' + channel, _chat).show();
+            $('.messages .chat-warn', _chat).show();
+            $('.messages .chat-system', _chat).show();
 
-            $('input[name=message]', __chat).focus();
+            $('input[name=message]', _chat).focus();
             resizeSelector();
         });
 
-        $('.selector-trigger', __chat).on('click', function () {
+        $('.selector-trigger', _chat).on('click', function () {
             if (!this.shown) {
-                $('.selector ul', __chat).show().animate({opacity: 1});
+                $('.selector ul', _chat).show().animate({opacity: 1});
 
                 this.shown	= true;
             } else {
-                $('.selector ul', __chat).animate({opacity: 0}, function () { $(this).hide() });
+                $('.selector ul', _chat).animate({opacity: 0}, function () { $(this).hide() });
 
                 this.shown	= false;
             }
@@ -443,7 +447,7 @@
             var	current		= $.cookie('chat_channel');
             var was_found	= false;
 
-            $('.selector ul li', __chat).each(function () {
+            $('.selector ul li', _chat).each(function () {
                 var _		= $(this);
 
                 if (_.data('channel') == current) {
@@ -454,7 +458,7 @@
             });
 
             if (!was_found) {
-                $('.selector ul li', __chat).each(function () {
+                $('.selector ul li', _chat).each(function () {
                     var _		= $(this);
 
                     if (_.data('channel') == 'world') {
@@ -463,7 +467,7 @@
                 });
             }
         } else {
-            $('.selector ul li', __chat).each(function () {
+            $('.selector ul li', _chat).each(function () {
                 var _		= $(this);
 
                 if (_.data('channel') == 'world') {
@@ -486,21 +490,21 @@
     }, 2500);
 
     var	__pvt_iv	= setInterval(function() {
-        __chat_socket.emit('pvt-query');
+        _chat_socket.emit('pvt-query');
     }, 2000)
 
     var	__block_iv	= setInterval(function() {
-        __chat_socket.emit('blocked-query');
+        _chat_socket.emit('blocked-query');
     }, 2000)
 
-    $('.title', __chat).on('click', function () {
+    $('.title', _chat).on('click', function () {
         if (parseInt($.cookie('chat_show'))) {
-            __chat.animate({height: 35});
+            _chat.animate({height: 35});
             $('.chat-pvt').animate({bottom: 30});
 
             $.cookie('chat_show', 0);
         } else {
-            __chat.animate({height: 350});
+            _chat.animate({height: 350});
             $('.chat-pvt').animate({bottom: 340});
 
             $.cookie('chat_show', 1);
@@ -509,7 +513,7 @@
         resizeSelector();
     });
 
-    $('.auto-scroll', __chat).on('click', function () {
+    $('.auto-scroll', _chat).on('click', function () {
         if (this.checked) {
             $.cookie('chat_as', 1);
         } else {
@@ -518,10 +522,10 @@
     });
 
     if (!parseInt($.cookie('chat_show'))) {
-        __chat.css('height', 35);
+        _chat.css('height', 35);
     }
 
     if (parseInt($.cookie('chat_as'))) {
-        $('.auto-scroll', __chat)[0].checked = true;
+        $('.auto-scroll', _chat)[0].checked = true;
     }
 })();

@@ -1,4 +1,4 @@
-config.prod.php
-test.php
+*.lock
+ads.txt
+config.php
 vendor/
-cronjob/
