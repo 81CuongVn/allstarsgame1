@@ -112,7 +112,8 @@ if (preg_match('/read_news/', $action)) {
 				_current_player			= <?=$player->id;?>,
 				_is_guild_leader		= <?=(($player->guild_id && $player->guild_id == $player->guild()->player_id) ? 'true' : 'false');?>,
 				_equipments_names		= <?=json_encode($equipments);?>,
-				_graduations			= [];
+				_graduations			= [],
+				_chat_register			= "<?=$player->chatRegister();?>";;
 		<?php } ?>
 
 		var	_check_pvp_queue		= <?=($player && $player->is_pvp_queued ? 'true': 'false');?>;
@@ -120,9 +121,6 @@ if (preg_match('/read_news/', $action)) {
 		// Servers
 		var _chat_server			= "<?=CHAT_SERVER;?>";
 		var _highlights_server		= "<?=HIGHLIGHTS_SERVER;?>";
-
-		// Chat Register
-		_chat_register				= "<?=$player->chatRegister();?>";
 
 		$(document).ready(function() {
         	// I18n.default_locale		= _language;
