@@ -101,12 +101,6 @@ class Recordset {
 		} catch (PDOException $e) {
 			echo 'Recordset::connect - Error: ' . $e->getMessage();
 		}
-
-		if (Recordset::$cache_mode === 'file' && !is_dir(ROOT . '/../tmp/recordset')) {
-			mkdir(ROOT . '/../tmp/recordset');
-		} elseif (Recordset::$cache_mode === 'shared' && !is_dir(ROOT . '/../tmp/shared')) {
-			mkdir(ROOT . '/../tmp/shared');
-		}
 	}
 
 	function repeat() {

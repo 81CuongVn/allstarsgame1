@@ -68,7 +68,10 @@
 					<?php if($rewards->equipment && $rewards->equipment == 4){?>
 						<?php echo t('treasure.show.equipment4')?><br />
 					<?php }?>
-					<?php if($rewards->pets  && $rewards->item_id){?>
+					<?php if($rewards->equipment && $rewards->equipment == 5){?>
+						<?php echo t('treasure.show.equipment5')?><br />
+					<?php }?>
+					<?php if($rewards->pets && $rewards->item_id){?>
 						<?php echo t('treasure.show.pet')?> "<?php echo Item::find($rewards->item_id)->description()->name ?>"<br />
 					<?php }?>
 					<?php if($rewards->character_theme_id){?>

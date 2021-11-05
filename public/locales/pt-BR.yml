@@ -1055,7 +1055,7 @@ pt-BR:
       join: Participar
     create:
       name: Organização
-      name_note: (Entre 6 e 20 caractéres sem caractéres especiais)
+      name_note: (Entre 6 e 20 caractéres)
       normal: |
         Sou nível #{level} e tenho #{price}
       credits: |
@@ -1072,11 +1072,6 @@ pt-BR:
         full: Essa Organização está cheia
         users: Não é possível ter dois personagens da mesma conta nessa organização
         change: Não é possível trocar de facção participando de uma organização
-      dungeon:
-        invalid_queue: invalid_queue
-        invalid_dungeon: invalid_dungeon
-        dungeon_not_unlocked: dungeon_not_unlocked
-        invalid_players_list: invalid_players_list
     destroy:
       title: Exclusão de sua Organização
       text: Sua organização está sendo deletada, você tem certeza disso?
@@ -1136,6 +1131,14 @@ pt-BR:
     errors:
       no_privilege: Privilégios insuficientes para essa ação
       max_players: A sua organização alcançou o número limite de membros
+      dungeon:
+        dungeon_took_sharedchest: Você já resgatou este baú!
+        dungeon_took_chest: Alguém já resgatou este baú!
+        invalid_object: Objeto inválido!
+        dungeon_not_unlocked: Evento não desbloqueado!
+        invalid_players_list: Lista inválida!
+        invalid_queue: Fila inválida!
+        dungeon_only_leader: Apenas o líder da organização pode realizar essa ação!
   support:
     index:
       title: Suporte

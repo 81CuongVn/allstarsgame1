@@ -38,10 +38,15 @@ class GuildsController extends Controller {
 			if (!$event) {
 				$errors[]	= t('history_mode.unlock.errors.invalid');
 			} else {
-				if ($_POST['mode'] == 1 && $player->currency < $event->currency) {
-					$errors[]	= t('history_mode.unlock.errors.not_enough_currency');
-				} elseif ($_POST['mode'] != 1 && $player->user()->credits < $event->credits) {
-					$errors[]	= t('history_mode.unlock.errors.not_enough_vip');
+				$leader	= $player->guild()->leader();
+				if ($leader->id != $player->id) {
+					$errors[] = t('guilds.errors.dungeon.dungeon_only_leader');
+				} else {
+					if ($_POST['mode'] == 1 && $player->currency < $event->currency) {
+						$errors[]	= t('history_mode.unlock.errors.not_enough_currency');
+					} elseif ($_POST['mode'] != 1 && $player->user()->credits < $event->credits) {
+						$errors[]	= t('history_mode.unlock.errors.not_enough_vip');
+					}
 				}
 			}
 		}
@@ -75,9 +80,9 @@ class GuildsController extends Controller {
 
 		// TODO: Fazer uma verificação para ver se existe uma dungeon ativa
 
-		$this->assign('player', $player);
-		$this->assign('position', $position);
-		$this->assign('map', $map);
+		$this->assign('player',		$player);
+		$this->assign('position',	$position);
+		$this->assign('map',		$map);
 	}
 
 	function dungeon_move() {
@@ -194,10 +199,10 @@ class GuildsController extends Controller {
 					$errors[] = t('guilds.errors.dungeon.dungeon_took_chest');
 				}
 			} else {
-				$errors[] = $errors[] = t('guilds.errors.dungeon.invalid_object');
+				$errors[] = t('guilds.errors.dungeon.invalid_object');
 			}
 		} else {
-			$errors[] = $errors[] = t('guilds.errors.dungeon.invalid_object');
+			$errors[] = t('guilds.errors.dungeon.invalid_object');
 		}
 
 		if (!sizeof($errors)) {
@@ -243,15 +248,15 @@ class GuildsController extends Controller {
 
 			// Prêmios ( EQUIPS )
 			if ($object_reward->equipment) {
-				if ($object_reward->equipment == 1) {
+				if ($object_reward->equipment == 1) {				// Equipamento Aleatório
 					$dropped  = Item::generate_equipment($player);
-				} elseif ($object_reward->equipment == 2) {
+				} elseif ($object_reward->equipment == 2) {			// Equipamento Comum
 					$dropped  = Item::generate_equipment($player, 0);
-				} elseif ($object_reward->equipment == 3) {
+				} elseif ($object_reward->equipment == 3) {			// Equipamento Raro
 					$dropped  = Item::generate_equipment($player, 1);
-				} elseif ($object_reward->equipment == 4) {
+				} elseif ($object_reward->equipment == 4) {			// Equipamento Épico
 					$dropped  = Item::generate_equipment($player, 2);
-				} elseif ($object_reward->equipment == 5) {
+				} elseif ($object_reward->equipment == 5) {			// Equipamento Lendário
 					$dropped  = Item::generate_equipment($player, 3);
 				}
 
@@ -388,7 +393,6 @@ class GuildsController extends Controller {
 
 			if ($object->kind == 'sharednpc') {
 				$session = GuildMapObjectSession::find_first('player_id=0 AND guild_accepted_event_id=' . $player->guild_accepted_event_id . ' AND guild_id=' . $player->guild_id . ' AND guild_map_object_id=' . $object->id);
-
 				if (!$session) {
 					$session = new GuildMapObjectSession();
 					$session->guild_id = $player->guild_id;
@@ -450,6 +454,11 @@ class GuildsController extends Controller {
 			$queue_id	= md5("aasg" . $unlocked->id);
 		} else {
 			$errors[]	= t('guilds.errors.dungeon.invalid_dungeon');
+		}
+
+		$leader	= $player->guild()->leader();
+		if ($leader->id != $player->id) {
+			$errors[] = t('guilds.errors.dungeon.dungeon_only_leader');
 		}
 
 		if (isset($_POST['list']) && $_POST['list']) {
@@ -514,7 +523,7 @@ class GuildsController extends Controller {
 		$errors					= [];
 
 		if (!isset($_POST['queue_id']) || (isset($_POST['queue_id']) && !$_POST['queue_id'])) {
-			$errors[] = t('guilds.errors.dungeon.invalid_queue');;
+			$errors[] = t('guilds.errors.dungeon.invalid_queue');
 		}
 
 		if (!sizeof($errors)) {
@@ -568,7 +577,7 @@ class GuildsController extends Controller {
 		$this->json->success	= false;
 
 		if (!isset($_POST['queue_id']) || (isset($_POST['queue_id']) && !$_POST['queue_id'])) {
-			$errors[] = t('guilds.errors.dungeon.invalid_queue');;
+			$errors[] = t('guilds.errors.dungeon.invalid_queue');
 		}
 
 		if (!sizeof($errors)) {
@@ -620,7 +629,7 @@ class GuildsController extends Controller {
 			$redis->del("od_name_"			. $queue_id);
 			$redis->del("od_id_"			. $queue_id);
 			$redis->del("od_event_"			. $queue_id);
-			$redis->del("od_guild_"	. $queue_id);
+			$redis->del("od_guild_"			. $queue_id);
 			$redis->del("od_needed_"		. $queue_id);
 
 			// remove our queue from the active queues
@@ -648,6 +657,7 @@ class GuildsController extends Controller {
 		$this->assign('currency_price',	$this->currency_price);
 		$this->assign('min_level',		$this->min_level);
 	}
+
 	function remove_all() {
 		$this->as_json			= true;
 		$this->json->success	= false;
@@ -830,7 +840,7 @@ class GuildsController extends Controller {
 		if (!$is_refuse) {
 			// Não deixa entrar 2 jogadores da mesma conta em uma organização
 			$guild_request		   = GuildRequest::find_first($_POST['id']);
-			$player_pedido		   		   = Player::find_first($guild_request->player_id);
+			$player_pedido		   = Player::find_first($guild_request->player_id);
 
 			$players_guilds = Player::find("guild_id=". $guild_request->guild_id ." AND user_id=". $player_pedido->user_id);
 			if ($players_guilds) {

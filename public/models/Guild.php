@@ -189,6 +189,13 @@ class Guild extends Relation {
 
 			$this->guild_accepted_event_id = 0;
 			$this->save();
+
+			// Envia uma mensagem para o jogador avisando do prêmio
+			$pm				= new PrivateMessage();
+			$pm->to_id		= $player->id;
+			$pm->subject	= "Dungeon: ". $active_event->description()->name;
+			$pm->content	= "Você falhou ao não completar a dungeon à tempo!";
+			$pm->save();
 		} else {
 			if ($bosses >= $active_event->require_boss && $npcs >= $active_event->require_npc) {
 				$accepted->finished_at = now(true);
@@ -250,8 +257,8 @@ class Guild extends Relation {
 						$npc_pet = Item::find($reward->item_id);
 
 						$player_pet = new PlayerItem();
-						$player_pet->item_id = $npc_pet->id;
-						$player_pet->player_id = $p->id;
+						$player_pet->item_id	= $npc_pet->id;
+						$player_pet->player_id	= $p->id;
 						$player_pet->save();
 
 						$p->achievement_check('pets');
@@ -301,6 +308,13 @@ class Guild extends Relation {
 						$reward_headline->save();
 					}
 				}
+
+				// Envia uma mensagem para o jogador avisando do prêmio
+				$pm				= new PrivateMessage();
+				$pm->to_id		= $player->id;
+				$pm->subject	= "Dungeon: ". $active_event->description()->name;
+				$pm->content	= "Você falhou ao não completar a dungeon à tempo!";
+				$pm->save();
 			}
 		}
 
