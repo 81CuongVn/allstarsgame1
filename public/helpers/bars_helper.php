@@ -22,15 +22,15 @@ function top_exp_bar($player, $user) {
     $msg_points      = "";
     $msg_talents     = "";
 
-    $check_talents  = FALSE;
-    $check_points   = FALSE;
+    $check_talents  = false;
+    $check_points   = false;
 
     if ($has_points) {
-        $check_points   = TRUE;
+        $check_points   = true;
         $msg_points     = t('alerts.points', array('link' => make_url('trainings#attributes')));
     }
     if (floor($user->level / 2) != $has_talents && $has_talents < sizeof($total_talents)) {
-        $check_talents  = TRUE;
+        $check_talents  = true;
         $msg_talents    = t('alerts.talents', array('link' => make_url('characters#talents')));
     }
     if (!empty($msg_talents) && !empty($msg_points)) {
