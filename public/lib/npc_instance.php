@@ -206,28 +206,33 @@ class NpcInstance {
 
 		$this->_attributes	= $at;
 
-		$attacks	= [];
+		$allAttacks	= [];
 
 		if ($anime_id_for_generics) {
 			$anime		= Anime::find($anime_id_for_generics);
-			$attacks	= array_merge($attacks, $anime->attacks());
+			$allAttacks	= array_merge($allAttacks, $anime->attacks());
 
 			// $this->character_theme = CharacterTheme::find_first('character_id=' . $this->character->id, ['cache' => true]);
 
 			$this->anime	= $anime;
 		} else {
-			$attacks	= array_merge($attacks, $this->character_theme->attacks());
+			$allAttacks	= array_merge($allAttacks, $this->character_theme->attacks());
 		}
 
 		if (is_array($theme_ids) && count($theme_ids) > 0) {
 			foreach ($theme_ids as $theme_id) {
-				$attacks	= array_merge($attacks, CharacterTheme::find($theme_id)->attacks());
+				$allAttacks	= array_merge($allAttacks, CharacterTheme::find($theme_id)->attacks());
 			}
+		}
+
+		$attacks	= [];
+		for ($i = 1; $i <= MAX_EQUIPPED_ATTACKS; $i++) {
+			$attacks[]	= array_random_item($allAttacks);
 		}
 
 		$attacks[]	= new SkipTurnItem();
 
-		foreach($attacks as $attack) {
+		foreach ($attacks as $attack) {
 			if (!is_a($attack, 'SkipTurnItem')) {
 				$fake	= new FakePlayerItem($attack->id, $this);
 				$attack->set_player($this);
@@ -306,15 +311,20 @@ class NpcInstance {
 
 		while ($retries++ < 500) {
 			$choosen	= $this->attacks[rand(0, sizeof($this->attacks) - 1)];
-			if (!$choosen->is_buff) {
-				if ($choosen->formula()->consume_mana <= $this->for_mana()) {
-					$technique	= $choosen;
-					break;
-				}
+			if ($this->has_technique_lock($choosen->id)) {
+				continue;
+			}
+			if ($choosen->is_buff) {
+				continue;
+			}
+
+			if ($choosen->formula()->consume_mana <= $this->for_mana()) {
+				$technique	= $choosen;
+				break;
 			}
 		}
 
-		if(!$technique) {
+		if (!$technique) {
 			// TODO: $_$
 			return new SkipTurnItem();
 		} else {
