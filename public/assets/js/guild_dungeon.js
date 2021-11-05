@@ -315,7 +315,10 @@ $(document).ready(function () {
 
                     format_error(result);
                 }
-            }
+            },
+			error:		function() {
+				window.location.reload();
+			}
         });
     }).on('click', '.attack', function () {
         var self = $(this);
@@ -336,7 +339,10 @@ $(document).ready(function () {
 
                     format_error(result);
                 }
-            }
+            },
+			error:		function() {
+				window.location.reload();
+			}
         });
     }).on('click', 'img', function () {
         var self		= $(this);
@@ -383,7 +389,10 @@ $(document).ready(function () {
             dataType:	'json',
             success:	function(result) {
                 parseResponse(result);
-            }
+            },
+			error:		function() {
+				window.location.reload();
+			}
         });
     });
 
@@ -414,7 +423,10 @@ $(document).ready(function () {
             data:		{ key: postKey },
             success:	function(result) {
                 parseResponse(result);
-            }
+            },
+			error:		function() {
+				window.location.reload();
+			}
         });
     }
 
