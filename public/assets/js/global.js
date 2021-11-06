@@ -131,10 +131,11 @@
 					$(_this).popover('hide');
 				});
 			}).on("mouseleave", function () {
-				var _this = this;
-				setTimeout(function () {
+				var _this			= this;
+				var _checkPopovers	= setInterval(function () {
 					if (!$(".popover:hover").length) {
-						$(_this).popover("hide")
+						$(_this).popover("hide");
+						clearInterval(_checkPopovers);
 					}
 				}, 100);
 			});

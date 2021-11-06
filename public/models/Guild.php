@@ -42,6 +42,17 @@ class Guild extends Relation {
 		}
 	}
 
+	public function spend($amount) {
+		$this->treasure_atual	-= $amount;
+		$this->save();
+	}
+
+	public function earn($amount) {
+		$this->treasure_atual	+= $amount;
+		$this->treasure_total	+= $amount;
+		$this->save();
+	}
+
 	function level_rewards($level) {
 		return GuildLevelReward::find_first('id = ' . $level);
 	}

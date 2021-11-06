@@ -1023,8 +1023,13 @@ pt-BR:
       max_players: A sua organização alcançou o número limite de membros
   guilds:
     events:
-      title: O que são os eventos?
-      description: Aqui é onde você e sua organização vai poder caçar npcs e tesouros junto ao seu time.
+      title: Sala de Eventos
+      title2: O que são os eventos?
+      description2: |
+        Aqui é onde você e sua organização vai poder caçar npcs e tesouros.<br />
+        Aqui é onde você e sua organização vai poder caçar npcs e tesouros.<br />
+        Aqui é onde você e sua organização vai poder caçar npcs e tesouros.<br />
+        Aqui é onde você e sua organização vai poder caçar npcs e tesouros.<br />
     remove_error: Você não tem pedidos para remover no momento.
     remove_error2: Você não tem organização e não pode fazer essa ação.
     remove_all: Você realmente gostaria de deletar todos os pedidos pendentes?
@@ -1994,6 +1999,8 @@ pt-BR:
         #{amount} Estrelas
       unlock_currency: |
         #{amount} #{currency}
+      unlock_treasure: |
+        #{amount} Tesouros
       go_battles: Ir para as batalhas
     unlock:
       success: Grupo destravado com sucesso. A página irá recarregar e o grupo ficara ativo para ver os detalhes e fazer as lutas
@@ -2001,6 +2008,7 @@ pt-BR:
         invalid: Grupo inválido
         not_enough_credits: Estrelas insuficientes
         not_enough_currency: Dinheiro insuficiente
+        not_enough_treasure: Dinheiro insuficiente
     show:
       error_title: Um problema foi encontrado!
       denied: Você não destravou esse grupo do Modo Aventura

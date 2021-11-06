@@ -1,4 +1,4 @@
-<?php echo partial('shared/title', array('title' => 'battles.npc.title', 'place' => 'battles.npc.title')) ?>
+<?php echo partial('shared/title', array('title' => 'guilds.events.title', 'place' => 'guilds.events.title')) ?>
 <?php if (FW_ENV != 'dev') { ?>
 	<!-- AASG - Guild -->
 	<ins class="adsbygoogle"
@@ -12,15 +12,15 @@
 <?php
 	echo partial('shared/info', array(
 		'id'		=> 1,
-		'title'		=> 'ranked.liga',
-		'message'	=> t('battles.ranked.description2')
+		'title'		=> 'guilds.events.title2',
+		'message'	=> t('guilds.events.description2')
 	));
 ?>
 <div id="guild-event-list">
 	<?php foreach ($events as $event) { ?>
 		<?php $unlocked = $event->unlocked($player->guild_id, $event->id, $player->id); ?>
 		<div class="group">
-			<div class="technique-popover buff" data-source="#challenges-container-<?=$event->id;?>" data-title="Recompensas" data-trigger="click" data-placement="bottom">
+			<div class="technique-popover buff" data-source="#challenges-container-<?=$event->id;?>" data-title="<?=$event->description()->name;?>" data-trigger="click" data-placement="bottom">
 			<div class="<?=($unlocked ? '' : 'efeito');?>">
 				<?=$event->image();?>
 			</div>
@@ -32,10 +32,9 @@
 					<a class="btn btn-success invite" data-event="<?=$event->id;?>">Começar Dungeon</a>
 				<?php } else { ?>
 					<?php if ($event->currency) { ?>
-						<a class="btn btn-primary unlock" data-event="<?=$event->id;?>" data-mode="1">
-							<?=t('history_mode.index.unlock_currency', [
-								'amount'	=> highamount($event->currency),
-								'currency'	=> t('currencies.' . $player->character()->anime_id)
+						<a class="btn btn-primary unlock" data-event="<?=$event->id;?>" data-mode="3">
+							<?=t('history_mode.index.unlock_treasure', [
+								'amount'	=> highamount($event->treasure)
 							]);?>
 						</a>
 					<?php } ?>
@@ -49,45 +48,58 @@
 				<?php } ?>
             </div>
 			<div id="challenges-container-<?=$event->id;?>" class="technique-container">
+				<b class="amarelo" style="font-size:14px">Requerimentos:</b><br />
+				<i class="fa fa-arrow-right fa-fw cinza"></i> <?=highamount($event->players_required);?> Membros<br />
+				<i class="fa fa-arrow-right fa-fw cinza"></i> Terminar em até <?=format_time($event->require_time)['string'];?><br /><br />
+
+				<b class="amarelo" style="font-size:14px">Condições de Vitória:</b><br />
+				<?php if ($event->require_npc) { ?>
+					<i class="fa fa-arrow-right fa-fw cinza"></i> Derrotar <?=highamount($event->require_npc);?> NPCs<br />
+				<?php } ?>
+				<?php if ($event->require_boss) { ?>
+					<i class="fa fa-arrow-right fa-fw cinza"></i> Derrotar <?=highamount($event->require_boss);?> Boss<br />
+				<?php } ?>
+
 				<?php if ($rewards = $event->reward()) { ?>
+					<br /><b class="amarelo" style="font-size:14px">Recompensas:</b><br />
 					<?php if ($rewards->exp) { ?>
-						<?=highamount($rewards->exp);?> Exp<br />
+						<i class="fa fa-arrow-right fa-fw cinza"></i> <?=highamount($rewards->exp);?> Exp<br />
 					<?php } ?>
 					<?php if ($rewards->currency) { ?>
-						<?=highamount($rewards->currency);?> <?=t('currencies.' . $player->character()->anime_id);?><br />
+						<i class="fa fa-arrow-right fa-fw cinza"></i> <?=highamount($rewards->currency);?> <?=t('currencies.' . $player->character()->anime_id);?><br />
 					<?php } ?>
 					<?php if ($rewards->credits) { ?>
-						<?=highamount($rewards->credits);?> <?=t('treasure.show.credits');?><br />
+						<i class="fa fa-arrow-right fa-fw cinza"></i> <?=highamount($rewards->credits);?> <?=t('treasure.show.credits');?><br />
 					<?php } ?>
 					<?php if ($rewards->equipment && $rewards->equipment == 1) { ?>
-						<?=t('treasure.show.equipment1');?><br />
+						<i class="fa fa-arrow-right fa-fw cinza"></i> <?=t('treasure.show.equipment1');?><br />
 					<?php } ?>
 					<?php if ($rewards->equipment && $rewards->equipment == 2) { ?>
-						<?=t('treasure.show.equipment2');?><br />
+						<i class="fa fa-arrow-right fa-fw cinza"></i> <?=t('treasure.show.equipment2');?><br />
 					<?php } ?>
 					<?php if ($rewards->equipment && $rewards->equipment == 3) { ?>
-						<?=t('treasure.show.equipment3');?><br />
+						<i class="fa fa-arrow-right fa-fw cinza"></i> <?=t('treasure.show.equipment3');?><br />
 					<?php } ?>
 					<?php if ($rewards->equipment && $rewards->equipment == 4) { ?>
-						<?=t('treasure.show.equipment4');?><br />
+						<i class="fa fa-arrow-right fa-fw cinza"></i> <?=t('treasure.show.equipment4');?><br />
 					<?php } ?>
 					<?php if ($rewards->equipment && $rewards->equipment == 5) { ?>
-						<?=t('treasure.show.equipment5');?><br />
+						<i class="fa fa-arrow-right fa-fw cinza"></i> <?=t('treasure.show.equipment5');?><br />
 					<?php } ?>
 					<?php if ($rewards->pets && $rewards->item_id) { ?>
-						<?=t('treasure.show.pet');?> "<?=Item::find($rewards->item_id)->description()->name;?>"<br />
+						<i class="fa fa-arrow-right fa-fw cinza"></i> <?=t('treasure.show.pet');?> "<?=Item::find($rewards->item_id)->description()->name;?>"<br />
 					<?php } ?>
 					<?php if (!$rewards->pets && $rewards->item_id) { ?>
-						<?=highamount($rewards->quantity);?>x "<?=Item::find($rewards->item_id)->description()->name;?>"<br />
+						<i class="fa fa-arrow-right fa-fw cinza"></i> <?=highamount($rewards->quantity);?>x "<?=Item::find($rewards->item_id)->description()->name;?>"<br />
 					<?php } ?>
 					<?php if ($rewards->character_theme_id) { ?>
-						<?=t('treasure.show.theme');?> "<?=CharacterTheme::find($rewards->character_theme_id)->description()->name;?>"<br />
+						<i class="fa fa-arrow-right fa-fw cinza"></i> <?=t('treasure.show.theme');?> "<?=CharacterTheme::find($rewards->character_theme_id)->description()->name;?>"<br />
 					<?php } ?>
 					<?php if ($rewards->character_id) { ?>
-						<?=t('treasure.show.character');?> "<?=Character::find($rewards->character_id)->description()->name;?>"<br />
+						<i class="fa fa-arrow-right fa-fw cinza"></i> <?=t('treasure.show.character');?> "<?=Character::find($rewards->character_id)->description()->name;?>"<br />
 					<?php } ?>
 					<?php if ($rewards->headline_id) { ?>
-						<?=t('treasure.show.headline');?> "<?=Headline::find($rewards->headline_id)->description()->name;?>"<br />
+						<i class="fa fa-arrow-right fa-fw cinza"></i> <?=t('treasure.show.headline');?> "<?=Headline::find($rewards->headline_id)->description()->name;?>"<br />
 					<?php } ?>
 				<?php } else { ?>
 					Nenhuma recompensa
