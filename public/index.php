@@ -29,14 +29,14 @@ if (isset($_SERVER['REDIRECT_URL']) && $_SERVER['REDIRECT_URL']) {
     $_SERVER['PATH_INFO'] = $_SERVER['REDIRECT_URL'];
 }
 
-define('DB_LOGGING',		        TRUE);
-define('BACKTRACE_SELECTS',	        TRUE);
-define('BACKTRACE_UPDATES',	        TRUE);
-define('BACKTRACE_DELETES',	        TRUE);
-define('RECORDSET_CACHE_OFF_FORCE',	FW_ENV == 'dev');
+define('DB_LOGGING',		        true);
+define('BACKTRACE_SELECTS',	        true);
+define('BACKTRACE_UPDATES',	        true);
+define('BACKTRACE_DELETES',	        true);
+// define('RECORDSET_CACHE_OFF_FORCE',	FW_ENV == 'dev');
 
 $___clear_cache_key				= 'vaMALORuhvCTTiCGvnDehblfdIJnPNbUak7OxcE1knbPGuwwTuPrpTGCGzdbYVwXBusrqhXcvqqIjhBIetDDPvzOvPaqzLHVE7eb';
-$___start						= microtime(TRUE);
+$___start						= microtime(true);
 $___memory						= [];
 $___memory['before_autoload']	= memory_get_usage();
 
@@ -101,7 +101,7 @@ if (!$_SERVER['PATH_INFO']) {
 
 	if ($parts[0] != 'admin') {
 	    $controller	= $parts[0];
-    	$action		= sizeof($parts) > 1 ? $parts[1] : NULL;
+    	$action		= sizeof($parts) > 1 ? $parts[1] : null;
 
     	if (sizeof($parts) > 2) {
         	$params		= array_splice($parts, 2);
@@ -110,7 +110,7 @@ if (!$_SERVER['PATH_INFO']) {
 		$is_admin	= true;
 		if (sizeof($parts) > 1) {
 			$controller	= $parts[1];
-			$action		= sizeof($parts) > 2 ? $parts[2] : NULL;
+			$action		= sizeof($parts) > 2 ? $parts[2] : null;
 			$params		= array_splice($parts, 3);
 		} else {
 			$home		= explode('#', SITE_HOME);
@@ -143,13 +143,10 @@ $___memory['before_helpers']	= memory_get_usage();
 require_once ROOT . '/helpers/global_helpers.php';
 require_once ROOT . '/helpers/url_helper.php';
 require_once ROOT . '/helpers/bars_helper.php';
-require_once ROOT . '/helpers/flash_helper.php';
 require_once ROOT . '/helpers/item_helper.php';
 require_once ROOT . '/helpers/menu_helper.php';
 require_once ROOT . '/helpers/player_helper.php';
 require_once ROOT . '/helpers/user_helper.php';
-require_once ROOT . '/helpers/ranked_helper.php';
-require_once ROOT . '/helpers/pagseguro_helper.php';
 
 $___memory['after_helpers']     = memory_get_usage();
 $___memory['before_mailers']	= memory_get_usage();
@@ -164,12 +161,12 @@ $___memory['after_mailers']     = memory_get_usage();
 
 $controller_file	= 'controllers/' . ($is_admin ? 'admin' : 'game') . '/' . $controller . '_controller.php';
 $controller_class	= '';
-$_ignore			= FALSE;
+$_ignore			= false;
 
 for ($_i = 0; $_i < strlen($controller); $_i++) {
     if ($controller[$_i] == '_') {
         $controller_class	.= strtoupper($controller[$_i + 1]);
-        $_ignore			= TRUE;
+        $_ignore			= true;
     } else {
         if (!$_ignore) {
             if ($_i == 0) {
@@ -178,7 +175,7 @@ for ($_i = 0; $_i < strlen($controller); $_i++) {
                 $controller_class	.= $controller[$_i];
             }
         } else {
-            $_ignore	= FALSE;
+            $_ignore	= false;
         }
     }
 }
@@ -192,7 +189,7 @@ $denied				= function (&$instance) {
 };
 
 if (isset($framework_force_denied) && $framework_force_denied) {
-    $instance	= NULL;
+    $instance	= null;
     $denied($instance);
 } else {
     if (!file_exists($controller_file)) {
@@ -228,22 +225,22 @@ if (isset($instance->render)) {
     if (is_a($instance, 'InternalController')) {
         $view_file	= 'views/' . ($is_admin ? 'admin' : 'game') . '/' . $instance->render . '.php';
     } else {
-        if ($instance->render !== FALSE) {
+        if ($instance->render !== false) {
             $view_file	= 'views/' . ($is_admin ? 'admin' : 'game') . '/' . $controller . '/' . $instance->render . '.php';
         } else {
-            $view_file	= FALSE;
+            $view_file	= false;
         }
     }
 } else {
     $view_file	= 'views/' . ($is_admin ? 'admin' : 'game') . '/' . $controller . '/' . $action . '.php';
 }
 
-$can_render_layout	= TRUE;
+$can_render_layout	= true;
 $layout_file		= 'views/' . ($is_admin ? 'admin' : 'game') . '/application.php';
 
 if (isset($instance->layout)) {
-    if ($instance->layout === FALSE) {
-        $can_render_layout	= FALSE;
+    if ($instance->layout === false) {
+        $can_render_layout	= false;
     } else {
         $layout_file	= 'views/' . ($is_admin ? 'admin' : 'game') . '/' . $instance->layout . '.php';
     }

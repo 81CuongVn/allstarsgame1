@@ -1,0 +1,125 @@
+name: Database Dump
+
+on:
+    workflow_dispatch:
+
+jobs:
+  database-dump:
+    name: Database Dump
+    runs-on: ubuntu-latest
+    steps:
+    - name: Atualizar apt-get
+      run: sudo apt-get update
+    - name: Instalando mysql-client
+      run: sudo apt-get install mysql-client
+    - name: Dumping structure
+      run: mysqldump -h ${{ secrets.DB_HOST }} -u ${{ secrets.DB_USER }} --password=${{ secrets.DB_PASSWORD }} ${{ secrets.DB_NAME }} --no-data > structure.sql
+    - name: Upload structure artifact
+      uses: actions/upload-artifact@v1
+      with:
+        name: structure.sql
+        path: structure.sql
+    - name: Dumping data
+      run: |
+        mysqldump -h ${{ secrets.DB_HOST }} -u ${{ secrets.DB_USER }} --password=${{ secrets.DB_PASSWORD }} ${{ secrets.DB_NAME }} \
+        --ignore-table=${{ secrets.DB_NAME }}.banishments \
+        --ignore-table=${{ secrets.DB_NAME }}.battle_npcs \
+        --ignore-table=${{ secrets.DB_NAME }}.battle_pvps \
+        --ignore-table=${{ secrets.DB_NAME }}.battle_queues \
+        --ignore-table=${{ secrets.DB_NAME }}.battle_rooms \
+        --ignore-table=${{ secrets.DB_NAME }}.chats \
+        --ignore-table=${{ secrets.DB_NAME }}.chat_banned \
+        --ignore-table=${{ secrets.DB_NAME }}.chat_blocked \
+        --ignore-table=${{ secrets.DB_NAME }}.chat_word_blacklist \
+        --ignore-table=${{ secrets.DB_NAME }}.event_animes \
+        --ignore-table=${{ secrets.DB_NAME }}.guilds \
+        --ignore-table=${{ secrets.DB_NAME }}.guild_accepted_events \
+        --ignore-table=${{ secrets.DB_NAME }}.guild_daily_quests \
+        --ignore-table=${{ secrets.DB_NAME }}.guild_map_object_sessions \
+        --ignore-table=${{ secrets.DB_NAME }}.guild_players \
+        --ignore-table=${{ secrets.DB_NAME }}.guild_quest_counters \
+        --ignore-table=${{ secrets.DB_NAME }}.guild_requests \
+        --ignore-table=${{ secrets.DB_NAME }}.hall_of_fames \
+        --ignore-table=${{ secrets.DB_NAME }}.log \
+        --ignore-table=${{ secrets.DB_NAME }}.marketplaces \
+        --ignore-table=${{ secrets.DB_NAME }}.marketplace_bids \
+        --ignore-table=${{ secrets.DB_NAME }}.notifications \
+        --ignore-table=${{ secrets.DB_NAME }}.players \
+        --ignore-table=${{ secrets.DB_NAME }}.player_achievements \
+        --ignore-table=${{ secrets.DB_NAME }}.player_achievement_stats \
+        --ignore-table=${{ secrets.DB_NAME }}.player_attributes \
+        --ignore-table=${{ secrets.DB_NAME }}.player_battle_counters \
+        --ignore-table=${{ secrets.DB_NAME }}.player_battle_pvps \
+        --ignore-table=${{ secrets.DB_NAME }}.player_battle_pvp_logs \
+        --ignore-table=${{ secrets.DB_NAME }}.player_battle_stats \
+        --ignore-table=${{ secrets.DB_NAME }}.player_challenges \
+        --ignore-table=${{ secrets.DB_NAME }}.player_changes \
+        --ignore-table=${{ secrets.DB_NAME }}.player_character_abilities \
+        --ignore-table=${{ secrets.DB_NAME }}.player_character_specialities \
+        --ignore-table=${{ secrets.DB_NAME }}.player_combat_quests \
+        --ignore-table=${{ secrets.DB_NAME }}.player_daily_quests \
+        --ignore-table=${{ secrets.DB_NAME }}.player_fidelities \
+        --ignore-table=${{ secrets.DB_NAME }}.player_friend_lists \
+        --ignore-table=${{ secrets.DB_NAME }}.player_friend_requests \
+        --ignore-table=${{ secrets.DB_NAME }}.player_gift_logs \
+        --ignore-table=${{ secrets.DB_NAME }}.player_items \
+        --ignore-table=${{ secrets.DB_NAME }}.player_item_attributes \
+        --ignore-table=${{ secrets.DB_NAME }}.player_item_gems \
+        --ignore-table=${{ secrets.DB_NAME }}.player_item_stats \
+        --ignore-table=${{ secrets.DB_NAME }}.player_kills \
+        --ignore-table=${{ secrets.DB_NAME }}.player_logins \
+        --ignore-table=${{ secrets.DB_NAME }}.player_luck_logs \
+        --ignore-table=${{ secrets.DB_NAME }}.player_map_animes \
+        --ignore-table=${{ secrets.DB_NAME }}.player_map_logs \
+        --ignore-table=${{ secrets.DB_NAME }}.player_pet_quests \
+        --ignore-table=${{ secrets.DB_NAME }}.player_positions \
+        --ignore-table=${{ secrets.DB_NAME }}.player_pvp_quests \
+        --ignore-table=${{ secrets.DB_NAME }}.player_quest_counters \
+        --ignore-table=${{ secrets.DB_NAME }}.player_rankeds \
+        --ignore-table=${{ secrets.DB_NAME }}.player_star_items \
+        --ignore-table=${{ secrets.DB_NAME }}.player_stats \
+        --ignore-table=${{ secrets.DB_NAME }}.player_store_logs \
+        --ignore-table=${{ secrets.DB_NAME }}.player_time_quests \
+        --ignore-table=${{ secrets.DB_NAME }}.player_treasure_logs \
+        --ignore-table=${{ secrets.DB_NAME }}.player_tutorials \
+        --ignore-table=${{ secrets.DB_NAME }}.player_wanteds \
+        --ignore-table=${{ secrets.DB_NAME }}.private_messages \
+        --ignore-table=${{ secrets.DB_NAME }}.proxy_ips \
+        --ignore-table=${{ secrets.DB_NAME }}.rankeds \
+        --ignore-table=${{ secrets.DB_NAME }}.ranked_rewards \
+        --ignore-table=${{ secrets.DB_NAME }}.ranking_accounts \
+        --ignore-table=${{ secrets.DB_NAME }}.ranking_achievements \
+        --ignore-table=${{ secrets.DB_NAME }}.ranking_challenges \
+        --ignore-table=${{ secrets.DB_NAME }}.ranking_guilds \
+        --ignore-table=${{ secrets.DB_NAME }}.ranking_players \
+        --ignore-table=${{ secrets.DB_NAME }}.ranking_rankeds \
+        --ignore-table=${{ secrets.DB_NAME }}.site_news \
+        --ignore-table=${{ secrets.DB_NAME }}.site_news_comments \
+        --ignore-table=${{ secrets.DB_NAME }}.star_doubles \
+        --ignore-table=${{ secrets.DB_NAME }}.star_purchases \
+        --ignore-table=${{ secrets.DB_NAME }}.statistic_players \
+        --ignore-table=${{ secrets.DB_NAME }}.support_tickets \
+        --ignore-table=${{ secrets.DB_NAME }}.support_ticket_replies \
+        --ignore-table=${{ secrets.DB_NAME }}.support_ticket_uploads \
+        --ignore-table=${{ secrets.DB_NAME }}.users \
+        --ignore-table=${{ secrets.DB_NAME }}.user_changes \
+        --ignore-table=${{ secrets.DB_NAME }}.user_characters \
+        --ignore-table=${{ secrets.DB_NAME }}.user_character_themes \
+        --ignore-table=${{ secrets.DB_NAME }}.user_character_theme_images \
+        --ignore-table=${{ secrets.DB_NAME }}.user_daily_quests \
+        --ignore-table=${{ secrets.DB_NAME }}.user_headlines \
+        --ignore-table=${{ secrets.DB_NAME }}.user_history_mode_groups \
+        --ignore-table=${{ secrets.DB_NAME }}.user_history_mode_npcs \
+        --ignore-table=${{ secrets.DB_NAME }}.user_history_mode_subgroups \
+        --ignore-table=${{ secrets.DB_NAME }}.user_logins \
+        --ignore-table=${{ secrets.DB_NAME }}.user_objectives \
+        --ignore-table=${{ secrets.DB_NAME }}.user_player_items \
+        --ignore-table=${{ secrets.DB_NAME }}.user_quest_counters \
+        --ignore-table=${{ secrets.DB_NAME }}.user_stats \
+        > data.sql
+
+    - name: Upload data artifact
+      uses: actions/upload-artifact@v1
+      with:
+        name: data.sql
+        path: data.sql
