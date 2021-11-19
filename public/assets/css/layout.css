@@ -55,6 +55,7 @@
 	background-color: rgba(26, 47, 66, 1);
 }
 
+html { min-width: 1232px; }
 body {
 	background-image: url('../images/bg-site.jpg');
 	background-position: top center;
@@ -1696,7 +1697,7 @@ table hr {
 	margin-left: 235px;
 }
 .menu .values .relogio {
-	margin-left: 665px;
+	margin-left: 675px;
 	margin-top: -6px;
 }
 .menu .values .gift {
@@ -1704,19 +1705,23 @@ table hr {
 	margin-top: -6px;
 }
 .menu .values .queue {
-	margin-left: 755px;
+	margin-left: 745px;
 	margin-top: -6px;
 }
 .menu .values .mensagem {
-	margin-left: 800px;
+	margin-left: 780px;
+	margin-top: -6px;
+}
+.menu .values .friend {
+	margin-left: 815px;
 	margin-top: -6px;
 }
 .menu .values .vip {
-	margin-left: 845px;
+	margin-left: 850px;
 	margin-top: -6px;
 }
 .menu .values .logout {
-	margin-left: 890px;
+	margin-left: 885px;
 	margin-top: -6px;
 }
 .menu .values .badge,
