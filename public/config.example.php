@@ -26,7 +26,7 @@ define('DATABASE', 				[
 	'database'		=> 'aasg_db',
 	'connection'	=> 'primary',
 	'cache_id'		=> GAME_PREFIX,
-	'cache_mode'	=> 'file'		// file, shared, none
+	'cache_mode'	=> 'file'		// file or redis
 ]);
 
 // SMTP settings

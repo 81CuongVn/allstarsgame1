@@ -33,7 +33,7 @@ define('DB_LOGGING',				true);
 define('BACKTRACE_SELECTS',			true);
 define('BACKTRACE_UPDATES',			true);
 define('BACKTRACE_DELETES',			true);
-define('RECORDSET_CACHE_OFF_FORCE',	FW_ENV == 'dev');
+// define('RECORDSET_CACHE_OFF_FORCE',	FW_ENV == 'dev');
 
 $___clear_cache_key				= 'vaMALORuhvCTTiCGvnDehblfdIJnPNbUak7OxcE1knbPGuwwTuPrpTGCGzdbYVwXBusrqhXcvqqIjhBIetDDPvzOvPaqzLHVE7eb';
 $___start						= microtime(true);
@@ -62,9 +62,7 @@ require_once ROOT . '/includes/db.php';
 $___memory['after_includes']	= memory_get_usage();
 
 if (isset($_GET['__clear_the_damn_cache']) && $_GET['__clear_the_damn_cache'] == $___clear_cache_key) {
-	foreach(glob(ROOT . '/../tmp/recordset/RECSET_' . Recordset::$key_prefix . '*') as $cache_file) {
-		@unlink($cache_file);
-	}
+	Recordset::clearCache();
 }
 
 # Fix to 'PATH_INFO' ??? Really? Oh My God!

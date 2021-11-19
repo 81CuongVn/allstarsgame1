@@ -447,7 +447,7 @@ class GuildsController extends Controller {
 		$redis = new Redis();
 		$redis->pconnect(REDIS_SERVER);
 		$redis->auth(REDIS_PASS);
-		$redis->select(0);
+		$redis->select(REDIS_DATABASE);
 
 		if (isset($_POST['dungeon_id']) && is_numeric($_POST['dungeon_id'])) {
 			$event = GuildEvent::find($_POST['dungeon_id']);
@@ -538,7 +538,7 @@ class GuildsController extends Controller {
 			$redis = new Redis();
 			$redis->pconnect(REDIS_SERVER);
 			$redis->auth(REDIS_PASS);
-			$redis->select(0);
+			$redis->select(REDIS_DATABASE);
 
 			$redis->rPush("od_accepts_" . $queue_id, $player->id);
 
@@ -605,7 +605,7 @@ class GuildsController extends Controller {
 			$redis = new Redis();
 			$redis->pconnect(REDIS_SERVER);
 			$redis->auth(REDIS_PASS);
-			$redis->select(0);
+			$redis->select(REDIS_DATABASE);
 
 			$redis->rPush("od_refuses_"	. $queue_id, $player->id);
 
@@ -625,7 +625,7 @@ class GuildsController extends Controller {
 		$redis = new Redis();
 		$redis->pconnect(REDIS_SERVER);
 		$redis->auth(REDIS_PASS);
-		$redis->select(0);
+		$redis->select(REDIS_DATABASE);
 
 		if (isset($_POST['dungeon_id']) && is_numeric($_POST['dungeon_id'])) {
 			$event = GuildEvent::find($_POST['dungeon_id']);

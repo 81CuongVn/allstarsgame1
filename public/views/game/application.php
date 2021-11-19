@@ -487,7 +487,7 @@ if (preg_match('/read_news/', $action)) {
 // 	$redis = new Redis();
 // 	$redis->pconnect(REDIS_SERVER);
 // 	$redis->auth(REDIS_PASS);
-// 	$redis->select(0);
+// 	$redis->select(REDIS_DATABASE);
 
 // 	$have_queue	= FALSE;
 // 	$queues		= $redis->lRange("aasg_od_invites", 0, -1);

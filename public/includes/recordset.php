@@ -154,7 +154,26 @@ class Recordset {
 		$store		= false;
 		$key		= 'RECSET_' . Recordset::$key_prefix . md5($sql);
 
-		if (Recordset::$cache_mode == 'file') {
+		if (Recordset::$cache_mode == 'redis') {
+			$redis = new Redis();
+			if ($redis->pconnect(REDIS_SERVER, REDIS_PORT)) {
+				$redis->auth(REDIS_PASS);
+				$redis->select(REDIS_DATABASE);
+
+				$cache_data  = $redis->get($key);
+				if (!$cache_data) {
+					$store = true;
+				} else {
+					$cache		= unserialize($cache_data);
+					$do_query	= false;
+
+					$data = $cache['data'];
+					$this->num_rows = $cache['rows'];
+				}
+			} else {
+				$store	= true;
+			}
+		} else {
 			$cache_file	= ROOT . '/../tmp/recordset/' . $key . '.sqlcache';
 			$cache_data	= @file_get_contents($cache_file);
 
@@ -166,18 +185,6 @@ class Recordset {
 				$this->num_rows	= $cache['rows'];
 			} else {
 				$store	= true;
-			}
-		} elseif (Recordset::$cache_mode == 'shared') {
-			$cache_data = SharedStore::G($key);
-
-			if (is_null($cache_data)) {
-				$store = true;
-			} else {
-				$cache = unserialize($cache_data);
-				$do_query = false;
-
-				$data = $cache['data'];
-				$this->num_rows = $cache['rows'];
 			}
 		}
 
@@ -216,10 +223,17 @@ class Recordset {
 				'sql'	=> $sql
 			];
 
-			if (Recordset::$cache_mode === 'file') {
-				file_put_contents($cache_file, serialize($data_store));
+			if (Recordset::$cache_mode == 'redis') {
+				$redis = new Redis();
+				if ($redis->pconnect(REDIS_SERVER, REDIS_PORT)) {
+					$redis->auth(REDIS_PASS);
+					$redis->select(REDIS_DATABASE);
+					$redis->set($key, serialize($data_store));
+				}
 			} elseif (Recordset::$cache_mode === 'shared') {
 				SharedStore::S($key, $data_store);
+			} else {
+				file_put_contents($cache_file, serialize($data_store));
 			}
 		}
 
@@ -300,6 +314,21 @@ class Recordset {
 	function set_records($array) {
 		$this->recordset	= $array;
 		$this->num_rows		= sizeof($array);
+	}
+
+	static function clearCache() {
+		if (Recordset::$cache_mode == 'redis') {
+			$redis = new Redis();
+			if ($redis->pconnect(REDIS_SERVER, REDIS_PORT)) {
+				$redis->auth(REDIS_PASS);
+				$redis->select(REDIS_DATABASE);
+				$redis->delete($redis->keys('RECSET_' . Recordset::$key_prefix . '*'));
+			}
+		} else {
+			foreach (glob(ROOT . '/../tmp/recordset/RECSET_' . Recordset::$key_prefix . '*') as $cache_file) {
+				@unlink($cache_file);
+			}
+		}
 	}
 
 	static function insert($table, $fields, $duplicate = null, $connection = true) {
