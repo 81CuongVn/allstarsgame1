@@ -161,17 +161,15 @@ class Recordset {
 				$redis->select(REDIS_DATABASE);
 
 				$cache_data  = $redis->get($key);
-				if (!$cache_data) {
-					$store = true;
-				} else {
+				if (!($cache_data === false)) {
 					$cache		= unserialize($cache_data);
 					$do_query	= false;
 
 					$data = $cache['data'];
 					$this->num_rows = $cache['rows'];
+				} else {
+					$store = true;
 				}
-			} else {
-				$store	= true;
 			}
 		} else {
 			$cache_file	= ROOT . '/../tmp/recordset/' . $key . '.sqlcache';
@@ -322,7 +320,7 @@ class Recordset {
 			if ($redis->pconnect(REDIS_SERVER, REDIS_PORT)) {
 				$redis->auth(REDIS_PASS);
 				$redis->select(REDIS_DATABASE);
-				$redis->delete($redis->keys('RECSET_' . Recordset::$key_prefix . '*'));
+				$redis->del($redis->keys('RECSET_' . Recordset::$key_prefix . '*'));
 			}
 		} else {
 			foreach (glob(ROOT . '/../tmp/recordset/RECSET_' . Recordset::$key_prefix . '*') as $cache_file) {
