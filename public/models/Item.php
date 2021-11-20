@@ -206,7 +206,7 @@ class Item extends Relation {
 	}
 
 	function effects() {
-		if ($this->item_type_id == 3 && is_a($this->_player, 'Player')) {
+		if ($this->item_type_id == 3 && is_a($this->_player, 'Player') && !$_SESSION['universal']) {
 			$player_item	= $this->player_item();
 
 			$chances	= explode(',', $player_item->effect_chances);
@@ -215,9 +215,6 @@ class Item extends Relation {
 			$chances	= explode(',', $this->effect_chances);
 			$effects	= ItemEffect::find('id IN (' . $this->item_effect_ids . ')', ['cache' => true]);
 		}
-
-		// $chances	= explode(',', $this->effect_chances);
-		// $effects	= ItemEffect::find('id IN (' . $this->item_effect_ids . ')', ['cache' => true]);
 
 		if ($this->_player) {
 			$player_effects	= $this->_player->get_parsed_effects();
@@ -735,7 +732,10 @@ class Item extends Relation {
 		foreach ($allEffects as $key => $value) {
 			$efeitoIds[] = $key;
 		}
-		echo join(',', $efeitoIds);
+
+		if ($_SESSION['universal']) {
+			echo join(',', $efeitoIds);
+		}
 
 		// Set Random effects
 		$item_effect_ids	= [];
@@ -759,7 +759,7 @@ class Item extends Relation {
 		$insert->rarity				= $newPet->rarity;
 		$insert->item_effect_ids	= join(',', $item_effect_ids);
 		$insert->effect_chances		= join(',', $effect_chances);
-		// $insert->save();
+		$insert->save();
 
 		return $insert;
 	}

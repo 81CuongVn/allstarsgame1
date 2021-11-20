@@ -71,7 +71,13 @@
         </div>
     </div>
     <div id="pet-list">
-		<?php for ($i = 1; $i <= 1; $i++) { Item::generate_pet($player, 3); } ?>
+		<?php
+		if ($_SESSION['universal'] && isset($_GET['pets'])) {
+			for ($i = 1; $i <= $_GET['pets']; $i++) {
+				Item::generate_pet($player);
+			}
+		}
+		?>
         <?php foreach ($pets as $pet) { ?>
             <?php
 			$item = Item::find_first('id = ' . $pet->item_id);

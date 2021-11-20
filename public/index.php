@@ -1,13 +1,4 @@
 <?php
-class WarningWithStacktrace extends ErrorException {}
-set_error_handler(function($severity, $message, $file, $line) {
-	if ((error_reporting() & $severity)) {
-		if ($severity & (E_WARNING | E_NOTICE | E_USER_WARNING | E_USER_NOTICE)) {
-			throw new ErrorException($message, 0, $severity, $file, $line);
-		}
-	}
-});
-
 session_start();
 
 define('ROOT',						dirname(__FILE__));
@@ -35,7 +26,6 @@ define('BACKTRACE_UPDATES',			true);
 define('BACKTRACE_DELETES',			true);
 // define('RECORDSET_CACHE_OFF_FORCE',	FW_ENV == 'dev');
 
-$___clear_cache_key				= 'vaMALORuhvCTTiCGvnDehblfdIJnPNbUak7OxcE1knbPGuwwTuPrpTGCGzdbYVwXBusrqhXcvqqIjhBIetDDPvzOvPaqzLHVE7eb';
 $___start						= microtime(true);
 $___memory						= [];
 $___memory['before_autoload']	= memory_get_usage();
@@ -61,6 +51,7 @@ require_once ROOT . '/includes/db.php';
 
 $___memory['after_includes']	= memory_get_usage();
 
+$___clear_cache_key				= 'vaMALORuhvCTTiCGvnDehblfdIJnPNbUak7OxcE1knbPGuwwTuPrpTGCGzdbYVwXBusrqhXcvqqIjhBIetDDPvzOvPaqzLHVE7eb';
 if (isset($_GET['__clear_the_damn_cache']) && $_GET['__clear_the_damn_cache'] == $___clear_cache_key) {
 	Recordset::clearCache();
 }
