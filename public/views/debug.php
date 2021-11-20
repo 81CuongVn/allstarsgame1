@@ -33,7 +33,7 @@
 				<td class="col-lg-4">Without cache:</td>
 				<td>
 					<?=highamount(Recordset::$count_queries - Recordset::$count_cache_hits - Recordset::$count_hard_cache_hits);?>
-					( Misses: <?highamount(Recordset::$count_cache_miss);?> )
+					( Misses: <?=highamount(Recordset::$count_cache_miss);?> )
 				</td>
 			</tr>
 			<tr>

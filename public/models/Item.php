@@ -206,7 +206,7 @@ class Item extends Relation {
 	}
 
 	function effects() {
-		if ($this->item_type_id == 3 && is_a($this->_player, 'Player') && !$_SESSION['universal']) {
+		if ($this->item_type_id == 3 && is_a($this->_player, 'Player') && $_SESSION['universal']) {
 			$player_item	= $this->player_item();
 
 			$chances	= explode(',', $player_item->effect_chances);
