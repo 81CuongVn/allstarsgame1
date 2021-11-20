@@ -29,23 +29,26 @@ class GuildsController extends Controller {
 			$errors[]	= t('history_mode.unlock.errors.invald');
 		} else {
 			$player	= Player::get_instance();
+			$guild	= $player->guild();
 			$event	= GuildEvent::find($_POST['event_id']);
 
 			if ($event->removed) {
 				$event	= false;
 			}
 
-			if (!$event) {
+			if (!$event || !in_array($_POST['mode'], [ 1,2,3 ])) {
 				$errors[]	= t('history_mode.unlock.errors.invalid');
 			} else {
-				$leader	= $player->guild()->leader();
+				$leader	= $guild->leader();
 				if ($leader->id != $player->id) {
 					$errors[] = t('guilds.errors.dungeon.dungeon_only_leader');
 				} else {
 					if ($_POST['mode'] == 1 && $player->currency < $event->currency) {
 						$errors[]	= t('history_mode.unlock.errors.not_enough_currency');
-					} elseif ($_POST['mode'] != 1 && $player->user()->credits < $event->credits) {
+					} elseif ($_POST['mode'] == 2 && $player->user()->credits < $event->credits) {
 						$errors[]	= t('history_mode.unlock.errors.not_enough_vip');
+					} elseif ($_POST['mode'] == 3 && $guild->treasure_atual < $event->treasure) {
+						$errors[]	= t('history_mode.unlock.errors.not_enough_treasure');
 					}
 				}
 			}
@@ -56,8 +59,10 @@ class GuildsController extends Controller {
 
 			if ($_POST['mode'] == 1) {
 				$player->spend($event->currency);
-			} else {
+			} elseif ($_POST['mode'] == 2) {
 				$player->user()->spend($event->credits);
+			} elseif ($_POST['mode'] == 3) {
+				$guild->spend($event->treasure);
 			}
 
 			// Salva o Id na Tabela de Organização aceita
@@ -107,11 +112,10 @@ class GuildsController extends Controller {
 				// upate my own position
 				if (isset($_POST['x']) && isset($_POST['y']) && is_numeric($_POST['x']) && is_numeric($_POST['y'])) {
 					$something = $map->at($_POST['x'], $_POST['y']);
-
 					if ($something) {
 						if ($something->kind == 'door') {
-							$position->xpos			= $something->target_xpos;
-							$position->ypos			= $something->target_ypos;
+							$position->xpos			= mt_rand(0, 19);
+							$position->ypos			= mt_rand(0, 19);
 							$position->guild_map_id	= $something->target_guild_map_id;
 
 							$this->json->reload = true;
@@ -159,12 +163,13 @@ class GuildsController extends Controller {
 						}
 					}
 
-					$objekt = [
+					$session	= $object->session($player->guild_id, $player->guild_accepted_event_id);
+					$objekt		= [
 						'id'	=> $object->id,
 						'name'	=> $object->description()->name,
 						'kind'	=> $object->kind,
-						'x'		=> $object->xpos,
-						'y'		=> $object->ypos
+						'x'		=> $session->xpos,
+						'y'		=> $session->ypos
 					];
 
 					if ($object->kind == 'npc' || $object->kind == 'sharednpc') {
@@ -209,11 +214,11 @@ class GuildsController extends Controller {
 			$this->json->success = true;
 
 			$took = new GuildMapObjectSession();
-			$took->player_id						= $player->id;
+			$took->player_id				= $player->id;
 			$took->guild_id					= $player->guild_id;
 			$took->guild_map_object_id		= $object->id;
 			$took->guild_accepted_event_id	= $player->guild_accepted_event_id;
-			$took->down								= 1;
+			$took->down						= 1;
 			$took->save();
 
 			// Recompensa para o caboclo
@@ -377,8 +382,8 @@ class GuildsController extends Controller {
 		if (!sizeof($errors)) {
 			$this->json->success = true;
 
-			$battle = new BattleNpc();
-			$npc = new NpcInstance(
+			$battle	= new BattleNpc();
+			$npc	= new NpcInstance(
 				$player,
 				$object->anime_id,
 				null,
@@ -392,12 +397,12 @@ class GuildsController extends Controller {
 			);
 
 			if ($object->kind == 'sharednpc') {
-				$session = GuildMapObjectSession::find_first('player_id=0 AND guild_accepted_event_id=' . $player->guild_accepted_event_id . ' AND guild_id=' . $player->guild_id . ' AND guild_map_object_id=' . $object->id);
+				$session = GuildMapObjectSession::find_first('player_id = 0 and guild_accepted_event_id=' . $player->guild_accepted_event_id . ' AND guild_id=' . $player->guild_id . ' AND guild_map_object_id=' . $object->id);
 				if (!$session) {
 					$session = new GuildMapObjectSession();
-					$session->guild_id = $player->guild_id;
-					$session->guild_map_object_id = $object->id;
-					$session->guild_accepted_event_id = $player->guild_accepted_event_id;
+					$session->guild_id					= $player->guild_id;
+					$session->guild_map_object_id		= $object->id;
+					$session->guild_accepted_event_id	= $player->guild_accepted_event_id;
 					$session->save();
 				}
 			}
@@ -442,7 +447,7 @@ class GuildsController extends Controller {
 		$redis = new Redis();
 		$redis->pconnect(REDIS_SERVER);
 		$redis->auth(REDIS_PASS);
-		$redis->select(0);
+		$redis->select(REDIS_DATABASE);
 
 		if (isset($_POST['dungeon_id']) && is_numeric($_POST['dungeon_id'])) {
 			$event = GuildEvent::find($_POST['dungeon_id']);
@@ -533,7 +538,7 @@ class GuildsController extends Controller {
 			$redis = new Redis();
 			$redis->pconnect(REDIS_SERVER);
 			$redis->auth(REDIS_PASS);
-			$redis->select(0);
+			$redis->select(REDIS_DATABASE);
 
 			$redis->rPush("od_accepts_" . $queue_id, $player->id);
 
@@ -544,7 +549,7 @@ class GuildsController extends Controller {
 			$accepted	= GuildAcceptedEvent::find($event_id);
 			$event		= $accepted->guild_event();
 
-			if (sizeof($accepts) == $needed) {
+			if (sizeof($accepts) >= $needed) {
 				foreach ($accepts as $player_id) {
 					// Adiciona o player no evento
 					$p = Player::find($player_id);
@@ -554,11 +559,24 @@ class GuildsController extends Controller {
 					// Posiciona o player no mapa
 					$position = $p->position();
 					$position->guild_map_id		= $event->initial_map()->id;
-					$position->xpos						= rand(0, 19);
-					$position->ypos						= rand(0, 19);
+					$position->xpos				= mt_rand(0, 19);
+					$position->ypos				= mt_rand(0, 19);
 					$position->save();
 				}
 				// $redis->lRem("aasg_od_invites", $queue_id, 0);
+
+				// Posiciona objetos no mapa
+				foreach ($event->maps() as $map) {
+					foreach ($map->objects() as $object) {
+						$session = new GuildMapObjectSession();
+						$session->guild_id					= $player->guild_id;
+						$session->guild_map_object_id		= $object->id;
+						$session->guild_accepted_event_id	= $player->guild_accepted_event_id;
+						$session->xpos						= mt_rand(0, 19);
+						$session->ypos						= mt_rand(0, 19);
+						$session->save();
+					}
+				}
 
 				$accepted->accepted		= 1;
 				$accepted->finishes_at	= date('Y-m-d H:i:s', now() + $event->require_time);
@@ -587,7 +605,7 @@ class GuildsController extends Controller {
 			$redis = new Redis();
 			$redis->pconnect(REDIS_SERVER);
 			$redis->auth(REDIS_PASS);
-			$redis->select(0);
+			$redis->select(REDIS_DATABASE);
 
 			$redis->rPush("od_refuses_"	. $queue_id, $player->id);
 
@@ -607,7 +625,7 @@ class GuildsController extends Controller {
 		$redis = new Redis();
 		$redis->pconnect(REDIS_SERVER);
 		$redis->auth(REDIS_PASS);
-		$redis->select(0);
+		$redis->select(REDIS_DATABASE);
 
 		if (isset($_POST['dungeon_id']) && is_numeric($_POST['dungeon_id'])) {
 			$event = GuildEvent::find($_POST['dungeon_id']);

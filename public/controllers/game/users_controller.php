@@ -162,7 +162,7 @@ class UsersController extends Controller {
 				if (!sizeof($errors)) {
 					$getIP = getIP();
 					if (isProxy($getIP)) {
-						$errors[]	= t('users.login.errors.cont_use_proxy');
+						$errors[]	= t('users.login.errors.cant_use_proxy');
 					}
 
 					if (!sizeof($errors)) {

@@ -134,7 +134,7 @@ class User extends Relation {
 		$redis = new Redis();
 		if ($redis->pconnect(REDIS_SERVER, REDIS_PORT)) {
 			$redis->auth(REDIS_PASS);
-			$redis->select(0);
+			$redis->select(REDIS_DATABASE);
 
 			$redis->set('user_' . $this->id . '_online', now(true));
 		}

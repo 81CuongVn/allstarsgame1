@@ -262,6 +262,17 @@ if (preg_match('/read_news/', $action)) {
 					<?php } ?>
 					<a href="<?=make_url('private_messages');?>"><img src="<?=image_url('icons/email.png');?>" /></a>
 				</div>
+				<div class="friend absolute">
+					<?php
+					$friendRequests	= sizeof(PlayerFriendRequest::find('friend_id=' . $player->id));
+					if ($friendRequests) {
+					?>
+						<a href="<?=make_url('friend_lists#search');?>" class="badge <?=($friendRequests ? 'pulsate_icons' : '');?>">
+							<i class="fa fa-exclamation fa-fw"></i>
+						</a>
+					<?php } ?>
+					<a href="<?=make_url('friend_lists#search')?>"><img src="<?=image_url('icons/friend.png');?>" /></a>
+				</div>
 				<div class="vip absolute">
 					<a href="<?=make_url('vips');?>">
 						<img src="<?=image_url('icons/vip-' . ($user->vip ? 'on' : 'off') . '.png');?>" class="requirement-popover" data-source="#tooltip-vip" data-title="<?=t('popovers.titles.credits');?>" data-trigger="hover" data-placement="bottom" />
@@ -476,7 +487,7 @@ if (preg_match('/read_news/', $action)) {
 // 	$redis = new Redis();
 // 	$redis->pconnect(REDIS_SERVER);
 // 	$redis->auth(REDIS_PASS);
-// 	$redis->select(0);
+// 	$redis->select(REDIS_DATABASE);
 
 // 	$have_queue	= FALSE;
 // 	$queues		= $redis->lRange("aasg_od_invites", 0, -1);

@@ -3,7 +3,7 @@ function is_user_online($id) {
     $redis = new Redis();
     if ($redis->pconnect(REDIS_SERVER, REDIS_PORT)) {
         $redis->auth(REDIS_PASS);
-        $redis->select(0);
+        $redis->select(REDIS_DATABASE);
 
         $last_time  = $redis->get('user_' . $id . '_online');
         if ($last_time) {

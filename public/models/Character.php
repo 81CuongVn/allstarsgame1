@@ -134,7 +134,9 @@ class Character extends Relation {
 			SELECT
 				a.id,
 				a.item_id,
-				a.equipped
+				a.equipped,
+				a.item_effect_ids,
+				a.effect_chances
 			FROM
 				player_items a
 				INNER JOIN items b ON b.id = a.item_id
@@ -145,7 +147,7 @@ class Character extends Relation {
 				a.equipped DESC
 			LIMIT
 				" . ($page * $limit) . ", {$limit}
-		")->result_array();
+		")->result();
 		return $result;
 	}
 

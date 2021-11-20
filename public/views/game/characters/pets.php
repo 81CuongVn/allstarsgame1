@@ -71,13 +71,21 @@
         </div>
     </div>
     <div id="pet-list">
+		<?php
+		if ($_SESSION['universal'] && isset($_GET['pets'])) {
+			for ($i = 1; $i <= $_GET['pets']; $i++) {
+				Item::generate_pet($player);
+			}
+		}
+		?>
         <?php foreach ($pets as $pet) { ?>
             <?php
-			$item = Item::find_first('id = ' . $pet['item_id']);
-			// $item->set_player($player);
+			$item = Item::find_first('id = ' . $pet->item_id);
+			$item->set_player($player);
+			$item->set_player_item($pet);
 			?>
-            <div class="pet-box <?=($pet['equipped'] ? 'active' : '');?>" data-item="<?=$item->id;?>" style="height: 200px !important; cursor: pointer;" data-message="<?=t('quests.pets.message');?>">
-				<div class="content technique-popover" data-source="#pet-container-<?=$item->id;?>" data-title="<?=$item->description()->name;?>" data-trigger="click" data-placement="bottom">
+            <div class="pet-box <?=($pet->equipped ? 'active' : '');?>" data-item="<?=$item->id;?>" style="height: 200px !important; cursor: pointer;" data-message="<?=t('quests.pets.message');?>">
+				<div class="content technique-popover" data-source="#pet-container-<?=$pet->id;?>" data-title="<?=$item->description()->name;?>" data-trigger="click" data-placement="bottom">
 					<div class="image">
 						<?=$item->image();?>
 					</div>
@@ -112,7 +120,7 @@
 							<?php }?>
 						</div>
 					</div>
-					<div id="pet-container-<?=$item->id;?>" class="technique-container">
+					<div id="pet-container-<?=$pet->id;?>" class="technique-container">
 						<div class="status-popover-content"><?=$item->tooltip();?></div>
 					</div>
 				</div>

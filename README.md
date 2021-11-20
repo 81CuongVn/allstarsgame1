@@ -11,9 +11,9 @@ Este é o repositório oficial do https://allstarsgame.com.br
 ## Permissões
 As seguintes pastas precisam ter suas permissões(776)/grupo de usuário configurados(de acordo com o usuário/grupo do servidor web) apropriadamente:
 
-- public/cache/recset
-- public/cache/store
-- public/cache/yaml
+- tmp/recset
+- tmp/store
+- tmp/yaml
 - public/logs
 - public/logs/battles/npc
 - public/logs/battles/pvp

@@ -206,18 +206,15 @@ class Item extends Relation {
 	}
 
 	function effects() {
-		// if ($this->item_type_id == 3) {
-		// 	$player_item	= $this->player_item();
+		if ($this->item_type_id == 3 && is_a($this->_player, 'Player') && !$_SESSION['universal']) {
+			$player_item	= $this->player_item();
 
-		// 	$chances	= explode(',', $player_item->effect_chances);
-		// 	$effects	= ItemEffect::find('id IN (' . $player_item->item_effect_ids . ')');
-		// } else {
-		// 	$chances	= explode(',', $this->effect_chances);
-		// 	$effects	= ItemEffect::find('id IN (' . $this->item_effect_ids . ')', ['cache' => true]);
-		// }
-
-		$chances	= explode(',', $this->effect_chances);
-		$effects	= ItemEffect::find('id IN (' . $this->item_effect_ids . ')', ['cache' => true]);
+			$chances	= explode(',', $player_item->effect_chances);
+			$effects	= ItemEffect::find('id IN (' . $player_item->item_effect_ids . ')', ['cache' => true]);
+		} else {
+			$chances	= explode(',', $this->effect_chances);
+			$effects	= ItemEffect::find('id IN (' . $this->item_effect_ids . ')', ['cache' => true]);
+		}
 
 		if ($this->_player) {
 			$player_effects	= $this->_player->get_parsed_effects();
@@ -675,6 +672,96 @@ class Item extends Relation {
 		}
 
 		return false;
+	}
+
+	static function generate_pet(Player $player, $rarity_fragment = null) {
+		$rarity_drop		= [
+			'common'	=> 45,
+			'rare'		=> 30,
+			'legendary'	=> 20,
+			'mega'		=> 5
+		];
+		$effects_by_rarity	= [
+			'common'	=> 1,
+			'rare'		=> 2,
+			'legendary'	=> 3,
+			'mega'		=> 4
+		];
+
+		$rarity_choosen_name	= '';
+		if (is_null($rarity_fragment)) {
+			while (true) {
+				foreach ($rarity_drop as $rarity => $chance) {
+					if (get_chance() <= $chance) {
+						$rarity_choosen_name	= $rarity;
+						break 2;
+					}
+				}
+			}
+		} else {
+			switch ($rarity_fragment) {
+				case 0:	$rarity_choosen_name	= "common";		break;
+				case 1:	$rarity_choosen_name	= "rare";		break;
+				case 2:	$rarity_choosen_name	= "legendary";	break;
+				case 3:	$rarity_choosen_name	= "mega";		break;
+			}
+		}
+
+		// Get all pets
+		$allPetsByRarity	= Item::find("item_type_id = 3 and rarity = '{$rarity_choosen_name}'");
+
+		// Get random pet
+		$newPet		= array_random_item($allPetsByRarity);
+
+		// Get all effects
+		$allEffects	= [];
+		$allPets	= Item::find("item_type_id = 3");
+		foreach ($allPets as $pet) {
+			$effects	= explode(',', $pet->item_effect_ids);
+			$chances	= explode(',', $pet->effect_chances);
+			foreach ($effects as $key => $effect) {
+				$allEffects[$effect]	= [
+					'id'		=> $effect,
+					'chance'	=> $chances[$key]
+				];
+			}
+		}
+		ksort($allEffects);
+
+		$efeitoIds = [];
+		foreach ($allEffects as $key => $value) {
+			$efeitoIds[] = $key;
+		}
+
+		if ($_SESSION['universal']) {
+			echo join(',', $efeitoIds);
+		}
+
+		// Set Random effects
+		$item_effect_ids	= [];
+		$effect_chances		= [];
+		$effects_counter	= $effects_by_rarity[$rarity_choosen_name];
+		while (true) {
+			$randomEffect		= array_random_item($allEffects);
+			$item_effect_ids[]	= $randomEffect['id'];
+			$effect_chances[]	= $randomEffect['chance'];
+
+			$effects_counter--;
+			if (!$effects_counter) {
+				break;
+			}
+		}
+
+		// Create new Pet
+		$insert 					= new PlayerItem();
+		$insert->player_id			= $player->id;
+		$insert->item_id			= $newPet->id;
+		$insert->rarity				= $newPet->rarity;
+		$insert->item_effect_ids	= join(',', $item_effect_ids);
+		$insert->effect_chances		= join(',', $effect_chances);
+		$insert->save();
+
+		return $insert;
 	}
 
 	static function generate_equipment($player, $rarity_fragment = null, $slot = false) {
