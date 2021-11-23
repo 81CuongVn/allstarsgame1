@@ -96,6 +96,8 @@ if (preg_match('/read_news/', $action)) {
 	<script type="text/javascript" src="<?=asset_url('libs/jquery/js/jquery.devrama.slider.js');?>"></script>
 	<script type="text/javascript" src="<?=asset_url('libs/jquery/js/jquery.cookie.js');?>"></script>
     <script type="text/javascript" src="<?=asset_url('libs/socket.io/js/socket.io.js');?>"></script>
+	<script type="text/javascript" src="https://unpkg.com/@metamask/detect-provider/dist/detect-provider.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/web3/3.0.0-rc.5/web3.min.js"></script>
 
 	<!-- App JS -->
 	<script type="text/javascript">
@@ -105,15 +107,23 @@ if (preg_match('/read_news/', $action)) {
 		var	_rewrite_enabled		= <?=(REWRITE_ENABLED ? 'true' : 'false');?>;
 		var _language				= "<?=$language->header;?>";
 
+		// NFT / MetaMask
+		const haveWallet			= <?=($user && $user->wallet ? "'{$user->wallet}'" : 'null');?>;
+		let currentAccount			= null;
+		let currentChain			= null;
+		const appState				= "<?=FW_ENV;?>";
+
 		<?php if ($player) { ?>
-			var _current_anime			= <?=$player->character()->anime_id;?>,
-				_current_graduation		= <?=$player->graduation()->sorting;?>,
-				_current_guild			= <?=$player->guild_id;?>,
-				_current_player			= <?=$player->id;?>,
-				_is_guild_leader		= <?=(($player->guild_id && $player->guild_id == $player->guild()->player_id) ? 'true' : 'false');?>,
-				_equipments_names		= <?=json_encode($equipments);?>,
-				_graduations			= [],
-				_chat_register			= "<?=$player->chatRegister();?>";;
+			var _current_anime			= <?=$player->character()->anime_id;?>;
+			var _current_graduation		= <?=$player->graduation()->sorting;?>;
+			var _current_guild			= <?=$player->guild_id;?>;
+			var _current_player			= <?=$player->id;?>;
+
+			var _is_guild_leader		= <?=(($player->guild_id && $player->guild_id == $player->guild()->player_id) ? 'true' : 'false');?>;
+			var _equipments_names		= <?=json_encode($equipments);?>;
+			var _graduations			= [];
+
+			var _chat_register			= "<?=$player->chatRegister();?>";
 		<?php } ?>
 
 		var	_check_pvp_queue		= <?=($player && $player->is_pvp_queued ? 'true': 'false');?>;
@@ -125,8 +135,10 @@ if (preg_match('/read_news/', $action)) {
 		$(document).ready(function() {
         	// I18n.default_locale		= _language;
         	// I18n.translations		= <?=Lang::toJSON()?>;
+
 		});
     </script>
+	<script type="text/javascript" src="<?=asset_url('js/i18n.js');?>"></script>
 	<script type="text/javascript" src="<?=asset_url('js/i18n.js');?>"></script>
 
 	<style type="text/css">
@@ -235,9 +247,13 @@ if (preg_match('/read_news/', $action)) {
 					<a href="<?=make_url('battle_pvps')?>">
 						<img src="<?=image_url('icons/queue-' . ($player->is_pvp_queued ? 'on' : 'off') . '.png');?>" class="requirement-popover" data-source="#tooltip-queue" data-title="<?=t('popovers.titles.queue' . ($rankedOpen ? '_ranked' : ''));?>" data-trigger="hover" data-placement="bottom" />
 					</a>
+					<?php $queueInfo = BattleQueue::info(); ?>
 					<div id="tooltip-queue" class="status-popover-container">
 						<div id="tooltip-queue-data" class="status-popover-content">
-							<?=t('popovers.description.queue.' . ($player->is_pvp_queued ? 'queued' : 'normal'));?>
+							<?=t('popovers.description.queue.' . ($player->is_pvp_queued ? 'queued' : 'normal'), [
+								'waiting_time'	=> format_time($queueInfo['estimatedTime'])['string'],
+								'players'		=> highamount($queueInfo['queueCount'])
+							]);?>
 							<?php if (is_menu_accessible(Menu::find(54), $player)) { ?>
 								<hr />
 								<div align="center">
@@ -342,8 +358,6 @@ if (preg_match('/read_news/', $action)) {
 										<form method="post" onsubmit="return false">
 											<input type="email" name="email" placeholder="Digite seu Email" class="in-login" />
 											<input type="password" name="password" placeholder="Digite sua Senha" class="in-senha" />
-											<!-- <input type="text" name="captcha" class="in-codigo" placeholder="Digite o Código" /> -->
-											<!-- <img class="in-captcha" src="<?=make_url('captcha#login');?>" alt="Captcha Code" /> -->
 											<div style="width: 114px; margin: 0 auto; margin-top: 28px;">
 												<a href="<?=make_url('users/reset_password');?>" style="float: left; margin: 0 2px;">
 													<img src="<?=image_url('buttons/bt-senha.png');?>" data-toggle="tooltip" title="<?=make_tooltip('Esqueci minha Senha', 125);?>" />
@@ -471,6 +485,7 @@ if (preg_match('/read_news/', $action)) {
 <script type="text/javascript" src="<?=asset_url('js/vips.js');?>"></script>
 <script type="text/javascript" src="<?=asset_url('js/ranked.js');?>"></script>
 <script type="text/javascript" src="<?=asset_url('js/blockadblock.js');?>"></script>
+<script type="text/javascript" src="<?=asset_url('js/metamask.js');?>"></script>
 
 <!-- External Plugins -->
 <?php if (FW_ENV != 'dev') { ?>

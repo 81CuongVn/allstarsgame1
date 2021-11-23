@@ -66,12 +66,19 @@
 		</a>
 	</div>
 	<select id="character-change-headline" class="form-control input-sm select2">
-		<option value="0"><?php echo t('characters.no_headline') ?></option>
+		<option value="0"><?=t('characters.no_headline');?></option>
 		<?php foreach ($player->user()->headlines() as $user_headline): ?>
-			<option value="<?php echo $user_headline->id ?>" <?php echo $player->headline_id == $user_headline->headline_id ? 'selected="selected"' : '' ?>><?php echo $user_headline->headline()->description()->name ?></option>
+			<option value="<?=$user_headline->id;?>" <?=($player->headline_id == $user_headline->headline_id ? 'selected' : '');?>><?=$user_headline->headline()->description()->name;?></option>
 		<?php endforeach ?>
 	</select>
-	<?php if(!$tutorial){?><a href="<?=make_url('events#tutorial');?>"><div class="tutorial cursor_pointer"></div></a><?php } else { echo '<br />'; }?>
+	<?php if (!$tutorial) { ?>
+		<a href="<?=make_url('events#tutorial');?>">
+			<div class="tutorial cursor_pointer"></div>
+		</a>
+	<?php } else { echo '<br />'; } ?>
+	<?=partial('shared/metamask', [
+		'user'	=> $user
+	]);?>
 	<div class="bg_menu_esquerdo">
 		<div class="menu_esquerdo_divisao">
 			<b class="amarelo"><?php echo t('global.anime') ?></b>
@@ -136,21 +143,23 @@
 			<b class=""><?=DROP_RATE;?>x</b>
 		</div>
 	</div>
-	<div class="bg_menu_esquerdo">
-		<?php
-		$timeout	= now() - (15 * 60);
-		$online		= Recordset::query("SELECT `id` FROM `players` WHERE `last_activity` > {$timeout}", false)->num_rows;
-		$queueds	= Recordset::query("SELECT `id` FROM `players` WHERE `is_pvp_queued` = 1", false)->num_rows;
-		?>
-		<div class="menu_esquerdo_divisao">
-			<b class="amarelo">Online</b>
-			<b class=""><?=highamount($online);?></b>
+	<?php if ($_SESSION['universal']) { ?>
+		<div class="bg_menu_esquerdo">
+			<?php
+			$timeout	= now() - (15 * 60);
+			$online		= Recordset::query("SELECT `id` FROM `players` WHERE `last_activity` > {$timeout}", false)->num_rows;
+			$queueds	= Recordset::query("SELECT `id` FROM `players` WHERE `is_pvp_queued` = 1", false)->num_rows;
+			?>
+			<div class="menu_esquerdo_divisao">
+				<b class="amarelo">Online</b>
+				<b class=""><?=highamount($online);?></b>
+			</div>
+			<div class="menu_esquerdo_divisao">
+				<b class="amarelo">Fila PvP</b>
+				<b class=""><?=highamount($queueds);?></b>
+			</div>
 		</div>
-		<div class="menu_esquerdo_divisao">
-			<b class="amarelo">Fila PvP</b>
-			<b class=""><?=highamount($queueds);?></b>
-		</div>
-	</div>
+	<?php } ?>
 	<div class="bg_menu_esquerdo">
 		<?php $battles_pvp	= Recordset::query("SELECT `id` FROM `battle_pvps` WHERE `finished_at` IS NOT NULL ", false)->num_rows; ?>
 		<div class="menu_esquerdo_divisao">
