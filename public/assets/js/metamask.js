@@ -7,7 +7,7 @@ function init() {
 async function verifyAllMetamask() {
 	const metamaskApi	= ethereum.isMetaMask;
 	if (!metamaskApi) {
-		jalert('Please connect metamask Wallet');
+		jalert('Please connect MetaMask Wallet');
 		return;
 	}
 
@@ -50,25 +50,59 @@ async function verifyAllMetamask() {
 					});
 				} catch (addError) {
 					// handle "add" error
-					console.error(addError);
+					// console.error(addError);
 				}
 			}
 			// handle other "switch" errors
 		}
-
-		const accounts = await window.ethereum.request({
-			method: 'eth_requestAccounts'
-		});
-		const account = accounts[0];
-		verifyIfHaveTokenContract();
-
-		window.ethereum.on('accountsChanged', function(accounts) {
-			// Time to reload your interface with accounts[0]!
-			if (haveWallet == null) {
-				ajaxToAccount(accounts[0]);
+	} else {
+		// Switch to testnet
+		try {
+			await ethereum.request({
+				method: 'wallet_switchEthereumChain',
+				params: [{
+					chainId: '0x61'
+				}],
+			});
+		} catch (switchError) {
+			// This error code indicates that the chain has not been added to MetaMask.
+			if (switchError.code === 4902) {
+				try {
+					await ethereum.request({
+						method: 'wallet_addEthereumChain',
+						params: [{
+							chainId: '0x61',
+							chainName: 'Smart Chain - Testnet',
+							nativeCurrency: {
+								name: 'Binance Coin',
+								symbol: 'BNB', // 2-6 characters long
+								decimals: 18
+							},
+							rpcUrl: 'https://data-seed-prebsc-1-s1.binance.org:8545/',
+							blockExplorerUrls: 'https://testnet.bscscan.com'
+						}],
+					});
+				} catch (addError) {
+					// handle "add" error
+					// console.error(addError);
+				}
 			}
-		});
+			// handle other "switch" errors
+		}
 	}
+
+	const accounts = await window.ethereum.request({
+		method: 'eth_requestAccounts'
+	});
+	const account = accounts[0];
+	verifyIfHaveTokenContract();
+
+	window.ethereum.on('accountsChanged', function(accounts) {
+		// Time to reload your interface with accounts[0]!
+		if (haveWallet == null) {
+			ajaxToAccount(accounts[0]);
+		}
+	});
 }
 
 
@@ -158,7 +192,8 @@ function getCurrentBalance() {
 			if (err.code === 4001) {
 				// EIP-1193 userRejectedRequest error
 				// If this happens, the user rejected the connection request.
-				console.log('Please connect to MetaMask.');
+				jalert("Please connect to MetaMask.");
+				return;
 			} else {
 				console.error(err);
 			}
@@ -180,8 +215,9 @@ async function callMetaToken(amount, address, id) {
 			from: haveWallet,
 			to: address,
 		});
+
 	if (response.status == true) {
-		registerTx(response.transactionHash, id); // Deprecated
+		console.log(response.transactionHash, id); // Deprecated
 	} else {
 		jalert('Error: ' + response);
 		return;
@@ -192,19 +228,35 @@ async function callMetaToken(amount, address, id) {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 async function loginMetamask() {
-	const e = await detectEthereumProvider();
-	e ? startApp(e) : console.log("Please install MetaMask!")
+	const provider	= await detectEthereumProvider();
+	if (!provider) {
+		jalert("Please install MetaMask!");
+		return;
+	}
+	startApp(provider);
 }
 
-async function startApp(e) {
-	null !== haveWallet && connect(), e !== window.ethereum && console.error("Do you have multiple wallets installed?");
-	const n = await ethereum.request({
+async function startApp(provider) {
+	if (haveWallet !== null) {
+		connect();
+	}
+
+	if (provider !== window.ethereum) {
+		jalert("Do you have multiple wallets installed?");
+		return;
+	}
+
+	const chainId = await ethereum.request({
 		method: "eth_chainId"
 	});
-	handleChainChanged(n), currentChain = currentChain, console.log("Chain", n), ethereum.request({
+	handleChainChanged(chainId);
+	currentChain = chainId;
+	console.log("Chain ID:", chainId);
+
+	ethereum.request({
 		method: "eth_accounts"
-	}).then(handleAccountsChanged).catch((e => {
-		console.error(e)
+	}).then(handleAccountsChanged).catch((err => {
+		console.error(err)
 	}))
 }
 
@@ -212,13 +264,20 @@ function connect() {
 	ethereum.request({
 		method: "eth_requestAccounts"
 	}).then((e => {
-		if (0 === e.length) console.log("Please connect to MetaMask.");
-		else {
+		if (0 === e.length) {
+			jalert("Please connect to MetaMask.");
+			return;
+		} else {
 			let n = e[0];
 			ajaxToAccount(n)
 		}
 	})).catch((e => {
-		4001 === e.code ? console.log("Please connect to MetaMask.") : console.error(e)
+		if (e.code === 4001) {
+			jalert("Please connect to MetaMask.");
+			return;
+		} else {
+			console.error(e)
+		}
 	}))
 }
 
@@ -226,8 +285,17 @@ function handleChainChanged(e) {
 	getCurrentBalance()
 }
 
-function handleAccountsChanged(e) {
-	0 === e.length ? console.log("Please connect to MetaMask.") : e[0] !== currentAccount && (currentAccount = e[0], ajaxToAccount(currentAccount))
+function handleAccountsChanged(accounts) {
+	console.log(accounts);
+	if (accounts.length === 0) {
+		jalert("Please connect to MetaMask.");
+		return;
+	} else {
+		if (accounts[0] !== currentAccount) {
+			currentAccount = accounts[0];
+			ajaxToAccount(currentAccount);
+		}
+	}
 }
 
 ethereum.on("chainChanged",		handleChainChanged);
