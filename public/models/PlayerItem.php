@@ -30,7 +30,7 @@ class PlayerItem extends Relation {
 
 	function item() {
 		$this->player();
-		if ($this->parent_id){
+		if ($this->parent_id) {
 			$item	= Item::find($this->parent_id);
 		} else {
 			$item	= Item::find($this->item_id);
