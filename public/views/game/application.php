@@ -112,6 +112,10 @@ if (preg_match('/read_news/', $action)) {
 		let currentAccount			= null;
 		let currentChain			= null;
 		const appState				= "<?=FW_ENV;?>";
+		const tokenAddress			= {
+			address:	"0xB508EC43B75e4869E247c19c2C05158d90f4f99D",
+			token:		"AASG"
+		};
 
 		<?php if ($player) { ?>
 			var _current_anime			= <?=$player->character()->anime_id;?>;

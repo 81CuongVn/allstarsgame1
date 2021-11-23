@@ -154,10 +154,11 @@ function global_message($message, $is_yaml = FALSE, $assigns = []) {
 	}
 }
 
-function canBattle(Player $player, Player $enemy) {
+function canBattle($player, $enemy) {
 	if (
 		$player->id == $enemy->id ||
-		$player->user_id == $enemy->user_id
+		$player->user_id == $enemy->user_id ||
+		$player->ip == $enemy->ip
 	) {
 		return false;
 	} elseif (Recordset::query("SELECT `id` FROM `player_battle_pvps` WHERE (

@@ -1,22 +1,20 @@
 window.onload = init();
-
 function init() {
 	verifyAllMetamask();
-	if (haveWallet) {
-		getCurrentBalance();
-	}
+	getCurrentBalance();
 }
 
 async function verifyAllMetamask() {
-	const conected		= ethereum.isConnected();
-
 	const metamaskApi	= ethereum.isMetaMask;
 	if (!metamaskApi) {
-		alert('Please connect metamask Wallet');
+		jalert('Please connect metamask Wallet');
+		return;
 	}
 
+	const conected		= ethereum.isConnected();
 	if (!conected) {
-	    alert('Please connect BSC Wallet');
+		jalert('Please connect BSC Wallet');
+		return;
 	}
 
 	const chainId = await ethereum.request({
@@ -62,16 +60,59 @@ async function verifyAllMetamask() {
 			method: 'eth_requestAccounts'
 		});
 		const account = accounts[0];
-		console.log(account);
+		verifyIfHaveTokenContract();
 
 		window.ethereum.on('accountsChanged', function(accounts) {
 			// Time to reload your interface with accounts[0]!
-			// console.log(accounts[0])
 			if (haveWallet == null) {
 				ajaxToAccount(accounts[0]);
 			}
 		});
 	}
+}
+
+
+async function verifyIfHaveTokenContract() {
+	// ethereum
+	// 	.request({
+	// 		method:	'wallet_watchAsset',
+	// 		params:	{
+	// 			type:		'BEP20',
+	// 			options:	{
+	// 				address:	tokenAddress.address,
+	// 				symbol:		tokenAddress.token,
+	// 				decimals:	18,
+	// 				image:		image_url('logo.png'),
+	// 			}
+	// 		}
+	// 	}).then((success) => {
+	// 		if (success) {
+	// 			return true;
+	// 		} else {
+	// 			throw new Error('Something went wrong.')
+	// 		}
+	// 	}).catch(console.error)
+}
+
+function ajaxToAccount(address) {
+	$.ajax({
+		url:		make_url('users#metamask'),
+		type:		'POST',
+		data:		{ wallet: address },
+		dataTypee:	'json',
+		success:	function(result) {
+			if (!result.success) {
+				format_error(result);
+				return;
+			} else {
+				window.location.reload();
+			}
+		},
+		error:		function(xhr, ajaxOptions, thrownError) {
+			jalert(xhr.responseText);
+			return;
+		}
+	});
 }
 
 function changeBNBBalancesInDOM(bnb) {
@@ -87,14 +128,9 @@ function changeTOKENBalancesInDOM(token) {
 }
 
 async function getTokenBalance() {
-	web3				= new Web3(window.ethereum);
-	const tokenAddress	= {
-		address: "0xB508EC43B75e4869E247c19c2C05158d90f4f99D",
-		token: "AASG"
-	};
-
-	const tokenABI		= await $.getJSON(absolute_url('tokenABI.json'));
-	const tokenInst		= new web3.eth.Contract(tokenABI, tokenAddress.address);
+	web3			= new Web3(window.ethereum);
+	const tokenABI	= await $.getJSON(absolute_url('tokenABI.json'));
+	const tokenInst	= new web3.eth.Contract(tokenABI, tokenAddress.address);
 
 	await tokenInst.methods.balanceOf(haveWallet).call().then((balance) => {
 		const balanceFormated = ((parseInt(balance) / 1000000000) / 1000000000).toFixed(2);
@@ -105,6 +141,10 @@ async function getTokenBalance() {
 }
 
 function getCurrentBalance() {
+	if (haveWallet === null) {
+		return;
+	}
+
 	ethereum
 		.request({
 			method: 'eth_getBalance',
@@ -126,6 +166,29 @@ function getCurrentBalance() {
 
 }
 
+async function callMetaToken(amount, address, id) {
+	// Sending Ethereum to an address
+	web3			= new Web3(web3.currentProvider);
+	amount			= web3.utils.toBN(amount).toString();
+
+	const tokenABI	= await $.getJSON(absolute_url('tokenABI.json'));
+	const tokenInst	= new web3.eth.Contract(tokenABI, tokenAddress.address);
+
+	const response	= await tokenInst.methods
+		.transfer(address, amount) // function in contract
+		.send({
+			from: haveWallet,
+			to: address,
+		});
+	if (response.status == true) {
+		registerTx(response.transactionHash, id); // Deprecated
+	} else {
+		jalert('Error: ' + response);
+		return;
+	}
+
+}
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 async function loginMetamask() {
@@ -143,25 +206,6 @@ async function startApp(e) {
 	}).then(handleAccountsChanged).catch((e => {
 		console.error(e)
 	}))
-}
-
-function ajaxToAccount(address) {
-	$.ajax({
-		type: 'POST',
-		url: make_url('users#metamask'),
-		data: { wallet: address },
-		success: function(data) {
-			console.log(data);
-			// if (data.error != undefined) {
-			// 	alert('Error: ' + data.error)
-			// } else {
-			// 	window.location.reload();
-			// }
-		},
-		error: function(xhr, ajaxOptions, thrownError) {
-			alert(xhr.responseText);
-		}
-	});
 }
 
 function connect() {
@@ -186,5 +230,5 @@ function handleAccountsChanged(e) {
 	0 === e.length ? console.log("Please connect to MetaMask.") : e[0] !== currentAccount && (currentAccount = e[0], ajaxToAccount(currentAccount))
 }
 
-ethereum.on("chainChanged", handleChainChanged);
-ethereum.on("accountsChanged", handleAccountsChanged);
+ethereum.on("chainChanged",		handleChainChanged);
+ethereum.on("accountsChanged",	handleAccountsChanged);
