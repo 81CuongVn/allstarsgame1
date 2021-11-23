@@ -1,5 +1,31 @@
 <?php
 class UsersController extends Controller {
+	public function metamask() {
+		$this->layout			= false;
+		$this->as_json			= true;
+		$this->render			= false;
+		$this->json->success	= false;
+
+		$user		= User::get_instance();
+		$wallet		= trim($_POST['wallet']);
+		$errors		= [];
+
+		if (sizeof(User::find("wallet = '{$wallet}'"))) {
+			$errors[]	= 'Essa carteira já está vinculada a outra conta!';
+		} elseif ($user->wallet && $user->wallet != $wallet) {
+			$errors[]	= 'Já existe uma carteira vinculada a essa conta!';
+		}
+
+		if (!sizeof($errors) && !$user->wallet) {
+			$this->json->success	= true;
+
+			$user->wallet	= $wallet;
+			$user->save();
+		} else {
+			$this->json->errors	= $errors;
+		}
+	}
+
 	public function join() {
 		$countries	= Country::all();
 
