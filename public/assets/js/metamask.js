@@ -26,12 +26,9 @@ async function verifyAllMetamask() {
 		try {
 			await ethereum.request({
 				method: 'wallet_switchEthereumChain',
-				params: [{
-					chainId: '0x38'
-				}],
+				params: [{ chainId: '0x38' }]
 			});
 		} catch (switchError) {
-			// This error code indicates that the chain has not been added to MetaMask.
 			if (switchError.code === 4902) {
 				try {
 					await ethereum.request({
@@ -41,31 +38,30 @@ async function verifyAllMetamask() {
 							chainName: 'Smart Chain',
 							nativeCurrency: {
 								name: 'Binance Coin',
-								symbol: 'BNB', // 2-6 characters long
+								symbol: 'BNB',
 								decimals: 18
 							},
 							rpcUrl: 'https://bsc-dataseed.binance.org/',
 							blockExplorerUrls: 'https://bscscan.com'
-						}],
+						}]
 					});
 				} catch (addError) {
 					// handle "add" error
-					// console.error(addError);
+					console.error(addError);
 				}
 			}
+
 			// handle other "switch" errors
+			console.error(switchError);
 		}
-	} else {
+	} else if (appState == 'dev' && chainId != '0x61') {
 		// Switch to testnet
 		try {
 			await ethereum.request({
 				method: 'wallet_switchEthereumChain',
-				params: [{
-					chainId: '0x61'
-				}],
+				params: [{ chainId: '0x61' }]
 			});
 		} catch (switchError) {
-			// This error code indicates that the chain has not been added to MetaMask.
 			if (switchError.code === 4902) {
 				try {
 					await ethereum.request({
@@ -75,19 +71,21 @@ async function verifyAllMetamask() {
 							chainName: 'Smart Chain - Testnet',
 							nativeCurrency: {
 								name: 'Binance Coin',
-								symbol: 'BNB', // 2-6 characters long
+								symbol: 'BNB',
 								decimals: 18
 							},
 							rpcUrl: 'https://data-seed-prebsc-1-s1.binance.org:8545/',
 							blockExplorerUrls: 'https://testnet.bscscan.com'
-						}],
+						}]
 					});
 				} catch (addError) {
 					// handle "add" error
-					// console.error(addError);
+					console.error(addError);
 				}
 			}
+
 			// handle other "switch" errors
+			console.error(switchError);
 		}
 	}
 
@@ -179,27 +177,23 @@ function getCurrentBalance() {
 		return;
 	}
 
-	ethereum
-		.request({
-			method: 'eth_getBalance',
-			params: [ haveWallet, 'latest' ]
-		})
-		.then((balances) => {
-			changeBNBBalancesInDOM((parseInt(balances, 16) / 1000000000) / 1000000000);
-			getTokenBalance();
-		})
-		.catch((err) => {
-			if (err.code === 4001) {
-				// EIP-1193 userRejectedRequest error
-				// If this happens, the user rejected the connection request.
-				jalert("Please connect to MetaMask.");
-				return;
-			} else {
-				console.error(err);
-			}
-		});
+	ethereum.request({
+		method: 'eth_getBalance',
+		params: [ haveWallet, 'latest' ]
+	}).then((balances) => {
+		changeBNBBalancesInDOM((parseInt(balances, 16) / 1000000000) / 1000000000);
+		getTokenBalance();
+	}).catch((err) => {
+		if (err.code === 4001) {
+			// EIP-1193 userRejectedRequest error
+			// If this happens, the user rejected the connection request.
+			jalert("Please connect to MetaMask.");
+			return;
+		} else {
+			console.error(err);
+		}
+	});
 
-}
 
 async function callMetaToken(amount, address, id) {
 	// Sending Ethereum to an address
