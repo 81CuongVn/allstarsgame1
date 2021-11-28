@@ -132,7 +132,7 @@ function ajaxToAccount(address) {
 		type:		'POST',
 		data:		{ wallet: address },
 		dataTypee:	'json',
-		success:	function(result) {
+		success:	function (result) {
 			if (!result.success) {
 				format_error(result);
 				return;
@@ -140,7 +140,7 @@ function ajaxToAccount(address) {
 				window.location.reload();
 			}
 		},
-		error:		function(xhr, ajaxOptions, thrownError) {
+		error:		function (xhr, ajaxOptions, thrownError) {
 			jalert(xhr.responseText);
 			return;
 		}
@@ -193,7 +193,7 @@ function getCurrentBalance() {
 			console.error(err);
 		}
 	});
-
+}
 
 async function callMetaToken(amount, address, id) {
 	// Sending Ethereum to an address
@@ -280,7 +280,6 @@ function handleChainChanged(e) {
 }
 
 function handleAccountsChanged(accounts) {
-	console.log(accounts);
 	if (accounts.length === 0) {
 		jalert("Please connect to MetaMask.");
 		return;
