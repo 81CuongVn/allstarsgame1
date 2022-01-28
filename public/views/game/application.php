@@ -488,8 +488,8 @@ if (preg_match('/read_news/', $action)) {
 <script type="text/javascript" src="<?=asset_url('js/guilds.js');?>"></script>
 <script type="text/javascript" src="<?=asset_url('js/vips.js');?>"></script>
 <script type="text/javascript" src="<?=asset_url('js/ranked.js');?>"></script>
-<script type="text/javascript" src="<?=asset_url('js/blockadblock.js');?>"></script>
-<script type="text/javascript" src="<?=asset_url('js/metamask.js');?>"></script>
+<!-- <script type="text/javascript" src="<?=asset_url('js/blockadblock.js');?>"></script> -->
+<!-- <script type="text/javascript" src="<?=asset_url('js/metamask.js');?>"></script> -->
 
 <!-- External Plugins -->
 <?php if (FW_ENV != 'dev') { ?>

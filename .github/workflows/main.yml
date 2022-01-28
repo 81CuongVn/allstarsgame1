@@ -2,7 +2,7 @@ name: Deploy
 
 on:
   push:
-    branches: [ main ]
+    branches: [ mains ]
   workflow_dispatch:
 
 jobs:
@@ -21,4 +21,4 @@ jobs:
             cd /var/www/allstarsgame
 
             git status
-            git pull https://fmedeiros95:${{ secrets.TOKEN }}@github.com/fmedeiros95/allstarsgame.git main
+            git pull https://fmedeiros95:${{ secrets.TOKEN }}@github.com/fmedeiros95/allstarsgame.git mains
